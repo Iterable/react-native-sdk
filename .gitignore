@@ -1,0 +1,66 @@
+# Xcode
+!**/*.xcsettings
+!**/*.xcscheme
+*.pbxuser
+!default.pbxuser
+xcuserdata
+*.xccheckout
+*.moved-aside
+DerivedData
+*.hmap
+*.ipa
+*.xcuserstate
+project.xcworkspace
+xcshareddata/
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+
+# Xcode, Gradle
+build/
+
+# Android
+.idea
+.gradle
+local.properties
+*.iml
+android/bin/
+.project
+.settings
+AppboyProject/android/app/bin/
+AppboyProject/android/app/.classpath
+!debug.keystore
+
+# Node
+node_modules
+*.log
+.nvm
+npm-debug.log
+yarn-error.log
+
+# OS X
+.DS_Store
+
+# CocoaPods
+Pods
+
+#fastlane
+AppboyProject/ios/fastlane/README.md
+AppboyProject/ios/fastlane/report.xml
+
+# Emacs
+*~
+
+#jest
+coverage/
+
+#BUCK
+buck-out/
+\.buckd/
+*.keystore
+
+# VSCode
+.vscode/
