@@ -24,7 +24,7 @@
 		AC68734B240D4BB000F3667D /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		AC68734C240D4BB000F3667D /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		AC687351240D4BCB00F3667D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		AC687354240D4BE900F3667D /* SampleApp-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SampleApp-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
+		AC687354240D4BE900F3667D /* SampleApp-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SampleApp-Bridging-Header.h"; path = "SampleApp/SampleApp-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		AC687357240D4C0F00F3667D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		AC687359240D4C3400F3667D /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		E5ABF7BDAC01C20765F599CB /* Pods-SampleApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SampleApp.debug.xcconfig"; path = "Target Support Files/Pods-SampleApp/Pods-SampleApp.debug.xcconfig"; sourceTree = "<group>"; };
@@ -55,14 +55,11 @@
 		13B07FAE1A68108700A75B9A /* SampleApp */ = {
 			isa = PBXGroup;
 			children = (
-				AC687359240D4C3400F3667D /* File.swift */,
+				ACBF953D240D7302008BA83F /* Supporting Files */,
 				AC687356240D4C0F00F3667D /* LaunchScreen.xib */,
-				AC687354240D4BE900F3667D /* SampleApp-Bridging-Header.h */,
 				AC687351240D4BCB00F3667D /* Images.xcassets */,
 				AC68734C240D4BB000F3667D /* AppDelegate.h */,
 				AC68734A240D4BB000F3667D /* AppDelegate.m */,
-				AC687349240D4BB000F3667D /* Info.plist */,
-				AC68734B240D4BB000F3667D /* main.m */,
 			);
 			path = SampleApp;
 			sourceTree = "<group>";
@@ -103,6 +100,17 @@
 				13B07F961A680F5B00A75B9A /* SampleApp.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		ACBF953D240D7302008BA83F /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				AC687359240D4C3400F3667D /* File.swift */,
+				AC687354240D4BE900F3667D /* SampleApp-Bridging-Header.h */,
+				AC687349240D4BB000F3667D /* Info.plist */,
+				AC68734B240D4BB000F3667D /* main.m */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -186,7 +194,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		C83FFB9FAAD627D9B825FF51 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -274,7 +282,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.company.reactjs.SampleApp;
 				PRODUCT_NAME = SampleApp;
-				SWIFT_OBJC_BRIDGING_HEADER = "SampleApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -298,7 +305,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.company.reactjs.SampleApp;
 				PRODUCT_NAME = SampleApp;
-				SWIFT_OBJC_BRIDGING_HEADER = "SampleApp-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -354,6 +360,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "SampleApp/SampleApp-Bridging-Header.h";
 			};
 			name = Debug;
 		};
@@ -399,6 +406,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "SampleApp/SampleApp-Bridging-Header.h";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

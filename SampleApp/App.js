@@ -18,23 +18,10 @@ import {
 } from 'react-native';
 
 import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
+  Colors
 } from 'react-native/Libraries/NewAppScreen';
 
 import {NativeModules} from 'react-native';
-
-function doSomething() {
-	Alert.alert('You clicked the button!');
-	return;
-    console.log("something");
-	var calendarManager = NativeModules.RNIterableSDK;
-	calendarManager.addEvent('Birthday Party', '41 Private Drive, Surrey');
-	
-}
 
 const App: () => React$Node = () => {
   return (
@@ -44,44 +31,8 @@ const App: () => React$Node = () => {
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
           <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-            <Button title="Click Me" onPress={() => {
-            		console.log("something");
-            		var calendarManager = NativeModules.RNIterableSDK;
-            		calendarManager.addEvent('Birthday Party', '4 Private Drive, Surrey');
-            		console.log('something else');
+            <Button title="Login" onPress={() => {
 					var iterableSDK = NativeModules.RNIterableSDK;
 					iterableSDK.setEmail("tapash@iterable.com");
             	} 
