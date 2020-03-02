@@ -7,15 +7,14 @@
 
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(addEvent:(NSString *)name location:(NSString *)location) {
-    NSLog(@"Hello, World!");
-    NSLog(@"Something Else");
-    RCTLogInfo(@"Pretending to create an event %@ at %@", name, location);
-}
-
 RCT_EXPORT_METHOD(setEmail: (NSString *) email) {
     IterableAPI.email = email;
-    RCTLogInfo(@"set email");
+    RCTLogInfo(@"Setting Iterable email %@", email);
+}
+
+RCT_EXPORT_METHOD(track: (NSString *) event) {
+    [IterableAPI track:event];
+    RCTLogInfo(@"Tracking event %@", event);
 }
 
 @end
