@@ -37,6 +37,11 @@ const App: () => React$Node = () => {
 					iterableSDK.setEmail("tapash@iterable.com");
             	} 
             }/>
+            <Button title="Logout" onPress={() => {
+					var iterableSDK = NativeModules.RNIterableSDK;
+					iterableSDK.setEmail(null);
+            	} 
+            }/>
             <Button title="Track Event" onPress={() => {
 					var iterableSDK = NativeModules.RNIterableSDK;
 					iterableSDK.track("ProductPurchased");
