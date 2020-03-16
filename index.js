@@ -1,6 +1,11 @@
+// @flow
+'use strict';
 
-import { NativeModules } from 'react-native';
+/**
+ * React Native module for Iterable.
+ * @module react-native-iterable-sdk
+ */
 
-const { RNIterableSDK } = NativeModules;
+import {Iterable} from './Iterable';
 
-export default RNIterableSDK;
+export {Iterable};

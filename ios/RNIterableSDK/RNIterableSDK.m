@@ -12,7 +12,7 @@ RCT_EXPORT_METHOD(initializeWithApiKey: (NSString *) apiKey) {
     [IterableAPI initializeWithApiKey: apiKey];
 }
 
-RCT_REMAP_METHOD(getMessages,
+RCT_REMAP_METHOD(getInAppMessages,
                  resolver:(RCTPromiseResolveBlock)resolve
                  rejecter:(RCTPromiseRejectBlock)reject) {
     NSArray* messages =  [[IterableAPI inAppManager] getMessages];
