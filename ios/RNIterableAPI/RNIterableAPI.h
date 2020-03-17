@@ -5,6 +5,6 @@
 #endif
 
 
-@interface RNIterableSDK : NSObject <RCTBridgeModule>
+@interface RNIterableAPI : NSObject <RCTBridgeModule>
 
 @end

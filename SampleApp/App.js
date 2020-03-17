@@ -21,7 +21,7 @@ import {
   Colors
 } from 'react-native/Libraries/NewAppScreen';
 
-import {NativeModules} from 'react-native';
+import {Iterable} from 'react-native-iterable';
 
 const App: () => React$Node = () => {
   return (
@@ -33,18 +33,15 @@ const App: () => React$Node = () => {
           style={styles.scrollView}>
           <View style={styles.body}>
             <Button title="Login" onPress={() => {
-					var iterableSDK = NativeModules.RNIterableSDK;
-					iterableSDK.setEmail("tapash@iterable.com");
+              	Iterable.setEmail("tapash@iterable.com");
             	} 
             }/>
             <Button title="Logout" onPress={() => {
-					var iterableSDK = NativeModules.RNIterableSDK;
-					iterableSDK.setEmail(null);
+ 					    Iterable.setEmail(null);
             	} 
             }/>
             <Button title="Track Event" onPress={() => {
-					var iterableSDK = NativeModules.RNIterableSDK;
-					iterableSDK.track("ProductPurchased");
+					    Iterable.track("ProductPurchased");
             	} 
             }/>
           </View>

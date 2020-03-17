@@ -3,7 +3,7 @@
 
 import { NativeModules } from 'react-native';
 
-const RNIterableSDK = NativeModules.RNIterableSDK;
+const RNIterableAPI = NativeModules.RNIterableAPI;
 
 class Iterable {
     /**
@@ -12,7 +12,7 @@ class Iterable {
      */
     static initializeWithApiKey(apiKey: string) {
         console.log("initializeWithApiKey: " + apiKey);
-        RNIterableSDK.initializeWithApiKey(apiKey);
+        RNIterableAPI.initializeWithApiKey(apiKey);
     }
 
     /**
@@ -21,13 +21,13 @@ class Iterable {
      */
     static setEmail(email: string) {
         console.log("setEmail: " + email);
-        RNIterableSDK.setEmail(email);
+        RNIterableAPI.setEmail(email);
     }
 
     static async getInAppMessages() {
         console.log("getInAppMessages");
         try {
-            var messages = await RNIterableSDK.getInAppMessages();
+            var messages = await RNIterableAPI.getInAppMessages();
             console.log(messages);
         } catch (e) {
             console.error(e);

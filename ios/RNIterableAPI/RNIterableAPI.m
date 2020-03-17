@@ -1,9 +1,9 @@
-#import "RNIterableSDK.h"
+#import "RNIterableAPI.h"
 #import <React/RCTLog.h>
 
 @import IterableSDK;
 
-@implementation RNIterableSDK;
+@implementation RNIterableAPI;
 
 RCT_EXPORT_MODULE();
 

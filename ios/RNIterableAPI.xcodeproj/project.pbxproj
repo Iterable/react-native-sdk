@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AC547A9524004D39008782E7 /* RNIterableSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = AC547A9424004D39008782E7 /* RNIterableSDK.m */; };
-		AC547A9624004D39008782E7 /* RNIterableSDK.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AC547A9324004D39008782E7 /* RNIterableSDK.h */; };
+		ACDDDF2224212BB9001686E5 /* RNIterableAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = ACDDDF2124212BB9001686E5 /* RNIterableAPI.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -18,16 +17,15 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				AC547A9624004D39008782E7 /* RNIterableSDK.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		AC547A9024004D39008782E7 /* libRNIterableSDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNIterableSDK.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		AC547A9324004D39008782E7 /* RNIterableSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNIterableSDK.h; sourceTree = "<group>"; };
-		AC547A9424004D39008782E7 /* RNIterableSDK.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNIterableSDK.m; sourceTree = "<group>"; };
+		AC547A9024004D39008782E7 /* libRNIterableAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNIterableAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		ACDDDF2024212BB9001686E5 /* RNIterableAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNIterableAPI.h; sourceTree = "<group>"; };
+		ACDDDF2124212BB9001686E5 /* RNIterableAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNIterableAPI.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,7 +42,7 @@
 		AC547A8724004D39008782E7 = {
 			isa = PBXGroup;
 			children = (
-				AC547A9224004D39008782E7 /* RNIterableSDK */,
+				AC547A9224004D39008782E7 /* RNIterableAPI */,
 				AC547A9124004D39008782E7 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -52,26 +50,26 @@
 		AC547A9124004D39008782E7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AC547A9024004D39008782E7 /* libRNIterableSDK.a */,
+				AC547A9024004D39008782E7 /* libRNIterableAPI.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		AC547A9224004D39008782E7 /* RNIterableSDK */ = {
+		AC547A9224004D39008782E7 /* RNIterableAPI */ = {
 			isa = PBXGroup;
 			children = (
-				AC547A9324004D39008782E7 /* RNIterableSDK.h */,
-				AC547A9424004D39008782E7 /* RNIterableSDK.m */,
+				ACDDDF2024212BB9001686E5 /* RNIterableAPI.h */,
+				ACDDDF2124212BB9001686E5 /* RNIterableAPI.m */,
 			);
-			path = RNIterableSDK;
+			path = RNIterableAPI;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		AC547A8F24004D39008782E7 /* RNIterableSDK */ = {
+		AC547A8F24004D39008782E7 /* RNIterableAPI */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AC547A9924004D39008782E7 /* Build configuration list for PBXNativeTarget "RNIterableSDK" */;
+			buildConfigurationList = AC547A9924004D39008782E7 /* Build configuration list for PBXNativeTarget "RNIterableAPI" */;
 			buildPhases = (
 				AC547A8C24004D39008782E7 /* Sources */,
 				AC547A8D24004D39008782E7 /* Frameworks */,
@@ -81,9 +79,9 @@
 			);
 			dependencies = (
 			);
-			name = RNIterableSDK;
+			name = RNIterableAPI;
 			productName = RNIterableSDK;
-			productReference = AC547A9024004D39008782E7 /* libRNIterableSDK.a */;
+			productReference = AC547A9024004D39008782E7 /* libRNIterableAPI.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -100,7 +98,7 @@
 					};
 				};
 			};
-			buildConfigurationList = AC547A8B24004D39008782E7 /* Build configuration list for PBXProject "RNIterableSDK" */;
+			buildConfigurationList = AC547A8B24004D39008782E7 /* Build configuration list for PBXProject "RNIterableAPI" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -113,7 +111,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				AC547A8F24004D39008782E7 /* RNIterableSDK */,
+				AC547A8F24004D39008782E7 /* RNIterableAPI */,
 			);
 		};
 /* End PBXProject section */
@@ -123,7 +121,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AC547A9524004D39008782E7 /* RNIterableSDK.m in Sources */,
+				ACDDDF2224212BB9001686E5 /* RNIterableAPI.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,7 +265,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		AC547A8B24004D39008782E7 /* Build configuration list for PBXProject "RNIterableSDK" */ = {
+		AC547A8B24004D39008782E7 /* Build configuration list for PBXProject "RNIterableAPI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AC547A9724004D39008782E7 /* Debug */,
@@ -276,7 +274,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AC547A9924004D39008782E7 /* Build configuration list for PBXNativeTarget "RNIterableSDK" */ = {
+		AC547A9924004D39008782E7 /* Build configuration list for PBXNativeTarget "RNIterableAPI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AC547A9A24004D39008782E7 /* Debug */,
