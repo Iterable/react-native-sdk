@@ -3,14 +3,14 @@ require 'json'
 package = JSON.parse(File.read(File.join(__dir__, 'package.json')))
 
 Pod::Spec.new do |s|
-  s.name           = package['name']
+  s.name           = 'Iterable-React-Native-SDK'
   s.version        = package['version']
   s.summary        = package['description']
   s.description    = package['description']
   s.license        = package['license']
   s.author         = package['author']
   s.homepage       = package['homepage']
-  s.source         = { :git => 'git+https://github.com/Iterable/react-native-iterable-sdk.git', :tag => s.version }
+  s.source         = { :git => 'git+https://github.com/Iterable/react-native-sdk.git', :tag => s.version }
 
   s.requires_arc   = true
   s.platform       = :ios, '9.0'

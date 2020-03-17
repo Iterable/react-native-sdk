@@ -34,7 +34,7 @@ target 'SampleApp' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-  pod 'react-native-iterable-sdk', :path => '../node_modules/react-native-iterable-sdk'
+  pod 'Iterable-React-Native-SDK', :path => '../node_modules/react-native-iterable'
 
   use_native_modules!
 end

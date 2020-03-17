@@ -1,6 +1,6 @@
 {
-  "name": "react-native-iterable-sdk",
-  "version": "1.0.2",
+  "name": "react-native-iterable",
+  "version": "1.0.3",
   "description": "Iterable SDK for React Native.",
   "main": "index.js",
   "scripts": {
@@ -12,11 +12,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Iterable/react-native-iterable-sdk.git"
+    "url": "git+https://github.com/Iterable/react-native-sdk.git"
   },
   "author": "Iterable",
   "license": "LICENSE.md",
-  "homepage": "https://github.com/Iterable/react-native-iterable-sdk",
+  "homepage": "https://github.com/Iterable/react-native-sdk",
   "devDependencies": {
     "eslint": "^4.18.2",
     "eslint-config-standard": "^6.0.0",
