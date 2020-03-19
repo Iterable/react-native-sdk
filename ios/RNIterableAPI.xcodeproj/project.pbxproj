@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AC76DC322423C2290071587E /* ReactIterableAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC76DC302423C2290071587E /* ReactIterableAPI.swift */; };
 		ACDDDF2224212BB9001686E5 /* RNIterableAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = ACDDDF2124212BB9001686E5 /* RNIterableAPI.m */; };
 /* End PBXBuildFile section */
 
@@ -24,7 +25,8 @@
 
 /* Begin PBXFileReference section */
 		AC547A9024004D39008782E7 /* libRNIterableAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNIterableAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		ACDDDF2024212BB9001686E5 /* RNIterableAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNIterableAPI.h; sourceTree = "<group>"; };
+		AC76DC302423C2290071587E /* ReactIterableAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactIterableAPI.swift; sourceTree = "<group>"; };
+		AC76DC312423C2290071587E /* RNIterable-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RNIterable-Bridging-Header.h"; sourceTree = "<group>"; };
 		ACDDDF2124212BB9001686E5 /* RNIterableAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNIterableAPI.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -58,7 +60,8 @@
 		AC547A9224004D39008782E7 /* RNIterableAPI */ = {
 			isa = PBXGroup;
 			children = (
-				ACDDDF2024212BB9001686E5 /* RNIterableAPI.h */,
+				AC76DC302423C2290071587E /* ReactIterableAPI.swift */,
+				AC76DC312423C2290071587E /* RNIterable-Bridging-Header.h */,
 				ACDDDF2124212BB9001686E5 /* RNIterableAPI.m */,
 			);
 			path = RNIterableAPI;
@@ -95,6 +98,7 @@
 				TargetAttributes = {
 					AC547A8F24004D39008782E7 = {
 						CreatedOnToolsVersion = 11.3.1;
+						LastSwiftMigration = 1130;
 					};
 				};
 			};
@@ -121,6 +125,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC76DC322423C2290071587E /* ReactIterableAPI.swift in Sources */,
 				ACDDDF2224212BB9001686E5 /* RNIterableAPI.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -241,11 +246,19 @@
 		AC547A9A24004D39008782E7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BP98Z28R86;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -253,11 +266,18 @@
 		AC547A9B24004D39008782E7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BP98Z28R86;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

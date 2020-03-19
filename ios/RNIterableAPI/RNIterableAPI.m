@@ -1,32 +1,19 @@
-#import "RNIterableAPI.h"
-#import <React/RCTLog.h>
+//
+//  Created by Tapash Majumder on 3/19/20.
+//  Copyright © 2020 Iterable. All rights reserved.
+//
 
-@import IterableSDK;
+#import <React/RCTBridgeModule.h>
 
-@implementation RNIterableAPI;
+@interface RCT_EXTERN_REMAP_MODULE(RNIterableAPI, ReactIterableAPI, NSObject)
 
-RCT_EXPORT_MODULE();
+RCT_EXTERN_METHOD(initializeWithApiKey: (NSString *) apiKey)
 
-RCT_EXPORT_METHOD(initializeWithApiKey: (NSString *) apiKey) {
-    RCTLogInfo(@"IterableAPI.initialize(:apiKey)");
-    [IterableAPI initializeWithApiKey: apiKey];
-}
+RCT_EXTERN_METHOD(setEmail: (NSString *)email)
 
-RCT_REMAP_METHOD(getInAppMessages,
-                 resolver:(RCTPromiseResolveBlock)resolve
-                 rejecter:(RCTPromiseRejectBlock)reject) {
-    NSArray* messages =  [[IterableAPI inAppManager] getMessages];
-    resolve(messages);
-}
+RCT_EXTERN_METHOD(getInAppMessages: (RCTPromiseResolveBlock)resolve
+                  rejecter: (RCTPromiseRejectBlock)reject)
 
-RCT_EXPORT_METHOD(setEmail: (NSString *) email) {
-    IterableAPI.email = email;
-    RCTLogInfo(@"Setting Iterable email %@", email);
-}
-
-RCT_EXPORT_METHOD(track: (NSString *) event) {
-    [IterableAPI track:event];
-    RCTLogInfo(@"Tracking event %@", event);
-}
+RCT_EXTERN_METHOD(track: (NSString *) event)
 
 @end

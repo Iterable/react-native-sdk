@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   s.platform       = :ios, '9.0'
 
   s.preserve_paths = 'LICENSE.md', 'README.md', 'package.json', 'index.js'
-  s.source_files   = 'ios/**/*.{h,m}'
+  s.source_files   = 'ios/**/*.{h,m,swift}'
 
   s.dependency 'Iterable-iOS-SDK', '~> 6.2.0'
   s.dependency 'React'
