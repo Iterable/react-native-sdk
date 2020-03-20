@@ -18,6 +18,10 @@
   "license": "LICENSE.md",
   "homepage": "https://github.com/Iterable/react-native-sdk",
   "devDependencies": {
+    "@types/jest": "^25.1.4",
+    "@types/react": "^16.9.23",
+    "@types/react-native": "^0.61.23",
+    "@types/react-test-renderer": "^16.9.2",
     "eslint": "^4.18.2",
     "eslint-config-standard": "^6.0.0",
     "eslint-config-standard-jsx": "^3.0.0",
@@ -28,7 +32,8 @@
     "i": "^0.3.5",
     "jest": "^23.0.0",
     "react": "^16.3.2",
-    "react-native": "^0.56.0"
+    "react-native": "^0.56.0",
+    "typescript": "^3.8.3"
   },
   "jest": {
     "preset": "react-native"
