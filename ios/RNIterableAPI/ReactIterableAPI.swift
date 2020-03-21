@@ -13,14 +13,22 @@ class ReactIterableAPI: NSObject, RCTBridgeModule {
         return "RNIterableAPI"
     }
     
-    @objc let methodQueue = DispatchQueue.main
-    
     @objc var bridge: RCTBridge!
     
+    @objc let methodQueue = DispatchQueue(label: String(describing: ReactIterableAPI.self))
+    
+    @objc static func requiresMainQueueSetup() -> Bool {
+        false
+    }
+    
     @objc(initializeWithApiKey:)
-    func initializeWithApiKey(apiKey: String) {
+    func initialize(apiKey: String) {
         ITBInfo()
-        IterableAPI.initialize(apiKey: apiKey)
+        let launchOptions = createLaunchOptions()
+        
+        DispatchQueue.main.async {
+            IterableAPI.initialize(apiKey: apiKey, launchOptions: launchOptions)
+        }
     }
 
     @objc(setEmail:)
@@ -39,5 +47,24 @@ class ReactIterableAPI: NSObject, RCTBridgeModule {
     func track(event: String) {
         ITBInfo()
         IterableAPI.track(event: event)
+    }
+    
+    private func createLaunchOptions() -> [UIApplication.LaunchOptionsKey: Any]? {
+        guard let bridge = bridge else {
+            return nil
+        }
+
+        return ReactIterableAPI.createLaunchOptions(bridgeLaunchOptions: bridge.launchOptions)
+    }
+    
+    private static func createLaunchOptions(bridgeLaunchOptions: [AnyHashable: Any]?) -> [UIApplication.LaunchOptionsKey: Any]? {
+        guard let bridgeLaunchOptions = bridgeLaunchOptions,
+            let remoteNotification = bridgeLaunchOptions[UIApplication.LaunchOptionsKey.remoteNotification.rawValue] else {
+            return nil
+        }
+        
+        var result = [UIApplication.LaunchOptionsKey: Any]()
+        result[UIApplication.LaunchOptionsKey.remoteNotification] = remoteNotification
+        return result
     }
 }
