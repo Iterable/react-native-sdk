@@ -5,6 +5,21 @@ import { NativeModules } from 'react-native';
 
 const RNIterableAPI = NativeModules.RNIterableAPI;
 
+enum PushServicePlatform {
+    sandbox,
+    production,
+    auto
+}
+
+class IterableConfig {
+    pushIntegrationName?: String
+    sandboxPushIntegrationName?: String
+    pushPlatform: PushServicePlatform = PushServicePlatform.auto
+    autoPushRegistration = true
+    checkForDeferredDeeplink = false
+    inAppDisplayInterval: number = 30.0
+}
+
 class Iterable {
     /**
      * 
@@ -14,6 +29,7 @@ class Iterable {
         console.log("initializeWithApiKey: " + apiKey);
         RNIterableAPI.initializeWithApiKey(apiKey);
     }
+
 
     /**
      * 

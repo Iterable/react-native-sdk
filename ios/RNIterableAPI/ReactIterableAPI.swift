@@ -8,27 +8,35 @@ import Foundation
 import IterableSDK;
 
 @objc(ReactIterableAPI)
-class ReactIterableAPI: NSObject {
-    @objc
-    func initializeWithApiKey(_ apiKey: String) {
+class ReactIterableAPI: NSObject, RCTBridgeModule {
+    @objc static func moduleName() -> String! {
+        return "RNIterableAPI"
+    }
+    
+    @objc let methodQueue = DispatchQueue.main
+    
+    @objc var bridge: RCTBridge!
+    
+    @objc(initializeWithApiKey:)
+    func initializeWithApiKey(apiKey: String) {
         ITBInfo()
         IterableAPI.initialize(apiKey: apiKey)
     }
 
-    @objc
-    func setEmail(_ email: String) {
+    @objc(setEmail:)
+    func set(email: String) {
         ITBInfo()
         IterableAPI.email = email
     }
     
     @objc(getInAppMessages:rejecter:)
-    func getInAppMessages(_ resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
+    func getInAppMessages(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
         ITBInfo()
         resolver(IterableAPI.inAppManager.getMessages())
     }
     
-    @objc
-    func track(_ event: String) {
+    @objc(trackEvent:)
+    func track(event: String) {
         ITBInfo()
         IterableAPI.track(event: event)
     }
