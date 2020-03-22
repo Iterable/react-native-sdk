@@ -44,6 +44,19 @@ class Iterable {
         return RNIterableAPI.getEmail()
     }
 
+    /**
+     * 
+     * @param {string} email 
+     */
+    static setUserId(userId: string) {
+        console.log("setUserId: " + userId);
+        RNIterableAPI.setUserId(userId);
+    }
+
+    static getUserId(): Promise<String | null> {
+        return RNIterableAPI.getUserId()
+    }
+
     static async getInAppMessages() {
         console.log("getInAppMessages");
         try {

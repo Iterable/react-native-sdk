@@ -33,7 +33,7 @@ class ReactIterableAPI: NSObject, RCTBridgeModule {
     }
 
     @objc(setEmail:)
-    func set(email: String) {
+    func set(email: String?) {
         ITBInfo()
         IterableAPI.email = email
     }
@@ -43,7 +43,19 @@ class ReactIterableAPI: NSObject, RCTBridgeModule {
         ITBInfo()
         resolver(IterableAPI.email)
     }
+
+    @objc(setUserId:)
+    func set(userId: String?) {
+        ITBInfo()
+        IterableAPI.userId = userId
+    }
     
+    @objc(getUserId:rejecter:)
+    func getUserId(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
+        ITBInfo()
+        resolver(IterableAPI.userId)
+    }
+
     @objc(getInAppMessages:rejecter:)
     func getInAppMessages(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
         ITBInfo()

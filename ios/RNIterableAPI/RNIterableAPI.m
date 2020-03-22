@@ -15,6 +15,11 @@ RCT_EXTERN_METHOD(setEmail: (NSString *) email)
 RCT_EXTERN_METHOD(getEmail: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
 
+RCT_EXTERN_METHOD(setUserId: (NSString *) userId)
+
+RCT_EXTERN_METHOD(getUserId: (RCTPromiseResolveBlock) resolve
+                  rejecter: (RCTPromiseRejectBlock) reject)
+
 RCT_EXTERN_METHOD(getInAppMessages: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
 
