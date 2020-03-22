@@ -38,6 +38,12 @@ class ReactIterableAPI: NSObject, RCTBridgeModule {
         IterableAPI.email = email
     }
     
+    @objc(getEmail:rejecter:)
+    func getEmail(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
+        ITBInfo()
+        resolver(IterableAPI.email)
+    }
+    
     @objc(getInAppMessages:rejecter:)
     func getInAppMessages(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
         ITBInfo()

@@ -1,7 +1,8 @@
 export class Iterable {
-    static initialize(apiKey: string): void;
-    static setEmail(email: string): void;
-    static getInAppMessages(): void;
+    static initialize(apiKey: string): void
+    static setEmail(email: string): void
+    static getEmail(): Promise<String | null>
+    static getInAppMessages(): void
 }
 
 export enum PushServicePlatform {

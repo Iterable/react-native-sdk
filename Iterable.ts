@@ -40,6 +40,10 @@ class Iterable {
         RNIterableAPI.setEmail(email);
     }
 
+    static getEmail(): Promise<String | null> {
+        return RNIterableAPI.getEmail()
+    }
+
     static async getInAppMessages() {
         console.log("getInAppMessages");
         try {

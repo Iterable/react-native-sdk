@@ -12,8 +12,11 @@ RCT_EXTERN_METHOD(initializeWithApiKey: (NSString *) apiKey
 
 RCT_EXTERN_METHOD(setEmail: (NSString *) email)
 
-RCT_EXTERN_METHOD(getInAppMessages: (RCTPromiseResolveBlock)resolve
-                  rejecter: (RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(getEmail: (RCTPromiseResolveBlock) resolve
+                  rejecter: (RCTPromiseRejectBlock) reject)
+
+RCT_EXTERN_METHOD(getInAppMessages: (RCTPromiseResolveBlock) resolve
+                  rejecter: (RCTPromiseRejectBlock) reject)
 
 RCT_EXTERN_METHOD(track: (NSString *) event)
 
