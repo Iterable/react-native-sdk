@@ -57,6 +57,14 @@ class Iterable {
         return RNIterableAPI.getUserId()
     }
 
+    static disableDeviceForCurrentUser() {
+        RNIterableAPI.disableDeviceForCurrentUser()
+    }
+
+    static disableDeviceForAllUsers() {
+        RNIterableAPI.disableDeviceForAllUsers()
+    }
+
     static async getInAppMessages() {
         console.log("getInAppMessages");
         try {

@@ -4,6 +4,8 @@ export class Iterable {
     static getEmail(): Promise<String | null>
     static setUserId(userId: string): void
     static getUserId(): Promise<String | null>
+    static disableDeviceForCurrentUser(): void
+    static disableDeviceForAllUsers(): void
     static getInAppMessages(): void
 }
 

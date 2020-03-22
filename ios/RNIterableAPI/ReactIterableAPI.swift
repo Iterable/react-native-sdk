@@ -56,6 +56,18 @@ class ReactIterableAPI: NSObject, RCTBridgeModule {
         resolver(IterableAPI.userId)
     }
 
+    @objc(disableDeviceForCurrentUser)
+    func disableDeviceForCurrentUser() {
+        ITBInfo()
+        IterableAPI.disableDeviceForCurrentUser()
+    }
+    
+    @objc(disableDeviceForAllUsers)
+    func disableDeviceForAllUsers() {
+        ITBInfo()
+        IterableAPI.disableDeviceForAllUsers()
+    }
+
     @objc(getInAppMessages:rejecter:)
     func getInAppMessages(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
         ITBInfo()
