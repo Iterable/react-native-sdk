@@ -7,9 +7,10 @@
 
 @interface RCT_EXTERN_REMAP_MODULE(RNIterableAPI, ReactIterableAPI, NSObject)
 
-RCT_EXTERN_METHOD(initializeWithApiKey: (NSString *) apiKey)
+RCT_EXTERN_METHOD(initializeWithApiKey: (NSString *) apiKey
+                  config: (NSDictionary *) config)
 
-RCT_EXTERN_METHOD(setEmail: (NSString *)email)
+RCT_EXTERN_METHOD(setEmail: (NSString *) email)
 
 RCT_EXTERN_METHOD(getInAppMessages: (RCTPromiseResolveBlock)resolve
                   rejecter: (RCTPromiseRejectBlock)reject)

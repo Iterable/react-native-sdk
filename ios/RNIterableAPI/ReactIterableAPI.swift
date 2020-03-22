@@ -21,13 +21,14 @@ class ReactIterableAPI: NSObject, RCTBridgeModule {
         false
     }
     
-    @objc(initializeWithApiKey:)
-    func initialize(apiKey: String) {
+    @objc(initializeWithApiKey:config:)
+    func initialize(apiKey: String, config: [AnyHashable: Any]?) {
         ITBInfo()
         let launchOptions = createLaunchOptions()
+        let config = ReactIterableAPI.createIterableConfig(from: config)
         
         DispatchQueue.main.async {
-            IterableAPI.initialize(apiKey: apiKey, launchOptions: launchOptions)
+            IterableAPI.initialize(apiKey: apiKey, launchOptions: launchOptions, config: config)
         }
     }
 
@@ -66,5 +67,30 @@ class ReactIterableAPI: NSObject, RCTBridgeModule {
         var result = [UIApplication.LaunchOptionsKey: Any]()
         result[UIApplication.LaunchOptionsKey.remoteNotification] = remoteNotification
         return result
+    }
+    
+    private static func createIterableConfig(from dict: [AnyHashable: Any]?) -> IterableConfig {
+        let config = IterableConfig()
+        guard let dict = dict else {
+            return config
+        }
+        
+        if let pushIntegrationName = dict["pushIntegrationName"] as? String {
+            config.pushIntegrationName = pushIntegrationName
+        }
+        if let sandboxPushIntegrationName = dict["sandboxPushIntegrationName"] as? String {
+            config.sandboxPushIntegrationName = sandboxPushIntegrationName
+        }
+        if let intValue = dict["pushPlatform"] as? Int, let pushPlatform = PushServicePlatform(rawValue: intValue) {
+            config.pushPlatform = pushPlatform
+        }
+        if let autoPushRegistration = dict["autoPushRegistration"] as? Bool {
+            config.autoPushRegistration = autoPushRegistration
+        }
+        if let checkForDeferredDeeplink = dict["checkForDeferredDeeplink"] as? Bool {
+            config.checkForDeferredDeeplink = checkForDeferredDeeplink
+        }
+
+        return config
     }
 }

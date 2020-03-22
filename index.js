@@ -6,6 +6,6 @@
  * @module react-native-iterable-sdk
  */
 
-import {Iterable} from './Iterable';
+import {Iterable, IterableConfig, PushServicePlatform} from './Iterable';
 
-export {Iterable};
+export {Iterable, IterableConfig, PushServicePlatform};

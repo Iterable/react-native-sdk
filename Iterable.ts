@@ -6,9 +6,9 @@ import { NativeModules } from 'react-native';
 const RNIterableAPI = NativeModules.RNIterableAPI;
 
 enum PushServicePlatform {
-    sandbox,
-    production,
-    auto
+    sandbox = 0,
+    production = 1,
+    auto = 2
 }
 
 class IterableConfig {
@@ -24,12 +24,12 @@ class Iterable {
     /**
      * 
      * @param {string} apiKey 
+     * @param {IterableConfig | null} config
      */
-    static initializeWithApiKey(apiKey: string) {
-        console.log("initializeWithApiKey: " + apiKey);
-        RNIterableAPI.initializeWithApiKey(apiKey);
+    static initialize(apiKey: string, config?: IterableConfig | null) {
+        console.log("initialize: " + apiKey);
+        RNIterableAPI.initializeWithApiKey(apiKey, config);
     }
-
 
     /**
      * 
@@ -50,4 +50,4 @@ class Iterable {
         }
     }
 }
-export { Iterable };
+export { Iterable, IterableConfig, PushServicePlatform };
