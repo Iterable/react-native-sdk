@@ -11,6 +11,12 @@ enum PushServicePlatform {
     auto = 2
 }
 
+enum IterableActionSource {
+    push = 0,
+    universalLink = 1,
+    inApp = 2
+}
+
 class IterableConfig {
     pushIntegrationName?: String
     sandboxPushIntegrationName?: String
@@ -18,7 +24,29 @@ class IterableConfig {
     autoPushRegistration = true
     checkForDeferredDeeplink = false
     inAppDisplayInterval: number = 30.0
-    urlDelegate?: (url: String) => Boolean
+    urlDelegate?: (url: String, context: IterableActionContext) => Boolean
+}
+
+class IterableAction {
+    type: String
+    data?: String
+    userInput?: String
+    
+    constructor(type: String, data?: String, userInput?: String) {
+        this.type = type
+        this.data = data
+        this.userInput = userInput
+    }
+}
+
+class IterableActionContext {
+    action: IterableAction
+    source: IterableActionSource
+
+    constructor(action: IterableAction, source: IterableActionSource) {
+        this.action = action
+        this.source = source
+    }
 }
 
 class Iterable {
@@ -30,8 +58,9 @@ class Iterable {
     static initialize(apiKey: string, config: IterableConfig = new IterableConfig()) {
         console.log("initialize: " + apiKey);
         if (config.urlDelegate) {
-            let urlCallback = (error:Error, url: String) => {
-                let result = config.urlDelegate!(url)
+            let urlCallback = (error: Error, url: String, contextDict: any) => {
+                let context = this.convertDictToIterableContext(contextDict)
+                let result = config.urlDelegate!(url, context)
                 RNIterableAPI.setUrlHandled(result)
             }
             RNIterableAPI.initializeWithApiKeyAndConfigAndUrlCallback(apiKey, config, urlCallback);
@@ -76,6 +105,13 @@ class Iterable {
     static disableDeviceForAllUsers() {
         console.log("disableDeviceForAllUsers")
         RNIterableAPI.disableDeviceForAllUsers()
+    }
+
+    private static convertDictToIterableContext(dict: any): IterableActionContext {
+        const actionDict = dict["action"]
+        const action = new IterableAction(actionDict["type"], actionDict["data"], actionDict["userInput"])
+        const actionSource = dict["actionSource"] as IterableActionSource
+        return new IterableActionContext(action, actionSource)
     }
 
     static async getInAppMessages() {

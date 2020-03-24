@@ -159,7 +159,7 @@ class ReactIterableAPI: NSObject, RCTBridgeModule {
 extension ReactIterableAPI: IterableURLDelegate {
     func handle(iterableURL url: URL, inContext context: IterableActionContext) -> Bool {
         ITBInfo()
-        urlCallback?([NSNull(), url.absoluteString])
+        urlCallback?([NSNull(), url.absoluteString, ReactIterableAPI.contextToDictionary(context: context)])
         let timeoutResult = urlDelegateSemaphore.wait(timeout: .now() + 2.0)
         if timeoutResult == .success {
             ITBInfo("urlHandled: \(urlHandled)")
@@ -168,5 +168,21 @@ extension ReactIterableAPI: IterableURLDelegate {
             ITBInfo("timed out")
             return false
         }
+    }
+    
+    private static func contextToDictionary(context: IterableActionContext) -> [AnyHashable: Any] {
+        var result = [AnyHashable: Any]()
+        var actionDict = [AnyHashable: Any]()
+        actionDict["type"] = context.action.type
+        if let data = context.action.data {
+            actionDict["data"] = data
+        }
+        if let userInput = context.action.userInput {
+            actionDict["userInput"] = userInput
+        }
+        
+        result["action"] = actionDict
+        result["source"] = context.source.rawValue
+        return result
     }
 }
