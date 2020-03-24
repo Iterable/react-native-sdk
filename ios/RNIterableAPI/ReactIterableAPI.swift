@@ -20,15 +20,35 @@ class ReactIterableAPI: NSObject, RCTBridgeModule {
     @objc static func requiresMainQueueSetup() -> Bool {
         false
     }
-    
-    @objc(initializeWithApiKey:config:)
+
+    @objc(initializeWithApiKeyAndConfig:config:)
     func initialize(apiKey: String, config: [AnyHashable: Any]?) {
         ITBInfo()
+        initialize(apiKey: apiKey, config: config, urlCallback: nil)
+    }
+
+    @objc(initializeWithApiKeyAndConfigAndUrlCallback:config:urlCallback:)
+    func initialize(apiKey: String, config: [AnyHashable: Any]?, urlCallback: RCTResponseSenderBlock?) {
+        ITBInfo()
         let launchOptions = createLaunchOptions()
-        let config = ReactIterableAPI.createIterableConfig(from: config)
+        let iterableConfig = ReactIterableAPI.createIterableConfig(from: config)
+        if let urlCallback = urlCallback {
+            self.urlCallback = urlCallback
+            iterableConfig.urlDelegate = self
+        }
         
         DispatchQueue.main.async {
-            IterableAPI.initialize(apiKey: apiKey, launchOptions: launchOptions, config: config)
+            IterableAPI.initialize(apiKey: apiKey, launchOptions: launchOptions, config: iterableConfig)
+        }
+        
+        //TODO:tqm remove
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            ITBInfo("sending url delegate")
+            let url = URL(string: "https://somewhere.com")!
+            let action = IterableAction.action(fromDictionary: ["type" : "openUrl", "data": url.absoluteString])!
+            _ = iterableConfig.urlDelegate?.handle(iterableURL: url,
+                                               inContext: IterableActionContext(action: action,
+                                                                                source: .push))
         }
     }
 
@@ -55,6 +75,12 @@ class ReactIterableAPI: NSObject, RCTBridgeModule {
         ITBInfo()
         resolver(IterableAPI.userId)
     }
+    
+    @objc(setUrlHandled:)
+    func set(urlHandled: Bool) {
+        self.urlHandled = urlHandled
+        urlDelegateSemaphore.signal()
+    }
 
     @objc(disableDeviceForCurrentUser)
     func disableDeviceForCurrentUser() {
@@ -80,6 +106,11 @@ class ReactIterableAPI: NSObject, RCTBridgeModule {
         IterableAPI.track(event: event)
     }
     
+    // Handling url delegate
+    private var urlCallback: RCTResponseSenderBlock?
+    private var urlHandled = false
+    private var urlDelegateSemaphore = DispatchSemaphore(value: 0)
+
     private func createLaunchOptions() -> [UIApplication.LaunchOptionsKey: Any]? {
         guard let bridge = bridge else {
             return nil
@@ -122,5 +153,20 @@ class ReactIterableAPI: NSObject, RCTBridgeModule {
         }
 
         return config
+    }
+}
+
+extension ReactIterableAPI: IterableURLDelegate {
+    func handle(iterableURL url: URL, inContext context: IterableActionContext) -> Bool {
+        ITBInfo()
+        urlCallback?([NSNull(), url.absoluteString])
+        let timeoutResult = urlDelegateSemaphore.wait(timeout: .now() + 2.0)
+        if timeoutResult == .success {
+            ITBInfo("urlHandled: \(urlHandled)")
+            return urlHandled
+        } else {
+            ITBInfo("timed out")
+            return false
+        }
     }
 }

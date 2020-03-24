@@ -18,17 +18,26 @@ class IterableConfig {
     autoPushRegistration = true
     checkForDeferredDeeplink = false
     inAppDisplayInterval: number = 30.0
+    urlDelegate?: (url: String) => Boolean
 }
 
 class Iterable {
     /**
      * 
      * @param {string} apiKey 
-     * @param {IterableConfig | null} config
+     * @param {IterableConfig} config
      */
-    static initialize(apiKey: string, config?: IterableConfig | null) {
+    static initialize(apiKey: string, config: IterableConfig = new IterableConfig()) {
         console.log("initialize: " + apiKey);
-        RNIterableAPI.initializeWithApiKey(apiKey, config);
+        if (config.urlDelegate) {
+            let urlCallback = (error:Error, url: String) => {
+                let result = config.urlDelegate!(url)
+                RNIterableAPI.setUrlHandled(result)
+            }
+            RNIterableAPI.initializeWithApiKeyAndConfigAndUrlCallback(apiKey, config, urlCallback);
+        } else {
+            RNIterableAPI.initializeWithApiKeyAndConfig(apiKey, config);
+        }
     }
 
     /**
@@ -41,6 +50,7 @@ class Iterable {
     }
 
     static getEmail(): Promise<String | null> {
+        console.log("getEmail")
         return RNIterableAPI.getEmail()
     }
 
@@ -54,14 +64,17 @@ class Iterable {
     }
 
     static getUserId(): Promise<String | null> {
+        console.log("getUserId")
         return RNIterableAPI.getUserId()
     }
 
     static disableDeviceForCurrentUser() {
+        console.log("disableDeviceForCurrentUser")
         RNIterableAPI.disableDeviceForCurrentUser()
     }
 
     static disableDeviceForAllUsers() {
+        console.log("disableDeviceForAllUsers")
         RNIterableAPI.disableDeviceForAllUsers()
     }
 

@@ -7,8 +7,12 @@
 
 @interface RCT_EXTERN_REMAP_MODULE(RNIterableAPI, ReactIterableAPI, NSObject)
 
-RCT_EXTERN_METHOD(initializeWithApiKey: (NSString *) apiKey
+RCT_EXTERN_METHOD(initializeWithApiKeyAndConfig: (NSString *) apiKey
                   config: (NSDictionary *) config)
+
+RCT_EXTERN_METHOD(initializeWithApiKeyAndConfigAndUrlCallback: (NSString *) apiKey
+                  config: (NSDictionary *) config
+                  urlCallback: (RCTResponseSenderBlock) urlCallback)
 
 RCT_EXTERN_METHOD(setEmail: (NSString *) email)
 
@@ -23,6 +27,8 @@ RCT_EXTERN_METHOD(getUserId: (RCTPromiseResolveBlock) resolve
 RCT_EXTERN_METHOD(disableDeviceForCurrentUser)
 
 RCT_EXTERN_METHOD(disableDeviceForAllUsers)
+
+RCT_EXTERN_METHOD(setUrlHandled: (BOOL) handled)
 
 RCT_EXTERN_METHOD(getInAppMessages: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
