@@ -44,48 +44,15 @@ class ReactIterableAPI: RCTEventEmitter {
         shouldEmit = false
     }
     
-    @objc(initializeWithApiKeyAndConfig:config:)
-    func initialize(apiKey: String, config: [AnyHashable: Any]?) {
-        ITBInfo()
-        initialize(apiKey: apiKey, config: config, urlCallback: nil)
-    }
-
-    @objc(initializeWithApiKeyAndConfigAndUrlCallback:config:urlCallback:)
-    func initialize(apiKey: String, config: [AnyHashable: Any]?, urlCallback: RCTResponseSenderBlock?) {
-        ITBInfo()
-        let launchOptions = createLaunchOptions()
-        let iterableConfig = ReactIterableAPI.createIterableConfig(from: config)
-        if let urlCallback = urlCallback {
-            self.urlCallback = urlCallback
-            iterableConfig.urlDelegate = self
-        }
-        
-        DispatchQueue.main.async {
-            IterableAPI.initialize(apiKey: apiKey, launchOptions: launchOptions, config: iterableConfig)
-        }
-        
-        //TODO:tqm remove
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            ITBInfo("sending url delegate")
-            let url = URL(string: "https://somewhere.com")!
-            let action = IterableAction.action(fromDictionary: ["type" : "openUrl", "data": url.absoluteString])!
-            _ = iterableConfig.urlDelegate?.handle(iterableURL: url,
-                                               inContext: IterableActionContext(action: action,
-                                                                                source: .push))
-        }
-    }
-    
-    @objc(initializeWithApiKey:config:urlCallback:customActionCallback:)
-    func initialize(apiKey: String, config configDict: [AnyHashable: Any], urlCallback: @escaping RCTResponseSenderBlock, customActionCallback: @escaping RCTResponseSenderBlock) {
+    @objc(initializeWithApiKey:config:)
+    func initialize(apiKey: String, config configDict: [AnyHashable: Any]) {
         ITBInfo()
         let launchOptions = createLaunchOptions()
         let iterableConfig = ReactIterableAPI.createIterableConfig(from: configDict)
         if let urlDelegatePresent = configDict["urlDelegatePresent"] as? Bool, urlDelegatePresent == true {
-            self.urlCallback = urlCallback
             iterableConfig.urlDelegate = self
         }
         if let customActionDelegatePresent = configDict["customActionDelegatePresent"] as? Bool, customActionDelegatePresent == true {
-            self.customActionCallback = customActionCallback
             iterableConfig.customActionDelegate = self
         }
         
@@ -172,13 +139,9 @@ class ReactIterableAPI: RCTEventEmitter {
     private let _methodQueue = DispatchQueue(label: String(describing: ReactIterableAPI.self))
     
     // Handling url delegate
-    private var urlCallback: RCTResponseSenderBlock?
     private var urlHandled = false
     private var urlDelegateSemaphore = DispatchSemaphore(value: 0)
     
-    // Handling custom action delegate
-    private var customActionCallback: RCTResponseSenderBlock?
-
     private func createLaunchOptions() -> [UIApplication.LaunchOptionsKey: Any]? {
         guard let bridge = bridge else {
             return nil
@@ -271,7 +234,7 @@ extension ReactIterableAPI: IterableCustomActionDelegate {
         ITBInfo()
         let actionDict = ReactIterableAPI.actionToDictionary(action: action)
         let contextDict = ReactIterableAPI.contextToDictionary(context: context)
-        customActionCallback?([NSNull(), actionDict, contextDict])
+        sendEvent(withName: EventName.handleCustomActionCalled.rawValue, body: ["action": actionDict, "context": contextDict])
         return true
     }
 }

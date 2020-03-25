@@ -53,6 +53,7 @@ class IterableActionContext {
 
 enum EventName {
     handleUrlCalled = "handleUrlCalled",
+    handleCustomActionCalled = "handleCustomActionCalled",
 }
 
 class Iterable {
@@ -76,32 +77,21 @@ class Iterable {
                 }
             )
         }
-
-        let urlCallback: ((error: Error, url: String, contextDict: any) => void)
-        let customActionCallback: ((error: Error, url: String, contextDict: any) => void)
-        if (config.urlDelegate) {
-            urlCallback = (error: Error, url: String, contextDict: any) => {
-                let context = Iterable.convertDictToIterableContext(contextDict)
-                let result = config.urlDelegate!(url, context)
-                RNIterableAPI.setUrlHandled(result)
-            }
-        } else {
-            urlCallback = (error: Error, url: String, contextDict: any) => {
-            }
-        }
         if (config.customActionDelegate) {
-            customActionCallback = (error: Error, actionDict: any, contextDict: any) => {
-                let action = Iterable.convertDictToIterableAction(actionDict)
-                let context = Iterable.convertDictToIterableContext(contextDict)
-
-                config.customActionDelegate!(action, context)
-            }
-        } else {
-            customActionCallback = (error: Error, actionDict: any, contextDict: any) => {
-            }
+            RNEventEmitter.addListener(
+                EventName.handleCustomActionCalled,
+                (dict) => {
+                    let actionDict = dict["action"]
+                    let contextDict = dict["context"]
+                    let action = Iterable.convertDictToIterableAction(actionDict)
+                    let context = Iterable.convertDictToIterableContext(contextDict)
+    
+                    config.customActionDelegate!(action, context)
+                }
+            )
         }
-        
-        RNIterableAPI.initializeWithApiKey(apiKey, Iterable.createConfigDict(config), urlCallback, customActionCallback)
+
+        RNIterableAPI.initializeWithApiKey(apiKey, Iterable.createConfigDict(config))
     }
 
     /**
