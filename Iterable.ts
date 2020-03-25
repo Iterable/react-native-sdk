@@ -25,6 +25,7 @@ class IterableConfig {
     checkForDeferredDeeplink = false
     inAppDisplayInterval: number = 30.0
     urlDelegate?: (url: String, context: IterableActionContext) => Boolean
+    customActionDelegate?: (action: IterableAction, context: IterableActionContext) => Boolean
 }
 
 class IterableAction {
@@ -57,16 +58,31 @@ class Iterable {
      */
     static initialize(apiKey: string, config: IterableConfig = new IterableConfig()) {
         console.log("initialize: " + apiKey);
+        let urlCallback: ((error: Error, url: String, contextDict: any) => void)
+        let customActionCallback: ((error: Error, url: String, contextDict: any) => void)
         if (config.urlDelegate) {
-            let urlCallback = (error: Error, url: String, contextDict: any) => {
-                let context = this.convertDictToIterableContext(contextDict)
+            urlCallback = (error: Error, url: String, contextDict: any) => {
+                let context = Iterable.convertDictToIterableContext(contextDict)
                 let result = config.urlDelegate!(url, context)
                 RNIterableAPI.setUrlHandled(result)
             }
-            RNIterableAPI.initializeWithApiKeyAndConfigAndUrlCallback(apiKey, config, urlCallback);
         } else {
-            RNIterableAPI.initializeWithApiKeyAndConfig(apiKey, config);
+            urlCallback = (error: Error, url: String, contextDict: any) => {
+            }
         }
+        if (config.customActionDelegate) {
+            customActionCallback = (error: Error, actionDict: any, contextDict: any) => {
+                let action = Iterable.convertDictToIterableAction(actionDict)
+                let context = Iterable.convertDictToIterableContext(contextDict)
+
+                config.customActionDelegate!(action, context)
+            }
+        } else {
+            customActionCallback = (error: Error, actionDict: any, contextDict: any) => {
+            }
+        }
+        
+        RNIterableAPI.initializeWithApiKey(apiKey, Iterable.createConfigDict(config), urlCallback, customActionCallback)
     }
 
     /**
@@ -107,11 +123,28 @@ class Iterable {
         RNIterableAPI.disableDeviceForAllUsers()
     }
 
+    private static createConfigDict(config: IterableConfig): any {
+        return {
+            "pushIntegrationName": config.pushIntegrationName,
+            "sandboxPushIntegrationName": config.sandboxPushIntegrationName,
+            "pushPlatform": config.pushPlatform,
+            "autoPushRegistration": config.autoPushRegistration,
+            "checkForDeferredDeeplink": config.checkForDeferredDeeplink,
+            "inAppDisplayInterval": config.inAppDisplayInterval,
+            "urlDelegatePresent": config.urlDelegate != undefined,
+            "customActionDelegatePresent": config.customActionDelegate != undefined,
+        }
+    }
+
     private static convertDictToIterableContext(dict: any): IterableActionContext {
         const actionDict = dict["action"]
-        const action = new IterableAction(actionDict["type"], actionDict["data"], actionDict["userInput"])
+        const action = Iterable.convertDictToIterableAction(actionDict)
         const actionSource = dict["actionSource"] as IterableActionSource
         return new IterableActionContext(action, actionSource)
+    }
+
+    private static convertDictToIterableAction(actionDict: any): IterableAction {
+        return new IterableAction(actionDict["type"], actionDict["data"], actionDict["userInput"])
     }
 
     static async getInAppMessages() {

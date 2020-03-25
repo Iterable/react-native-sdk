@@ -29,6 +29,7 @@ export class IterableConfig {
     checkForDeferredDeeplink: Boolean
     inAppDisplayInterval: number
     urlDelegate?: (url: String, context: IterableActionContext) => Boolean
+    customActionDelegate?: (action: IterableAction, context: IterableActionContext) => Boolean
 }
 
 export class IterableAction {

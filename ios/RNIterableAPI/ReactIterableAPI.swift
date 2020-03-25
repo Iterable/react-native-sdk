@@ -51,6 +51,44 @@ class ReactIterableAPI: NSObject, RCTBridgeModule {
                                                                                 source: .push))
         }
     }
+    
+    @objc(initializeWithApiKey:config:urlCallback:customActionCallback:)
+    func initialize(apiKey: String, config configDict: [AnyHashable: Any], urlCallback: @escaping RCTResponseSenderBlock, customActionCallback: @escaping RCTResponseSenderBlock) {
+        ITBInfo()
+        let launchOptions = createLaunchOptions()
+        let iterableConfig = ReactIterableAPI.createIterableConfig(from: configDict)
+        if let urlDelegatePresent = configDict["urlDelegatePresent"] as? Bool, urlDelegatePresent == true {
+            self.urlCallback = urlCallback
+            iterableConfig.urlDelegate = self
+        }
+        if let customActionDelegatePresent = configDict["customActionDelegatePresent"] as? Bool, customActionDelegatePresent == true {
+            self.customActionCallback = customActionCallback
+            iterableConfig.customActionDelegate = self
+        }
+        
+        DispatchQueue.main.async {
+            IterableAPI.initialize(apiKey: apiKey, launchOptions: launchOptions, config: iterableConfig)
+        }
+        
+        //TODO:tqm remove
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+//            ITBInfo("sending url delegate")
+//            let url = URL(string: "https://somewhere.com")!
+//            let action = IterableAction.action(fromDictionary: ["type" : "openUrl", "data": url.absoluteString])!
+//            _ = iterableConfig.urlDelegate?.handle(iterableURL: url,
+//                                               inContext: IterableActionContext(action: action,
+//                                                                                source: .push))
+//        }
+
+        //TODO:tqm remove
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+//            ITBInfo("sending custom action delegate")
+//            let action = IterableAction.action(fromDictionary: ["type" : "showPopup", "data": "zeePopupName"])!
+//            _ = iterableConfig.customActionDelegate?.handle(iterableCustomAction: action,
+//                                                            inContext: IterableActionContext(action: action,
+//                                                                                             source: .push))
+//        }
+    }
 
     @objc(setEmail:)
     func set(email: String?) {
@@ -110,6 +148,9 @@ class ReactIterableAPI: NSObject, RCTBridgeModule {
     private var urlCallback: RCTResponseSenderBlock?
     private var urlHandled = false
     private var urlDelegateSemaphore = DispatchSemaphore(value: 0)
+    
+    // Handling custom action delegate
+    private var customActionCallback: RCTResponseSenderBlock?
 
     private func createLaunchOptions() -> [UIApplication.LaunchOptionsKey: Any]? {
         guard let bridge = bridge else {
@@ -159,7 +200,8 @@ class ReactIterableAPI: NSObject, RCTBridgeModule {
 extension ReactIterableAPI: IterableURLDelegate {
     func handle(iterableURL url: URL, inContext context: IterableActionContext) -> Bool {
         ITBInfo()
-        urlCallback?([NSNull(), url.absoluteString, ReactIterableAPI.contextToDictionary(context: context)])
+        let contextDict = ReactIterableAPI.contextToDictionary(context: context)
+        urlCallback?([NSNull(), url.absoluteString, contextDict])
         let timeoutResult = urlDelegateSemaphore.wait(timeout: .now() + 2.0)
         if timeoutResult == .success {
             ITBInfo("urlHandled: \(urlHandled)")
@@ -172,17 +214,31 @@ extension ReactIterableAPI: IterableURLDelegate {
     
     private static func contextToDictionary(context: IterableActionContext) -> [AnyHashable: Any] {
         var result = [AnyHashable: Any]()
-        var actionDict = [AnyHashable: Any]()
-        actionDict["type"] = context.action.type
-        if let data = context.action.data {
-            actionDict["data"] = data
-        }
-        if let userInput = context.action.userInput {
-            actionDict["userInput"] = userInput
-        }
-        
+        let actionDict = actionToDictionary(action: context.action)
         result["action"] = actionDict
         result["source"] = context.source.rawValue
         return result
+    }
+    
+    private static func actionToDictionary(action: IterableAction) -> [AnyHashable: Any] {
+        var actionDict = [AnyHashable: Any]()
+        actionDict["type"] = action.type
+        if let data = action.data {
+            actionDict["data"] = data
+        }
+        if let userInput = action.userInput {
+            actionDict["userInput"] = userInput
+        }
+        return actionDict
+    }
+}
+
+extension ReactIterableAPI: IterableCustomActionDelegate {
+    func handle(iterableCustomAction action: IterableAction, inContext context: IterableActionContext) -> Bool {
+        ITBInfo()
+        let actionDict = ReactIterableAPI.actionToDictionary(action: action)
+        let contextDict = ReactIterableAPI.contextToDictionary(context: context)
+        customActionCallback?([NSNull(), actionDict, contextDict])
+        return true
     }
 }

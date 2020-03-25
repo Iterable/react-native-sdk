@@ -7,6 +7,12 @@
 
 @interface RCT_EXTERN_REMAP_MODULE(RNIterableAPI, ReactIterableAPI, NSObject)
 
+RCT_EXTERN_METHOD(initializeWithApiKey: (NSString *) apiKey
+                  config: (NSDictionary *) config
+                  urlCallback: (RCTResponseSenderBlock) urlCallback
+                  customActionCallback: (RCTResponseSenderBlock) urlCallback)
+
+
 RCT_EXTERN_METHOD(initializeWithApiKeyAndConfig: (NSString *) apiKey
                   config: (NSDictionary *) config)
 
