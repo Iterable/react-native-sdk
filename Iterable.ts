@@ -1,9 +1,10 @@
 // @flow
 'use strict';
 
-import { NativeModules } from 'react-native';
+import { NativeModules, NativeEventEmitter } from 'react-native';
 
-const RNIterableAPI = NativeModules.RNIterableAPI;
+const RNIterableAPI = NativeModules.RNIterableAPI
+const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
 
 enum PushServicePlatform {
     sandbox = 0,
@@ -50,6 +51,10 @@ class IterableActionContext {
     }
 }
 
+enum EventName {
+    handleUrlCalled = "handleUrlCalled",
+}
+
 class Iterable {
     /**
      * 
@@ -58,6 +63,20 @@ class Iterable {
      */
     static initialize(apiKey: string, config: IterableConfig = new IterableConfig()) {
         console.log("initialize: " + apiKey);
+
+        if (config.urlDelegate) {
+            RNEventEmitter.addListener(
+                EventName.handleUrlCalled,
+                (dict) => {
+                    let url = dict["url"]
+                    let contextDict = dict["context"]
+                    let context = Iterable.convertDictToIterableContext(contextDict)
+                    let result = config.urlDelegate!(url, context)
+                    RNIterableAPI.setUrlHandled(result)
+                }
+            )
+        }
+
         let urlCallback: ((error: Error, url: String, contextDict: any) => void)
         let customActionCallback: ((error: Error, url: String, contextDict: any) => void)
         if (config.urlDelegate) {

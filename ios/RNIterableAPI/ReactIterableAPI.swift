@@ -20,9 +20,28 @@ class ReactIterableAPI: RCTEventEmitter {
     @objc override static func requiresMainQueueSetup() -> Bool {
         false
     }
+    
+    enum EventName: String, CaseIterable {
+        case handleUrlCalled
+        case handleCustomActionCalled
+    }
 
     override func supportedEvents() -> [String]! {
-        return []
+        var result = [String]()
+        EventName.allCases.forEach {
+            result.append($0.rawValue)
+        }
+        return result
+    }
+    
+    override func startObserving() {
+        ITBInfo()
+        shouldEmit = true
+    }
+    
+    override func stopObserving() {
+        ITBInfo()
+        shouldEmit = false
     }
     
     @objc(initializeWithApiKeyAndConfig:config:)
@@ -120,6 +139,7 @@ class ReactIterableAPI: RCTEventEmitter {
     
     @objc(setUrlHandled:)
     func set(urlHandled: Bool) {
+        ITBInfo()
         self.urlHandled = urlHandled
         urlDelegateSemaphore.signal()
     }
@@ -148,7 +168,9 @@ class ReactIterableAPI: RCTEventEmitter {
         IterableAPI.track(event: event)
     }
     
+    private var shouldEmit = false
     private let _methodQueue = DispatchQueue(label: String(describing: ReactIterableAPI.self))
+    
     // Handling url delegate
     private var urlCallback: RCTResponseSenderBlock?
     private var urlHandled = false
@@ -205,8 +227,14 @@ class ReactIterableAPI: RCTEventEmitter {
 extension ReactIterableAPI: IterableURLDelegate {
     func handle(iterableURL url: URL, inContext context: IterableActionContext) -> Bool {
         ITBInfo()
+
+        guard shouldEmit == true else {
+            return false
+        }
+
         let contextDict = ReactIterableAPI.contextToDictionary(context: context)
-        urlCallback?([NSNull(), url.absoluteString, contextDict])
+        sendEvent(withName: EventName.handleUrlCalled.rawValue, body: ["url": url.absoluteString, "context": contextDict])
+
         let timeoutResult = urlDelegateSemaphore.wait(timeout: .now() + 2.0)
         if timeoutResult == .success {
             ITBInfo("urlHandled: \(urlHandled)")
@@ -216,7 +244,7 @@ extension ReactIterableAPI: IterableURLDelegate {
             return false
         }
     }
-    
+
     private static func contextToDictionary(context: IterableActionContext) -> [AnyHashable: Any] {
         var result = [AnyHashable: Any]()
         let actionDict = actionToDictionary(action: context.action)
