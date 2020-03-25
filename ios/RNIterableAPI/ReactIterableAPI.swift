@@ -8,19 +8,23 @@ import Foundation
 import IterableSDK;
 
 @objc(ReactIterableAPI)
-class ReactIterableAPI: NSObject, RCTBridgeModule {
-    @objc static func moduleName() -> String! {
+class ReactIterableAPI: RCTEventEmitter {
+    @objc static override func moduleName() -> String! {
         return "RNIterableAPI"
     }
     
-    @objc var bridge: RCTBridge!
+    override var methodQueue: DispatchQueue! {
+        _methodQueue
+    }
     
-    @objc let methodQueue = DispatchQueue(label: String(describing: ReactIterableAPI.self))
-    
-    @objc static func requiresMainQueueSetup() -> Bool {
+    @objc override static func requiresMainQueueSetup() -> Bool {
         false
     }
 
+    override func supportedEvents() -> [String]! {
+        return []
+    }
+    
     @objc(initializeWithApiKeyAndConfig:config:)
     func initialize(apiKey: String, config: [AnyHashable: Any]?) {
         ITBInfo()
@@ -144,6 +148,7 @@ class ReactIterableAPI: NSObject, RCTBridgeModule {
         IterableAPI.track(event: event)
     }
     
+    private let _methodQueue = DispatchQueue(label: String(describing: ReactIterableAPI.self))
     // Handling url delegate
     private var urlCallback: RCTResponseSenderBlock?
     private var urlHandled = false
