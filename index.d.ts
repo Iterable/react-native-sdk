@@ -8,6 +8,9 @@ export class Iterable {
     static disableDeviceForAllUsers(): void
     static getInAppMessages(): void
     static getLastPushPayload(): Promise<any | null>
+    static getLastPushPayload(): Promise<any | null>
+    static getAttributionInfo(): Promise<IterableAttributionInfo | null>
+    static setAttributionInfo(attributionInfo?: IterableAttributionInfo): void
 }
 
 export enum PushServicePlatform {
@@ -37,16 +40,22 @@ export class IterableAction {
     type: String
     data?: String
     userInput?: String
+
+    constructor(type: String, data?: String, userInput?: String)
 }
 
 export class IterableActionContext {
     action: IterableAction
     source: IterableActionSource
+
+    constructor(action: IterableAction, source: IterableActionSource)
 }
 
 export class IterableAttributionInfo {
     campaignId: number
     templateId: number
     messageId: String
+
+    constructor(campaignId: number, templateId: number, messageId: String)
 }
 

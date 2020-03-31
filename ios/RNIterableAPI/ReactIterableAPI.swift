@@ -109,7 +109,29 @@ class ReactIterableAPI: RCTEventEmitter {
         ITBInfo()
         resolver(IterableAPI.lastPushPayload)
     }
-    
+
+    @objc(getAttributionInfo:rejecter:)
+    func getAttributionInfo(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
+        ITBInfo()
+        guard let attributionInfo = IterableAPI.attributionInfo else {
+            resolver(NSNull())
+            return
+        }
+        
+        resolver(ReactIterableAPI.codableToDictionary(codable: attributionInfo))
+    }
+
+    @objc(setAttributionInfo:)
+    func set(attributionInfo dict: [AnyHashable: Any]?) {
+        ITBInfo()
+        guard let dict = dict else {
+            IterableAPI.attributionInfo = nil
+            return
+        }
+
+        IterableAPI.attributionInfo = ReactIterableAPI.dictionaryToCodable(dict: dict)
+    }
+
     @objc(getInAppMessages:rejecter:)
     func getInAppMessages(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
         ITBInfo()
@@ -213,6 +235,21 @@ extension ReactIterableAPI: IterableURLDelegate {
             actionDict["userInput"] = userInput
         }
         return actionDict
+    }
+    
+    private static func codableToDictionary<T>(codable: T) -> [AnyHashable: Any]? where T: Codable {
+        guard let data = try? JSONEncoder().encode(codable) else {
+            return nil
+        }
+        return try? JSONSerialization.jsonObject(with: data, options: []) as? [AnyHashable: Any]
+    }
+    
+    private static func dictionaryToCodable<T>(dict: [AnyHashable: Any]) -> T? where T: Codable {
+        guard let data = try? JSONSerialization.data(withJSONObject: dict, options: []) else {
+            return nil
+        }
+        
+        return try? JSONDecoder().decode(T.self, from: data)
     }
 }
 

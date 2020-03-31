@@ -29,6 +29,11 @@ RCT_EXTERN_METHOD(setUrlHandled: (BOOL) handled)
 RCT_EXTERN_METHOD(getLastPushPayload: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
 
+RCT_EXTERN_METHOD(getAttributionInfo: (RCTPromiseResolveBlock) resolve
+                  rejecter: (RCTPromiseRejectBlock) reject)
+
+RCT_EXTERN_METHOD(setAttributionInfo: (NSDictionary *) attributionInfo)
+
 RCT_EXTERN_METHOD(getInAppMessages: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
 

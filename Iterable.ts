@@ -144,6 +144,28 @@ class Iterable {
         RNIterableAPI.disableDeviceForAllUsers()
     }
 
+    static getLastPushPayload(): Promise<any | null> {
+        console.log("getLastPushPayload")
+        return RNIterableAPI.getLastPushPayload()
+    }
+
+    static getAttributionInfo(): Promise<IterableAttributionInfo | null> {
+        console.log("getAttributionInfo")
+        return RNIterableAPI.getAttributionInfo().then((dict: any) => {
+            return new IterableAttributionInfo(dict["campaignId"] as number, dict["templateId"] as number, dict["messageId"] as String)
+        })
+    }
+
+    /**
+     * 
+     * Attribution info (campaignId, messageId etc.) for last push open or app link click from an email.
+     * @param {attributionInfo} IterableAttributionInfo 
+     */
+    static setAttributionInfo(attributionInfo?: IterableAttributionInfo) {
+        console.log("setAttributionInfo")
+        RNIterableAPI.setAttributionInfo(attributionInfo)
+    }
+
     private static createConfigDict(config: IterableConfig): any {
         return {
             "pushIntegrationName": config.pushIntegrationName,
@@ -155,11 +177,6 @@ class Iterable {
             "urlDelegatePresent": config.urlDelegate != undefined,
             "customActionDelegatePresent": config.customActionDelegate != undefined,
         }
-    }
-
-    static getLastPushPayload(): Promise<any | null> {
-        console.log("getLastPushPayload")
-        return RNIterableAPI.getLastPushPayload()
     }
 
     private static convertDictToIterableContext(dict: any): IterableActionContext {
@@ -183,4 +200,4 @@ class Iterable {
         }
     }
 }
-export { Iterable, IterableConfig, PushServicePlatform };
+export { Iterable, IterableConfig, PushServicePlatform, IterableAction, IterableActionContext, IterableAttributionInfo };
