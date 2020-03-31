@@ -7,6 +7,7 @@ export class Iterable {
     static disableDeviceForCurrentUser(): void
     static disableDeviceForAllUsers(): void
     static getInAppMessages(): void
+    static getLastPushPayload(): Promise<any | null>
 }
 
 export enum PushServicePlatform {
@@ -42,3 +43,10 @@ export class IterableActionContext {
     action: IterableAction
     source: IterableActionSource
 }
+
+export class IterableAttributionInfo {
+    campaignId: number
+    templateId: number
+    messageId: String
+}
+

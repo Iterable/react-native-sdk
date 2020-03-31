@@ -26,6 +26,9 @@ RCT_EXTERN_METHOD(disableDeviceForAllUsers)
 
 RCT_EXTERN_METHOD(setUrlHandled: (BOOL) handled)
 
+RCT_EXTERN_METHOD(getLastPushPayload: (RCTPromiseResolveBlock) resolve
+                  rejecter: (RCTPromiseRejectBlock) reject)
+
 RCT_EXTERN_METHOD(getInAppMessages: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
 

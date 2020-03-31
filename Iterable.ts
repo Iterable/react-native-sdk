@@ -51,6 +51,18 @@ class IterableActionContext {
     }
 }
 
+class IterableAttributionInfo {
+    campaignId: number
+    templateId: number
+    messageId: String
+
+    constructor(campaignId: number, templateId: number, messageId: String) {
+        this.campaignId = campaignId
+        this.templateId = templateId
+        this.messageId = messageId
+    }
+}
+
 enum EventName {
     handleUrlCalled = "handleUrlCalled",
     handleCustomActionCalled = "handleCustomActionCalled",
@@ -143,6 +155,11 @@ class Iterable {
             "urlDelegatePresent": config.urlDelegate != undefined,
             "customActionDelegatePresent": config.customActionDelegate != undefined,
         }
+    }
+
+    static getLastPushPayload(): Promise<any | null> {
+        console.log("getLastPushPayload")
+        return RNIterableAPI.getLastPushPayload()
     }
 
     private static convertDictToIterableContext(dict: any): IterableActionContext {

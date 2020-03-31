@@ -59,25 +59,6 @@ class ReactIterableAPI: RCTEventEmitter {
         DispatchQueue.main.async {
             IterableAPI.initialize(apiKey: apiKey, launchOptions: launchOptions, config: iterableConfig)
         }
-        
-        //TODO:tqm remove
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-//            ITBInfo("sending url delegate")
-//            let url = URL(string: "https://somewhere.com")!
-//            let action = IterableAction.action(fromDictionary: ["type" : "openUrl", "data": url.absoluteString])!
-//            _ = iterableConfig.urlDelegate?.handle(iterableURL: url,
-//                                               inContext: IterableActionContext(action: action,
-//                                                                                source: .push))
-//        }
-
-        //TODO:tqm remove
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-//            ITBInfo("sending custom action delegate")
-//            let action = IterableAction.action(fromDictionary: ["type" : "showPopup", "data": "zeePopupName"])!
-//            _ = iterableConfig.customActionDelegate?.handle(iterableCustomAction: action,
-//                                                            inContext: IterableActionContext(action: action,
-//                                                                                             source: .push))
-//        }
     }
 
     @objc(setEmail:)
@@ -123,6 +104,12 @@ class ReactIterableAPI: RCTEventEmitter {
         IterableAPI.disableDeviceForAllUsers()
     }
 
+    @objc(getLastPushPayload:rejecter:)
+    func getLastPushPayload(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
+        ITBInfo()
+        resolver(IterableAPI.lastPushPayload)
+    }
+    
     @objc(getInAppMessages:rejecter:)
     func getInAppMessages(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
         ITBInfo()
