@@ -34,6 +34,16 @@ RCT_EXTERN_METHOD(getAttributionInfo: (RCTPromiseResolveBlock) resolve
 
 RCT_EXTERN_METHOD(setAttributionInfo: (NSDictionary *) attributionInfo)
 
+RCT_EXTERN_METHOD(trackPushOpenWithPayload: (NSDictionary *) payload
+                  dataFields: (NSDictionary *) dataFields)
+
+RCT_EXTERN_METHOD(trackPushOpenWithCampaignId: (NSNumber) campaignId
+                  templateId: (NSNumber) templateId
+                  messageId: (NSString *) messageId
+                  appAlreadyRunning: (BOOL) appAlreadyRunning
+                  dataFields: (NSDictionary *) dataFields)
+
+
 RCT_EXTERN_METHOD(getInAppMessages: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
 

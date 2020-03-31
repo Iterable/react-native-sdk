@@ -166,6 +166,29 @@ class Iterable {
         RNIterableAPI.setAttributionInfo(attributionInfo)
     }
 
+    /**
+     * 
+     * @param {any} payload 
+     * @param {any | null} dataFields 
+     */
+    static trackPushOpenWithPayload(payload: any, dataFields: any | null) {
+        console.log("trackPushOpenWithPayload")
+        RNIterableAPI.trackPushOpenWithPayload(payload, dataFields)
+    }
+
+    /**
+     * 
+     * @param {number} campaignId 
+     * @param {number} templateId 
+     * @param {String | null} messageId 
+     * @param {Boolean} appAlreadyRunning 
+     * @param {any | null} dataFields 
+     */
+    static trackPushOpenWithCampaignId(campaignId: number, templateId: number, messageId: String | null, appAlreadyRunning: Boolean, dataFields: any | null) {
+        console.log("trackPushOpenWithCampaignId")
+        RNIterableAPI.trackPushOpenWithCampaignId(campaignId, templateId, messageId, appAlreadyRunning, dataFields)
+    }
+
     private static createConfigDict(config: IterableConfig): any {
         return {
             "pushIntegrationName": config.pushIntegrationName,

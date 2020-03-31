@@ -11,6 +11,8 @@ export class Iterable {
     static getLastPushPayload(): Promise<any | null>
     static getAttributionInfo(): Promise<IterableAttributionInfo | null>
     static setAttributionInfo(attributionInfo?: IterableAttributionInfo): void
+    static trackPushOpenWithPayload(payload: any, dataFields: any | null): void
+    static trackPushOpenWithCampaignId(campaignId: number, templateId: number, messageId: String | null, appAlreadyRunning: Boolean, dataFields: any | null): void
 }
 
 export enum PushServicePlatform {

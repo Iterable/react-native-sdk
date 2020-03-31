@@ -131,6 +131,22 @@ class ReactIterableAPI: RCTEventEmitter {
 
         IterableAPI.attributionInfo = ReactIterableAPI.dictionaryToCodable(dict: dict)
     }
+    
+    @objc(trackPushOpenWithPayload:dataFields:)
+    func trackPushOpen(payload: [AnyHashable: Any], dataFields: [AnyHashable: Any]?) {
+        ITBInfo()
+        IterableAPI.track(pushOpen: payload, dataFields: dataFields)
+    }
+
+    @objc(trackPushOpenWithCampaignId:templateId:messageId:appAlreadyRunning:dataFields:)
+    func trackPushOpen(campaignId: NSNumber,
+                       templateId: NSNumber?,
+                       messageId: String?,
+                       appAlreadyRunning: Bool,
+                       dataFields: [AnyHashable: Any]?) {
+        ITBInfo()
+        IterableAPI.track(pushOpen: campaignId, templateId: templateId, messageId: messageId, appAlreadyRunning: appAlreadyRunning, dataFields: dataFields)
+    }
 
     @objc(getInAppMessages:rejecter:)
     func getInAppMessages(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
