@@ -26,6 +26,19 @@ class IterableConfig {
     inAppDisplayInterval: number = 30.0
     urlDelegate?: (url: String, context: IterableActionContext) => Boolean
     customActionDelegate?: (action: IterableAction, context: IterableActionContext) => Boolean
+
+    toDict(): any {
+        return {
+            "pushIntegrationName": this.pushIntegrationName,
+            "sandboxPushIntegrationName": this.sandboxPushIntegrationName,
+            "pushPlatform": this.pushPlatform,
+            "autoPushRegistration": this.autoPushRegistration,
+            "checkForDeferredDeeplink": this.checkForDeferredDeeplink,
+            "inAppDisplayInterval": this.inAppDisplayInterval,
+            "urlDelegatePresent": this.urlDelegate != undefined,
+            "customActionDelegatePresent": this.customActionDelegate != undefined,
+        }
+    }
 }
 
 class IterableAction {
@@ -122,7 +135,7 @@ class Iterable {
             )
         }
 
-        RNIterableAPI.initializeWithApiKey(apiKey, Iterable.createConfigDict(config))
+        RNIterableAPI.initializeWithApiKey(apiKey, config.toDict())
     }
 
     /**
@@ -217,19 +230,6 @@ class Iterable {
     static trackPurchase(total: number, items: Array<IterableCommerceItem>, dataFields: any | null) {
         console.log("trackPurchase")
         RNIterableAPI.trackPurchaseWithTotal(total, items, dataFields)
-    }
-
-    private static createConfigDict(config: IterableConfig): any {
-        return {
-            "pushIntegrationName": config.pushIntegrationName,
-            "sandboxPushIntegrationName": config.sandboxPushIntegrationName,
-            "pushPlatform": config.pushPlatform,
-            "autoPushRegistration": config.autoPushRegistration,
-            "checkForDeferredDeeplink": config.checkForDeferredDeeplink,
-            "inAppDisplayInterval": config.inAppDisplayInterval,
-            "urlDelegatePresent": config.urlDelegate != undefined,
-            "customActionDelegatePresent": config.customActionDelegate != undefined,
-        }
     }
 
     static async getInAppMessages() {
