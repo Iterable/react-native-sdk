@@ -1,4 +1,3 @@
-// @flow
 'use strict';
 
 import { NativeModules, NativeEventEmitter } from 'react-native';
@@ -39,6 +38,10 @@ class IterableAction {
         this.data = data
         this.userInput = userInput
     }
+
+    static fromDict(dict: any): IterableAction {
+        return new IterableAction(dict["type"], dict["data"], dict["userInput"])
+    }
 }
 
 class IterableActionContext {
@@ -48,6 +51,12 @@ class IterableActionContext {
     constructor(action: IterableAction, source: IterableActionSource) {
         this.action = action
         this.source = source
+    }
+
+    static fromDict(dict: any): IterableActionContext {
+        const action = IterableAction.fromDict(dict["action"])
+        const source = dict["actionSource"] as IterableActionSource
+        return new IterableActionContext(action, source)
     }
 }
 
@@ -95,10 +104,9 @@ class Iterable {
             RNEventEmitter.addListener(
                 EventName.handleUrlCalled,
                 (dict) => {
-                    let url = dict["url"]
-                    let contextDict = dict["context"]
-                    let context = Iterable.convertDictToIterableContext(contextDict)
-                    let result = config.urlDelegate!(url, context)
+                    const url = dict["url"]
+                    const context = IterableActionContext.fromDict(dict["context"])
+                    const result = config.urlDelegate!(url, context)
                     RNIterableAPI.setUrlHandled(result)
                 }
             )
@@ -107,11 +115,8 @@ class Iterable {
             RNEventEmitter.addListener(
                 EventName.handleCustomActionCalled,
                 (dict) => {
-                    let actionDict = dict["action"]
-                    let contextDict = dict["context"]
-                    let action = Iterable.convertDictToIterableAction(actionDict)
-                    let context = Iterable.convertDictToIterableContext(contextDict)
-    
+                    const action = IterableAction.fromDict(dict["action"])
+                    const context = IterableActionContext.fromDict(dict["context"])
                     config.customActionDelegate!(action, context)
                 }
             )
@@ -225,17 +230,6 @@ class Iterable {
             "urlDelegatePresent": config.urlDelegate != undefined,
             "customActionDelegatePresent": config.customActionDelegate != undefined,
         }
-    }
-
-    private static convertDictToIterableContext(dict: any): IterableActionContext {
-        const actionDict = dict["action"]
-        const action = Iterable.convertDictToIterableAction(actionDict)
-        const actionSource = dict["actionSource"] as IterableActionSource
-        return new IterableActionContext(action, actionSource)
-    }
-
-    private static convertDictToIterableAction(actionDict: any): IterableAction {
-        return new IterableAction(actionDict["type"], actionDict["data"], actionDict["userInput"])
     }
 
     static async getInAppMessages() {
