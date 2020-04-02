@@ -63,6 +63,20 @@ class IterableAttributionInfo {
     }
 }
 
+class IterableCommerceItem {
+    id: String
+    name: String
+    price: number
+    quantity: number
+
+    constructor(id: String, name: String, price: number, quantity: number) {
+        this.id = id
+        this.name = name
+        this.price = price
+        this.quantity = quantity
+    }
+}
+
 enum EventName {
     handleUrlCalled = "handleUrlCalled",
     handleCustomActionCalled = "handleCustomActionCalled",
@@ -189,6 +203,17 @@ class Iterable {
         RNIterableAPI.trackPushOpenWithCampaignId(campaignId, templateId, messageId, appAlreadyRunning, dataFields)
     }
 
+    /**
+     * 
+     * @param {number} total 
+     * @param {Array<IterableCommerceItem>} items 
+     * @param {any | null} dataFields 
+     */
+    static trackPurchase(total: number, items: Array<IterableCommerceItem>, dataFields: any | null) {
+        console.log("trackPurchase")
+        RNIterableAPI.trackPurchaseWithTotal(total, items, dataFields)
+    }
+
     private static createConfigDict(config: IterableConfig): any {
         return {
             "pushIntegrationName": config.pushIntegrationName,
@@ -223,4 +248,4 @@ class Iterable {
         }
     }
 }
-export { Iterable, IterableConfig, PushServicePlatform, IterableAction, IterableActionContext, IterableAttributionInfo };
+export { Iterable, IterableConfig, PushServicePlatform, IterableAction, IterableActionContext, IterableAttributionInfo, IterableCommerceItem };

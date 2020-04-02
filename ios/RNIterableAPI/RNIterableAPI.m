@@ -43,6 +43,10 @@ RCT_EXTERN_METHOD(trackPushOpenWithCampaignId: (NSNumber) campaignId
                   appAlreadyRunning: (BOOL) appAlreadyRunning
                   dataFields: (NSDictionary *) dataFields)
 
+RCT_EXTERN_METHOD(trackPurchaseWithTotal: (NSNumber) total
+                  items: (NSArray *) items
+                  dataFields: (NSDictionary *) dataFields)
+
 
 RCT_EXTERN_METHOD(getInAppMessages: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)

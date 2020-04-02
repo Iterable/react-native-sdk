@@ -13,6 +13,7 @@ export class Iterable {
     static setAttributionInfo(attributionInfo?: IterableAttributionInfo): void
     static trackPushOpenWithPayload(payload: any, dataFields: any | null): void
     static trackPushOpenWithCampaignId(campaignId: number, templateId: number, messageId: String | null, appAlreadyRunning: Boolean, dataFields: any | null): void
+    static trackPurchase(total: number, items: Array<IterableCommerceItem>, dataFields: any | null): void
 }
 
 export enum PushServicePlatform {
@@ -61,3 +62,11 @@ export class IterableAttributionInfo {
     constructor(campaignId: number, templateId: number, messageId: String)
 }
 
+export class IterableCommerceItem {
+    id: String
+    name: String
+    price: number
+    quantity: number
+
+    constructor(id: String, name: String, price: number, quantity: number)
+}

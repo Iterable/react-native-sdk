@@ -147,6 +147,16 @@ class ReactIterableAPI: RCTEventEmitter {
         ITBInfo()
         IterableAPI.track(pushOpen: campaignId, templateId: templateId, messageId: messageId, appAlreadyRunning: appAlreadyRunning, dataFields: dataFields)
     }
+    
+    @objc(trackPurchaseWithTotal:items:dataFields:)
+    func trackPurchase(total: NSNumber,
+                       items: [[AnyHashable: Any]],
+                       dataFields: [AnyHashable: Any]?) {
+        ITBInfo()
+        IterableAPI.track(purchase: total,
+                          items: items.compactMap(ReactIterableAPI.dictionaryToCommerceItem),
+                          dataFields: dataFields)
+    }
 
     @objc(getInAppMessages:rejecter:)
     func getInAppMessages(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
@@ -251,6 +261,24 @@ extension ReactIterableAPI: IterableURLDelegate {
             actionDict["userInput"] = userInput
         }
         return actionDict
+    }
+    
+    // TODO: convert CommerceItem to Codable
+    private static func dictionaryToCommerceItem(dict: [AnyHashable: Any]) -> CommerceItem? {
+        guard let id = dict["id"] as? String else {
+            return nil
+        }
+        guard let name = dict["name"] as? String else {
+            return nil
+        }
+        guard let price = dict["price"] as? NSNumber else {
+            return nil
+        }
+        guard let quantity = dict["quantity"] as? UInt else {
+            return nil
+        }
+
+        return CommerceItem(id: id, name: name, price: price, quantity: quantity)
     }
     
     private static func codableToDictionary<T>(codable: T) -> [AnyHashable: Any]? where T: Codable {
