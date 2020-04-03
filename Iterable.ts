@@ -1,6 +1,7 @@
 'use strict';
 
 import { NativeModules, NativeEventEmitter } from 'react-native';
+import { IterableInAppMessage } from './InAppClasses'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
@@ -232,14 +233,10 @@ class Iterable {
         RNIterableAPI.trackPurchaseWithTotal(total, items, dataFields)
     }
 
-    static async getInAppMessages() {
+    static getInAppMessages(): Promise<Array<IterableInAppMessage>> {
         console.log("getInAppMessages");
-        try {
-            var messages = await RNIterableAPI.getInAppMessages();
-            console.log(messages);
-        } catch (e) {
-            console.error(e);
-        }
+        return RNIterableAPI.getInAppMessages().then((messages: Array<any>) => messages.map (message => {return IterableInAppMessage.fromDict(message)}))
     }
 }
+
 export { Iterable, IterableConfig, PushServicePlatform, IterableAction, IterableActionContext, IterableAttributionInfo, IterableCommerceItem };

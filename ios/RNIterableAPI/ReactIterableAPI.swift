@@ -118,7 +118,7 @@ class ReactIterableAPI: RCTEventEmitter {
             return
         }
         
-        resolver(ReactIterableAPI.codableToDictionary(codable: attributionInfo))
+        resolver(attributionInfo.toDictionary())
     }
 
     @objc(setAttributionInfo:)
@@ -129,7 +129,7 @@ class ReactIterableAPI: RCTEventEmitter {
             return
         }
 
-        IterableAPI.attributionInfo = ReactIterableAPI.dictionaryToCodable(dict: dict)
+        IterableAPI.attributionInfo = dict.toDecodable()
     }
     
     @objc(trackPushOpenWithPayload:dataFields:)
@@ -161,7 +161,7 @@ class ReactIterableAPI: RCTEventEmitter {
     @objc(getInAppMessages:rejecter:)
     func getInAppMessages(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
         ITBInfo()
-        resolver(IterableAPI.inAppManager.getMessages())
+        resolver(IterableAPI.inAppManager.getMessages().map{ $0.toDictionary() })
     }
     
     @objc(trackEvent:)
@@ -220,6 +220,51 @@ class ReactIterableAPI: RCTEventEmitter {
 
         return config
     }
+
+    
+    // TODO: convert CommerceItem to Codable
+    private static func dictionaryToCommerceItem(dict: [AnyHashable: Any]) -> CommerceItem? {
+        guard let id = dict["id"] as? String else {
+            return nil
+        }
+        guard let name = dict["name"] as? String else {
+            return nil
+        }
+        guard let price = dict["price"] as? NSNumber else {
+            return nil
+        }
+        guard let quantity = dict["quantity"] as? UInt else {
+            return nil
+        }
+
+        return CommerceItem(id: id, name: name, price: price, quantity: quantity)
+    }
+    
+    private static func inAppTriggerToDict(trigger: IterableInAppTrigger) -> [AnyHashable: Any] {
+        var dict = [AnyHashable: Any]()
+        dict["type"] = trigger.type.rawValue
+        return dict
+    }
+    
+    private static func edgeInsetsToDict(edgeInsets: UIEdgeInsets) -> [AnyHashable: Any] {
+        var dict = [AnyHashable: Any]()
+        dict["top"] = edgeInsets.top
+        dict["left"] = edgeInsets.left
+        dict["bottom"] = edgeInsets.bottom
+        dict["right"] = edgeInsets.right
+        return dict
+    }
+    
+    private static func inAppMessageToDict(message: IterableInAppMessage) -> [AnyHashable: Any] {
+        var dict = [AnyHashable: Any]()
+        dict["messageId"] = message.messageId
+        dict["campaignId"] = message.campaignId
+        dict["trigger"] = inAppTriggerToDict(trigger: message.trigger)
+        dict["createdAt"] = message.createdAt.map { $0.iterableIntValue }
+        dict["expiresAt"] = message.expiresAt.map { $0.iterableIntValue }
+//        dict["content"] =
+        return dict
+    }
 }
 
 extension ReactIterableAPI: IterableURLDelegate {
@@ -262,39 +307,6 @@ extension ReactIterableAPI: IterableURLDelegate {
         }
         return actionDict
     }
-    
-    // TODO: convert CommerceItem to Codable
-    private static func dictionaryToCommerceItem(dict: [AnyHashable: Any]) -> CommerceItem? {
-        guard let id = dict["id"] as? String else {
-            return nil
-        }
-        guard let name = dict["name"] as? String else {
-            return nil
-        }
-        guard let price = dict["price"] as? NSNumber else {
-            return nil
-        }
-        guard let quantity = dict["quantity"] as? UInt else {
-            return nil
-        }
-
-        return CommerceItem(id: id, name: name, price: price, quantity: quantity)
-    }
-    
-    private static func codableToDictionary<T>(codable: T) -> [AnyHashable: Any]? where T: Codable {
-        guard let data = try? JSONEncoder().encode(codable) else {
-            return nil
-        }
-        return try? JSONSerialization.jsonObject(with: data, options: []) as? [AnyHashable: Any]
-    }
-    
-    private static func dictionaryToCodable<T>(dict: [AnyHashable: Any]) -> T? where T: Codable {
-        guard let data = try? JSONSerialization.data(withJSONObject: dict, options: []) else {
-            return nil
-        }
-        
-        return try? JSONDecoder().decode(T.self, from: data)
-    }
 }
 
 extension ReactIterableAPI: IterableCustomActionDelegate {
@@ -304,5 +316,44 @@ extension ReactIterableAPI: IterableCustomActionDelegate {
         let contextDict = ReactIterableAPI.contextToDictionary(context: context)
         sendEvent(withName: EventName.handleCustomActionCalled.rawValue, body: ["action": actionDict, "context": contextDict])
         return true
+    }
+}
+
+// TODO: make public
+extension Encodable {
+    public func toDictionary() -> [String: Any]? {
+        guard let data = try? JSONEncoder().encode(self) else {
+            return nil
+        }
+        
+        return try? JSONSerialization.jsonObject(with: data, options: [.allowFragments]) as? [String: Any]
+    }
+}
+
+// TODO: make public
+extension Dictionary where Key == AnyHashable, Value == Any {
+    public func toDecodable<T>() -> T? where T: Decodable {
+        guard let data = try? JSONSerialization.data(withJSONObject: self, options: []) else {
+            return nil
+        }
+        
+        return try? JSONDecoder().decode(T.self, from: data)
+
+    }
+}
+
+// TODO: make public
+extension Date {
+    public var iterableIntValue: Int {
+        return Int(self.timeIntervalSince1970 * 1000)
+    }
+}
+
+// TODO: make public
+extension Int {
+    public var iterableDateValue: Date {
+        let seconds = Double(self) / 1000.0 // ms -> seconds
+        
+        return Date(timeIntervalSince1970: seconds)
     }
 }

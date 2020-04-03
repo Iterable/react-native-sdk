@@ -70,3 +70,90 @@ export class IterableCommerceItem {
 
     constructor(id: String, name: String, price: number, quantity: number)
 }
+
+export enum IterableInAppTriggerType {
+    immediate = 0,
+    event = 1,
+    never = 2,
+}
+
+export class IterableInAppTrigger {
+    type: IterableInAppTriggerType
+    dict: any
+
+    constructor(type: IterableInAppTriggerType, dict: any)
+
+    static fromDict(dict: any): IterableInAppTrigger
+}
+
+export enum IterableInAppContentType {
+    html = 0,
+    alert = 1,
+    banner = 2,
+}
+
+export class IterableEdgeInsets {
+    top: number
+    left: number
+    bottom: number
+    right: number
+
+    constructor(top: number, left: number, bottom: number, right: number)
+
+    static fromDict(dict: any): IterableEdgeInsets
+}
+
+export interface IterableInAppContent {
+    type: IterableInAppContentType
+}
+
+export class IterableHtmlInAppContent implements IterableInAppContent {
+    type: IterableInAppContentType
+    edgeInsets: IterableEdgeInsets
+    backgroundAlpha: number
+    html: String
+
+    constructor(edgeInsets: IterableEdgeInsets, backgroundAlpha: number, html: String)
+
+    static fromDict(dict: any): IterableHtmlInAppContent
+}
+
+export class IterableInboxMetadata {
+    title?: String
+    subTitle?: String
+    icon?: String
+
+    constructor(title: String | undefined, subTitle: String | undefined, icon: String | undefined)
+
+    static fromDict(dict: any): IterableInboxMetadata
+}
+
+export class IterableInAppMessage {
+    readonly messageId: String
+    readonly campaignId: String
+    readonly trigger: IterableInAppTrigger
+    readonly createdAt?: Date
+    readonly expiresAt?: Date
+    readonly content: IterableInAppContent
+    readonly saveToInbox: Boolean
+    readonly inboxMetadata: IterableInboxMetadata
+    readonly customPayload?: any
+    readonly read: Boolean
+
+    constructor(messageId: String, 
+        campaignId: String, 
+        trigger: IterableInAppTrigger, 
+        createdAt: Date | undefined, 
+        expiresAt: Date | undefined, 
+        content: IterableInAppContent, 
+        saveToInbox: Boolean, 
+        inboxMetadata: IterableInboxMetadata,
+        customPayload: any | undefined,
+        read: Boolean)
+
+    isSilentInbox(): Boolean {
+        return this.saveToInbox && this.trigger.type == IterableInAppTriggerType.never
+    }
+
+    static fromDict(dict: any): IterableInAppMessage
+}
