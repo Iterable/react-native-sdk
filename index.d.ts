@@ -150,9 +150,7 @@ export class IterableInAppMessage {
         customPayload: any | undefined,
         read: Boolean)
 
-    isSilentInbox(): Boolean {
-        return this.saveToInbox && this.trigger.type == IterableInAppTriggerType.never
-    }
+    isSilentInbox(): Boolean
 
     static fromDict(dict: any): IterableInAppMessage
 }

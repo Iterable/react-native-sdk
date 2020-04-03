@@ -43,7 +43,7 @@ class IterableEdgeInsets {
     }
 }
 
-interface IterableInAppContent {
+export interface IterableInAppContent {
     type: IterableInAppContentType
 }
 
@@ -154,4 +154,12 @@ class IterableInAppMessage {
     }        
 }
 
-export { IterableInAppMessage }
+export { 
+    IterableInAppTriggerType, 
+    IterableInAppTrigger,
+    IterableInAppContentType,
+    IterableEdgeInsets,
+    IterableHtmlInAppContent,
+    IterableInboxMetadata,
+    IterableInAppMessage,
+}
