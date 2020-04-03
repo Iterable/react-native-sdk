@@ -79,9 +79,8 @@ export enum IterableInAppTriggerType {
 
 export class IterableInAppTrigger {
     type: IterableInAppTriggerType
-    dict: any
 
-    constructor(type: IterableInAppTriggerType, dict: any)
+    constructor(type: IterableInAppTriggerType)
 
     static fromDict(dict: any): IterableInAppTrigger
 }

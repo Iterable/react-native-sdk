@@ -8,20 +8,14 @@ enum IterableInAppTriggerType {
 
 class IterableInAppTrigger {
     type: IterableInAppTriggerType
-    dict: any
 
-    constructor(type: IterableInAppTriggerType, dict: any) {
+    constructor(type: IterableInAppTriggerType) {
         this.type = type
-        this.dict = dict
     }
 
     static fromDict(dict: any): IterableInAppTrigger {
-        const type = dict["type"] as IterableInAppTriggerType
-        if (type) {
-            return new IterableInAppTrigger(type, dict)
-        } else {
-            return new IterableInAppTrigger(IterableInAppTriggerType.immediate, dict)
-        }
+        const type = dict["type"] as IterableInAppTriggerType | IterableInAppTriggerType.immediate
+        return new IterableInAppTrigger(type)
     }
 }
 

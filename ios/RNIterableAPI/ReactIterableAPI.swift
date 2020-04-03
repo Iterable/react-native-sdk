@@ -161,7 +161,7 @@ class ReactIterableAPI: RCTEventEmitter {
     @objc(getInAppMessages:rejecter:)
     func getInAppMessages(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
         ITBInfo()
-        resolver(IterableAPI.inAppManager.getMessages().map{ $0.toDictionary() })
+        resolver(IterableAPI.inAppManager.getMessages().map{ ReactIterableAPI.inAppMessageToDict(message: $0) })
     }
     
     @objc(trackEvent:)
@@ -262,7 +262,35 @@ class ReactIterableAPI: RCTEventEmitter {
         dict["trigger"] = inAppTriggerToDict(trigger: message.trigger)
         dict["createdAt"] = message.createdAt.map { $0.iterableIntValue }
         dict["expiresAt"] = message.expiresAt.map { $0.iterableIntValue }
-//        dict["content"] =
+        dict["content"] = inAppContentToDict(content: message.content)
+        dict["saveToInbox"] = message.saveToInbox
+        dict["inboxMetadata"] = inboxMetadataToDict(metadata: message.inboxMetadata)
+        dict["customPayload"] = message.customPayload
+        dict["read"] = message.read
+        return dict
+    }
+    
+    private static func inAppContentToDict(content: IterableInAppContent) -> [AnyHashable: Any] {
+        guard let htmlInAppContent = content as? IterableHtmlInAppContent else {
+            return [:]
+        }
+
+        var dict = [AnyHashable: Any]()
+        dict["type"] = htmlInAppContent.type.rawValue
+        dict["edgeInsets"] = edgeInsetsToDict(edgeInsets: htmlInAppContent.edgeInsets)
+        dict["backgroundAlpha"] = htmlInAppContent.backgroundAlpha
+        dict["html"] = htmlInAppContent.html
+        return dict
+    }
+    
+    private static func inboxMetadataToDict(metadata: IterableInboxMetadata?) -> [AnyHashable: Any]? {
+        guard let metadata = metadata else {
+            return nil
+        }
+        var dict = [AnyHashable: Any]()
+        dict["title"] = metadata.title
+        dict["subtitle"] = metadata.subtitle
+        dict["icon"] = metadata.icon
         return dict
     }
 }
