@@ -39,13 +39,13 @@ RCT_EXTERN_METHOD(setAttributionInfo: (NSDictionary *) attributionInfo)
 RCT_EXTERN_METHOD(trackPushOpenWithPayload: (NSDictionary *) payload
                   dataFields: (NSDictionary *) dataFields)
 
-RCT_EXTERN_METHOD(trackPushOpenWithCampaignId: (NSNumber) campaignId
-                  templateId: (NSNumber) templateId
+RCT_EXTERN_METHOD(trackPushOpenWithCampaignId: (nonnull NSNumber *) campaignId
+                  templateId: (nonnull NSNumber *) templateId
                   messageId: (NSString *) messageId
                   appAlreadyRunning: (BOOL) appAlreadyRunning
                   dataFields: (NSDictionary *) dataFields)
 
-RCT_EXTERN_METHOD(trackPurchaseWithTotal: (NSNumber) total
+RCT_EXTERN_METHOD(trackPurchaseWithTotal: (nonnull NSNumber *) total
                   items: (NSArray *) items
                   dataFields: (NSDictionary *) dataFields)
 

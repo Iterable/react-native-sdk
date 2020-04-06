@@ -49,7 +49,7 @@ class ReactIterableAPI: RCTEventEmitter {
     func initialize(apiKey: String, config configDict: [AnyHashable: Any]) {
         ITBInfo()
         let launchOptions = createLaunchOptions()
-        let iterableConfig = ReactIterableAPI.createIterableConfig(from: configDict)
+        let iterableConfig = IterableConfig.from(dict: configDict)
         if let urlDelegatePresent = configDict["urlDelegatePresent"] as? Bool, urlDelegatePresent == true {
             iterableConfig.urlDelegate = self
         }
@@ -58,9 +58,6 @@ class ReactIterableAPI: RCTEventEmitter {
         }
         if let inAppDelegatePresent = configDict["inAppDelegatePresent"] as? Bool, inAppDelegatePresent == true {
             iterableConfig.inAppDelegate = self
-        }
-        if let inAppDisplayInterval = configDict["inAppDisplayInterval"] as? Double {
-            iterableConfig.inAppDisplayInterval = inAppDisplayInterval
         }
         
         DispatchQueue.main.async {
@@ -136,7 +133,7 @@ class ReactIterableAPI: RCTEventEmitter {
             return
         }
         
-        resolver(attributionInfo.toDictionary())
+        resolver(SerializationUtil.encodableToDictionary(encodable: attributionInfo))
     }
 
     @objc(setAttributionInfo:)
@@ -147,7 +144,7 @@ class ReactIterableAPI: RCTEventEmitter {
             return
         }
 
-        IterableAPI.attributionInfo = dict.toDecodable()
+        IterableAPI.attributionInfo = SerializationUtil.dictionaryToDecodable(dict: dict)
     }
     
     @objc(trackPushOpenWithPayload:dataFields:)
@@ -172,14 +169,14 @@ class ReactIterableAPI: RCTEventEmitter {
                        dataFields: [AnyHashable: Any]?) {
         ITBInfo()
         IterableAPI.track(purchase: total,
-                          items: items.compactMap(ReactIterableAPI.dictionaryToCommerceItem),
+                          items: items.compactMap(CommerceItem.from(dict:)),
                           dataFields: dataFields)
     }
 
     @objc(getInAppMessages:rejecter:)
     func getInAppMessages(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
         ITBInfo()
-        resolver(IterableAPI.inAppManager.getMessages().map{ ReactIterableAPI.inAppMessageToDict(message: $0) })
+        resolver(IterableAPI.inAppManager.getMessages().map{ $0.toDict() })
     }
     
     @objc(trackEvent:)
@@ -216,101 +213,6 @@ class ReactIterableAPI: RCTEventEmitter {
         var result = [UIApplication.LaunchOptionsKey: Any]()
         result[UIApplication.LaunchOptionsKey.remoteNotification] = remoteNotification
         return result
-    }
-    
-    private static func createIterableConfig(from dict: [AnyHashable: Any]?) -> IterableConfig {
-        let config = IterableConfig()
-        guard let dict = dict else {
-            return config
-        }
-        
-        if let pushIntegrationName = dict["pushIntegrationName"] as? String {
-            config.pushIntegrationName = pushIntegrationName
-        }
-        if let sandboxPushIntegrationName = dict["sandboxPushIntegrationName"] as? String {
-            config.sandboxPushIntegrationName = sandboxPushIntegrationName
-        }
-        if let intValue = dict["pushPlatform"] as? Int, let pushPlatform = PushServicePlatform(rawValue: intValue) {
-            config.pushPlatform = pushPlatform
-        }
-        if let autoPushRegistration = dict["autoPushRegistration"] as? Bool {
-            config.autoPushRegistration = autoPushRegistration
-        }
-        if let checkForDeferredDeeplink = dict["checkForDeferredDeeplink"] as? Bool {
-            config.checkForDeferredDeeplink = checkForDeferredDeeplink
-        }
-
-        return config
-    }
-
-    private static func dictionaryToCommerceItem(dict: [AnyHashable: Any]) -> CommerceItem? {
-        guard let id = dict["id"] as? String else {
-            return nil
-        }
-        guard let name = dict["name"] as? String else {
-            return nil
-        }
-        guard let price = dict["price"] as? NSNumber else {
-            return nil
-        }
-        guard let quantity = dict["quantity"] as? UInt else {
-            return nil
-        }
-
-        return CommerceItem(id: id, name: name, price: price, quantity: quantity)
-    }
-    
-    private static func inAppTriggerToDict(trigger: IterableInAppTrigger) -> [AnyHashable: Any] {
-        var dict = [AnyHashable: Any]()
-        dict["type"] = trigger.type.rawValue
-        return dict
-    }
-    
-    private static func edgeInsetsToDict(edgeInsets: UIEdgeInsets) -> [AnyHashable: Any] {
-        var dict = [AnyHashable: Any]()
-        dict["top"] = edgeInsets.top
-        dict["left"] = edgeInsets.left
-        dict["bottom"] = edgeInsets.bottom
-        dict["right"] = edgeInsets.right
-        return dict
-    }
-    
-    private static func inAppMessageToDict(message: IterableInAppMessage) -> [AnyHashable: Any] {
-        var dict = [AnyHashable: Any]()
-        dict["messageId"] = message.messageId
-        dict["campaignId"] = message.campaignId
-        dict["trigger"] = inAppTriggerToDict(trigger: message.trigger)
-        dict["createdAt"] = message.createdAt.map { $0.iterableIntValue }
-        dict["expiresAt"] = message.expiresAt.map { $0.iterableIntValue }
-        dict["saveToInbox"] = message.saveToInbox
-        dict["inboxMetadata"] = inboxMetadataToDict(metadata: message.inboxMetadata)
-        dict["customPayload"] = message.customPayload
-        dict["read"] = message.read
-        return dict
-    }
-    
-    private static func inAppContentToDict(content: IterableInAppContent) -> [AnyHashable: Any] {
-        guard let htmlInAppContent = content as? IterableHtmlInAppContent else {
-            return [:]
-        }
-
-        var dict = [AnyHashable: Any]()
-        dict["type"] = htmlInAppContent.type.rawValue
-        dict["edgeInsets"] = edgeInsetsToDict(edgeInsets: htmlInAppContent.edgeInsets)
-        dict["backgroundAlpha"] = htmlInAppContent.backgroundAlpha
-        dict["html"] = htmlInAppContent.html
-        return dict
-    }
-    
-    private static func inboxMetadataToDict(metadata: IterableInboxMetadata?) -> [AnyHashable: Any]? {
-        guard let metadata = metadata else {
-            return nil
-        }
-        var dict = [AnyHashable: Any]()
-        dict["title"] = metadata.title
-        dict["subtitle"] = metadata.subtitle
-        dict["icon"] = metadata.icon
-        return dict
     }
 }
 
@@ -372,7 +274,7 @@ extension ReactIterableAPI: IterableInAppDelegate {
             return .show
         }
         
-        let messageDict = ReactIterableAPI.inAppMessageToDict(message: message)
+        let messageDict = message.toDict()
         sendEvent(withName: EventName.handleInAppCalled.rawValue, body: messageDict)
         let timeoutResult = inAppDelegateSemapohore.wait(timeout: .now() + 2.0)
 
@@ -386,41 +288,3 @@ extension ReactIterableAPI: IterableInAppDelegate {
     }
 }
 
-// TODO: make public
-extension Encodable {
-    public func toDictionary() -> [String: Any]? {
-        guard let data = try? JSONEncoder().encode(self) else {
-            return nil
-        }
-        
-        return try? JSONSerialization.jsonObject(with: data, options: [.allowFragments]) as? [String: Any]
-    }
-}
-
-// TODO: make public
-extension Dictionary where Key == AnyHashable, Value == Any {
-    public func toDecodable<T>() -> T? where T: Decodable {
-        guard let data = try? JSONSerialization.data(withJSONObject: self, options: []) else {
-            return nil
-        }
-        
-        return try? JSONDecoder().decode(T.self, from: data)
-
-    }
-}
-
-// TODO: make public
-extension Date {
-    public var iterableIntValue: Int {
-        return Int(self.timeIntervalSince1970 * 1000)
-    }
-}
-
-// TODO: make public
-extension Int {
-    public var iterableDateValue: Date {
-        let seconds = Double(self) / 1000.0 // ms -> seconds
-        
-        return Date(timeIntervalSince1970: seconds)
-    }
-}
