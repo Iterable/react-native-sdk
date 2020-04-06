@@ -133,7 +133,6 @@ export class IterableInAppMessage {
     readonly trigger: IterableInAppTrigger
     readonly createdAt?: Date
     readonly expiresAt?: Date
-    readonly content: IterableInAppContent
     readonly saveToInbox: Boolean
     readonly inboxMetadata: IterableInboxMetadata
     readonly customPayload?: any
@@ -144,7 +143,6 @@ export class IterableInAppMessage {
         trigger: IterableInAppTrigger, 
         createdAt: Date | undefined, 
         expiresAt: Date | undefined, 
-        content: IterableInAppContent, 
         saveToInbox: Boolean, 
         inboxMetadata: IterableInboxMetadata,
         customPayload: any | undefined,

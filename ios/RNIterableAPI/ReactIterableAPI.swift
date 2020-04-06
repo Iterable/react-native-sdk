@@ -221,8 +221,6 @@ class ReactIterableAPI: RCTEventEmitter {
         return config
     }
 
-    
-    // TODO: convert CommerceItem to Codable
     private static func dictionaryToCommerceItem(dict: [AnyHashable: Any]) -> CommerceItem? {
         guard let id = dict["id"] as? String else {
             return nil
@@ -262,7 +260,6 @@ class ReactIterableAPI: RCTEventEmitter {
         dict["trigger"] = inAppTriggerToDict(trigger: message.trigger)
         dict["createdAt"] = message.createdAt.map { $0.iterableIntValue }
         dict["expiresAt"] = message.expiresAt.map { $0.iterableIntValue }
-        dict["content"] = inAppContentToDict(content: message.content)
         dict["saveToInbox"] = message.saveToInbox
         dict["inboxMetadata"] = inboxMetadataToDict(metadata: message.inboxMetadata)
         dict["customPayload"] = message.customPayload

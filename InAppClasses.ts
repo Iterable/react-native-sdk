@@ -89,7 +89,6 @@ class IterableInAppMessage {
     readonly trigger: IterableInAppTrigger
     readonly createdAt?: Date
     readonly expiresAt?: Date
-    readonly content: IterableInAppContent
     readonly saveToInbox: Boolean
     readonly inboxMetadata: IterableInboxMetadata
     readonly customPayload?: any
@@ -100,7 +99,6 @@ class IterableInAppMessage {
         trigger: IterableInAppTrigger, 
         createdAt: Date | undefined, 
         expiresAt: Date | undefined, 
-        content: IterableInAppContent, 
         saveToInbox: Boolean, 
         inboxMetadata: IterableInboxMetadata,
         customPayload: any | undefined,
@@ -110,7 +108,6 @@ class IterableInAppMessage {
             this.trigger = trigger
             this.createdAt = createdAt
             this.expiresAt = expiresAt
-            this.content = content
             this.saveToInbox = saveToInbox
             this.inboxMetadata = inboxMetadata
             this.customPayload = customPayload
@@ -133,7 +130,6 @@ class IterableInAppMessage {
         if (expiresAt) {
             expiresAt = new Date(expiresAt as number)
         }
-        let content = IterableHtmlInAppContent.fromDict(dict["content"])
         let saveToInbox = dict["saveToInbox"] as Boolean
         let inboxMetadata = IterableInboxMetadata.fromDict(dict["inboxMetadata"])
         let customPayload = dict["customPayload"]
@@ -145,7 +141,6 @@ class IterableInAppMessage {
             trigger,
             createdAt,
             expiresAt,
-            content,
             saveToInbox,
             inboxMetadata,
             customPayload,
