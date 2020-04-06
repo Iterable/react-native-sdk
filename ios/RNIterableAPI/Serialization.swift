@@ -141,3 +141,23 @@ extension IterableInAppMessage {
         return dict
     }
 }
+
+extension InAppLocation {
+    static func from(number: NSNumber) -> InAppLocation {
+        if let value = number as? Int {
+            return InAppLocation(rawValue: value) ?? .inApp
+        } else {
+            return .inApp
+        }
+    }
+}
+
+extension InAppShowResponse {
+    static func from(number: NSNumber) -> InAppShowResponse {
+        if let value = number as? Int {
+            return InAppShowResponse(rawValue: value) ?? .show
+        } else {
+            return .show
+        }
+    }
+}

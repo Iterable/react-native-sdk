@@ -97,13 +97,9 @@ class ReactIterableAPI: RCTEventEmitter {
     }
 
     @objc(setInAppShowResponse:)
-    func set(inAppShowResponse: NSNumber) {
+    func set(inAppShowResponse number: NSNumber) {
         ITBInfo()
-        if let value = inAppShowResponse as? Int {
-            self.inAppShowResponse = InAppShowResponse(rawValue: value) ?? .show
-        } else {
-            self.inAppShowResponse = .show
-        }
+        self.inAppShowResponse = InAppShowResponse.from(number: number)
         inAppDelegateSemapohore.signal()
     }
 
@@ -171,6 +167,16 @@ class ReactIterableAPI: RCTEventEmitter {
         IterableAPI.track(purchase: total,
                           items: items.compactMap(CommerceItem.from(dict:)),
                           dataFields: dataFields)
+    }
+    
+    @objc(trackInAppOpenWithMessageId:location:)
+    func trackInAppOpen(messageId: String, location number: NSNumber) {
+        ITBInfo()
+        guard let message = IterableAPI.inAppManager.getMessage(withId: messageId) else {
+            ITBError("Could not find message with id: \(messageId)")
+            return
+        }
+        IterableAPI.track(inAppOpen: message, location: InAppLocation.from(number: number))
     }
 
     @objc(getInAppMessages:rejecter:)

@@ -49,6 +49,9 @@ RCT_EXTERN_METHOD(trackPurchaseWithTotal: (nonnull NSNumber *) total
                   items: (NSArray *) items
                   dataFields: (NSDictionary *) dataFields)
 
+RCT_EXTERN_METHOD(trackInAppOpenWithMessageId: (NSString *) messageId
+                  location: (nonnull NSNumber *) location)
+
 RCT_EXTERN_METHOD(getInAppMessages: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
 

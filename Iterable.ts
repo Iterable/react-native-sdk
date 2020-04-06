@@ -1,7 +1,7 @@
 'use strict';
 
 import { NativeModules, NativeEventEmitter } from 'react-native';
-import { IterableInAppMessage, IterableInAppShowResponse } from './InAppClasses'
+import { IterableInAppMessage, IterableInAppShowResponse, IterableInAppLocation } from './InAppClasses'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
@@ -244,6 +244,11 @@ class Iterable {
     static trackPurchase(total: number, items: Array<IterableCommerceItem>, dataFields: any | null) {
         console.log("trackPurchase")
         RNIterableAPI.trackPurchaseWithTotal(total, items, dataFields)
+    }
+
+    static trackInAppOpen(message: IterableInAppMessage, location: IterableInAppLocation) {
+        console.log("trackInAppOpen")
+        RNIterableAPI.trackInAppOpenWithMessageId(message.messageId, location)
     }
 
     static getInAppMessages(): Promise<Array<IterableInAppMessage>> {

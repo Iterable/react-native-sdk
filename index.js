@@ -25,6 +25,7 @@ import {
     IterableHtmlInAppContent,
     IterableInboxMetadata,
     IterableInAppMessage,
+    IterableInAppLocation,
 } from './InAppClasses';
 
 export { 
@@ -44,4 +45,5 @@ export {
     IterableHtmlInAppContent,
     IterableInboxMetadata,
     IterableInAppMessage,
+    IterableInAppLocation,
 };

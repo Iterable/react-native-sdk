@@ -14,6 +14,7 @@ export class Iterable {
     static trackPushOpenWithPayload(payload: any, dataFields: any | null): void
     static trackPushOpenWithCampaignId(campaignId: number, templateId: number, messageId: String | null, appAlreadyRunning: Boolean, dataFields: any | null): void
     static trackPurchase(total: number, items: Array<IterableCommerceItem>, dataFields: any | null): void
+    static trackInAppOpen(message: IterableInAppMessage, location: IterableInAppLocation): void
 }
 
 export enum PushServicePlatform {
@@ -158,3 +159,9 @@ export class IterableInAppMessage {
 
     static fromDict(dict: any): IterableInAppMessage
 }
+
+export enum IterableInAppLocation {
+    inApp = 0,
+    inbox = 1,
+}
+

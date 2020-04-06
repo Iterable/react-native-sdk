@@ -30,6 +30,11 @@ enum IterableInAppContentType {
     banner = 2,
 }
 
+enum IterableInAppLocation {
+    inApp = 0,
+    inbox = 1,
+}
+
 class IterableEdgeInsets {
     top: number
     left: number
@@ -169,4 +174,5 @@ export {
     IterableHtmlInAppContent,
     IterableInboxMetadata,
     IterableInAppMessage,
+    IterableInAppLocation,
 }
