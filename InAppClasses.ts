@@ -1,5 +1,10 @@
 'use strict';
 
+enum IterableInAppShowResponse {
+    show = 0,
+    skip = 1
+}
+
 enum IterableInAppTriggerType {
     immediate = 0,
     event = 1,
@@ -90,7 +95,7 @@ class IterableInAppMessage {
     readonly createdAt?: Date
     readonly expiresAt?: Date
     readonly saveToInbox: Boolean
-    readonly inboxMetadata: IterableInboxMetadata
+    readonly inboxMetadata?: IterableInboxMetadata
     readonly customPayload?: any
     readonly read: Boolean
 
@@ -100,7 +105,7 @@ class IterableInAppMessage {
         createdAt: Date | undefined, 
         expiresAt: Date | undefined, 
         saveToInbox: Boolean, 
-        inboxMetadata: IterableInboxMetadata,
+        inboxMetadata: IterableInboxMetadata | undefined,
         customPayload: any | undefined,
         read: Boolean) {
             this.campaignId = campaignId
@@ -131,7 +136,13 @@ class IterableInAppMessage {
             expiresAt = new Date(expiresAt as number)
         }
         let saveToInbox = dict["saveToInbox"] as Boolean
-        let inboxMetadata = IterableInboxMetadata.fromDict(dict["inboxMetadata"])
+        let inboxMetadataDict = dict["inboxMetadata"]
+        let inboxMetadata: IterableInboxMetadata | undefined
+        if (inboxMetadataDict) {
+            inboxMetadata = IterableInboxMetadata.fromDict(inboxMetadataDict)
+        } else {
+            inboxMetadata = undefined
+        }
         let customPayload = dict["customPayload"]
         let read = dict["read"] as Boolean
 
@@ -150,6 +161,7 @@ class IterableInAppMessage {
 }
 
 export { 
+    IterableInAppShowResponse,
     IterableInAppTriggerType, 
     IterableInAppTrigger,
     IterableInAppContentType,

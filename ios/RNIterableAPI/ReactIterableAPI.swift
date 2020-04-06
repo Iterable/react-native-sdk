@@ -24,6 +24,7 @@ class ReactIterableAPI: RCTEventEmitter {
     enum EventName: String, CaseIterable {
         case handleUrlCalled
         case handleCustomActionCalled
+        case handleInAppCalled
     }
 
     override func supportedEvents() -> [String]! {
@@ -54,6 +55,12 @@ class ReactIterableAPI: RCTEventEmitter {
         }
         if let customActionDelegatePresent = configDict["customActionDelegatePresent"] as? Bool, customActionDelegatePresent == true {
             iterableConfig.customActionDelegate = self
+        }
+        if let inAppDelegatePresent = configDict["inAppDelegatePresent"] as? Bool, inAppDelegatePresent == true {
+            iterableConfig.inAppDelegate = self
+        }
+        if let inAppDisplayInterval = configDict["inAppDisplayInterval"] as? Double {
+            iterableConfig.inAppDisplayInterval = inAppDisplayInterval
         }
         
         DispatchQueue.main.async {
@@ -90,6 +97,17 @@ class ReactIterableAPI: RCTEventEmitter {
         ITBInfo()
         self.urlHandled = urlHandled
         urlDelegateSemaphore.signal()
+    }
+
+    @objc(setInAppShowResponse:)
+    func set(inAppShowResponse: NSNumber) {
+        ITBInfo()
+        if let value = inAppShowResponse as? Int {
+            self.inAppShowResponse = InAppShowResponse(rawValue: value) ?? .show
+        } else {
+            self.inAppShowResponse = .show
+        }
+        inAppDelegateSemapohore.signal()
     }
 
     @objc(disableDeviceForCurrentUser)
@@ -176,6 +194,10 @@ class ReactIterableAPI: RCTEventEmitter {
     // Handling url delegate
     private var urlHandled = false
     private var urlDelegateSemaphore = DispatchSemaphore(value: 0)
+    
+    // Handling in-app delegate
+    private var inAppShowResponse = InAppShowResponse.show
+    private var inAppDelegateSemapohore = DispatchSemaphore(value: 0)
     
     private func createLaunchOptions() -> [UIApplication.LaunchOptionsKey: Any]? {
         guard let bridge = bridge else {
@@ -295,15 +317,14 @@ class ReactIterableAPI: RCTEventEmitter {
 extension ReactIterableAPI: IterableURLDelegate {
     func handle(iterableURL url: URL, inContext context: IterableActionContext) -> Bool {
         ITBInfo()
-
         guard shouldEmit == true else {
             return false
         }
 
         let contextDict = ReactIterableAPI.contextToDictionary(context: context)
         sendEvent(withName: EventName.handleUrlCalled.rawValue, body: ["url": url.absoluteString, "context": contextDict])
-
         let timeoutResult = urlDelegateSemaphore.wait(timeout: .now() + 2.0)
+
         if timeoutResult == .success {
             ITBInfo("urlHandled: \(urlHandled)")
             return urlHandled
@@ -341,6 +362,27 @@ extension ReactIterableAPI: IterableCustomActionDelegate {
         let contextDict = ReactIterableAPI.contextToDictionary(context: context)
         sendEvent(withName: EventName.handleCustomActionCalled.rawValue, body: ["action": actionDict, "context": contextDict])
         return true
+    }
+}
+
+extension ReactIterableAPI: IterableInAppDelegate {
+    func onNew(message: IterableInAppMessage) -> InAppShowResponse {
+        ITBInfo()
+        guard shouldEmit == true else {
+            return .show
+        }
+        
+        let messageDict = ReactIterableAPI.inAppMessageToDict(message: message)
+        sendEvent(withName: EventName.handleInAppCalled.rawValue, body: messageDict)
+        let timeoutResult = inAppDelegateSemapohore.wait(timeout: .now() + 2.0)
+
+        if timeoutResult == .success {
+            ITBInfo("inAppShowResponse: \(inAppShowResponse == .show)")
+            return inAppShowResponse
+        } else {
+            ITBInfo("timed out")
+            return .show
+        }
     }
 }
 

@@ -37,6 +37,7 @@ export class IterableConfig {
     inAppDisplayInterval: number
     urlDelegate?: (url: String, context: IterableActionContext) => Boolean
     customActionDelegate?: (action: IterableAction, context: IterableActionContext) => Boolean
+    inAppDelegate?: (message: IterableInAppMessage) => IterableInAppShowResponse
 }
 
 export class IterableAction {
@@ -69,6 +70,11 @@ export class IterableCommerceItem {
     quantity: number
 
     constructor(id: String, name: String, price: number, quantity: number)
+}
+
+export enum IterableInAppShowResponse {
+    show = 0,
+    skip = 1
 }
 
 export enum IterableInAppTriggerType {

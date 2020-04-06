@@ -1,7 +1,7 @@
 'use strict';
 
 import { NativeModules, NativeEventEmitter } from 'react-native';
-import { IterableInAppMessage } from './InAppClasses'
+import { IterableInAppMessage, IterableInAppShowResponse } from './InAppClasses'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
@@ -27,6 +27,7 @@ class IterableConfig {
     inAppDisplayInterval: number = 30.0
     urlDelegate?: (url: String, context: IterableActionContext) => Boolean
     customActionDelegate?: (action: IterableAction, context: IterableActionContext) => Boolean
+    inAppDelegate?: (message: IterableInAppMessage) => IterableInAppShowResponse
 
     toDict(): any {
         return {
@@ -38,6 +39,7 @@ class IterableConfig {
             "inAppDisplayInterval": this.inAppDisplayInterval,
             "urlDelegatePresent": this.urlDelegate != undefined,
             "customActionDelegatePresent": this.customActionDelegate != undefined,
+            "inAppDelegatePresent": this.inAppDelegate != undefined,
         }
     }
 }
@@ -103,6 +105,7 @@ class IterableCommerceItem {
 enum EventName {
     handleUrlCalled = "handleUrlCalled",
     handleCustomActionCalled = "handleCustomActionCalled",
+    handleInAppCalled = "handleInAppCalled",
 }
 
 class Iterable {
@@ -132,6 +135,16 @@ class Iterable {
                     const action = IterableAction.fromDict(dict["action"])
                     const context = IterableActionContext.fromDict(dict["context"])
                     config.customActionDelegate!(action, context)
+                }
+            )
+        }
+        if (config.inAppDelegate) {
+            RNEventEmitter.addListener(
+                EventName.handleInAppCalled,
+                (messageDict) => {
+                    const message = IterableInAppMessage.fromDict(messageDict)
+                    const result = config.inAppDelegate!(message)
+                    RNIterableAPI.setInAppShowResponse(result)
                 }
             )
         }

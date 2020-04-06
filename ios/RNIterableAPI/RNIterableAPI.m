@@ -26,6 +26,8 @@ RCT_EXTERN_METHOD(disableDeviceForAllUsers)
 
 RCT_EXTERN_METHOD(setUrlHandled: (BOOL) handled)
 
+RCT_EXTERN_METHOD(setInAppShowResponse: (nonnull NSNumber *) inAppShowResponse)
+
 RCT_EXTERN_METHOD(getLastPushPayload: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
 
@@ -46,7 +48,6 @@ RCT_EXTERN_METHOD(trackPushOpenWithCampaignId: (NSNumber) campaignId
 RCT_EXTERN_METHOD(trackPurchaseWithTotal: (NSNumber) total
                   items: (NSArray *) items
                   dataFields: (NSDictionary *) dataFields)
-
 
 RCT_EXTERN_METHOD(getInAppMessages: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)

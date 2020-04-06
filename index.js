@@ -16,6 +16,7 @@ import {
     IterableCommerceItem 
 } from './Iterable';
 import { 
+    IterableInAppShowResponse,
     IterableInAppContent,
     IterableInAppTriggerType, 
     IterableInAppTrigger,
@@ -34,6 +35,7 @@ export {
     IterableActionContext, 
     IterableAttributionInfo, 
     IterableCommerceItem, 
+    IterableInAppShowResponse,
     IterableInAppContent,
     IterableInAppTriggerType, 
     IterableInAppTrigger,
