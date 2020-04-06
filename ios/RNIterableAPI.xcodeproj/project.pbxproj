@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AC13877D243BA05600A02674 /* Serialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC13877C243BA05600A02674 /* Serialization.swift */; };
 		AC76DC322423C2290071587E /* ReactIterableAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC76DC302423C2290071587E /* ReactIterableAPI.swift */; };
 		ACDDDF2224212BB9001686E5 /* RNIterableAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = ACDDDF2124212BB9001686E5 /* RNIterableAPI.m */; };
 /* End PBXBuildFile section */
@@ -24,6 +25,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		AC13877C243BA05600A02674 /* Serialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Serialization.swift; sourceTree = "<group>"; };
 		AC547A9024004D39008782E7 /* libRNIterableAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNIterableAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC76DC302423C2290071587E /* ReactIterableAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactIterableAPI.swift; sourceTree = "<group>"; };
 		AC76DC312423C2290071587E /* RNIterable-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RNIterable-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -60,6 +62,7 @@
 		AC547A9224004D39008782E7 /* RNIterableAPI */ = {
 			isa = PBXGroup;
 			children = (
+				AC13877C243BA05600A02674 /* Serialization.swift */,
 				AC76DC302423C2290071587E /* ReactIterableAPI.swift */,
 				AC76DC312423C2290071587E /* RNIterable-Bridging-Header.h */,
 				ACDDDF2124212BB9001686E5 /* RNIterableAPI.m */,
@@ -126,6 +129,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AC76DC322423C2290071587E /* ReactIterableAPI.swift in Sources */,
+				AC13877D243BA05600A02674 /* Serialization.swift in Sources */,
 				ACDDDF2224212BB9001686E5 /* RNIterableAPI.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
