@@ -255,6 +255,11 @@ class Iterable {
         console.log("getInAppMessages");
         return RNIterableAPI.getInAppMessages().then((messages: Array<any>) => messages.map (message => {return IterableInAppMessage.fromDict(message)}))
     }
+
+    static track(event: String, dataFields: any | null) {
+        console.log("track")
+        return RNIterableAPI.track(event, dataFields)
+    }
 }
 
 export { Iterable, IterableConfig, PushServicePlatform, IterableAction, IterableActionContext, IterableAttributionInfo, IterableCommerceItem };
