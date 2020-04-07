@@ -243,12 +243,12 @@ class Iterable {
      */
     static trackPurchase(total: number, items: Array<IterableCommerceItem>, dataFields: any | null) {
         console.log("trackPurchase")
-        RNIterableAPI.trackPurchaseWithTotal(total, items, dataFields)
+        RNIterableAPI.trackPurchase(total, items, dataFields)
     }
 
     static trackInAppOpen(message: IterableInAppMessage, location: IterableInAppLocation) {
         console.log("trackInAppOpen")
-        RNIterableAPI.trackInAppOpenWithMessageId(message.messageId, location)
+        RNIterableAPI.trackInAppOpen(message.messageId, location)
     }
 
     static getInAppMessages(): Promise<Array<IterableInAppMessage>> {

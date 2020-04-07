@@ -159,7 +159,7 @@ class ReactIterableAPI: RCTEventEmitter {
         IterableAPI.track(pushOpen: campaignId, templateId: templateId, messageId: messageId, appAlreadyRunning: appAlreadyRunning, dataFields: dataFields)
     }
     
-    @objc(trackPurchaseWithTotal:items:dataFields:)
+    @objc(trackPurchase:items:dataFields:)
     func trackPurchase(total: NSNumber,
                        items: [[AnyHashable: Any]],
                        dataFields: [AnyHashable: Any]?) {
@@ -169,7 +169,7 @@ class ReactIterableAPI: RCTEventEmitter {
                           dataFields: dataFields)
     }
     
-    @objc(trackInAppOpenWithMessageId:location:)
+    @objc(trackInAppOpen:location:)
     func trackInAppOpen(messageId: String, location number: NSNumber) {
         ITBInfo()
         guard let message = IterableAPI.inAppManager.getMessage(withId: messageId) else {
