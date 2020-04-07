@@ -18,6 +18,7 @@ export class Iterable {
     static inAppConsume(message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppDeleteSource): void
     static trackEvent(name: String, dataFields: any | null): void
     static updateUser(dataFields: any, mergeNestedObjects: Boolean): void
+    static updateEmail(email: String): void
 }
 
 export enum PushServicePlatform {

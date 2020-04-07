@@ -250,6 +250,12 @@ class ReactIterableAPI: RCTEventEmitter {
         ITBInfo()
         IterableAPI.updateUser(dataFields, mergeNestedObjects)
     }
+
+    @objc(updateEmail:)
+    func updateEmail(email: String) {
+        ITBInfo()
+        IterableAPI.updateEmail(email)
+    }
     
     private var shouldEmit = false
     private let _methodQueue = DispatchQueue(label: String(describing: ReactIterableAPI.self))

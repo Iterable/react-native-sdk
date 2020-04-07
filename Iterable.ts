@@ -310,6 +310,11 @@ class Iterable {
         console.log("updateUser")
         RNIterableAPI.updateUser(dataFields, mergeNestedObjects)
     }
+
+    static updateEmail(email: String) {
+        console.log("updateEmail")
+        RNIterablePAI.updateEmail(email)
+    }
 }
 
 export { Iterable, IterableConfig, PushServicePlatform, IterableAction, IterableActionContext, IterableAttributionInfo, IterableCommerceItem };
