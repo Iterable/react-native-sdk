@@ -246,9 +246,25 @@ class Iterable {
         RNIterableAPI.trackPurchase(total, items, dataFields)
     }
 
+    /**
+     * 
+     * @param {IterableInAppMessage} message 
+     * @param {IterableInAppLocation} location 
+     */
     static trackInAppOpen(message: IterableInAppMessage, location: IterableInAppLocation) {
         console.log("trackInAppOpen")
         RNIterableAPI.trackInAppOpen(message.messageId, location)
+    }
+
+    /**
+     * 
+     * @param {IterableInAppMessage} message 
+     * @param {IterableInAppLocation} location 
+     * @param {String} clickedUrl 
+     */
+    static trackInAppClick(message: IterableInAppMessage, location: IterableInAppLocation, clickedUrl: String) {
+        console.log("trackInAppClick")
+        RNIterableAPI.trackInAppClick(message.messageId, location, clickedUrl)
     }
 
     static getInAppMessages(): Promise<Array<IterableInAppMessage>> {

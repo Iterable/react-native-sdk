@@ -179,6 +179,16 @@ class ReactIterableAPI: RCTEventEmitter {
         IterableAPI.track(inAppOpen: message, location: InAppLocation.from(number: number))
     }
 
+    @objc(trackInAppClick:location:clickedUrl:)
+    func trackInAppClick(messageId: String, location number: NSNumber, clickedUrl: String) {
+        ITBInfo()
+        guard let message = IterableAPI.inAppManager.getMessage(withId: messageId) else {
+            ITBError("Could not find message with id: \(messageId)")
+            return
+        }
+        IterableAPI.track(inAppClick: message, location: InAppLocation.from(number: number), clickedUrl: clickedUrl)
+    }
+
     @objc(getInAppMessages:rejecter:)
     func getInAppMessages(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
         ITBInfo()

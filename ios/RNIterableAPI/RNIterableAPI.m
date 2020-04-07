@@ -52,8 +52,9 @@ RCT_EXTERN_METHOD(trackPurchase: (nonnull NSNumber *) total
 RCT_EXTERN_METHOD(trackInAppOpen: (NSString *) messageId
                   location: (nonnull NSNumber *) location)
 
-RCT_EXTERN_METHOD(trackInAppClick: (NSString *) messageId
-                  location: (nonnull NSNumber *) location)
+RCT_EXTERN_METHOD(trackInAppClick: (nonnull NSString *) messageId
+                  location: (nonnull NSNumber *) location
+                  clickedUrl: (nonnull NSString *) clickedUrl)
 
 RCT_EXTERN_METHOD(getInAppMessages: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
