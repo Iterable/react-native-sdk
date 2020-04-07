@@ -74,4 +74,6 @@ RCT_EXTERN_METHOD(trackEvent: (nonnull NSString *) name
 RCT_EXTERN_METHOD(updateUser: (NSDictionary *) dataFields
                   mergeNestedObjects: (BOOL) mergeNestedObjects)
 
+RCT_EXTERN_METHOD(updateEmail: (nonnull NSString *) email)
+
 @end
