@@ -159,7 +159,7 @@ class ReactIterableAPI: RCTEventEmitter {
         IterableAPI.track(pushOpen: campaignId, templateId: templateId, messageId: messageId, appAlreadyRunning: appAlreadyRunning, dataFields: dataFields)
     }
     
-    @objc(trackPurchaseWithTotal:items:dataFields:)
+    @objc(trackPurchase:items:dataFields:)
     func trackPurchase(total: NSNumber,
                        items: [[AnyHashable: Any]],
                        dataFields: [AnyHashable: Any]?) {
@@ -169,14 +169,68 @@ class ReactIterableAPI: RCTEventEmitter {
                           dataFields: dataFields)
     }
     
-    @objc(trackInAppOpenWithMessageId:location:)
-    func trackInAppOpen(messageId: String, location number: NSNumber) {
+    @objc(trackInAppOpen:location:)
+    func trackInAppOpen(messageId: String,
+                        location locationNumber: NSNumber) {
         ITBInfo()
         guard let message = IterableAPI.inAppManager.getMessage(withId: messageId) else {
             ITBError("Could not find message with id: \(messageId)")
             return
         }
-        IterableAPI.track(inAppOpen: message, location: InAppLocation.from(number: number))
+        IterableAPI.track(inAppOpen: message, location: InAppLocation.from(number: locationNumber))
+    }
+
+    @objc(trackInAppClick:location:clickedUrl:)
+    func trackInAppClick(messageId: String,
+                         location locationNumber: NSNumber,
+                         clickedUrl: String) {
+        ITBInfo()
+        guard let message = IterableAPI.inAppManager.getMessage(withId: messageId) else {
+            ITBError("Could not find message with id: \(messageId)")
+            return
+        }
+        IterableAPI.track(inAppClick: message, location: InAppLocation.from(number: locationNumber), clickedUrl: clickedUrl)
+    }
+
+    @objc(trackInAppClose:location:source:clickedUrl:)
+    func trackInAppClose(messageId: String,
+                         location locationNumber: NSNumber,
+                         source sourceNumber: NSNumber,
+                         clickedUrl: String) {
+        ITBInfo()
+        guard let message = IterableAPI.inAppManager.getMessage(withId: messageId) else {
+            ITBError("Could not find message with id: \(messageId)")
+            return
+        }
+        if let inAppCloseSource = InAppCloseSource.from(number: sourceNumber) {
+            IterableAPI.track(inAppClose: message,
+                              location: InAppLocation.from(number: locationNumber),
+                              source: inAppCloseSource,
+                              clickedUrl: clickedUrl)
+        } else {
+            IterableAPI.track(inAppClose: message,
+                              location: InAppLocation.from(number: locationNumber),
+                              clickedUrl: clickedUrl)
+        }
+    }
+
+    @objc(inAppConsume:location:source:)
+    func inAppConsume(messageId: String,
+                      location locationNumber: NSNumber,
+                      source sourceNumber: NSNumber) {
+        ITBInfo()
+        guard let message = IterableAPI.inAppManager.getMessage(withId: messageId) else {
+            ITBError("Could not find message with id: \(messageId)")
+            return
+        }
+        if let inAppDeleteSource = InAppDeleteSource.from(number: sourceNumber) {
+            IterableAPI.inAppConsume(message: message,
+                              location: InAppLocation.from(number: locationNumber),
+                              source: inAppDeleteSource)
+        } else {
+            IterableAPI.inAppConsume(message: message,
+                              location: InAppLocation.from(number: locationNumber))
+        }
     }
 
     @objc(getInAppMessages:rejecter:)

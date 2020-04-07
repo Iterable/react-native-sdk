@@ -1,7 +1,13 @@
 'use strict';
 
 import { NativeModules, NativeEventEmitter } from 'react-native';
-import { IterableInAppMessage, IterableInAppShowResponse, IterableInAppLocation } from './InAppClasses'
+import { 
+    IterableInAppMessage, 
+    IterableInAppShowResponse, 
+    IterableInAppLocation,
+    IterableInAppCloseSource,
+    IterableInAppDeleteSource,
+} from './InAppClasses'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
@@ -243,12 +249,51 @@ class Iterable {
      */
     static trackPurchase(total: number, items: Array<IterableCommerceItem>, dataFields: any | null) {
         console.log("trackPurchase")
-        RNIterableAPI.trackPurchaseWithTotal(total, items, dataFields)
+        RNIterableAPI.trackPurchase(total, items, dataFields)
     }
 
+    /**
+     * 
+     * @param {IterableInAppMessage} message 
+     * @param {IterableInAppLocation} location 
+     */
     static trackInAppOpen(message: IterableInAppMessage, location: IterableInAppLocation) {
         console.log("trackInAppOpen")
-        RNIterableAPI.trackInAppOpenWithMessageId(message.messageId, location)
+        RNIterableAPI.trackInAppOpen(message.messageId, location)
+    }
+
+    /**
+     * 
+     * @param {IterableInAppMessage} message 
+     * @param {IterableInAppLocation} location 
+     * @param {String} clickedUrl 
+     */
+    static trackInAppClick(message: IterableInAppMessage, location: IterableInAppLocation, clickedUrl: String) {
+        console.log("trackInAppClick")
+        RNIterableAPI.trackInAppClick(message.messageId, location, clickedUrl)
+    }
+
+    /**
+     * 
+     * @param {IterableInAppMessage} message 
+     * @param {IterableInAppLocation} location 
+     * @param {IterableInAppCloseSource} source
+     * @param {String} clickedUrl 
+     */
+    static trackInAppClose(message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppCloseSource, clickedUrl: String) {
+        console.log("trackInAppClose")
+        RNIterableAPI.trackInAppClose(message.messageId, location, source, clickedUrl)
+    }
+
+    /**
+     * 
+     * @param {IterableInAppMessage} message 
+     * @param {IterableInAppLocation} location 
+     * @param {IterableInAppDeleteSource} source
+     */
+    static inAppConsume(message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppDeleteSource) {
+        console.log("inAppConsume")
+        RNIterableAPI.inAppConsume(message.messageId, location, source)
     }
 
     static getInAppMessages(): Promise<Array<IterableInAppMessage>> {

@@ -45,12 +45,25 @@ RCT_EXTERN_METHOD(trackPushOpenWithCampaignId: (nonnull NSNumber *) campaignId
                   appAlreadyRunning: (BOOL) appAlreadyRunning
                   dataFields: (NSDictionary *) dataFields)
 
-RCT_EXTERN_METHOD(trackPurchaseWithTotal: (nonnull NSNumber *) total
+RCT_EXTERN_METHOD(trackPurchase: (nonnull NSNumber *) total
                   items: (NSArray *) items
                   dataFields: (NSDictionary *) dataFields)
 
-RCT_EXTERN_METHOD(trackInAppOpenWithMessageId: (NSString *) messageId
+RCT_EXTERN_METHOD(trackInAppOpen: (NSString *) messageId
                   location: (nonnull NSNumber *) location)
+
+RCT_EXTERN_METHOD(trackInAppClick: (nonnull NSString *) messageId
+                  location: (nonnull NSNumber *) location
+                  clickedUrl: (nonnull NSString *) clickedUrl)
+
+RCT_EXTERN_METHOD(trackInAppClose: (nonnull NSString *) messageId
+                  location: (nonnull NSNumber *) location
+                  source: (nonnull NSNumber *) source
+                  clickedUrl: (nonnull NSString *) clickedUrl)
+
+RCT_EXTERN_METHOD(inAppConsume: (nonnull NSString *) messageId
+                  location: (nonnull NSNumber *) location
+                  source: (nonnull NSNumber *) source)
 
 RCT_EXTERN_METHOD(getInAppMessages: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)

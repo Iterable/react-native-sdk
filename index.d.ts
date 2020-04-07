@@ -8,13 +8,14 @@ export class Iterable {
     static disableDeviceForAllUsers(): void
     static getInAppMessages(): void
     static getLastPushPayload(): Promise<any | null>
-    static getLastPushPayload(): Promise<any | null>
     static getAttributionInfo(): Promise<IterableAttributionInfo | null>
     static setAttributionInfo(attributionInfo?: IterableAttributionInfo): void
     static trackPushOpenWithPayload(payload: any, dataFields: any | null): void
     static trackPushOpenWithCampaignId(campaignId: number, templateId: number, messageId: String | null, appAlreadyRunning: Boolean, dataFields: any | null): void
     static trackPurchase(total: number, items: Array<IterableCommerceItem>, dataFields: any | null): void
     static trackInAppOpen(message: IterableInAppMessage, location: IterableInAppLocation): void
+    static trackInAppClick(message: IterableInAppMessage, location: IterableInAppLocation, clickedUrl: String): void
+    static inAppConsume(message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppDeleteSource): void
     static trackEvent(name: String, dataFields: any | null): void
 }
 
@@ -165,4 +166,17 @@ export enum IterableInAppLocation {
     inApp = 0,
     inbox = 1,
 }
+
+export enum IterableInAppCloseSource {
+    back = 0,
+    link = 1,
+    unknown = 100,
+}
+
+export enum IterableInAppDeleteSource {
+    inboxSwipe = 0,
+    deleteButton = 1,
+    unknown = 100,
+}
+
 
