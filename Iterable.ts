@@ -303,7 +303,12 @@ class Iterable {
 
     static trackEvent(name: String, dataFields: any | null) {
         console.log("trackEvent")
-        return RNIterableAPI.trackEvent(name, dataFields)
+        RNIterableAPI.trackEvent(name, dataFields)
+    }
+
+    static updateUser(dataFields: any, mergeNestedObjects: Boolean) {
+        console.log("updateUser")
+        RNIterableAPI.updateUser(dataFields, mergeNestedObjects)
     }
 }
 
