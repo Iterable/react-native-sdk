@@ -239,10 +239,10 @@ class ReactIterableAPI: RCTEventEmitter {
         resolver(IterableAPI.inAppManager.getMessages().map{ $0.toDict() })
     }
     
-    @objc(trackEvent:)
-    func track(event: String) {
+    @objc(trackEvent:dataFields:)
+    func trackEvent(name: String, dataFields: [AnyHashable: Any]?) {
         ITBInfo()
-        IterableAPI.track(event: event)
+        IterableAPI.trackEvent(name: event, dataFields)
     }
     
     private var shouldEmit = false
