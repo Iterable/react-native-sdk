@@ -27,6 +27,7 @@ import {
     IterableInAppMessage,
     IterableInAppLocation,
     IterableInAppCloseSource,
+    IterableInAppDeleteSource,
 } from './InAppClasses';
 
 export { 
@@ -48,4 +49,5 @@ export {
     IterableInAppMessage,
     IterableInAppLocation,
     IterableInAppCloseSource,
+    IterableInAppDeleteSource,
 };

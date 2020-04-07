@@ -41,6 +41,12 @@ enum IterableInAppCloseSource {
     unknown = 100,
 }
 
+enum IterableInAppDeleteSource {
+    inboxSwipe = 0,
+    deleteButton = 1,
+    unknown = 100,
+}
+
 class IterableEdgeInsets {
     top: number
     left: number
@@ -182,4 +188,5 @@ export {
     IterableInAppMessage,
     IterableInAppLocation,
     IterableInAppCloseSource,
+    IterableInAppDeleteSource,
 }

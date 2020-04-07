@@ -15,6 +15,7 @@ export class Iterable {
     static trackPurchase(total: number, items: Array<IterableCommerceItem>, dataFields: any | null): void
     static trackInAppOpen(message: IterableInAppMessage, location: IterableInAppLocation): void
     static trackInAppClick(message: IterableInAppMessage, location: IterableInAppLocation, clickedUrl: String): void
+    static inAppConsume(message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppDeleteSource): void
 }
 
 export enum PushServicePlatform {
@@ -168,6 +169,12 @@ export enum IterableInAppLocation {
 export enum IterableInAppCloseSource {
     back = 0,
     link = 1,
+    unknown = 100,
+}
+
+export enum IterableInAppDeleteSource {
+    inboxSwipe = 0,
+    deleteButton = 1,
     unknown = 100,
 }
 

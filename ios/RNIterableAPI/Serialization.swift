@@ -161,6 +161,15 @@ extension InAppCloseSource {
     }
 }
 
+extension InAppDeleteSource {
+    static func from(number: NSNumber) -> InAppDeleteSource? {
+        guard let value = number as? Int else {
+            return nil
+        }
+        return InAppDeleteSource(rawValue: value)
+    }
+}
+
 extension InAppShowResponse {
     static func from(number: NSNumber) -> InAppShowResponse {
         if let value = number as? Int {

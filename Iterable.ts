@@ -6,6 +6,7 @@ import {
     IterableInAppShowResponse, 
     IterableInAppLocation,
     IterableInAppCloseSource,
+    IterableInAppDeleteSource,
 } from './InAppClasses'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
@@ -282,6 +283,17 @@ class Iterable {
     static trackInAppClose(message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppCloseSource, clickedUrl: String) {
         console.log("trackInAppClose")
         RNIterableAPI.trackInAppClose(message.messageId, location, source, clickedUrl)
+    }
+
+    /**
+     * 
+     * @param {IterableInAppMessage} message 
+     * @param {IterableInAppLocation} location 
+     * @param {IterableInAppDeleteSource} source
+     */
+    static inAppConsume(message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppDeleteSource) {
+        console.log("inAppConsume")
+        RNIterableAPI.inAppConsume(message.messageId, location, source)
     }
 
     static getInAppMessages(): Promise<Array<IterableInAppMessage>> {
