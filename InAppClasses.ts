@@ -35,6 +35,12 @@ enum IterableInAppLocation {
     inbox = 1,
 }
 
+enum IterableInAppCloseSource {
+    back = 0,
+    link = 1,
+    unknown = 100,
+}
+
 class IterableEdgeInsets {
     top: number
     left: number
@@ -175,4 +181,5 @@ export {
     IterableInboxMetadata,
     IterableInAppMessage,
     IterableInAppLocation,
+    IterableInAppCloseSource,
 }

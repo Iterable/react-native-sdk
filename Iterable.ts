@@ -1,7 +1,12 @@
 'use strict';
 
 import { NativeModules, NativeEventEmitter } from 'react-native';
-import { IterableInAppMessage, IterableInAppShowResponse, IterableInAppLocation } from './InAppClasses'
+import { 
+    IterableInAppMessage, 
+    IterableInAppShowResponse, 
+    IterableInAppLocation,
+    IterableInAppCloseSource,
+} from './InAppClasses'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
@@ -265,6 +270,18 @@ class Iterable {
     static trackInAppClick(message: IterableInAppMessage, location: IterableInAppLocation, clickedUrl: String) {
         console.log("trackInAppClick")
         RNIterableAPI.trackInAppClick(message.messageId, location, clickedUrl)
+    }
+
+    /**
+     * 
+     * @param {IterableInAppMessage} message 
+     * @param {IterableInAppLocation} location 
+     * @param {IterableInAppCloseSource} source
+     * @param {String} clickedUrl 
+     */
+    static trackInAppClose(message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppCloseSource, clickedUrl: String) {
+        console.log("trackInAppClose")
+        RNIterableAPI.trackInAppClose(message.messageId, location, source, clickedUrl)
     }
 
     static getInAppMessages(): Promise<Array<IterableInAppMessage>> {

@@ -170,23 +170,48 @@ class ReactIterableAPI: RCTEventEmitter {
     }
     
     @objc(trackInAppOpen:location:)
-    func trackInAppOpen(messageId: String, location number: NSNumber) {
+    func trackInAppOpen(messageId: String,
+                        location locationNumber: NSNumber) {
         ITBInfo()
         guard let message = IterableAPI.inAppManager.getMessage(withId: messageId) else {
             ITBError("Could not find message with id: \(messageId)")
             return
         }
-        IterableAPI.track(inAppOpen: message, location: InAppLocation.from(number: number))
+        IterableAPI.track(inAppOpen: message, location: InAppLocation.from(number: locationNumber))
     }
 
     @objc(trackInAppClick:location:clickedUrl:)
-    func trackInAppClick(messageId: String, location number: NSNumber, clickedUrl: String) {
+    func trackInAppClick(messageId: String,
+                         location locationNumber: NSNumber,
+                         clickedUrl: String) {
         ITBInfo()
         guard let message = IterableAPI.inAppManager.getMessage(withId: messageId) else {
             ITBError("Could not find message with id: \(messageId)")
             return
         }
-        IterableAPI.track(inAppClick: message, location: InAppLocation.from(number: number), clickedUrl: clickedUrl)
+        IterableAPI.track(inAppClick: message, location: InAppLocation.from(number: locationNumber), clickedUrl: clickedUrl)
+    }
+
+    @objc(trackInAppClose:location:source:clickedUrl:)
+    func trackInAppClose(messageId: String,
+                         location locationNumber: NSNumber,
+                         source sourceNumber: NSNumber,
+                         clickedUrl: String) {
+        ITBInfo()
+        guard let message = IterableAPI.inAppManager.getMessage(withId: messageId) else {
+            ITBError("Could not find message with id: \(messageId)")
+            return
+        }
+        if let inAppCloseSource = InAppCloseSource.from(number: sourceNumber) {
+            IterableAPI.track(inAppClose: message,
+                              location: InAppLocation.from(number: locationNumber),
+                              source: inAppCloseSource,
+                              clickedUrl: clickedUrl)
+        } else {
+            IterableAPI.track(inAppClose: message,
+                              location: InAppLocation.from(number: locationNumber),
+                              clickedUrl: clickedUrl)
+        }
     }
 
     @objc(getInAppMessages:rejecter:)
