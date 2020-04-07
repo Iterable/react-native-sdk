@@ -71,7 +71,7 @@ RCT_EXTERN_METHOD(getInAppMessages: (RCTPromiseResolveBlock) resolve
 RCT_EXTERN_METHOD(trackEvent: (nonnull NSString *) name
                   dataFields: (NSDictionary *) dataFields)
 
-RCT_EXTERN_METHOD(updateUser: (NSDictionary *) dataFields
+RCT_EXTERN_METHOD(updateUser: (nonnull NSDictionary *) dataFields
                   mergeNestedObjects: (BOOL) mergeNestedObjects)
 
 @end
