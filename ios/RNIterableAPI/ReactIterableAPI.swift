@@ -244,6 +244,12 @@ class ReactIterableAPI: RCTEventEmitter {
         ITBInfo()
         IterableAPI.trackEvent(name: event, dataFields)
     }
+
+    @objc(updateUser:mergeNestedObjects:)
+    func updateUser(dataFields: [AnyHashable: Any]?, mergeNestedObjects: Bool) {
+        ITBInfo()
+        IterableAPI.updateUser(dataFields, mergeNestedObjects)
+    }
     
     private var shouldEmit = false
     private let _methodQueue = DispatchQueue(label: String(describing: ReactIterableAPI.self))
