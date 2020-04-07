@@ -55,7 +55,7 @@ RCT_EXTERN_METHOD(trackInAppOpenWithMessageId: (NSString *) messageId
 RCT_EXTERN_METHOD(getInAppMessages: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
 
-RCT_EXTERN_METHOD(track: (NSString *) event
+RCT_EXTERN_METHOD(trackEvent: (NSString *) name
                   dataFields: (NSDictionary *) dataFields)
 
 @end

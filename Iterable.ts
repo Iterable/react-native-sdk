@@ -256,9 +256,9 @@ class Iterable {
         return RNIterableAPI.getInAppMessages().then((messages: Array<any>) => messages.map (message => {return IterableInAppMessage.fromDict(message)}))
     }
 
-    static track(event: String, dataFields: any | null) {
-        console.log("track")
-        return RNIterableAPI.track(event, dataFields)
+    static trackEvent(name: String, dataFields: any | null) {
+        console.log("trackEvent")
+        return RNIterableAPI.trackEvent(name, dataFields)
     }
 }
 

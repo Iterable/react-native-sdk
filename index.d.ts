@@ -15,7 +15,7 @@ export class Iterable {
     static trackPushOpenWithCampaignId(campaignId: number, templateId: number, messageId: String | null, appAlreadyRunning: Boolean, dataFields: any | null): void
     static trackPurchase(total: number, items: Array<IterableCommerceItem>, dataFields: any | null): void
     static trackInAppOpen(message: IterableInAppMessage, location: IterableInAppLocation): void
-    static track(event: String, dataFields: any | null): void
+    static trackEvent(name: String, dataFields: any | null): void
 }
 
 export enum PushServicePlatform {

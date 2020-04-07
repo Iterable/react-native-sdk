@@ -186,9 +186,9 @@ class ReactIterableAPI: RCTEventEmitter {
     }
     
     @objc(trackEvent:dataFields:)
-    func track(event: String, dataFields: [AnyHashable: Any]?) {
+    func trackEvent(name: String, dataFields: [AnyHashable: Any]?) {
         ITBInfo()
-        IterableAPI.track(event: event, dataFields)
+        IterableAPI.trackEvent(name: event, dataFields)
     }
     
     private var shouldEmit = false
