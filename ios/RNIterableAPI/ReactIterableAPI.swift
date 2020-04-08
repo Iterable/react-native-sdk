@@ -5,7 +5,7 @@
 
 import Foundation
 
-import IterableSDK;
+import IterableSDK
 
 @objc(ReactIterableAPI)
 class ReactIterableAPI: RCTEventEmitter {
@@ -242,19 +242,19 @@ class ReactIterableAPI: RCTEventEmitter {
     @objc(trackEvent:dataFields:)
     func trackEvent(name: String, dataFields: [AnyHashable: Any]?) {
         ITBInfo()
-        IterableAPI.trackEvent(name: event, dataFields)
+        IterableAPI.track(event: name, dataFields: dataFields)
     }
 
     @objc(updateUser:mergeNestedObjects:)
-    func updateUser(dataFields: [AnyHashable: Any]?, mergeNestedObjects: Bool) {
+    func updateUser(dataFields: [AnyHashable: Any], mergeNestedObjects: Bool) {
         ITBInfo()
-        IterableAPI.updateUser(dataFields, mergeNestedObjects)
+        IterableAPI.updateUser(dataFields, mergeNestedObjects: mergeNestedObjects)
     }
 
     @objc(updateEmail:)
     func updateEmail(email: String) {
         ITBInfo()
-        IterableAPI.updateEmail(email)
+        IterableAPI.updateEmail(email, onSuccess: nil, onFailure: nil)
     }
     
     private var shouldEmit = false
