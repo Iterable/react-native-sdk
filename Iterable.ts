@@ -313,7 +313,7 @@ class Iterable {
 
     static updateEmail(email: String) {
         console.log("updateEmail")
-        RNIterablePAI.updateEmail(email)
+        RNIterableAPI.updateEmail(email)
     }
 }
 
