@@ -19,6 +19,7 @@ export class Iterable {
     static trackEvent(name: String, dataFields: any | null): void
     static updateUser(dataFields: any, mergeNestedObjects: Boolean): void
     static updateEmail(email: String): void
+    static handleUniversalLink(link: String): Promise<Boolean>
 }
 
 export enum PushServicePlatform {

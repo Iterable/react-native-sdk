@@ -315,6 +315,11 @@ class Iterable {
         console.log("updateEmail")
         RNIterableAPI.updateEmail(email)
     }
+
+    static handleUniversalLink(link: String): Promise<Boolean> {
+        console.log("handleUniversalLink")
+        return RNIterableAPI.handleUniversalLink(link)
+    }
 }
 
 export { Iterable, IterableConfig, PushServicePlatform, IterableAction, IterableActionContext, IterableAttributionInfo, IterableCommerceItem };

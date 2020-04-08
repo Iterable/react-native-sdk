@@ -156,7 +156,11 @@ class ReactIterableAPI: RCTEventEmitter {
                        appAlreadyRunning: Bool,
                        dataFields: [AnyHashable: Any]?) {
         ITBInfo()
-        IterableAPI.track(pushOpen: campaignId, templateId: templateId, messageId: messageId, appAlreadyRunning: appAlreadyRunning, dataFields: dataFields)
+        IterableAPI.track(pushOpen: campaignId,
+                          templateId: templateId,
+                          messageId: messageId,
+                          appAlreadyRunning: appAlreadyRunning,
+                          dataFields: dataFields)
     }
     
     @objc(trackPurchase:items:dataFields:)
@@ -255,6 +259,12 @@ class ReactIterableAPI: RCTEventEmitter {
     func updateEmail(email: String) {
         ITBInfo()
         IterableAPI.updateEmail(email, onSuccess: nil, onFailure: nil)
+    }
+    
+    @objc(handleUniversalLink:resolver:rejecter:)
+    func handleUniversalLink(link: String, resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
+        ITBInfo()
+        resolver(IterableAPI.handle(universalLink: URL(string: link)!))
     }
     
     private var shouldEmit = false
