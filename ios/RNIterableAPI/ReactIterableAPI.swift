@@ -250,10 +250,10 @@ class ReactIterableAPI: RCTEventEmitter {
         IterableAPI.updateEmail(email, onSuccess: nil, onFailure: nil)
     }
     
-    @objc(handleUniversalLink:resolver:rejecter:)
-    func handleUniversalLink(link: String, resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
+    @objc(handle:resolver:rejecter:)
+    func handle(universalLink: String, resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
         ITBInfo()
-        resolver(IterableAPI.handle(universalLink: URL(string: link)!))
+        resolver(IterableAPI.handle(universalLink: URL(string: universalLink)!))
     }
     
     // MARK: InApp Manager methods

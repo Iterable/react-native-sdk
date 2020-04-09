@@ -335,9 +335,9 @@ class Iterable {
         RNIterableAPI.updateEmail(email)
     }
 
-    static handleUniversalLink(link: String): Promise<Boolean> {
+    static handle(universalLink: String): Promise<Boolean> {
         console.log("handleUniversalLink")
-        return RNIterableAPI.handleUniversalLink(link)
+        return RNIterableAPI.handle(universalLink)
     }
 }
 
