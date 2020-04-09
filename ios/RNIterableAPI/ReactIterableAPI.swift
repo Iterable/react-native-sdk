@@ -295,6 +295,16 @@ class ReactIterableAPI: RCTEventEmitter {
                                             location: InAppLocation.from(number: locationNumber))
         }
     }
+    
+    @objc(setReadForMessage:read:)
+    func setRead(for messageId: String, read: Bool) {
+        ITBInfo()
+        guard let message = IterableAPI.inAppManager.getMessage(withId: messageId) else {
+            ITBError("Could not find message with id: \(messageId)")
+            return
+        }
+        IterableAPI.inAppManager.set(read: read, forMessage: message)
+    }
 
     // MARK: Private
     private var shouldEmit = false

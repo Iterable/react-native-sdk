@@ -185,5 +185,6 @@ export class IterableInAppManager {
     getMessages(): Promise<Array<IterableInAppMessage>>
     show(message: IterableInAppMessage, consume: Boolean): Promise<String | null>
     remove(message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppDeleteSource): void
+    setReadForMessage(message: IterableInAppMessage, read: Boolean): void
 }
 

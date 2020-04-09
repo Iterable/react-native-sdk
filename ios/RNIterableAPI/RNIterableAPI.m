@@ -91,4 +91,7 @@ RCT_EXTERN_METHOD(removeMessage: (nonnull NSString *) messageId
                   location: (nonnull NSNumber *) location
                   source: (nonnull NSNumber *) source)
 
+RCT_EXTERN_METHOD(setReadForMessage: (nonnull NSString *) messageId
+                  read: (BOOL) read)
+
 @end

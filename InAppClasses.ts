@@ -196,6 +196,11 @@ class IterableInAppManager {
         console.log("InAppManager.remove")
         return RNIterableAPI.removeMessage(message.messageId, location, source)
     }
+
+    setReadForMessage(message: IterableInAppMessage, read: Boolean) {
+        console.log("InAppManager.setRead")
+        RNIterableAPI.setReadForMessage(message.messageId, read)
+    }
 }
 
 export { 
