@@ -1,5 +1,9 @@
 'use strict';
 
+import { NativeModules } from 'react-native';
+const RNIterableAPI = NativeModules.RNIterableAPI
+
+
 enum IterableInAppShowResponse {
     show = 0,
     skip = 1
@@ -177,6 +181,13 @@ class IterableInAppMessage {
     }        
 }
 
+class IterableInAppManager {
+    getMessages(): Promise<Array<IterableInAppMessage>> {
+        console.log("InAppManager.getMessages");
+        return RNIterableAPI.getInAppMessages().then((messages: Array<any>) => messages.map (message => {return IterableInAppMessage.fromDict(message)}))
+    }
+}
+
 export { 
     IterableInAppShowResponse,
     IterableInAppTriggerType, 
@@ -189,4 +200,5 @@ export {
     IterableInAppLocation,
     IterableInAppCloseSource,
     IterableInAppDeleteSource,
+    IterableInAppManager,
 }

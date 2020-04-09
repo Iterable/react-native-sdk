@@ -1,4 +1,5 @@
 export class Iterable {
+    static inAppManager: IterableInAppManager
     static initialize(apiKey: string, config: IterableConfig): void
     static setEmail(email: string): void
     static getEmail(): Promise<String | null>
@@ -181,4 +182,7 @@ export enum IterableInAppDeleteSource {
     unknown = 100,
 }
 
+export class IterableInAppManager {
+    getMessages(): Promise<Array<IterableInAppMessage>>
+}
 
