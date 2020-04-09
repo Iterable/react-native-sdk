@@ -335,6 +335,10 @@ class Iterable {
         RNIterableAPI.updateEmail(email)
     }
 
+    /**
+     * 
+     * @param {String} universalLink URL in String form to be handled
+     */
     static handle(universalLink: String): Promise<Boolean> {
         console.log("handleUniversalLink")
         return RNIterableAPI.handle(universalLink)
