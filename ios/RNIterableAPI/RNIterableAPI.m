@@ -65,9 +65,6 @@ RCT_EXTERN_METHOD(inAppConsume: (nonnull NSString *) messageId
                   location: (nonnull NSNumber *) location
                   source: (nonnull NSNumber *) source)
 
-RCT_EXTERN_METHOD(getInAppMessages: (RCTPromiseResolveBlock) resolve
-                  rejecter: (RCTPromiseRejectBlock) reject)
-
 RCT_EXTERN_METHOD(trackEvent: (nonnull NSString *) name
                   dataFields: (NSDictionary *) dataFields)
 
@@ -79,5 +76,26 @@ RCT_EXTERN_METHOD(updateEmail: (nonnull NSString *) email)
 RCT_EXTERN_METHOD(handleUniversalLink: (nonnull NSString *) link
                   resolver: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
+
+RCT_EXTERN_METHOD(getInAppMessages: (RCTPromiseResolveBlock) resolve
+                  rejecter: (RCTPromiseRejectBlock) reject)
+
+RCT_EXTERN_METHOD(getInboxMessages: (RCTPromiseResolveBlock) resolve
+                  rejecter: (RCTPromiseRejectBlock) reject)
+
+RCT_EXTERN_METHOD(getUnreadInboxMessagesCount: (RCTPromiseResolveBlock) resolve
+                  rejecter: (RCTPromiseRejectBlock) reject)
+
+RCT_EXTERN_METHOD(showMessage: (nonnull NSString *) messageId
+                  consume: (nonnull BOOL) consume
+                  resolver: (RCTPromiseResolveBlock) resolve
+                  rejecter: (RCTPromiseRejectBlock) reject)
+
+RCT_EXTERN_METHOD(removeMessage: (nonnull NSString *) messageId
+                  location: (nonnull NSNumber *) location
+                  source: (nonnull NSNumber *) source)
+
+RCT_EXTERN_METHOD(setReadForMessage: (nonnull NSString *) messageId
+                  read: (BOOL) read)
 
 @end

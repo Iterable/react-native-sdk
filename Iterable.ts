@@ -7,6 +7,7 @@ import {
     IterableInAppLocation,
     IterableInAppCloseSource,
     IterableInAppDeleteSource,
+    IterableInAppManager,
 } from './InAppClasses'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
@@ -116,6 +117,11 @@ enum EventName {
 
 class Iterable {
     /**
+     * inAppManager instance
+     */
+    static inAppManager = new IterableInAppManager()
+
+    /**
      * 
      * @param {string} apiKey 
      * @param {IterableConfig} config
@@ -203,8 +209,12 @@ class Iterable {
 
     static getAttributionInfo(): Promise<IterableAttributionInfo | null> {
         console.log("getAttributionInfo")
-        return RNIterableAPI.getAttributionInfo().then((dict: any) => {
-            return new IterableAttributionInfo(dict["campaignId"] as number, dict["templateId"] as number, dict["messageId"] as String)
+        return RNIterableAPI.getAttributionInfo().then((dict: any | null) => {
+            if (dict) {
+                return new IterableAttributionInfo(dict["campaignId"] as number, dict["templateId"] as number, dict["messageId"] as String)
+            } else {
+                return null
+            }
         })
     }
 
@@ -296,21 +306,30 @@ class Iterable {
         RNIterableAPI.inAppConsume(message.messageId, location, source)
     }
 
-    static getInAppMessages(): Promise<Array<IterableInAppMessage>> {
-        console.log("getInAppMessages");
-        return RNIterableAPI.getInAppMessages().then((messages: Array<any>) => messages.map (message => {return IterableInAppMessage.fromDict(message)}))
-    }
-
+    /**
+     * 
+     * @param {String} name 
+     * @param {any | null} dataFields 
+     */
     static trackEvent(name: String, dataFields: any | null) {
         console.log("trackEvent")
         RNIterableAPI.trackEvent(name, dataFields)
     }
 
+    /**
+     * 
+     * @param {any} dataFields Data fields to store in user profile
+     * @param {Boolean} mergeNestedObjects Whether to merge top level objects instead of overwriting
+     */
     static updateUser(dataFields: any, mergeNestedObjects: Boolean) {
         console.log("updateUser")
         RNIterableAPI.updateUser(dataFields, mergeNestedObjects)
     }
 
+    /**
+     * 
+     * @param email the new email to set
+     */
     static updateEmail(email: String) {
         console.log("updateEmail")
         RNIterableAPI.updateEmail(email)

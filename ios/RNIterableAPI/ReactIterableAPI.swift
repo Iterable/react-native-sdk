@@ -124,12 +124,7 @@ class ReactIterableAPI: RCTEventEmitter {
     @objc(getAttributionInfo:rejecter:)
     func getAttributionInfo(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
         ITBInfo()
-        guard let attributionInfo = IterableAPI.attributionInfo else {
-            resolver(NSNull())
-            return
-        }
-        
-        resolver(SerializationUtil.encodableToDictionary(encodable: attributionInfo))
+        resolver(IterableAPI.attributionInfo.map(SerializationUtil.encodableToDictionary))
     }
 
     @objc(setAttributionInfo:)
@@ -237,12 +232,6 @@ class ReactIterableAPI: RCTEventEmitter {
         }
     }
 
-    @objc(getInAppMessages:rejecter:)
-    func getInAppMessages(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
-        ITBInfo()
-        resolver(IterableAPI.inAppManager.getMessages().map{ $0.toDict() })
-    }
-    
     @objc(trackEvent:dataFields:)
     func trackEvent(name: String, dataFields: [AnyHashable: Any]?) {
         ITBInfo()
@@ -267,6 +256,67 @@ class ReactIterableAPI: RCTEventEmitter {
         resolver(IterableAPI.handle(universalLink: URL(string: link)!))
     }
     
+    // MARK: InApp Manager methods
+    @objc(getInAppMessages:rejecter:)
+    func getInAppMessages(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
+        ITBInfo()
+        resolver(IterableAPI.inAppManager.getMessages().map{ $0.toDict() })
+    }
+
+    @objc(getInboxMessages:rejecter:)
+    func getInboxMessages(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
+        ITBInfo()
+        resolver(IterableAPI.inAppManager.getInboxMessages().map{ $0.toDict() })
+    }
+
+    @objc(getUnreadInboxMessagesCount:rejecter:)
+    func getUnreadInboxMessagesCount(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
+        ITBInfo()
+        resolver(IterableAPI.inAppManager.getUnreadInboxMessagesCount())
+    }
+
+    @objc(showMessage:consume:resolver:rejecter:)
+    func show(messageId: String, consume: Bool, resolver: @escaping RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
+        ITBInfo()
+        guard let message = IterableAPI.inAppManager.getMessage(withId: messageId) else {
+            ITBError("Could not find message with id: \(messageId)")
+            return
+        }
+
+        IterableAPI.inAppManager.show(message: message, consume: consume) { (url) in
+            resolver(url.map({$0.absoluteString}))
+        }
+    }
+
+    @objc(removeMessage:location:source:)
+    func remove(messageId: String, location locationNumber: NSNumber, source sourceNumber: NSNumber) {
+        ITBInfo()
+        guard let message = IterableAPI.inAppManager.getMessage(withId: messageId) else {
+            ITBError("Could not find message with id: \(messageId)")
+            return
+        }
+        
+        if let inAppDeleteSource = InAppDeleteSource.from(number: sourceNumber) {
+            IterableAPI.inAppManager.remove(message: message,
+                                            location: InAppLocation.from(number: locationNumber),
+                                            source: inAppDeleteSource)
+        } else {
+            IterableAPI.inAppManager.remove(message: message,
+                                            location: InAppLocation.from(number: locationNumber))
+        }
+    }
+    
+    @objc(setReadForMessage:read:)
+    func setRead(for messageId: String, read: Bool) {
+        ITBInfo()
+        guard let message = IterableAPI.inAppManager.getMessage(withId: messageId) else {
+            ITBError("Could not find message with id: \(messageId)")
+            return
+        }
+        IterableAPI.inAppManager.set(read: read, forMessage: message)
+    }
+
+    // MARK: Private
     private var shouldEmit = false
     private let _methodQueue = DispatchQueue(label: String(describing: ReactIterableAPI.self))
     

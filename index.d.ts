@@ -1,4 +1,5 @@
 export class Iterable {
+    static inAppManager: IterableInAppManager
     static initialize(apiKey: string, config: IterableConfig): void
     static setEmail(email: string): void
     static getEmail(): Promise<String | null>
@@ -6,7 +7,6 @@ export class Iterable {
     static getUserId(): Promise<String | null>
     static disableDeviceForCurrentUser(): void
     static disableDeviceForAllUsers(): void
-    static getInAppMessages(): void
     static getLastPushPayload(): Promise<any | null>
     static getAttributionInfo(): Promise<IterableAttributionInfo | null>
     static setAttributionInfo(attributionInfo?: IterableAttributionInfo): void
@@ -182,4 +182,10 @@ export enum IterableInAppDeleteSource {
     unknown = 100,
 }
 
+export class IterableInAppManager {
+    getMessages(): Promise<Array<IterableInAppMessage>>
+    showMessage(message: IterableInAppMessage, consume: Boolean): Promise<String | null>
+    removeMessage(message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppDeleteSource): void
+    setReadForMessage(message: IterableInAppMessage, read: Boolean): void
+}
 
