@@ -186,6 +186,11 @@ class IterableInAppManager {
         console.log("InAppManager.getMessages");
         return RNIterableAPI.getInAppMessages().then((messages: Array<any>) => messages.map (message => {return IterableInAppMessage.fromDict(message)}))
     }
+
+    show(message: IterableInAppMessage, consume: Boolean): Promise<String | null> {
+        console.log("InAppManager.show")
+        return RNIterableAPI.showMessage(message.messageId, consume)
+    }
 }
 
 export { 

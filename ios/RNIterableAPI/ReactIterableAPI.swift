@@ -228,12 +228,6 @@ class ReactIterableAPI: RCTEventEmitter {
         }
     }
 
-    @objc(getInAppMessages:rejecter:)
-    func getInAppMessages(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
-        ITBInfo()
-        resolver(IterableAPI.inAppManager.getMessages().map{ $0.toDict() })
-    }
-    
     @objc(trackEvent:dataFields:)
     func trackEvent(name: String, dataFields: [AnyHashable: Any]?) {
         ITBInfo()
@@ -252,6 +246,39 @@ class ReactIterableAPI: RCTEventEmitter {
         IterableAPI.updateEmail(email, onSuccess: nil, onFailure: nil)
     }
     
+    // MARK: InApp Manager methods
+    @objc(getInAppMessages:rejecter:)
+    func getInAppMessages(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
+        ITBInfo()
+        resolver(IterableAPI.inAppManager.getMessages().map{ $0.toDict() })
+    }
+
+    @objc(getInboxMessages:rejecter:)
+    func getInboxMessages(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
+        ITBInfo()
+        resolver(IterableAPI.inAppManager.getInboxMessages().map{ $0.toDict() })
+    }
+
+    @objc(getUnreadInboxMessagesCount:rejecter:)
+    func getUnreadInboxMessagesCount(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
+        ITBInfo()
+        resolver(IterableAPI.inAppManager.getUnreadInboxMessagesCount())
+    }
+
+    @objc(showMessage:consume:resolver:rejecter:)
+    func show(messageId: String, consume: Bool, resolver: @escaping RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
+        ITBInfo()
+        guard let message = IterableAPI.inAppManager.getMessage(withId: messageId) else {
+            ITBError("Could not find message with id: \(messageId)")
+            return
+        }
+
+        IterableAPI.inAppManager.show(message: message, consume: consume) { (url) in
+            resolver(url.map({$0.absoluteString}))
+        }
+    }
+    
+    // MARK: Private
     private var shouldEmit = false
     private let _methodQueue = DispatchQueue(label: String(describing: ReactIterableAPI.self))
     
