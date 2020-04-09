@@ -187,12 +187,12 @@ class IterableInAppManager {
         return RNIterableAPI.getInAppMessages().then((messages: Array<any>) => messages.map (message => {return IterableInAppMessage.fromDict(message)}))
     }
 
-    show(message: IterableInAppMessage, consume: Boolean): Promise<String | null> {
+    showMessage(message: IterableInAppMessage, consume: Boolean): Promise<String | null> {
         console.log("InAppManager.show")
         return RNIterableAPI.showMessage(message.messageId, consume)
     }
 
-    remove(message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppDeleteSource): void {
+    removeMessage(message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppDeleteSource): void {
         console.log("InAppManager.remove")
         return RNIterableAPI.removeMessage(message.messageId, location, source)
     }
