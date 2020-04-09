@@ -306,11 +306,6 @@ class Iterable {
         RNIterableAPI.inAppConsume(message.messageId, location, source)
     }
 
-    static getInAppMessages(): Promise<Array<IterableInAppMessage>> {
-        console.log("getInAppMessages");
-        return RNIterableAPI.getInAppMessages().then((messages: Array<any>) => messages.map (message => {return IterableInAppMessage.fromDict(message)}))
-    }
-
     /**
      * 
      * @param {String} name 

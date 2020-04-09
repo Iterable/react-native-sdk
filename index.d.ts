@@ -7,7 +7,6 @@ export class Iterable {
     static getUserId(): Promise<String | null>
     static disableDeviceForCurrentUser(): void
     static disableDeviceForAllUsers(): void
-    static getInAppMessages(): void
     static getLastPushPayload(): Promise<any | null>
     static getAttributionInfo(): Promise<IterableAttributionInfo | null>
     static setAttributionInfo(attributionInfo?: IterableAttributionInfo): void
