@@ -203,8 +203,12 @@ class Iterable {
 
     static getAttributionInfo(): Promise<IterableAttributionInfo | null> {
         console.log("getAttributionInfo")
-        return RNIterableAPI.getAttributionInfo().then((dict: any) => {
-            return new IterableAttributionInfo(dict["campaignId"] as number, dict["templateId"] as number, dict["messageId"] as String)
+        return RNIterableAPI.getAttributionInfo().then((dict: any | null) => {
+            if (dict) {
+                return new IterableAttributionInfo(dict["campaignId"] as number, dict["templateId"] as number, dict["messageId"] as String)
+            } else {
+                return null
+            }
         })
     }
 

@@ -124,12 +124,7 @@ class ReactIterableAPI: RCTEventEmitter {
     @objc(getAttributionInfo:rejecter:)
     func getAttributionInfo(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
         ITBInfo()
-        guard let attributionInfo = IterableAPI.attributionInfo else {
-            resolver(NSNull())
-            return
-        }
-        
-        resolver(SerializationUtil.encodableToDictionary(encodable: attributionInfo))
+        resolver(IterableAPI.attributionInfo.map(SerializationUtil.encodableToDictionary))
     }
 
     @objc(setAttributionInfo:)
