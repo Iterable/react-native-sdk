@@ -277,7 +277,25 @@ class ReactIterableAPI: RCTEventEmitter {
             resolver(url.map({$0.absoluteString}))
         }
     }
-    
+
+    @objc(removeMessage:location:source:)
+    func remove(messageId: String, location locationNumber: NSNumber, source sourceNumber: NSNumber) {
+        ITBInfo()
+        guard let message = IterableAPI.inAppManager.getMessage(withId: messageId) else {
+            ITBError("Could not find message with id: \(messageId)")
+            return
+        }
+        
+        if let inAppDeleteSource = InAppDeleteSource.from(number: sourceNumber) {
+            IterableAPI.inAppManager.remove(message: message,
+                                            location: InAppLocation.from(number: locationNumber),
+                                            source: inAppDeleteSource)
+        } else {
+            IterableAPI.inAppManager.remove(message: message,
+                                            location: InAppLocation.from(number: locationNumber))
+        }
+    }
+
     // MARK: Private
     private var shouldEmit = false
     private let _methodQueue = DispatchQueue(label: String(describing: ReactIterableAPI.self))

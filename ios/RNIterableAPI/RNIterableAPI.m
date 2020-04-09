@@ -87,4 +87,8 @@ RCT_EXTERN_METHOD(showMessage: (nonnull NSString *) messageId
                   resolver: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
 
+RCT_EXTERN_METHOD(removeMessage: (nonnull NSString *) messageId
+                  location: (nonnull NSNumber *) location
+                  source: (nonnull NSNumber *) source)
+
 @end

@@ -191,6 +191,11 @@ class IterableInAppManager {
         console.log("InAppManager.show")
         return RNIterableAPI.showMessage(message.messageId, consume)
     }
+
+    remove(message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppDeleteSource): void {
+        console.log("InAppManager.remove")
+        return RNIterableAPI.removeMessage(message.messageId, location, source)
+    }
 }
 
 export { 
