@@ -334,6 +334,15 @@ class Iterable {
         console.log("updateEmail")
         RNIterableAPI.updateEmail(email)
     }
+
+    /**
+     * 
+     * @param {String} universalLink URL in String form to be either opened as a universal link or as a normal one
+     */
+    static handleUniversalLink(link: String): Promise<Boolean> {
+        console.log("handleUniversalLink")
+        return RNIterableAPI.handleUniversalLink(link)
+    }
 }
 
 export { Iterable, IterableConfig, PushServicePlatform, IterableAction, IterableActionContext, IterableAttributionInfo, IterableCommerceItem };

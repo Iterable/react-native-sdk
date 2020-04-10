@@ -151,7 +151,11 @@ class ReactIterableAPI: RCTEventEmitter {
                        appAlreadyRunning: Bool,
                        dataFields: [AnyHashable: Any]?) {
         ITBInfo()
-        IterableAPI.track(pushOpen: campaignId, templateId: templateId, messageId: messageId, appAlreadyRunning: appAlreadyRunning, dataFields: dataFields)
+        IterableAPI.track(pushOpen: campaignId,
+                          templateId: templateId,
+                          messageId: messageId,
+                          appAlreadyRunning: appAlreadyRunning,
+                          dataFields: dataFields)
     }
     
     @objc(trackPurchase:items:dataFields:)
@@ -244,6 +248,17 @@ class ReactIterableAPI: RCTEventEmitter {
     func updateEmail(email: String) {
         ITBInfo()
         IterableAPI.updateEmail(email, onSuccess: nil, onFailure: nil)
+    }
+    
+    @objc(handleUniversalLink:resolver:rejecter:)
+    func handle(universalLink: String, resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
+        ITBInfo()
+
+        if let url = URL(string: universalLink) {
+            resolver(IterableAPI.handle(universalLink: url))
+        } else {
+            rejecter("", "invalid URL", nil)
+        }
     }
     
     // MARK: InApp Manager methods
