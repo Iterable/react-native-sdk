@@ -73,7 +73,7 @@ RCT_EXTERN_METHOD(updateUser: (nonnull NSDictionary *) dataFields
 
 RCT_EXTERN_METHOD(updateEmail: (nonnull NSString *) email)
 
-RCT_EXTERN_METHOD(handle: (nonnull NSString *) universalLink
+RCT_EXTERN_METHOD(handleUniversalLink: (nonnull NSString *) universalLink
                   resolver: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
 

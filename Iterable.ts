@@ -337,11 +337,11 @@ class Iterable {
 
     /**
      * 
-     * @param {String} universalLink URL in String form to be handled
+     * @param {String} universalLink URL in String form to be either opened as a universal link or as a normal one
      */
-    static handle(universalLink: String): Promise<Boolean> {
+    static handleUniversalLink(link: String): Promise<Boolean> {
         console.log("handleUniversalLink")
-        return RNIterableAPI.handle(universalLink)
+        return RNIterableAPI.handleUniversalLink(link)
     }
 }
 
