@@ -20,6 +20,7 @@ export class Iterable {
     static updateUser(dataFields: any, mergeNestedObjects: Boolean): void
     static updateEmail(email: String): void
     static handleUniversalLink: String): Promise<Boolean>
+    static updateSubscriptions(emailListIds: Array<number> | null, unsubscribedChannelIds: Array<number> | null, unsubscribedMessageTypeIds: Array<number> | null, subscribedMessageTypeIds: Array<number> | null, campaignId: number | null, templateId: number | null): void
 }
 
 export enum PushServicePlatform {

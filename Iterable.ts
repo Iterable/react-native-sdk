@@ -343,6 +343,26 @@ class Iterable {
         console.log("handleUniversalLink")
         return RNIterableAPI.handleUniversalLink(link)
     }
+
+    static updateSubscriptions(emailListIds: Array<number> | null, 
+        unsubscribedChannelIds: Array<number> | null,
+        unsubscribedMessageTypeIds: Array<number> | null,
+        subscribedMessageTypeIds: Array<number> | null,
+        campaignId: number | null,
+        templateId: number | null) {
+        console.log("updateSubscriptions")
+        RNIterableAPI.updateSubscriptions(emailListIds, unsubscribedChannelIds, unsubscribedMessageTypeIds, subscribedMessageTypeIds, campaignId, templateId)
+    }
+
+    static updateSubscriptions(emailListIds: Array<number> | null, 
+        unsubscribedChannelIds: Array<number> | null,
+        unsubscribedMessageTypeIds: Array<number> | null,
+        subscribedMessageTypeIds: Array<number> | null,
+        campaignId: number | null,
+        templateId: number | null) {
+        console.log("updateSubscriptions")
+        RNIterableAPI.updateSubscriptions(emailListIds, unsubscribedChannelIds, unsubscribedMessageTypeIds, subscribedMessageTypeIds, campaignId, templateId)
+    }
 }
 
 export { Iterable, IterableConfig, PushServicePlatform, IterableAction, IterableActionContext, IterableAttributionInfo, IterableCommerceItem };

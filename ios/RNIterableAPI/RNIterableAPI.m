@@ -98,4 +98,11 @@ RCT_EXTERN_METHOD(removeMessage: (nonnull NSString *) messageId
 RCT_EXTERN_METHOD(setReadForMessage: (nonnull NSString *) messageId
                   read: (BOOL) read)
 
+RCT_EXTERN_METHOD(updateSubscriptions: (NSArray *) emailListIds
+                  unsubscribedChannelIds: (NSArray *) unsubscribedChannelIds
+                  unsubscribedMessageTypeIds: (NSArray *) unsubscribedMessageTypeIds
+                  subscribedMessageTypeIds: (NSArray *) subscribedMessageTypeIds
+                  campaignId: (NSNumber *) campaignId
+                  templateId: (NSNumber *) templateId)
+
 @end
