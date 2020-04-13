@@ -15,11 +15,12 @@ export class Iterable {
     static trackPurchase(total: number, items: Array<IterableCommerceItem>, dataFields: any | null): void
     static trackInAppOpen(message: IterableInAppMessage, location: IterableInAppLocation): void
     static trackInAppClick(message: IterableInAppMessage, location: IterableInAppLocation, clickedUrl: String): void
+    static trackInAppClose(message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppCloseSource, clickedUrl: String): void
     static inAppConsume(message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppDeleteSource): void
     static trackEvent(name: String, dataFields: any | null): void
     static updateUser(dataFields: any, mergeNestedObjects: Boolean): void
     static updateEmail(email: String): void
-    static handleUniversalLink: String): Promise<Boolean>
+    static handleUniversalLink(link: String): Promise<Boolean>
 }
 
 export enum PushServicePlatform {
