@@ -343,6 +343,25 @@ class Iterable {
         console.log("handleUniversalLink")
         return RNIterableAPI.handleUniversalLink(link)
     }
+
+    /**
+     * 
+     * @param {Array<number> | null} emailListIds the list of lists (by ID) that a user is subscribed to
+     * @param {Array<number> | null} unsubscribedChannelIds the list of channels (by ID) to unsubscribe from
+     * @param {Array<number> | null} unsubscribedMessageTypeIds the list of message types (by ID) to unsubscribe from
+     * @param {Array<number> | null} subscribedMessageTypeIds the list of message types (by ID) to subscribe to
+     * @param {number | null} campaignId the ID of the campaign to attribute unsubscribes
+     * @param {number | null} templateId the ID of the template to attribute unsubscribes
+     */
+    static updateSubscriptions(emailListIds: Array<number> | null, 
+        unsubscribedChannelIds: Array<number> | null,
+        unsubscribedMessageTypeIds: Array<number> | null,
+        subscribedMessageTypeIds: Array<number> | null,
+        campaignId: number | null,
+        templateId: number | null) {
+        console.log("updateSubscriptions")
+        RNIterableAPI.updateSubscriptions(emailListIds, unsubscribedChannelIds, unsubscribedMessageTypeIds, subscribedMessageTypeIds, campaignId, templateId)
+    }
 }
 
 export { Iterable, IterableConfig, PushServicePlatform, IterableAction, IterableActionContext, IterableAttributionInfo, IterableCommerceItem };

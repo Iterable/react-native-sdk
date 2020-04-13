@@ -311,6 +311,22 @@ class ReactIterableAPI: RCTEventEmitter {
         }
     }
     
+    @objc(updateSubscriptions:unsubscribedChannelIds:unsubscribedMessageTypeIds:subscribedMessageTypeIds:campaignId:templateId:)
+    func updateSubscriptions(emailListIds: [NSNumber]?,
+                             unsubscribedChannelIds: [NSNumber]?,
+                             unsubscribedMessageTypeIds: [NSNumber]?,
+                             subscribedMessageTypeIds: [NSNumber]?,
+                             campaignId: NSNumber?,
+                             templateId: NSNumber?) {
+        ITBInfo()
+        IterableAPI.updateSubscriptions(emailListIds,
+                                        unsubscribedChannelIds: unsubscribedChannelIds,
+                                        unsubscribedMessageTypeIds: unsubscribedMessageTypeIds,
+                                        subscribedMessageTypeIds: subscribedMessageTypeIds,
+                                        campaignId: campaignId,
+                                        templateId: templateId)
+    }
+    
     @objc(setReadForMessage:read:)
     func setRead(for messageId: String, read: Bool) {
         ITBInfo()
