@@ -1,56 +1,17 @@
-import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  Button,
-  StatusBar,
-} from 'react-native';
+'use strict'
 
-import {
-  Iterable,
-} from 'react-native-iterable';
+import { createAppContainer } from 'react-navigation'
+import { createBottomTabNavigator } from 'react-navigation-tabs'
 
-// Iterable:
-// Initialize API.
+import HomeScreen from "./screens/HomeScreen"
+import SettingsScreen from "./screens/SettingsScreen"
 
-const App: () => React.ReactNode = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <View style={styles.body}>
-            <Button title="Login" onPress={() => {
-              	Iterable.setEmail("tapash@iterable.com");
-            	} 
-            }/>
-            <Button title="Logout" onPress={() => {
- 					    Iterable.setEmail(null);
-            	} 
-            }/>
-            <Button title="Track Event" onPress={() => {
-					    Iterable.track("ProductPurchased");
-            	} 
-            }/>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
-  );
-};
-
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: 'white',
+const TabNavigator = createBottomTabNavigator(
+  {
+    Home: HomeScreen,
+    Settings: SettingsScreen,
   },
-  body: {
-    backgroundColor: 'white',
-  },
-});
+  { initialRouteName: 'Home' },
+)
 
-export default App;
+export default createAppContainer(TabNavigator);
