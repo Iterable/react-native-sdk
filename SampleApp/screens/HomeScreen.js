@@ -12,7 +12,11 @@ import {
   SafeAreaView,
 } from 'react-native'
 
-import styles from './../Styles'
+import {
+  StyleSheet,
+} from 'react-native';
+
+import { FlatList } from 'react-native-gesture-handler'
 
 export default class HomeScreen extends Component {
 
@@ -26,13 +30,26 @@ export default class HomeScreen extends Component {
   render() {
     return (
       <SafeAreaView>
-        <ScrollView contentContainerStyle={styles.contentContainer}>
-          <Image
-            style={{ width: 298, height: 68, marginTop: 75, alignItems: 'center' }}
-            source={require('./../img/iterable-logo.png')}
+          <FlatList style={styles.list}
+            data={[
+              {key: "Cappuccino"},
+              {key: "Mocha"},
+            ]}
+            renderItem={({item}) => <Text style={styles.item}>{item.key}</Text>}
           />
-        </ScrollView>
       </SafeAreaView>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  list: {
+   paddingTop: 10
+  },
+  item: {
+    padding: 10,
+    fontSize: 18,
+    height: 44,
+  },
+})
+
