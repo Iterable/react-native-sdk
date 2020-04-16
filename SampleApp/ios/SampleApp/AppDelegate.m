@@ -28,15 +28,7 @@
     rootViewController.view = rootView;
     self.window.rootViewController = rootViewController;
     [self.window makeKeyAndVisible];
-    
-    NSString *apiKey = [NSProcessInfo.processInfo.environment valueForKey:@"apiKey"];
-    if (apiKey != nil) {
-        [IterableAPI initializeWithApiKey:apiKey];
-    } else {
-        NSLog(@"Please make sure 'apiKey' is set in environment");
-        exit(1);
-    }
-    
+
     return YES;
 }
 
