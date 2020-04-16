@@ -1,51 +1,90 @@
 'use strict'
 
-import React from 'react'
+import React, {
+  Component
+} from 'react'
 import {
   Text,
   View,
   Button,
   StyleSheet,
+  Image,
 } from 'react-native'
-import { createStackNavigator } from '@react-navigation/stack';
+import { TextInput } from 'react-native-gesture-handler';
 
-function DetailsScreen() {
-  return (
-    <View style={styles.container}>
-      <Text>Details!</Text>
-    </View>
-  );
+interface Props {}
+interface State {
+  isLoggedIn: boolean
 }
 
+class SettingsTab extends Component<Props, State> {
+  constructor(props: Props) {
+    super(props)
+    this.state = {isLoggedIn: false}
+  }
 
-function SettingsScreen({ navigation }) {
-  return (
-    <View style={styles.container}>
-      <Text>Settings screen</Text>
-      <Button
-        title="Go to Details"
-        onPress={() => navigation.navigate('Details')}
-      />
-    </View>
-  );
-}
+  render() {
+    if (this.state.isLoggedIn == true) {
+      return this.renderLoggedIn()
+    } else {
+      return this.renderLoggedOut()
+    }
+  }
 
-const SettingsStack = createStackNavigator();
+  renderLoggedIn() {
+    return (
+      <View style={styles.emailContainer}>
+        <Text>Hello, World</Text>
+        <TextInput 
+          style={styles.emailTextInput} 
+          autoCapitalize="none" 
+          autoCompleteType="email"
+          placeholder="user@example.com" />
+        <Button
+          title="Login"
+          onPress={() => {this.setState({isLoggedIn: false})}}
+        />
+      </View>
+   ) 
+  }
 
-function SettingsTab() {
-  return (
-    <SettingsStack.Navigator>
-      <SettingsStack.Screen name="Settings" component={SettingsScreen} />
-      <SettingsStack.Screen name="Details" component={DetailsScreen} />
-    </SettingsStack.Navigator>
-  );
+  renderLoggedOut() {
+    return (
+      <View style={styles.emailContainer}>
+        <TextInput 
+          style={styles.emailTextInput} 
+          autoCapitalize="none" 
+          autoCompleteType="email"
+          placeholder="user@example.com" />
+        <Button
+          title="Login"
+          onPress={this.onLoginTapped}
+        />
+      </View>
+    )
+  }
+
+  onLoginTapped = () => {
+    this.setState({isLoggedIn: true})
+  }
 }
 
 const styles = StyleSheet.create({
+  emailContainer: {
+    flexDirection: "row",
+    marginTop: 250,
+  },
+  emailTextInput: {
+    marginLeft: 10,
+    padding: 10,
+    borderBottomColor: 'gray',
+    borderBottomWidth: 1,
+    width: 250,
+  },
   container: {
-    flex: 1, 
-    justifyContent: 'center', 
-    alignItems: 'center'  
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
 })
 
