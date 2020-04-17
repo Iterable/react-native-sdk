@@ -63,7 +63,7 @@ type Coffee = {
   subtitle: string
 }
 
-const coffees: Array<Coffee> = [{
+export const coffees: Array<Coffee> = [{
   name: 'Black Coffee',
   icon: require('../img/black-coffee.png'),
   subtitle: 'Black coffee is great for weight loss'

@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons'
 import { Iterable, IterableConfig } from 'react-native-iterable'
 
-import HomeTab, { Coffee } from './HomeTab'
+import HomeTab, { Coffee, coffees } from './HomeTab'
 import SettingsTab from './SettingsTab'
 
 // ITERABLE:
@@ -21,13 +21,8 @@ export default class App extends React.Component {
     Iterable.initialize(apiKey, config)
 
     // :tqm (remove - navigation test)
-    var coffee = {
-      name: 'Black Coffee',
-      icon: require('../img/black-coffee.png'),
-      subtitle: 'Black coffee is great for weight loss'
-    }
     setTimeout(() => {
-      this.navigate(coffee)
+      this.navigate(coffees[2])
     }, 5000);
   }
 
