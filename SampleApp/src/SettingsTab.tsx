@@ -11,9 +11,9 @@ import {
   Image,
 } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler';
-import {Iterable} from 'react-native-iterable'
+import { Iterable } from 'react-native-iterable'
 
-interface Props {}
+interface Props { }
 interface State {
   email?: String
 }
@@ -30,43 +30,50 @@ class SettingsTab extends Component<Props, State> {
     Iterable.getEmail().then(email => {
       console.log("gotEmail: " + email)
       if (email) {
-        this.setState((prevState, props) => {return {email: email}})
+        this.setState((prevState, props) => { return { email: email } })
       } else {
-        this.setState((prevState, props) => {return {email: undefined}})
+        this.setState((prevState, props) => { return { email: undefined } })
       }
     })
   }
 
   render() {
     console.log("render")
+    var userInfo
     if (this.state.email) {
       console.log("renderLoggedIn: " + this.state.email)
-      return this.renderLoggedIn(this.state.email)
+      userInfo = this.renderLoggedIn(this.state.email)
     } else {
       console.log("renderLoggedOut")
-      return this.renderLoggedOut()
+      userInfo = this.renderLoggedOut()
     }
+    return (
+      <View style={styles.container}>
+        <Image source={require('../img/iterable-logo.png')} />
+        {userInfo}
+      </View>
+    )
   }
 
   renderLoggedIn(email: String) {
     console.log("email: " + email)
     return (
       <View style={styles.emailContainer}>
-        <Text>{email}</Text>
+        <Text style={styles.emailText}>User: {email}</Text>
         <Button
           title="Logout"
           onPress={this.onLogoutTapped}
         />
       </View>
-   ) 
+    )
   }
 
   renderLoggedOut() {
     return (
       <View style={styles.emailContainer}>
-        <TextInput 
-          style={styles.emailTextInput} 
-          autoCapitalize="none" 
+        <TextInput
+          style={styles.emailTextInput}
+          autoCapitalize="none"
           autoCompleteType="email"
           placeholder="user@example.com" />
         <Button
@@ -102,10 +109,15 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     width: 250,
   },
+  emailText: {
+    marginLeft: 10,
+    padding: 10,
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: 'white',
   },
 })
 
