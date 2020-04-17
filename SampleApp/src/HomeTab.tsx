@@ -8,7 +8,6 @@ import {
   StyleSheet,
 } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack';
-import { FlatList } from 'react-native-gesture-handler'
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { ListItem } from 'react-native-elements'
@@ -35,6 +34,11 @@ type DetailScreenProps = {
 class HomeTab extends Component {
   constructor(props: Readonly<{}>) {
     super(props)
+    this.homeScreenRef = React.createRef()
+  }
+  
+  navigate(coffee: Coffee) {
+    this.homeScreenRef.current.navigate(coffee)
   }
 
   render() {
@@ -42,40 +46,45 @@ class HomeTab extends Component {
 
     return (
       <HomeStack.Navigator>
-        <HomeStack.Screen name="Home" options={{headerTitle: "Coffees"}} component={HomeScreen} />
-        <HomeStack.Screen name="Detail" options={{headerTitle: "Coffee"}} component={DetailScreen} />
+        <HomeStack.Screen name="Home" options={{ headerTitle: "Coffees" }}>
+          {props => <HomeScreen {...props} ref={this.homeScreenRef} />}
+        </HomeStack.Screen>
+        <HomeStack.Screen name="Detail" options={{ headerTitle: "Coffee" }} component={DetailScreen} />
       </HomeStack.Navigator>
     );
   }
+
+  private homeScreenRef: any
 }
 
-interface Coffee {
+type Coffee = {
   name: string
   icon: any
   subtitle: string
 }
 
-const coffees: Array<Coffee> = [
-  {
-    name: 'Black Coffee',
-    icon: require('../img/black-coffee.png'),
-    subtitle: 'Black coffee is great for weight loss'
-  },
-  {
-    name: 'Cappuccino',
-    icon: require('../img/cappuccino.png'),
-    subtitle: 'It is tasty'
-  },
-  {
-    name: 'Mocha',
-    icon: require('../img/mocha.png'),
-    subtitle: 'Indulge yourself'
-  },
+const coffees: Array<Coffee> = [{
+  name: 'Black Coffee',
+  icon: require('../img/black-coffee.png'),
+  subtitle: 'Black coffee is great for weight loss'
+}, {
+  name: 'Cappuccino',
+  icon: require('../img/cappuccino.png'),
+  subtitle: 'It is tasty'
+}, {
+  name: 'Mocha',
+  icon: require('../img/mocha.png'),
+  subtitle: 'Indulge yourself'
+},
 ]
 
 class HomeScreen extends React.Component<HomeScreenProps> {
   constructor(props: HomeScreenProps) {
     super(props)
+  }
+
+  navigate(coffee: Coffee) {
+    this.props.navigation.navigate('Detail', { coffee: coffee })
   }
 
   render() {
@@ -137,3 +146,4 @@ const styles = StyleSheet.create({
 })
 
 export default HomeTab
+export type { Coffee }
