@@ -5,22 +5,22 @@ import React, {
 import {
   Text,
   View,
-  Button,
   StyleSheet,
 } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack';
 import { FlatList } from 'react-native-gesture-handler'
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { ListItem } from 'react-native-elements'
 
 type Screens = {
   Home: undefined,
-  Detail: {coffeeId: String},
+  Detail: { coffee: Coffee },
 }
+type NavigationProp = StackNavigationProp<Screens>
+
 type HomeRouteProp = RouteProp<Screens, 'Home'>
 type DetailRouteProp = RouteProp<Screens, 'Detail'>
-
-type NavigationProp = StackNavigationProp<Screens>
 
 type HomeScreenProps = {
   route: HomeRouteProp,
@@ -42,12 +42,36 @@ class HomeTab extends Component {
 
     return (
       <HomeStack.Navigator>
-        <HomeStack.Screen name="Home" component={HomeScreen} />
-        <HomeStack.Screen name="Detail" component={DetailScreen} />
+        <HomeStack.Screen name="Home" options={{headerTitle: "Coffees"}} component={HomeScreen} />
+        <HomeStack.Screen name="Detail" options={{headerTitle: "Coffee"}} component={DetailScreen} />
       </HomeStack.Navigator>
     );
-    }
+  }
 }
+
+interface Coffee {
+  name: string
+  icon: any
+  subtitle: string
+}
+
+const coffees: Array<Coffee> = [
+  {
+    name: 'Black Coffee',
+    icon: require('../img/black-coffee.png'),
+    subtitle: 'Black coffee is great for weight loss'
+  },
+  {
+    name: 'Cappuccino',
+    icon: require('../img/cappuccino.png'),
+    subtitle: 'It is tasty'
+  },
+  {
+    name: 'Mocha',
+    icon: require('../img/mocha.png'),
+    subtitle: 'Indulge yourself'
+  },
+]
 
 class HomeScreen extends React.Component<HomeScreenProps> {
   constructor(props: HomeScreenProps) {
@@ -56,20 +80,22 @@ class HomeScreen extends React.Component<HomeScreenProps> {
 
   render() {
     return (
-      <View style={styles.container}>
-        <FlatList style={styles.list}
-          data={[
-            { key: "Cappuccino" },
-            { key: "Mocha" },
-            { key: "Black" },
-          ]}
-          renderItem={({ item }) => <Text style={styles.item}>{item.key}</Text>}
-        />
-        <Text>Home screen</Text>
-        <Button
-          title="Go to Details"
-          onPress={() => this.props.navigation.navigate('Detail', {coffeeId: "mocha"})}
-        />
+      <View>
+        {
+          coffees.map((coffee, i) => (
+            <ListItem
+              onPress={() => {
+                this.props.navigation.navigate('Detail', { coffee: coffee })
+              }}
+              key={i}
+              leftAvatar={{ source: coffee.icon }}
+              title={coffee.name}
+              subtitle={coffee.subtitle}
+              bottomDivider
+              chevron
+            />
+          ))
+        }
       </View>
     )
   }
@@ -83,10 +109,10 @@ class DetailScreen extends Component<DetailScreenProps> {
   render() {
     return (
       <View style={styles.details}>
-        <Text>Details! {this.props.route.params.coffeeId}</Text>
+        <Text>Details! {this.props.route.params.coffee.subtitle}</Text>
       </View>
     )
-    }
+  }
 }
 
 const styles = StyleSheet.create({
