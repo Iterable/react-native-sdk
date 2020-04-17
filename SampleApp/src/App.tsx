@@ -5,8 +5,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons'
 import { Iterable, IterableConfig } from 'react-native-iterable'
 
-import HomeTab, { Coffee, coffees } from './HomeTab'
+import HomeTab from './HomeTab'
 import SettingsTab from './SettingsTab'
+import { Coffee, coffees } from './Data'
+
 
 // ITERABLE:
 const apiKey = "9db32a2d72b9476196cbca44d580a05e"
@@ -24,10 +26,6 @@ export default class App extends React.Component {
     setTimeout(() => {
       this.navigate(coffees[2])
     }, 5000);
-  }
-
-  navigate(coffee: Coffee) {
-    this.homeTabRef.current.navigate(coffee)
   }
 
   render() {
@@ -52,7 +50,7 @@ export default class App extends React.Component {
           }}
         >
           <Tab.Screen name="Home" options={{ title: "Coffees" }}>
-            {props => <HomeTab ref={this.homeTabRef} {...props}  />}
+            {props => <HomeTab ref={this.homeTabRef} {...props} />}
           </Tab.Screen>
           <Tab.Screen name="Settings" component={SettingsTab} />
         </Tab.Navigator>
@@ -61,4 +59,8 @@ export default class App extends React.Component {
   }
 
   private homeTabRef: any
+
+  private navigate(coffee: Coffee) {
+    this.homeTabRef.current.navigate(coffee)
+  }
 }
