@@ -97,7 +97,6 @@ class SettingsTab extends Component<Props, State> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
@@ -116,7 +115,7 @@ const styles = StyleSheet.create({
   },
   emailContainer: {
     flexDirection: "row",
-    marginTop: 250,
+    marginTop: 25,
   },
   emailTextInput: {
     marginLeft: 10,

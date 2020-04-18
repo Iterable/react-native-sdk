@@ -7,11 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AC68734E240D4BB000F3667D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AC68734A240D4BB000F3667D /* AppDelegate.m */; };
-		AC68734F240D4BB000F3667D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AC68734B240D4BB000F3667D /* main.m */; };
 		AC687352240D4BCB00F3667D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AC687351240D4BCB00F3667D /* Images.xcassets */; };
 		AC687358240D4C0F00F3667D /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC687356240D4C0F00F3667D /* LaunchScreen.xib */; };
 		AC68735A240D4C3400F3667D /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC687359240D4C3400F3667D /* File.swift */; };
+		ACEDF2A1244AE85E00ADB238 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEDF2A0244AE85E00ADB238 /* AppDelegate.swift */; };
 		D7DFC2B7055E724EA1367775 /* libPods-SampleApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 62BD32C1B3CC3D8C780404C6 /* libPods-SampleApp.a */; };
 /* End PBXBuildFile section */
 
@@ -20,13 +19,12 @@
 		3880338A1B0EB65A960621E5 /* Pods-SampleApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SampleApp.release.xcconfig"; path = "Target Support Files/Pods-SampleApp/Pods-SampleApp.release.xcconfig"; sourceTree = "<group>"; };
 		62BD32C1B3CC3D8C780404C6 /* libPods-SampleApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SampleApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC687349240D4BB000F3667D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		AC68734A240D4BB000F3667D /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; tabWidth = 4; };
-		AC68734B240D4BB000F3667D /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		AC68734C240D4BB000F3667D /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		AC687351240D4BCB00F3667D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		AC687354240D4BE900F3667D /* SampleApp-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SampleApp-Bridging-Header.h"; path = "SampleApp/SampleApp-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		AC687357240D4C0F00F3667D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		AC687359240D4C3400F3667D /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		ACEDF2A0244AE85E00ADB238 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		ACEDF2A2244AED1500ADB238 /* SampleApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SampleApp.entitlements; sourceTree = "<group>"; };
 		E5ABF7BDAC01C20765F599CB /* Pods-SampleApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SampleApp.debug.xcconfig"; path = "Target Support Files/Pods-SampleApp/Pods-SampleApp.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -55,11 +53,11 @@
 		13B07FAE1A68108700A75B9A /* SampleApp */ = {
 			isa = PBXGroup;
 			children = (
+				ACEDF2A2244AED1500ADB238 /* SampleApp.entitlements */,
 				ACBF953D240D7302008BA83F /* Supporting Files */,
 				AC687356240D4C0F00F3667D /* LaunchScreen.xib */,
 				AC687351240D4BCB00F3667D /* Images.xcassets */,
-				AC68734C240D4BB000F3667D /* AppDelegate.h */,
-				AC68734A240D4BB000F3667D /* AppDelegate.m */,
+				ACEDF2A0244AE85E00ADB238 /* AppDelegate.swift */,
 			);
 			path = SampleApp;
 			sourceTree = "<group>";
@@ -108,7 +106,6 @@
 				AC687359240D4C3400F3667D /* File.swift */,
 				AC687354240D4BE900F3667D /* SampleApp-Bridging-Header.h */,
 				AC687349240D4BB000F3667D /* Info.plist */,
-				AC68734B240D4BB000F3667D /* main.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -147,6 +144,7 @@
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = BP98Z28R86;
 						LastSwiftMigration = 1130;
 					};
 				};
@@ -295,9 +293,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AC68734F240D4BB000F3667D /* main.m in Sources */,
+				ACEDF2A1244AE85E00ADB238 /* AppDelegate.swift in Sources */,
 				AC68735A240D4C3400F3667D /* File.swift in Sources */,
-				AC68734E240D4BB000F3667D /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -321,8 +318,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = SampleApp/SampleApp.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = BP98Z28R86;
 				INFOPLIST_FILE = "$(SRCROOT)/SampleApp/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -331,8 +330,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.iterable.react.SampleApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.iterable.ReactDev;
 				PRODUCT_NAME = SampleApp;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -345,7 +345,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = SampleApp/SampleApp.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = BP98Z28R86;
 				INFOPLIST_FILE = "$(SRCROOT)/SampleApp/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -354,7 +356,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.iterable.react.SampleApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.iterable.ReactDev;
 				PRODUCT_NAME = SampleApp;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
