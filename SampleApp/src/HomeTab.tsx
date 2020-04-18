@@ -3,7 +3,7 @@ import React, {
   Component
 } from 'react'
 import { createStackNavigator } from '@react-navigation/stack';
-import {Coffee} from './Data'
+import { Coffee } from './Data'
 import HomeScreen from './HomeScreen'
 import DetailScreen from './DetailScreen'
 
@@ -17,7 +17,7 @@ export default class HomeTab extends Component {
     super(props)
     this.homeScreenRef = React.createRef()
   }
-  
+
   navigate(coffee: Coffee) {
     this.homeScreenRef.current.navigate(coffee)
   }
