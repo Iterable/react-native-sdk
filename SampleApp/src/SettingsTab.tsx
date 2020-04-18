@@ -1,5 +1,4 @@
 'use strict'
-
 import React, {
   Component
 } from 'react'
@@ -17,7 +16,6 @@ interface Props { }
 interface State {
   email?: String
 }
-
 class SettingsTab extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
@@ -25,38 +23,25 @@ class SettingsTab extends Component<Props, State> {
     this.updateState()
   }
 
-  updateState() {
-    console.log("updateState")
-    Iterable.getEmail().then(email => {
-      console.log("gotEmail: " + email)
-      if (email) {
-        this.setState((prevState, props) => { return { email: email } })
-      } else {
-        this.setState((prevState, props) => { return { email: undefined } })
-      }
-    })
-  }
-
   render() {
-    console.log("render")
     var userInfo
     if (this.state.email) {
-      console.log("renderLoggedIn: " + this.state.email)
       userInfo = this.renderLoggedIn(this.state.email)
     } else {
-      console.log("renderLoggedOut")
       userInfo = this.renderLoggedOut()
     }
     return (
       <View style={styles.container}>
-        <Image source={require('../img/iterable-logo.png')} />
-        {userInfo}
+        <View style={styles.upperContainer}>
+          <Image resizeMode="contain" style={styles.image} source={require('../img/iterable-logo.png')} />
+          {userInfo}
+        </View>
       </View>
     )
   }
 
-  renderLoggedIn(email: String) {
-    console.log("email: " + email)
+  private renderLoggedIn(email: String) {
+    console.log(`renderLoggedIn, email: ${email}`)
     return (
       <View style={styles.emailContainer}>
         <Text style={styles.emailText}>User: {email}</Text>
@@ -68,7 +53,8 @@ class SettingsTab extends Component<Props, State> {
     )
   }
 
-  renderLoggedOut() {
+  private renderLoggedOut() {
+    console.log("renderLoggedOut")
     return (
       <View style={styles.emailContainer}>
         <TextInput
@@ -84,20 +70,50 @@ class SettingsTab extends Component<Props, State> {
     )
   }
 
-  onLoginTapped = () => {
+  private onLoginTapped = () => {
     console.log("onLoginTapped")
     Iterable.setEmail("tapash@iterable.com")
     this.updateState()
   }
 
-  onLogoutTapped = () => {
+  private onLogoutTapped = () => {
     console.log("onLogoutTapped")
     Iterable.setEmail(null)
     this.updateState()
   }
+
+  private updateState() {
+    Iterable.getEmail().then(email => {
+      console.log("gotEmail: " + email)
+      if (email) {
+        this.setState((prevState, props) => { return { email: email } })
+      } else {
+        this.setState((prevState, props) => { return { email: undefined } })
+      }
+    })
+  }
+
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+  },
+  upperContainer: {
+    marginTop: 25,
+    height: 300,
+//    backgroundColor: 'blue',
+  },
+  lowerContainer: {
+
+  },
+  image: {
+    width: 275,
+    height: 150,
+  },
   emailContainer: {
     flexDirection: "row",
     marginTop: 250,
@@ -112,12 +128,7 @@ const styles = StyleSheet.create({
   emailText: {
     marginLeft: 10,
     padding: 10,
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
+    fontSize: 18,
   },
 })
 
