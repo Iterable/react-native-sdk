@@ -37,3 +37,7 @@ target 'SampleApp' do
 
   use_native_modules!
 end
+
+target 'Rich Notification Extension' do
+  pod 'Iterable-iOS-AppExtensions'
+end
