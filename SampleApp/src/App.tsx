@@ -1,16 +1,25 @@
 import React from 'react';
-import { View, Text } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons'
-import { Iterable, IterableConfig } from 'react-native-iterable'
+import {
+  Alert,
+} from 'react-native';
 
 import HomeTab from './HomeTab'
 import SettingsTab from './SettingsTab'
 import { Coffee, coffees } from './Data'
-
+import {
+  Iterable,
+  IterableConfig,
+  IterableAction,
+  IterableActionContext,
+  IterableInAppMessage,
+  IterableInAppShowResponse,
+} from 'react-native-iterable';
 
 // ITERABLE:
+// Replace with your Iterable apiKey
 const apiKey = "9db32a2d72b9476196cbca44d580a05e"
 
 interface Props { }
@@ -18,14 +27,19 @@ export default class App extends React.Component {
   constructor(props: Props) {
     super(props)
     this.homeTabRef = React.createRef()
+
     // ITERABLE:
     const config = new IterableConfig()
+    config.inAppDisplayInterval = 1.0
+    config.urlDelegate = this.urlDelegate
+    config.customActionDelegate = (action: IterableAction, context: IterableActionContext) => {
+      Alert.alert("Custom Action Delegate", "actionType: " + action.type)
+      return true
+    }
+    config.inAppDelegate = (message: IterableInAppMessage) => {
+      return IterableInAppShowResponse.show
+    }
     Iterable.initialize(apiKey, config)
-
-    // :tqm (remove - navigation test)
-    setTimeout(() => {
-      this.navigate(coffees[2])
-    }, 5000);
   }
 
   render() {
@@ -62,5 +76,18 @@ export default class App extends React.Component {
 
   private navigate(coffee: Coffee) {
     this.homeTabRef.current.navigate(coffee)
+  }
+
+  // ITERABLE:
+  private urlDelegate = (url: String, context: IterableActionContext): Boolean => {
+    console.log(`urlDelegate, url: ${url}`)
+    let match = url.match(/coffee\/([^\/]+)/i)
+    if (match) {
+      this.navigate(coffees[2])
+      return true
+    } else {
+      console.log("opening external url")
+      return false
+    }
   }
 }

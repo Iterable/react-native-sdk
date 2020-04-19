@@ -104,10 +104,7 @@ const styles = StyleSheet.create({
   upperContainer: {
     marginTop: 25,
     height: 300,
-//    backgroundColor: 'blue',
-  },
-  lowerContainer: {
-
+    backgroundColor: 'white',
   },
   image: {
     width: 275,
