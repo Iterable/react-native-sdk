@@ -75,15 +75,23 @@ export default class App extends React.Component {
   private homeTabRef: any
 
   private navigate(coffee: Coffee) {
-    this.homeTabRef.current.navigate(coffee)
+    if (this.homeTabRef && this.homeTabRef.current) {
+      this.homeTabRef.current.navigate(coffee)
+    }
   }
 
   // ITERABLE:
   private urlDelegate = (url: String, context: IterableActionContext): Boolean => {
     console.log(`urlDelegate, url: ${url}`)
     let match = url.match(/coffee\/([^\/]+)/i)
-    if (match) {
-      this.navigate(coffees[2])
+    if (match && match.length > 1) {
+      const id = match[1]
+      const foundCoffee = coffees.find(coffee => coffee.id == id)
+      if (foundCoffee) {
+        this.navigate(foundCoffee)
+      } else {
+        console.log(`could not find coffee with id: ${id}`)
+      }
       return true
     } else {
       console.log("opening external url")
