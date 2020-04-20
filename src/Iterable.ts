@@ -8,7 +8,7 @@ import {
     IterableInAppCloseSource,
     IterableInAppDeleteSource,
     IterableInAppManager,
-} from './InAppClasses'
+} from './IterableInAppClasses'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)

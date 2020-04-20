@@ -1,4 +1,3 @@
-// @flow
 'use strict';
 
 /**
@@ -29,7 +28,7 @@ import {
     IterableInAppCloseSource,
     IterableInAppDeleteSource,
     IterableInAppManager,
-} from './InAppClasses';
+} from './IterableInAppClasses';
 
 export { 
     Iterable, 
