@@ -1,48 +1,48 @@
 import React, {
-    Component
+  Component
 } from 'react'
 import {
-    View,
+  View,
 } from 'react-native'
 import { ListItem } from 'react-native-elements'
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Screens } from './HomeTab'
-import {Coffee, coffees} from './Data'
+import { Coffee, coffees } from './Data'
 
 type HomeScreenProps = {
-    route: RouteProp<Screens, 'Home'>,
-    navigation: StackNavigationProp<Screens>,
+  route: RouteProp<Screens, 'Home'>,
+  navigation: StackNavigationProp<Screens>,
 }
 
 export default class HomeScreen extends Component<HomeScreenProps> {
-    constructor(props: HomeScreenProps) {
-        super(props)
-    }
+  constructor(props: HomeScreenProps) {
+    super(props)
+  }
 
-    navigate(coffee: Coffee) {
-        this.props.navigation.navigate('Detail', { coffee: coffee })
-    }
+  navigate(coffee: Coffee) {
+    this.props.navigation.navigate('Detail', { coffee: coffee })
+  }
 
-    render() {
-        return (
-            <View>
-                {
-                    coffees.map((coffee, i) => (
-                        <ListItem
-                            onPress={() => {
-                                this.props.navigation.navigate('Detail', { coffee: coffee })
-                            }}
-                            key={i}
-                            leftAvatar={{ source: coffee.icon }}
-                            title={coffee.name}
-                            subtitle={coffee.subtitle}
-                            bottomDivider
-                            chevron
-                        />
-                    ))
-                }
-            </View>
-        )
-    }
+  render() {
+    return (
+      <View>
+        {
+          coffees.map((coffee, i) => (
+            <ListItem
+              onPress={() => {
+                this.props.navigation.navigate('Detail', { coffee: coffee })
+              }}
+              key={i}
+              leftAvatar={{ source: coffee.icon }}
+              title={coffee.name}
+              subtitle={coffee.subtitle}
+              bottomDivider
+              chevron
+            />
+          ))
+        }
+      </View>
+    )
+  }
 }

@@ -2,9 +2,6 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons'
-import {
-  Alert,
-} from 'react-native';
 
 import HomeTab from './HomeTab'
 import SettingsTab from './SettingsTab'
@@ -20,7 +17,7 @@ import {
 
 // ITERABLE:
 // Replace with your Iterable apiKey
-const apiKey = "9db32a2d72b9476196cbca44d580a05e"
+import { iterableAPIKey } from './Config'
 
 interface Props { }
 export default class App extends React.Component {
@@ -30,16 +27,9 @@ export default class App extends React.Component {
 
     // ITERABLE:
     const config = new IterableConfig()
-    config.inAppDisplayInterval = 1.0
+    config.inAppDisplayInterval = 1.0 // Min gap between in-apps. No need to set this in production.
     config.urlDelegate = this.urlDelegate
-    config.customActionDelegate = (action: IterableAction, context: IterableActionContext) => {
-      Alert.alert("Custom Action Delegate", "actionType: " + action.type)
-      return true
-    }
-    config.inAppDelegate = (message: IterableInAppMessage) => {
-      return IterableInAppShowResponse.show
-    }
-    Iterable.initialize(apiKey, config)
+    Iterable.initialize(iterableAPIKey, config)
   }
 
   render() {
@@ -72,6 +62,7 @@ export default class App extends React.Component {
     )
   }
 
+  // Private variables
   private homeTabRef: any
 
   private navigate(coffee: Coffee) {
