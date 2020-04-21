@@ -9,7 +9,7 @@ export const coffees: Array<Coffee> = [{
     id: "black",
     name: 'Black Coffee',
     icon: require('../img/black-coffee.png'),
-    subtitle: 'Black coffee is great for weight loss'
+    subtitle: 'It\'s great for weight loss'
 }, {
     id: "cappuccino",
     name: 'Cappuccino',

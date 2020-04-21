@@ -28,10 +28,11 @@ export default class DetailScreen extends Component<DetailScreenProps> {
   }
 
   render() {
+    const coffee = this.props.route.params.coffee
     return (
       <View style={styles.container}>
-        <Image resizeMode="contain" style={styles.image} source={this.props.route.params.coffee.icon} />
-        <Text style={styles.text}>{this.props.route.params.coffee.subtitle}</Text>
+        <Image resizeMode="contain" style={styles.image} source={coffee.icon} />
+        <Text style={styles.text}>{coffee.name}. {coffee.subtitle}</Text>
         <Button buttonStyle={styles.button} titleStyle={styles.buttonText} title="Buy Now" onPress={this.buyTapped} />
       </View>
     )
