@@ -2,12 +2,16 @@ package com.iterable.reactnative;
 
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.ReadableMap;
 import com.iterable.iterableapi.IterableApi;
+import com.iterable.iterableapi.IterableLogger;
 
 public class RNIterableAPIModule extends ReactContextBaseJavaModule {
 
@@ -24,15 +28,13 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void initializeWithApiKey(String apiKey) {
-        //
+    public void initializeWithApiKey(String apiKey, ReadableMap context) {
         Log.d("ReactNative", "initializeWithApiKey: " + apiKey);
         IterableApi.getInstance().initialize(reactContext, apiKey);
     }
 
     @ReactMethod
     public void setEmail(String email) {
-        //
         Log.d("ReactNative", "setEmail: " + email);
         IterableApi.getInstance().setEmail(email);
     }
@@ -48,4 +50,11 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
         // TODO: Implement some actually useful functionality
         callback.invoke("Received numberArgument: " + numberArgument + " stringArgument: " + stringArgument);
     }
+
+    @ReactMethod
+    public void setUserId(@Nullable String userId) {
+        Log.d("ReactNative", "setUserId");
+        IterableApi.getInstance().setUserId(userId);
+    }
+    
 }
