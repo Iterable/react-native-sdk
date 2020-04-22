@@ -1,10 +1,12 @@
 {
   "name": "react-native-iterable",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Iterable SDK for React Native.",
-  "main": "./src/index.js",
+  "main": "./js/index.js",
+  "types": "./js/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rm -rf js/ && tsc"
   },
   "keywords": [
     "react-native",
@@ -17,6 +19,9 @@
   "author": "Iterable",
   "license": "LICENSE.md",
   "homepage": "https://github.com/Iterable/react-native-sdk",
+  "dependencies": {
+    "react-native": "^0.61.5"
+  },
   "devDependencies": {
     "@types/jest": "^25.1.4",
     "@types/react": "^16.9.23",

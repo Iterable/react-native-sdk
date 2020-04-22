@@ -1,5 +1,4 @@
-'use strict';
-
+'use strict'
 /**
  * React Native module for Iterable.
  * @module react-native-iterable-sdk
@@ -13,7 +12,7 @@ import {
     IterableActionContext, 
     IterableAttributionInfo, 
     IterableCommerceItem 
-} from './Iterable';
+} from './Iterable'
 import { 
     IterableInAppShowResponse,
     IterableInAppContent,
@@ -28,7 +27,7 @@ import {
     IterableInAppCloseSource,
     IterableInAppDeleteSource,
     IterableInAppManager,
-} from './IterableInAppClasses';
+} from './IterableInAppClasses'
 
 export { 
     Iterable, 
@@ -39,7 +38,6 @@ export {
     IterableAttributionInfo, 
     IterableCommerceItem, 
     IterableInAppShowResponse,
-    IterableInAppContent,
     IterableInAppTriggerType, 
     IterableInAppTrigger,
     IterableInAppContentType,
@@ -51,4 +49,7 @@ export {
     IterableInAppCloseSource,
     IterableInAppDeleteSource,
     IterableInAppManager,
-};
+}
+export type {
+  IterableInAppContent
+}

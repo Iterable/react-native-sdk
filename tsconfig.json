@@ -7,10 +7,12 @@
       "jsx": "react",
       "lib": ["es6"],
       "moduleResolution": "node",
-      "noEmit": true,
       "strict": true,
-      "target": "esnext"
+      "target": "esnext",
+      "outDir": "js",
+      "declaration": true
     },
+    "include": ["src"],
     "exclude": [
       "node_modules",
       "babel.config.js",

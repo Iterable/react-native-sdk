@@ -1,1 +1,6 @@
 SampleApp
+jest.config.js
+node_modules
+package-lock.json
+tsconfig.json
+src
