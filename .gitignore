@@ -53,3 +53,5 @@ package-lock.json
 Config.ts
 
 /js
+
+/docs
