@@ -3,7 +3,7 @@
 ### Resources
 - [Iterable iOS SDK](https://github.com/Iterable/swift-sdk)
 - [Iterable Android SDK](https://github.com/Iterable/iterable-android-sdk)
-- [API docs](docs/index.html)
+- [API docs](https://iterable.github.io/react-native-sdk/modules/_iterable_.html)
 
 ### Requirements:
  - Xcode 11+
