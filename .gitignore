@@ -50,8 +50,11 @@ Podfile.lock
 yarn.lock
 package-lock.json
 
-Config.ts
-
 /js
 
 /docs
+
+Config.ts
+Config.js
+Config.d.ts
+Config.sample.d.ts
