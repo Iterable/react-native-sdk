@@ -6,7 +6,8 @@
   "types": "./js/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf js/ && tsc"
+    "build": "rm -rf js/ && tsc",
+    "doc": "rm -rf docs/ && typedoc --out docs/ ts/"
   },
   "keywords": [
     "react-native",
