@@ -77,9 +77,9 @@ class IterableHtmlInAppContent implements IterableInAppContent {
     type: IterableInAppContentType = IterableInAppContentType.html
     edgeInsets: IterableEdgeInsets
     backgroundAlpha: number
-    html: String
+    html: string
 
-    constructor(edgeInsets: IterableEdgeInsets, backgroundAlpha: number, html: String) {
+    constructor(edgeInsets: IterableEdgeInsets, backgroundAlpha: number, html: string) {
         this.edgeInsets = edgeInsets
         this.backgroundAlpha = backgroundAlpha
         this.html = html
@@ -89,16 +89,16 @@ class IterableHtmlInAppContent implements IterableInAppContent {
         return new IterableHtmlInAppContent(
             IterableEdgeInsets.fromDict(dict["edgeInsets"]), 
             dict["backgroundAlpha"] as number, 
-            dict["html"] as String)
+            dict["html"] as string)
     }
 }
 
 class IterableInboxMetadata {
-    title?: String
-    subTitle?: String
-    icon?: String
+    title?: string
+    subTitle?: string
+    icon?: string
 
-    constructor(title: String | undefined, subTitle: String | undefined, icon: String | undefined) {
+    constructor(title: string | undefined, subTitle: string | undefined, icon: string | undefined) {
         this.title = title
         this.subTitle = subTitle
         this.icon = icon
@@ -110,8 +110,8 @@ class IterableInboxMetadata {
 }
 
 class IterableInAppMessage {
-    readonly messageId: String
-    readonly campaignId: String
+    readonly messageId: string
+    readonly campaignId: string
     readonly trigger: IterableInAppTrigger
     readonly createdAt?: Date
     readonly expiresAt?: Date
@@ -120,8 +120,8 @@ class IterableInAppMessage {
     readonly customPayload?: any
     readonly read: Boolean
 
-    constructor(messageId: String, 
-        campaignId: String, 
+    constructor(messageId: string, 
+        campaignId: string, 
         trigger: IterableInAppTrigger, 
         createdAt: Date | undefined, 
         expiresAt: Date | undefined, 
@@ -145,8 +145,8 @@ class IterableInAppMessage {
     }
 
     static fromDict(dict: any): IterableInAppMessage {
-        const messageId = dict["messageId"] as String
-        const campaignId = dict["campaignId"] as String
+        const messageId = dict["messageId"] as string
+        const campaignId = dict["campaignId"] as string
         const trigger = IterableInAppTrigger.fromDict(dict["trigger"])
         let createdAt = dict["createdAt"] 
         if (createdAt) {
@@ -187,7 +187,7 @@ class IterableInAppManager {
         return RNIterableAPI.getInAppMessages().then((messages: Array<any>) => messages.map (message => {return IterableInAppMessage.fromDict(message)}))
     }
 
-    showMessage(message: IterableInAppMessage, consume: Boolean): Promise<String | null> {
+    showMessage(message: IterableInAppMessage, consume: Boolean): Promise<string | null> {
         console.log("InAppManager.show")
         return RNIterableAPI.showMessage(message.messageId, consume)
     }

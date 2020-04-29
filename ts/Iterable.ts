@@ -26,13 +26,13 @@ enum IterableActionSource {
 }
 
 class IterableConfig {
-    pushIntegrationName?: String
-    sandboxPushIntegrationName?: String
+    pushIntegrationName?: string
+    sandboxPushIntegrationName?: string
     pushPlatform: PushServicePlatform = PushServicePlatform.auto
     autoPushRegistration = true
     checkForDeferredDeeplink = false
     inAppDisplayInterval: number = 30.0
-    urlDelegate?: (url: String, context: IterableActionContext) => Boolean
+    urlDelegate?: (url: string, context: IterableActionContext) => Boolean
     customActionDelegate?: (action: IterableAction, context: IterableActionContext) => Boolean
     inAppDelegate?: (message: IterableInAppMessage) => IterableInAppShowResponse
 
@@ -52,11 +52,11 @@ class IterableConfig {
 }
 
 class IterableAction {
-    type: String
-    data?: String
-    userInput?: String
+    type: string
+    data?: string
+    userInput?: string
     
-    constructor(type: String, data?: String, userInput?: String) {
+    constructor(type: string, data?: string, userInput?: string) {
         this.type = type
         this.data = data
         this.userInput = userInput
@@ -86,9 +86,9 @@ class IterableActionContext {
 class IterableAttributionInfo {
     campaignId: number
     templateId: number
-    messageId: String
+    messageId: string
 
-    constructor(campaignId: number, templateId: number, messageId: String) {
+    constructor(campaignId: number, templateId: number, messageId: string) {
         this.campaignId = campaignId
         this.templateId = templateId
         this.messageId = messageId
@@ -96,12 +96,12 @@ class IterableAttributionInfo {
 }
 
 class IterableCommerceItem {
-    id: String
-    name: String
+    id: string
+    name: string
     price: number
     quantity: number
 
-    constructor(id: String, name: String, price: number, quantity: number) {
+    constructor(id: string, name: string, price: number, quantity: number) {
         this.id = id
         this.name = name
         this.price = price
@@ -173,7 +173,7 @@ class Iterable {
         RNIterableAPI.setEmail(email);
     }
 
-    static getEmail(): Promise<String | null> {
+    static getEmail(): Promise<string | null> {
         console.log("getEmail")
         return RNIterableAPI.getEmail()
     }
@@ -187,7 +187,7 @@ class Iterable {
         RNIterableAPI.setUserId(userId);
     }
 
-    static getUserId(): Promise<String | null> {
+    static getUserId(): Promise<string | null> {
         console.log("getUserId")
         return RNIterableAPI.getUserId()
     }
@@ -211,7 +211,7 @@ class Iterable {
         console.log("getAttributionInfo")
         return RNIterableAPI.getAttributionInfo().then((dict: any | null) => {
             if (dict) {
-                return new IterableAttributionInfo(dict["campaignId"] as number, dict["templateId"] as number, dict["messageId"] as String)
+                return new IterableAttributionInfo(dict["campaignId"] as number, dict["templateId"] as number, dict["messageId"] as string)
             } else {
                 return null
             }
@@ -242,11 +242,11 @@ class Iterable {
      * 
      * @param {number} campaignId 
      * @param {number} templateId 
-     * @param {String | null} messageId 
+     * @param {string | null} messageId 
      * @param {Boolean} appAlreadyRunning 
      * @param {any | null} dataFields 
      */
-    static trackPushOpenWithCampaignId(campaignId: number, templateId: number, messageId: String | null, appAlreadyRunning: Boolean, dataFields: any | null) {
+    static trackPushOpenWithCampaignId(campaignId: number, templateId: number, messageId: string | null, appAlreadyRunning: Boolean, dataFields: any | null) {
         console.log("trackPushOpenWithCampaignId")
         RNIterableAPI.trackPushOpenWithCampaignId(campaignId, templateId, messageId, appAlreadyRunning, dataFields)
     }
@@ -276,9 +276,9 @@ class Iterable {
      * 
      * @param {IterableInAppMessage} message 
      * @param {IterableInAppLocation} location 
-     * @param {String} clickedUrl 
+     * @param {string} clickedUrl 
      */
-    static trackInAppClick(message: IterableInAppMessage, location: IterableInAppLocation, clickedUrl: String) {
+    static trackInAppClick(message: IterableInAppMessage, location: IterableInAppLocation, clickedUrl: string) {
         console.log("trackInAppClick")
         RNIterableAPI.trackInAppClick(message.messageId, location, clickedUrl)
     }
@@ -288,9 +288,9 @@ class Iterable {
      * @param {IterableInAppMessage} message 
      * @param {IterableInAppLocation} location 
      * @param {IterableInAppCloseSource} source
-     * @param {String} clickedUrl 
+     * @param {string} clickedUrl 
      */
-    static trackInAppClose(message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppCloseSource, clickedUrl: String) {
+    static trackInAppClose(message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppCloseSource, clickedUrl: string) {
         console.log("trackInAppClose")
         RNIterableAPI.trackInAppClose(message.messageId, location, source, clickedUrl)
     }
@@ -308,10 +308,10 @@ class Iterable {
 
     /**
      * 
-     * @param {String} name 
+     * @param {string} name 
      * @param {any | null} dataFields 
      */
-    static trackEvent(name: String, dataFields: any | null) {
+    static trackEvent(name: string, dataFields: any | null) {
         console.log("trackEvent")
         RNIterableAPI.trackEvent(name, dataFields)
     }
@@ -330,16 +330,16 @@ class Iterable {
      * 
      * @param email the new email to set
      */
-    static updateEmail(email: String) {
+    static updateEmail(email: string) {
         console.log("updateEmail")
         RNIterableAPI.updateEmail(email)
     }
 
     /**
      * 
-     * @param {String} universalLink URL in String form to be either opened as a universal link or as a normal one
+     * @param {string} universalLink URL in string form to be either opened as a universal link or as a normal one
      */
-    static handleUniversalLink(link: String): Promise<Boolean> {
+    static handleUniversalLink(link: string): Promise<Boolean> {
         console.log("handleUniversalLink")
         return RNIterableAPI.handleUniversalLink(link)
     }
