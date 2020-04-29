@@ -1,21 +1,24 @@
 package com.iterable.reactnative;
 
-import android.util.Log;
-
 import androidx.annotation.Nullable;
 
+import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReadableMap;
 import com.iterable.iterableapi.IterableApi;
+import com.iterable.iterableapi.IterableInAppCloseAction;
+import com.iterable.iterableapi.IterableInAppLocation;
+import com.iterable.iterableapi.IterableInAppMessage;
 import com.iterable.iterableapi.IterableLogger;
+import com.iterable.iterableapi.RNIterableInternal;
 
 public class RNIterableAPIModule extends ReactContextBaseJavaModule {
 
     private final ReactApplicationContext reactContext;
+    private static String TAG = "RNIterableAPIModule";
 
     public RNIterableAPIModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -29,19 +32,19 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void initializeWithApiKey(String apiKey, ReadableMap context) {
-        Log.d("ReactNative", "initializeWithApiKey: " + apiKey);
+        IterableLogger.d(TAG, "initializeWithApiKey: " + apiKey);
         IterableApi.getInstance().initialize(reactContext, apiKey);
     }
 
     @ReactMethod
     public void setEmail(String email) {
-        Log.d("ReactNative", "setEmail: " + email);
+        IterableLogger.d(TAG, "setEmail: " + email);
         IterableApi.getInstance().setEmail(email);
     }
 
     @ReactMethod
     public void getInAppMessages(Promise promise) {
-        Log.d("ReactNative", "getMessages");
+        IterableLogger.d(TAG, "getMessages");
         promise.resolve(IterableApi.getInstance().getInAppManager().getMessages());
     }
 
@@ -53,8 +56,58 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setUserId(@Nullable String userId) {
-        Log.d("ReactNative", "setUserId");
+        IterableLogger.d(TAG, "setUserId");
         IterableApi.getInstance().setUserId(userId);
     }
-    
+
+    // region Track APIs
+    // ---------------------------------------------------------------------------------------
+    @ReactMethod
+    public void trackInAppOpen(String messageId, @Nullable Integer location) {
+        IterableInAppMessage message = RNIterableInternal.getMessageById(messageId);
+        if (message == null) {
+            IterableLogger.d(TAG, "Failed to get InApp for message id : " + messageId);
+            return;
+        }
+        IterableApi.getInstance().trackInAppOpen(message, Serialization.getIterableInAppLocationFromInteger(location));
+    }
+
+    public void trackInAppClick(String messageId, @Nullable Integer location, String clickedUrl) {
+        IterableInAppMessage message = RNIterableInternal.getMessageById(messageId);
+        IterableInAppLocation inAppOpenLocation = Serialization.getIterableInAppLocationFromInteger(location);
+        if (message == null) {
+            IterableLogger.d(TAG, "Failed to get InApp for message id : " + messageId);
+            return;
+        }
+        if (clickedUrl == null) {
+            IterableLogger.d(TAG, "clickedURL is null");
+            return;
+        }
+        if (inAppOpenLocation == null) {
+            IterableLogger.d(TAG, "in-app open location is null");
+            return;
+        }
+        IterableApi.getInstance().trackInAppClick(message, clickedUrl, inAppOpenLocation);
+    }
+
+    public void trackInAppClose(String messageId, Integer location, Integer source, String clickedUrl) {
+        IterableInAppLocation inAppCloseLocation = Serialization.getIterableInAppLocationFromInteger(location);
+        IterableInAppCloseAction closeAction = Serialization.getIterableInAppCloseSourceFromInteger(source);
+        if (messageId == null || clickedUrl == null || inAppCloseLocation == null || closeAction == null) {
+            IterableLogger.d(TAG, "null parameter passed to IterableAPI API");
+            return;
+        }
+        RNIterableInternal.trackInAppClose(messageId, clickedUrl, closeAction, inAppCloseLocation);
+    }
+
+    public void inAppConsume(String messageId, Integer location, Integer source) {
+        if (messageId == null) {
+            return;
+        }
+        IterableApi.getInstance().inAppConsume(RNIterableInternal.getMessageById(messageId), Serialization.getIterableDeleteActionTypeFromInteger(source), Serialization.getIterableInAppLocationFromInteger(location));
+    }
+    // ---------------------------------------------------------------------------------------
+    // endregion
+
+
 }
