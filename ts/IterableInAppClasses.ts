@@ -3,12 +3,19 @@
 import { NativeModules } from 'react-native';
 const RNIterableAPI = NativeModules.RNIterableAPI
 
-
+/**
+ * `show` to show the in-app otherwise `skip` to skip.
+ */
 enum IterableInAppShowResponse {
   show = 0,
   skip = 1
 }
 
+/**
+ * `immediate` will try to display the in-app automatically immediately
+ * `event` is used for Push to in-app
+ * `never` will not display the in-app automatically via the SDK
+ */
 enum IterableInAppTriggerType {
   immediate = 0,
   event = 1,
@@ -109,15 +116,45 @@ class IterableHtmlInAppContent implements IterableInAppContent {
     }
   }
   
+  /**
+   * Iterable in-app message
+   */
   class IterableInAppMessage {
+    /**
+     * the ID for the in-app message
+     */
     readonly messageId: string
+    /**
+     * the campaign ID for this message
+     */
     readonly campaignId: string
+    /**
+     * when to trigger this in-app
+     */
     readonly trigger: IterableInAppTrigger
+    /**
+     * when was this message created
+     */
     readonly createdAt?: Date
+    /**
+     * when to expire this in-app (undefined means do not expire)
+     */
     readonly expiresAt?: Date
+    /**
+     * Whether to save this message to inbox
+     */
     readonly saveToInbox: Boolean
+    /**
+     * Metadata such as title, subtitle etc. needed to display this in-app message in inbox.
+     */
     readonly inboxMetadata?: IterableInboxMetadata
+    /**
+     * Custom Payload for this message.
+     */
     readonly customPayload?: any
+    /**
+     * Whether this inbox message has been read
+     */
     readonly read: Boolean
     
     constructor(messageId: string, 
@@ -182,21 +219,40 @@ class IterableHtmlInAppContent implements IterableInAppContent {
       }
       
       class IterableInAppManager {
+        /**
+         * Returns a list of all in-app messages.
+         */
         getMessages(): Promise<Array<IterableInAppMessage>> {
           console.log("InAppManager.getMessages");
           return RNIterableAPI.getInAppMessages().then((messages: Array<any>) => messages.map (message => {return IterableInAppMessage.fromDict(message)}))
         }
         
+        /**
+         * 
+         * @param {IterableInAppMessage} message The message to show
+         * @param {Boolean} consume Set to true to consume the event from the server queue if the message is shown. This should be default.
+         */
         showMessage(message: IterableInAppMessage, consume: Boolean): Promise<string | undefined> {
           console.log("InAppManager.show")
           return RNIterableAPI.showMessage(message.messageId, consume)
         }
         
+        /**
+         * 
+         * @param {IterableInAppMessage} message The message to remove
+         * @param {IterableInAppLocation} location 
+         * @param {IterableInAppDeleteSource} source 
+         */
         removeMessage(message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppDeleteSource): void {
           console.log("InAppManager.remove")
           return RNIterableAPI.removeMessage(message.messageId, location, source)
         }
         
+        /**
+         * 
+         * @param {IterableInAppMessage} message 
+         * @param {Boolean} read 
+         */
         setReadForMessage(message: IterableInAppMessage, read: Boolean) {
           console.log("InAppManager.setRead")
           RNIterableAPI.setReadForMessage(message.messageId, read)

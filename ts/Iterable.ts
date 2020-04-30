@@ -13,27 +13,71 @@ import {
 const RNIterableAPI = NativeModules.RNIterableAPI
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
 
+/**
+Enum representing push platform; apple push notification service, production vs sandbox
+*/
 enum PushServicePlatform {
   sandbox = 0,
   production = 1,
   auto = 2
 }
 
+/**
+* Enum representing the source of IteraleAction.
+*/
 enum IterableActionSource {
   push = 0,
   universalLink = 1,
   inApp = 2
 }
 
+/**
+Iterable Configuration Object. Use this when initializing the API.
+*/
 class IterableConfig {
+  /**
+  * You don't have to set this variable. Set this value only if you are an existing Iterable customer who has already setup mobile integrations in Iterable Web UI.
+  * In that case, set this variable to the push integration name that you have set for 'APNS' in Iterable Web UI.
+  * To view your existing integrations, navigate to Settings > Mobile Apps
+  */
   pushIntegrationName?: string
+  /**
+  * You don't have to set this variable. Set this value only if you are an existing Iterable customer who has already setup mobile integrations in Iterable Web UI.
+  * In that case, set this variable to the push integration name that you have set for 'APNS_SANDBOX' in Iterable Web UI.
+  * To view your existing integrations, navigate to Settings > Mobile Apps
+  */
   sandboxPushIntegrationName?: string
+  /**
+  * APNS (Apple Push Notification Service) environment for the current build of the app.
+  * Possible values: `production`, `sandbox`, `auto`
+  * Defaults to `auto` and detects the APNS environment automatically
+  */
   pushPlatform: PushServicePlatform = PushServicePlatform.auto
+  /**
+  * When set to true, IterableSDK will automatically register and deregister notification tokens.
+  */
   autoPushRegistration = true
+  /**
+  * When set to true, it will check for deferred deep links on first time app launch after installation from the App Store.
+  */
   checkForDeferredDeeplink = false
+  /**
+  * How many seconds to wait before showing the next in-app, if there are more than one present
+  */
   inAppDisplayInterval: number = 30.0
+  /**
+   * How many seconds to wait before showing the next in-app, if there are more than one present
+   */
   urlDelegate?: (url: string, context: IterableActionContext) => Boolean
+  /**
+   * How to handle IterableActions which are other than 'openUrl'
+   */
   customActionDelegate?: (action: IterableAction, context: IterableActionContext) => Boolean
+  /**
+   * Implement this protocol to override default in-app behavior.
+   * By default, every single in-app will be shown as soon as it is available.
+   * If more than 1 in-app is available, we show the first.
+   */
   inAppDelegate?: (message: IterableInAppMessage) => IterableInAppShowResponse
   
   toDict(): any {
@@ -51,6 +95,10 @@ class IterableConfig {
   }
 }
 
+/**
+ * IterableAction represents an action defined as a response to user events.
+ * It is currently used in push notification actions (open push & action buttons).
+ */
 class IterableAction {
   type: string
   data?: string
@@ -95,6 +143,9 @@ class IterableAttributionInfo {
   }
 }
 
+/**
+ * How many seconds to wait before showing the next in-app, if there are more than one present
+ */
 class IterableCommerceItem {
   id: string
   name: string
@@ -166,7 +217,7 @@ class Iterable {
         
         /**
         * 
-        * @param {string} email 
+        * @param {string | undefined} email 
         */
         static setEmail(email: string | undefined) {
           console.log("setEmail: " + email);
@@ -180,9 +231,9 @@ class Iterable {
         
         /**
         * 
-        * @param {string} email 
+        * @param {string | undefined} email 
         */
-        static setUserId(userId: string) {
+        static setUserId(userId: string | undefined) {
           console.log("setUserId: " + userId);
           RNIterableAPI.setUserId(userId);
         }
