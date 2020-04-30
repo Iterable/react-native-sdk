@@ -68,11 +68,11 @@ class IterableConfig {
   /**
    * How many seconds to wait before showing the next in-app, if there are more than one present
    */
-  urlDelegate?: (url: string, context: IterableActionContext) => Boolean
+  urlDelegate?: (url: string, context: IterableActionContext) => boolean
   /**
    * How to handle IterableActions which are other than 'openUrl'
    */
-  customActionDelegate?: (action: IterableAction, context: IterableActionContext) => Boolean
+  customActionDelegate?: (action: IterableAction, context: IterableActionContext) => boolean
   /**
    * Implement this protocol to override default in-app behavior.
    * By default, every single in-app will be shown as soon as it is available.
@@ -294,10 +294,10 @@ class Iterable {
         * @param {number} campaignId 
         * @param {number} templateId 
         * @param {string | undefined} messageId 
-        * @param {Boolean} appAlreadyRunning 
+        * @param {boolean} appAlreadyRunning 
         * @param {any | undefined} dataFields 
         */
-        static trackPushOpenWithCampaignId(campaignId: number, templateId: number, messageId: string | undefined, appAlreadyRunning: Boolean, dataFields: any | undefined) {
+        static trackPushOpenWithCampaignId(campaignId: number, templateId: number, messageId: string | undefined, appAlreadyRunning: boolean, dataFields: any | undefined) {
           console.log("trackPushOpenWithCampaignId")
           RNIterableAPI.trackPushOpenWithCampaignId(campaignId, templateId, messageId, appAlreadyRunning, dataFields)
         }
@@ -370,9 +370,9 @@ class Iterable {
         /**
         * 
         * @param {any} dataFields Data fields to store in user profile
-        * @param {Boolean} mergeNestedObjects Whether to merge top level objects instead of overwriting
+        * @param {boolean} mergeNestedObjects Whether to merge top level objects instead of overwriting
         */
-        static updateUser(dataFields: any, mergeNestedObjects: Boolean) {
+        static updateUser(dataFields: any, mergeNestedObjects: boolean) {
           console.log("updateUser")
           RNIterableAPI.updateUser(dataFields, mergeNestedObjects)
         }
@@ -390,7 +390,7 @@ class Iterable {
         * 
         * @param {string} universalLink URL in string form to be either opened as a universal link or as a normal one
         */
-        static handleUniversalLink(link: string): Promise<Boolean> {
+        static handleUniversalLink(link: string): Promise<boolean> {
           console.log("handleUniversalLink")
           return RNIterableAPI.handleUniversalLink(link)
         }

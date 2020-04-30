@@ -143,7 +143,7 @@ class IterableHtmlInAppContent implements IterableInAppContent {
     /**
      * Whether to save this message to inbox
      */
-    readonly saveToInbox: Boolean
+    readonly saveToInbox: boolean
     /**
      * Metadata such as title, subtitle etc. needed to display this in-app message in inbox.
      */
@@ -155,17 +155,17 @@ class IterableHtmlInAppContent implements IterableInAppContent {
     /**
      * Whether this inbox message has been read
      */
-    readonly read: Boolean
+    readonly read: boolean
     
     constructor(messageId: string, 
       campaignId: string, 
       trigger: IterableInAppTrigger, 
       createdAt: Date | undefined, 
       expiresAt: Date | undefined, 
-      saveToInbox: Boolean, 
+      saveToInbox: boolean, 
       inboxMetadata: IterableInboxMetadata | undefined,
       customPayload: any | undefined,
-      read: Boolean) {
+      read: boolean) {
         this.campaignId = campaignId
         this.messageId = messageId
         this.trigger = trigger
@@ -177,7 +177,7 @@ class IterableHtmlInAppContent implements IterableInAppContent {
         this.read = read
       }
       
-      isSilentInbox(): Boolean {
+      isSilentInbox(): boolean {
         return this.saveToInbox && this.trigger.type == IterableInAppTriggerType.never
       }
       
@@ -193,7 +193,7 @@ class IterableHtmlInAppContent implements IterableInAppContent {
         if (expiresAt) {
           expiresAt = new Date(expiresAt as number)
         }
-        let saveToInbox = dict["saveToInbox"] as Boolean
+        let saveToInbox = dict["saveToInbox"] as boolean
         let inboxMetadataDict = dict["inboxMetadata"]
         let inboxMetadata: IterableInboxMetadata | undefined
         if (inboxMetadataDict) {
@@ -202,7 +202,7 @@ class IterableHtmlInAppContent implements IterableInAppContent {
           inboxMetadata = undefined
         }
         let customPayload = dict["customPayload"]
-        let read = dict["read"] as Boolean
+        let read = dict["read"] as boolean
         
         return new IterableInAppMessage(
           messageId,
@@ -230,9 +230,9 @@ class IterableHtmlInAppContent implements IterableInAppContent {
         /**
          * 
          * @param {IterableInAppMessage} message The message to show
-         * @param {Boolean} consume Set to true to consume the event from the server queue if the message is shown. This should be default.
+         * @param {boolean} consume Set to true to consume the event from the server queue if the message is shown. This should be default.
          */
-        showMessage(message: IterableInAppMessage, consume: Boolean): Promise<string | undefined> {
+        showMessage(message: IterableInAppMessage, consume: boolean): Promise<string | undefined> {
           console.log("InAppManager.show")
           return RNIterableAPI.showMessage(message.messageId, consume)
         }
@@ -251,9 +251,9 @@ class IterableHtmlInAppContent implements IterableInAppContent {
         /**
          * 
          * @param {IterableInAppMessage} message 
-         * @param {Boolean} read 
+         * @param {boolean} read 
          */
-        setReadForMessage(message: IterableInAppMessage, read: Boolean) {
+        setReadForMessage(message: IterableInAppMessage, read: boolean) {
           console.log("InAppManager.setRead")
           RNIterableAPI.setReadForMessage(message.messageId, read)
         }
