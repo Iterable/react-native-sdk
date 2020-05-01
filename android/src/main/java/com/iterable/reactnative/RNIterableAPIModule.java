@@ -60,6 +60,11 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
         IterableApi.getInstance().setUserId(userId);
     }
 
+    @ReactMethod
+    public void getUserId(Promise promise) {
+        promise.resolve(RNIterableInternal.getUserId());
+    }
+
     // region Track APIs
     // ---------------------------------------------------------------------------------------
     @ReactMethod
