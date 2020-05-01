@@ -43,6 +43,11 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void getEmail(Promise promise) {
+        promise.resolve(RNIterableInternal.getEmail());
+    }
+
+    @ReactMethod
     public void getInAppMessages(Promise promise) {
         IterableLogger.d(TAG, "getMessages");
         promise.resolve(IterableApi.getInstance().getInAppManager().getMessages());

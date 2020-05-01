@@ -2,6 +2,10 @@ package com.iterable.iterableapi;
 
 public class RNIterableInternal {
 
+    public static String getEmail() {
+        return IterableApi.getInstance().getEmail();
+    }
+
     public static IterableInAppMessage getMessageById(String messageId) {
         return IterableApi.getInstance().getInAppManager().getMessageById(messageId);
     }
