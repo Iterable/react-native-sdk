@@ -15,8 +15,10 @@ import com.iterable.iterableapi.IterableInAppMessage;
 import com.iterable.iterableapi.IterableLogger;
 import com.iterable.iterableapi.RNIterableInternal;
 
-public class RNIterableAPIModule extends ReactContextBaseJavaModule {
+import org.json.JSONException;
 
+public class RNIterableAPIModule extends ReactContextBaseJavaModule {
+    
     private final ReactApplicationContext reactContext;
     private static String TAG = "RNIterableAPIModule";
 
@@ -48,12 +50,6 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void getInAppMessages(Promise promise) {
-        IterableLogger.d(TAG, "getMessages");
-        promise.resolve(IterableApi.getInstance().getInAppManager().getMessages());
-    }
-
-    @ReactMethod
     public void sampleMethod(String stringArgument, int numberArgument, Callback callback) {
         // TODO: Implement some actually useful functionality
         callback.invoke("Received numberArgument: " + numberArgument + " stringArgument: " + stringArgument);
@@ -82,6 +78,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
         IterableApi.getInstance().trackInAppOpen(message, Serialization.getIterableInAppLocationFromInteger(location));
     }
 
+    @ReactMethod
     public void trackInAppClick(String messageId, @Nullable Integer location, String clickedUrl) {
         IterableInAppMessage message = RNIterableInternal.getMessageById(messageId);
         IterableInAppLocation inAppOpenLocation = Serialization.getIterableInAppLocationFromInteger(location);
@@ -100,6 +97,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
         IterableApi.getInstance().trackInAppClick(message, clickedUrl, inAppOpenLocation);
     }
 
+    @ReactMethod
     public void trackInAppClose(String messageId, Integer location, Integer source, String clickedUrl) {
         IterableInAppLocation inAppCloseLocation = Serialization.getIterableInAppLocationFromInteger(location);
         IterableInAppCloseAction closeAction = Serialization.getIterableInAppCloseSourceFromInteger(source);
@@ -109,15 +107,30 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
         }
         RNIterableInternal.trackInAppClose(messageId, clickedUrl, closeAction, inAppCloseLocation);
     }
+    // ---------------------------------------------------------------------------------------
+    // endregion
 
+    // ---------------------------------------------------------------------------------------
+    // region In App APIs
+
+    @ReactMethod
     public void inAppConsume(String messageId, Integer location, Integer source) {
         if (messageId == null) {
             return;
         }
         IterableApi.getInstance().inAppConsume(RNIterableInternal.getMessageById(messageId), Serialization.getIterableDeleteActionTypeFromInteger(source), Serialization.getIterableInAppLocationFromInteger(location));
     }
+
+    @ReactMethod
+    public void getInAppMessages(Promise promise) {
+        IterableLogger.d(TAG, "getMessages");
+        try {
+            promise.resolve(Serialization.convertJsonToArray(Serialization.getInAppMessages()));
+        } catch (JSONException e) {
+            IterableLogger.e(TAG, e.getLocalizedMessage());
+        }
+    }
+
     // ---------------------------------------------------------------------------------------
     // endregion
-
-
 }
