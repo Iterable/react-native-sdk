@@ -66,18 +66,18 @@ class IterableConfig {
   */
   inAppDisplayInterval: number = 30.0
   /**
-   * How many seconds to wait before showing the next in-app, if there are more than one present
-   */
+  * How many seconds to wait before showing the next in-app, if there are more than one present
+  */
   urlDelegate?: (url: string, context: IterableActionContext) => boolean
   /**
-   * How to handle IterableActions which are other than 'openUrl'
-   */
+  * How to handle IterableActions which are other than 'openUrl'
+  */
   customActionDelegate?: (action: IterableAction, context: IterableActionContext) => boolean
   /**
-   * Implement this protocol to override default in-app behavior.
-   * By default, every single in-app will be shown as soon as it is available.
-   * If more than 1 in-app is available, we show the first.
-   */
+  * Implement this protocol to override default in-app behavior.
+  * By default, every single in-app will be shown as soon as it is available.
+  * If more than 1 in-app is available, we show the first.
+  */
   inAppDelegate?: (message: IterableInAppMessage) => IterableInAppShowResponse
   
   toDict(): any {
@@ -96,9 +96,9 @@ class IterableConfig {
 }
 
 /**
- * IterableAction represents an action defined as a response to user events.
- * It is currently used in push notification actions (open push & action buttons).
- */
+* IterableAction represents an action defined as a response to user events.
+* It is currently used in push notification actions (open push & action buttons).
+*/
 class IterableAction {
   type: string
   data?: string
@@ -144,8 +144,8 @@ class IterableAttributionInfo {
 }
 
 /**
- * How many seconds to wait before showing the next in-app, if there are more than one present
- */
+* How many seconds to wait before showing the next in-app, if there are more than one present
+*/
 class IterableCommerceItem {
   id: string
   name: string
@@ -211,10 +211,14 @@ class Iterable {
             }
             )
           }
+
+          // Set version from package.json
+          const json = require('../package.json')
+          const version = json["version"] as string
           
-          RNIterableAPI.initializeWithApiKey(apiKey, config.toDict())
+          RNIterableAPI.initializeWithApiKey(apiKey, config.toDict(), version)
         }
-        
+      
         /**
         * 
         * @param {string | undefined} email 
