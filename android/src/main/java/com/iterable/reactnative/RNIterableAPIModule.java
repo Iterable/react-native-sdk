@@ -31,7 +31,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void initializeWithApiKey(String apiKey, ReadableMap context) {
+    public void initializeWithApiKey(String apiKey, ReadableMap context, String version) {
         IterableLogger.d(TAG, "initializeWithApiKey: " + apiKey);
         IterableApi.getInstance().initialize(reactContext, apiKey);
     }
