@@ -1,5 +1,7 @@
 package com.iterable.reactnative;
 
+import android.net.Uri;
+
 import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.Callback;
@@ -9,6 +11,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.iterable.iterableapi.IterableApi;
+import com.iterable.iterableapi.IterableHelper;
 import com.iterable.iterableapi.IterableInAppCloseAction;
 import com.iterable.iterableapi.IterableInAppLocation;
 import com.iterable.iterableapi.IterableInAppMessage;
@@ -68,6 +71,19 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void getUserId(Promise promise) {
         promise.resolve(RNIterableInternal.getUserId());
+    }
+
+    @ReactMethod
+    public void showMessage(String messageId, boolean consume, final Promise promise) {
+        if (messageId == null || messageId == "") {
+            return;
+        }
+        IterableApi.getInstance().getInAppManager().showMessage(RNIterableInternal.getMessageById(messageId), consume, new IterableHelper.IterableUrlCallback() {
+            @Override
+            public void execute(@Nullable Uri url) {
+                promise.resolve(url.toString());
+            }
+        });
     }
 
     // region Track APIs
