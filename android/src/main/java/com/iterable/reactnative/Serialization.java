@@ -152,7 +152,7 @@ class Serialization {
         return array;
     }
 
-    private static JSONObject convertMapToJson(ReadableMap readableMap) throws JSONException {
+    public static JSONObject convertMapToJson(ReadableMap readableMap) throws JSONException {
         JSONObject object = new JSONObject();
         ReadableMapKeySetIterator iterator = readableMap.keySetIterator();
         while (iterator.hasNextKey()) {
@@ -181,7 +181,7 @@ class Serialization {
         return object;
     }
 
-    private static JSONArray convertArrayToJson(ReadableArray readableArray) throws JSONException {
+    public static JSONArray convertArrayToJson(ReadableArray readableArray) throws JSONException {
         JSONArray array = new JSONArray();
         for (int i = 0; i < readableArray.size(); i++) {
             switch (readableArray.getType(i)) {

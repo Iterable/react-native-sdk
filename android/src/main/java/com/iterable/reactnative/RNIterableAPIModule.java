@@ -66,6 +66,15 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
         promise.resolve(RNIterableInternal.getUserId());
     }
 
+    @ReactMethod
+    public void trackEvent(String name, ReadableMap dataFields) {
+        try {
+            IterableApi.getInstance().track(name, Serialization.convertMapToJson(dataFields));
+        } catch (JSONException e) {
+            IterableLogger.e(TAG, "Failed to convert datafields to JSON");
+        }
+    }
+
     // region Track APIs
     // ---------------------------------------------------------------------------------------
     @ReactMethod
