@@ -71,7 +71,7 @@ class Serialization {
                 messageJson.putOpt("customPayload", message.getCustomPayload());
                 messageJson.putOpt("read", message.isRead());
             } catch (JSONException e) {
-                IterableLogger.e(TAG,e.getLocalizedMessage());
+                IterableLogger.e(TAG, e.getLocalizedMessage());
             }
             inappMessagesJson.put(messageJson);
         }
@@ -79,7 +79,7 @@ class Serialization {
     }
 
     private static JSONObject getInboxMetadataJson(IterableInAppMessage message) {
-        if (message.getInboxMetadata()==null){
+        if (message.getInboxMetadata() == null) {
             return null;
         }
         JSONObject result = new JSONObject();
@@ -95,7 +95,7 @@ class Serialization {
     }
 
     static long dateToEpoch(Date date) {
-        return date.getTime()/1000;
+        return date.getTime() / 1000;
     }
 
     // ---------------------------------------------------------------------------------------
@@ -152,7 +152,7 @@ class Serialization {
         return array;
     }
 
-    private static JSONObject convertMapToJson(ReadableMap readableMap) throws JSONException {
+    static JSONObject convertMapToJson(ReadableMap readableMap) throws JSONException {
         JSONObject object = new JSONObject();
         ReadableMapKeySetIterator iterator = readableMap.keySetIterator();
         while (iterator.hasNextKey()) {
@@ -181,7 +181,7 @@ class Serialization {
         return object;
     }
 
-    private static JSONArray convertArrayToJson(ReadableArray readableArray) throws JSONException {
+    static JSONArray convertArrayToJson(ReadableArray readableArray) throws JSONException {
         JSONArray array = new JSONArray();
         for (int i = 0; i < readableArray.size(); i++) {
             switch (readableArray.getType(i)) {

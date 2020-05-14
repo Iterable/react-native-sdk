@@ -18,7 +18,7 @@ import com.iterable.iterableapi.RNIterableInternal;
 import org.json.JSONException;
 
 public class RNIterableAPIModule extends ReactContextBaseJavaModule {
-    
+
     private final ReactApplicationContext reactContext;
     private static String TAG = "RNIterableAPIModule";
 
@@ -59,6 +59,16 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     public void setUserId(@Nullable String userId) {
         IterableLogger.d(TAG, "setUserId");
         IterableApi.getInstance().setUserId(userId);
+    }
+
+    @ReactMethod
+    public void updateUser(ReadableMap dataFields, Boolean mergeNestedObjects) {
+        IterableLogger.v(TAG, "Update User");
+        try {
+            IterableApi.getInstance().updateUser(Serialization.convertMapToJson(dataFields));
+        } catch (JSONException e) {
+            IterableLogger.e(TAG, "Failed passing dataFields to updateUser API");
+        }
     }
 
     @ReactMethod
