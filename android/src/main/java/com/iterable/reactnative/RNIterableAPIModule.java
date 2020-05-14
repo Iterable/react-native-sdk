@@ -9,6 +9,7 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.iterable.iterableapi.IterableApi;
 import com.iterable.iterableapi.IterableHelper;
@@ -80,6 +81,16 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void updateSubscriptions(ReadableArray emailListIds, ReadableArray unsubscribedChannelIds, ReadableArray unsubscribedMessageTypeIds, ReadableArray subscribedMessageTypeIds, Integer campaignId, Integer templateId) {
+        IterableLogger.v(TAG, "updateSubscriptions");
+        IterableApi.getInstance().updateSubscriptions(readableToIntegerArray(emailListIds),
+                readableToIntegerArray(unsubscribedChannelIds),
+                readableToIntegerArray(unsubscribedMessageTypeIds),
+                readableToIntegerArray(subscribedMessageTypeIds),
+                campaignId,
+                templateId);
+	}
+
     public void showMessage(String messageId, boolean consume, final Promise promise) {
         if (messageId == null || messageId == "") {
             return;
@@ -141,5 +152,13 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     // ---------------------------------------------------------------------------------------
     // endregion
 
+    private Integer[] readableToIntegerArray(ReadableArray array) {
+        return doubleToInteger(array.toArrayList().toArray(new Double[0]));
+    }
 
+    private Integer[] doubleToInteger(Double[] list) {
+        Integer[] integers = new Integer[list.length];
+        for (int i = 0; i < list.length; i++) integers[i] = list[i].intValue();
+        return integers;
+    }
 }
