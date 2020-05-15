@@ -9,6 +9,7 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
+import com.iterable.iterableapi.CommerceItem;
 import com.iterable.iterableapi.IterableApi;
 import com.iterable.iterableapi.IterableInAppCloseAction;
 import com.iterable.iterableapi.IterableInAppDeleteActionType;
@@ -21,6 +22,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -50,6 +52,27 @@ class Serialization {
         } else {
             return IterableInAppDeleteActionType.values()[actionType];
         }
+    }
+
+    static List<CommerceItem> commerceItemsFromReadableArray(ReadableArray array) {
+        ArrayList<CommerceItem> list = new ArrayList<>();
+        try {
+            JSONArray commerceItemJsonarray = convertArrayToJson(array);
+            for (int i = 0; i < commerceItemJsonarray.length(); i++) {
+                JSONObject item = commerceItemJsonarray.getJSONObject(i);
+                list.add(commerceItemFromMap(item));
+            }
+        } catch (JSONException e) {
+            IterableLogger.e(TAG,"Failed converting to JSONObject");
+        }
+        return list;
+    }
+
+    static CommerceItem commerceItemFromMap(JSONObject itemMap) throws JSONException {
+        return new CommerceItem(itemMap.getString("id"),
+                itemMap.getString("name"),
+                itemMap.getDouble("price"),
+                itemMap.getInt("quantity"));
     }
 
     static JSONArray getInAppMessages() {
