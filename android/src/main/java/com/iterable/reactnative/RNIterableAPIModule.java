@@ -152,7 +152,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     // ---------------------------------------------------------------------------------------
     // endregion
 
-    private Integer[] readableToIntegerArray(ReadableArray array) {
+    private Integer[] readableArrayToIntegerArray(ReadableArray array) {
         return doubleToInteger(array.toArrayList().toArray(new Double[0]));
     }
 
