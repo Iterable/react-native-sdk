@@ -83,10 +83,10 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void updateSubscriptions(ReadableArray emailListIds, ReadableArray unsubscribedChannelIds, ReadableArray unsubscribedMessageTypeIds, ReadableArray subscribedMessageTypeIds, Integer campaignId, Integer templateId) {
         IterableLogger.v(TAG, "updateSubscriptions");
-        IterableApi.getInstance().updateSubscriptions(readableToIntegerArray(emailListIds),
-                readableToIntegerArray(unsubscribedChannelIds),
-                readableToIntegerArray(unsubscribedMessageTypeIds),
-                readableToIntegerArray(subscribedMessageTypeIds),
+        IterableApi.getInstance().updateSubscriptions(readableArrayToIntegerArray(emailListIds),
+                readableArrayToIntegerArray(unsubscribedChannelIds),
+                readableArrayToIntegerArray(unsubscribedMessageTypeIds),
+                readableArrayToIntegerArray(subscribedMessageTypeIds),
                 campaignId,
                 templateId);
 	}
@@ -152,13 +152,11 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     // ---------------------------------------------------------------------------------------
     // endregion
 
-    private Integer[] readableArrayToIntegerArray(ReadableArray array) {
-        return doubleToInteger(array.toArrayList().toArray(new Double[0]));
-    }
-
-    private Integer[] doubleArrayToIntegerArray(Double[] list) {
-        Integer[] integers = new Integer[list.length];
-        for (int i = 0; i < list.length; i++) integers[i] = list[i].intValue();
+    private static Integer[] readableArrayToIntegerArray(ReadableArray array) {
+        Integer[] integers = new Integer[array.size()];
+        for (int i = 0; i < array.size(); i++) {
+            integers[i] = array.getInt(i);
+        }
         return integers;
     }
 }
