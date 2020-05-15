@@ -7,6 +7,7 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.iterable.iterableapi.IterableApi;
 import com.iterable.iterableapi.IterableInAppCloseAction;
@@ -16,9 +17,10 @@ import com.iterable.iterableapi.IterableLogger;
 import com.iterable.iterableapi.RNIterableInternal;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 public class RNIterableAPIModule extends ReactContextBaseJavaModule {
-    
+
     private final ReactApplicationContext reactContext;
     private static String TAG = "RNIterableAPIModule";
 
@@ -64,6 +66,20 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void getUserId(Promise promise) {
         promise.resolve(RNIterableInternal.getUserId());
+    }
+
+    @ReactMethod
+    public void trackPurchase(Double total, ReadableArray items, ReadableMap dataFields) {
+        IterableLogger.v(TAG, "TrackPurchase API");
+        JSONObject dataFieldsJson = null;
+        try {
+            if (dataFields != null) {
+                dataFieldsJson = Serialization.convertMapToJson(dataFields);
+            }
+        } catch (JSONException e) {
+            IterableLogger.e(TAG, "Failed converting JSON to object");
+        }
+        IterableApi.getInstance().trackPurchase(total, Serialization.commerceItemsFromReadableArray(items), dataFieldsJson);
     }
 
     // region Track APIs
