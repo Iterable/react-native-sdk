@@ -43,6 +43,12 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void updateEmail(String email) {
+        IterableLogger.d(TAG, "Update Email: " + email);
+        IterableApi.getInstance().updateEmail(email);
+    }
+
+    @ReactMethod
     public void getEmail(Promise promise) {
         promise.resolve(RNIterableInternal.getEmail());
     }
