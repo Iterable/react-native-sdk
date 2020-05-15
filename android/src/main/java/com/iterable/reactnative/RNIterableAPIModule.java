@@ -156,7 +156,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
         return doubleToInteger(array.toArrayList().toArray(new Double[0]));
     }
 
-    private Integer[] doubleToInteger(Double[] list) {
+    private Integer[] doubleArrayToIntegerArray(Double[] list) {
         Integer[] integers = new Integer[list.length];
         for (int i = 0; i < list.length; i++) integers[i] = list[i].intValue();
         return integers;
