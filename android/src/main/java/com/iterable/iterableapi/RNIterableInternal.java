@@ -17,7 +17,7 @@ public class RNIterableInternal {
         return IterableApi.getInstance().getUserId();
     }
 
-    public static Date getExpireDate(IterableInAppMessage message) {
+    public static Date getExpirationDate(IterableInAppMessage message) {
         return message.getExpiresAt();
     }
 
