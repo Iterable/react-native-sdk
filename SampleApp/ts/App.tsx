@@ -72,7 +72,7 @@ export default class App extends React.Component {
   }
 
   // ITERABLE:
-  private urlDelegate = (url: String, context: IterableActionContext): Boolean => {
+  private urlDelegate = (url: String, context: IterableActionContext): boolean => {
     console.log(`urlDelegate, url: ${url}`)
     let match = url.match(/coffee\/([^\/]+)/i)
     if (match && match.length > 1) {

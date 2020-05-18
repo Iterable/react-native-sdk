@@ -8,20 +8,20 @@ class SettingsTab extends Component {
         super(props);
         this.onLoginTapped = () => {
             console.log("onLoginTapped");
-            Iterable.setEmail("tapash@iterable.com");
+            Iterable.setEmail(this.state.email);
             this.updateState();
         };
         this.onLogoutTapped = () => {
             console.log("onLogoutTapped");
-            Iterable.setEmail(null);
+            Iterable.setEmail(undefined);
             this.updateState();
         };
-        this.state = {};
+        this.state = { isLoggedIn: false };
         this.updateState();
     }
     render() {
         var userInfo;
-        if (this.state.email) {
+        if (this.state.isLoggedIn) {
             userInfo = this.renderLoggedIn(this.state.email);
         }
         else {
@@ -43,17 +43,17 @@ class SettingsTab extends Component {
     renderLoggedOut() {
         console.log("renderLoggedOut");
         return (React.createElement(View, { style: styles.emailContainer },
-            React.createElement(TextInput, { style: styles.emailTextInput, autoCapitalize: "none", autoCompleteType: "email", placeholder: "user@example.com" }),
+            React.createElement(TextInput, { value: this.state.email, style: styles.emailTextInput, autoCapitalize: "none", autoCompleteType: "email", onChangeText: (text) => this.setState({ isLoggedIn: false, email: text }), placeholder: "user@example.com" }),
             React.createElement(Button, { title: "Login", onPress: this.onLoginTapped })));
     }
     updateState() {
         Iterable.getEmail().then(email => {
             console.log("gotEmail: " + email);
             if (email) {
-                this.setState((prevState, props) => { return { email: email }; });
+                this.setState({ isLoggedIn: true, email: email });
             }
             else {
-                this.setState((prevState, props) => { return { email: undefined }; });
+                this.setState({ isLoggedIn: false, email: undefined });
             }
         });
     }

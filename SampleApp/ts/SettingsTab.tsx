@@ -14,19 +14,20 @@ import { Iterable } from 'react-native-iterable'
 
 interface Props { }
 interface State {
-  email?: String
+  email?: string
+  isLoggedIn: boolean
 }
 class SettingsTab extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
-    this.state = {}
+    this.state = { isLoggedIn: false }
     this.updateState()
   }
 
   render() {
     var userInfo
-    if (this.state.email) {
-      userInfo = this.renderLoggedIn(this.state.email)
+    if (this.state.isLoggedIn) {
+      userInfo = this.renderLoggedIn(this.state.email!)
     } else {
       userInfo = this.renderLoggedOut()
     }
@@ -58,9 +59,11 @@ class SettingsTab extends Component<Props, State> {
     return (
       <View style={styles.emailContainer}>
         <TextInput
+          value={this.state.email}
           style={styles.emailTextInput}
           autoCapitalize="none"
           autoCompleteType="email"
+          onChangeText={(text) => this.setState({ isLoggedIn: false, email: text }) }
           placeholder="user@example.com" />
         <Button
           title="Login"
@@ -72,13 +75,13 @@ class SettingsTab extends Component<Props, State> {
 
   private onLoginTapped = () => {
     console.log("onLoginTapped")
-    Iterable.setEmail("tapash@iterable.com")
+    Iterable.setEmail(this.state.email)
     this.updateState()
   }
 
   private onLogoutTapped = () => {
     console.log("onLogoutTapped")
-    Iterable.setEmail(null)
+    Iterable.setEmail(undefined)
     this.updateState()
   }
 
@@ -86,13 +89,12 @@ class SettingsTab extends Component<Props, State> {
     Iterable.getEmail().then(email => {
       console.log("gotEmail: " + email)
       if (email) {
-        this.setState((prevState, props) => { return { email: email } })
+        this.setState( { isLoggedIn: true, email: email } )
       } else {
-        this.setState((prevState, props) => { return { email: undefined } })
+        this.setState( { isLoggedIn: false, email: undefined } )
       }
     })
   }
-
 }
 
 const styles = StyleSheet.create({
