@@ -14,21 +14,20 @@ import { Iterable } from 'react-native-iterable'
 
 interface Props { }
 interface State {
-  email?: String
+  email?: string
+  isLoggedIn: boolean
 }
 class SettingsTab extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
-    this.state = {}
+    this.state = { isLoggedIn: false }
     this.updateState()
   }
 
-  uiEmail?: string = undefined
-
   render() {
     var userInfo
-    if (this.state.email) {
-      userInfo = this.renderLoggedIn(this.state.email)
+    if (this.state.isLoggedIn) {
+      userInfo = this.renderLoggedIn(this.state.email!)
     } else {
       userInfo = this.renderLoggedOut()
     }
@@ -60,10 +59,11 @@ class SettingsTab extends Component<Props, State> {
     return (
       <View style={styles.emailContainer}>
         <TextInput
+          value={this.state.email}
           style={styles.emailTextInput}
           autoCapitalize="none"
           autoCompleteType="email"
-          onChangeText={(text) => this.uiEmail = text }
+          onChangeText={(text) => this.setState({ isLoggedIn: false, email: text }) }
           placeholder="user@example.com" />
         <Button
           title="Login"
@@ -75,7 +75,7 @@ class SettingsTab extends Component<Props, State> {
 
   private onLoginTapped = () => {
     console.log("onLoginTapped")
-    Iterable.setEmail(this.uiEmail)
+    Iterable.setEmail(this.state.email)
     this.updateState()
   }
 
@@ -89,9 +89,9 @@ class SettingsTab extends Component<Props, State> {
     Iterable.getEmail().then(email => {
       console.log("gotEmail: " + email)
       if (email) {
-        this.setState((_prevState, _props) => { return { email: email } })
+        this.setState((_prevState, _props) => { return { isLoggedIn: true, email: email } })
       } else {
-        this.setState((_prevState, _props) => { return { email: undefined } })
+        this.setState((_prevState, _props) => { return { isLoggedIn: false, email: undefined } })
       }
     })
   }

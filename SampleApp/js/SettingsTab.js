@@ -9,7 +9,7 @@ class SettingsTab extends Component {
         this.uiEmail = undefined;
         this.onLoginTapped = () => {
             console.log("onLoginTapped");
-            Iterable.setEmail(this.uiEmail);
+            Iterable.setEmail(this.state.email);
             this.updateState();
         };
         this.onLogoutTapped = () => {
@@ -17,12 +17,12 @@ class SettingsTab extends Component {
             Iterable.setEmail(undefined);
             this.updateState();
         };
-        this.state = {};
+        this.state = { isLoggedIn: false };
         this.updateState();
     }
     render() {
         var userInfo;
-        if (this.state.email) {
+        if (this.state.isLoggedIn) {
             userInfo = this.renderLoggedIn(this.state.email);
         }
         else {
@@ -44,17 +44,17 @@ class SettingsTab extends Component {
     renderLoggedOut() {
         console.log("renderLoggedOut");
         return (React.createElement(View, { style: styles.emailContainer },
-            React.createElement(TextInput, { style: styles.emailTextInput, autoCapitalize: "none", autoCompleteType: "email", onChangeText: (text) => this.uiEmail = text, placeholder: "user@example.com" }),
+            React.createElement(TextInput, { value: this.state.email, style: styles.emailTextInput, autoCapitalize: "none", autoCompleteType: "email", onChangeText: (text) => this.setState({ isLoggedIn: false, email: text }), placeholder: "user@example.com" }),
             React.createElement(Button, { title: "Login", onPress: this.onLoginTapped })));
     }
     updateState() {
         Iterable.getEmail().then(email => {
             console.log("gotEmail: " + email);
             if (email) {
-                this.setState((_prevState, _props) => { return { email: email }; });
+                this.setState((_prevState, _props) => { return { isLoggedIn: true, email: email }; });
             }
             else {
-                this.setState((_prevState, _props) => { return { email: undefined }; });
+                this.setState((_prevState, _props) => { return { isLoggedIn: false, email: undefined }; });
             }
         });
     }
