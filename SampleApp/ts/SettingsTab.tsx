@@ -89,13 +89,12 @@ class SettingsTab extends Component<Props, State> {
     Iterable.getEmail().then(email => {
       console.log("gotEmail: " + email)
       if (email) {
-        this.setState((_prevState, _props) => { return { isLoggedIn: true, email: email } })
+        this.setState( { isLoggedIn: true, email: email } )
       } else {
-        this.setState((_prevState, _props) => { return { isLoggedIn: false, email: undefined } })
+        this.setState( { isLoggedIn: false, email: undefined } )
       }
     })
   }
-
 }
 
 const styles = StyleSheet.create({

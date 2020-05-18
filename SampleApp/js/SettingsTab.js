@@ -6,7 +6,6 @@ import { Iterable } from 'react-native-iterable';
 class SettingsTab extends Component {
     constructor(props) {
         super(props);
-        this.uiEmail = undefined;
         this.onLoginTapped = () => {
             console.log("onLoginTapped");
             Iterable.setEmail(this.state.email);
@@ -51,10 +50,10 @@ class SettingsTab extends Component {
         Iterable.getEmail().then(email => {
             console.log("gotEmail: " + email);
             if (email) {
-                this.setState((_prevState, _props) => { return { isLoggedIn: true, email: email }; });
+                this.setState({ isLoggedIn: true, email: email });
             }
             else {
-                this.setState((_prevState, _props) => { return { isLoggedIn: false, email: undefined }; });
+                this.setState({ isLoggedIn: false, email: undefined });
             }
         });
     }
