@@ -23,6 +23,8 @@ class SettingsTab extends Component<Props, State> {
     this.updateState()
   }
 
+  uiEmail?: string = undefined
+
   render() {
     var userInfo
     if (this.state.email) {
@@ -61,6 +63,7 @@ class SettingsTab extends Component<Props, State> {
           style={styles.emailTextInput}
           autoCapitalize="none"
           autoCompleteType="email"
+          onChangeText={(text) => this.uiEmail = text }
           placeholder="user@example.com" />
         <Button
           title="Login"
@@ -72,13 +75,13 @@ class SettingsTab extends Component<Props, State> {
 
   private onLoginTapped = () => {
     console.log("onLoginTapped")
-    Iterable.setEmail("tapash@iterable.com")
+    Iterable.setEmail(this.uiEmail)
     this.updateState()
   }
 
   private onLogoutTapped = () => {
     console.log("onLogoutTapped")
-    Iterable.setEmail(null)
+    Iterable.setEmail(undefined)
     this.updateState()
   }
 
@@ -86,9 +89,9 @@ class SettingsTab extends Component<Props, State> {
     Iterable.getEmail().then(email => {
       console.log("gotEmail: " + email)
       if (email) {
-        this.setState((prevState, props) => { return { email: email } })
+        this.setState((_prevState, _props) => { return { email: email } })
       } else {
-        this.setState((prevState, props) => { return { email: undefined } })
+        this.setState((_prevState, _props) => { return { email: undefined } })
       }
     })
   }

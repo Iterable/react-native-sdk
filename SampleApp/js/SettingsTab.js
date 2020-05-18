@@ -6,14 +6,15 @@ import { Iterable } from 'react-native-iterable';
 class SettingsTab extends Component {
     constructor(props) {
         super(props);
+        this.uiEmail = undefined;
         this.onLoginTapped = () => {
             console.log("onLoginTapped");
-            Iterable.setEmail("tapash@iterable.com");
+            Iterable.setEmail(this.uiEmail);
             this.updateState();
         };
         this.onLogoutTapped = () => {
             console.log("onLogoutTapped");
-            Iterable.setEmail(null);
+            Iterable.setEmail(undefined);
             this.updateState();
         };
         this.state = {};
@@ -43,17 +44,17 @@ class SettingsTab extends Component {
     renderLoggedOut() {
         console.log("renderLoggedOut");
         return (React.createElement(View, { style: styles.emailContainer },
-            React.createElement(TextInput, { style: styles.emailTextInput, autoCapitalize: "none", autoCompleteType: "email", placeholder: "user@example.com" }),
+            React.createElement(TextInput, { style: styles.emailTextInput, autoCapitalize: "none", autoCompleteType: "email", onChangeText: (text) => this.uiEmail = text, placeholder: "user@example.com" }),
             React.createElement(Button, { title: "Login", onPress: this.onLoginTapped })));
     }
     updateState() {
         Iterable.getEmail().then(email => {
             console.log("gotEmail: " + email);
             if (email) {
-                this.setState((prevState, props) => { return { email: email }; });
+                this.setState((_prevState, _props) => { return { email: email }; });
             }
             else {
-                this.setState((prevState, props) => { return { email: undefined }; });
+                this.setState((_prevState, _props) => { return { email: undefined }; });
             }
         });
     }

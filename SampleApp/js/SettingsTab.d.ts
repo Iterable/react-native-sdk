@@ -6,6 +6,7 @@ interface State {
 }
 declare class SettingsTab extends Component<Props, State> {
     constructor(props: Props);
+    uiEmail?: string;
     render(): JSX.Element;
     private renderLoggedIn;
     private renderLoggedOut;
