@@ -75,22 +75,19 @@ class Serialization {
                 itemMap.getInt("quantity"));
     }
 
-    static JSONArray getInAppMessages() {
-        List<IterableInAppMessage> inappMessages = IterableApi.getInstance().getInAppManager().getMessages();
-
+    static JSONArray getInAppMessages(List<IterableInAppMessage> inappMessages) {
         JSONArray inappMessagesJson = new JSONArray();
 
         for (IterableInAppMessage message : inappMessages) {
             JSONObject messageJson = new JSONObject();
             try {
                 messageJson.putOpt("messageId", message.getMessageId());
-                //TODO: Incorporate public getter method for campaignId in next Android SDK release
-                //messageJson.putOpt("campaignId", message.getcampignId());
+                messageJson.putOpt("campaignId", message.getCampaignId());
                 messageJson.putOpt("trigger", RNIterableInternal.getTriggerType(message));
                 messageJson.putOpt("createdAt", dateToEpoch(message.getCreatedAt()));
                 messageJson.putOpt("expiresAt", dateToEpoch(RNIterableInternal.getExpireDate(message)));
                 messageJson.putOpt("saveToInbox", message.isInboxMessage());
-                messageJson.putOpt("inboxMetadata", getInboxMetadataJson(message));
+                messageJson.putOpt("inboxMetadata", getInboxMetadataJson(message.getInboxMetadata()));
                 messageJson.putOpt("customPayload", message.getCustomPayload());
                 messageJson.putOpt("read", message.isRead());
             } catch (JSONException e) {
@@ -101,15 +98,15 @@ class Serialization {
         return inappMessagesJson;
     }
 
-    private static JSONObject getInboxMetadataJson(IterableInAppMessage message) {
-        if (message.getInboxMetadata() == null) {
+    private static JSONObject getInboxMetadataJson(IterableInAppMessage.InboxMetadata metaData) {
+        if (metaData == null) {
             return null;
         }
         JSONObject result = new JSONObject();
         try {
-            result.putOpt("title", message.getInboxMetadata().title);
-            result.putOpt("subtitle", message.getInboxMetadata().subtitle);
-            result.putOpt("icon", message.getInboxMetadata().icon);
+            result.putOpt("title", metaData.title);
+            result.putOpt("subtitle", metaData.subtitle);
+            result.putOpt("icon", metaData.icon);
         } catch (JSONException e) {
             IterableLogger.d(TAG, e.getLocalizedMessage());
             return null;
