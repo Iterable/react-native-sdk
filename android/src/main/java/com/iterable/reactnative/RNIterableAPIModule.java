@@ -80,6 +80,15 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void trackEvent(String name, ReadableMap dataFields) {
+        try {
+            IterableApi.getInstance().track(name, Serialization.convertMapToJson(dataFields));
+        } catch (JSONException e) {
+            IterableLogger.e(TAG, "Failed to convert datafields to JSON");
+        }
+    }
+  
+    @ReactMethod
     public void trackPurchase(Double total, ReadableArray items, ReadableMap dataFields) {
         IterableLogger.v(TAG, "TrackPurchase API");
         JSONObject dataFieldsJson = null;
