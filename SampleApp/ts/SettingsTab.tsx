@@ -10,7 +10,7 @@ import {
   Image,
 } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler';
-import { Iterable } from 'react-native-iterable'
+import { Iterable } from '@iterable/react-native-sdk'
 
 interface Props { }
 interface State {
@@ -63,7 +63,7 @@ class SettingsTab extends Component<Props, State> {
           style={styles.emailTextInput}
           autoCapitalize="none"
           autoCompleteType="email"
-          onChangeText={(text) => this.setState({ isLoggedIn: false, email: text }) }
+          onChangeText={(text) => this.setState({ isLoggedIn: false, email: text })}
           placeholder="user@example.com" />
         <Button
           title="Login"
@@ -89,9 +89,9 @@ class SettingsTab extends Component<Props, State> {
     Iterable.getEmail().then(email => {
       console.log("gotEmail: " + email)
       if (email) {
-        this.setState( { isLoggedIn: true, email: email } )
+        this.setState({ isLoggedIn: true, email: email })
       } else {
-        this.setState( { isLoggedIn: false, email: undefined } )
+        this.setState({ isLoggedIn: false, email: undefined })
       }
     })
   }

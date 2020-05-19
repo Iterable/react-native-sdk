@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Text, View, Button, StyleSheet, Image, } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import { Iterable } from 'react-native-iterable';
+import { Iterable } from '@iterable/react-native-sdk';
 class SettingsTab extends Component {
     constructor(props) {
         super(props);

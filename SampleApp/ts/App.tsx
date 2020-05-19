@@ -13,7 +13,7 @@ import {
   IterableActionContext,
   IterableInAppMessage,
   IterableInAppShowResponse,
-} from 'react-native-iterable';
+} from '@iterable/react-native-sdk';
 
 // ITERABLE:
 // Replace with your Iterable apiKey

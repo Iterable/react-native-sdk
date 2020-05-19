@@ -1,6 +1,6 @@
 {
-  "name": "react-native-iterable",
-  "version": "1.0.13",
+  "name": "@iterable/react-native-sdk",
+  "version": "1.0.1",
   "description": "Iterable SDK for React Native.",
   "main": "./js/index.js",
   "types": "./js/index.d.ts",
