@@ -17,19 +17,8 @@ public class RNIterableInternal {
         return IterableApi.getInstance().getUserId();
     }
 
-    public static Date getExpirationDate(IterableInAppMessage message) {
-        return message.getExpiresAt();
-    }
-
-    public static JSONObject getTriggerType(IterableInAppMessage message) {
-        JSONObject trigger = new JSONObject();
-        try {
-            trigger.putOpt("type", message.getTriggerType().ordinal());
-        } catch (JSONException e) {
-            IterableLogger.e(TAG,e.getLocalizedMessage());
-            return null;
-        }
-        return trigger;
+    public static JSONObject getInAppMessageJson(IterableInAppMessage message) {
+        return message.toJSONObject();
     }
 
     public static IterableInAppMessage getMessageById(String messageId) {

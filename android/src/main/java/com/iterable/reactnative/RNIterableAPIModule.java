@@ -161,7 +161,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     public void getInAppMessages(Promise promise) {
         IterableLogger.d(TAG, "getMessages");
         try {
-            JSONArray inAppMessageJsonArray = Serialization.getInAppMessages(IterableApi.getInstance().getInAppManager().getMessages());
+            JSONArray inAppMessageJsonArray = Serialization.serializeInAppMessages(IterableApi.getInstance().getInAppManager().getMessages());
             promise.resolve(Serialization.convertJsonToArray(inAppMessageJsonArray));
         } catch (JSONException e) {
             IterableLogger.e(TAG, e.getLocalizedMessage());
