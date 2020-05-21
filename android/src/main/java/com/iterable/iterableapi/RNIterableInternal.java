@@ -1,9 +1,8 @@
 package com.iterable.iterableapi;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import androidx.annotation.Nullable;
 
-import java.util.Date;
+import org.json.JSONObject;
 
 public class RNIterableInternal {
 
@@ -27,6 +26,10 @@ public class RNIterableInternal {
 
     public static void trackInAppClose(String messageId, String clickedUrl, IterableInAppCloseAction closeAction, IterableInAppLocation location) {
         IterableApi.getInstance().trackInAppClose(messageId, clickedUrl, closeAction, location);
+    }
+
+    public static void trackPushOpenWithCampaignId(Integer campaignId, Integer templateId, String messageId, @Nullable JSONObject dataFields) {
+        IterableApi.getInstance().trackPushOpen(campaignId, templateId, messageId, dataFields);
     }
 
 }

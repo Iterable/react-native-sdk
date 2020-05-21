@@ -87,7 +87,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
             IterableLogger.e(TAG, "Failed to convert datafields to JSON");
         }
     }
-  
+
     @ReactMethod
     public void trackPurchase(Double total, ReadableArray items, ReadableMap dataFields) {
         IterableLogger.v(TAG, "TrackPurchase API");
@@ -100,6 +100,24 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
             IterableLogger.e(TAG, "Failed converting JSON to object");
         }
         IterableApi.getInstance().trackPurchase(total, Serialization.commerceItemsFromReadableArray(items), dataFieldsJson);
+    }
+
+    @ReactMethod
+    public void trackPushOpenWithPayload(ReadableMap payload, ReadableMap dataFields) {
+        IterableLogger.d(TAG, "Feature iOS only");
+    }
+
+    @ReactMethod
+    public void trackPushOpenWithCampaignId(Integer campaignId, Integer templateId, String messageId, Boolean appAlreadyRunning, ReadableMap dataFields) {
+        JSONObject dataFieldsJson = null;
+        if (dataFields != null) {
+            try {
+                dataFieldsJson = Serialization.convertMapToJson(dataFields);
+            } catch (JSONException e) {
+                IterableLogger.d(TAG, "Failed to convert to JSON");
+            }
+        }
+        RNIterableInternal.trackPushOpenWithCampaignId(campaignId, templateId, messageId, dataFieldsJson);
     }
 
     // region Track APIs
