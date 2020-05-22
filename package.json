@@ -5,7 +5,7 @@
   "main": "./js/index.js",
   "types": "./js/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "rm -rf js/ && tsc",
     "doc": "./scripts/generate_docs.sh"
   },
@@ -24,10 +24,14 @@
     "react-native": "^0.61.5"
   },
   "devDependencies": {
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "@babel/preset-typescript": "^7.9.0",
     "@types/jest": "^25.1.4",
     "@types/react": "^16.9.23",
     "@types/react-native": "^0.61.23",
     "@types/react-test-renderer": "^16.9.2",
+    "babel-jest": "^26.0.1",
     "eslint": "^4.18.2",
     "eslint-config-standard": "^6.0.0",
     "eslint-config-standard-jsx": "^3.0.0",
