@@ -96,7 +96,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
             IterableLogger.e(TAG, "Failed to convert datafields to JSON");
         }
     }
-  
+
     @ReactMethod
     public void trackPurchase(Double total, ReadableArray items, ReadableMap dataFields) {
         IterableLogger.v(TAG, "TrackPurchase API");
@@ -111,7 +111,20 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
         IterableApi.getInstance().trackPurchase(total, Serialization.commerceItemsFromReadableArray(items), dataFieldsJson);
     }
 
-	 @ReactMethod
+    @ReactMethod
+    public void trackPushOpenWithCampaignId(Integer campaignId, Integer templateId, String messageId, Boolean appAlreadyRunning, ReadableMap dataFields) {
+        JSONObject dataFieldsJson = null;
+        if (dataFields != null) {
+            try {
+                dataFieldsJson = Serialization.convertMapToJson(dataFields);
+            } catch (JSONException e) {
+                IterableLogger.d(TAG, "Failed to convert to JSON");
+            }
+        }
+        RNIterableInternal.trackPushOpenWithCampaignId(campaignId, templateId, messageId, dataFieldsJson);
+    }
+
+    @ReactMethod
     public void updateSubscriptions(ReadableArray emailListIds, ReadableArray unsubscribedChannelIds, ReadableArray unsubscribedMessageTypeIds, ReadableArray subscribedMessageTypeIds, Integer campaignId, Integer templateId) {
         IterableLogger.v(TAG, "updateSubscriptions");
         IterableApi.getInstance().updateSubscriptions(readableArrayToIntegerArray(emailListIds),
@@ -120,7 +133,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
                 readableArrayToIntegerArray(subscribedMessageTypeIds),
                 campaignId,
                 templateId);
-	}
+    }
 
     public void showMessage(String messageId, boolean consume, final Promise promise) {
         if (messageId == null || messageId == "") {
@@ -133,7 +146,6 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
             }
         });
     }
-
 
     // region Track APIs
     // ---------------------------------------------------------------------------------------
