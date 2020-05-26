@@ -1,13 +1,13 @@
 {
-  "name": "react-native-iterable",
-  "version": "1.0.12",
+  "name": "@iterable/react-native-sdk",
+  "version": "1.0.1",
   "description": "Iterable SDK for React Native.",
   "main": "./js/index.js",
   "types": "./js/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rm -rf js/ && tsc",
-    "doc": "rm -rf docs/ && typedoc --out docs/ ts/"
+    "doc": "./scripts/generate_docs.sh"
   },
   "keywords": [
     "react-native",

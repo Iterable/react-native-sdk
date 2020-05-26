@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import HomeTab from './HomeTab';
 import SettingsTab from './SettingsTab';
 import { coffees } from './Data';
-import { Iterable, IterableConfig, } from 'react-native-iterable';
+import { Iterable, IterableConfig, } from '@iterable/react-native-sdk';
 // ITERABLE:
 // Replace with your Iterable apiKey
 import { iterableAPIKey } from './Config';

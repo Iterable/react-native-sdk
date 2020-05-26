@@ -13,9 +13,10 @@ import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { Screens } from './HomeTab'
 
-import { 
-  Iterable, 
-  IterableCommerceItem } from 'react-native-iterable'
+import {
+  Iterable,
+  IterableCommerceItem
+} from '@iterable/react-native-sdk'
 
 type DetailScreenProps = {
   route: RouteProp<Screens, 'Detail'>,

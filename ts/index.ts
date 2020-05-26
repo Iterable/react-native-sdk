@@ -4,19 +4,19 @@
 * @module react-native-iterable-sdk
 */
 
-import { 
-  Iterable, 
-  IterableConfig, 
-  PushServicePlatform, 
-  IterableAction, 
-  IterableActionContext, 
-  IterableAttributionInfo, 
-  IterableCommerceItem 
+import {
+  Iterable,
+  IterableConfig,
+  PushServicePlatform,
+  IterableAction,
+  IterableActionContext,
+  IterableAttributionInfo,
+  IterableCommerceItem
 } from './Iterable'
-import { 
+import {
   IterableInAppShowResponse,
   IterableInAppContent,
-  IterableInAppTriggerType, 
+  IterableInAppTriggerType,
   IterableInAppTrigger,
   IterableInAppContentType,
   IterableEdgeInsets,
@@ -29,16 +29,16 @@ import {
   IterableInAppManager,
 } from './IterableInAppClasses'
 
-export { 
-  Iterable, 
-  IterableConfig, 
-  PushServicePlatform, 
-  IterableAction, 
-  IterableActionContext, 
-  IterableAttributionInfo, 
-  IterableCommerceItem, 
+export {
+  Iterable,
+  IterableConfig,
+  PushServicePlatform,
+  IterableAction,
+  IterableActionContext,
+  IterableAttributionInfo,
+  IterableCommerceItem,
   IterableInAppShowResponse,
-  IterableInAppTriggerType, 
+  IterableInAppTriggerType,
   IterableInAppTrigger,
   IterableInAppContentType,
   IterableEdgeInsets,

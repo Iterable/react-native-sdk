@@ -69,6 +69,13 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Iterable Configuration Object. Use this when initializing the API.</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -112,9 +119,14 @@
 					<div class="tsd-signature tsd-kind-icon">auto<wbr>Push<wbr>Registration<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = true</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Iterable/react-native-sdk/blob/a8c4539/ts/Iterable.ts#L32">Iterable.ts:32</a></li>
+							<li>Defined in <a href="https://github.com/Iterable/react-native-sdk/blob/81cd54b/ts/Iterable.ts#L59">Iterable.ts:59</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>When set to true, IterableSDK will automatically register and deregister notification tokens.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="checkfordeferreddeeplink" class="tsd-anchor"></a>
@@ -122,19 +134,29 @@
 					<div class="tsd-signature tsd-kind-icon">check<wbr>For<wbr>Deferred<wbr>Deeplink<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Iterable/react-native-sdk/blob/a8c4539/ts/Iterable.ts#L33">Iterable.ts:33</a></li>
+							<li>Defined in <a href="https://github.com/Iterable/react-native-sdk/blob/81cd54b/ts/Iterable.ts#L63">Iterable.ts:63</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>When set to true, it will check for deferred deep links on first time app launch after installation from the App Store.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="customactiondelegate" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> custom<wbr>Action<wbr>Delegate</h3>
-					<div class="tsd-signature tsd-kind-icon">custom<wbr>Action<wbr>Delegate<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>action<span class="tsd-signature-symbol">: </span><a href="_iterable_.iterableaction.html" class="tsd-signature-type">IterableAction</a>, context<span class="tsd-signature-symbol">: </span><a href="_iterable_.iterableactioncontext.html" class="tsd-signature-type">IterableActionContext</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Boolean</span><span class="tsd-signature-symbol">)</span></div>
+					<div class="tsd-signature tsd-kind-icon">custom<wbr>Action<wbr>Delegate<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>action<span class="tsd-signature-symbol">: </span><a href="_iterable_.iterableaction.html" class="tsd-signature-type">IterableAction</a>, context<span class="tsd-signature-symbol">: </span><a href="_iterable_.iterableactioncontext.html" class="tsd-signature-type">IterableActionContext</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Iterable/react-native-sdk/blob/a8c4539/ts/Iterable.ts#L36">Iterable.ts:36</a></li>
+							<li>Defined in <a href="https://github.com/Iterable/react-native-sdk/blob/81cd54b/ts/Iterable.ts#L75">Iterable.ts:75</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>How to handle IterableActions which are other than &#39;openUrl&#39;</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="inappdelegate" class="tsd-anchor"></a>
@@ -142,9 +164,16 @@
 					<div class="tsd-signature tsd-kind-icon">in<wbr>App<wbr>Delegate<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>message<span class="tsd-signature-symbol">: </span><a href="_iterableinappclasses_.iterableinappmessage.html" class="tsd-signature-type">IterableInAppMessage</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="../enums/_iterableinappclasses_.iterableinappshowresponse.html" class="tsd-signature-type">IterableInAppShowResponse</a><span class="tsd-signature-symbol">)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Iterable/react-native-sdk/blob/a8c4539/ts/Iterable.ts#L37">Iterable.ts:37</a></li>
+							<li>Defined in <a href="https://github.com/Iterable/react-native-sdk/blob/81cd54b/ts/Iterable.ts#L81">Iterable.ts:81</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Implement this protocol to override default in-app behavior.
+								By default, every single in-app will be shown as soon as it is available.
+							If more than 1 in-app is available, we show the first.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="inappdisplayinterval" class="tsd-anchor"></a>
@@ -152,19 +181,31 @@
 					<div class="tsd-signature tsd-kind-icon">in<wbr>App<wbr>Display<wbr>Interval<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 30</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Iterable/react-native-sdk/blob/a8c4539/ts/Iterable.ts#L34">Iterable.ts:34</a></li>
+							<li>Defined in <a href="https://github.com/Iterable/react-native-sdk/blob/81cd54b/ts/Iterable.ts#L67">Iterable.ts:67</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>How many seconds to wait before showing the next in-app, if there are more than one present</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="pushintegrationname" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> push<wbr>Integration<wbr>Name</h3>
-					<div class="tsd-signature tsd-kind-icon">push<wbr>Integration<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">String</span></div>
+					<div class="tsd-signature tsd-kind-icon">push<wbr>Integration<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Iterable/react-native-sdk/blob/a8c4539/ts/Iterable.ts#L29">Iterable.ts:29</a></li>
+							<li>Defined in <a href="https://github.com/Iterable/react-native-sdk/blob/81cd54b/ts/Iterable.ts#L43">Iterable.ts:43</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>You don&#39;t have to set this variable. Set this value only if you are an existing Iterable customer who has already setup mobile integrations in Iterable Web UI.
+								In that case, set this variable to the push integration name that you have set for &#39;APNS&#39; in Iterable Web UI.
+							To view your existing integrations, navigate to Settings &gt; Mobile Apps</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="pushplatform" class="tsd-anchor"></a>
@@ -172,29 +213,48 @@
 					<div class="tsd-signature tsd-kind-icon">push<wbr>Platform<span class="tsd-signature-symbol">:</span> <a href="../enums/_iterable_.pushserviceplatform.html" class="tsd-signature-type">PushServicePlatform</a><span class="tsd-signature-symbol"> = PushServicePlatform.auto</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Iterable/react-native-sdk/blob/a8c4539/ts/Iterable.ts#L31">Iterable.ts:31</a></li>
+							<li>Defined in <a href="https://github.com/Iterable/react-native-sdk/blob/81cd54b/ts/Iterable.ts#L55">Iterable.ts:55</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>APNS (Apple Push Notification Service) environment for the current build of the app.
+								Possible values: <code>production</code>, <code>sandbox</code>, <code>auto</code>
+							Defaults to <code>auto</code> and detects the APNS environment automatically</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="sandboxpushintegrationname" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> sandbox<wbr>Push<wbr>Integration<wbr>Name</h3>
-					<div class="tsd-signature tsd-kind-icon">sandbox<wbr>Push<wbr>Integration<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">String</span></div>
+					<div class="tsd-signature tsd-kind-icon">sandbox<wbr>Push<wbr>Integration<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Iterable/react-native-sdk/blob/a8c4539/ts/Iterable.ts#L30">Iterable.ts:30</a></li>
+							<li>Defined in <a href="https://github.com/Iterable/react-native-sdk/blob/81cd54b/ts/Iterable.ts#L49">Iterable.ts:49</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>You don&#39;t have to set this variable. Set this value only if you are an existing Iterable customer who has already setup mobile integrations in Iterable Web UI.
+								In that case, set this variable to the push integration name that you have set for &#39;APNS_SANDBOX&#39; in Iterable Web UI.
+							To view your existing integrations, navigate to Settings &gt; Mobile Apps</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="urldelegate" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> url<wbr>Delegate</h3>
-					<div class="tsd-signature tsd-kind-icon">url<wbr>Delegate<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">String</span>, context<span class="tsd-signature-symbol">: </span><a href="_iterable_.iterableactioncontext.html" class="tsd-signature-type">IterableActionContext</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Boolean</span><span class="tsd-signature-symbol">)</span></div>
+					<div class="tsd-signature tsd-kind-icon">url<wbr>Delegate<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, context<span class="tsd-signature-symbol">: </span><a href="_iterable_.iterableactioncontext.html" class="tsd-signature-type">IterableActionContext</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Iterable/react-native-sdk/blob/a8c4539/ts/Iterable.ts#L35">Iterable.ts:35</a></li>
+							<li>Defined in <a href="https://github.com/Iterable/react-native-sdk/blob/81cd54b/ts/Iterable.ts#L71">Iterable.ts:71</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>How many seconds to wait before showing the next in-app, if there are more than one present</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -209,7 +269,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Iterable/react-native-sdk/blob/a8c4539/ts/Iterable.ts#L39">Iterable.ts:39</a></li>
+									<li>Defined in <a href="https://github.com/Iterable/react-native-sdk/blob/81cd54b/ts/Iterable.ts#L83">Iterable.ts:83</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
