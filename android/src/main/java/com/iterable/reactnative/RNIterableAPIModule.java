@@ -103,11 +103,6 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void trackPushOpenWithPayload(ReadableMap payload, ReadableMap dataFields) {
-        IterableLogger.d(TAG, "Feature iOS only");
-    }
-
-    @ReactMethod
     public void trackPushOpenWithCampaignId(Integer campaignId, Integer templateId, String messageId, Boolean appAlreadyRunning, ReadableMap dataFields) {
         JSONObject dataFieldsJson = null;
         if (dataFields != null) {
