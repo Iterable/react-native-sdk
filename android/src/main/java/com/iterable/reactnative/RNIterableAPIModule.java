@@ -204,7 +204,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     // ---------------------------------------------------------------------------------------
     // endregion
 
-	private static Integer[] readableArrayToIntegerArray(ReadableArray array) {
+    private static Integer[] readableArrayToIntegerArray(ReadableArray array) {
         Integer[] integers = new Integer[array.size()];
         for (int i = 0; i < array.size(); i++) {
             integers[i] = array.getInt(i);
