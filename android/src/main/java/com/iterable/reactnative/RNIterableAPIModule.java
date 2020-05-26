@@ -19,6 +19,10 @@ import com.iterable.iterableapi.IterableInAppMessage;
 import com.iterable.iterableapi.IterableLogger;
 import com.iterable.iterableapi.RNIterableInternal;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class RNIterableAPIModule extends ReactContextBaseJavaModule {
 
     private final ReactApplicationContext reactContext;
@@ -58,12 +62,6 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void getInAppMessages(Promise promise) {
-        IterableLogger.d(TAG, "getMessages");
-        promise.resolve(IterableApi.getInstance().getInAppManager().getMessages());
-    }
-
-    @ReactMethod
     public void sampleMethod(String stringArgument, int numberArgument, Callback callback) {
         // TODO: Implement some actually useful functionality
         callback.invoke("Received numberArgument: " + numberArgument + " stringArgument: " + stringArgument);
@@ -76,8 +74,54 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void updateUser(ReadableMap dataFields, Boolean mergeNestedObjects) {
+        IterableLogger.v(TAG, "Update User");
+        try {
+            IterableApi.getInstance().updateUser(Serialization.convertMapToJson(dataFields));
+        } catch (JSONException e) {
+            IterableLogger.e(TAG, "Failed passing dataFields to updateUser API");
+        }
+    }
+
+    @ReactMethod
     public void getUserId(Promise promise) {
         promise.resolve(RNIterableInternal.getUserId());
+    }
+
+    @ReactMethod
+    public void trackEvent(String name, ReadableMap dataFields) {
+        try {
+            IterableApi.getInstance().track(name, Serialization.convertMapToJson(dataFields));
+        } catch (JSONException e) {
+            IterableLogger.e(TAG, "Failed to convert datafields to JSON");
+        }
+    }
+
+    @ReactMethod
+    public void trackPurchase(Double total, ReadableArray items, ReadableMap dataFields) {
+        IterableLogger.v(TAG, "TrackPurchase API");
+        JSONObject dataFieldsJson = null;
+        try {
+            if (dataFields != null) {
+                dataFieldsJson = Serialization.convertMapToJson(dataFields);
+            }
+        } catch (JSONException e) {
+            IterableLogger.e(TAG, "Failed converting JSON to object");
+        }
+        IterableApi.getInstance().trackPurchase(total, Serialization.commerceItemsFromReadableArray(items), dataFieldsJson);
+    }
+
+    @ReactMethod
+    public void trackPushOpenWithCampaignId(Integer campaignId, Integer templateId, String messageId, Boolean appAlreadyRunning, ReadableMap dataFields) {
+        JSONObject dataFieldsJson = null;
+        if (dataFields != null) {
+            try {
+                dataFieldsJson = Serialization.convertMapToJson(dataFields);
+            } catch (JSONException e) {
+                IterableLogger.d(TAG, "Failed to convert to JSON");
+            }
+        }
+        RNIterableInternal.trackPushOpenWithCampaignId(campaignId, templateId, messageId, dataFieldsJson);
     }
 
     @ReactMethod
@@ -89,7 +133,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
                 readableArrayToIntegerArray(subscribedMessageTypeIds),
                 campaignId,
                 templateId);
-	}
+    }
 
     public void showMessage(String messageId, boolean consume, final Promise promise) {
         if (messageId == null || messageId == "") {
@@ -115,6 +159,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
         IterableApi.getInstance().trackInAppOpen(message, Serialization.getIterableInAppLocationFromInteger(location));
     }
 
+    @ReactMethod
     public void trackInAppClick(String messageId, @Nullable Integer location, String clickedUrl) {
         IterableInAppMessage message = RNIterableInternal.getMessageById(messageId);
         IterableInAppLocation inAppOpenLocation = Serialization.getIterableInAppLocationFromInteger(location);
@@ -133,6 +178,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
         IterableApi.getInstance().trackInAppClick(message, clickedUrl, inAppOpenLocation);
     }
 
+    @ReactMethod
     public void trackInAppClose(String messageId, Integer location, Integer source, String clickedUrl) {
         IterableInAppLocation inAppCloseLocation = Serialization.getIterableInAppLocationFromInteger(location);
         IterableInAppCloseAction closeAction = Serialization.getIterableInAppCloseSourceFromInteger(source);
@@ -142,13 +188,31 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
         }
         RNIterableInternal.trackInAppClose(messageId, clickedUrl, closeAction, inAppCloseLocation);
     }
+    // ---------------------------------------------------------------------------------------
+    // endregion
 
+    // ---------------------------------------------------------------------------------------
+    // region In App APIs
+
+    @ReactMethod
     public void inAppConsume(String messageId, Integer location, Integer source) {
         if (messageId == null) {
             return;
         }
         IterableApi.getInstance().inAppConsume(RNIterableInternal.getMessageById(messageId), Serialization.getIterableDeleteActionTypeFromInteger(source), Serialization.getIterableInAppLocationFromInteger(location));
     }
+
+    @ReactMethod
+    public void getInAppMessages(Promise promise) {
+        IterableLogger.d(TAG, "getMessages");
+        try {
+            JSONArray inAppMessageJsonArray = Serialization.serializeInAppMessages(IterableApi.getInstance().getInAppManager().getMessages());
+            promise.resolve(Serialization.convertJsonToArray(inAppMessageJsonArray));
+        } catch (JSONException e) {
+            IterableLogger.e(TAG, e.getLocalizedMessage());
+        }
+    }
+
     // ---------------------------------------------------------------------------------------
     // endregion
 
