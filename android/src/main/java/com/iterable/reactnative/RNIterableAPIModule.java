@@ -1,5 +1,7 @@
 package com.iterable.reactnative;
 
+import android.net.Uri;
+
 import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.Callback;
@@ -10,6 +12,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.iterable.iterableapi.IterableApi;
+import com.iterable.iterableapi.IterableHelper;
 import com.iterable.iterableapi.IterableInAppCloseAction;
 import com.iterable.iterableapi.IterableInAppLocation;
 import com.iterable.iterableapi.IterableInAppMessage;
@@ -36,7 +39,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void initializeWithApiKey(String apiKey, ReadableMap context) {
+    public void initializeWithApiKey(String apiKey, ReadableMap context, String version) {
         IterableLogger.d(TAG, "initializeWithApiKey: " + apiKey);
         IterableApi.getInstance().initialize(reactContext, apiKey);
     }
@@ -45,6 +48,12 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     public void setEmail(String email) {
         IterableLogger.d(TAG, "setEmail: " + email);
         IterableApi.getInstance().setEmail(email);
+    }
+
+    @ReactMethod
+    public void updateEmail(String email) {
+        IterableLogger.d(TAG, "Update Email: " + email);
+        IterableApi.getInstance().updateEmail(email);
     }
 
     @ReactMethod
@@ -101,6 +110,30 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
         }
         IterableApi.getInstance().trackPurchase(total, Serialization.commerceItemsFromReadableArray(items), dataFieldsJson);
     }
+
+	 @ReactMethod
+    public void updateSubscriptions(ReadableArray emailListIds, ReadableArray unsubscribedChannelIds, ReadableArray unsubscribedMessageTypeIds, ReadableArray subscribedMessageTypeIds, Integer campaignId, Integer templateId) {
+        IterableLogger.v(TAG, "updateSubscriptions");
+        IterableApi.getInstance().updateSubscriptions(readableArrayToIntegerArray(emailListIds),
+                readableArrayToIntegerArray(unsubscribedChannelIds),
+                readableArrayToIntegerArray(unsubscribedMessageTypeIds),
+                readableArrayToIntegerArray(subscribedMessageTypeIds),
+                campaignId,
+                templateId);
+	}
+
+    public void showMessage(String messageId, boolean consume, final Promise promise) {
+        if (messageId == null || messageId == "") {
+            return;
+        }
+        IterableApi.getInstance().getInAppManager().showMessage(RNIterableInternal.getMessageById(messageId), consume, new IterableHelper.IterableUrlCallback() {
+            @Override
+            public void execute(@Nullable Uri url) {
+                promise.resolve(url.toString());
+            }
+        });
+    }
+
 
     // region Track APIs
     // ---------------------------------------------------------------------------------------
@@ -170,4 +203,12 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
 
     // ---------------------------------------------------------------------------------------
     // endregion
+
+	private static Integer[] readableArrayToIntegerArray(ReadableArray array) {
+        Integer[] integers = new Integer[array.size()];
+        for (int i = 0; i < array.size(); i++) {
+            integers[i] = array.getInt(i);
+        }
+        return integers;
+    }
 }

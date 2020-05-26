@@ -5,7 +5,7 @@
 
 import Foundation
 
-import IterableSDK;
+import IterableSDK
 
 struct SerializationUtil {
     static func dateToInt(date: Date) -> Int {

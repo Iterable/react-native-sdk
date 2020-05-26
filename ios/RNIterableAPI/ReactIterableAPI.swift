@@ -45,8 +45,8 @@ class ReactIterableAPI: RCTEventEmitter {
         shouldEmit = false
     }
     
-    @objc(initializeWithApiKey:config:)
-    func initialize(apiKey: String, config configDict: [AnyHashable: Any]) {
+    @objc(initializeWithApiKey:config:version:)
+    func initialize(apiKey: String, config configDict: [AnyHashable: Any], version: String) {
         ITBInfo()
         let launchOptions = createLaunchOptions()
         let iterableConfig = IterableConfig.from(dict: configDict)
@@ -62,6 +62,7 @@ class ReactIterableAPI: RCTEventEmitter {
         
         DispatchQueue.main.async {
             IterableAPI.initialize(apiKey: apiKey, launchOptions: launchOptions, config: iterableConfig)
+            IterableAPI.setDeviceAttribute(name: "reactNativeSDKVersion", value: version)
         }
     }
 

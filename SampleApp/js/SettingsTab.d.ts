@@ -2,7 +2,8 @@ import { Component } from 'react';
 interface Props {
 }
 interface State {
-    email?: String;
+    email?: string;
+    isLoggedIn: boolean;
 }
 declare class SettingsTab extends Component<Props, State> {
     constructor(props: Props);
