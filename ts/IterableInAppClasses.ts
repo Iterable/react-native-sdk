@@ -127,7 +127,7 @@ class IterableInAppMessage {
   /**
    * the campaign ID for this message
    */
-  readonly campaignId: string
+  readonly campaignId: number
   /**
    * when to trigger this in-app
    */
@@ -158,7 +158,7 @@ class IterableInAppMessage {
   readonly read: boolean
 
   constructor(messageId: string,
-    campaignId: string,
+    campaignId: number,
     trigger: IterableInAppTrigger,
     createdAt: Date | undefined,
     expiresAt: Date | undefined,
@@ -183,7 +183,7 @@ class IterableInAppMessage {
 
   static fromDict(dict: any): IterableInAppMessage {
     const messageId = dict["messageId"] as string
-    const campaignId = dict["campaignId"] as string
+    const campaignId = dict["campaignId"] as number
     const trigger = IterableInAppTrigger.fromDict(dict["trigger"])
     let createdAt = dict["createdAt"]
     if (createdAt) {
