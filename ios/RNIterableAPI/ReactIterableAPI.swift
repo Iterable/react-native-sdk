@@ -90,13 +90,6 @@ class ReactIterableAPI: RCTEventEmitter {
         resolver(IterableAPI.userId)
     }
     
-    @objc(setUrlHandled:)
-    func set(urlHandled: Bool) {
-        ITBInfo()
-        self.urlHandled = urlHandled
-        urlDelegateSemaphore.signal()
-    }
-
     @objc(setInAppShowResponse:)
     func set(inAppShowResponse number: NSNumber) {
         ITBInfo()
@@ -336,10 +329,6 @@ class ReactIterableAPI: RCTEventEmitter {
     private var shouldEmit = false
     private let _methodQueue = DispatchQueue(label: String(describing: ReactIterableAPI.self))
     
-    // Handling url delegate
-    private var urlHandled = false
-    private var urlDelegateSemaphore = DispatchSemaphore(value: 0)
-    
     // Handling in-app delegate
     private var inAppShowResponse = InAppShowResponse.show
     private var inAppDelegateSemapohore = DispatchSemaphore(value: 0)
@@ -373,15 +362,7 @@ extension ReactIterableAPI: IterableURLDelegate {
 
         let contextDict = ReactIterableAPI.contextToDictionary(context: context)
         sendEvent(withName: EventName.handleUrlCalled.rawValue, body: ["url": url.absoluteString, "context": contextDict])
-        let timeoutResult = urlDelegateSemaphore.wait(timeout: .now() + 2.0)
-
-        if timeoutResult == .success {
-            ITBInfo("urlHandled: \(urlHandled)")
-            return urlHandled
-        } else {
-            ITBInfo("timed out")
-            return false
-        }
+        return true
     }
 
     private static func contextToDictionary(context: IterableActionContext) -> [AnyHashable: Any] {

@@ -1,6 +1,6 @@
 'use strict';
 
-import { NativeModules, NativeEventEmitter } from 'react-native';
+import { NativeModules, NativeEventEmitter, Linking } from 'react-native';
 import {
   IterableInAppMessage,
   IterableInAppShowResponse,
@@ -186,8 +186,13 @@ class Iterable {
         (dict) => {
           const url = dict["url"]
           const context = IterableActionContext.fromDict(dict["context"])
-          const result = config.urlDelegate!(url, context)
-          RNIterableAPI.setUrlHandled(result)
+          if (config.urlDelegate!(url, context) == false) {
+            Linking.canOpenURL(url)
+              .then(canOpen => {
+                if (canOpen) { Linking.openURL(url) }
+              })
+              .catch(reason => { console.log("could not open url: " + reason) })
+          }
         }
       )
     }

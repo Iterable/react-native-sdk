@@ -25,8 +25,6 @@ RCT_EXTERN_METHOD(disableDeviceForCurrentUser)
 
 RCT_EXTERN_METHOD(disableDeviceForAllUsers)
 
-RCT_EXTERN_METHOD(setUrlHandled: (BOOL) handled)
-
 RCT_EXTERN_METHOD(setInAppShowResponse: (nonnull NSNumber *) inAppShowResponse)
 
 RCT_EXTERN_METHOD(getLastPushPayload: (RCTPromiseResolveBlock) resolve
