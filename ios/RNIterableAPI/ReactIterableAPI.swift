@@ -139,12 +139,6 @@ class ReactIterableAPI: RCTEventEmitter {
         IterableAPI.attributionInfo = SerializationUtil.dictionaryToDecodable(dict: dict)
     }
     
-    @objc(trackPushOpenWithPayload:dataFields:)
-    func trackPushOpen(payload: [AnyHashable: Any], dataFields: [AnyHashable: Any]?) {
-        ITBInfo()
-        IterableAPI.track(pushOpen: payload, dataFields: dataFields)
-    }
-
     @objc(trackPushOpenWithCampaignId:templateId:messageId:appAlreadyRunning:dataFields:)
     func trackPushOpen(campaignId: NSNumber,
                        templateId: NSNumber?,

@@ -285,16 +285,6 @@ class Iterable {
 
   /**
   * 
-  * @param {any} payload 
-  * @param {any | undefined} dataFields 
-  */
-  static trackPushOpenWithPayload(payload: any, dataFields: any | undefined) {
-    console.log("trackPushOpenWithPayload")
-    RNIterableAPI.trackPushOpenWithPayload(payload, dataFields)
-  }
-
-  /**
-  * 
   * @param {number} campaignId 
   * @param {number} templateId 
   * @param {string | undefined} messageId 
