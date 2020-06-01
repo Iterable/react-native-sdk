@@ -4,6 +4,7 @@ import * as ReactNative from 'react-native';
 
 class RNIterableAPIMock {
   static email?: string
+  static userId?: string
 
   static getEmail(): Promise<string> {
     return new Promise((resolve, _) => {
@@ -13,6 +14,16 @@ class RNIterableAPIMock {
 
   static setEmail(email?: string) {
     RNIterableAPIMock.email = email
+  }
+
+  static getUserId(): Promise<string> {
+    return new Promise((resolve, _) => {
+      resolve(RNIterableAPIMock.userId)
+    })
+  }
+
+  static setUserId(userId?: string) {
+    RNIterableAPIMock.userId = userId
   }
 }
 

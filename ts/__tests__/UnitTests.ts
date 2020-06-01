@@ -6,3 +6,10 @@ test("set/get email", () => {
     expect(email).toBe("user@example.com")
   })
 })
+
+test("set/get userId", () => {
+  Iterable.setUserId("user1")
+  return Iterable.getUserId().then(userId => {
+    expect(userId).toBe("user1")
+  })
+})
