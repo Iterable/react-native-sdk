@@ -18,7 +18,7 @@
     "url": "git+https://github.com/Iterable/react-native-sdk.git"
   },
   "author": "Iterable",
-  "license": "LICENSE.md",
+  "license": "MIT",
   "homepage": "https://github.com/Iterable/react-native-sdk",
   "dependencies": {
     "react-native": "^0.61.5"
@@ -38,7 +38,6 @@
     "i": "^0.3.5",
     "jest": "^26.0.1",
     "react": "^16.3.2",
-    "react-native": "^0.56.0",
     "ts-jest": "^26.0.0",
     "typescript": "^3.9.3"
   }
