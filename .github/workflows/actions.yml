@@ -9,6 +9,9 @@ jobs:
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
+
+    - name: Install dependencies
+      run: yarn install
     
     - name: Test & publish code coverage
       uses: paambaati/codeclimate-action@v2.6.0
