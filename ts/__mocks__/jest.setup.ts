@@ -3,16 +3,16 @@ jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter.js')
 import * as ReactNative from 'react-native';
 
 class RNIterableAPIMock {
-  static email;
+  static email?: string
 
-  static getEmail() {
-    return new Promise((resolve, reject) => {
-      resolve(email)
+  static getEmail(): Promise<string> {
+    return new Promise((resolve, _) => {
+      resolve(RNIterableAPIMock.email)
     })
   }
 
-  static setEmail(value) {
-    email = value
+  static setEmail(email?: string) {
+    RNIterableAPIMock.email = email
   }
 }
 
