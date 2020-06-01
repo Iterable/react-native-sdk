@@ -56,3 +56,5 @@ Config.ts
 Config.js
 Config.d.ts
 Config.sample.d.ts
+
+coverage/
