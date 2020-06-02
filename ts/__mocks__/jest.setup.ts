@@ -34,6 +34,15 @@ class RNIterableAPIMock {
   static trackPushOpenWithCampaignId = jest.fn()
 
   static trackPurchase = jest.fn()
+
+  static trackInAppOpen = jest.fn()
+
+  static trackInAppClick = jest.fn()
+  
+  static trackInAppClose = jest.fn()
+
+  static trackEvent = jest.fn()
+
   static getLastPushPayload(): Promise<any | undefined> {
     return new Promise((resolve, _) => {
       resolve(RNIterableAPIMock.lastPushPayload)
