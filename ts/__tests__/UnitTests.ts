@@ -1,4 +1,4 @@
-import { Iterable } from '../Iterable'
+import { Iterable, IterableAttributionInfo } from '../Iterable'
 import { RNIterableAPIMock } from '../__mocks__/jest.setup'
 
 test("set/get email", () => {
@@ -30,5 +30,25 @@ test("getLastPushPayload", () => {
 
   return Iterable.getLastPushPayload().then(payload => {
     expect(payload).toEqual({ "var1": "val1", "var2": true })
+  })
+})
+
+test("set/get attribution info", () => {
+  Iterable.getAttributionInfo().then(attributionInfo => {
+    expect(attributionInfo?.campaignId).toBe(0)
+    expect(attributionInfo?.templateId).toBe(0)
+    expect(attributionInfo?.messageId).toBe("")
+  })
+
+  let campaignId = 1234
+  let templateId = 5678
+  let messageId = "qwer"
+
+  Iterable.setAttributionInfo(new IterableAttributionInfo(campaignId, templateId, messageId))
+
+  Iterable.getAttributionInfo().then(attributionInfo => {
+    expect(attributionInfo?.campaignId).toBe(campaignId)
+    expect(attributionInfo?.templateId).toBe(templateId)
+    expect(attributionInfo?.messageId).toBe(messageId)
   })
 })

@@ -2,10 +2,23 @@ jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter.js')
 
 import * as ReactNative from 'react-native';
 
+class IterableAttributionInfo {
+  campaignId: number
+  templateId: number
+  messageId: string
+
+  constructor(campaignId: number, templateId: number, messageId: string) {
+    this.campaignId = campaignId
+    this.templateId = templateId
+    this.messageId = messageId
+  }
+}
+
 class RNIterableAPIMock {
   static email?: string
   static userId?: string
   static lastPushPayload?: any
+  static attributionInfo?: IterableAttributionInfo
 
   static getEmail(): Promise<string> {
     return new Promise((resolve, _) => {
@@ -35,6 +48,16 @@ class RNIterableAPIMock {
     return new Promise((resolve, _) => {
       resolve(RNIterableAPIMock.lastPushPayload)
     })
+  }
+
+  static getAttributionInfo(): Promise<IterableAttributionInfo | undefined> {
+    return new Promise((resolve, _) => {
+      resolve(RNIterableAPIMock.attributionInfo)
+    })
+  }
+
+  static setAttributionInfo(attributionInfo?: IterableAttributionInfo) {
+    RNIterableAPIMock.attributionInfo = attributionInfo
   }
 }
 
