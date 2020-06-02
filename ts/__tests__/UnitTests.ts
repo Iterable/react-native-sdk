@@ -1,5 +1,6 @@
-import { Iterable } from '../Iterable'
+import { Iterable, IterableCommerceItem } from '../Iterable'
 import { RNIterableAPIMock } from '../__mocks__/jest.setup'
+import { IterableInAppMessage, IterableInAppLocation, IterableInAppTrigger, IterableInAppTriggerType, IterableInboxMetadata } from '../IterableInAppClasses'
 
 test("set/get email", () => {
   Iterable.setEmail("user@example.com")
@@ -31,4 +32,32 @@ test("getLastPushPayload", () => {
   return Iterable.getLastPushPayload().then(payload => {
     expect(payload).toEqual({ "var1": "val1", "var2": true })
   })
+})
+
+test("trackPushOpenWithCampaignId", () => {
+  Iterable.trackPushOpenWithCampaignId(123,234,"SOMEMESSAEGID",false,{"dataFieldKey":"dataFieldValue"})
+
+  expect(RNIterableAPIMock.trackPushOpenWithCampaignId).toBeCalledWith(
+    expect.any(Number),
+    expect.any(Number),
+    expect.any(String),
+    expect.any(Boolean),
+    expect.any(Object)
+  )
+})
+
+test("trackPurchase", () => {
+
+  Iterable.trackPurchase(
+    10,
+    [new IterableCommerceItem("id1","Boba Tea", 18, 26)],
+    {"dataFieldKey":"dataFieldValue"}
+  )
+
+  expect(RNIterableAPIMock.trackPurchase).toBeCalledWith(
+    expect.any(Number),
+    expect.any(Object),
+    expect.any(Object)
+  )
+
 })

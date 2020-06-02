@@ -31,6 +31,9 @@ class RNIterableAPIMock {
 
   static disableDeviceForAllUsers = jest.fn()
 
+  static trackPushOpenWithCampaignId = jest.fn()
+
+  static trackPurchase = jest.fn()
   static getLastPushPayload(): Promise<any | undefined> {
     return new Promise((resolve, _) => {
       resolve(RNIterableAPIMock.lastPushPayload)
