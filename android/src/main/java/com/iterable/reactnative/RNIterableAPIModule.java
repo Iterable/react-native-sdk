@@ -1,9 +1,11 @@
 package com.iterable.reactnative;
 
 import android.net.Uri;
+import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -136,6 +138,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
                 templateId);
     }
 
+    @ReactMethod
     public void showMessage(String messageId, boolean consume, final Promise promise) {
         if (messageId == null || messageId == "") {
             return;
@@ -177,6 +180,15 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
 
     }
 
+    public void getLastPushPayload(Promise promise) {
+        Bundle payloadData = IterableApi.getInstance().getPayloadData();
+        if (payloadData != null) {
+            promise.resolve(Arguments.fromBundle(IterableApi.getInstance().getPayloadData()));
+        } else {
+            IterableLogger.d(TAG, "No payload data found");
+        }
+
+    }
 
     // region Track APIs
     // ---------------------------------------------------------------------------------------
