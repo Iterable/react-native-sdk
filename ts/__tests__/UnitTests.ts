@@ -124,10 +124,9 @@ test("custom action delegate is called", () => {
   const actionDict = { "type": actionName, "data": actionData }
   nativeEmitter.emit(EventName.handleCustomActionCalled, { "action": actionDict, "context": { "action": actionDict, "actionSource": IterableActionSource.inApp } });
 
-  return new Promise(res => setTimeout(() => {
+  return TestHelper.delayed(0, () => {
     let expectedAction = new IterableAction(actionName, actionData)
     let expectedContext = new IterableActionContext(expectedAction, IterableActionSource.inApp)
     expect(config.customActionDelegate).toBeCalledWith(expectedAction, expectedContext)
-    res()
-  }, 100))
+  })
 })
