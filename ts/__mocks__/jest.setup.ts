@@ -41,30 +41,11 @@ class RNIterableAPIMock {
 }
 
 class MockLinking {
-  static canOpen = false
-  static urlToOpen?: string
-
-  static clear() {
-    this.canOpen = false
-    this.urlToOpen = undefined
-  }
+  static canOpenURL = jest.fn()
+  static openURL = jest.fn()
 
   static addEventListener = jest.fn()
-
   static removeEventListener = jest.fn()
-
-  static canOpenURL(url: string): Promise<boolean> {
-    return new Promise((resolve, _) => {
-      resolve(this.canOpen)
-    })
-  }
-
-  static openURL(url: string): Promise<any> {
-    return new Promise((resolve, _) => {
-      this.urlToOpen = url
-      resolve(undefined)
-    })
-  }
 }
 
 jest.doMock('react-native', () => {
@@ -82,4 +63,15 @@ jest.doMock('react-native', () => {
   );
 });
 
-export { RNIterableAPIMock, MockLinking }
+class TestHelper {
+  static delayed(delay: number, fn: () => void): Promise<any> {
+    return new Promise(res => setTimeout(() => {
+      fn()
+      res()
+    }, delay))
+  }
+}
+
+
+
+export { RNIterableAPIMock, MockLinking, TestHelper }

@@ -1,5 +1,5 @@
 import { Iterable, IterableConfig, IterableActionContext, EventName } from '../Iterable'
-import { RNIterableAPIMock, MockLinking } from '../__mocks__/jest.setup'
+import { RNIterableAPIMock, MockLinking, TestHelper } from '../__mocks__/jest.setup'
 import { NativeEventEmitter } from 'react-native'
 
 test("set/get email", () => {
@@ -34,71 +34,76 @@ test("getLastPushPayload", () => {
   })
 })
 
-test("open url when url delegate returns false", async () => {
-  MockLinking.clear()
-  MockLinking.canOpen = true
+test("open url when url delegate returns false", () => {
+  MockLinking.canOpenURL = jest.fn(() => {
+    return new Promise(res => { res(true) })
+  })
+  MockLinking.openURL.mockReset()
+
   const nativeEmitter = new NativeEventEmitter();
   nativeEmitter.removeAllListeners(EventName.handleUrlCalled)
 
   const expectedUrl = "https://somewhere.com"
   const config = new IterableConfig()
-  config.urlDelegate = (url: string, context: IterableActionContext) => {
-    expect(url).toBe(expectedUrl)
+  config.urlDelegate = jest.fn((url: string, _: IterableActionContext) => {
     return false
-  }
+  })
 
   Iterable.initialize("apiKey", config)
   const actionDict = { "type": "openUrl" }
   nativeEmitter.emit(EventName.handleUrlCalled, { "url": expectedUrl, "context": { "action": actionDict, "source": "inApp" } });
 
-  await new Promise(res => setTimeout(() => {
-    expect(MockLinking.urlToOpen).toBe(expectedUrl)
-    res()
-  }, 100))
+  return TestHelper.delayed(0, () => {
+    expect(config.urlDelegate).toBeCalledWith(expectedUrl, expect.any(Object))
+    expect(MockLinking.openURL).toBeCalledWith(expectedUrl)
+  })
 })
 
-test("do not open url when url delegate returns false and canOpen is false", async () => {
-  MockLinking.clear()
-  MockLinking.canOpen = false
+test("do not open url when url delegate returns false and canOpen is false", () => {
+  MockLinking.canOpenURL = jest.fn(() => {
+    return new Promise(res => { res(false) })
+  })
+  MockLinking.openURL.mockReset()
+
   const nativeEmitter = new NativeEventEmitter();
   nativeEmitter.removeAllListeners(EventName.handleUrlCalled)
 
   const expectedUrl = "https://somewhere.com"
   const config = new IterableConfig()
-  config.urlDelegate = (url: string, context: IterableActionContext) => {
-    expect(url).toBe(expectedUrl)
+  config.urlDelegate = jest.fn((url: string, _: IterableActionContext) => {
     return false
-  }
+  })
 
   Iterable.initialize("apiKey", config)
   const actionDict = { "type": "openUrl" }
   nativeEmitter.emit(EventName.handleUrlCalled, { "url": expectedUrl, "context": { "action": actionDict, "source": "inApp" } });
 
-  await new Promise(res => setTimeout(() => {
-    expect(MockLinking.urlToOpen).not.toBe(expectedUrl)
-    res()
-  }, 100))
+  return TestHelper.delayed(0, () => {
+    expect(config.urlDelegate).toBeCalledWith(expectedUrl, expect.any(Object))
+    expect(MockLinking.openURL).not.toBeCalled()
+  })
 })
 
-test("do not open url when url delegate returns true", async () => {
-  MockLinking.clear()
-  MockLinking.canOpen = true
+test("do not open url when url delegate returns true", () => {
+  MockLinking.canOpenURL = jest.fn(() => {
+    return new Promise(res => { res(true) })
+  })
+  MockLinking.openURL.mockReset()
+
   const nativeEmitter = new NativeEventEmitter();
   nativeEmitter.removeAllListeners(EventName.handleUrlCalled)
 
   const expectedUrl = "https://somewhere.com"
   const config = new IterableConfig()
-  config.urlDelegate = (url: string, context: IterableActionContext) => {
-    expect(url).toBe(expectedUrl)
+  config.urlDelegate = jest.fn((url: string, _: IterableActionContext) => {
     return true
-  }
+  })
 
   Iterable.initialize("apiKey", config)
   const actionDict = { "type": "openUrl" }
   nativeEmitter.emit(EventName.handleUrlCalled, { "url": expectedUrl, "context": { "action": actionDict, "source": "inApp" } });
 
-  await new Promise(res => setTimeout(() => {
-    expect(MockLinking.urlToOpen).not.toBe(expectedUrl)
-    res()
-  }, 100))
+  return TestHelper.delayed(0, () => {
+    expect(MockLinking.openURL).not.toBeCalled()
+  })
 })
