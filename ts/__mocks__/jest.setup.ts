@@ -38,7 +38,7 @@ class RNIterableAPIMock {
   static trackInAppOpen = jest.fn()
 
   static trackInAppClick = jest.fn()
-  
+
   static trackInAppClose = jest.fn()
 
   static trackEvent = jest.fn()

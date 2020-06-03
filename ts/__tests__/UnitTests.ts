@@ -35,87 +35,86 @@ test("getLastPushPayload", () => {
 })
 
 test("trackPushOpenWithCampaignId", () => {
-  Iterable.trackPushOpenWithCampaignId(123, 234, "SOMEMESSAEGID", false, {"dataFieldKey":"dataFieldValue"})
+  Iterable.trackPushOpenWithCampaignId(123, 234, "someMessageId", false, { "dataFieldKey": "dataFieldValue" })
 
-  expect(RNIterableAPIMock.trackPushOpenWithCampaignId).toBeCalledWith (
-    expect.any(Number),
-    expect.any(Number),
-    expect.any(String),
-    expect.any(Boolean),
-    expect.any(Object)
+  expect(RNIterableAPIMock.trackPushOpenWithCampaignId).toBeCalledWith(
+    123,
+    234,
+    "someMessageId",
+    false,
+    { "dataFieldKey": "dataFieldValue" }
   )
 })
 
 test("trackPurchase", () => {
-
-  Iterable.trackPurchase (
+  Iterable.trackPurchase(
     10,
     [new IterableCommerceItem("id1", "Boba Tea", 18, 26)],
-    {"dataFieldKey":"dataFieldValue"}
+    { "dataFieldKey": "dataFieldValue" }
   )
 
-  expect(RNIterableAPIMock.trackPurchase).toBeCalledWith (
-    expect.any(Number),
-    expect.any(Object),
-    expect.any(Object)
+  expect(RNIterableAPIMock.trackPurchase).toBeCalledWith(
+    10,
+    [new IterableCommerceItem("id1", "Boba Tea", 18, 26)],
+    { "dataFieldKey": "dataFieldValue" }
   )
 })
 
 test("trackInAppOpen", () => {
-  let msg: IterableInAppMessage = new IterableInAppMessage("someMessageId", 123, new IterableInAppTrigger(IterableInAppTriggerType.event), new Date(1234), new Date(123123), true, new IterableInboxMetadata("title", "subtitle", "iconURL"), {"CustomPayloadKey":"CustomPayloadValue"}, false);
-  Iterable.trackInAppOpen (
+  let msg: IterableInAppMessage = new IterableInAppMessage("someMessageId", 123, new IterableInAppTrigger(IterableInAppTriggerType.event), new Date(1234), new Date(123123), true, new IterableInboxMetadata("title", "subtitle", "iconURL"), { "CustomPayloadKey": "CustomPayloadValue" }, false);
+  Iterable.trackInAppOpen(
     msg,
     IterableInAppLocation.inApp
   )
 
-  expect(RNIterableAPIMock.trackInAppOpen).toBeCalledWith (
-    expect.any(String),
-    expect.any(Number)
+  expect(RNIterableAPIMock.trackInAppOpen).toBeCalledWith(
+    "someMessageId",
+    0
   )
 })
 
 test("trackInAppClick", () => {
-  let msg: IterableInAppMessage = new IterableInAppMessage("someMessageId", 123, new IterableInAppTrigger(IterableInAppTriggerType.event), new Date(1234), new Date(123123), true, new IterableInboxMetadata("title", "subtitle", "iconURL"), {"CustomPayloadKey":"CustomPayloadValue"}, false);
-  Iterable.trackInAppClick (
+  let msg: IterableInAppMessage = new IterableInAppMessage("someMessageId", 123, new IterableInAppTrigger(IterableInAppTriggerType.event), new Date(1234), new Date(123123), true, new IterableInboxMetadata("title", "subtitle", "iconURL"), { "CustomPayloadKey": "CustomPayloadValue" }, false);
+  Iterable.trackInAppClick(
     msg,
     IterableInAppLocation.inApp,
     "URLClicked"
   )
 
-  expect(RNIterableAPIMock.trackInAppClick).toBeCalledWith (
-    expect.any(String),
-    expect.any(Number),
-    expect.any(String)
+  expect(RNIterableAPIMock.trackInAppClick).toBeCalledWith(
+    "someMessageId",
+    0,
+    "URLClicked"
   )
 })
 
 test("trackInAppClose", () => {
-  let msg: IterableInAppMessage = new IterableInAppMessage("someMessageId", 123, new IterableInAppTrigger(IterableInAppTriggerType.event), new Date(1234), new Date(123123), true, new IterableInboxMetadata("title", "subtitle", "iconURL"), {"CustomPayloadKey":"CustomPayloadValue"}, false);
-  Iterable.trackInAppClose (
+  let msg: IterableInAppMessage = new IterableInAppMessage("someMessageId", 123, new IterableInAppTrigger(IterableInAppTriggerType.event), new Date(1234), new Date(123123), true, new IterableInboxMetadata("title", "subtitle", "iconURL"), { "CustomPayloadKey": "CustomPayloadValue" }, false);
+  Iterable.trackInAppClose(
     msg,
     IterableInAppLocation.inbox,
     IterableInAppCloseSource.link,
     "ClickedURL"
   )
 
-  expect(RNIterableAPIMock.trackInAppClose).toBeCalledWith (
-    expect.any(String),
-    expect.any(Number),
-    expect.any(Number),
-    expect.any(String)
+  expect(RNIterableAPIMock.trackInAppClose).toBeCalledWith(
+    "someMessageId",
+    1,
+    1,
+    "ClickedURL"
   )
 })
 
 test("trackEvent", () => {
-  let msg: IterableInAppMessage = new IterableInAppMessage("someMessageId", 123, new IterableInAppTrigger(IterableInAppTriggerType.event), new Date(1234), new Date(123123), true, new IterableInboxMetadata("title", "subtitle", "iconURL"), {"CustomPayloadKey":"CustomPayloadValue"}, false);
-  Iterable.trackEvent (
+  let msg: IterableInAppMessage = new IterableInAppMessage("someMessageId", 123, new IterableInAppTrigger(IterableInAppTriggerType.event), new Date(1234), new Date(123123), true, new IterableInboxMetadata("title", "subtitle", "iconURL"), { "CustomPayloadKey": "CustomPayloadValue" }, false);
+  Iterable.trackEvent(
     "EventName",
-    {"DatafieldKey":"DatafieldValue"}
+    { "DatafieldKey": "DatafieldValue" }
   )
 
-  expect(RNIterableAPIMock.trackEvent).toBeCalledWith (
-    expect.any(String),
-    expect.any(Object)
+  expect(RNIterableAPIMock.trackEvent).toBeCalledWith(
+    "EventName",
+    { "DatafieldKey": "DatafieldValue" }
   )
 })
 
