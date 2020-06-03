@@ -1,18 +1,9 @@
 jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter.js')
 
-import * as ReactNative from 'react-native';
+import * as ReactNative from 'react-native'
 
-class IterableAttributionInfo {
-  campaignId: number
-  templateId: number
-  messageId: string
-
-  constructor(campaignId: number, templateId: number, messageId: string) {
-    this.campaignId = campaignId
-    this.templateId = templateId
-    this.messageId = messageId
-  }
-}
+import { IterableAttributionInfo } from '../Iterable'
+import { IterableInAppMessage, IterableInAppLocation, IterableInAppDeleteSource } from '../IterableInAppClasses'
 
 class RNIterableAPIMock {
   static email?: string

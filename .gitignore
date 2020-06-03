@@ -33,22 +33,12 @@ buck-out/
 *.keystore
 !debug.keystore
 
-# fastlane
-#
-# It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the
-# screenshots whenever they are needed.
-# For more information about the recommended setup visit:
-# https://docs.fastlane.tools/best-practices/source-control/
-
 # Bundle artifact
 *.jsbundle
 
 # CocoaPods
 Pods/
 Podfile.lock
-
-yarn.lock
-package-lock.json
 
 /js
 
