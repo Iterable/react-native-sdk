@@ -33,14 +33,6 @@ test("getLastPushPayload", () => {
   })
 })
 
-test("default attribution info values", () => {
-  return Iterable.getAttributionInfo().then(attributionInfo => {
-    expect(attributionInfo?.campaignId).toBe(0)
-    expect(attributionInfo?.templateId).toBe(0)
-    expect(attributionInfo?.messageId).toBe("")
-  })
-})
-
 test("set/get attribution info", () => {
   let campaignId = 1234
   let templateId = 5678
