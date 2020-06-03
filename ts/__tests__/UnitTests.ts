@@ -1,4 +1,4 @@
-import { Iterable, IterableConfig, IterableActionContext, EventName } from '../Iterable'
+import { Iterable, IterableConfig, IterableActionContext, EventName, IterableAction, IterableActionSource } from '../Iterable'
 import { RNIterableAPIMock, MockLinking, TestHelper } from '../__mocks__/jest.setup'
 import { NativeEventEmitter } from 'react-native'
 
@@ -106,4 +106,28 @@ test("do not open url when url delegate returns true", () => {
   return TestHelper.delayed(0, () => {
     expect(MockLinking.openURL).not.toBeCalled()
   })
+})
+
+test("custom action delegate is called", () => {
+  const nativeEmitter = new NativeEventEmitter();
+  nativeEmitter.removeAllListeners(EventName.handleUrlCalled)
+
+  const actionName = "zeeActionName"
+  const actionData = "zeeActionData"
+  const config = new IterableConfig()
+
+  config.customActionDelegate = jest.fn((action: IterableAction, context: IterableActionContext) => {
+    return true
+  })
+
+  Iterable.initialize("apiKey", config)
+  const actionDict = { "type": actionName, "data": actionData }
+  nativeEmitter.emit(EventName.handleCustomActionCalled, { "action": actionDict, "context": { "action": actionDict, "actionSource": IterableActionSource.inApp } });
+
+  return new Promise(res => setTimeout(() => {
+    let expectedAction = new IterableAction(actionName, actionData)
+    let expectedContext = new IterableActionContext(expectedAction, IterableActionSource.inApp)
+    expect(config.customActionDelegate).toBeCalledWith(expectedAction, expectedContext)
+    res()
+  }, 100))
 })
