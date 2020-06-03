@@ -1,11 +1,15 @@
 jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter.js')
 
-import * as ReactNative from 'react-native';
+import * as ReactNative from 'react-native'
+
+import { IterableAttributionInfo } from '../Iterable'
+import { IterableInAppMessage, IterableInAppLocation, IterableInAppDeleteSource } from '../IterableInAppClasses'
 
 class RNIterableAPIMock {
   static email?: string
   static userId?: string
   static lastPushPayload?: any
+  static attributionInfo?: IterableAttributionInfo
 
   static getEmail(): Promise<string> {
     return new Promise((resolve, _) => {
@@ -35,6 +39,16 @@ class RNIterableAPIMock {
     return new Promise((resolve, _) => {
       resolve(RNIterableAPIMock.lastPushPayload)
     })
+  }
+
+  static getAttributionInfo(): Promise<IterableAttributionInfo | undefined> {
+    return new Promise((resolve, _) => {
+      resolve(RNIterableAPIMock.attributionInfo)
+    })
+  }
+
+  static setAttributionInfo(attributionInfo?: IterableAttributionInfo) {
+    RNIterableAPIMock.attributionInfo = attributionInfo
   }
 }
 
