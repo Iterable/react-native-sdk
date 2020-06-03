@@ -49,3 +49,5 @@ Config.sample.d.ts
 
 yarn.lock
 package-lock.json
+
+coverage/
