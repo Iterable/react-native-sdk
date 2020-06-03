@@ -36,6 +36,35 @@ class RNIterableAPIMock {
       resolve(RNIterableAPIMock.lastPushPayload)
     })
   }
+
+  static initializeWithApiKey = jest.fn()
+}
+
+class MockLinking {
+  static canOpen = false
+  static urlToOpen?: string
+
+  static clear() {
+    this.canOpen = false
+    this.urlToOpen = undefined
+  }
+
+  static addEventListener = jest.fn()
+
+  static removeEventListener = jest.fn()
+
+  static canOpenURL(url: string): Promise<boolean> {
+    return new Promise((resolve, _) => {
+      resolve(this.canOpen)
+    })
+  }
+
+  static openURL(url: string): Promise<any> {
+    return new Promise((resolve, _) => {
+      this.urlToOpen = url
+      resolve(undefined)
+    })
+  }
 }
 
 jest.doMock('react-native', () => {
@@ -47,9 +76,10 @@ jest.doMock('react-native', () => {
         ...ReactNative.NativeModules,
         RNIterableAPI: RNIterableAPIMock,
       },
+      Linking: MockLinking,
     },
     ReactNative,
   );
 });
 
-export { RNIterableAPIMock }
+export { RNIterableAPIMock, MockLinking }
