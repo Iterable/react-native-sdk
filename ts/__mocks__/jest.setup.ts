@@ -1,18 +1,9 @@
 jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter.js')
 
-import * as ReactNative from 'react-native';
+import * as ReactNative from 'react-native'
 
-class IterableAttributionInfo {
-  campaignId: number
-  templateId: number
-  messageId: string
-
-  constructor(campaignId: number, templateId: number, messageId: string) {
-    this.campaignId = campaignId
-    this.templateId = templateId
-    this.messageId = messageId
-  }
-}
+import { IterableAttributionInfo } from '../Iterable'
+import { IterableInAppMessage, IterableInAppLocation, IterableInAppDeleteSource } from '../IterableInAppClasses'
 
 class RNIterableAPIMock {
   static email?: string
@@ -59,6 +50,20 @@ class RNIterableAPIMock {
   static setAttributionInfo(attributionInfo?: IterableAttributionInfo) {
     RNIterableAPIMock.attributionInfo = attributionInfo
   }
+
+  // static inAppConsume(message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppDeleteSource) {
+  //   jest.fn()
+  // }
+
+  static inAppConsume = jest.fn()
+
+  static updateUser(dataFields: any, mergeNestedObjects: boolean) {
+
+  }
+
+  static updateEmail(email: string) {
+
+  }
 }
 
 jest.doMock('react-native', () => {
@@ -72,7 +77,7 @@ jest.doMock('react-native', () => {
       },
     },
     ReactNative,
-  );
-});
+  )
+})
 
 export { RNIterableAPIMock }
