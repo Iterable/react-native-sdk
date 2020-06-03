@@ -193,7 +193,7 @@ class IterableInAppMessage {
     if (expiresAt) {
       expiresAt = new Date(expiresAt as number)
     }
-    let saveToInbox = dict["saveToInbox"] as boolean
+    let saveToInbox = this.readBoolean(dict, "saveToInbox")
     let inboxMetadataDict = dict["inboxMetadata"]
     let inboxMetadata: IterableInboxMetadata | undefined
     if (inboxMetadataDict) {
@@ -202,7 +202,7 @@ class IterableInAppMessage {
       inboxMetadata = undefined
     }
     let customPayload = dict["customPayload"]
-    let read = dict["read"] as boolean
+    let read = this.readBoolean(dict, "read")
 
     return new IterableInAppMessage(
       messageId,
@@ -215,6 +215,14 @@ class IterableInAppMessage {
       customPayload,
       read
     )
+  }
+
+  private static readBoolean(dict: any, key: string): boolean {
+    if (dict[key]) {
+      return dict[key] as boolean
+    } else {
+      return false
+    }
   }
 }
 

@@ -1,6 +1,7 @@
 import { Iterable, IterableConfig, IterableActionContext, EventName, IterableAction, IterableActionSource } from '../Iterable'
 import { RNIterableAPIMock, MockLinking, TestHelper } from '../__mocks__/jest.setup'
 import { NativeEventEmitter } from 'react-native'
+import { IterableInAppTriggerType, IterableInAppMessage, IterableInAppShowResponse, IterableInAppTrigger } from '../IterableInAppClasses'
 
 test("set/get email", () => {
   Iterable.setEmail("user@example.com")
@@ -110,7 +111,7 @@ test("do not open url when url delegate returns true", () => {
 
 test("custom action delegate is called", () => {
   const nativeEmitter = new NativeEventEmitter();
-  nativeEmitter.removeAllListeners(EventName.handleUrlCalled)
+  nativeEmitter.removeAllListeners(EventName.handleCustomActionCalled)
 
   const actionName = "zeeActionName"
   const actionData = "zeeActionData"
@@ -128,5 +129,33 @@ test("custom action delegate is called", () => {
     let expectedAction = new IterableAction(actionName, actionData)
     let expectedContext = new IterableActionContext(expectedAction, IterableActionSource.inApp)
     expect(config.customActionDelegate).toBeCalledWith(expectedAction, expectedContext)
+  })
+})
+
+test("in-app delegate is called", () => {
+  RNIterableAPIMock.setInAppShowResponse.mockReset()
+
+  const nativeEmitter = new NativeEventEmitter();
+  nativeEmitter.removeAllListeners(EventName.handleInAppCalled)
+
+  const config = new IterableConfig()
+
+  config.inAppDelegate = jest.fn((message: IterableInAppMessage) => {
+    return IterableInAppShowResponse.show
+  })
+
+  Iterable.initialize("apiKey", config)
+  const messageDict = {
+    "messageId": "message1",
+    "campaignId": 1234,
+    "trigger": { "type": IterableInAppTriggerType.immediate },
+  }
+  nativeEmitter.emit(EventName.handleInAppCalled, messageDict);
+
+  return TestHelper.delayed(0, () => {
+    expect(config.inAppDelegate)
+    let expectedMessage = new IterableInAppMessage("message1", 1234, new IterableInAppTrigger(IterableInAppTriggerType.immediate), undefined, undefined, false, undefined, undefined, false)
+    expect(config.inAppDelegate).toBeCalledWith(expectedMessage)
+    expect(RNIterableAPIMock.setInAppShowResponse).toBeCalledWith(IterableInAppShowResponse.show)
   })
 })
