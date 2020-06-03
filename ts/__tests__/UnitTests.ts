@@ -1,4 +1,4 @@
-import { Iterable, IterableConfig, IterableActionContext } from '../Iterable'
+import { Iterable, IterableConfig, IterableActionContext, EventName } from '../Iterable'
 import { RNIterableAPIMock, MockLinking } from '../__mocks__/jest.setup'
 import { NativeEventEmitter } from 'react-native'
 
@@ -38,7 +38,7 @@ test("open url when url delegate returns false", async () => {
   MockLinking.clear()
   MockLinking.canOpen = true
   const nativeEmitter = new NativeEventEmitter();
-  nativeEmitter.removeAllListeners("handleUrlCalled")
+  nativeEmitter.removeAllListeners(EventName.handleUrlCalled)
 
   const expectedUrl = "https://somewhere.com"
   const config = new IterableConfig()
@@ -49,7 +49,7 @@ test("open url when url delegate returns false", async () => {
 
   Iterable.initialize("apiKey", config)
   const actionDict = { "type": "openUrl" }
-  nativeEmitter.emit('handleUrlCalled', { "url": expectedUrl, "context": { "action": actionDict, "source": "inApp" } });
+  nativeEmitter.emit(EventName.handleUrlCalled, { "url": expectedUrl, "context": { "action": actionDict, "source": "inApp" } });
 
   await new Promise(res => setTimeout(() => {
     expect(MockLinking.urlToOpen).toBe(expectedUrl)
@@ -61,7 +61,7 @@ test("do not open url when url delegate returns false and canOpen is false", asy
   MockLinking.clear()
   MockLinking.canOpen = false
   const nativeEmitter = new NativeEventEmitter();
-  nativeEmitter.removeAllListeners("handleUrlCalled")
+  nativeEmitter.removeAllListeners(EventName.handleUrlCalled)
 
   const expectedUrl = "https://somewhere.com"
   const config = new IterableConfig()
@@ -72,7 +72,7 @@ test("do not open url when url delegate returns false and canOpen is false", asy
 
   Iterable.initialize("apiKey", config)
   const actionDict = { "type": "openUrl" }
-  nativeEmitter.emit('handleUrlCalled', { "url": expectedUrl, "context": { "action": actionDict, "source": "inApp" } });
+  nativeEmitter.emit(EventName.handleUrlCalled, { "url": expectedUrl, "context": { "action": actionDict, "source": "inApp" } });
 
   await new Promise(res => setTimeout(() => {
     expect(MockLinking.urlToOpen).not.toBe(expectedUrl)
@@ -84,7 +84,7 @@ test("do not open url when url delegate returns true", async () => {
   MockLinking.clear()
   MockLinking.canOpen = true
   const nativeEmitter = new NativeEventEmitter();
-  nativeEmitter.removeAllListeners("handleUrlCalled")
+  nativeEmitter.removeAllListeners(EventName.handleUrlCalled)
 
   const expectedUrl = "https://somewhere.com"
   const config = new IterableConfig()
@@ -95,7 +95,7 @@ test("do not open url when url delegate returns true", async () => {
 
   Iterable.initialize("apiKey", config)
   const actionDict = { "type": "openUrl" }
-  nativeEmitter.emit('handleUrlCalled', { "url": expectedUrl, "context": { "action": actionDict, "source": "inApp" } });
+  nativeEmitter.emit(EventName.handleUrlCalled, { "url": expectedUrl, "context": { "action": actionDict, "source": "inApp" } });
 
   await new Promise(res => setTimeout(() => {
     expect(MockLinking.urlToOpen).not.toBe(expectedUrl)
