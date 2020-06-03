@@ -33,20 +33,22 @@ test("getLastPushPayload", () => {
   })
 })
 
-test("set/get attribution info", () => {
-  Iterable.getAttributionInfo().then(attributionInfo => {
+test("default attribution info values", () => {
+  return Iterable.getAttributionInfo().then(attributionInfo => {
     expect(attributionInfo?.campaignId).toBe(0)
     expect(attributionInfo?.templateId).toBe(0)
     expect(attributionInfo?.messageId).toBe("")
   })
+})
 
+test("set/get attribution info", () => {
   let campaignId = 1234
   let templateId = 5678
   let messageId = "qwer"
 
   Iterable.setAttributionInfo(new IterableAttributionInfo(campaignId, templateId, messageId))
 
-  Iterable.getAttributionInfo().then(attributionInfo => {
+  return Iterable.getAttributionInfo().then(attributionInfo => {
     expect(attributionInfo?.campaignId).toBe(campaignId)
     expect(attributionInfo?.templateId).toBe(templateId)
     expect(attributionInfo?.messageId).toBe(messageId)
