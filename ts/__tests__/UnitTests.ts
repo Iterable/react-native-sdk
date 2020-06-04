@@ -1,6 +1,7 @@
-import { Iterable, IterableAttributionInfo, IterableConfig, PushServicePlatform, IterableCommerceItem } from '../Iterable'
-import { RNIterableAPIMock } from '../__mocks__/jest.setup'
+import { Iterable, IterableAttributionInfo, IterableConfig, PushServicePlatform, IterableCommerceItem, IterableActionContext, EventName } from '../Iterable'
+import { RNIterableAPIMock, MockLinking, TestHelper } from '../__mocks__/jest.setup'
 import { IterableInAppMessage, IterableInAppLocation, IterableInAppTrigger, IterableInAppTriggerType, IterableInboxMetadata, IterableInAppCloseSource } from '../IterableInAppClasses'
+import { NativeEventEmitter } from 'react-native'
 
 test("set/get email", () => {
   Iterable.setEmail("user@example.com")
@@ -134,7 +135,7 @@ test("set/get attribution info", () => {
 
 test("default config values", () => {
   var config = new IterableConfig()
-  
+
   expect(config.pushIntegrationName).toBe(undefined)
   expect(config.sandboxPushIntegrationName).toBe(undefined)
   expect(config.pushPlatform).toBe(PushServicePlatform.auto)
@@ -158,4 +159,78 @@ test("default config dictionary values", () => {
   expect(configDict["urlDelegatePresent"]).toBe(false)
   expect(configDict["customActionDelegatePresent"]).toBe(false)
   expect(configDict["inAppDelegatePresent"]).toBe(false)
+})
+
+test("open url when url delegate returns false", () => {
+  MockLinking.canOpenURL = jest.fn(() => {
+    return new Promise(res => { res(true) })
+  })
+  MockLinking.openURL.mockReset()
+
+  const nativeEmitter = new NativeEventEmitter();
+  nativeEmitter.removeAllListeners(EventName.handleUrlCalled)
+
+  const expectedUrl = "https://somewhere.com"
+  const config = new IterableConfig()
+  config.urlDelegate = jest.fn((url: string, _: IterableActionContext) => {
+    return false
+  })
+
+  Iterable.initialize("apiKey", config)
+  const actionDict = { "type": "openUrl" }
+  nativeEmitter.emit(EventName.handleUrlCalled, { "url": expectedUrl, "context": { "action": actionDict, "source": "inApp" } });
+
+  return TestHelper.delayed(0, () => {
+    expect(config.urlDelegate).toBeCalledWith(expectedUrl, expect.any(Object))
+    expect(MockLinking.openURL).toBeCalledWith(expectedUrl)
+  })
+})
+
+test("do not open url when url delegate returns false and canOpen is false", () => {
+  MockLinking.canOpenURL = jest.fn(() => {
+    return new Promise(res => { res(false) })
+  })
+  MockLinking.openURL.mockReset()
+
+  const nativeEmitter = new NativeEventEmitter();
+  nativeEmitter.removeAllListeners(EventName.handleUrlCalled)
+
+  const expectedUrl = "https://somewhere.com"
+  const config = new IterableConfig()
+  config.urlDelegate = jest.fn((url: string, _: IterableActionContext) => {
+    return false
+  })
+
+  Iterable.initialize("apiKey", config)
+  const actionDict = { "type": "openUrl" }
+  nativeEmitter.emit(EventName.handleUrlCalled, { "url": expectedUrl, "context": { "action": actionDict, "source": "inApp" } });
+
+  return TestHelper.delayed(0, () => {
+    expect(config.urlDelegate).toBeCalledWith(expectedUrl, expect.any(Object))
+    expect(MockLinking.openURL).not.toBeCalled()
+  })
+})
+
+test("do not open url when url delegate returns true", () => {
+  MockLinking.canOpenURL = jest.fn(() => {
+    return new Promise(res => { res(true) })
+  })
+  MockLinking.openURL.mockReset()
+
+  const nativeEmitter = new NativeEventEmitter();
+  nativeEmitter.removeAllListeners(EventName.handleUrlCalled)
+
+  const expectedUrl = "https://somewhere.com"
+  const config = new IterableConfig()
+  config.urlDelegate = jest.fn((url: string, _: IterableActionContext) => {
+    return true
+  })
+
+  Iterable.initialize("apiKey", config)
+  const actionDict = { "type": "openUrl" }
+  nativeEmitter.emit(EventName.handleUrlCalled, { "url": expectedUrl, "context": { "action": actionDict, "source": "inApp" } });
+
+  return TestHelper.delayed(0, () => {
+    expect(MockLinking.openURL).not.toBeCalled()
+  })
 })

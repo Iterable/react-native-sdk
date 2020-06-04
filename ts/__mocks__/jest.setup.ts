@@ -62,6 +62,16 @@ class RNIterableAPIMock {
   static setAttributionInfo(attributionInfo?: IterableAttributionInfo) {
     RNIterableAPIMock.attributionInfo = attributionInfo
   }
+
+  static initializeWithApiKey = jest.fn()
+}
+
+class MockLinking {
+  static canOpenURL = jest.fn()
+  static openURL = jest.fn()
+
+  static addEventListener = jest.fn()
+  static removeEventListener = jest.fn()
 }
 
 jest.doMock('react-native', () => {
@@ -73,9 +83,21 @@ jest.doMock('react-native', () => {
         ...ReactNative.NativeModules,
         RNIterableAPI: RNIterableAPIMock,
       },
+      Linking: MockLinking,
     },
     ReactNative,
   );
 });
 
-export { RNIterableAPIMock }
+class TestHelper {
+  static delayed(delay: number, fn: () => void): Promise<any> {
+    return new Promise(res => setTimeout(() => {
+      fn()
+      res()
+    }, delay))
+  }
+}
+
+
+
+export { RNIterableAPIMock, MockLinking, TestHelper }
