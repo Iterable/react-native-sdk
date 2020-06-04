@@ -47,7 +47,6 @@ Config.js
 Config.d.ts
 Config.sample.d.ts
 
-yarn.lock
 package-lock.json
 
 coverage/
