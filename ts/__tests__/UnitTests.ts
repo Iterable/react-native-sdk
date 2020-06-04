@@ -164,15 +164,23 @@ test("in-app consume", () => {
 
   Iterable.inAppConsume(message, IterableInAppLocation.inApp, IterableInAppDeleteSource.unknown)
 
-  expect(RNIterableAPIMock.inAppConsume).toBeCalled()
+  expect(RNIterableAPIMock.inAppConsume).toBeCalledWith(message.messageId, IterableInAppLocation.inApp, IterableInAppDeleteSource.unknown)
 })
 
 test("update user", () => {
+  const dataFields = { "field": "value1" }
 
+  Iterable.updateUser(dataFields, false)
+
+  expect(RNIterableAPIMock.updateUser).toBeCalledWith(dataFields, false)
 })
 
 test("update email", () => {
+  const newEmail = "woo@newemail.com"
 
+  Iterable.updateEmail(newEmail)
+
+  expect(RNIterableAPIMock.updateEmail).toBeCalledWith(newEmail)
 })
 
 test("default config values", () => {
