@@ -1,6 +1,7 @@
-'use strict';
+'use strict'
 
-import { NativeModules } from 'react-native';
+import { NativeModules } from 'react-native'
+
 const RNIterableAPI = NativeModules.RNIterableAPI
 
 /**
