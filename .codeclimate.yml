@@ -7,6 +7,7 @@ exclude_patterns:
   - "scripts/"
   - "**/__mocks__/"
   - "**/__tests__/"
+  - "**/.*"
   - "**/*.config.js"
   - "**/*.h"
   - "**/*.json"
