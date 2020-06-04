@@ -1,8 +1,7 @@
 import { Iterable, IterableAttributionInfo, IterableConfig, PushServicePlatform, IterableCommerceItem, IterableActionContext, EventName, IterableAction, IterableActionSource } from '../Iterable'
 import { RNIterableAPIMock, MockLinking, TestHelper } from '../__mocks__/jest.setup'
-import { IterableInAppMessage, IterableInAppLocation, IterableInAppTrigger, IterableInAppTriggerType, IterableInboxMetadata, IterableInAppCloseSource } from '../IterableInAppClasses'
+import { IterableInAppMessage, IterableInAppLocation, IterableInAppTrigger, IterableInAppTriggerType, IterableInboxMetadata, IterableInAppCloseSource, IterableInAppShowResponse } from '../IterableInAppClasses'
 import { NativeEventEmitter } from 'react-native'
-import { IterableInAppTriggerType, IterableInAppMessage, IterableInAppShowResponse, IterableInAppTrigger } from '../IterableInAppClasses'
 
 test("set/get email", () => {
   Iterable.setEmail("user@example.com")
@@ -253,8 +252,8 @@ test("custom action delegate is called", () => {
   nativeEmitter.emit(EventName.handleCustomActionCalled, { "action": actionDict, "context": { "action": actionDict, "actionSource": IterableActionSource.inApp } });
 
   return TestHelper.delayed(0, () => {
-    let expectedAction = new IterableAction(actionName, actionData)
-    let expectedContext = new IterableActionContext(expectedAction, IterableActionSource.inApp)
+    const expectedAction = new IterableAction(actionName, actionData)
+    const expectedContext = new IterableActionContext(expectedAction, IterableActionSource.inApp)
     expect(config.customActionDelegate).toBeCalledWith(expectedAction, expectedContext)
   })
 })
@@ -281,8 +280,29 @@ test("in-app delegate is called", () => {
 
   return TestHelper.delayed(0, () => {
     expect(config.inAppDelegate)
-    let expectedMessage = new IterableInAppMessage("message1", 1234, new IterableInAppTrigger(IterableInAppTriggerType.immediate), undefined, undefined, false, undefined, undefined, false)
+    const expectedMessage = new IterableInAppMessage("message1", 1234, new IterableInAppTrigger(IterableInAppTriggerType.immediate), undefined, undefined, false, undefined, undefined, false)
     expect(config.inAppDelegate).toBeCalledWith(expectedMessage)
     expect(RNIterableAPIMock.setInAppShowResponse).toBeCalledWith(IterableInAppShowResponse.show)
+  })
+})
+
+test("get in-app messages", () => {
+  const messageDicts = [{
+    "messageId": "message1",
+    "campaignId": 1234,
+    "trigger": { "type": IterableInAppTriggerType.immediate },
+  }, {
+    "messageId": "message2",
+    "campaignId": 2345,
+    "trigger": { "type": IterableInAppTriggerType.never },
+  }]
+
+  const messages = messageDicts.map(message => IterableInAppMessage.fromDict(message))
+  RNIterableAPIMock.getInAppMessages = jest.fn(() => {
+    return new Promise(res => res(messages))
+  })
+
+  return Iterable.inAppManager.getMessages().then(messagesObtained => {
+    expect(messagesObtained).toEqual(messages)
   })
 })

@@ -66,6 +66,8 @@ class RNIterableAPIMock {
   static initializeWithApiKey = jest.fn()
 
   static setInAppShowResponse = jest.fn()
+
+  static getInAppMessages = jest.fn()
 }
 
 class MockLinking {
