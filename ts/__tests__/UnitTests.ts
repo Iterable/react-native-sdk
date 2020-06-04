@@ -332,11 +332,6 @@ test("in-app remove message is called", () => {
     "trigger": { "type": IterableInAppTriggerType.immediate },
   }
   const message = IterableInAppMessage.fromDict(messageDict)
-  RNIterableAPIMock.removeMessage = jest.fn((message, location, source) => {
-    return new Promise(res => {
-      res()
-    })
-  })
 
   Iterable.inAppManager.removeMessage(message, IterableInAppLocation.inApp, IterableInAppDeleteSource.deleteButton)
   expect(RNIterableAPIMock.removeMessage).toBeCalledWith(message.messageId, IterableInAppLocation.inApp, IterableInAppDeleteSource.deleteButton)
