@@ -3,6 +3,10 @@ import { RNIterableAPIMock, MockLinking, TestHelper } from '../__mocks__/jest.se
 import { IterableInAppMessage, IterableInAppLocation, IterableInAppTrigger, IterableInAppTriggerType, IterableInboxMetadata, IterableInAppCloseSource, IterableInAppShowResponse, IterableInAppDeleteSource } from '../IterableInAppClasses'
 import { NativeEventEmitter } from 'react-native'
 
+beforeEach(() => {
+  jest.clearAllMocks()
+})
+
 test("set/get email", () => {
   Iterable.setEmail("user@example.com")
   return Iterable.getEmail().then(email => {
@@ -335,4 +339,16 @@ test("in-app remove message is called", () => {
 
   Iterable.inAppManager.removeMessage(message, IterableInAppLocation.inApp, IterableInAppDeleteSource.deleteButton)
   expect(RNIterableAPIMock.removeMessage).toBeCalledWith(message.messageId, IterableInAppLocation.inApp, IterableInAppDeleteSource.deleteButton)
+})
+
+test("in-app set read for message is called", () => {
+  const messageDict = {
+    "messageId": "message1",
+    "campaignId": 1234,
+    "trigger": { "type": IterableInAppTriggerType.immediate },
+  }
+  const message = IterableInAppMessage.fromDict(messageDict)
+
+  Iterable.inAppManager.setReadForMessage(message, true)
+  expect(RNIterableAPIMock.setReadForMessage).toBeCalledWith(message.messageId, true)
 })
