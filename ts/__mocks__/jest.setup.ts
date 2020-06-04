@@ -35,6 +35,18 @@ class RNIterableAPIMock {
 
   static disableDeviceForAllUsers = jest.fn()
 
+  static trackPushOpenWithCampaignId = jest.fn()
+
+  static trackPurchase = jest.fn()
+
+  static trackInAppOpen = jest.fn()
+
+  static trackInAppClick = jest.fn()
+
+  static trackInAppClose = jest.fn()
+
+  static trackEvent = jest.fn()
+
   static getLastPushPayload(): Promise<any | undefined> {
     return new Promise((resolve, _) => {
       resolve(RNIterableAPIMock.lastPushPayload)
@@ -51,19 +63,25 @@ class RNIterableAPIMock {
     RNIterableAPIMock.attributionInfo = attributionInfo
   }
 
-  // static inAppConsume(message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppDeleteSource) {
-  //   jest.fn()
-  // }
+  static initializeWithApiKey = jest.fn()
 
-  static inAppConsume = jest.fn()
+  static setInAppShowResponse = jest.fn()
 
-  static updateUser(dataFields: any, mergeNestedObjects: boolean) {
+  static getInAppMessages = jest.fn()
 
-  }
+  static showMessage = jest.fn()
 
-  static updateEmail(email: string) {
+  static removeMessage = jest.fn()
 
-  }
+  static setReadForMessage = jest.fn()
+}
+
+class MockLinking {
+  static canOpenURL = jest.fn()
+  static openURL = jest.fn()
+
+  static addEventListener = jest.fn()
+  static removeEventListener = jest.fn()
 }
 
 jest.doMock('react-native', () => {
@@ -75,9 +93,21 @@ jest.doMock('react-native', () => {
         ...ReactNative.NativeModules,
         RNIterableAPI: RNIterableAPIMock,
       },
+      Linking: MockLinking,
     },
     ReactNative,
   )
 })
 
-export { RNIterableAPIMock }
+class TestHelper {
+  static delayed(delay: number, fn: () => void): Promise<any> {
+    return new Promise(res => setTimeout(() => {
+      fn()
+      res()
+    }, delay))
+  }
+}
+
+
+
+export { RNIterableAPIMock, MockLinking, TestHelper }
