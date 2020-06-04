@@ -306,3 +306,21 @@ test("get in-app messages", () => {
     expect(messagesObtained).toEqual(messages)
   })
 })
+
+test("in-app show message is called", () => {
+  const messageDict = {
+    "messageId": "message1",
+    "campaignId": 1234,
+    "trigger": { "type": IterableInAppTriggerType.immediate },
+  }
+  const message = IterableInAppMessage.fromDict(messageDict)
+  RNIterableAPIMock.showMessage = jest.fn((message, consume) => {
+    return new Promise(res => {
+      res()
+    })
+  })
+
+  return Iterable.inAppManager.showMessage(message, true).then(_ => {
+    expect(RNIterableAPIMock.showMessage).toBeCalledWith(message.messageId, true)
+  })
+})
