@@ -40,6 +40,8 @@ buck-out/
 Pods/
 Podfile.lock
 
+package-lock.json
+
 /js
 
 Config.ts
