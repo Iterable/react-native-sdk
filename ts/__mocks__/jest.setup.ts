@@ -116,4 +116,8 @@ class TestHelper {
 
 
 
-export { RNIterableAPIMock, MockLinking, TestHelper }
+export {
+  RNIterableAPIMock,
+  MockLinking,
+  TestHelper
+}
