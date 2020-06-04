@@ -74,6 +74,8 @@ class RNIterableAPIMock {
   static removeMessage = jest.fn()
 
   static setReadForMessage = jest.fn()
+
+  static inAppConsume = jest.fn()
 }
 
 class MockLinking {

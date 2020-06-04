@@ -7,9 +7,6 @@ beforeEach(() => {
   jest.clearAllMocks()
 })
 
-import { Iterable, IterableAttributionInfo, IterableConfig, PushServicePlatform } from '../Iterable'
-import { IterableInAppMessage, IterableInAppTrigger, IterableInAppLocation, IterableInAppDeleteSource, IterableInAppTriggerType } from '../IterableInAppClasses'
-
 test("set/get email", () => {
   Iterable.setEmail("user@example.com")
   return Iterable.getEmail().then(email => {
