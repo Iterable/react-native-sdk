@@ -1,8 +1,7 @@
 import { Iterable, IterableAttributionInfo, IterableConfig, PushServicePlatform, IterableCommerceItem, IterableActionContext, EventName, IterableAction, IterableActionSource } from '../Iterable'
 import { RNIterableAPIMock, MockLinking, TestHelper } from '../__mocks__/jest.setup'
-import { IterableInAppMessage, IterableInAppLocation, IterableInAppTrigger, IterableInAppTriggerType, IterableInboxMetadata, IterableInAppCloseSource } from '../IterableInAppClasses'
+import { IterableInAppMessage, IterableInAppLocation, IterableInAppTrigger, IterableInAppTriggerType, IterableInboxMetadata, IterableInAppCloseSource, IterableInAppShowResponse } from '../IterableInAppClasses'
 import { NativeEventEmitter } from 'react-native'
-import { IterableInAppTriggerType, IterableInAppMessage, IterableInAppShowResponse, IterableInAppTrigger } from '../IterableInAppClasses'
 
 test("set/get email", () => {
   Iterable.setEmail("user@example.com")
