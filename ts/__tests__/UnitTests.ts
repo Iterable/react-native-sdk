@@ -1,6 +1,6 @@
 import { Iterable, IterableAttributionInfo, IterableConfig, PushServicePlatform, IterableCommerceItem, IterableActionContext, EventName, IterableAction, IterableActionSource } from '../Iterable'
 import { RNIterableAPIMock, MockLinking, TestHelper } from '../__mocks__/jest.setup'
-import { IterableInAppMessage, IterableInAppLocation, IterableInAppTrigger, IterableInAppTriggerType, IterableInboxMetadata, IterableInAppCloseSource, IterableInAppShowResponse } from '../IterableInAppClasses'
+import { IterableInAppMessage, IterableInAppLocation, IterableInAppTrigger, IterableInAppTriggerType, IterableInboxMetadata, IterableInAppCloseSource, IterableInAppShowResponse, IterableInAppDeleteSource } from '../IterableInAppClasses'
 import { NativeEventEmitter } from 'react-native'
 
 test("set/get email", () => {
@@ -323,4 +323,16 @@ test("in-app show message is called", () => {
   return Iterable.inAppManager.showMessage(message, true).then(_ => {
     expect(RNIterableAPIMock.showMessage).toBeCalledWith(message.messageId, true)
   })
+})
+
+test("in-app remove message is called", () => {
+  const messageDict = {
+    "messageId": "message1",
+    "campaignId": 1234,
+    "trigger": { "type": IterableInAppTriggerType.immediate },
+  }
+  const message = IterableInAppMessage.fromDict(messageDict)
+
+  Iterable.inAppManager.removeMessage(message, IterableInAppLocation.inApp, IterableInAppDeleteSource.deleteButton)
+  expect(RNIterableAPIMock.removeMessage).toBeCalledWith(message.messageId, IterableInAppLocation.inApp, IterableInAppDeleteSource.deleteButton)
 })
