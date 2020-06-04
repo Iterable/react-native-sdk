@@ -1,7 +1,29 @@
-import { Iterable, IterableAttributionInfo, IterableConfig, PushServicePlatform, IterableCommerceItem, IterableActionContext, EventName, IterableAction, IterableActionSource } from '../Iterable'
 import { RNIterableAPIMock, MockLinking, TestHelper } from '../__mocks__/jest.setup'
-import { IterableInAppMessage, IterableInAppLocation, IterableInAppTrigger, IterableInAppTriggerType, IterableInboxMetadata, IterableInAppCloseSource, IterableInAppShowResponse, IterableInAppDeleteSource } from '../IterableInAppClasses'
 import { NativeEventEmitter } from 'react-native'
+
+import {
+  Iterable,
+  IterableAttributionInfo,
+  IterableConfig,
+  PushServicePlatform,
+  IterableCommerceItem,
+  IterableActionContext,
+  EventName,
+  IterableAction,
+  IterableActionSource
+} from '../Iterable'
+
+import {
+  IterableInAppMessage,
+  IterableInAppLocation,
+  IterableInAppTrigger,
+  IterableInAppTriggerType,
+  IterableInboxMetadata,
+  IterableInAppCloseSource,
+  IterableInAppShowResponse,
+  IterableInAppDeleteSource
+} from '../IterableInAppClasses'
+
 
 beforeEach(() => {
   jest.clearAllMocks()

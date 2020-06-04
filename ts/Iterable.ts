@@ -414,4 +414,14 @@ class Iterable {
   }
 }
 
-export { Iterable, IterableConfig, PushServicePlatform, IterableAction, IterableActionContext, IterableAttributionInfo, IterableCommerceItem, EventName, IterableActionSource };
+export {
+  Iterable,
+  IterableConfig,
+  PushServicePlatform,
+  IterableAction,
+  IterableActionContext,
+  IterableAttributionInfo,
+  IterableCommerceItem,
+  EventName,
+  IterableActionSource
+};
