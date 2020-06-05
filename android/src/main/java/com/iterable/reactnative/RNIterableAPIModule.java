@@ -159,7 +159,6 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
             promise.resolve(null);
             return;
         }
-
         try {
             promise.resolve(Serialization.convertJsonToMap(attributionInfo.toJSONObject()));
         } catch (JSONException e) {
@@ -177,7 +176,6 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
         } catch (JSONException e) {
             IterableLogger.e(TAG, "Failed converting ReadableMap to JSON");
         }
-
     }
 
     public void getLastPushPayload(Promise promise) {
@@ -187,7 +185,6 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
         } else {
             IterableLogger.d(TAG, "No payload data found");
         }
-
     }
 
     // region Track APIs
