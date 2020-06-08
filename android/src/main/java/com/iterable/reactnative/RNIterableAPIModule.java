@@ -161,6 +161,12 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
 
     }
 
+    @ReactMethod
+    public void disableDeviceForCurrentUser() {
+        IterableLogger.v(TAG, "Disable Device");
+        IterableApi.getInstance().disablePush();
+    }
+
     // region Track APIs
     // ---------------------------------------------------------------------------------------
     @ReactMethod
