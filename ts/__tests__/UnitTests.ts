@@ -398,3 +398,29 @@ test("in-app set read for message is called", () => {
   Iterable.inAppManager.setReadForMessage(message, true)
   expect(RNIterableAPIMock.setReadForMessage).toBeCalledWith(message.messageId, true)
 })
+
+test("handle universal link is called", () => {
+  const link = "https://somewhere.com/link/something"
+  Iterable.handleUniversalLink(link)
+  expect(RNIterableAPIMock.handleUniversalLink).toBeCalledWith(link)
+})
+
+test("update subscriptions is called", () => {
+  const emailListIds = [1, 2, 3]
+  const unsubscribedChannelIds = [4, 5, 6]
+  const unsubscribedMessageTypeIds = [7, 8]
+  const subscribedMessageTypeIds = [9]
+  const campaignId = 10
+  const templateId = 11
+
+  Iterable.updateSubscriptions(emailListIds,
+    unsubscribedChannelIds,
+    unsubscribedMessageTypeIds,
+    subscribedMessageTypeIds,
+    campaignId,
+    templateId
+  )
+
+  expect(RNIterableAPIMock.updateSubscriptions).toBeCalledWith(emailListIds, unsubscribedChannelIds, unsubscribedMessageTypeIds, subscribedMessageTypeIds, campaignId, templateId)
+})
+

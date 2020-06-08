@@ -80,6 +80,10 @@ class RNIterableAPIMock {
   static updateUser = jest.fn()
 
   static updateEmail = jest.fn()
+
+  static handleUniversalLink = jest.fn()
+
+  static updateSubscriptions = jest.fn()
 }
 
 class MockLinking {
