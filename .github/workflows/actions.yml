@@ -1,22 +1,27 @@
 name: actions
 
-on: [ pull_request ]
+on:
+  push:
+    branches:
+      - "master"
+  pull_request:
+    branches:
+      - "**"
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Install dependencies
-      run: yarn install
-    
-    - name: Test & publish code coverage
-      uses: paambaati/codeclimate-action@v2.6.0
-      env:
-        CC_TEST_REPORTER_ID: 44578b761dafe2060ea097e038c5c510be57fb81cd004ac257e07615b5dcdc34
-      with:
-        coverageCommand: yarn coverage
-        debug: true
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Test & publish code coverage
+        uses: paambaati/codeclimate-action@v2.6.0
+        env:
+          CC_TEST_REPORTER_ID: 44578b761dafe2060ea097e038c5c510be57fb81cd004ac257e07615b5dcdc34
+        with:
+          coverageCommand: yarn coverage
+          debug: true
