@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-import { NativeModules, NativeEventEmitter, Linking } from 'react-native';
+import { NativeModules, NativeEventEmitter, Linking } from 'react-native'
 import {
   IterableInAppMessage,
   IterableInAppShowResponse,
@@ -414,4 +414,14 @@ class Iterable {
   }
 }
 
-export { Iterable, IterableConfig, PushServicePlatform, IterableAction, IterableActionContext, IterableAttributionInfo, IterableCommerceItem, EventName, IterableActionSource };
+export {
+  Iterable,
+  IterableConfig,
+  PushServicePlatform,
+  IterableAction,
+  IterableActionContext,
+  IterableAttributionInfo,
+  IterableCommerceItem,
+  EventName,
+  IterableActionSource
+};

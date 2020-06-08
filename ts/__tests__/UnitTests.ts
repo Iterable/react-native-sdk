@@ -1,7 +1,29 @@
-import { Iterable, IterableAttributionInfo, IterableConfig, PushServicePlatform, IterableCommerceItem, IterableActionContext, EventName, IterableAction, IterableActionSource } from '../Iterable'
 import { RNIterableAPIMock, MockLinking, TestHelper } from '../__mocks__/jest.setup'
-import { IterableInAppMessage, IterableInAppLocation, IterableInAppTrigger, IterableInAppTriggerType, IterableInboxMetadata, IterableInAppCloseSource, IterableInAppShowResponse, IterableInAppDeleteSource } from '../IterableInAppClasses'
 import { NativeEventEmitter } from 'react-native'
+
+import {
+  Iterable,
+  IterableAttributionInfo,
+  IterableConfig,
+  PushServicePlatform,
+  IterableCommerceItem,
+  IterableActionContext,
+  EventName,
+  IterableAction,
+  IterableActionSource
+} from '../Iterable'
+
+import {
+  IterableInAppMessage,
+  IterableInAppLocation,
+  IterableInAppTrigger,
+  IterableInAppTriggerType,
+  IterableInboxMetadata,
+  IterableInAppCloseSource,
+  IterableInAppShowResponse,
+  IterableInAppDeleteSource
+} from '../IterableInAppClasses'
+
 
 beforeEach(() => {
   jest.clearAllMocks()
@@ -135,6 +157,30 @@ test("set/get attribution info", () => {
     expect(attributionInfo?.templateId).toBe(templateId)
     expect(attributionInfo?.messageId).toBe(messageId)
   })
+})
+
+test("in-app consume", () => {
+  let message = new IterableInAppMessage("asdf", 1234, new IterableInAppTrigger(IterableInAppTriggerType.never), undefined, undefined, false, undefined, undefined, false)
+
+  Iterable.inAppConsume(message, IterableInAppLocation.inApp, IterableInAppDeleteSource.unknown)
+
+  expect(RNIterableAPIMock.inAppConsume).toBeCalledWith(message.messageId, IterableInAppLocation.inApp, IterableInAppDeleteSource.unknown)
+})
+
+test("update user", () => {
+  const dataFields = { "field": "value1" }
+
+  Iterable.updateUser(dataFields, false)
+
+  expect(RNIterableAPIMock.updateUser).toBeCalledWith(dataFields, false)
+})
+
+test("update email", () => {
+  const newEmail = "woo@newemail.com"
+
+  Iterable.updateEmail(newEmail)
+
+  expect(RNIterableAPIMock.updateEmail).toBeCalledWith(newEmail)
 })
 
 test("default config values", () => {

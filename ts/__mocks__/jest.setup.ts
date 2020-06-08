@@ -74,6 +74,12 @@ class RNIterableAPIMock {
   static removeMessage = jest.fn()
 
   static setReadForMessage = jest.fn()
+
+  static inAppConsume = jest.fn()
+
+  static updateUser = jest.fn()
+
+  static updateEmail = jest.fn()
 }
 
 class MockLinking {
@@ -96,8 +102,8 @@ jest.doMock('react-native', () => {
       Linking: MockLinking,
     },
     ReactNative,
-  );
-});
+  )
+})
 
 class TestHelper {
   static delayed(delay: number, fn: () => void): Promise<any> {
@@ -110,4 +116,8 @@ class TestHelper {
 
 
 
-export { RNIterableAPIMock, MockLinking, TestHelper }
+export {
+  RNIterableAPIMock,
+  MockLinking,
+  TestHelper
+}
