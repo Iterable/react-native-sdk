@@ -1,15 +1,8 @@
 import { MockRNIterableAPI } from './MockRNIterableAPI'
+import { MockLinking } from './MockLinking'
 jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter.js')
 
 import * as ReactNative from 'react-native'
-
-class MockLinking {
-  static canOpenURL = jest.fn()
-  static openURL = jest.fn()
-
-  static addEventListener = jest.fn()
-  static removeEventListener = jest.fn()
-}
 
 jest.doMock('react-native', () => {
   // Extend ReactNative
@@ -36,6 +29,5 @@ class TestHelper {
 }
 
 export {
-  MockLinking,
   TestHelper
 }
