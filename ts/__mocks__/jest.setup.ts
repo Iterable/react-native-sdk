@@ -5,7 +5,7 @@ import * as ReactNative from 'react-native'
 import { IterableAttributionInfo } from '../Iterable'
 import { IterableInAppMessage, IterableInAppLocation, IterableInAppDeleteSource } from '../IterableInAppClasses'
 
-class RNIterableAPIMock {
+class MockRNIterableAPI {
   static email?: string
   static userId?: string
   static lastPushPayload?: any
@@ -13,22 +13,22 @@ class RNIterableAPIMock {
 
   static getEmail(): Promise<string> {
     return new Promise((resolve, _) => {
-      resolve(RNIterableAPIMock.email)
+      resolve(MockRNIterableAPI.email)
     })
   }
 
   static setEmail(email?: string) {
-    RNIterableAPIMock.email = email
+    MockRNIterableAPI.email = email
   }
 
   static getUserId(): Promise<string> {
     return new Promise((resolve, _) => {
-      resolve(RNIterableAPIMock.userId)
+      resolve(MockRNIterableAPI.userId)
     })
   }
 
   static setUserId(userId?: string) {
-    RNIterableAPIMock.userId = userId
+    MockRNIterableAPI.userId = userId
   }
 
   static disableDeviceForCurrentUser = jest.fn()
@@ -49,18 +49,18 @@ class RNIterableAPIMock {
 
   static getLastPushPayload(): Promise<any | undefined> {
     return new Promise((resolve, _) => {
-      resolve(RNIterableAPIMock.lastPushPayload)
+      resolve(MockRNIterableAPI.lastPushPayload)
     })
   }
 
   static getAttributionInfo(): Promise<IterableAttributionInfo | undefined> {
     return new Promise((resolve, _) => {
-      resolve(RNIterableAPIMock.attributionInfo)
+      resolve(MockRNIterableAPI.attributionInfo)
     })
   }
 
   static setAttributionInfo(attributionInfo?: IterableAttributionInfo) {
-    RNIterableAPIMock.attributionInfo = attributionInfo
+    MockRNIterableAPI.attributionInfo = attributionInfo
   }
 
   static initializeWithApiKey = jest.fn()
@@ -101,7 +101,7 @@ jest.doMock('react-native', () => {
       // Mock RNIterableAPI
       NativeModules: {
         ...ReactNative.NativeModules,
-        RNIterableAPI: RNIterableAPIMock,
+        RNIterableAPI: MockRNIterableAPI,
       },
       Linking: MockLinking,
     },
@@ -121,7 +121,7 @@ class TestHelper {
 
 
 export {
-  RNIterableAPIMock,
+  MockRNIterableAPI,
   MockLinking,
   TestHelper
 }
