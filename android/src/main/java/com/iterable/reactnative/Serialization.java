@@ -11,6 +11,7 @@ import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.iterable.iterableapi.CommerceItem;
 import com.iterable.iterableapi.IterableApi;
+import com.iterable.iterableapi.IterableConfig;
 import com.iterable.iterableapi.IterableInAppCloseAction;
 import com.iterable.iterableapi.IterableInAppDeleteActionType;
 import com.iterable.iterableapi.IterableInAppLocation;
@@ -82,6 +83,35 @@ class Serialization {
             inappMessagesJson.put(messageJson);
         }
         return inappMessagesJson;
+    }
+
+    static IterableConfig getConfigFromReadableMap(ReadableMap iterableContextMap) {
+        try {
+            JSONObject iterableContextJSON = convertMapToJson(iterableContextMap);
+
+            IterableConfig.Builder configBuilder = new IterableConfig.Builder();
+            if (iterableContextJSON.has("pushIntegrationName")){
+                configBuilder.setPushIntegrationName(iterableContextJSON.optString("pushIntegrationName"));
+            }
+
+            if (iterableContextJSON.has("autoPushRegistration")){
+                configBuilder.setAutoPushRegistration(iterableContextJSON.optBoolean("autoPushRegistration"));
+            }
+
+            if (iterableContextJSON.has("checkForDeferredDeeplink")) {
+                configBuilder.setCheckForDeferredDeeplink(iterableContextJSON.optBoolean("checkForDeferredDeeplink"));
+            }
+
+            if (iterableContextJSON.has("inAppDisplayInterval")){
+                configBuilder.setInAppDisplayInterval(iterableContextJSON.optDouble("inAppDisplayInterval"));
+            }
+
+            IterableConfig config = configBuilder.build();
+            return config;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     // ---------------------------------------------------------------------------------------

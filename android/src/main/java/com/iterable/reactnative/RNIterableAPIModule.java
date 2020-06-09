@@ -14,6 +14,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.iterable.iterableapi.IterableApi;
+import com.iterable.iterableapi.IterableConfig;
 import com.iterable.iterableapi.IterableHelper;
 import com.iterable.iterableapi.IterableInAppCloseAction;
 import com.iterable.iterableapi.IterableInAppLocation;
@@ -41,9 +42,13 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void initializeWithApiKey(String apiKey, ReadableMap context, String version) {
+    public void initializeWithApiKey(String apiKey, ReadableMap configReadableMap, String version) {
         IterableLogger.d(TAG, "initializeWithApiKey: " + apiKey);
-        IterableApi.getInstance().initialize(reactContext, apiKey);
+        IterableConfig config = Serialization.getConfigFromReadableMap(configReadableMap);
+        IterableApi.getInstance().initialize(reactContext,apiKey,config);
+
+        //TODO Set deviceAttribute once new AndroidSDK is released
+        //IterableApi.getInstance().setDeviceAttribute("reactNativeSDKVersion",version);
     }
 
     @ReactMethod
