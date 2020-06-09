@@ -1,4 +1,5 @@
-import { MockRNIterableAPI, MockLinking, TestHelper } from '../__mocks__/jest.setup'
+import { MockRNIterableAPI } from '../__mocks__/MockRNIterableAPI'
+import { MockLinking, TestHelper } from '../__mocks__/jest.setup'
 import { NativeEventEmitter } from 'react-native'
 
 import {
