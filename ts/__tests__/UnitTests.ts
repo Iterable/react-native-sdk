@@ -1,4 +1,4 @@
-import { RNIterableAPIMock, MockLinking, TestHelper } from '../__mocks__/jest.setup'
+import { MockRNIterableAPI, MockLinking, TestHelper } from '../__mocks__/jest.setup'
 import { NativeEventEmitter } from 'react-native'
 
 import {
@@ -45,16 +45,16 @@ test("set/get userId", () => {
 
 test("disable device for current user", () => {
   Iterable.disableDeviceForCurrentUser()
-  expect(RNIterableAPIMock.disableDeviceForCurrentUser).toBeCalled()
+  expect(MockRNIterableAPI.disableDeviceForCurrentUser).toBeCalled()
 })
 
 test("disable device for all users", () => {
   Iterable.disableDeviceForAllUsers()
-  expect(RNIterableAPIMock.disableDeviceForAllUsers).toBeCalled()
+  expect(MockRNIterableAPI.disableDeviceForAllUsers).toBeCalled()
 })
 
 test("getLastPushPayload", () => {
-  RNIterableAPIMock.lastPushPayload = { "var1": "val1", "var2": true }
+  MockRNIterableAPI.lastPushPayload = { "var1": "val1", "var2": true }
 
   return Iterable.getLastPushPayload().then(payload => {
     expect(payload).toEqual({ "var1": "val1", "var2": true })
@@ -64,7 +64,7 @@ test("getLastPushPayload", () => {
 test("trackPushOpenWithCampaignId", () => {
   Iterable.trackPushOpenWithCampaignId(123, 234, "someMessageId", false, { "dataFieldKey": "dataFieldValue" })
 
-  expect(RNIterableAPIMock.trackPushOpenWithCampaignId).toBeCalledWith(
+  expect(MockRNIterableAPI.trackPushOpenWithCampaignId).toBeCalledWith(
     123,
     234,
     "someMessageId",
@@ -80,7 +80,7 @@ test("trackPurchase", () => {
     { "dataFieldKey": "dataFieldValue" }
   )
 
-  expect(RNIterableAPIMock.trackPurchase).toBeCalledWith(
+  expect(MockRNIterableAPI.trackPurchase).toBeCalledWith(
     10,
     [new IterableCommerceItem("id1", "Boba Tea", 18, 26)],
     { "dataFieldKey": "dataFieldValue" }
@@ -94,7 +94,7 @@ test("trackInAppOpen", () => {
     IterableInAppLocation.inApp
   )
 
-  expect(RNIterableAPIMock.trackInAppOpen).toBeCalledWith(
+  expect(MockRNIterableAPI.trackInAppOpen).toBeCalledWith(
     "someMessageId",
     0
   )
@@ -108,7 +108,7 @@ test("trackInAppClick", () => {
     "URLClicked"
   )
 
-  expect(RNIterableAPIMock.trackInAppClick).toBeCalledWith(
+  expect(MockRNIterableAPI.trackInAppClick).toBeCalledWith(
     "someMessageId",
     0,
     "URLClicked"
@@ -124,7 +124,7 @@ test("trackInAppClose", () => {
     "ClickedURL"
   )
 
-  expect(RNIterableAPIMock.trackInAppClose).toBeCalledWith(
+  expect(MockRNIterableAPI.trackInAppClose).toBeCalledWith(
     "someMessageId",
     1,
     1,
@@ -139,7 +139,7 @@ test("trackEvent", () => {
     { "DatafieldKey": "DatafieldValue" }
   )
 
-  expect(RNIterableAPIMock.trackEvent).toBeCalledWith(
+  expect(MockRNIterableAPI.trackEvent).toBeCalledWith(
     "EventName",
     { "DatafieldKey": "DatafieldValue" }
   )
@@ -164,7 +164,7 @@ test("in-app consume", () => {
 
   Iterable.inAppConsume(message, IterableInAppLocation.inApp, IterableInAppDeleteSource.unknown)
 
-  expect(RNIterableAPIMock.inAppConsume).toBeCalledWith(message.messageId, IterableInAppLocation.inApp, IterableInAppDeleteSource.unknown)
+  expect(MockRNIterableAPI.inAppConsume).toBeCalledWith(message.messageId, IterableInAppLocation.inApp, IterableInAppDeleteSource.unknown)
 })
 
 test("update user", () => {
@@ -172,7 +172,7 @@ test("update user", () => {
 
   Iterable.updateUser(dataFields, false)
 
-  expect(RNIterableAPIMock.updateUser).toBeCalledWith(dataFields, false)
+  expect(MockRNIterableAPI.updateUser).toBeCalledWith(dataFields, false)
 })
 
 test("update email", () => {
@@ -180,7 +180,7 @@ test("update email", () => {
 
   Iterable.updateEmail(newEmail)
 
-  expect(RNIterableAPIMock.updateEmail).toBeCalledWith(newEmail)
+  expect(MockRNIterableAPI.updateEmail).toBeCalledWith(newEmail)
 })
 
 test("default config values", () => {
@@ -309,7 +309,7 @@ test("custom action delegate is called", () => {
 })
 
 test("in-app delegate is called", () => {
-  RNIterableAPIMock.setInAppShowResponse.mockReset()
+  MockRNIterableAPI.setInAppShowResponse.mockReset()
 
   const nativeEmitter = new NativeEventEmitter();
   nativeEmitter.removeAllListeners(EventName.handleInAppCalled)
@@ -332,7 +332,7 @@ test("in-app delegate is called", () => {
     expect(config.inAppDelegate)
     const expectedMessage = new IterableInAppMessage("message1", 1234, new IterableInAppTrigger(IterableInAppTriggerType.immediate), undefined, undefined, false, undefined, undefined, false)
     expect(config.inAppDelegate).toBeCalledWith(expectedMessage)
-    expect(RNIterableAPIMock.setInAppShowResponse).toBeCalledWith(IterableInAppShowResponse.show)
+    expect(MockRNIterableAPI.setInAppShowResponse).toBeCalledWith(IterableInAppShowResponse.show)
   })
 })
 
@@ -348,7 +348,7 @@ test("get in-app messages", () => {
   }]
 
   const messages = messageDicts.map(message => IterableInAppMessage.fromDict(message))
-  RNIterableAPIMock.getInAppMessages = jest.fn(() => {
+  MockRNIterableAPI.getInAppMessages = jest.fn(() => {
     return new Promise(res => res(messages))
   })
 
@@ -364,14 +364,14 @@ test("in-app show message is called", () => {
     "trigger": { "type": IterableInAppTriggerType.immediate },
   }
   const message = IterableInAppMessage.fromDict(messageDict)
-  RNIterableAPIMock.showMessage = jest.fn((message, consume) => {
+  MockRNIterableAPI.showMessage = jest.fn((message, consume) => {
     return new Promise(res => {
       res()
     })
   })
 
   return Iterable.inAppManager.showMessage(message, true).then(_ => {
-    expect(RNIterableAPIMock.showMessage).toBeCalledWith(message.messageId, true)
+    expect(MockRNIterableAPI.showMessage).toBeCalledWith(message.messageId, true)
   })
 })
 
@@ -384,7 +384,7 @@ test("in-app remove message is called", () => {
   const message = IterableInAppMessage.fromDict(messageDict)
 
   Iterable.inAppManager.removeMessage(message, IterableInAppLocation.inApp, IterableInAppDeleteSource.deleteButton)
-  expect(RNIterableAPIMock.removeMessage).toBeCalledWith(message.messageId, IterableInAppLocation.inApp, IterableInAppDeleteSource.deleteButton)
+  expect(MockRNIterableAPI.removeMessage).toBeCalledWith(message.messageId, IterableInAppLocation.inApp, IterableInAppDeleteSource.deleteButton)
 })
 
 test("in-app set read for message is called", () => {
@@ -396,13 +396,13 @@ test("in-app set read for message is called", () => {
   const message = IterableInAppMessage.fromDict(messageDict)
 
   Iterable.inAppManager.setReadForMessage(message, true)
-  expect(RNIterableAPIMock.setReadForMessage).toBeCalledWith(message.messageId, true)
+  expect(MockRNIterableAPI.setReadForMessage).toBeCalledWith(message.messageId, true)
 })
 
 test("handle universal link is called", () => {
   const link = "https://somewhere.com/link/something"
   Iterable.handleUniversalLink(link)
-  expect(RNIterableAPIMock.handleUniversalLink).toBeCalledWith(link)
+  expect(MockRNIterableAPI.handleUniversalLink).toBeCalledWith(link)
 })
 
 test("update subscriptions is called", () => {
@@ -421,6 +421,6 @@ test("update subscriptions is called", () => {
     templateId
   )
 
-  expect(RNIterableAPIMock.updateSubscriptions).toBeCalledWith(emailListIds, unsubscribedChannelIds, unsubscribedMessageTypeIds, subscribedMessageTypeIds, campaignId, templateId)
+  expect(MockRNIterableAPI.updateSubscriptions).toBeCalledWith(emailListIds, unsubscribedChannelIds, unsubscribedMessageTypeIds, subscribedMessageTypeIds, campaignId, templateId)
 })
 
