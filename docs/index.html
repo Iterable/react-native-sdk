@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>react-native-iterable</title>
-	<meta name="description" content="Documentation for react-native-iterable">
+	<title>@iterable/react-native-sdk</title>
+	<meta name="description" content="Documentation for @iterable/react-native-sdk">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
 </head>
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">react-native-iterable</a>
+					<a href="index.html" class="title">@iterable/react-native-sdk</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -56,7 +56,7 @@
 					<a href="globals.html">Globals</a>
 				</li>
 			</ul>
-			<h1>react-native-iterable</h1>
+			<h1>@iterable/react-native-sdk</h1>
 		</div>
 	</div>
 </header>
@@ -101,16 +101,22 @@
 				</a>
 				<ol>
 					<li><p>Install pods</p>
-						<pre><code> cd ios <span class="hljs-meta">&amp;&amp; pod install</span></code></pre><p> If your app will receive rich push notification containing media attachments (images, etc.) and/or custom buttons, add the <strong>Iterable-IOS-AppExtensions</strong> pod to your project&#39;s <code>Notification Service Extension</code> target.</p>
-						<pre><code> target <span class="hljs-symbol">'your</span>-app-notification-extension' <span class="hljs-keyword">do</span>
-     pod <span class="hljs-symbol">'Iterable</span>-iOS-<span class="hljs-type">AppExtensions'</span>
- <span class="hljs-keyword">end</span></code></pre><p> Please see <a href="https://github.com/iterable/swift-sdk/#7-optional-configure-support-for-rich-push-notifications">here</a> regarding how to setup rich push notifictions.</p>
+						<pre><code class="language-bash"> <span class="hljs-built_in">cd</span> ios &amp;&amp; pod install</code></pre>
+						<p> If your app will receive rich push notification containing media
+							attachments (images, etc.) and/or custom buttons, add the
+							<strong>Iterable-iOS-AppExtensions</strong> pod to your project&#39;s
+						<code>Notification Service Extension</code> target.</p>
+						<pre><code class="language-ruby"> target <span class="hljs-string">'&lt;YOUR-APP-NOTIFICATION-EXTENSION-TARGET-NAME&gt;'</span> <span class="hljs-keyword">do</span>
+     pod <span class="hljs-string">'Iterable-iOS-AppExtensions'</span>
+ <span class="hljs-keyword">end</span></code></pre>
+						<p> Please see <a href="https://support.iterable.com/hc/articles/360035451931#configure-support-for-rich-push-notifications">here</a>
+						regarding how to setup rich push notifications.</p>
 					</li>
 					<li><p>Add the following capabilities to your application target as needed.</p>
 						<ul>
 							<li><code>Background Modes - Remote notifications</code> - needed for in-app messages</li>
 							<li><code>Push Notifications</code> - needed for push messages</li>
-							<li><code>Associated Domains</code> - needed for deep linking. Please see more information <a href="https://support.iterable.com/hc/en-us/articles/360035496511-iOS-Universal-Links-">here</a>.</li>
+							<li><code>Associated Domains</code> - needed for deep linking. Please see more information <a href="https://support.iterable.com/hc/articles/360035496511">here</a>.</li>
 						</ul>
 					</li>
 					<li><p>To enable in-app messages and push notifications, set both of the following in your <code>AppDelegate</code> file</p>
@@ -123,10 +129,13 @@
  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">application</span><span class="hljs-params">(<span class="hljs-number">_</span> application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : <span class="hljs-keyword">Any</span>], fetchCompletionHandler completionHandler: @escaping <span class="hljs-params">(UIBackgroundFetchResult)</span></span></span> -&gt; <span class="hljs-type">Void</span>) {
         <span class="hljs-type">IterableAppIntegration</span>.application(application, didReceiveRemoteNotification: userInfo, fetchCompletionHandler: completionHandler)
  }        </code></pre>
-						<p> Now you should be getting in-app messages without any further configuration.</p>
+						<p> Now you should be able to retrieve in-app messages without any further configuration.</p>
 					</li>
-					<li><p>To enable push notifications, call Apple&#39;s <a href="https://developer.apple.com/documentation/usernotifications/unusernotificationcenter/1649527-requestauthorization"><code>requestAuthorization</code></a>
-						method on <a href="https://developer.apple.com/documentation/usernotifications/unusernotificationcenter"><code>UNNotificationCenter</code></a> to prompt the user for these permissions. Before requesting authorization, remember to set the <code>delegate</code> property for <code>UNUserNotificationCenter.current()</code></p>
+					<li><p>To enable push notifications, call Apple&#39;s
+							<a href="https://developer.apple.com/documentation/usernotifications/unusernotificationcenter/1649527-requestauthorization"><code>requestAuthorization</code></a>
+							method on <a href="https://developer.apple.com/documentation/usernotifications/unusernotificationcenter"><code>UNNotificationCenter</code></a>
+							to prompt the user for these permissions. Before requesting authorization,
+						remember to set the <code>delegate</code> property for <code>UNUserNotificationCenter.current()</code>.</p>
 						<pre><code class="language-swift">     <span class="hljs-type">UNUserNotificationCenter</span>.current().delegate = <span class="hljs-keyword">self</span>
      <span class="hljs-type">UNUserNotificationCenter</span>.current().requestAuthorization(options:[.alert, .badge, .sound]) { (success, error) <span class="hljs-keyword">in</span>
          <span class="hljs-comment">// ...</span>
@@ -143,7 +152,9 @@
      }
  }</code></pre>
 					</li>
-					<li><p>To handle Iterable deep link urls of the form <code>https://links.yourcompany.com/a/3906b9d2bd8</code>, which are used to track email clicks, you will have to pass this url from <code>application(_:continue:restorationHandler:)</code> to <code>IterableAPI</code> as below:</p>
+					<li><p>To handle Iterable deep link URLs of the form <code>https://links.yourcompany.com/a/3906b9d2bd8</code>,
+							which are used to track email clicks, you will have to pass this URL from
+						<code>application(_:continue:restorationHandler:)</code> to <code>IterableAPI</code> as below:</p>
 						<pre><code class="language-swift"> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">application</span><span class="hljs-params">(<span class="hljs-number">_</span> application: UIApplication, <span class="hljs-keyword">continue</span> userActivity: NSUserActivity, restorationHandler: @escaping <span class="hljs-params">([UIUserActivityRestoring]?)</span></span></span> -&gt; <span class="hljs-type">Void</span>) -&gt; <span class="hljs-type">Bool</span> {
      <span class="hljs-type">ITBInfo</span>()
      <span class="hljs-keyword">guard</span> <span class="hljs-keyword">let</span> url = userActivity.webpageURL <span class="hljs-keyword">else</span> {
@@ -151,15 +162,21 @@
      }
 
      <span class="hljs-keyword">return</span> <span class="hljs-type">IterableAPI</span>.handle(universalLink: url)
- }
-</code></pre>
-						<p> If you pass a regular url to <code>IterableAPI.handle(universalLink:)</code>, that url will be passed unaltered to <code>IterableConfig.urlDelegate</code>. If you pass an Iterable deep link url to  <code>IterableAPI.handle(universalLink:)</code>, we will convert this url to a regular url and pass the resolved url to <code>IterableConfig.urlDelegate</code>. </p>
-						<p> We recommend handling <strong>all urls</strong> in <code>IterableConfig.urlDelegagte</code>. This way you have all your url handling logic in one place.</p>
-						<p> Please see <a href="#configuring-the-sdk">Configuring the SDK</a> section below to see how to set <code>IterableConfig.urlDelegate</code>.</p>
+ }</code></pre>
+						<p> If you pass a regular URL to <code>IterableAPI.handle(universalLink:)</code>, that URL
+							will be passed unaltered to <code>IterableConfig.urlDelegate</code>. If you pass an
+							Iterable deep link uURLrl to <code>IterableAPI.handle(universalLink:)</code>, we will
+							convert this URL to a regular URL and pass the resolved URL to
+						<code>IterableConfig.urlDelegate</code>. </p>
+						<p> We recommend handling <strong>all URLs</strong> in <code>IterableConfig.urlDelegagte</code>. This way
+						you ca  have all of your URL handling logic in one place.</p>
+						<p> Please see <a href="#configuring-the-sdk">Configuring the SDK</a> section below to see
+						how to set <code>IterableConfig.urlDelegate</code>.</p>
 					</li>
 				</ol>
 				<blockquote>
-					<p>&#x1f4a1; You can take a look at <a href="https://github.com/Iterable/react-native-sdk/blob/master/SampleApp/ios/SampleApp/AppDelegate.swift">AppDelegate</a> file in our Sample Applicationto see an example of the above mentioned changes.</p>
+					<p>&#x1f4a1; You can take a look at our sample <a href="https://github.com/Iterable/react-native-sdk/blob/master/SampleApp/ios/SampleApp/AppDelegate.swift">AppDelegate</a>
+					file to see an example of the above mentioned changes.</p>
 				</blockquote>
 				<a href="#android-setup" id="android-setup" style="color: inherit; text-decoration: none;">
 					<h2>Android Setup</h2>
@@ -173,29 +190,36 @@
 				</a>
 				<ol>
 					<li><p>Import Iterable react native components</p>
-						<pre><code class="language-javascript"> <span class="hljs-keyword">import</span> { Iterable, IterableConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">'react-native-itera ble'</span>;</code></pre>
+						<pre><code class="language-javascript"> <span class="hljs-keyword">import</span> { Iterable, IterableConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">'react-native-iterable'</span>;</code></pre>
 					</li>
 					<li><p>Set an API Key</p>
 						<pre><code class="language-javascript"> <span class="hljs-keyword">const</span> config = IterableConfig();
  Iterable.initialize(<span class="hljs-string">'&lt;YOUR_API_KEY&gt;'</span>, config);</code></pre>
 					</li>
 					<li><p>Set userId or email</p>
-						<pre><code class="language-javascript"> Iterable.email = <span class="hljs-string">'user@example.com'</span>;</code></pre>
+						<pre><code class="language-javascript"> Iterable.email = <span class="hljs-string">'&lt;USER_EMAIL_ADDRESS&gt;'</span>;</code></pre>
 						<blockquote>
-							<p>&#x26A0; Don&#39;t specify both <code>email</code> and <code>userId</code> in the same session, as they will be treated as different users by the SDK. Only use one type of identifier, <code>email</code> or <code>userId</code>, to identify the user.</p>
+							<p>&#x26A0; Don&#39;t specify a value for both <code>email</code> and <code>userId</code> in the same
+								session, as they will be treated as different users by the SDK. Only use
+							one type of identifier, <code>email</code> or <code>userId</code>, to identify the user.</p>
 						</blockquote>
 					</li>
-					<li><p>To handle urls coming from in-app messages and push messages as well as to handle Iterable deep link urls coming from emails, you will have to set <code>IterableConfig.urlDelegate</code> to handle the url. Please see example below.</p>
-						<pre><code> <span class="hljs-keyword">const</span> config = <span class="hljs-keyword">new</span> IterableConfig()
+					<li><p>To handle URLs coming from in-app messages and push messages as well as to
+							handle Iterable deep link URLs coming from emails, you will have to set
+						<code>IterableConfig.urlDelegate</code> to handle the URL. Please see the example below.</p>
+						<pre><code class="language-javascript"> <span class="hljs-keyword">const</span> config = <span class="hljs-keyword">new</span> IterableConfig()
+
  config.urlDelegate = <span class="hljs-function">(<span class="hljs-params">url, context</span>) =&gt;</span> {
      <span class="hljs-keyword">if</span> (url.match(<span class="hljs-regexp">/product\/([^\/]+)/i</span>)) {
          <span class="hljs-keyword">this</span>.navigate(match[<span class="hljs-number">1</span>]);
          <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>; <span class="hljs-comment">// handled</span>
      }
+
      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-comment">// not handled</span>
 }
-Iterable.initialize(<span class="hljs-string">'&lt;YOUR_API_KEY&gt;'</span>, config);
-</code></pre></li>
+
+Iterable.initialize(<span class="hljs-string">'&lt;YOUR_API_KEY&gt;'</span>, config);</code></pre>
+					</li>
 				</ol>
 				<a href="#license" id="license" style="color: inherit; text-decoration: none;">
 					<h2>License</h2>

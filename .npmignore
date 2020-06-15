@@ -1,8 +1,11 @@
 SampleApp
+sample-app
 jest.config.js
 node_modules
 package-lock.json
+yarn.lock
 tsconfig.json
+.codeclimate.yml
 /ts
 /docs
 /scripts
