@@ -1,0 +1,3 @@
+rootProject.name = 'DetoxRNExample'
+
+include ':app'

@@ -1,5 +1,5 @@
 SampleApp
-sample-app
+integration-testing
 jest.config.js
 node_modules
 package-lock.json

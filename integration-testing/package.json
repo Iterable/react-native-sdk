@@ -1,0 +1,30 @@
+{
+  "name": "example",
+  "version": "16.7.2",
+  "private": true,
+  "scripts": {
+    "start": "react-native start",
+    "postinstall": "node scripts/postinstall.js",
+    "build:ios": "detox build --configuration ios.sim.debug",
+    "build:android-debug": "detox build --configuration android.emu.debug",
+    "build:android-release": "detox build --configuration android.emu.release",
+    "test:ios": "detox test --configuration ios.sim.debug",
+    "test:android-debug": "detox test --configuration android.emu.debug",
+    "test:android-release": "detox test --configuration android.emu.release",
+    "test:android-release-ci": "detox test --configuration android.emu.release -l verbose --headless --record-logs all --take-screenshots all",
+    "test:android-explicit-require": "DETOX_EXPOSE_GLOBALS=0 detox test e2eExplicitRequire -c android.emu.release",
+    "test:android-explicit-require-ci": "DETOX_EXPOSE_GLOBALS=0 detox test e2eExplicitRequire -c android.emu.release -l verbose --headless --record-logs all --take-screenshots all",
+    "e2e:ios": "npm run build:ios && npm run test:ios",
+    "e2e:android-debug": "npm run build:android-debug && npm run test:android-debug",
+    "e2e:android-release": "npm run build:android-release && npm run test:android-release"
+  },
+  "dependencies": {
+    "@iterable/react-native-sdk": "^1.0.1",
+    "react": "16.11.x",
+    "react-native": "0.62.x"
+  },
+  "devDependencies": {
+    "detox": "^16.7.2",
+    "mocha": "^6.1.3"
+  }
+}
