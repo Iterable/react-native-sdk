@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# This will manually copy react-native-sdk files from top folder to the right place for sample-app.
+# This is for dev use only. 
+
 export sample_app_dir=`dirname $0`/..
 cd $sample_app_dir
 export sample_app_dir=`pwd`
