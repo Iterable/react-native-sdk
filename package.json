@@ -29,10 +29,12 @@
     "@types/react": "^16.9.23",
     "@types/react-native": "^0.61.23",
     "@types/react-test-renderer": "^16.9.2",
-    "eslint": "^5.0.0",
+    "eslint": "^7.2.0",
     "eslint-config-standard": "^14.0.0",
     "eslint-config-standard-jsx": "^8.1.0",
     "eslint-config-standard-react": "^9.2.0",
+    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.0.0",
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-standard": "^4.0.0",
@@ -40,6 +42,6 @@
     "jest": "^26.0.1",
     "react": "^16.9.0",
     "ts-jest": "^26.0.0",
-    "typescript": "^3.9.3"
+    "typescript": "^3.9.5"
   }
 }
