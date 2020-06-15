@@ -21,13 +21,11 @@
   "author": "Iterable",
   "license": "MIT",
   "homepage": "https://github.com/Iterable/react-native-sdk",
-  "dependencies": {
-    "react-native": "^0.61.5"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@types/jest": "^25.2.3",
+    "@types/jest": "^26.0.0",
     "@types/react": "^16.9.23",
-    "@types/react-native": "^0.61.23",
+    "@types/react-native": "^0.62.13",
     "@types/react-test-renderer": "^16.9.2",
     "eslint": "^7.2.0",
     "eslint-config-standard": "^14.0.0",
@@ -40,8 +38,12 @@
     "eslint-plugin-standard": "^4.0.0",
     "i": "^0.3.5",
     "jest": "^26.0.1",
-    "react": "^16.9.0",
+    "react": "^16.11.0",
+    "react-native": "^0.62.2",
     "ts-jest": "^26.0.0",
     "typescript": "^3.9.5"
+  },
+  "peerDependencies": {
+    "react-native": "^0.62.2"
   }
 }
