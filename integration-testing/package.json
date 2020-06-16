@@ -19,7 +19,7 @@
     "e2e:android-release": "npm run build:android-release && npm run test:android-release"
   },
   "dependencies": {
-    "@iterable/react-native-sdk": "^1.0.1",
+    "@iterable/react-native-sdk": "^1.0.5",
     "react": "16.11.x",
     "react-native": "0.62.x"
   },
