@@ -1,8 +1,8 @@
 #!/bin/sh
 
 set -euxo
-export IT_DIR=$(cd `dirname "$0"`/.. && pwd)
-cd $IT_DIR
+export BASE_DIR=$(cd `dirname "$0"`/.. && pwd)
+cd $BASE_DIR
 
 rm -rf node_modules/
 rm -rf yarn.lock
