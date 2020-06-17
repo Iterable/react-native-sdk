@@ -1,3 +1,4 @@
+import { NativeModules, NativeEventEmitter, Linking } from 'react-native'
 import React from 'react';
 import {
   Alert,
@@ -30,6 +31,8 @@ import {
 
 import { Login } from './ts/Login'
 
+const RNE2E = NativeModules.RNE2E
+
 const config = new IterableConfig()
 config.pushPlatform = PushServicePlatform.auto
 config.inAppDisplayInterval = 1.0
@@ -52,6 +55,8 @@ config.inAppDelegate = (message: IterableInAppMessage) => {
 
 Iterable.initialize("9db32a2d72b9476196cbca44d580a05e", config);
 
+RNE2E.sendCommand("initialize")
+
 const App: () => React.ReactNode = () => {
   return (
     <>
@@ -64,15 +69,8 @@ const App: () => React.ReactNode = () => {
             <Login />
           </View>
           <View style={styles.body}>
-            <Button title="Set Email" onPress={() => {
-              Iterable.setEmail("tapash@iterable.com");
-            }} />
-          </View>
-          <View style={styles.body}>
-            <Button title="Get Email" onPress={() => {
-              Iterable.getEmail().then(email => {
-                console.log("email: " + email)
-              })
+            <Button title="Send Command" onPress={() => {
+              RNE2E.sendCommand("initialize")
             }} />
           </View>
           <View style={styles.body}>
