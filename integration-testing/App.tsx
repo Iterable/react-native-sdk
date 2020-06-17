@@ -55,8 +55,6 @@ config.inAppDelegate = (message: IterableInAppMessage) => {
 
 Iterable.initialize("9db32a2d72b9476196cbca44d580a05e", config);
 
-RNE2E.sendCommand("initialize")
-
 const App: () => React.ReactNode = () => {
   return (
     <>

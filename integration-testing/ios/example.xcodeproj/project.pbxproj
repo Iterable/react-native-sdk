@@ -10,6 +10,7 @@
 		4220A76D9E01418EA8F8E9BD /* libPods-example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B032AA4480FF30BB594C1A6C /* libPods-example.a */; };
 		AC1272892499FCC10006A3C5 /* RNE2E.m in Sources */ = {isa = PBXBuildFile; fileRef = AC1272882499FCC10006A3C5 /* RNE2E.m */; };
 		AC12728B2499FCEC0006A3C5 /* ReactE2E.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC12728A2499FCEC0006A3C5 /* ReactE2E.swift */; };
+		AC12728D249A567D0006A3C5 /* IterableAPISupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC12728C249A567D0006A3C5 /* IterableAPISupport.swift */; };
 		AC27B4652495224E0079F714 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC27B4642495224E0079F714 /* AppDelegate.swift */; };
 		AC27B4692495224E0079F714 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC27B4682495224E0079F714 /* ViewController.swift */; };
 		AC27B46C2495224E0079F714 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC27B46A2495224E0079F714 /* Main.storyboard */; };
@@ -21,6 +22,7 @@
 		3C757389F2C6D30D9AAFFFFB /* Pods-example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-example.debug.xcconfig"; path = "Target Support Files/Pods-example/Pods-example.debug.xcconfig"; sourceTree = "<group>"; };
 		AC1272882499FCC10006A3C5 /* RNE2E.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNE2E.m; sourceTree = "<group>"; };
 		AC12728A2499FCEC0006A3C5 /* ReactE2E.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactE2E.swift; sourceTree = "<group>"; };
+		AC12728C249A567D0006A3C5 /* IterableAPISupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IterableAPISupport.swift; sourceTree = "<group>"; };
 		AC27B4612495224E0079F714 /* example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC27B4642495224E0079F714 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AC27B4682495224E0079F714 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 				AC27B478249526180079F714 /* example-Bridging-Header.h */,
 				AC1272882499FCC10006A3C5 /* RNE2E.m */,
 				AC12728A2499FCEC0006A3C5 /* ReactE2E.swift */,
+				AC12728C249A567D0006A3C5 /* IterableAPISupport.swift */,
 			);
 			path = example;
 			sourceTree = "<group>";
@@ -253,6 +256,7 @@
 			files = (
 				AC12728B2499FCEC0006A3C5 /* ReactE2E.swift in Sources */,
 				AC1272892499FCC10006A3C5 /* RNE2E.m in Sources */,
+				AC12728D249A567D0006A3C5 /* IterableAPISupport.swift in Sources */,
 				AC27B4692495224E0079F714 /* ViewController.swift in Sources */,
 				AC27B4652495224E0079F714 /* AppDelegate.swift in Sources */,
 			);

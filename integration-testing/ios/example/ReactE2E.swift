@@ -64,6 +64,10 @@ class ReactE2E: RCTEventEmitter {
     private func execute(command: Command) {
         switch command {
         case .initialize:
+            IterableAPISupport.sharedInstance.sendInApp(toEmail: IterableAPI.email!, withCampaignId: 1157554)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                _ = IterableAPI.internalImplementation?.inAppManager.scheduleSync()
+            }
             break
         default:
             ITBError("unknown command")
