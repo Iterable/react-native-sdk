@@ -28,6 +28,8 @@ import {
   IterableInAppDeleteSource,
 } from '@iterable/react-native-sdk';
 
+import { Login } from './ts/Login'
+
 const config = new IterableConfig()
 config.pushPlatform = PushServicePlatform.auto
 config.inAppDisplayInterval = 1.0
@@ -58,6 +60,9 @@ const App: () => React.ReactNode = () => {
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={styles.scrollView}>
+          <View style={styles.body}>
+            <Login />
+          </View>
           <View style={styles.body}>
             <Button title="Set Email" onPress={() => {
               Iterable.setEmail("tapash@iterable.com");

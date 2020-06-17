@@ -10,6 +10,7 @@ yarn install
 cd ios/
 rm -rf Podfile.lock
 rm -rf Pods/
+rm -rf *.xcworkspace/
 rm -rf ~/Library/Caches/CocoaPods
 rm -rf build/
 pod install
