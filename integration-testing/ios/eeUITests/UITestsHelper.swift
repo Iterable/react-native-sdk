@@ -43,6 +43,10 @@ struct UITestsHelper {
         return app.links[text].firstMatch
     }
     
+    static func label(withText text: String, inApp app: XCUIApplication) -> XCUIElement {
+        return app.staticTexts[text]
+    }
+    
     static func button(withText text: String, inApp app: XCUIApplication) -> XCUIElement {
         return app.buttons[text]
     }
@@ -63,6 +67,10 @@ extension XCUIApplication {
     
     func lastCell() -> XCUIElement {
         return UITestsHelper.lastCell(inApp: self)
+    }
+    
+    func label(withText text: String) -> XCUIElement {
+        return UITestsHelper.label(withText: text, inApp: self)
     }
     
     func link(withText text: String) -> XCUIElement {

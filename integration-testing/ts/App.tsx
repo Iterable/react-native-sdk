@@ -1,7 +1,6 @@
 import { NativeModules, NativeEventEmitter, Linking } from 'react-native'
 import React from 'react';
 import {
-  Alert,
   SafeAreaView,
   StyleSheet,
   ScrollView,
@@ -26,36 +25,22 @@ import {
 import { Login } from './Login'
 
 // Consts
-import { iterableAPIKey, sendInAppCampaignId } from './Config'
+import { iterableAPIKey, sendInAppCampaignId, skipInAppCampaignId } from './Config'
 
 const RNE2E = NativeModules.RNE2E
 
-const config = new IterableConfig()
-config.pushPlatform = PushServicePlatform.auto
-config.inAppDisplayInterval = 1.0
-config.urlDelegate = (url: string, context: IterableActionContext) => {
-  console.log("urlDelegate: url: " + url)
-  if (url.search(/coffee/i) == -1) {
-    return false
-  } else {
-    Alert.alert("Url Delegate, opening coffee page", "url: " + url)
-    return true
+interface State {
+  statusText?: string
+}
+export default class App extends React.Component<Object, State> {
+  constructor(props) {
+    super(props)
+    this.state = { statusText: "" }
+    this.initializeIterable()
   }
-}
-config.customActionDelegate = (action: IterableAction, context: IterableActionContext) => {
-  Alert.alert("Custom Action Delegate", "actionType: " + action.type)
-  return true
-}
-config.inAppDelegate = (message: IterableInAppMessage) => {
-  return IterableInAppShowResponse.show
-}
 
-RNE2E.setApiKey(iterableAPIKey)
-Iterable.initialize(iterableAPIKey, config);
-
-const App: () => React.ReactNode = () => {
-  return (
-    <>
+  render() {
+    return (
       <SafeAreaView style={styles.container}>
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
@@ -66,6 +51,11 @@ const App: () => React.ReactNode = () => {
           <View style={styles.buttonContainer}>
             <Button testID='sendInAppBtn' title="Send In-App" onPress={() => {
               RNE2E.sendCommand("send-in-app", { campaignId: sendInAppCampaignId })
+            }} />
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button testID='skipInAppBtn' title="Skip In-App" onPress={() => {
+              RNE2E.sendCommand("send-in-app", { campaignId: skipInAppCampaignId })
             }} />
           </View>
           <View style={styles.buttonContainer}>
@@ -110,7 +100,7 @@ const App: () => React.ReactNode = () => {
           </View>
           <View style={styles.buttonContainer}>
             <Button title="Track Event" onPress={() => {
-              Iterable.trackEvent("custom event", { "field1": "value1" })
+              this.setState({ statusText: "Changed text" })
             }} />
           </View>
           <View style={styles.buttonContainer}>
@@ -153,12 +143,50 @@ const App: () => React.ReactNode = () => {
           </View>
         </ScrollView>
         <View style={styles.textContainer}>
-          <Text testID='statusText' style={styles.statusText}>You can see status here</Text>
+          <Text testID='statusText' style={styles.statusText}>{this.state.statusText}</Text>
         </View>
       </SafeAreaView>
-    </>
-  );
-};
+    )
+  }
+
+  initializeIterable() {
+    const config = new IterableConfig()
+    config.pushPlatform = PushServicePlatform.auto
+    config.inAppDisplayInterval = 1.0
+    config.urlDelegate = (url: string, context: IterableActionContext) => {
+      console.log("urlDelegate: url: " + url)
+      if (url.search(/coffee/i) == -1) {
+        return false
+      } else {
+        this.setState({ statusText: "Url Delegate, opening coffee page, url: " + url })
+        return true
+      }
+    }
+    config.customActionDelegate = (action: IterableAction, context: IterableActionContext) => {
+      this.setState({ statusText: "Custom Action Delegate, actionType: " + action.type })
+      return true
+    }
+    config.inAppDelegate = (message: IterableInAppMessage) => {
+      if (App.readBoolean(message.customPayload, "hide")) {
+        this.setState({ statusText: "Skipping in-app" })
+        return IterableInAppShowResponse.skip
+      }
+      this.setState({ statusText: "Showing in-app" })
+      return IterableInAppShowResponse.show
+    }
+
+    RNE2E.setApiKey(iterableAPIKey)
+    Iterable.initialize(iterableAPIKey, config);
+  }
+
+  static readBoolean(dict: any, key: string): boolean {
+    if (dict[key]) {
+      return dict[key] as boolean
+    } else {
+      return false
+    }
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -189,4 +217,3 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
