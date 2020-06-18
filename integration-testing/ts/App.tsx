@@ -25,7 +25,7 @@ import {
 import { Login } from './Login'
 
 // Consts
-import { iterableAPIKey, sendInAppCampaignId, skipInAppCampaignId } from './Config'
+import { iterableAPIKey, sendInAppCampaignId, skipInAppCampaignId, openDeepLinkCampaignId } from './Config'
 
 const RNE2E = NativeModules.RNE2E
 
@@ -59,13 +59,8 @@ export default class App extends React.Component<Object, State> {
             }} />
           </View>
           <View style={styles.buttonContainer}>
-            <Button title="Track In-App Open" onPress={() => {
-              Iterable.inAppManager.getMessages().then(messages => {
-                console.log("total messages: " + messages.length)
-                if (messages.length > 0) {
-                  Iterable.trackInAppOpen(messages[messages.length - 1], IterableInAppLocation.inbox)
-                }
-              })
+            <Button testID="openDeepLinkBtn" title="Url Delegate Open Deep Link" onPress={() => {
+              RNE2E.sendCommand("send-in-app", { campaignId: openDeepLinkCampaignId })
             }} />
           </View>
           <View style={styles.buttonContainer}>
@@ -156,23 +151,26 @@ export default class App extends React.Component<Object, State> {
     config.urlDelegate = (url: string, context: IterableActionContext) => {
       console.log("urlDelegate: url: " + url)
       if (url.search(/coffee/i) == -1) {
+        this.setState({ statusText: `Opening url: ${url}` })
         return false
       } else {
-        this.setState({ statusText: "Url Delegate, opening coffee page, url: " + url })
+        const coffee = url.match(/coffee\/(.+)/)[1]
+        this.setState({ statusText: `Opening coffee page: '${coffee}'` })
         return true
       }
     }
     config.customActionDelegate = (action: IterableAction, context: IterableActionContext) => {
-      this.setState({ statusText: "Custom Action Delegate, actionType: " + action.type })
+      this.setState({ statusText: `Custom Action: ${action.type}` })
       return true
     }
     config.inAppDelegate = (message: IterableInAppMessage) => {
       if (App.readBoolean(message.customPayload, "hide")) {
         this.setState({ statusText: "Skipping in-app" })
         return IterableInAppShowResponse.skip
+      } else {
+        this.setState({ statusText: "Showing in-app" })
+        return IterableInAppShowResponse.show
       }
-      this.setState({ statusText: "Showing in-app" })
-      return IterableInAppShowResponse.show
     }
 
     RNE2E.setApiKey(iterableAPIKey)

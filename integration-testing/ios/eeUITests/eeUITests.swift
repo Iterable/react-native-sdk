@@ -21,7 +21,7 @@ class eeUITests: XCTestCase {
         app.button(withText: "Login").waitToAppear().doubleTap()
         app.button(withText: "Logout").waitToAppear()
     }
-    
+
     func testSendInApp() throws {
         app.button(withText: "Send In-App").tap()
         app.link(withText: "Later").waitToAppear().tap()
@@ -30,5 +30,11 @@ class eeUITests: XCTestCase {
     func testSkipInApp() throws {
         app.button(withText: "Skip In-App").tap()
         app.label(withText: "Skipping in-app").waitToAppear()
+    }
+    
+    func testUrlDelegateOpenDeeplink() throws {
+        app.button(withText: "openDeepLinkBtn").tap()
+        app.link(withText: "Buy Now!").waitToAppear().tap()
+        app.label(withText: "Opening coffee page: 'cappuccino'").waitToAppear()
     }
 }
