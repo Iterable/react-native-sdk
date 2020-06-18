@@ -15,7 +15,7 @@ describe('Iterable', () => {
     await waitFor(element(by.id('logoutBtn'))).toBeVisible();
   });
 
-  it('Show in-app', async () => {
-    await element(by.id('getInAppBtn')).tap();
+  it('Send in-app', async () => {
+    await element(by.id('sendInAppBtn')).tap();
   });
 });

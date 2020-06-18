@@ -13,12 +13,13 @@ class ReactE2E: RCTEventEmitter {
     func setApiKey(apiKey: String) {
         ITBInfo("setApiKey")
         self.apiKey = apiKey
+        IterableAPISupport.sharedInstance = IterableAPISupport(apiKey: apiKey)
     }
     
-    @objc(sendCommand:)
-    func sendCommand(command: String) {
+    @objc(sendCommand:params:)
+    func sendCommand(command: String, params: [AnyHashable: Any]) {
         ITBInfo("sendCommand: \(command)")
-        execute(command: Command.parse(str: command))
+        execute(command: Command.parse(str: command), params: params)
         
     }
     
@@ -56,6 +57,7 @@ class ReactE2E: RCTEventEmitter {
     
     enum Command: String {
         case initialize
+        case sendInApp = "send-in-app"
         case unknown
         
         static func parse(str: String) -> Command {
@@ -68,11 +70,13 @@ class ReactE2E: RCTEventEmitter {
     private var shouldEmit = false
     private let _methodQueue = DispatchQueue(label: String(describing: ReactE2E.self))
     
-    private func execute(command: Command) {
+    private func execute(command: Command, params: [AnyHashable: Any]) {
         switch command {
         case .initialize:
-            IterableAPISupport.sharedInstance = IterableAPISupport(apiKey: apiKey)
-            IterableAPISupport.sharedInstance.sendInApp(toEmail: IterableAPI.email!, withCampaignId: 1157554)
+            break
+        case .sendInApp:
+            let campaignId = params["campaignId"] as! Int
+            IterableAPISupport.sharedInstance.sendInApp(toEmail: IterableAPI.email!, withCampaignId: campaignId)
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                 _ = IterableAPI.internalImplementation?.inAppManager.scheduleSync()
             }

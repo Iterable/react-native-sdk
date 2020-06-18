@@ -11,6 +11,7 @@
 
 RCT_EXTERN_METHOD(setApiKey: (nonnull NSString *) apiKey)
 
-RCT_EXTERN_METHOD(sendCommand: (nonnull NSString *) command)
+RCT_EXTERN_METHOD(sendCommand: (nonnull NSString *) command
+                  params: (nonnull NSDictionary *) params)
 
 @end

@@ -24,8 +24,9 @@ import {
 } from '@iterable/react-native-sdk';
 
 import { Login } from './Login'
-import { iterableAPIKey } from './Config'
 
+// Consts
+import { iterableAPIKey, sendInAppCampaignId } from './Config'
 
 const RNE2E = NativeModules.RNE2E
 
@@ -63,8 +64,8 @@ const App: () => React.ReactNode = () => {
             <Login />
           </View>
           <View style={styles.buttonContainer}>
-            <Button testID='getInAppBtn' title="Send Command" onPress={() => {
-              RNE2E.sendCommand("initialize")
+            <Button testID='sendInAppBtn' title="Send In-App" onPress={() => {
+              RNE2E.sendCommand("send-in-app", { campaignId: sendInAppCampaignId })
             }} />
           </View>
           <View style={styles.buttonContainer}>
