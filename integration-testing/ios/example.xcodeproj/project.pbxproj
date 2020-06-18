@@ -16,7 +16,19 @@
 		AC27B46C2495224E0079F714 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC27B46A2495224E0079F714 /* Main.storyboard */; };
 		AC27B46E249522510079F714 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AC27B46D249522510079F714 /* Assets.xcassets */; };
 		AC27B471249522510079F714 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC27B46F249522510079F714 /* LaunchScreen.storyboard */; };
+		AC424ABA249B6266006BE3DC /* eeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC424AB9249B6266006BE3DC /* eeUITests.swift */; };
+		AC424AC2249B6765006BE3DC /* UITestsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC424AC1249B6765006BE3DC /* UITestsHelper.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		AC424ABC249B6266006BE3DC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AC27B4592495224E0079F714 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AC27B4602495224E0079F714;
+			remoteInfo = example;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		3C757389F2C6D30D9AAFFFFB /* Pods-example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-example.debug.xcconfig"; path = "Target Support Files/Pods-example/Pods-example.debug.xcconfig"; sourceTree = "<group>"; };
@@ -31,6 +43,10 @@
 		AC27B470249522510079F714 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AC27B472249522510079F714 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AC27B478249526180079F714 /* example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "example-Bridging-Header.h"; sourceTree = "<group>"; };
+		AC424AB7249B6266006BE3DC /* eeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = eeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AC424AB9249B6266006BE3DC /* eeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = eeUITests.swift; sourceTree = "<group>"; };
+		AC424ABB249B6266006BE3DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AC424AC1249B6765006BE3DC /* UITestsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestsHelper.swift; sourceTree = "<group>"; };
 		ACBA3CD72495F1AB000B555A /* example.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = example.entitlements; sourceTree = "<group>"; };
 		B032AA4480FF30BB594C1A6C /* libPods-example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D08D72478808E896D10238F8 /* Pods-example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-example.release.xcconfig"; path = "Target Support Files/Pods-example/Pods-example.release.xcconfig"; sourceTree = "<group>"; };
@@ -42,6 +58,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				4220A76D9E01418EA8F8E9BD /* libPods-example.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AC424AB4249B6266006BE3DC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -69,6 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				AC27B4632495224E0079F714 /* example */,
+				AC424AB8249B6266006BE3DC /* eeUITests */,
 				AC27B4622495224E0079F714 /* Products */,
 				66776D6547833594FC34624D /* Pods */,
 				4AC3CCD3A8ED474D998351AF /* Frameworks */,
@@ -79,6 +103,7 @@
 			isa = PBXGroup;
 			children = (
 				AC27B4612495224E0079F714 /* example.app */,
+				AC424AB7249B6266006BE3DC /* eeUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -99,6 +124,16 @@
 				AC12728C249A567D0006A3C5 /* IterableAPISupport.swift */,
 			);
 			path = example;
+			sourceTree = "<group>";
+		};
+		AC424AB8249B6266006BE3DC /* eeUITests */ = {
+			isa = PBXGroup;
+			children = (
+				AC424AB9249B6266006BE3DC /* eeUITests.swift */,
+				AC424ABB249B6266006BE3DC /* Info.plist */,
+				AC424AC1249B6765006BE3DC /* UITestsHelper.swift */,
+			);
+			path = eeUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -125,6 +160,24 @@
 			productReference = AC27B4612495224E0079F714 /* example.app */;
 			productType = "com.apple.product-type.application";
 		};
+		AC424AB6249B6266006BE3DC /* eeUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AC424AC0249B6266006BE3DC /* Build configuration list for PBXNativeTarget "eeUITests" */;
+			buildPhases = (
+				AC424AB3249B6266006BE3DC /* Sources */,
+				AC424AB4249B6266006BE3DC /* Frameworks */,
+				AC424AB5249B6266006BE3DC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AC424ABD249B6266006BE3DC /* PBXTargetDependency */,
+			);
+			name = eeUITests;
+			productName = eeUITests;
+			productReference = AC424AB7249B6266006BE3DC /* eeUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -137,6 +190,10 @@
 				TargetAttributes = {
 					AC27B4602495224E0079F714 = {
 						CreatedOnToolsVersion = 11.5;
+					};
+					AC424AB6249B6266006BE3DC = {
+						CreatedOnToolsVersion = 11.5;
+						TestTargetID = AC27B4602495224E0079F714;
 					};
 				};
 			};
@@ -154,6 +211,7 @@
 			projectRoot = "";
 			targets = (
 				AC27B4602495224E0079F714 /* example */,
+				AC424AB6249B6266006BE3DC /* eeUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -166,6 +224,13 @@
 				AC27B471249522510079F714 /* LaunchScreen.storyboard in Resources */,
 				AC27B46E249522510079F714 /* Assets.xcassets in Resources */,
 				AC27B46C2495224E0079F714 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AC424AB5249B6266006BE3DC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -262,7 +327,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AC424AB3249B6266006BE3DC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AC424ABA249B6266006BE3DC /* eeUITests.swift in Sources */,
+				AC424AC2249B6765006BE3DC /* UITestsHelper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AC424ABD249B6266006BE3DC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AC27B4602495224E0079F714 /* example */;
+			targetProxy = AC424ABC249B6266006BE3DC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		AC27B46A2495224E0079F714 /* Main.storyboard */ = {
@@ -440,6 +522,45 @@
 			};
 			name = Release;
 		};
+		AC424ABE249B6266006BE3DC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = BP98Z28R86;
+				INFOPLIST_FILE = eeUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.iterable.eeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = example;
+			};
+			name = Debug;
+		};
+		AC424ABF249B6266006BE3DC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = BP98Z28R86;
+				ENABLE_TESTABILITY = YES;
+				INFOPLIST_FILE = eeUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.iterable.eeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = example;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -457,6 +578,15 @@
 			buildConfigurations = (
 				AC27B476249522510079F714 /* Debug */,
 				AC27B477249522510079F714 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AC424AC0249B6266006BE3DC /* Build configuration list for PBXNativeTarget "eeUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AC424ABE249B6266006BE3DC /* Debug */,
+				AC424ABF249B6266006BE3DC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

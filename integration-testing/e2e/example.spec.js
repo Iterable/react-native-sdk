@@ -17,5 +17,7 @@ describe('Iterable', () => {
 
   it('Send in-app', async () => {
     await element(by.id('sendInAppBtn')).tap();
+    await waitFor(element(by.text('Later'))).toExist().withTimeout(10000);
+    //await element(by.text('Later')).tap();
   });
 });
