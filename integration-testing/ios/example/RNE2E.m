@@ -9,6 +9,8 @@
 
 @interface RCT_EXTERN_REMAP_MODULE(RNE2E, ReactE2E, NSObject)
 
+RCT_EXTERN_METHOD(setApiKey: (nonnull NSString *) apiKey)
+
 RCT_EXTERN_METHOD(sendCommand: (nonnull NSString *) command)
 
 @end

@@ -6,25 +6,6 @@
 import Foundation
 import IterableSDK
 
-struct Environment {
-    enum Key : String {
-        case apiKey
-        case email
-        case notificationDisabled
-    }
-
-    static func get(key: Key) -> String? {
-        return ProcessInfo.processInfo.environment[key.rawValue]
-    }
-
-    static func getBool(key: Key) -> Bool {
-        guard let strValue = get(key: key) else {
-            return false
-        }
-        return Bool(strValue) ?? false
-    }
-}
-
 struct IterableAPISupport {
     struct Key {
         static let ITBL_ENDPOINT_API = apiHostname + "/api/"
@@ -34,10 +15,9 @@ struct IterableAPISupport {
         static let ITBL_PATH_PUSH_TARGET = "push/target"
         static let ITBL_PATH_INAPP_TARGET = "inApp/target"
         private static let apiHostname = "https://api.iterable.com"
-        static let apiKey = Environment.get(key: .apiKey)!
     }
     
-    static var sharedInstance = IterableAPISupport()
+    static var sharedInstance: IterableAPISupport!
     
     func sendPush(toEmail email: String, withCampaignId campaignId: Int, withOnSuccess onSuccess: OnSuccessHandler? = nil, withOnFailure onFailure: OnFailureHandler? = nil) {
         let args: [String: Any] = [
@@ -79,7 +59,7 @@ struct IterableAPISupport {
         guard var components = URLComponents(string: "\(Key.ITBL_ENDPOINT_API)\(path)") else {
             return nil
         }
-        components.queryItems = [URLQueryItem(name: "api_key", value: Key.apiKey)]
+        components.queryItems = [URLQueryItem(name: "api_key", value: apiKey)]
         return components
     }
     
@@ -165,6 +145,12 @@ struct IterableAPISupport {
         
         task.resume()
     }
+    
+    init(apiKey: String) {
+        self.apiKey = apiKey
+    }
+    
+    private var apiKey: String
 
     private var urlSession: URLSession = {
         return URLSession(configuration: URLSessionConfiguration.default)

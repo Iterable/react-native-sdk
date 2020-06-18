@@ -47,6 +47,7 @@ config.inAppDelegate = (message: IterableInAppMessage) => {
   return IterableInAppShowResponse.show
 }
 
+RNE2E.setApiKey("9db32a2d72b9476196cbca44d580a05e")
 Iterable.initialize("9db32a2d72b9476196cbca44d580a05e", config);
 
 const App: () => React.ReactNode = () => {
@@ -60,7 +61,7 @@ const App: () => React.ReactNode = () => {
             <Login />
           </View>
           <View style={styles.buttonContainer}>
-            <Button title="Send Command" onPress={() => {
+            <Button testID='getInAppBtn' title="Send Command" onPress={() => {
               RNE2E.sendCommand("initialize")
             }} />
           </View>
@@ -149,7 +150,7 @@ const App: () => React.ReactNode = () => {
           </View>
         </ScrollView>
         <View style={styles.textContainer}>
-          <Text testID='statusText' style={styles.statusText}>Status text</Text>
+          <Text testID='statusText' style={styles.statusText}>You can see status here</Text>
         </View>
       </SafeAreaView>
     </>

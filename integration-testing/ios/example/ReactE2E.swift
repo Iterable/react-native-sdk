@@ -9,6 +9,12 @@ import Foundation
 
 @objc(ReactE2E)
 class ReactE2E: RCTEventEmitter {
+    @objc(setApiKey:)
+    func setApiKey(apiKey: String) {
+        ITBInfo("setApiKey")
+        self.apiKey = apiKey
+    }
+    
     @objc(sendCommand:)
     func sendCommand(command: String) {
         ITBInfo("sendCommand: \(command)")
@@ -58,12 +64,14 @@ class ReactE2E: RCTEventEmitter {
     }
 
     // MARK: Private
+    private var apiKey: String!
     private var shouldEmit = false
     private let _methodQueue = DispatchQueue(label: String(describing: ReactE2E.self))
     
     private func execute(command: Command) {
         switch command {
         case .initialize:
+            IterableAPISupport.sharedInstance = IterableAPISupport(apiKey: apiKey)
             IterableAPISupport.sharedInstance.sendInApp(toEmail: IterableAPI.email!, withCampaignId: 1157554)
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                 _ = IterableAPI.internalImplementation?.inAppManager.scheduleSync()
