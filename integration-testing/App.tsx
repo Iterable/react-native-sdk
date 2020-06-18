@@ -7,12 +7,8 @@ import {
   ScrollView,
   View,
   Button,
-  StatusBar,
+  Text,
 } from 'react-native';
-
-import {
-  Colors,
-} from 'react-native/Libraries/NewAppScreen';
 
 import {
   Iterable,
@@ -20,8 +16,6 @@ import {
   PushServicePlatform,
   IterableAction,
   IterableActionContext,
-  IterableAttributionInfo,
-  IterableCommerceItem,
   IterableInAppMessage,
   IterableInAppShowResponse,
   IterableInAppLocation,
@@ -58,72 +52,19 @@ Iterable.initialize("9db32a2d72b9476196cbca44d580a05e", config);
 const App: () => React.ReactNode = () => {
   return (
     <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
+      <SafeAreaView style={styles.container}>
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={styles.scrollView}>
-          <View style={styles.body}>
+          <View style={styles.buttonContainer}>
             <Login />
           </View>
-          <View style={styles.body}>
+          <View style={styles.buttonContainer}>
             <Button title="Send Command" onPress={() => {
               RNE2E.sendCommand("initialize")
             }} />
           </View>
-          <View style={styles.body}>
-            <Button title="Set UserId" onPress={() => {
-              Iterable.setUserId("user001");
-            }} />
-          </View>
-          <View style={styles.body}>
-            <Button title="Get UserId" onPress={() => {
-              Iterable.getUserId().then(userId => {
-                console.log("userId: " + userId)
-              })
-            }} />
-          </View>
-          <View style={styles.body}>
-            <Button title="Disable Device For Current User" onPress={() => {
-              Iterable.disableDeviceForCurrentUser()
-            }} />
-          </View>
-          <View style={styles.body}>
-            <Button title="Disable Device For All Users" onPress={() => {
-              Iterable.disableDeviceForAllUsers()
-            }} />
-          </View>
-          <View style={styles.body}>
-            <Button title="Get Last Push Payload" onPress={() => {
-              Iterable.getLastPushPayload().then(payload => {
-                console.log("pushPayload: " + JSON.stringify(payload))
-              })
-            }} />
-          </View>
-          <View style={styles.body}>
-            <Button title="Set Attribution Info" onPress={() => {
-              Iterable.setAttributionInfo(new IterableAttributionInfo(123, 456, "messageId"))
-            }} />
-          </View>
-          <View style={styles.body}>
-            <Button title="Get Attribution Info" onPress={() => {
-              Iterable.getAttributionInfo().then(attributionInfo => {
-                console.log("attributionInfo: " + JSON.stringify(attributionInfo))
-              })
-            }} />
-          </View>
-          <View style={styles.body}>
-            <Button title="Track Push Open With CampaignId" onPress={() => {
-              Iterable.trackPushOpenWithCampaignId(1234, 0, null, true, null)
-            }} />
-          </View>
-          <View style={styles.body}>
-            <Button title="Track Purchase" onPress={() => {
-              let items = [new IterableCommerceItem("id1", "item_name", 123.456, 789), new IterableCommerceItem("id2", "item_name_2", 1000, 1)]
-              Iterable.trackPurchase(1000000, items, { "name1": "value1" })
-            }} />
-          </View>
-          <View style={styles.body}>
+          <View style={styles.buttonContainer}>
             <Button title="Track In-App Open" onPress={() => {
               Iterable.inAppManager.getMessages().then(messages => {
                 console.log("total messages: " + messages.length)
@@ -133,7 +74,7 @@ const App: () => React.ReactNode = () => {
               })
             }} />
           </View>
-          <View style={styles.body}>
+          <View style={styles.buttonContainer}>
             <Button title="Track In-App Click" onPress={() => {
               Iterable.inAppManager.getMessages().then(messages => {
                 console.log("total messages: " + messages.length)
@@ -143,7 +84,7 @@ const App: () => React.ReactNode = () => {
               })
             }} />
           </View>
-          <View style={styles.body}>
+          <View style={styles.buttonContainer}>
             <Button title="Track In-App Close" onPress={() => {
               Iterable.inAppManager.getMessages().then(messages => {
                 console.log("total messages: " + messages.length)
@@ -153,7 +94,7 @@ const App: () => React.ReactNode = () => {
               })
             }} />
           </View>
-          <View style={styles.body}>
+          <View style={styles.buttonContainer}>
             <Button title="In-App Consume" onPress={() => {
               Iterable.inAppManager.getMessages().then(messages => {
                 console.log("total messages: " + messages.length)
@@ -163,22 +104,12 @@ const App: () => React.ReactNode = () => {
               })
             }} />
           </View>
-          <View style={styles.body}>
+          <View style={styles.buttonContainer}>
             <Button title="Track Event" onPress={() => {
               Iterable.trackEvent("custom event", { "field1": "value1" })
             }} />
           </View>
-          <View style={styles.body}>
-            <Button title="Update User" onPress={() => {
-              Iterable.updateUser({ "field1": "value1" }, false)
-            }} />
-          </View>
-          <View style={styles.body}>
-            <Button title="Update Email" onPress={() => {
-              Iterable.updateEmail("email@email.com")
-            }} />
-          </View>
-          <View style={styles.body}>
+          <View style={styles.buttonContainer}>
             <Button title="Get In-app Messages" onPress={() => {
               Iterable.inAppManager.getMessages().then(messages => {
                 console.log("messages: " + messages.length)
@@ -188,7 +119,7 @@ const App: () => React.ReactNode = () => {
               })
             }} />
           </View>
-          <View style={styles.body}>
+          <View style={styles.buttonContainer}>
             <Button title="Show In-App Message" onPress={() => {
               Iterable.inAppManager.getMessages().then(messages => {
                 console.log("total messages: " + messages.length)
@@ -200,7 +131,7 @@ const App: () => React.ReactNode = () => {
               })
             }} />
           </View>
-          <View style={styles.body}>
+          <View style={styles.buttonContainer}>
             <Button title="Remove In-App Message" onPress={() => {
               Iterable.inAppManager.getMessages().then(messages => {
                 console.log("total messages: " + messages.length)
@@ -210,56 +141,47 @@ const App: () => React.ReactNode = () => {
               })
             }} />
           </View>
-          <View style={styles.body}>
-            <Button title="Set Read for In-App Message" onPress={() => {
-              Iterable.inAppManager.getMessages().then(messages => {
-                console.log("total messages: " + messages.length)
-                if (messages.length > 0) {
-                  Iterable.inAppManager.setReadForMessage(messages[messages.length - 1], false)
-                }
-              })
-            }} />
-            <Button title="Track Event" onPress={() => {
-              console.log("track event")
-              Iterable.trackEvent("custom event", { "field1": "value1" })
-            }} />
-          </View>
-          <View style={styles.body}>
-            <Button title="Update User" onPress={() => {
-              console.log("update user")
-              Iterable.updateUser({ "field1": "value1" }, false)
-            }} />
-          </View>
-          <View style={styles.body}>
-            <Button title="Update Email" onPress={() => {
-              console.log("update email")
-              Iterable.updateEmail("email@email.com")
-            }} />
-          </View>
-          <View style={styles.body}>
+          <View style={styles.buttonContainer}>
             <Button title="Handle Universal Link" onPress={() => {
               console.log("handle universal link")
               Iterable.handleUniversalLink("https://iterable.com/a/asdf")
             }} />
           </View>
-          <View style={styles.body}>
-            <Button title="Update Subscriptions" onPress={() => {
-              console.log("update subscriptions")
-              Iterable.updateSubscriptions([65, 12], [87, 49, 46], [12, 45], [84], 3, 4)
-            }} />
-          </View>
         </ScrollView>
+        <View style={styles.textContainer}>
+          <Text testID='statusText' style={styles.statusText}>Status text</Text>
+        </View>
       </SafeAreaView>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
   },
-  body: {
-    backgroundColor: Colors.white,
+  scrollView: {
+    backgroundColor: '#FFFFFF',
+  },
+  buttonContainer: {
+    backgroundColor: '#FFFFFF',
+  },
+  textContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#777777',
+  },
+  colors: {
+    backgroundColor: '#F5FCFF',
+  },
+  statusText: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 10,
+    padding: 10,
+    fontSize: 18,
+    color: '#DDDDDD'
   },
 });
 
