@@ -24,6 +24,8 @@ import {
 } from '@iterable/react-native-sdk';
 
 import { Login } from './Login'
+import { iterableAPIKey } from './Config'
+
 
 const RNE2E = NativeModules.RNE2E
 
@@ -47,8 +49,8 @@ config.inAppDelegate = (message: IterableInAppMessage) => {
   return IterableInAppShowResponse.show
 }
 
-RNE2E.setApiKey("9db32a2d72b9476196cbca44d580a05e")
-Iterable.initialize("9db32a2d72b9476196cbca44d580a05e", config);
+RNE2E.setApiKey(iterableAPIKey)
+Iterable.initialize(iterableAPIKey, config);
 
 const App: () => React.ReactNode = () => {
   return (
