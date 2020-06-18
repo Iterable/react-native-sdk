@@ -23,7 +23,7 @@ import {
   IterableInAppDeleteSource,
 } from '@iterable/react-native-sdk';
 
-import { Login } from './ts/Login'
+import { Login } from './Login'
 
 const RNE2E = NativeModules.RNE2E
 
