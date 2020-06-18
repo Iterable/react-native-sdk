@@ -31,10 +31,20 @@ class eeUITests: XCTestCase {
         app.button(withText: "Skip In-App").tap()
         app.label(withText: "Skipping in-app").waitToAppear()
     }
-    
+
     func testUrlDelegateOpenDeeplink() throws {
         app.button(withText: "openDeepLinkBtn").tap()
         app.link(withText: "Buy Now!").waitToAppear().tap()
         app.label(withText: "Opening coffee page: 'cappuccino'").waitToAppear()
+    }
+
+    func testUrlDelegateOpenSafari() throws {
+        app.button(withText: "openSafariBtn").tap()
+        app.link(withText: "Open Safari").waitToAppear().tap()
+        let safariApp = XCUIApplication(bundleIdentifier: "com.apple.mobilesafari")
+        XCTAssertEqual(safariApp.state, .runningForeground, "Safari is not active")
+        
+        // launch this app again for other tests
+        app.launch()
     }
 }

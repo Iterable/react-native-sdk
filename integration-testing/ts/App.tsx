@@ -25,7 +25,7 @@ import {
 import { Login } from './Login'
 
 // Consts
-import { iterableAPIKey, sendInAppCampaignId, skipInAppCampaignId, openDeepLinkCampaignId } from './Config'
+import { iterableAPIKey, sendInAppCampaignId, skipInAppCampaignId, openDeepLinkCampaignId, openSafariCampaignId } from './Config'
 
 const RNE2E = NativeModules.RNE2E
 
@@ -64,13 +64,8 @@ export default class App extends React.Component<Object, State> {
             }} />
           </View>
           <View style={styles.buttonContainer}>
-            <Button title="Track In-App Click" onPress={() => {
-              Iterable.inAppManager.getMessages().then(messages => {
-                console.log("total messages: " + messages.length)
-                if (messages.length > 0) {
-                  Iterable.trackInAppClick(messages[messages.length - 1], IterableInAppLocation.inbox, "https://somewhere.com")
-                }
-              })
+            <Button testID="openSafariBtn" title="Url Delegate Open Safari" onPress={() => {
+              RNE2E.sendCommand("send-in-app", { campaignId: openSafariCampaignId })
             }} />
           </View>
           <View style={styles.buttonContainer}>
@@ -151,7 +146,7 @@ export default class App extends React.Component<Object, State> {
     config.urlDelegate = (url: string, context: IterableActionContext) => {
       console.log("urlDelegate: url: " + url)
       if (url.search(/coffee/i) == -1) {
-        this.setState({ statusText: `Opening url: ${url}` })
+        this.setState({ statusText: `Opening url: '${url}'` })
         return false
       } else {
         const coffee = url.match(/coffee\/(.+)/)[1]
