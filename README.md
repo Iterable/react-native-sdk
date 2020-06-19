@@ -17,7 +17,7 @@
 ## Install
 
 ```
-npm install react-native-iterable
+npm install @iterable/react-native-iterable
 ```
 
 ## Sample Application
