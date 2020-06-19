@@ -11,3 +11,5 @@ rm -rf js/
 yarn build
 rm -rf $dest_dir/js
 mv js/ $dest_dir/
+cp $sample_app_dir/package.json $dest_dir/package.json
+cp $sample_app_dir/ios/Podfile $dest_dir/ios/Podfile
