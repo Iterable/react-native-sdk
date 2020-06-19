@@ -32,6 +32,12 @@ class eeUITests: XCTestCase {
         app.label(withText: "Skipping in-app").waitToAppear()
     }
 
+    func testCustomAction() throws {
+        app.button(withText: "customActionBtn").tap()
+        app.link(withText: "Custom Action").waitToAppear().tap()
+        app.label(withText: "Custom Action: 'ActionJackson'").waitToAppear()
+    }
+
     func testUrlDelegateOpenDeeplink() throws {
         app.button(withText: "openDeepLinkBtn").tap()
         app.link(withText: "Buy Now!").waitToAppear().tap()
@@ -41,9 +47,14 @@ class eeUITests: XCTestCase {
     func testUrlDelegateOpenSafari() throws {
         app.button(withText: "openSafariBtn").tap()
         app.link(withText: "Open Safari").waitToAppear().tap()
+        
+        // Give some time to open
+        sleep(1)
+
+        // Assert that safari is active
         let safariApp = XCUIApplication(bundleIdentifier: "com.apple.mobilesafari")
         XCTAssertEqual(safariApp.state, .runningForeground, "Safari is not active")
-        
+
         // launch this app again for other tests
         app.launch()
     }

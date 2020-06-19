@@ -25,7 +25,7 @@ import {
 import { Login } from './Login'
 
 // Consts
-import { iterableAPIKey, sendInAppCampaignId, skipInAppCampaignId, openDeepLinkCampaignId, openSafariCampaignId } from './Config'
+import { iterableAPIKey, sendInAppCampaignId, skipInAppCampaignId, openDeepLinkCampaignId, openSafariCampaignId, customActionCampaignId } from './Config'
 
 const RNE2E = NativeModules.RNE2E
 
@@ -59,6 +59,11 @@ export default class App extends React.Component<Object, State> {
             }} />
           </View>
           <View style={styles.buttonContainer}>
+            <Button testID="customActionBtn" title="Custom Action" onPress={() => {
+              RNE2E.sendCommand("send-in-app", { campaignId: customActionCampaignId })
+            }} />
+          </View>
+          <View style={styles.buttonContainer}>
             <Button testID="openDeepLinkBtn" title="Url Delegate Open Deep Link" onPress={() => {
               RNE2E.sendCommand("send-in-app", { campaignId: openDeepLinkCampaignId })
             }} />
@@ -68,6 +73,7 @@ export default class App extends React.Component<Object, State> {
               RNE2E.sendCommand("send-in-app", { campaignId: openSafariCampaignId })
             }} />
           </View>
+
           <View style={styles.buttonContainer}>
             <Button title="Track In-App Close" onPress={() => {
               Iterable.inAppManager.getMessages().then(messages => {
@@ -155,7 +161,7 @@ export default class App extends React.Component<Object, State> {
       }
     }
     config.customActionDelegate = (action: IterableAction, context: IterableActionContext) => {
-      this.setState({ statusText: `Custom Action: ${action.type}` })
+      this.setState({ statusText: `Custom Action: '${action.type}'` })
       return true
     }
     config.inAppDelegate = (message: IterableInAppMessage) => {
