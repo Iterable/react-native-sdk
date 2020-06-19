@@ -11,6 +11,7 @@ cd ios/
 rm -rf Podfile.lock
 rm -rf Pods/
 rm -rf ~/Library/Caches/CocoaPods
+rm -rf *.xcworkspace/
 rm -rf build/
 pod install
 
