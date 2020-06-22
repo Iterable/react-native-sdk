@@ -18,6 +18,7 @@
 		AC27B471249522510079F714 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC27B46F249522510079F714 /* LaunchScreen.storyboard */; };
 		AC424ABA249B6266006BE3DC /* eeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC424AB9249B6266006BE3DC /* eeUITests.swift */; };
 		AC424AC2249B6765006BE3DC /* UITestsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC424AC1249B6765006BE3DC /* UITestsHelper.swift */; };
+		ACF93CD824A33A6F004B0745 /* main.jsBundle in Resources */ = {isa = PBXBuildFile; fileRef = ACF93CD724A33A6F004B0745 /* main.jsBundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,7 @@
 		AC424ABB249B6266006BE3DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AC424AC1249B6765006BE3DC /* UITestsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestsHelper.swift; sourceTree = "<group>"; };
 		ACBA3CD72495F1AB000B555A /* example.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = example.entitlements; sourceTree = "<group>"; };
+		ACF93CD724A33A6F004B0745 /* main.jsBundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsBundle; sourceTree = "<group>"; };
 		B032AA4480FF30BB594C1A6C /* libPods-example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D08D72478808E896D10238F8 /* Pods-example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-example.release.xcconfig"; path = "Target Support Files/Pods-example/Pods-example.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -122,6 +124,7 @@
 				AC1272882499FCC10006A3C5 /* RNE2E.m */,
 				AC12728A2499FCEC0006A3C5 /* ReactE2E.swift */,
 				AC12728C249A567D0006A3C5 /* IterableAPISupport.swift */,
+				ACF93CD724A33A6F004B0745 /* main.jsBundle */,
 			);
 			path = example;
 			sourceTree = "<group>";
@@ -144,7 +147,6 @@
 			buildConfigurationList = AC27B475249522510079F714 /* Build configuration list for PBXNativeTarget "example" */;
 			buildPhases = (
 				C07AA68C9973F3BAB4F3C542 /* [CP] Check Pods Manifest.lock */,
-				AC6DC4A82498A80200C058CE /* Start Packager */,
 				AC27B45D2495224E0079F714 /* Sources */,
 				AC27B45E2495224E0079F714 /* Frameworks */,
 				AC27B45F2495224E0079F714 /* Resources */,
@@ -222,6 +224,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AC27B471249522510079F714 /* LaunchScreen.storyboard in Resources */,
+				ACF93CD824A33A6F004B0745 /* main.jsBundle in Resources */,
 				AC27B46E249522510079F714 /* Assets.xcassets in Resources */,
 				AC27B46C2495224E0079F714 /* Main.storyboard in Resources */,
 			);
@@ -270,25 +273,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
-		};
-		AC6DC4A82498A80200C058CE /* Start Packager */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Start Packager";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > \"${SRCROOT}/../node_modules/react-native/scripts/.packager.env\"\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open \"$SRCROOT/../node_modules/react-native/scripts/launchPackager.command\" || echo \"Can't start packager automatically\"\n  fi\nfi\n";
+			shellScript = "export NODE_BINARY=node\nexport FORCE_BUNDLING=true\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		C07AA68C9973F3BAB4F3C542 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

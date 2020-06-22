@@ -75,49 +75,12 @@ export default class App extends React.Component<Object, State> {
           </View>
 
           <View style={styles.buttonContainer}>
-            <Button title="Track In-App Close" onPress={() => {
-              Iterable.inAppManager.getMessages().then(messages => {
-                console.log("total messages: " + messages.length)
-                if (messages.length > 0) {
-                  Iterable.trackInAppClose(messages[messages.length - 1], IterableInAppLocation.inbox, IterableInAppCloseSource.back, "https://somewhere.com")
-                }
-              })
-            }} />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button title="In-App Consume" onPress={() => {
-              Iterable.inAppManager.getMessages().then(messages => {
-                console.log("total messages: " + messages.length)
-                if (messages.length > 0) {
-                  Iterable.inAppConsume(messages[messages.length - 1], IterableInAppLocation.inbox, IterableInAppDeleteSource.deleteButton)
-                }
-              })
-            }} />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button title="Track Event" onPress={() => {
-              this.setState({ statusText: "Changed text" })
-            }} />
-          </View>
-          <View style={styles.buttonContainer}>
             <Button title="Get In-app Messages" onPress={() => {
               Iterable.inAppManager.getMessages().then(messages => {
                 console.log("messages: " + messages.length)
                 messages.forEach(message => {
                   console.log(JSON.stringify(message, null, 2))
                 })
-              })
-            }} />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button title="Show In-App Message" onPress={() => {
-              Iterable.inAppManager.getMessages().then(messages => {
-                console.log("total messages: " + messages.length)
-                if (messages.length > 0) {
-                  Iterable.inAppManager.showMessage(messages[messages.length - 1], false).then(url => {
-                    console.log("url: " + url)
-                  })
-                }
               })
             }} />
           </View>
@@ -132,9 +95,9 @@ export default class App extends React.Component<Object, State> {
             }} />
           </View>
           <View style={styles.buttonContainer}>
-            <Button title="Handle Universal Link" onPress={() => {
-              console.log("handle universal link")
-              Iterable.handleUniversalLink("https://iterable.com/a/asdf")
+            <Button testID="resetBtn" title="Reset" onPress={() => {
+              console.log("reset")
+              this.setState({ statusText: "" })
             }} />
           </View>
         </ScrollView>

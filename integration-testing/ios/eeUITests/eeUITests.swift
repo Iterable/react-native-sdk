@@ -1,7 +1,4 @@
 //
-//  eeUITests.swift
-//  eeUITests
-//
 //  Created by Tapash Majumder on 6/18/20.
 //  Copyright © 2020 Iterable. All rights reserved.
 //
@@ -11,7 +8,16 @@ import XCTest
 class eeUITests: XCTestCase {
     lazy var app: XCUIApplication! = UITestsGlobal.application
 
-    func testLogin() throws {
+    override func setUp() {
+        app.button(withText: "resetBtn").waitToAppear().tap()
+    }
+    
+    override func tearDown() {
+        app.button(withText: "resetBtn").waitToAppear().tap()
+    }
+    
+    // this must be called first
+    func test_aa_Login() throws {
         if app.button(withText: "Logout").exists {
             app.button(withText: "Logout").tap()
         }

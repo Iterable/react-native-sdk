@@ -15,12 +15,20 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install zee dependencies
+      - name: Install dependencies
         run: cd integration-testing/  && yarn install
 
       - name: pod install
         run: cd integration-testing/ios/ && pod install
 
-      - name: Build and test
+      - name: Build and Test
+        shell: bash
+        env: 
+          ITERABLE_API_KEY: ${{secrets.ITERABLE_API_KEY}}
+          SEND_IN_APP_CAMPAIGN_ID: ${{secrets.SEND_IN_APP_CAMPAIGN_ID}}
+          SKIP_IN_APP_CAMPAIGN_ID: ${{secrets.SKIP_IN_APP_CAMPAIGN_ID}}
+          OPEN_DEEP_LINK_CAMPAIGN_ID: ${{secrets.OPEN_DEEP_LINK_CAMPAIGN_ID}}
+          OPEN_SAFARI_CAMPAIGN_ID: ${{secrets.OPEN_SAFARI_CAMPAIGN_ID}}
+          CUSTOM_ACTION_CAMPAIGN_ID: ${{secrets.CUSTOM_ACTION_CAMPAIGN_ID}}
         run: |
-          cd integration-testing/ios/ && xcodebuild test -workspace example.xcworkspace -scheme example -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 11' CODE_SIGNING_REQUIRED=NO | xcpretty || exit 1
+          ./integration-testing/ios/scripts/run_test.sh

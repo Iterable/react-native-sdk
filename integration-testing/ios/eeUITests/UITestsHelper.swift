@@ -106,7 +106,7 @@ extension XCUIElement {
     }
 }
 
-let uiElementWaitTimeout = 15.0
+let uiElementWaitTimeout = 20.0
 
 protocol IterableUITestsProtocol: AnyObject {
     var app: XCUIApplication! { get }
