@@ -32,4 +32,8 @@ public class RNIterableInternal {
         IterableApi.getInstance().trackPushOpen(campaignId, templateId, messageId, dataFields);
     }
 
+    public static void setAttributionInfo(IterableAttributionInfo attributionInfo) {
+        IterableApi.getInstance().setAttributionInfo(attributionInfo);
+    }
+
 }

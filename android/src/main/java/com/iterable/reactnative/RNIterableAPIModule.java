@@ -14,6 +14,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.iterable.iterableapi.IterableApi;
+import com.iterable.iterableapi.IterableAttributionInfo;
 import com.iterable.iterableapi.IterableHelper;
 import com.iterable.iterableapi.IterableInAppCloseAction;
 import com.iterable.iterableapi.IterableInAppLocation;
@@ -151,6 +152,32 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void getAttributionInfo(Promise promise) {
+        IterableLogger.printInfo();
+        IterableAttributionInfo attributionInfo = IterableApi.getInstance().getAttributionInfo();
+        if (attributionInfo == null) {
+            promise.resolve(null);
+            return;
+        }
+        try {
+            promise.resolve(Serialization.convertJsonToMap(attributionInfo.toJSONObject()));
+        } catch (JSONException e) {
+            IterableLogger.e(TAG, "Failed converting attribution info to JSONObject");
+        }
+    }
+
+    @ReactMethod
+    public void setAttributionInfo(ReadableMap attributionInfoReadableMap) {
+        IterableLogger.printInfo();
+        try {
+            JSONObject attributionInfoJson = Serialization.convertMapToJson(attributionInfoReadableMap);
+            IterableAttributionInfo attributionInfo = IterableAttributionInfo.fromJSONObject(attributionInfoJson);
+            RNIterableInternal.setAttributionInfo(attributionInfo);
+        } catch (JSONException e) {
+            IterableLogger.e(TAG, "Failed converting ReadableMap to JSON");
+        }
+    }
+
     public void getLastPushPayload(Promise promise) {
         Bundle payloadData = IterableApi.getInstance().getPayloadData();
         if (payloadData != null) {
@@ -158,7 +185,6 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
         } else {
             IterableLogger.d(TAG, "No payload data found");
         }
-
     }
 
     @ReactMethod
