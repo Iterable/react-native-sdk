@@ -23,6 +23,7 @@ import com.iterable.iterableapi.IterableActionContext;
 import com.iterable.iterableapi.IterableApi;
 import com.iterable.iterableapi.IterableConfig;
 import com.iterable.iterableapi.IterableCustomActionHandler;
+import com.iterable.iterableapi.IterableAttributionInfo;
 import com.iterable.iterableapi.IterableHelper;
 import com.iterable.iterableapi.IterableInAppCloseAction;
 import com.iterable.iterableapi.IterableInAppHandler;
@@ -190,6 +191,32 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     }
 
     @ReactMethod
+    public void getAttributionInfo(Promise promise) {
+        IterableLogger.printInfo();
+        IterableAttributionInfo attributionInfo = IterableApi.getInstance().getAttributionInfo();
+        if (attributionInfo == null) {
+            promise.resolve(null);
+            return;
+        }
+        try {
+            promise.resolve(Serialization.convertJsonToMap(attributionInfo.toJSONObject()));
+        } catch (JSONException e) {
+            IterableLogger.e(TAG, "Failed converting attribution info to JSONObject");
+        }
+    }
+
+    @ReactMethod
+    public void setAttributionInfo(ReadableMap attributionInfoReadableMap) {
+        IterableLogger.printInfo();
+        try {
+            JSONObject attributionInfoJson = Serialization.convertMapToJson(attributionInfoReadableMap);
+            IterableAttributionInfo attributionInfo = IterableAttributionInfo.fromJSONObject(attributionInfoJson);
+            RNIterableInternal.setAttributionInfo(attributionInfo);
+        } catch (JSONException e) {
+            IterableLogger.e(TAG, "Failed converting ReadableMap to JSON");
+        }
+    }
+
     public void getLastPushPayload(Promise promise) {
         Bundle payloadData = IterableApi.getInstance().getPayloadData();
         if (payloadData != null) {
@@ -197,7 +224,12 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         } else {
             IterableLogger.d(TAG, "No payload data found");
         }
+    }
 
+    @ReactMethod
+    public void disableDeviceForCurrentUser() {
+        IterableLogger.v(TAG, "Disable Device");
+        IterableApi.getInstance().disablePush();
     }
 
     // region Track APIs

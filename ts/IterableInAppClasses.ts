@@ -1,6 +1,7 @@
 'use strict'
 
 import { NativeModules } from 'react-native'
+import { IterableUtil } from './IterableUtil'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
 
@@ -194,7 +195,7 @@ class IterableInAppMessage {
     if (expiresAt) {
       expiresAt = new Date(expiresAt as number)
     }
-    let saveToInbox = this.readBoolean(dict, "saveToInbox")
+    let saveToInbox = IterableUtil.readBoolean(dict, "saveToInbox")
     let inboxMetadataDict = dict["inboxMetadata"]
     let inboxMetadata: IterableInboxMetadata | undefined
     if (inboxMetadataDict) {
@@ -203,7 +204,7 @@ class IterableInAppMessage {
       inboxMetadata = undefined
     }
     let customPayload = dict["customPayload"]
-    let read = this.readBoolean(dict, "read")
+    let read = IterableUtil.readBoolean(dict, "read")
 
     return new IterableInAppMessage(
       messageId,
@@ -218,13 +219,6 @@ class IterableInAppMessage {
     )
   }
 
-  private static readBoolean(dict: any, key: string): boolean {
-    if (dict[key]) {
-      return dict[key] as boolean
-    } else {
-      return false
-    }
-  }
 }
 
 class IterableInAppManager {

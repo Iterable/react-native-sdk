@@ -1,6 +1,6 @@
 {
   "name": "@iterable/react-native-sdk",
-  "version": "1.0.1",
+  "version": "1.0.7",
   "description": "Iterable SDK for React Native.",
   "main": "./js/index.js",
   "types": "./js/index.d.ts",
@@ -21,25 +21,30 @@
   "author": "Iterable",
   "license": "MIT",
   "homepage": "https://github.com/Iterable/react-native-sdk",
-  "dependencies": {
-    "react-native": "^0.61.5"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@types/jest": "^25.2.3",
+    "@babel/core": "^7.10.2",
+    "@types/jest": "^26.0.0",
     "@types/react": "^16.9.23",
-    "@types/react-native": "^0.61.23",
+    "@types/react-native": "^0.62.13",
     "@types/react-test-renderer": "^16.9.2",
-    "eslint": "^4.18.2",
-    "eslint-config-standard": "^6.0.0",
-    "eslint-config-standard-jsx": "^3.0.0",
-    "eslint-config-standard-react": "^4.0.0",
-    "eslint-plugin-promise": "^2.0.1",
-    "eslint-plugin-react": "^6.2.0",
-    "eslint-plugin-standard": "^2.0.0",
+    "eslint": "^7.2.0",
+    "eslint-config-standard": "^14.0.0",
+    "eslint-config-standard-jsx": "^8.1.0",
+    "eslint-config-standard-react": "^9.2.0",
+    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.0.0",
+    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-standard": "^4.0.0",
     "i": "^0.3.5",
     "jest": "^26.0.1",
-    "react": "^16.3.2",
+    "react": "16.11.0",
+    "react-native": "^0.62.2",
     "ts-jest": "^26.0.0",
-    "typescript": "^3.9.3"
+    "typescript": "^3.9.5"
+  },
+  "peerDependencies": {
+    "react-native": "^0.62.2"
   }
 }

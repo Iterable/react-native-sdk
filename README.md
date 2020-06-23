@@ -17,7 +17,12 @@
 ## Install
 
 ```
-npm install react-native-iterable
+yarn add @iterable/react-native-sdk
+```
+or
+
+```
+npm install @iterable/react-native-sdk
 ```
 
 ## Sample Application
