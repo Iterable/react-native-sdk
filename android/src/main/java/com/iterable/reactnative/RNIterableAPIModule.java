@@ -178,6 +178,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
         }
     }
 
+    @ReactMethod
     public void getLastPushPayload(Promise promise) {
         Bundle payloadData = IterableApi.getInstance().getPayloadData();
         if (payloadData != null) {
@@ -191,6 +192,12 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     public void disableDeviceForCurrentUser() {
         IterableLogger.v(TAG, "Disable Device");
         IterableApi.getInstance().disablePush();
+    }
+
+    @ReactMethod
+    public void handleUniversalLink(String uri, Promise promise) {
+        IterableLogger.printInfo();
+        promise.resolve(IterableApi.getInstance().handleAppLink(uri));
     }
 
     // region Track APIs
