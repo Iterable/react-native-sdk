@@ -1,0 +1,32 @@
+name: actions
+
+on:
+  push:
+    branches:
+      - "master"
+  pull_request:
+    branches:
+      - "**"
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: cd integration-testing/
+        run: cd integration-testing/
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: cd ios/
+        run: cd ios/
+
+      - name: pod install
+        run: pod install
+
+      - name: Build and test
+        run: |
+          xcodebuild test -workspace example.xcworkspace -scheme example -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 11' CODE_SIGNING_REQUIRED=NO | xcpretty || exit 1
