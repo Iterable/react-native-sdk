@@ -19,13 +19,12 @@ jobs:
         run: cd integration-testing/
 
       - name: Install dependencies
-        run: yarn install
-
-      - name: cd ios/
-        run: cd ios/
+        run: cd integration-testing/  && yarn install
+        run: pwd
 
       - name: pod install
-        run: pod install
+        run: cd ios/ && pod install
+        run: pwd
 
       - name: Build and test
         run: |
