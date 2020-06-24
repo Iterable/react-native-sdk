@@ -3,6 +3,7 @@ package com.iterable.reactnative;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.Arguments;
@@ -13,23 +14,40 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.facebook.react.modules.core.RCTNativeAppEventEmitter;
+import com.iterable.iterableapi.IterableAction;
+import com.iterable.iterableapi.IterableActionContext;
 import com.iterable.iterableapi.IterableApi;
+import com.iterable.iterableapi.IterableConfig;
+import com.iterable.iterableapi.IterableCustomActionHandler;
 import com.iterable.iterableapi.IterableAttributionInfo;
 import com.iterable.iterableapi.IterableHelper;
 import com.iterable.iterableapi.IterableInAppCloseAction;
+import com.iterable.iterableapi.IterableInAppHandler;
 import com.iterable.iterableapi.IterableInAppLocation;
 import com.iterable.iterableapi.IterableInAppMessage;
 import com.iterable.iterableapi.IterableLogger;
+import com.iterable.iterableapi.IterableUrlHandler;
 import com.iterable.iterableapi.RNIterableInternal;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class RNIterableAPIModule extends ReactContextBaseJavaModule {
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+public class RNIterableAPIModule extends ReactContextBaseJavaModule implements IterableUrlHandler, IterableCustomActionHandler, IterableInAppHandler {
 
     private final ReactApplicationContext reactContext;
     private static String TAG = "RNIterableAPIModule";
+
+    private InAppResponse inAppResponse = InAppResponse.SHOW;
+
+    //A CountDownlatch. This helps decide whether to handle the inapp in Default way by waiting for JS to respond in runtime.
+    private CountDownLatch jsCallBackLatch;
 
     public RNIterableAPIModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -42,9 +60,26 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void initializeWithApiKey(String apiKey, ReadableMap context, String version) {
+    public void initializeWithApiKey(String apiKey, ReadableMap configReadableMap, String version) {
         IterableLogger.d(TAG, "initializeWithApiKey: " + apiKey);
-        IterableApi.getInstance().initialize(reactContext, apiKey);
+        IterableConfig.Builder configBuilder = Serialization.getConfigFromReadableMap(configReadableMap);
+
+        if (configReadableMap.hasKey("urlDelegatePresent") && configReadableMap.getBoolean("urlDelegatePresent") == true) {
+            configBuilder.setUrlHandler(this);
+        }
+
+        if (configReadableMap.hasKey("customActionDelegatePresent") && configReadableMap.getBoolean("customActionDelegatePresent") == true) {
+            configBuilder.setCustomActionHandler(this);
+        }
+
+        if (configReadableMap.hasKey("inAppDelegatePresent") && configReadableMap.getBoolean("inAppDelegatePresent") == true) {
+            configBuilder.setInAppHandler(this);
+        }
+
+        IterableApi.initialize(reactContext, apiKey, configBuilder.build());
+
+        //TODO Set deviceAttribute once new AndroidSDK is released
+        //IterableApi.getInstance().setDeviceAttribute("reactNativeSDKVersion",version);
     }
 
     @ReactMethod
@@ -259,6 +294,15 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
         }
     }
 
+    @ReactMethod
+    public void setInAppShowResponse(Integer number) {
+        IterableLogger.printInfo();
+        inAppResponse = Serialization.getInAppResponse(number);
+        if (jsCallBackLatch != null) {
+            jsCallBackLatch.countDown();
+        }
+    }
+
     // ---------------------------------------------------------------------------------------
     // endregion
 
@@ -269,4 +313,77 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
         }
         return integers;
     }
+
+
+    // ---------------------------------------------------------------------------------------
+    // region IterableSDK callbacks
+
+    @Override
+    public boolean handleIterableCustomAction(@NonNull IterableAction action, @NonNull IterableActionContext actionContext) {
+        IterableLogger.printInfo();
+        JSONObject actionJson = Serialization.actionToJson(action);
+        JSONObject actionContextJson = Serialization.actionContextToJson(actionContext);
+        JSONObject eventDataJson = new JSONObject();
+        try {
+            eventDataJson.put("action", actionJson);
+            eventDataJson.put("context", actionContextJson);
+            WritableMap eventData = Serialization.convertJsonToMap(eventDataJson);
+            sendEvent(EventName.handleCustomActionCalled.name(), eventData);
+        } catch (JSONException e) {
+            IterableLogger.e(TAG, "Failed handling custom action");
+        }
+        return true;
+    }
+
+    @NonNull
+    @Override
+    public InAppResponse onNewInApp(@NonNull IterableInAppMessage message) {
+        IterableLogger.printInfo();
+
+        JSONObject messageJson = RNIterableInternal.getInAppMessageJson(message);
+
+        try {
+            WritableMap eventData = Serialization.convertJsonToMap(messageJson);
+            jsCallBackLatch = new CountDownLatch(1);
+            sendEvent(EventName.handleInAppCalled.name(), eventData);
+            jsCallBackLatch.await(2, TimeUnit.SECONDS);
+            jsCallBackLatch = null;
+            return inAppResponse;
+        } catch (InterruptedException | JSONException e) {
+            IterableLogger.e(TAG, "new in-app module failed");
+            return InAppResponse.SHOW;
+        }
+    }
+
+    @Override
+    public boolean handleIterableURL(@NonNull Uri uri, @NonNull IterableActionContext actionContext) {
+        IterableLogger.printInfo();
+
+        JSONObject actionContextJson = Serialization.actionContextToJson(actionContext);
+        JSONObject eventDataJson = new JSONObject();
+
+        try {
+            eventDataJson.put("url", uri.toString());
+            eventDataJson.put("context", actionContextJson);
+            WritableMap eventData = Serialization.convertJsonToMap(eventDataJson);
+            sendEvent(EventName.handleUrlCalled.name(), eventData);
+        } catch (JSONException e) {
+            IterableLogger.e(TAG, e.getLocalizedMessage());
+        }
+        return true;
+    }
+
+    // ---------------------------------------------------------------------------------------
+    // endregion
+
+    public void sendEvent(@NonNull String eventName, @Nullable Object eventData) {
+        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, eventData);
+    }
+
+}
+
+enum EventName {
+    handleUrlCalled,
+    handleCustomActionCalled,
+    handleInAppCalled
 }

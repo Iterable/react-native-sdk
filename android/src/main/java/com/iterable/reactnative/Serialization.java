@@ -10,9 +10,12 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.iterable.iterableapi.CommerceItem;
-import com.iterable.iterableapi.IterableApi;
+import com.iterable.iterableapi.IterableAction;
+import com.iterable.iterableapi.IterableActionContext;
+import com.iterable.iterableapi.IterableConfig;
 import com.iterable.iterableapi.IterableInAppCloseAction;
 import com.iterable.iterableapi.IterableInAppDeleteActionType;
+import com.iterable.iterableapi.IterableInAppHandler;
 import com.iterable.iterableapi.IterableInAppLocation;
 import com.iterable.iterableapi.IterableInAppMessage;
 import com.iterable.iterableapi.IterableLogger;
@@ -23,7 +26,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -54,6 +56,14 @@ class Serialization {
         }
     }
 
+    static IterableInAppHandler.InAppResponse getInAppResponse(@Nullable Integer inAppResponseInteger) {
+        if (inAppResponseInteger == null || inAppResponseInteger >= IterableInAppCloseAction.values().length || inAppResponseInteger < 0) {
+            return null;
+        } else {
+            return IterableInAppHandler.InAppResponse.values()[inAppResponseInteger];
+        }
+    }
+
     static List<CommerceItem> commerceItemsFromReadableArray(ReadableArray array) {
         ArrayList<CommerceItem> list = new ArrayList<>();
         try {
@@ -63,7 +73,7 @@ class Serialization {
                 list.add(commerceItemFromMap(item));
             }
         } catch (JSONException e) {
-            IterableLogger.e(TAG,"Failed converting to JSONObject");
+            IterableLogger.e(TAG, "Failed converting to JSONObject");
         }
         return list;
     }
@@ -82,6 +92,62 @@ class Serialization {
             inappMessagesJson.put(messageJson);
         }
         return inappMessagesJson;
+    }
+
+    static IterableConfig.Builder getConfigFromReadableMap(ReadableMap iterableContextMap) {
+        try {
+            JSONObject iterableContextJSON = convertMapToJson(iterableContextMap);
+
+            IterableConfig.Builder configBuilder = new IterableConfig.Builder();
+            if (iterableContextJSON.has("pushIntegrationName")) {
+                configBuilder.setPushIntegrationName(iterableContextJSON.optString("pushIntegrationName"));
+            }
+
+            if (iterableContextJSON.has("autoPushRegistration")) {
+                configBuilder.setAutoPushRegistration(iterableContextJSON.optBoolean("autoPushRegistration"));
+            }
+
+            if (iterableContextJSON.has("checkForDeferredDeeplink")) {
+                configBuilder.setCheckForDeferredDeeplink(iterableContextJSON.optBoolean("checkForDeferredDeeplink"));
+            }
+
+            if (iterableContextJSON.has("inAppDisplayInterval")) {
+                configBuilder.setInAppDisplayInterval(iterableContextJSON.optDouble("inAppDisplayInterval"));
+            }
+
+            return configBuilder;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    static JSONObject actionToJson(IterableAction iterableAction) {
+        JSONObject actionJson = new JSONObject();
+        try {
+            actionJson.put("type", iterableAction.getType());
+            if (iterableAction.getData() != null && iterableAction.getData() != "") {
+                actionJson.put("data", iterableAction.getData());
+            }
+            if (iterableAction.userInput == null && iterableAction.userInput != "") {
+                actionJson.put("userInput", iterableAction.userInput);
+            }
+        } catch (JSONException e) {
+            IterableLogger.e(TAG, e.getLocalizedMessage());
+        }
+        return actionJson;
+    }
+
+    static JSONObject actionContextToJson(IterableActionContext iterableActionContext) {
+        JSONObject actionContextJson = new JSONObject();
+        JSONObject actionJson = Serialization.actionToJson(iterableActionContext.action);
+        try {
+            actionContextJson.put("action", actionJson);
+            actionContextJson.put("source", iterableActionContext.source.ordinal());
+        } catch (JSONException e) {
+            IterableLogger.e(TAG, e.getLocalizedMessage());
+        }
+        return actionContextJson;
     }
 
     // ---------------------------------------------------------------------------------------
