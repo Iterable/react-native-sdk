@@ -138,7 +138,7 @@ class Serialization {
         return actionJson;
     }
 
-    static JSONObject contextToJSON(IterableActionContext iterableActionContext) {
+    static JSONObject contextToJson(IterableActionContext iterableActionContext) {
         JSONObject actionContextJson = new JSONObject();
         JSONObject actionJson = Serialization.actionToJson(iterableActionContext.action);
         try {
