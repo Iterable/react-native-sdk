@@ -322,11 +322,11 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     public boolean handleIterableCustomAction(@NonNull IterableAction action, @NonNull IterableActionContext actionContext) {
         IterableLogger.printInfo();
         JSONObject actionJson = Serialization.actionToJson(action);
-        JSONObject contextJson = Serialization.contextToJson(actionContext);
+        JSONObject actionContextJson = Serialization.actionContextToJson(actionContext);
         JSONObject eventDataJson = new JSONObject();
         try {
             eventDataJson.put("action", actionJson);
-            eventDataJson.put("context", contextJson);
+            eventDataJson.put("context", actionContextJson);
             WritableMap eventData = Serialization.convertJsonToMap(eventDataJson);
             sendEvent(EventName.handleCustomActionCalled.name(), eventData);
         } catch (JSONException e) {
@@ -359,12 +359,12 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     public boolean handleIterableURL(@NonNull Uri uri, @NonNull IterableActionContext actionContext) {
         IterableLogger.printInfo();
 
-        JSONObject contextJsonObject = Serialization.contextToJson(actionContext);
+        JSONObject actionContextJson = Serialization.actionContextToJson(actionContext);
         JSONObject eventDataJson = new JSONObject();
 
         try {
             eventDataJson.put("url", uri.toString());
-            eventDataJson.put("context", contextJsonObject);
+            eventDataJson.put("context", actionContextJson);
             WritableMap eventData = Serialization.convertJsonToMap(eventDataJson);
             sendEvent(EventName.handleUrlCalled.name(), eventData);
         } catch (JSONException e) {
