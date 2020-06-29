@@ -1,13 +1,11 @@
 {
   "name": "@iterable/react-native-sdk",
-  "version": "1.0.7",
+  "version": "1.0.10",
   "description": "Iterable SDK for React Native.",
   "main": "./js/index.js",
   "types": "./js/index.d.ts",
   "scripts": {
     "test": "jest",
-    "build": "rm -rf js/ && tsc",
-    "doc": "./scripts/generate_docs.sh",
     "coverage": "jest --coverage"
   },
   "keywords": [

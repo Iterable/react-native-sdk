@@ -7,7 +7,7 @@ import SettingsTab from './SettingsTab';
 import { coffees } from './Data';
 import { Iterable, IterableConfig, } from '@iterable/react-native-sdk';
 // ITERABLE:
-// Replace with your Iterable apiKey
+// Make sure you have a file called Config.js and your apiKey is in there.
 import { iterableAPIKey } from './Config';
 export default class App extends React.Component {
     constructor(props) {

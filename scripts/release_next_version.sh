@@ -12,5 +12,6 @@ export NEXT_VERSION=$MAJOR_VERSION.$MIDDLE_VERSION.$((MINOR_VERSION+1))
 
 sed -Ei '' "s/\"version\": \"[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+\",/\"version\": \"$NEXT_VERSION\",/" package.json
 
-npm run build
+./scripts/clean_build.sh
+
 npm publish
