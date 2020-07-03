@@ -77,9 +77,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         }
 
         IterableApi.initialize(reactContext, apiKey, configBuilder.build());
-
-        //TODO Set deviceAttribute once new AndroidSDK is released
-        //IterableApi.getInstance().setDeviceAttribute("reactNativeSDKVersion",version);
+        IterableApi.getInstance().setDeviceAttribute("reactNativeSDKVersion",version);
     }
 
     @ReactMethod
