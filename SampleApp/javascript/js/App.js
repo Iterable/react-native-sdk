@@ -13,8 +13,8 @@ export default class App extends React.Component {
     constructor(props) {
         super(props);
         // ITERABLE:
-        this.urlDelegate = (url, context) => {
-            console.log(`urlDelegate, url: ${url}`);
+        this.urlHandler = (url, context) => {
+            console.log(`urlHandler, url: ${url}`);
             let match = url.match(/coffee\/([^\/]+)/i);
             if (match && match.length > 1) {
                 const id = match[1];
@@ -36,7 +36,7 @@ export default class App extends React.Component {
         // ITERABLE:
         const config = new IterableConfig();
         config.inAppDisplayInterval = 1.0; // Min gap between in-apps. No need to set this in production.
-        config.urlDelegate = this.urlDelegate;
+        config.urlHandler = this.urlHandler;
         Iterable.initialize(iterableAPIKey, config);
     }
     render() {

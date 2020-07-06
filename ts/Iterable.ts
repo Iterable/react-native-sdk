@@ -68,17 +68,17 @@ class IterableConfig {
   /**
   * How many seconds to wait before showing the next in-app, if there are more than one present
   */
-  urlDelegate?: (url: string, context: IterableActionContext) => boolean
+  urlHandler?: (url: string, context: IterableActionContext) => boolean
   /**
   * How to handle IterableActions which are other than 'openUrl'
   */
-  customActionDelegate?: (action: IterableAction, context: IterableActionContext) => boolean
+  customActionHandler?: (action: IterableAction, context: IterableActionContext) => boolean
   /**
   * Implement this protocol to override default in-app behavior.
   * By default, every single in-app will be shown as soon as it is available.
   * If more than 1 in-app is available, we show the first.
   */
-  inAppDelegate?: (message: IterableInAppMessage) => IterableInAppShowResponse
+  inAppHandler?: (message: IterableInAppMessage) => IterableInAppShowResponse
 
   toDict(): any {
     return {
@@ -88,9 +88,9 @@ class IterableConfig {
       "autoPushRegistration": this.autoPushRegistration,
       "checkForDeferredDeeplink": this.checkForDeferredDeeplink,
       "inAppDisplayInterval": this.inAppDisplayInterval,
-      "urlDelegatePresent": this.urlDelegate != undefined,
-      "customActionDelegatePresent": this.customActionDelegate != undefined,
-      "inAppDelegatePresent": this.inAppDelegate != undefined,
+      "urlHandlerPresent": this.urlHandler != undefined,
+      "customActionHandlerPresent": this.customActionHandler != undefined,
+      "inAppHandlerPresent": this.inAppHandler != undefined,
     }
   }
 }
@@ -180,13 +180,13 @@ class Iterable {
   static initialize(apiKey: string, config: IterableConfig = new IterableConfig()) {
     console.log("initialize: " + apiKey);
 
-    if (config.urlDelegate) {
+    if (config.urlHandler) {
       RNEventEmitter.addListener(
         EventName.handleUrlCalled,
         (dict) => {
           const url = dict["url"]
           const context = IterableActionContext.fromDict(dict["context"])
-          if (config.urlDelegate!(url, context) == false) {
+          if (config.urlHandler!(url, context) == false) {
             Linking.canOpenURL(url)
               .then(canOpen => {
                 if (canOpen) { Linking.openURL(url) }
@@ -196,22 +196,22 @@ class Iterable {
         }
       )
     }
-    if (config.customActionDelegate) {
+    if (config.customActionHandler) {
       RNEventEmitter.addListener(
         EventName.handleCustomActionCalled,
         (dict) => {
           const action = IterableAction.fromDict(dict["action"])
           const context = IterableActionContext.fromDict(dict["context"])
-          config.customActionDelegate!(action, context)
+          config.customActionHandler!(action, context)
         }
       )
     }
-    if (config.inAppDelegate) {
+    if (config.inAppHandler) {
       RNEventEmitter.addListener(
         EventName.handleInAppCalled,
         (messageDict) => {
           const message = IterableInAppMessage.fromDict(messageDict)
-          const result = config.inAppDelegate!(message)
+          const result = config.inAppHandler!(message)
           RNIterableAPI.setInAppShowResponse(result)
         }
       )
@@ -384,9 +384,9 @@ class Iterable {
   * 
   * @param {string} universalLink URL in string form to be either opened as a universal link or as a normal one
   */
-  static handleUniversalLink(link: string): Promise<boolean> {
-    console.log("handleUniversalLink")
-    return RNIterableAPI.handleUniversalLink(link)
+  static handleAppLink(link: string): Promise<boolean> {
+    console.log("handleAppLink")
+    return RNIterableAPI.handleAppLink(link)
   }
 
   /**

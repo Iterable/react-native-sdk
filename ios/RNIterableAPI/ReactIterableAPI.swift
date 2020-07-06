@@ -50,13 +50,13 @@ class ReactIterableAPI: RCTEventEmitter {
         ITBInfo()
         let launchOptions = createLaunchOptions()
         let iterableConfig = IterableConfig.from(dict: configDict)
-        if let urlDelegatePresent = configDict["urlDelegatePresent"] as? Bool, urlDelegatePresent == true {
+        if let urlHandlerPresent = configDict["urlHandlerPresent"] as? Bool, urlHandlerPresent == true {
             iterableConfig.urlDelegate = self
         }
-        if let customActionDelegatePresent = configDict["customActionDelegatePresent"] as? Bool, customActionDelegatePresent == true {
+        if let customActionHandlerPresent = configDict["customActionHandlerPresent"] as? Bool, customActionHandlerPresent == true {
             iterableConfig.customActionDelegate = self
         }
-        if let inAppDelegatePresent = configDict["inAppDelegatePresent"] as? Bool, inAppDelegatePresent == true {
+        if let inAppHandlerPresent = configDict["inAppHandlerPresent"] as? Bool, inAppHandlerPresent == true {
             iterableConfig.inAppDelegate = self
         }
         
@@ -94,7 +94,7 @@ class ReactIterableAPI: RCTEventEmitter {
     func set(inAppShowResponse number: NSNumber) {
         ITBInfo()
         self.inAppShowResponse = InAppShowResponse.from(number: number)
-        inAppDelegateSemapohore.signal()
+        inAppHandlerSemapohore.signal()
     }
 
     @objc(disableDeviceForCurrentUser)
@@ -232,11 +232,11 @@ class ReactIterableAPI: RCTEventEmitter {
         IterableAPI.updateEmail(email, onSuccess: nil, onFailure: nil)
     }
     
-    @objc(handleUniversalLink:resolver:rejecter:)
-    func handle(universalLink: String, resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
+    @objc(handleAppLink:resolver:rejecter:)
+    func handle(appLink: String, resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
         ITBInfo()
 
-        if let url = URL(string: universalLink) {
+        if let url = URL(string: appLink) {
             resolver(IterableAPI.handle(universalLink: url))
         } else {
             rejecter("", "invalid URL", nil)
@@ -325,7 +325,7 @@ class ReactIterableAPI: RCTEventEmitter {
     
     // Handling in-app delegate
     private var inAppShowResponse = InAppShowResponse.show
-    private var inAppDelegateSemapohore = DispatchSemaphore(value: 0)
+    private var inAppHandlerSemapohore = DispatchSemaphore(value: 0)
     
     private func createLaunchOptions() -> [UIApplication.LaunchOptionsKey: Any]? {
         guard let bridge = bridge else {
@@ -399,7 +399,7 @@ extension ReactIterableAPI: IterableInAppDelegate {
         
         let messageDict = message.toDict()
         sendEvent(withName: EventName.handleInAppCalled.rawValue, body: messageDict)
-        let timeoutResult = inAppDelegateSemapohore.wait(timeout: .now() + 2.0)
+        let timeoutResult = inAppHandlerSemapohore.wait(timeout: .now() + 2.0)
 
         if timeoutResult == .success {
             ITBInfo("inAppShowResponse: \(inAppShowResponse == .show)")
