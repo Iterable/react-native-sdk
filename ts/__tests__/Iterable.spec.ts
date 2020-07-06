@@ -38,11 +38,6 @@ test("disable device for current user", () => {
   expect(MockRNIterableAPI.disableDeviceForCurrentUser).toBeCalled()
 })
 
-test("disable device for all users", () => {
-  Iterable.disableDeviceForAllUsers()
-  expect(MockRNIterableAPI.disableDeviceForAllUsers).toBeCalled()
-})
-
 test("getLastPushPayload", () => {
   MockRNIterableAPI.lastPushPayload = { "var1": "val1", "var2": true }
 
