@@ -77,7 +77,7 @@ test("in-app consume", () => {
   expect(MockRNIterableAPI.inAppConsume).toBeCalledWith(message.messageId, IterableInAppLocation.inApp, IterableInAppDeleteSource.unknown)
 })
 
-test("in-app delegate is called", () => {
+test("in-app handler is called", () => {
   MockRNIterableAPI.setInAppShowResponse.mockReset()
 
   const nativeEmitter = new NativeEventEmitter();
@@ -85,7 +85,7 @@ test("in-app delegate is called", () => {
 
   const config = new IterableConfig()
 
-  config.inAppDelegate = jest.fn((message: IterableInAppMessage) => {
+  config.inAppHandler = jest.fn((message: IterableInAppMessage) => {
     return IterableInAppShowResponse.show
   })
 
@@ -98,9 +98,9 @@ test("in-app delegate is called", () => {
   nativeEmitter.emit(EventName.handleInAppCalled, messageDict);
 
   return TestHelper.delayed(0, () => {
-    expect(config.inAppDelegate)
+    expect(config.inAppHandler)
     const expectedMessage = new IterableInAppMessage("message1", 1234, new IterableInAppTrigger(IterableInAppTriggerType.immediate), undefined, undefined, false, undefined, undefined, false)
-    expect(config.inAppDelegate).toBeCalledWith(expectedMessage)
+    expect(config.inAppHandler).toBeCalledWith(expectedMessage)
     expect(MockRNIterableAPI.setInAppShowResponse).toBeCalledWith(IterableInAppShowResponse.show)
   })
 })

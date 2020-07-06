@@ -359,7 +359,7 @@ class Iterable {
 
   /**
   * 
-  * @param {string} universalLink URL in string form to be either opened as a universal link or as a normal one
+  * @param {string} link URL in string form to be either opened as an app link or as a normal one
   */
   static handleAppLink(link: string): Promise<boolean> {
     console.log("handleAppLink")

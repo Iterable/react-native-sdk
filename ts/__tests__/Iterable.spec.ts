@@ -7,7 +7,6 @@ import {
   Iterable,
   IterableAttributionInfo,
   IterableConfig,
-  PushServicePlatform,
   IterableCommerceItem,
   IterableActionContext,
   EventName,
@@ -138,7 +137,7 @@ test("default config dictionary values", () => {
   expect(configDict["inAppHandlerPresent"]).toBe(false)
 })
 
-test("open url when url delegate returns false", () => {
+test("open url when url handler returns false", () => {
   MockLinking.canOpenURL = jest.fn(() => {
     return new Promise(res => { res(true) })
   })
@@ -163,7 +162,7 @@ test("open url when url delegate returns false", () => {
   })
 })
 
-test("do not open url when url delegate returns false and canOpen is false", () => {
+test("do not open url when url handler returns false and canOpen is false", () => {
   MockLinking.canOpenURL = jest.fn(() => {
     return new Promise(res => { res(false) })
   })
@@ -188,7 +187,7 @@ test("do not open url when url delegate returns false and canOpen is false", () 
   })
 })
 
-test("do not open url when url delegate returns true", () => {
+test("do not open url when url handler returns true", () => {
   MockLinking.canOpenURL = jest.fn(() => {
     return new Promise(res => { res(true) })
   })
@@ -212,7 +211,7 @@ test("do not open url when url delegate returns true", () => {
   })
 })
 
-test("custom action delegate is called", () => {
+test("custom action handler is called", () => {
   const nativeEmitter = new NativeEventEmitter();
   nativeEmitter.removeAllListeners(EventName.handleCustomActionCalled)
 
@@ -235,7 +234,7 @@ test("custom action delegate is called", () => {
   })
 })
 
-test("handle universal link is called", () => {
+test("handle app link is called", () => {
   const link = "https://somewhere.com/link/something"
   Iterable.handleAppLink(link)
   expect(MockRNIterableAPI.handleAppLink).toBeCalledWith(link)
