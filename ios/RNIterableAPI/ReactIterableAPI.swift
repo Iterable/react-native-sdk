@@ -103,12 +103,6 @@ class ReactIterableAPI: RCTEventEmitter {
         IterableAPI.disableDeviceForCurrentUser()
     }
     
-    @objc(disableDeviceForAllUsers)
-    func disableDeviceForAllUsers() {
-        ITBInfo()
-        IterableAPI.disableDeviceForAllUsers()
-    }
-
     @objc(getLastPushPayload:rejecter:)
     func getLastPushPayload(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
         ITBInfo()
