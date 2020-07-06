@@ -18,7 +18,6 @@ import {
   IterableInAppMessage,
   IterableInAppShowResponse,
   IterableInAppLocation,
-  IterableInAppCloseSource,
   IterableInAppDeleteSource,
 } from '@iterable/react-native-sdk';
 

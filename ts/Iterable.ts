@@ -14,15 +14,6 @@ const RNIterableAPI = NativeModules.RNIterableAPI
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
 
 /**
-Enum representing push platform; apple push notification service, production vs sandbox
-*/
-enum PushServicePlatform {
-  sandbox = 0,
-  production = 1,
-  auto = 2
-}
-
-/**
 * Enum representing the source of IteraleAction.
 */
 enum IterableActionSource {
@@ -41,18 +32,6 @@ class IterableConfig {
   * To view your existing integrations, navigate to Settings > Mobile Apps
   */
   pushIntegrationName?: string
-  /**
-  * You don't have to set this variable. Set this value only if you are an existing Iterable customer who has already setup mobile integrations in Iterable Web UI.
-  * In that case, set this variable to the push integration name that you have set for 'APNS_SANDBOX' in Iterable Web UI.
-  * To view your existing integrations, navigate to Settings > Mobile Apps
-  */
-  sandboxPushIntegrationName?: string
-  /**
-  * APNS (Apple Push Notification Service) environment for the current build of the app.
-  * Possible values: `production`, `sandbox`, `auto`
-  * Defaults to `auto` and detects the APNS environment automatically
-  */
-  pushPlatform: PushServicePlatform = PushServicePlatform.auto
   /**
   * When set to true, IterableSDK will automatically register and deregister notification tokens.
   */
@@ -83,8 +62,6 @@ class IterableConfig {
   toDict(): any {
     return {
       "pushIntegrationName": this.pushIntegrationName,
-      "sandboxPushIntegrationName": this.sandboxPushIntegrationName,
-      "pushPlatform": this.pushPlatform,
       "autoPushRegistration": this.autoPushRegistration,
       "checkForDeferredDeeplink": this.checkForDeferredDeeplink,
       "inAppDisplayInterval": this.inAppDisplayInterval,
@@ -412,7 +389,6 @@ class Iterable {
 export {
   Iterable,
   IterableConfig,
-  PushServicePlatform,
   IterableAction,
   IterableActionContext,
   IterableAttributionInfo,
