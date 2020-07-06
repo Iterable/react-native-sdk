@@ -257,11 +257,6 @@ class Iterable {
     RNIterableAPI.disableDeviceForCurrentUser()
   }
 
-  static disableDeviceForAllUsers() {
-    console.log("disableDeviceForAllUsers")
-    RNIterableAPI.disableDeviceForAllUsers()
-  }
-
   static getLastPushPayload(): Promise<any | undefined> {
     console.log("getLastPushPayload")
     return RNIterableAPI.getLastPushPayload()
