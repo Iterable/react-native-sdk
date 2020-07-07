@@ -6,6 +6,6 @@ export default class App extends React.Component {
     render(): JSX.Element;
     private homeTabRef;
     private navigate;
-    private urlDelegate;
+    private urlHandler;
 }
 export {};

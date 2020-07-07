@@ -76,7 +76,7 @@ export class MockRNIterableAPI {
 
   static updateEmail = jest.fn()
 
-  static handleUniversalLink = jest.fn()
+  static handleAppLink = jest.fn()
 
   static updateSubscriptions = jest.fn()
 }

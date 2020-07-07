@@ -18,7 +18,6 @@ import {
   IterableInAppMessage,
   IterableInAppShowResponse,
   IterableInAppLocation,
-  IterableInAppCloseSource,
   IterableInAppDeleteSource,
 } from '@iterable/react-native-sdk';
 
@@ -112,8 +111,8 @@ export default class App extends React.Component<Object, State> {
     const config = new IterableConfig()
     config.pushPlatform = PushServicePlatform.auto
     config.inAppDisplayInterval = 1.0
-    config.urlDelegate = (url: string, context: IterableActionContext) => {
-      console.log("urlDelegate: url: " + url)
+    config.urlHandler = (url: string, context: IterableActionContext) => {
+      console.log("urlHandler: url: " + url)
       if (url.search(/coffee/i) == -1) {
         this.setState({ statusText: `Opening url: '${url}'` })
         return false
@@ -127,7 +126,7 @@ export default class App extends React.Component<Object, State> {
       this.setState({ statusText: `Custom Action: '${action.type}'` })
       return true
     }
-    config.inAppDelegate = (message: IterableInAppMessage) => {
+    config.inAppHandler = (message: IterableInAppMessage) => {
       if (App.readBoolean(message.customPayload, "hide")) {
         this.setState({ statusText: "Skipping in-app" })
         return IterableInAppShowResponse.skip

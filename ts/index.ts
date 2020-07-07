@@ -7,7 +7,6 @@
 import {
   Iterable,
   IterableConfig,
-  PushServicePlatform,
   IterableAction,
   IterableActionContext,
   IterableAttributionInfo,
@@ -32,7 +31,6 @@ import {
 export {
   Iterable,
   IterableConfig,
-  PushServicePlatform,
   IterableAction,
   IterableActionContext,
   IterableAttributionInfo,

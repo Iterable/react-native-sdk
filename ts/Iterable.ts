@@ -14,15 +14,6 @@ const RNIterableAPI = NativeModules.RNIterableAPI
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
 
 /**
-Enum representing push platform; apple push notification service, production vs sandbox
-*/
-enum PushServicePlatform {
-  sandbox = 0,
-  production = 1,
-  auto = 2
-}
-
-/**
 * Enum representing the source of IteraleAction.
 */
 enum IterableActionSource {
@@ -42,18 +33,6 @@ class IterableConfig {
   */
   pushIntegrationName?: string
   /**
-  * You don't have to set this variable. Set this value only if you are an existing Iterable customer who has already setup mobile integrations in Iterable Web UI.
-  * In that case, set this variable to the push integration name that you have set for 'APNS_SANDBOX' in Iterable Web UI.
-  * To view your existing integrations, navigate to Settings > Mobile Apps
-  */
-  sandboxPushIntegrationName?: string
-  /**
-  * APNS (Apple Push Notification Service) environment for the current build of the app.
-  * Possible values: `production`, `sandbox`, `auto`
-  * Defaults to `auto` and detects the APNS environment automatically
-  */
-  pushPlatform: PushServicePlatform = PushServicePlatform.auto
-  /**
   * When set to true, IterableSDK will automatically register and deregister notification tokens.
   */
   autoPushRegistration = true
@@ -68,29 +47,27 @@ class IterableConfig {
   /**
   * How many seconds to wait before showing the next in-app, if there are more than one present
   */
-  urlDelegate?: (url: string, context: IterableActionContext) => boolean
+  urlHandler?: (url: string, context: IterableActionContext) => boolean
   /**
   * How to handle IterableActions which are other than 'openUrl'
   */
-  customActionDelegate?: (action: IterableAction, context: IterableActionContext) => boolean
+  customActionHandler?: (action: IterableAction, context: IterableActionContext) => boolean
   /**
   * Implement this protocol to override default in-app behavior.
   * By default, every single in-app will be shown as soon as it is available.
   * If more than 1 in-app is available, we show the first.
   */
-  inAppDelegate?: (message: IterableInAppMessage) => IterableInAppShowResponse
+  inAppHandler?: (message: IterableInAppMessage) => IterableInAppShowResponse
 
   toDict(): any {
     return {
       "pushIntegrationName": this.pushIntegrationName,
-      "sandboxPushIntegrationName": this.sandboxPushIntegrationName,
-      "pushPlatform": this.pushPlatform,
       "autoPushRegistration": this.autoPushRegistration,
       "checkForDeferredDeeplink": this.checkForDeferredDeeplink,
       "inAppDisplayInterval": this.inAppDisplayInterval,
-      "urlDelegatePresent": this.urlDelegate != undefined,
-      "customActionDelegatePresent": this.customActionDelegate != undefined,
-      "inAppDelegatePresent": this.inAppDelegate != undefined,
+      "urlHandlerPresent": this.urlHandler != undefined,
+      "customActionHandlerPresent": this.customActionHandler != undefined,
+      "inAppHandlerPresent": this.inAppHandler != undefined,
     }
   }
 }
@@ -180,13 +157,13 @@ class Iterable {
   static initialize(apiKey: string, config: IterableConfig = new IterableConfig()) {
     console.log("initialize: " + apiKey);
 
-    if (config.urlDelegate) {
+    if (config.urlHandler) {
       RNEventEmitter.addListener(
         EventName.handleUrlCalled,
         (dict) => {
           const url = dict["url"]
           const context = IterableActionContext.fromDict(dict["context"])
-          if (config.urlDelegate!(url, context) == false) {
+          if (config.urlHandler!(url, context) == false) {
             Linking.canOpenURL(url)
               .then(canOpen => {
                 if (canOpen) { Linking.openURL(url) }
@@ -196,22 +173,22 @@ class Iterable {
         }
       )
     }
-    if (config.customActionDelegate) {
+    if (config.customActionHandler) {
       RNEventEmitter.addListener(
         EventName.handleCustomActionCalled,
         (dict) => {
           const action = IterableAction.fromDict(dict["action"])
           const context = IterableActionContext.fromDict(dict["context"])
-          config.customActionDelegate!(action, context)
+          config.customActionHandler!(action, context)
         }
       )
     }
-    if (config.inAppDelegate) {
+    if (config.inAppHandler) {
       RNEventEmitter.addListener(
         EventName.handleInAppCalled,
         (messageDict) => {
           const message = IterableInAppMessage.fromDict(messageDict)
-          const result = config.inAppDelegate!(message)
+          const result = config.inAppHandler!(message)
           RNIterableAPI.setInAppShowResponse(result)
         }
       )
@@ -382,11 +359,11 @@ class Iterable {
 
   /**
   * 
-  * @param {string} universalLink URL in string form to be either opened as a universal link or as a normal one
+  * @param {string} link URL in string form to be either opened as an app link or as a normal one
   */
-  static handleUniversalLink(link: string): Promise<boolean> {
-    console.log("handleUniversalLink")
-    return RNIterableAPI.handleUniversalLink(link)
+  static handleAppLink(link: string): Promise<boolean> {
+    console.log("handleAppLink")
+    return RNIterableAPI.handleAppLink(link)
   }
 
   /**
@@ -412,7 +389,6 @@ class Iterable {
 export {
   Iterable,
   IterableConfig,
-  PushServicePlatform,
   IterableAction,
   IterableActionContext,
   IterableAttributionInfo,

@@ -64,15 +64,15 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         IterableLogger.d(TAG, "initializeWithApiKey: " + apiKey);
         IterableConfig.Builder configBuilder = Serialization.getConfigFromReadableMap(configReadableMap);
 
-        if (configReadableMap.hasKey("urlDelegatePresent") && configReadableMap.getBoolean("urlDelegatePresent") == true) {
+        if (configReadableMap.hasKey("urlHandlerPresent") && configReadableMap.getBoolean("urlHandlerPresent") == true) {
             configBuilder.setUrlHandler(this);
         }
 
-        if (configReadableMap.hasKey("customActionDelegatePresent") && configReadableMap.getBoolean("customActionDelegatePresent") == true) {
+        if (configReadableMap.hasKey("customActionHandlerPresent") && configReadableMap.getBoolean("customActionHandlerPresent") == true) {
             configBuilder.setCustomActionHandler(this);
         }
 
-        if (configReadableMap.hasKey("inAppDelegatePresent") && configReadableMap.getBoolean("inAppDelegatePresent") == true) {
+        if (configReadableMap.hasKey("inAppHandlerPresent") && configReadableMap.getBoolean("inAppHandlerPresent") == true) {
             configBuilder.setInAppHandler(this);
         }
 
@@ -228,7 +228,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     }
 
     @ReactMethod
-    public void handleUniversalLink(String uri, Promise promise) {
+    public void handleAppLink(String uri, Promise promise) {
         IterableLogger.printInfo();
         promise.resolve(IterableApi.getInstance().handleAppLink(uri));
     }
