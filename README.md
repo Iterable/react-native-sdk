@@ -35,7 +35,7 @@ For installation instructions, read [Installing Iterable's React Native SDK](htt
 
 To learn more about the SDK, read:
 
-- [Overview of Iterable's React Native SDK](https://support.iterable.com/hc/articles/360046134931)
+- [Overview of Iterable's React Native SDK](https://support.iterable.com/hc/articles/360045714072)
 - [Managing User Identity](https://support.iterable.com/hc/articles/360045714152)
 - [User Profile Data and Subscription Preferences](https://support.iterable.com/hc/articles/360046134851)
 - [Push Notifications](https://support.iterable.com/hc/articles/360046134871)
