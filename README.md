@@ -63,7 +63,7 @@ Support policies:
 
 - Iterable's [Mobile SDK Support Policy](https://support.iterable.com/hc/articles/360046136171)
 - Iterable's [Beta Mobile SDK Terms of Service](https://support.iterable.com/hc/articles/360034753412)
-- [Deprecation and End-of-Life Schedule](https://support.iterable.com/hc/articles/360027798391#deprecation-and-end-of-life-schedule)
+- [Deprecation and End-of-Life Schedule](https://support.iterable.com/hc/articles/360045714352#deprecation-and-end-of-life-schedule)
   for Iterable's React Native SDK
 
 Please contact your customer success manager with any questions.
