@@ -48,22 +48,22 @@ To learn more about the SDK, read:
 
 For sample code, take a look at the following projects:
 
-- [JavaScript](https://github.com/Iterable/react-native-sdk/tree/master/SampleApp/javascript)
-  sample app
-- [TypeScript](https://github.com/Iterable/react-native-sdk/tree/master/SampleApp/typescript)
-  sample app
+- [SampleApp (JavaScript)](https://github.com/Iterable/react-native-sdk/tree/master/SampleApp/javascript)
+- [SampleApp (TypeScript)](https://github.com/Iterable/react-native-sdk/tree/master/SampleApp/typescript)
 
 ## Release notes, support and troubleshooting
 
 Release notes:
 
-- [iOS SDK Release Notes](https://support.iterable.com/hc/articles/360027798391) (major releases)
-- [Releases page](https://github.com/Iterable/swift-sdk/releases) on GitHub (minor releases)
+- [Release Notes - Iterable's React Native SDK](https://support.iterable.com/hc/articles/360045714352) (major releases)
+- [Releases page on GitHub](https://github.com/Iterable/react-native-sdk/releases) 
+  on GitHub (minor releases)
 
 Support policies:
 
-- Iterable's [Mobile SDK Support Policy](https://support.iterable.com/hc/articles/360027798391#mobile-sdk-support-policy)
-- Iterable's [iOS SDK Deprecation and End-of-Life Schedule](https://support.iterable.com/hc/articles/360027798391#ios-sdk-deprecation-and-end-of-life-schedule)
+- Iterable's [Mobile SDK Support Policy](https://support.iterable.com/hc/articles/360046136171)
+- [Deprecation and End-of-Life Schedule](https://support.iterable.com/hc/articles/360027798391#deprecation-and-end-of-life-schedule)
+  for Iterable's React Native SDK.
 
 Please contact your customer success manager with any questions.
 
