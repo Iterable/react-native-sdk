@@ -22,8 +22,8 @@ To run this sample:
 
 	**WARNING**: Never use _Standard_ Iterable API keys in client-side
 	code of any kind (for example, web or mobile). These API keys can access all
-	of your project's data, and they could potentially be compromised if used in
-	client-side code. In mobile apps, only use _Mobile_ API keys.
+	of your Iterable project's data, and they could potentially be compromised if
+	used in client-side code. In mobile apps, only use _Mobile_ API keys.
 
 4. In the **SampleApp/javascript/ios** folder, install various iOS dependencies
    by running `pod install`.
