@@ -1,29 +1,33 @@
-# Iterable React Native Sample Application
+# Sample App - TypeScript
 
-A basic sample application which shows how to use Iterable react native SDK.
+This sample app demonstrates how to use Iterable's React Native SDK in a
+TypeScript-based React Native application.
 
-## Setup
+## Running this sample
 
-Please make sure that you run each command below **in the folders mentioned**.
+To run this sample:
 
-1. Run `yarn install` in `SampleApp/typescript` folder.
-2. Rename `Config.sample.ts` to `Config.ts` in `SampleApp/typescript/ts/` folder.
+1. In the **SampleApp/typescript** folder, run `yarn install`.
 
-	```javascript
-	// in Config.ts
-	export const iterableAPIKey = "<YOUR_API_KEY>"
-	```
-3. For iOS, you need the following extra step in `SampleApp/typescript/ios` folder.
+2. In the **SampleApp/typescript/ts** folder, rename **Config.sample.ts** to
+   **Config.ts**.
 
-	```
-	cd ios && pod install
-	``` 
-4. From `SampleApp/typescript` folder run iOS/Android.
+3. Provide a _Mobile_ [API key](https://support.iterable.com/hc/articles/360043464871) 
+   for Iterable in the new **Config.ts** file:
 
-	```
-	yarn ios|android
+	```typescript
+	// in Config.js
+	export const iterableAPIKey = "<YOUR_API_KEY>";
 	```
 
+	**WARNING**: Never use _Standard_ Iterable API keys in client-side
+	code of any kind (for example, web or mobile). These API keys can access all
+	of your project's data, and they could potentially be compromised if used in
+	client-side code. In mobile apps, only use _Mobile_ API keys.
 
+4. In the **SampleApp/typescript/ios** folder, install various iOS dependencies
+   by running `pod install`.
 
- 
+5. Run the app from the **SampleApp/typescript** folder by running either
+   `yarn ios` or `yarn android`.
+
