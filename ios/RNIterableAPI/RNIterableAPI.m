@@ -96,7 +96,7 @@ RCT_EXTERN_METHOD(updateSubscriptions: (NSArray *) emailListIds
                   unsubscribedChannelIds: (NSArray *) unsubscribedChannelIds
                   unsubscribedMessageTypeIds: (NSArray *) unsubscribedMessageTypeIds
                   subscribedMessageTypeIds: (NSArray *) subscribedMessageTypeIds
-                  campaignId: (NSNumber *) campaignId
-                  templateId: (NSNumber *) templateId)
+                  campaignId: (nonnull NSNumber *) campaignId
+                  templateId: (nonnull NSNumber *) templateId)
 
 @end
