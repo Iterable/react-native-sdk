@@ -18,7 +18,7 @@ const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
 */
 enum IterableActionSource {
   push = 0,
-  universalLink = 1,
+  appLink = 1,
   inApp = 2
 }
 
