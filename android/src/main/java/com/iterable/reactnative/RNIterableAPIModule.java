@@ -1,5 +1,6 @@
 package com.iterable.reactnative;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -17,12 +18,14 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.modules.core.RCTNativeAppEventEmitter;
+import com.google.firebase.messaging.RemoteMessage;
 import com.iterable.iterableapi.IterableAction;
 import com.iterable.iterableapi.IterableActionContext;
 import com.iterable.iterableapi.IterableApi;
 import com.iterable.iterableapi.IterableConfig;
 import com.iterable.iterableapi.IterableCustomActionHandler;
 import com.iterable.iterableapi.IterableAttributionInfo;
+import com.iterable.iterableapi.IterableFirebaseMessagingService;
 import com.iterable.iterableapi.IterableHelper;
 import com.iterable.iterableapi.IterableInAppCloseAction;
 import com.iterable.iterableapi.IterableInAppHandler;
@@ -77,7 +80,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         }
 
         IterableApi.initialize(reactContext, apiKey, configBuilder.build());
-        IterableApi.getInstance().setDeviceAttribute("reactNativeSDKVersion",version);
+        IterableApi.getInstance().setDeviceAttribute("reactNativeSDKVersion", version);
     }
 
     @ReactMethod
@@ -376,6 +379,22 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
             IterableLogger.e(TAG, e.getLocalizedMessage());
         }
         return true;
+    }
+
+    // ---------------------------------------------------------------------------------------
+    // endregion
+
+    // ---------------------------------------------------------------------------------------
+    // region IterableSDK Firebase methods
+
+    public void handleFirebaseMessageReceived(@NonNull Context context, @NonNull RemoteMessage remoteMessage) {
+        IterableLogger.printInfo();
+        IterableFirebaseMessagingService.handleMessageReceived(context, remoteMessage);
+    }
+
+    public void handleFirebaseTokenRefresh() {
+        IterableLogger.printInfo();
+        IterableFirebaseMessagingService.handleTokenRefresh();
     }
 
     // ---------------------------------------------------------------------------------------
