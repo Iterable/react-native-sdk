@@ -1,191 +1,80 @@
-# Iterable React Native SDK
+![Iterable logo](./images/Iterable-Logo.png "Iterable Logo")
 
-### Resources
+# Iterable's React Native SDK
 
-- [Iterable iOS SDK](https://github.com/Iterable/swift-sdk)
-- [Iterable Android SDK](https://github.com/Iterable/iterable-android-sdk)
+[Iterable](https://www.iterable.com) is a growth marketing platform that helps
+you to create better experiences for—and deeper relationships with—your
+customers. Use it to send customized email, SMS, push notification, in-app
+message and web push notification campaigns to your customers.
 
-### Requirements:
+This SDK helps you integate your React Native-based iOS and Android apps with
+Iterable. It supports JavaScript and TypeScript.
 
- - Xcode 11+
- - iOS: Deployment target 10.0+
- - Android: minSdkVersion 16+, compileSdkVersion 28+
- - React Native >= 0.60.0
- - React Native cli >= 2.0.1
+## Requirements
 
-## Install
+Iterable's React Native SDK relies on:
 
-```
-yarn add @iterable/react-native-sdk
-```
-or
+- **React Native**
+    - [React Native 0.60.0+](https://github.com/facebook/react-native)
+    - [React Native CLI 2.0.1+](https://reactnative.dev/docs/upgrading#react-native-cli)
 
-```
-npm install @iterable/react-native-sdk
-```
+- **iOS**
+    - Xcode 11+
+    - [Deployment target 10.0+](https://help.apple.com/xcode/mac/current/#/deve69552ee5)
+    - [Iterable's iOS SDK](https://github.com/Iterable/swift-sdk)
 
-## Sample Application
+- **Android**
+    - [`minSdkVersion` 16+, `compileSdkVersion` 28+](https://medium.com/androiddevelopers/picking-your-compilesdkversion-minsdkversion-targetsdkversion-a098a0341ebd)
+    - [Iterable's Android SDK](https://github.com/Iterable/iterable-android-sdk)
 
-This repository contains the following sample application
+## Installation
 
-- [Sample Application](https://github.com/Iterable/react-native-sdk/blob/master/SampleApp)
+For installation instructions, read [Installing Iterable's React Native SDK](https://support.iterable.com/hc/articles/360045714132).
 
-## iOS Setup
+## Features
 
-1. Install pods
+To learn more about the SDK, read:
 
-	```bash
-	cd ios && pod install
-	```
-		
-	If your app will receive rich push notification containing media
-	attachments (images, etc.) and/or custom buttons, add the
-	**Iterable-iOS-AppExtensions** pod to your project's
-	`Notification Service Extension` target.
+- [Overview of Iterable's React Native SDK](https://support.iterable.com/hc/articles/360045714072)
+- [Installing Iterable's React Native SDK](https://support.iterable.com/hc/articles/360045714132)
+- [Managing User Identity](https://support.iterable.com/hc/articles/360045714152)
+- [User Profile Data and Subscription Preferences](https://support.iterable.com/hc/articles/360046134851)
+- [Tracking Events](https://support.iterable.com/hc/articles/360046134891)
+- [Deep Links and Custom Actions](https://support.iterable.com/hc/articles/360046134911)
+- [Push Notifications](https://support.iterable.com/hc/articles/360046134871)
+- [In-App Messages](https://support.iterable.com/hc/articles/360045714172)
+- [Migrating to Iterable's React Native SDK](https://support.iterable.com/hc/articles/360046134931)
 
-	```ruby
-	target '<YOUR-APP-NOTIFICATION-EXTENSION-TARGET-NAME>' do
-    	pod 'Iterable-iOS-AppExtensions'
-	end
-	```
-	Please see [here](https://support.iterable.com/hc/articles/360035451931#configure-support-for-rich-push-notifications)
-	regarding how to setup rich push notifications.
+## Sample projects
 
-2. Add the following capabilities to your application target as needed.
+For sample code, take a look at the following projects:
 
-	- `Background Modes - Remote notifications` - needed for in-app messages
-	- `Push Notifications` - needed for push messages
-	- `Associated Domains` - needed for deep linking. Please see more information [here](https://support.iterable.com/hc/articles/360035496511).
+- [SampleApp (JavaScript)](https://github.com/Iterable/react-native-sdk/tree/master/SampleApp/javascript)
+- [SampleApp (TypeScript)](https://github.com/Iterable/react-native-sdk/tree/master/SampleApp/typescript)
 
-3. To enable in-app messages and push notifications, set both of the following in your `AppDelegate` file
-	
-	```swift
-	// Needed to register token for messaging
-	func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-	    IterableAPI.register(token: deviceToken)
-	}
+## Release notes, support and troubleshooting
 
-	// Needed to receive silent push notifications for in-app messages
-	func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-   		IterableAppIntegration.application(application, didReceiveRemoteNotification: userInfo, fetchCompletionHandler: completionHandler)
-	}		
-	```
+Release notes:
 
-	Now you should be able to retrieve in-app messages without any further configuration.
+- [Release Notes - Iterable's React Native SDK](https://support.iterable.com/hc/articles/360045714352) (major releases)
+- [Releases page on GitHub](https://github.com/Iterable/react-native-sdk/releases) 
+  on GitHub (minor releases)
 
-4. To enable push notifications, call Apple's
-[`requestAuthorization`](https://developer.apple.com/documentation/usernotifications/unusernotificationcenter/1649527-requestauthorization)
-method on [`UNNotificationCenter`](https://developer.apple.com/documentation/usernotifications/unusernotificationcenter)
-to prompt the user for these permissions. Before requesting authorization,
-remember to set the `delegate` property for `UNUserNotificationCenter.current()`.
+Support policies:
 
-	```swift
-		UNUserNotificationCenter.current().delegate = self
-		UNUserNotificationCenter.current().requestAuthorization(options:[.alert, .badge, .sound]) { (success, error) in
-    		// ...
-		}
-	```
+- Iterable's [Mobile SDK Support Policy](https://support.iterable.com/hc/articles/360046136171)
+- Iterable's [Beta Mobile SDK Terms of Service](https://support.iterable.com/hc/articles/360034753412)
+- [Deprecation and End-of-Life Schedule](https://support.iterable.com/hc/articles/360045714352#deprecation-and-end-of-life-schedule)
+  for Iterable's React Native SDK
 
-	```swift
-	extension AppDelegate: UNUserNotificationCenterDelegate {
- 	    // App is running in the foreground
-   		public func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        	completionHandler([.alert, .badge, .sound])
-    	}
-		
-	    // The method will be called on the delegate when the user responded to the notification by opening the application, dismissing the notification or choosing a UNNotificationAction. The delegate must be set before the application returns from applicationDidFinishLaunching:.
-    	public func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-			IterableAppIntegration.userNotificationCenter(center, didReceive: response, withCompletionHandler: completionHandler)
-    	}
-	}
-	```
+Please contact your customer success manager with any questions.
 
-5. To handle Iterable deep link URLs of the form `https://links.yourcompany.com/a/3906b9d2bd8`,
-which are used to track email clicks, you will have to pass this URL from
-`application(_:continue:restorationHandler:)` to `IterableAPI` as below:
-
-	```swift
-    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-        ITBInfo()
-        guard let url = userActivity.webpageURL else {
-            return false
-        }
-
-        return IterableAPI.handle(universalLink: url)
-    }
-	```
-
-	If you pass a regular URL to `IterableAPI.handle(universalLink:)`, that URL
-	will be passed unaltered to `IterableConfig.urlDelegate`. If you pass an
-	Iterable deep link uURLrl to `IterableAPI.handle(universalLink:)`, we will
-	convert this URL to a regular URL and pass the resolved URL to
-	`IterableConfig.urlDelegate`. 
-	
-	We recommend handling **all URLs** in `IterableConfig.urlDelegagte`. This way
-	you ca  have all of your URL handling logic in one place.
-	
-	Please see [Configuring the SDK](#configuring-the-sdk) section below to see
-	how to set `IterableConfig.urlDelegate`.
-	
-> &#x1f4a1; You can take a look at our sample [AppDelegate](https://github.com/Iterable/react-native-sdk/blob/master/SampleApp/ios/SampleApp/AppDelegate.swift)
-file to see an example of the above mentioned changes.
-
-## Android Setup
-
-1. Step 1
-2. Step 2
-
-## Configuring the React Native SDK
-
-1. Import Iterable react native components
-
-	```javascript
-	import { Iterable, IterableConfig } from 'react-native-iterable';
-	```
-2. Set an API Key
-	
-	```javascript
-	const config = IterableConfig();
-	Iterable.initialize('<YOUR_API_KEY>', config);
-	```	
-	
-3. Set userId or email
-
-	```javascript
-	Iterable.email = '<USER_EMAIL_ADDRESS>';
-	```
-
-	> &#x26A0; Don't specify a value for both `email` and `userId` in the same
-	session, as they will be treated as different users by the SDK. Only use
-	one type of identifier, `email` or `userId`, to identify the user.
-
-4. To handle URLs coming from in-app messages and push messages as well as to
-handle Iterable deep link URLs coming from emails, you will have to set
-`IterableConfig.urlDelegate` to handle the URL. Please see the example below.
-	
-	```javascript
-	const config = new IterableConfig()
-
-	config.urlDelegate = (url, context) => {
-		if (url.match(/product\/([^\/]+)/i)) {
-			this.navigate(match[1]);
-			return true; // handled
-		}
-
-		return false; // not handled
-   }
-
-   Iterable.initialize('<YOUR_API_KEY>', config);
-   ```
-	
 ## License
 
-The MIT License
-
-See [LICENSE](LICENSE.md)
+This SDK is released under the MIT License. See [LICENSE](https://github.com/Iterable/swift-sdk/blob/master/LICENSE.md)
+for more information.
 
 ## Want to contribute?
 
-This library is open source, and we will look at pull requests!
-
+This library is open source, and we will look at issue reports and pull requests.
 See [CONTRIBUTING](CONTRIBUTING.md) for more information.
