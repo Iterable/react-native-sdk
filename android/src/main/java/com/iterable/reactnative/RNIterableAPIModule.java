@@ -77,7 +77,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         }
 
         IterableApi.initialize(reactContext, apiKey, configBuilder.build());
-        IterableApi.getInstance().setDeviceAttribute("reactNativeSDKVersion",version);
+        IterableApi.getInstance().setDeviceAttribute("reactNativeSDKVersion", version);
     }
 
     @ReactMethod
@@ -163,12 +163,20 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     @ReactMethod
     public void updateSubscriptions(ReadableArray emailListIds, ReadableArray unsubscribedChannelIds, ReadableArray unsubscribedMessageTypeIds, ReadableArray subscribedMessageTypeIds, Integer campaignId, Integer templateId) {
         IterableLogger.v(TAG, "updateSubscriptions");
+        Integer finalCampaignId = null, finalTemplateId = null;
+        if (campaignId > 0) {
+            finalCampaignId = campaignId;
+        }
+        if (templateId > 0) {
+            finalTemplateId = templateId;
+        }
         IterableApi.getInstance().updateSubscriptions(readableArrayToIntegerArray(emailListIds),
                 readableArrayToIntegerArray(unsubscribedChannelIds),
                 readableArrayToIntegerArray(unsubscribedMessageTypeIds),
                 readableArrayToIntegerArray(subscribedMessageTypeIds),
-                campaignId,
-                templateId);
+                finalCampaignId,
+                finalTemplateId
+        );
     }
 
     @ReactMethod
@@ -312,6 +320,9 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     // endregion
 
     private static Integer[] readableArrayToIntegerArray(ReadableArray array) {
+        if (array == null) {
+            return null;
+        }
         Integer[] integers = new Integer[array.size()];
         for (int i = 0; i < array.size(); i++) {
             integers[i] = array.getInt(i);
