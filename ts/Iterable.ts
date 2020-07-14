@@ -18,7 +18,7 @@ const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
 */
 enum IterableActionSource {
   push = 0,
-  universalLink = 1,
+  appLink = 1,
   inApp = 2
 }
 
@@ -372,15 +372,15 @@ class Iterable {
   * @param {Array<number> | undefined} unsubscribedChannelIds the list of channels (by ID) to unsubscribe from
   * @param {Array<number> | undefined} unsubscribedMessageTypeIds the list of message types (by ID) to unsubscribe from
   * @param {Array<number> | undefined} subscribedMessageTypeIds the list of message types (by ID) to subscribe to
-  * @param {number | undefined} campaignId the ID of the campaign to attribute unsubscribes
-  * @param {number | undefined} templateId the ID of the template to attribute unsubscribes
+  * @param {number} campaignId the ID of the campaign to attribute unsubscribes, pass -1 for unknown campaignId
+  * @param {number} templateId the ID of the template to attribute unsubscribes, pass -1 for unknown templateId
   */
   static updateSubscriptions(emailListIds: Array<number> | undefined,
     unsubscribedChannelIds: Array<number> | undefined,
     unsubscribedMessageTypeIds: Array<number> | undefined,
     subscribedMessageTypeIds: Array<number> | undefined,
-    campaignId: number | undefined,
-    templateId: number | undefined) {
+    campaignId: number,
+    templateId: number) {
     console.log("updateSubscriptions")
     RNIterableAPI.updateSubscriptions(emailListIds, unsubscribedChannelIds, unsubscribedMessageTypeIds, subscribedMessageTypeIds, campaignId, templateId)
   }

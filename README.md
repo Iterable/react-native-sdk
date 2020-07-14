@@ -36,12 +36,13 @@ For installation instructions, read [Installing Iterable's React Native SDK](htt
 To learn more about the SDK, read:
 
 - [Overview of Iterable's React Native SDK](https://support.iterable.com/hc/articles/360045714072)
+- [Installing Iterable's React Native SDK](https://support.iterable.com/hc/articles/360045714132)
 - [Managing User Identity](https://support.iterable.com/hc/articles/360045714152)
 - [User Profile Data and Subscription Preferences](https://support.iterable.com/hc/articles/360046134851)
+- [Tracking Events](https://support.iterable.com/hc/articles/360046134891)
+- [Deep Links and Custom Actions](https://support.iterable.com/hc/articles/360046134911)
 - [Push Notifications](https://support.iterable.com/hc/articles/360046134871)
 - [In-App Messages](https://support.iterable.com/hc/articles/360045714172)
-- [Tracking Purchases](https://support.iterable.com/hc/articles/360046134891)
-- [Deep Links and Custom Actions](https://support.iterable.com/hc/articles/360046134911)
 - [Migrating to Iterable's React Native SDK](https://support.iterable.com/hc/articles/360046134931)
 
 ## Sample projects

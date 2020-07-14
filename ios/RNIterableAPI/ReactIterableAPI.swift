@@ -298,15 +298,17 @@ class ReactIterableAPI: RCTEventEmitter {
                              unsubscribedChannelIds: [NSNumber]?,
                              unsubscribedMessageTypeIds: [NSNumber]?,
                              subscribedMessageTypeIds: [NSNumber]?,
-                             campaignId: NSNumber?,
-                             templateId: NSNumber?) {
+                             campaignId: NSNumber,
+                             templateId: NSNumber) {
         ITBInfo()
+        let finalCampaignId: NSNumber? = campaignId.intValue <= 0 ? nil: campaignId
+        let finalTemplateId: NSNumber? = templateId.intValue <= 0 ? nil: templateId
         IterableAPI.updateSubscriptions(emailListIds,
                                         unsubscribedChannelIds: unsubscribedChannelIds,
                                         unsubscribedMessageTypeIds: unsubscribedMessageTypeIds,
                                         subscribedMessageTypeIds: subscribedMessageTypeIds,
-                                        campaignId: campaignId,
-                                        templateId: templateId)
+                                        campaignId: finalCampaignId,
+                                        templateId: finalTemplateId)
     }
     
     @objc(setReadForMessage:read:)
