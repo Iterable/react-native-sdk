@@ -1,4 +1,4 @@
-name: actions
+name: Test & Publish code coverage
 
 on:
   push:
