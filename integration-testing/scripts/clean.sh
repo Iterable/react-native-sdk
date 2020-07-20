@@ -5,7 +5,8 @@ export IT_DIR=$(cd `dirname "$0"`/.. && pwd)
 cd $IT_DIR
 
 rm -rf node_modules/
-rm -rf yarn.lock
+# You should not have to delete yarn.lock. If you do, uncomment the following line.
+# rm -rf yarn.lock 
 yarn install
 cd ios/
 rm -rf Podfile.lock

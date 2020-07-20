@@ -11,12 +11,18 @@ class eeUITests: XCTestCase {
     override func setUp() {
         app.button(withText: "resetBtn").waitToAppear().tap()
     }
-    
+
     override func tearDown() {
         app.button(withText: "resetBtn").waitToAppear().tap()
     }
     
     // this must be called first
+    func test_aa_clearAllInAppMessages() throws {
+        app.button(withText: "clearAllInApps").waitToAppear().tap()
+        app.label(withText: "Cleared all in-apps").waitToAppear()
+    }
+    
+    // this must be called second
     func test_aa_Login() throws {
         if app.button(withText: "Logout").exists {
             app.button(withText: "Logout").tap()

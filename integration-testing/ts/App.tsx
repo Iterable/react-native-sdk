@@ -1,4 +1,4 @@
-import { NativeModules, NativeEventEmitter, Linking } from 'react-native'
+import { NativeModules } from 'react-native'
 import React from 'react';
 import {
   SafeAreaView,
@@ -12,7 +12,6 @@ import {
 import {
   Iterable,
   IterableConfig,
-  PushServicePlatform,
   IterableAction,
   IterableActionContext,
   IterableInAppMessage,
@@ -94,6 +93,15 @@ export default class App extends React.Component<Object, State> {
             }} />
           </View>
           <View style={styles.buttonContainer}>
+            <Button testID="clearAllInApps" title="Clear All In-App Messages" onPress={() => {
+              console.log("clearAllInApps")
+              RNE2E.clearAllInAppMessages().then(success => {
+                console.log("cleared all in-app messages: " + success)
+                this.setState({ statusText: "Cleared all in-apps" })
+              })
+            }} />
+          </View>
+          <View style={styles.buttonContainer}>
             <Button testID="resetBtn" title="Reset" onPress={() => {
               console.log("reset")
               this.setState({ statusText: "" })
@@ -109,7 +117,6 @@ export default class App extends React.Component<Object, State> {
 
   initializeIterable() {
     const config = new IterableConfig()
-    config.pushPlatform = PushServicePlatform.auto
     config.inAppDisplayInterval = 1.0
     config.urlHandler = (url: string, context: IterableActionContext) => {
       console.log("urlHandler: url: " + url)
@@ -122,7 +129,7 @@ export default class App extends React.Component<Object, State> {
         return true
       }
     }
-    config.customActionDelegate = (action: IterableAction, context: IterableActionContext) => {
+    config.customActionHandler = (action: IterableAction, context: IterableActionContext) => {
       this.setState({ statusText: `Custom Action: '${action.type}'` })
       return true
     }

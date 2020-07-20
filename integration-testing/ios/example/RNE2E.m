@@ -14,4 +14,6 @@ RCT_EXTERN_METHOD(setApiKey: (nonnull NSString *) apiKey)
 RCT_EXTERN_METHOD(sendCommand: (nonnull NSString *) command
                   params: (nonnull NSDictionary *) params)
 
+RCT_EXTERN_METHOD(clearAllInAppMessages: (RCTPromiseResolveBlock) resolve
+                  rejecter: (RCTPromiseRejectBlock) reject)
 @end

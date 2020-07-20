@@ -13,14 +13,20 @@ class ReactE2E: RCTEventEmitter {
     func setApiKey(apiKey: String) {
         ITBInfo("setApiKey")
         self.apiKey = apiKey
-        IterableAPISupport.sharedInstance = IterableAPISupport(apiKey: apiKey)
     }
     
     @objc(sendCommand:params:)
     func sendCommand(command: String, params: [AnyHashable: Any]) {
         ITBInfo("sendCommand: \(command)")
         execute(command: Command.parse(str: command), params: params)
+    }
+    
+    @objc(clearAllInAppMessages:rejecter:)
+    func clearAllInAppMessages(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
+        ITBInfo()
         
+        IterableAPISupport.clearAllInAppMessages(apiKey: apiKey, email: email)
+        resolver(true)
     }
     
     override var methodQueue: DispatchQueue! {
@@ -67,6 +73,7 @@ class ReactE2E: RCTEventEmitter {
 
     // MARK: Private
     private var apiKey: String!
+    private var email = "user@example.com"
     private var shouldEmit = false
     private let _methodQueue = DispatchQueue(label: String(describing: ReactE2E.self))
     
@@ -76,7 +83,7 @@ class ReactE2E: RCTEventEmitter {
             break
         case .sendInApp:
             let campaignId = params["campaignId"] as! Int
-            IterableAPISupport.sharedInstance.sendInApp(toEmail: IterableAPI.email!, withCampaignId: campaignId)
+            _ = IterableAPISupport.sendInApp(apiKey: apiKey, to: email, withCampaignId: campaignId)
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                 _ = IterableAPI.internalImplementation?.inAppManager.scheduleSync()
             }
@@ -85,5 +92,4 @@ class ReactE2E: RCTEventEmitter {
             ITBError("unknown command")
         }
     }
-
 }
