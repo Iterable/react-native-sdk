@@ -1,5 +1,7 @@
 package com.iterable.reactnative;
 
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.ReadableArray;
@@ -113,6 +115,28 @@ class Serialization {
 
             if (iterableContextJSON.has("inAppDisplayInterval")) {
                 configBuilder.setInAppDisplayInterval(iterableContextJSON.optDouble("inAppDisplayInterval"));
+            }
+
+            if (iterableContextJSON.has("logLevel")) {
+                int logLevel = iterableContextJSON.getInt("logLevel");
+                switch (logLevel) {
+                    case 1:
+                        //Debug
+                        logLevel = Log.DEBUG;
+                        break;
+                    case 2:
+                        //info
+                        logLevel = Log.VERBOSE;
+                        break;
+                    case 3:
+                        //error
+                        logLevel = Log.ERROR;
+                        break;
+                    default:
+                        logLevel = Log.ERROR;
+                        break;
+                }
+                configBuilder.setLogLevel(logLevel);
             }
 
             return configBuilder;
