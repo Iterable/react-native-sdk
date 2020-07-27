@@ -10,7 +10,8 @@ import {
   IterableAction,
   IterableActionContext,
   IterableAttributionInfo,
-  IterableCommerceItem
+  IterableCommerceItem,
+  IterableLogLevel,
 } from './Iterable'
 import {
   IterableInAppShowResponse,
@@ -35,6 +36,7 @@ export {
   IterableActionContext,
   IterableAttributionInfo,
   IterableCommerceItem,
+  IterableLogLevel,
   IterableInAppShowResponse,
   IterableInAppTriggerType,
   IterableInAppTrigger,

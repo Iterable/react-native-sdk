@@ -23,6 +23,16 @@ enum IterableActionSource {
 }
 
 /**
+* Enum representing what level of logs will Android and iOS project be printing on their consoles respectively.
+*/
+enum IterableLogLevel {
+  debug = 1,
+  info = 2,
+  error = 3
+}
+
+
+/**
 Iterable Configuration Object. Use this when initializing the API.
 */
 class IterableConfig {
@@ -59,6 +69,12 @@ class IterableConfig {
   */
   inAppHandler?: (message: IterableInAppMessage) => IterableInAppShowResponse
 
+  /**
+   * Set the verbosity of Android and iOS project's log system. 
+   * By default, you will be able to see info level logs printed in IDE when running the app. 
+  */
+  logLevel: IterableLogLevel = IterableLogLevel.info
+
   toDict(): any {
     return {
       "pushIntegrationName": this.pushIntegrationName,
@@ -68,6 +84,7 @@ class IterableConfig {
       "urlHandlerPresent": this.urlHandler != undefined,
       "customActionHandlerPresent": this.customActionHandler != undefined,
       "inAppHandlerPresent": this.inAppHandler != undefined,
+      "logLevel": this.logLevel
     }
   }
 }
@@ -394,5 +411,6 @@ export {
   IterableAttributionInfo,
   IterableCommerceItem,
   EventName,
-  IterableActionSource
+  IterableActionSource,
+  IterableLogLevel
 };
