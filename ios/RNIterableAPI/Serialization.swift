@@ -33,19 +33,6 @@ struct SerializationUtil {
         
         return try? JSONDecoder().decode(T.self, from: data)
     }
-
-    static func inAppContentToDict(content: IterableInAppContent) -> [AnyHashable: Any] {
-        guard let htmlInAppContent = content as? IterableHtmlInAppContent else {
-            return [:]
-        }
-
-        var dict = [AnyHashable: Any]()
-        dict["type"] = htmlInAppContent.type.rawValue
-        dict["edgeInsets"] = htmlInAppContent.edgeInsets.toDict()
-        dict["backgroundAlpha"] = htmlInAppContent.backgroundAlpha
-        dict["html"] = htmlInAppContent.html
-        return dict
-    }
 }
 
 extension IterableConfig {
@@ -139,6 +126,17 @@ extension IterableInAppMessage {
         dict["inboxMetadata"] = inboxMetadata?.toDict() ?? nil
         dict["customPayload"] = customPayload
         dict["read"] = read
+        return dict
+    }
+}
+
+extension IterableHtmlInAppContent {
+    func toDict() -> [AnyHashable: Any] {
+        var dict = [AnyHashable: Any]()
+        dict["type"] = type.rawValue
+        dict["edgeInsets"] = edgeInsets.toDict()
+        dict["backgroundAlpha"] = backgroundAlpha
+        dict["html"] = html
         return dict
     }
 }

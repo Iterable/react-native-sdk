@@ -74,6 +74,10 @@ RCT_EXTERN_METHOD(handleAppLink: (nonnull NSString *) appLink
 RCT_EXTERN_METHOD(getInAppMessages: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
 
+RCT_EXTERN_METHOD(getHtmlInAppContentForMessage: (nonnull NSString *) messageId
+                  resolver: (RCTPromiseResolveBlock) resolve
+                  rejecter: (RCTPromiseRejectBlock) reject)
+
 RCT_EXTERN_METHOD(getInboxMessages: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
 
