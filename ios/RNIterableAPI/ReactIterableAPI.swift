@@ -213,6 +213,23 @@ class ReactIterableAPI: RCTEventEmitter {
                               location: InAppLocation.from(number: locationNumber))
         }
     }
+    
+    @objc(getHtmlInAppContentForMessage:resolver:rejecter:)
+    func getHtmlInAppContent(messageId: String, resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
+        ITBInfo()
+        
+        guard let message = IterableAPI.inAppManager.getMessage(withId: messageId) else {
+            ITBError("Could not find message with id: \(messageId)")
+            rejecter("", "Could not find message with id: \(messageId)", nil)
+            return
+        }
+        guard let content = message.content as? IterableHtmlInAppContent else {
+            ITBError("Could not parse message content as HTML")
+            rejecter("", "Could not parse message content as HTML", nil)
+            return
+        }
+        resolver(content.toDict())
+    }
 
     @objc(trackEvent:dataFields:)
     func trackEvent(name: String, dataFields: [AnyHashable: Any]?) {
