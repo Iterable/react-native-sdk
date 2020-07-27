@@ -260,6 +260,18 @@ class IterableInAppManager {
     console.log("InAppManager.setRead")
     RNIterableAPI.setReadForMessage(message.messageId, read)
   }
+
+  /**
+   * Returns HTML in-app content for an in-app message.
+   * @param {IterableInAppMessage} message 
+   */
+  getHtmlContentForMessage(message: IterableInAppMessage): Promise<IterableHtmlInAppContent> {
+    console.log("InAppManager.getHtmlContentForMessage")
+    return RNIterableAPI.getHtmlInAppContentForMessage(message.messageId)
+      .then((content: any) => {
+        return IterableHtmlInAppContent.fromDict(content)
+      })
+  }
 }
 
 export {
