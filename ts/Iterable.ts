@@ -70,8 +70,8 @@ class IterableConfig {
   inAppHandler?: (message: IterableInAppMessage) => IterableInAppShowResponse
 
   /**
-   * Set the verbosity of Android and iOS project's Log system. 
-   * By default, you will be able to see debug level logs printed in IDE when running the app. 
+   * Set the verbosity of Android and iOS project's log system. 
+   * By default, you will be able to see info level logs printed in IDE when running the app. 
   */
   logLevel: IterableLogLevel = IterableLogLevel.info
 
