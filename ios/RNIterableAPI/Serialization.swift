@@ -67,8 +67,15 @@ extension IterableConfig {
         if let inAppDisplayInterval = dict["inAppDisplayInterval"] as? Double {
             config.inAppDisplayInterval = inAppDisplayInterval
         }
-
+        if let logLevelNumber = dict["logLevel"] as? NSNumber {
+            config.logDelegate = createLogDelegate(logLevelNumber: logLevelNumber)
+        }
+        
         return config
+    }
+    
+    private static func createLogDelegate(logLevelNumber: NSNumber) -> IterableLogDelegate {
+        DefaultLogDelegate(minLogLevel: LogLevel.from(number: logLevelNumber))
     }
 }
 
@@ -170,6 +177,16 @@ extension InAppShowResponse {
             return InAppShowResponse(rawValue: value) ?? .show
         } else {
             return .show
+        }
+    }
+}
+
+extension LogLevel {
+    static func from(number: NSNumber) -> LogLevel {
+        if let value = number as? Int {
+            return LogLevel(rawValue: value) ?? .info
+        } else {
+            return .info
         }
     }
 }
