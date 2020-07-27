@@ -81,7 +81,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     }
 
     @ReactMethod
-    public void setEmail(String email) {
+    public void setEmail(@Nullable String email) {
         IterableLogger.d(TAG, "setEmail: " + email);
         IterableApi.getInstance().setEmail(email);
     }
