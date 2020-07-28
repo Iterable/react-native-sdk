@@ -405,9 +405,9 @@ class Iterable {
    * @param email the new email for the user
    * @param token the associated authentication token
    */
-  static updateEmail(email: string, token: string | undefined) {
+  static updateEmailWithToken(email: string, token: string | undefined) {
     console.log("updateEmailWithToken")
-    RNIterableAPI.updateEmail(email, token)
+    RNIterableAPI.updateEmailWithToken(email, token)
   }
 
   /**

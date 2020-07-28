@@ -3,6 +3,7 @@ import { IterableAttributionInfo } from '../Iterable'
 export class MockRNIterableAPI {
   static email?: string
   static userId?: string
+  static token?: string
   static lastPushPayload?: any
   static attributionInfo?: IterableAttributionInfo
 
@@ -25,6 +26,10 @@ export class MockRNIterableAPI {
   static setUserId(userId?: string) {
     MockRNIterableAPI.userId = userId
   }
+
+  static setEmailWithToken = jest.fn()
+
+  static setUserIdWithToken = jest.fn()
 
   static disableDeviceForCurrentUser = jest.fn()
 
@@ -75,6 +80,8 @@ export class MockRNIterableAPI {
   static updateUser = jest.fn()
 
   static updateEmail = jest.fn()
+
+  static updateEmailWithToken = jest.fn()
 
   static handleAppLink = jest.fn()
 
