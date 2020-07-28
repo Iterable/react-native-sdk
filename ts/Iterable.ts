@@ -281,7 +281,7 @@ class Iterable {
   * 
   * @param {number} campaignId 
   * @param {number} templateId 
-  * @param {string | undefined} messageId 
+  * @param {string} messageId 
   * @param {boolean} appAlreadyRunning 
   * @param {any | undefined} dataFields 
   */
