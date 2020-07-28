@@ -219,28 +219,54 @@ class Iterable {
   }
 
   /**
-  * 
-  * @param {string | undefined} email 
+  * Set the user of the SDK by email address
+  * @param {string | undefined} email the email address of the user
   */
   static setEmail(email: string | undefined) {
-    console.log("setEmail: " + email);
-    RNIterableAPI.setEmail(email);
+    console.log("setEmail: " + email)
+    RNIterableAPI.setEmail(email)
   }
 
+  /**
+   * Set the user of the SDK by email address and set the authentication token
+   * @param email the email address of the user
+   * @param token the authentication token of the user
+   */
+  static setEmailWithToken(email: string | undefined, token: string | undefined) {
+    console.log("setEmail: " + email + " token: " + token)
+    RNIterableAPI.setEmailWithToken(email, token)
+  }
+
+  /**
+   * Get the email of the current user
+   */
   static getEmail(): Promise<string | undefined> {
     console.log("getEmail")
     return RNIterableAPI.getEmail()
   }
 
   /**
-  * 
-  * @param {string | undefined} email 
+  * Set the user of the SDK by ID
+  * @param {string | undefined} userId the ID of the user
   */
   static setUserId(userId: string | undefined) {
-    console.log("setUserId: " + userId);
-    RNIterableAPI.setUserId(userId);
+    console.log("setUserId: " + userId)
+    RNIterableAPI.setUserId(userId)
   }
 
+  /**
+   * Set the user of the SDK by ID and set the authentication token
+   * @param userId the ID of the user
+   * @param token the authentication token of the user
+   */
+  static setUserIdWithToken(userId: string | undefined, token: string | undefined) {
+    console.log("setUserId: " + userId + " token: " + token)
+    RNIterableAPI.setUserIdWithToken(userId, token)
+  }
+
+  /**
+   * Get the user ID of the current user
+   */
   static getUserId(): Promise<string | undefined> {
     console.log("getUserId")
     return RNIterableAPI.getUserId()
