@@ -233,7 +233,7 @@ class Iterable {
    * @param token the authentication token of the user
    */
   static setEmailWithToken(email: string | undefined, token: string | undefined) {
-    console.log("setEmail: " + email + " token: " + token)
+    console.log("setEmail: " + email + ", token: " + token)
     RNIterableAPI.setEmailWithToken(email, token)
   }
 
@@ -260,7 +260,7 @@ class Iterable {
    * @param token the authentication token of the user
    */
   static setUserIdWithToken(userId: string | undefined, token: string | undefined) {
-    console.log("setUserId: " + userId + " token: " + token)
+    console.log("setUserId: " + userId + ", token: " + token)
     RNIterableAPI.setUserIdWithToken(userId, token)
   }
 
@@ -398,6 +398,16 @@ class Iterable {
   static updateEmail(email: string) {
     console.log("updateEmail")
     RNIterableAPI.updateEmail(email)
+  }
+
+  /**
+   * 
+   * @param email the new email for the user
+   * @param token the associated authentication token
+   */
+  static updateEmail(email: string, token: string | undefined) {
+    console.log("updateEmailWithToken")
+    RNIterableAPI.updateEmail(email, token)
   }
 
   /**

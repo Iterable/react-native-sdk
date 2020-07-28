@@ -73,7 +73,7 @@ class ReactIterableAPI: RCTEventEmitter {
     }
     
     @objc(setEmail:withToken:)
-    func set(email: String?, token: String) {
+    func set(email: String?, token: String?) {
         ITBInfo()
         IterableAPI.setEmail(email, withToken: token)
     }
