@@ -141,7 +141,7 @@ class ReactIterableAPI: RCTEventEmitter {
     @objc(trackPushOpenWithCampaignId:templateId:messageId:appAlreadyRunning:dataFields:)
     func trackPushOpen(campaignId: NSNumber,
                        templateId: NSNumber?,
-                       messageId: String?,
+                       messageId: String,
                        appAlreadyRunning: Bool,
                        dataFields: [AnyHashable: Any]?) {
         ITBInfo()
