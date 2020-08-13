@@ -72,11 +72,11 @@ class ReactIterableAPI: RCTEventEmitter {
         IterableAPI.email = email
     }
     
-    @objc(setEmail:withToken:)
-    func set(email: String?, token: String?) {
-        ITBInfo()
-        IterableAPI.setEmail(email, withToken: token)
-    }
+//    @objc(setEmail:withToken:)
+//    func set(email: String?, token: String?) {
+//        ITBInfo()
+//        IterableAPI.setEmail(email, withToken: token)
+//    }
     
     @objc(getEmail:rejecter:)
     func getEmail(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
@@ -90,11 +90,11 @@ class ReactIterableAPI: RCTEventEmitter {
         IterableAPI.userId = userId
     }
     
-    @objc(setUserId:withToken:)
-    func set(userId: String?, token: String?) {
-        ITBInfo()
-        IterableAPI.setUserId(userId, withToken: token)
-    }
+//    @objc(setUserId:withToken:)
+//    func set(userId: String?, token: String?) {
+//        ITBInfo()
+//        IterableAPI.setUserId(userId, withToken: token)
+//    }
     
     @objc(getUserId:rejecter:)
     func getUserId(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
@@ -261,11 +261,11 @@ class ReactIterableAPI: RCTEventEmitter {
         IterableAPI.updateEmail(email, onSuccess: nil, onFailure: nil)
     }
     
-    @objc(updateEmail:withToken:)
-    func updateEmail(email: String, token: String) {
-        ITBInfo()
-        IterableAPI.updateEmail(email, withToken: token, onSuccess: nil, onFailure: nil)
-    }
+//    @objc(updateEmail:withToken:)
+//    func updateEmail(email: String, token: String) {
+//        ITBInfo()
+//        IterableAPI.updateEmail(email, withToken: token, onSuccess: nil, onFailure: nil)
+//    }
     
     @objc(handleAppLink:resolver:rejecter:)
     func handle(appLink: String, resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {

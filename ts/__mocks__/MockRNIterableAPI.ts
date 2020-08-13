@@ -27,9 +27,9 @@ export class MockRNIterableAPI {
     MockRNIterableAPI.userId = userId
   }
 
-  static setEmailWithToken = jest.fn()
+  // static setEmailWithToken = jest.fn()
 
-  static setUserIdWithToken = jest.fn()
+  // static setUserIdWithToken = jest.fn()
 
   static disableDeviceForCurrentUser = jest.fn()
 
@@ -81,7 +81,7 @@ export class MockRNIterableAPI {
 
   static updateEmail = jest.fn()
 
-  static updateEmailWithToken = jest.fn()
+  // static updateEmailWithToken = jest.fn()
 
   static handleAppLink = jest.fn()
 
