@@ -214,6 +214,26 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     }
 
     @ReactMethod
+    public void getHtmlInAppContentForMessage(String messageId, final Promise promise) {
+        IterableLogger.printInfo();
+        IterableInAppMessage message = RNIterableInternal.getMessageById(messageId);
+        if (message == null) {
+            promise.reject("", "Could not find message with id: " + messageId);
+            return;
+        }
+        JSONObject messageContent = Serialization.messageContentToJsonObject(message.getContent());
+        if (messageContent == null) {
+            promise.reject("", "messageContent is null for message id: " + messageId);
+            return;
+        }
+        try {
+            promise.resolve(Serialization.convertJsonToMap(messageContent));
+        } catch (JSONException e) {
+            promise.reject("", "Failed to convert JSONObject to ReadableMap");
+        }
+    }
+
+    @ReactMethod
     public void getAttributionInfo(Promise promise) {
         IterableLogger.printInfo();
         IterableAttributionInfo attributionInfo = IterableApi.getInstance().getAttributionInfo();

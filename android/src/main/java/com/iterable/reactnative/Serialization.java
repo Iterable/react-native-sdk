@@ -87,6 +87,26 @@ class Serialization {
                 itemMap.getInt("quantity"));
     }
 
+    static JSONObject messageContentToJsonObject(IterableInAppMessage.Content content) {
+        if (content == null) {
+            return null;
+        }
+
+        JSONObject messageContent = new JSONObject();
+        try {
+            messageContent.put("backgroundAlpha", content.backgroundAlpha);
+            messageContent.put("edgeInsets", content.padding);
+            messageContent.put("html", content.html);
+            if (messageContent.length() == 0) {
+                return null;
+            }
+        } catch (JSONException e) {
+            IterableLogger.e(TAG, "Failed to serialize message content\n" + e.getLocalizedMessage());
+            return null;
+        }
+        return messageContent;
+    }
+
     static JSONArray serializeInAppMessages(List<IterableInAppMessage> inappMessages) {
         JSONArray inappMessagesJson = new JSONArray();
         for (IterableInAppMessage message : inappMessages) {
