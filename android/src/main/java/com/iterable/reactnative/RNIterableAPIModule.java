@@ -108,6 +108,11 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
 
     @ReactMethod
     public void getEmail(Promise promise) {
+        String email = RNIterableInternal.getEmail();
+        if (email == null){
+            promise.reject("", "email is null");
+            return;
+        }
         promise.resolve(RNIterableInternal.getEmail());
     }
 
@@ -142,6 +147,11 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
 
     @ReactMethod
     public void getUserId(Promise promise) {
+        String userId = RNIterableInternal.getEmail();
+        if (userId == null){
+            promise.reject("", "userId is null");
+            return;
+        }
         promise.resolve(RNIterableInternal.getUserId());
     }
 
@@ -203,6 +213,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     @ReactMethod
     public void showMessage(String messageId, boolean consume, final Promise promise) {
         if (messageId == null || messageId == "") {
+            promise.reject("", "messageId is null or empty");
             return;
         }
         IterableApi.getInstance().getInAppManager().showMessage(RNIterableInternal.getMessageById(messageId), consume, new IterableHelper.IterableUrlCallback() {
@@ -238,7 +249,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         IterableLogger.printInfo();
         IterableAttributionInfo attributionInfo = IterableApi.getInstance().getAttributionInfo();
         if (attributionInfo == null) {
-            promise.resolve(null);
+            promise.reject("","No attribution info found");
             return;
         }
         try {
@@ -267,6 +278,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
             promise.resolve(Arguments.fromBundle(IterableApi.getInstance().getPayloadData()));
         } else {
             IterableLogger.d(TAG, "No payload data found");
+            promise.reject("","No payload data found");
         }
     }
 
@@ -345,6 +357,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
             promise.resolve(Serialization.convertJsonToArray(inAppMessageJsonArray));
         } catch (JSONException e) {
             IterableLogger.e(TAG, e.getLocalizedMessage());
+            promise.reject("","Failed to fetch messages with error " + e.getLocalizedMessage());
         }
     }
 
