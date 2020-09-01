@@ -203,6 +203,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     @ReactMethod
     public void showMessage(String messageId, boolean consume, final Promise promise) {
         if (messageId == null || messageId == "") {
+            promise.reject("", "messageId is null or empty");
             return;
         }
         IterableApi.getInstance().getInAppManager().showMessage(RNIterableInternal.getMessageById(messageId), consume, new IterableHelper.IterableUrlCallback() {
@@ -237,14 +238,15 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     public void getAttributionInfo(Promise promise) {
         IterableLogger.printInfo();
         IterableAttributionInfo attributionInfo = IterableApi.getInstance().getAttributionInfo();
-        if (attributionInfo == null) {
+        if (attributionInfo != null) {
+            try {
+                promise.resolve(Serialization.convertJsonToMap(attributionInfo.toJSONObject()));
+            } catch (JSONException e) {
+                IterableLogger.e(TAG, "Failed converting attribution info to JSONObject");
+                promise.reject("", "Failed to convert AttributionInfo to ReadableMap");
+            }
+        } else {
             promise.resolve(null);
-            return;
-        }
-        try {
-            promise.resolve(Serialization.convertJsonToMap(attributionInfo.toJSONObject()));
-        } catch (JSONException e) {
-            IterableLogger.e(TAG, "Failed converting attribution info to JSONObject");
         }
     }
 
@@ -267,6 +269,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
             promise.resolve(Arguments.fromBundle(IterableApi.getInstance().getPayloadData()));
         } else {
             IterableLogger.d(TAG, "No payload data found");
+            promise.resolve(null);
         }
     }
 
@@ -345,6 +348,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
             promise.resolve(Serialization.convertJsonToArray(inAppMessageJsonArray));
         } catch (JSONException e) {
             IterableLogger.e(TAG, e.getLocalizedMessage());
+            promise.reject("", "Failed to fetch messages with error " + e.getLocalizedMessage());
         }
     }
 
