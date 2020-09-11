@@ -27,7 +27,7 @@ RCT_EXTERN_METHOD(setUserId: (NSString *) userId)
 RCT_EXTERN_METHOD(getUserId: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
 
-RCT_EXTERN_METHOD(disableDeviceForAllUsers)
+RCT_EXTERN_METHOD(disableDeviceForCurrentUser)
 
 RCT_EXTERN_METHOD(setInAppShowResponse: (nonnull NSNumber *) inAppShowResponse)
 
