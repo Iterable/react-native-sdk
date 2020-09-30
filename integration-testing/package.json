@@ -28,14 +28,14 @@
     "react-navigation-tabs": "^2.8.13"
   },
   "devDependencies": {
-    "mocha": "^6.1.3",
     "@babel/core": "^7.9.6",
     "@babel/runtime": "^7.9.6",
     "@react-native-community/eslint-config": "^0.0.7",
     "@types/react-native": "0.62.x",
     "@types/react-native-vector-icons": "^6.4.5",
+    "eslint": "^6.8.0",
     "metro-react-native-babel-preset": "^0.58.0",
-    "react-test-renderer": "16.9.0",
-    "eslint": "^6.8.0"
+    "mocha": "^6.1.3",
+    "react-test-renderer": "16.9.0"
   }
 }
