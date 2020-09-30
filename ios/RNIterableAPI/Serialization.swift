@@ -38,6 +38,7 @@ struct SerializationUtil {
 extension IterableConfig {
     static func from(dict: [AnyHashable: Any]?) -> IterableConfig {
         let config = IterableConfig()
+        
         guard let dict = dict else {
             return config
         }
@@ -45,15 +46,19 @@ extension IterableConfig {
         if let pushIntegrationName = dict["pushIntegrationName"] as? String {
             config.pushIntegrationName = pushIntegrationName
         }
+        
         if let autoPushRegistration = dict["autoPushRegistration"] as? Bool {
             config.autoPushRegistration = autoPushRegistration
         }
+        
         if let checkForDeferredDeeplink = dict["checkForDeferredDeeplink"] as? Bool {
             config.checkForDeferredDeeplink = checkForDeferredDeeplink
         }
+        
         if let inAppDisplayInterval = dict["inAppDisplayInterval"] as? Double {
             config.inAppDisplayInterval = inAppDisplayInterval
         }
+        
         if let logLevelNumber = dict["logLevel"] as? NSNumber {
             config.logDelegate = createLogDelegate(logLevelNumber: logLevelNumber)
         }
@@ -71,12 +76,15 @@ extension CommerceItem {
         guard let id = dict["id"] as? String else {
             return nil
         }
+        
         guard let name = dict["name"] as? String else {
             return nil
         }
+        
         guard let price = dict["price"] as? NSNumber else {
             return nil
         }
+        
         guard let quantity = dict["quantity"] as? UInt else {
             return nil
         }
@@ -156,6 +164,7 @@ extension InAppCloseSource {
         guard let value = number as? Int else {
             return nil
         }
+        
         return InAppCloseSource(rawValue: value)
     }
 }
@@ -165,6 +174,7 @@ extension InAppDeleteSource {
         guard let value = number as? Int else {
             return nil
         }
+        
         return InAppDeleteSource(rawValue: value)
     }
 }
