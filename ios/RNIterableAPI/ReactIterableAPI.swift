@@ -378,6 +378,13 @@ class ReactIterableAPI: RCTEventEmitter {
         
         IterableAPI.inAppManager.set(read: read, forMessage: message)
     }
+    
+    @objc(setAutoDisplayPaused:)
+    func set(autoDisplayPaused: Bool) {
+        ITBInfo()
+        
+        IterableAPI.inAppManager.isAutoDisplayPaused = autoDisplayPaused
+    }
 
     // MARK: Private
     private var shouldEmit = false

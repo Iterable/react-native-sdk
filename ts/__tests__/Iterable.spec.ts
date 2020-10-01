@@ -25,24 +25,6 @@ test("set/get email", () => {
   })
 })
 
-// test("set email with token", () => {
-//   const email = "user@example.com"
-//   const token = "token"
-
-//   Iterable.setEmailWithToken(email, token)
-
-//   expect(MockRNIterableAPI.setEmailWithToken).toBeCalledWith(email, token)
-// })
-
-// test("set userId with token", () => {
-//   const userId = "testUserId"
-//   const token = "token"
-
-//   Iterable.setUserIdWithToken(userId, token)
-
-//   expect(MockRNIterableAPI.setUserIdWithToken).toBeCalledWith(userId, token)
-// })
-
 test("set/get userId", () => {
   Iterable.setUserId("user1")
   return Iterable.getUserId().then(userId => {
@@ -130,15 +112,6 @@ test("update email", () => {
 
   expect(MockRNIterableAPI.updateEmail).toBeCalledWith(newEmail)
 })
-
-// test("update email with token", () => {
-//   const newEmail = "woo@newemail.com"
-//   const newToken = "token"
-
-//   Iterable.updateEmailWithToken(newEmail, newToken)
-
-//   expect(MockRNIterableAPI.updateEmailWithToken).toBeCalledWith(newEmail, newToken)
-// })
 
 test("default config values", () => {
   var config = new IterableConfig()
