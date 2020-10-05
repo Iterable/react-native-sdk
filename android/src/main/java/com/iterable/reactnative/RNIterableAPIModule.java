@@ -393,7 +393,8 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         } catch (JSONException e) {
             IterableLogger.e(TAG, "Failed handling custom action");
         }
-        return true;
+        // The Android SDK will not bring the app into focus is this is `true`. It still respects the `openApp` bool flag.
+        return false;
     }
 
     @NonNull
@@ -431,7 +432,8 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         } catch (JSONException e) {
             IterableLogger.e(TAG, e.getLocalizedMessage());
         }
-        return true;
+        // The Android SDK will not bring the app into focus is this is `true`. It still respects the `openApp` bool flag.
+        return false;
     }
 
     // ---------------------------------------------------------------------------------------
