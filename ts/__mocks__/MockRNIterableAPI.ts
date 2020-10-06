@@ -27,13 +27,7 @@ export class MockRNIterableAPI {
     MockRNIterableAPI.userId = userId
   }
 
-  // static setEmailWithToken = jest.fn()
-
-  // static setUserIdWithToken = jest.fn()
-
   static disableDeviceForCurrentUser = jest.fn()
-
-  static disableDeviceForAllUsers = jest.fn()
 
   static trackPushOpenWithCampaignId = jest.fn()
 
@@ -69,6 +63,8 @@ export class MockRNIterableAPI {
 
   static getInAppMessages = jest.fn()
 
+  static setAutoDisplayPaused = jest.fn()
+
   static showMessage = jest.fn()
 
   static removeMessage = jest.fn()
@@ -80,8 +76,6 @@ export class MockRNIterableAPI {
   static updateUser = jest.fn()
 
   static updateEmail = jest.fn()
-
-  // static updateEmailWithToken = jest.fn()
 
   static handleAppLink = jest.fn()
 

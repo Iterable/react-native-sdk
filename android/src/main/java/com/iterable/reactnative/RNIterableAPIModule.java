@@ -340,6 +340,13 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         }
     }
 
+    @ReactMethod
+    public void setAutoDisplayPaused(boolean paused) {
+        IterableLogger.printInfo();
+
+        IterableApi.getInstance().getInAppManager().setAutoDisplayPaused(paused);
+    }
+
     // ---------------------------------------------------------------------------------------
     // endregion
 

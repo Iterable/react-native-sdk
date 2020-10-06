@@ -227,16 +227,6 @@ class Iterable {
     RNIterableAPI.setEmail(email)
   }
 
-  // /**
-  //  * Set the user of the SDK by email address and set the authentication token
-  //  * @param email the email address of the user
-  //  * @param token the authentication token of the user
-  //  */
-  // static setEmailWithToken(email: string | undefined, token: string | undefined) {
-  //   console.log("setEmail: " + email + ", token: " + token)
-  //   RNIterableAPI.setEmailWithToken(email, token)
-  // }
-
   /**
    * Get the email of the current user
    */
@@ -253,16 +243,6 @@ class Iterable {
     console.log("setUserId: " + userId)
     RNIterableAPI.setUserId(userId)
   }
-
-  // /**
-  //  * Set the user of the SDK by ID and set the authentication token
-  //  * @param userId the ID of the user
-  //  * @param token the authentication token of the user
-  //  */
-  // static setUserIdWithToken(userId: string | undefined, token: string | undefined) {
-  //   console.log("setUserId: " + userId + ", token: " + token)
-  //   RNIterableAPI.setUserIdWithToken(userId, token)
-  // }
 
   /**
    * Get the user ID of the current user
@@ -399,16 +379,6 @@ class Iterable {
     console.log("updateEmail")
     RNIterableAPI.updateEmail(email)
   }
-
-  // /**
-  //  * 
-  //  * @param email the new email for the user
-  //  * @param token the associated authentication token
-  //  */
-  // static updateEmailWithToken(email: string, token: string | undefined) {
-  //   console.log("updateEmailWithToken")
-  //   RNIterableAPI.updateEmailWithToken(email, token)
-  // }
 
   /**
   * 

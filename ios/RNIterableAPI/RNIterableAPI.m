@@ -7,6 +7,7 @@
 
 @interface RCT_EXTERN_REMAP_MODULE(RNIterableAPI, ReactIterableAPI, NSObject)
 
+// MARK: - SDK Functions
 RCT_EXTERN_METHOD(initializeWithApiKey: (nonnull NSString *) apiKey
                                 config: (nonnull NSDictionary *) config
                                 version: (nonnull NSString *) version)
@@ -21,6 +22,7 @@ RCT_EXTERN_METHOD(setUserId: (NSString *) userId)
 RCT_EXTERN_METHOD(getUserId: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
 
+// MARK: - Iterable API Request Functions
 RCT_EXTERN_METHOD(disableDeviceForCurrentUser)
 
 RCT_EXTERN_METHOD(setInAppShowResponse: (nonnull NSNumber *) inAppShowResponse)
@@ -71,6 +73,15 @@ RCT_EXTERN_METHOD(handleAppLink: (nonnull NSString *) appLink
                   resolver: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
 
+RCT_EXTERN_METHOD(updateSubscriptions: (NSArray *) emailListIds
+                  unsubscribedChannelIds: (NSArray *) unsubscribedChannelIds
+                  unsubscribedMessageTypeIds: (NSArray *) unsubscribedMessageTypeIds
+                  subscribedMessageTypeIds: (NSArray *) subscribedMessageTypeIds
+                  campaignId: (nonnull NSNumber *) campaignId
+                  templateId: (nonnull NSNumber *) templateId)
+
+// MARK: - SDK In-App Manager Functions
+
 RCT_EXTERN_METHOD(getInAppMessages: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
 
@@ -96,11 +107,6 @@ RCT_EXTERN_METHOD(removeMessage: (nonnull NSString *) messageId
 RCT_EXTERN_METHOD(setReadForMessage: (nonnull NSString *) messageId
                   read: (BOOL) read)
 
-RCT_EXTERN_METHOD(updateSubscriptions: (NSArray *) emailListIds
-                  unsubscribedChannelIds: (NSArray *) unsubscribedChannelIds
-                  unsubscribedMessageTypeIds: (NSArray *) unsubscribedMessageTypeIds
-                  subscribedMessageTypeIds: (NSArray *) subscribedMessageTypeIds
-                  campaignId: (nonnull NSNumber *) campaignId
-                  templateId: (nonnull NSNumber *) templateId)
+RCT_EXTERN_METHOD(setAutoDisplayPaused: (BOOL) paused)
 
 @end

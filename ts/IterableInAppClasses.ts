@@ -272,6 +272,16 @@ class IterableInAppManager {
         return IterableHtmlInAppContent.fromDict(content)
       })
   }
+
+  /**
+   * Pauses or unpauses the automatic displaying of in-apps
+   * @param {boolean} paused whether the automatic displaying should be paused
+   */
+  setAutoDisplayPaused(paused: boolean) {
+    console.log("InAppManager.setAutoDisplayPaused")
+
+    RNIterableAPI.setAutoDisplayPaused(paused)
+  }
 }
 
 export {

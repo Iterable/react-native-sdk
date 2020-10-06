@@ -167,3 +167,8 @@ test("in-app set read for message is called", () => {
   Iterable.inAppManager.setReadForMessage(message, true)
   expect(MockRNIterableAPI.setReadForMessage).toBeCalledWith(message.messageId, true)
 })
+
+test("in-app auto display paused", () => {
+  Iterable.inAppManager.setAutoDisplayPaused(true)
+  expect(MockRNIterableAPI.setAutoDisplayPaused).toBeCalledWith(true)
+})
