@@ -25,6 +25,7 @@ class ReactIterableAPI: RCTEventEmitter {
         case handleUrlCalled
         case handleCustomActionCalled
         case handleInAppCalled
+        case handleAuthTokenRequestedCalled
     }
 
     override func supportedEvents() -> [String]! {
@@ -65,6 +66,10 @@ class ReactIterableAPI: RCTEventEmitter {
         
         if let inAppHandlerPresent = configDict["inAppHandlerPresent"] as? Bool, inAppHandlerPresent == true {
             iterableConfig.inAppDelegate = self
+        }
+        
+        if let authTokenRequestedHandlerPresent = configDict["authTokenRequestedHandlerPresent"] as? Bool, authTokenRequestedHandlerPresent {
+            iterableConfig.authDelegate = self
         }
         
         DispatchQueue.main.async {
@@ -292,7 +297,7 @@ class ReactIterableAPI: RCTEventEmitter {
         }
     }
     
-    // MARK: InApp Manager methods
+    // MARK: In-App Manager methods
     @objc(getInAppMessages:rejecter:)
     func getInAppMessages(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
         ITBInfo()
@@ -385,6 +390,15 @@ class ReactIterableAPI: RCTEventEmitter {
         
         IterableAPI.inAppManager.isAutoDisplayPaused = autoDisplayPaused
     }
+    
+    @objc(retrieveAuthToken:)
+    func retrieve(authToken: String?) {
+        ITBInfo()
+        
+        retrievedAuthToken = authToken
+        
+        authTokenRequestedHandlerSemaphore.signal()
+    }
 
     // MARK: Private
     private var shouldEmit = false
@@ -393,6 +407,9 @@ class ReactIterableAPI: RCTEventEmitter {
     // Handling in-app delegate
     private var inAppShowResponse = InAppShowResponse.show
     private var inAppHandlerSemaphore = DispatchSemaphore(value: 0)
+    
+    private var retrievedAuthToken: String?
+    private var authTokenRequestedHandlerSemaphore = DispatchSemaphore(value: 0)
     
     private func createLaunchOptions() -> [UIApplication.LaunchOptionsKey: Any]? {
         guard let bridge = bridge else {
@@ -493,3 +510,18 @@ extension ReactIterableAPI: IterableInAppDelegate {
     }
 }
 
+extension ReactIterableAPI: IterableAuthDelegate {
+    func onAuthTokenRequested(completion: @escaping AuthTokenRetrievalHandler) {
+        ITBInfo()
+        
+        sendEvent(withName: EventName.handleAuthTokenRequestedCalled.rawValue,
+                  body: nil)
+        
+        let authTokenRetrievalResult = authTokenRequestedHandlerSemaphore.wait(timeout: .now() + 30.0)
+        
+        if authTokenRetrievalResult == .success {
+            ITBInfo("authTokenRetrieval successful")
+            completion(retrievedAuthToken)
+        }
+    }
+}

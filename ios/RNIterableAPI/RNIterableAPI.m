@@ -109,4 +109,8 @@ RCT_EXTERN_METHOD(setReadForMessage: (nonnull NSString *) messageId
 
 RCT_EXTERN_METHOD(setAutoDisplayPaused: (BOOL) paused)
 
+// MARK: - SDK Auth Manager Functions
+
+RCT_EXTERN_METHOD(retrieveAuthToken: (NSString *) authToken)
+
 @end
