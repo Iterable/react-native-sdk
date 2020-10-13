@@ -172,7 +172,7 @@ enum EventName {
   handleUrlCalled = "handleUrlCalled",
   handleCustomActionCalled = "handleCustomActionCalled",
   handleInAppCalled = "handleInAppCalled",
-  handleAuthHandlerCalled = "handleAuthHandlerCalled"
+  handleAuthCalled = "handleAuthCalled"
 }
 
 class Iterable {
@@ -230,7 +230,7 @@ class Iterable {
 
     if (config.authHandler) {
       RNEventEmitter.addListener(
-        EventName.handleAuthHandlerCalled,
+        EventName.handleAuthCalled,
         () => {
           config.authHandler!()
             .then(authToken => {
