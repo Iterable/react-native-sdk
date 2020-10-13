@@ -455,8 +455,13 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     // ---------------------------------------------------------------------------------------
     // endregion
 
+    @ReactMethod
     public void passAlongAuthToken(String authToken) {
         passedAuthToken = authToken;
+
+        if (authHandlerCallbackLatch != null) {
+            authHandlerCallbackLatch.countDown();
+        }
     }
 
     public void sendEvent(@NonNull String eventName, @Nullable Object eventData) {
