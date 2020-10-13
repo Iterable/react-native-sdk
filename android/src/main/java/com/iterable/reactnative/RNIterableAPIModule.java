@@ -20,6 +20,7 @@ import com.facebook.react.modules.core.RCTNativeAppEventEmitter;
 import com.iterable.iterableapi.IterableAction;
 import com.iterable.iterableapi.IterableActionContext;
 import com.iterable.iterableapi.IterableApi;
+import com.iterable.iterableapi.IterableAuthHandler;
 import com.iterable.iterableapi.IterableConfig;
 import com.iterable.iterableapi.IterableCustomActionHandler;
 import com.iterable.iterableapi.IterableAttributionInfo;
@@ -39,20 +40,26 @@ import org.json.JSONObject;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-public class RNIterableAPIModule extends ReactContextBaseJavaModule implements IterableUrlHandler, IterableCustomActionHandler, IterableInAppHandler {
+public class RNIterableAPIModule extends ReactContextBaseJavaModule implements IterableUrlHandler, IterableCustomActionHandler, IterableInAppHandler, IterableAuthHandler {
 
     private final ReactApplicationContext reactContext;
     private static String TAG = "RNIterableAPIModule";
 
     private InAppResponse inAppResponse = InAppResponse.SHOW;
 
-    //A CountDownlatch. This helps decide whether to handle the inapp in Default way by waiting for JS to respond in runtime.
+    //A CountDownLatch. This helps decide whether to handle the in-app in Default way by waiting for JS to respond in runtime.
     private CountDownLatch jsCallBackLatch;
+
+    private CountDownLatch authHandlerCallbackLatch;
+    private String receivedAuthToken = null;
 
     public RNIterableAPIModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.reactContext = reactContext;
     }
+
+    // ---------------------------------------------------------------------------------------
+    // region IterableSDK calls
 
     @Override
     public String getName() {
@@ -74,6 +81,10 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
 
         if (configReadableMap.hasKey("inAppHandlerPresent") && configReadableMap.getBoolean("inAppHandlerPresent") == true) {
             configBuilder.setInAppHandler(this);
+        }
+
+        if (configReadableMap.hasKey("authTokenRequestedPresent") && configReadableMap.getBoolean("authTokenRequestedPresent") == true) {
+            configBuilder.setAuthHandler(this);
         }
 
         IterableApi.initialize(reactContext, apiKey, configBuilder.build());
@@ -264,6 +275,9 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         promise.resolve(IterableApi.getInstance().handleAppLink(uri));
     }
 
+    // ---------------------------------------------------------------------------------------
+    // endregion
+
     // region Track APIs
     // ---------------------------------------------------------------------------------------
     @ReactMethod
@@ -422,8 +436,28 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         return false;
     }
 
+    @Override
+    public String onAuthTokenRequested() {
+        IterableLogger.printInfo();
+
+        try {
+            authHandlerCallbackLatch = new CountDownLatch(1);
+            sendEvent(EventName.handleAuthTokenRequestedCalled.name(), null);
+            authHandlerCallbackLatch.await(30, TimeUnit.SECONDS);
+            authHandlerCallbackLatch = null;
+            return receivedAuthToken;
+        } catch (InterruptedException e) {
+            IterableLogger.e(TAG, "auth handler module failed");
+            return null;
+        }
+    }
+
     // ---------------------------------------------------------------------------------------
     // endregion
+
+    public void retrieveAuthToken(String authToken) {
+        receivedAuthToken = authToken;
+    }
 
     public void sendEvent(@NonNull String eventName, @Nullable Object eventData) {
         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, eventData);
@@ -434,5 +468,6 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
 enum EventName {
     handleUrlCalled,
     handleCustomActionCalled,
-    handleInAppCalled
+    handleInAppCalled,
+    handleAuthTokenRequestedCalled
 }
