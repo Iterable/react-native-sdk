@@ -234,8 +234,7 @@ class Iterable {
         () => {
           config.authTokenRequestedHandler!()
             .then(authToken => {
-              console.log("authTokenRequestedHandler event called")
-              RNIterableAPI.retrieveAuthToken(authToken)
+              RNIterableAPI.passAlongAuthToken(authToken)
             })
         }
       )

@@ -391,11 +391,11 @@ class ReactIterableAPI: RCTEventEmitter {
         IterableAPI.inAppManager.isAutoDisplayPaused = autoDisplayPaused
     }
     
-    @objc(retrieveAuthToken:)
-    func retrieve(authToken: String?) {
+    @objc(passAlongAuthToken:)
+    func passAlong(authToken: String?) {
         ITBInfo()
         
-        retrievedAuthToken = authToken
+        passedAuthToken = authToken
         
         authTokenRequestedHandlerSemaphore.signal()
     }
@@ -408,7 +408,7 @@ class ReactIterableAPI: RCTEventEmitter {
     private var inAppShowResponse = InAppShowResponse.show
     private var inAppHandlerSemaphore = DispatchSemaphore(value: 0)
     
-    private var retrievedAuthToken: String?
+    private var passedAuthToken: String?
     private var authTokenRequestedHandlerSemaphore = DispatchSemaphore(value: 0)
     
     private func createLaunchOptions() -> [UIApplication.LaunchOptionsKey: Any]? {
@@ -521,7 +521,7 @@ extension ReactIterableAPI: IterableAuthDelegate {
         
         if authTokenRetrievalResult == .success {
             ITBInfo("authTokenRetrieval successful")
-            completion(retrievedAuthToken)
+            completion(passedAuthToken)
         }
     }
 }

@@ -51,7 +51,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     private CountDownLatch jsCallBackLatch;
 
     private CountDownLatch authHandlerCallbackLatch;
-    private String receivedAuthToken = null;
+    private String passedAuthToken = null;
 
     public RNIterableAPIModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -445,7 +445,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
             sendEvent(EventName.handleAuthTokenRequestedCalled.name(), null);
             authHandlerCallbackLatch.await(30, TimeUnit.SECONDS);
             authHandlerCallbackLatch = null;
-            return receivedAuthToken;
+            return passedAuthToken;
         } catch (InterruptedException e) {
             IterableLogger.e(TAG, "auth handler module failed");
             return null;
@@ -455,8 +455,8 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     // ---------------------------------------------------------------------------------------
     // endregion
 
-    public void retrieveAuthToken(String authToken) {
-        receivedAuthToken = authToken;
+    public void passAlongAuthToken(String authToken) {
+        passedAuthToken = authToken;
     }
 
     public void sendEvent(@NonNull String eventName, @Nullable Object eventData) {

@@ -111,6 +111,6 @@ RCT_EXTERN_METHOD(setAutoDisplayPaused: (BOOL) paused)
 
 // MARK: - SDK Auth Manager Functions
 
-RCT_EXTERN_METHOD(retrieveAuthToken: (NSString *) authToken)
+RCT_EXTERN_METHOD(passAlongAuthToken: (NSString *) authToken)
 
 @end
