@@ -2,12 +2,6 @@ apply plugin: 'com.android.library'
 
 import groovy.json.JsonSlurper
 
-allprojects {
-    repositories {
-        maven { url 'https://jitpack.io'}
-    }
-}
-
 android {
     compileSdkVersion 28
 
@@ -28,5 +22,5 @@ def getModuleVersion() {
 
 dependencies {
     implementation 'com.facebook.react:react-native:+'
-    api 'com.github.Iterable.iterable-android-sdk:iterableapi:3.2.7-beta2'
+    api 'com.iterable:iterableapi:3.2.7'
 }
