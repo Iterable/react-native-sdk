@@ -25,7 +25,7 @@ class ReactIterableAPI: RCTEventEmitter {
         case handleUrlCalled
         case handleCustomActionCalled
         case handleInAppCalled
-        case handleAuthTokenRequestedCalled
+        case handleAuthCalled
     }
 
     override func supportedEvents() -> [String]! {
@@ -68,7 +68,7 @@ class ReactIterableAPI: RCTEventEmitter {
             iterableConfig.inAppDelegate = self
         }
         
-        if let authTokenRequestedHandlerPresent = configDict["authTokenRequestedHandlerPresent"] as? Bool, authTokenRequestedHandlerPresent {
+        if let authHandlerPresent = configDict["authHandlerPresent"] as? Bool, authHandlerPresent {
             iterableConfig.authDelegate = self
         }
         
@@ -397,7 +397,7 @@ class ReactIterableAPI: RCTEventEmitter {
         
         passedAuthToken = authToken
         
-        authTokenRequestedHandlerSemaphore.signal()
+        authHandlerSemaphore.signal()
     }
 
     // MARK: Private
@@ -409,7 +409,7 @@ class ReactIterableAPI: RCTEventEmitter {
     private var inAppHandlerSemaphore = DispatchSemaphore(value: 0)
     
     private var passedAuthToken: String?
-    private var authTokenRequestedHandlerSemaphore = DispatchSemaphore(value: 0)
+    private var authHandlerSemaphore = DispatchSemaphore(value: 0)
     
     private func createLaunchOptions() -> [UIApplication.LaunchOptionsKey: Any]? {
         guard let bridge = bridge else {
@@ -514,10 +514,10 @@ extension ReactIterableAPI: IterableAuthDelegate {
     func onAuthTokenRequested(completion: @escaping AuthTokenRetrievalHandler) {
         ITBInfo()
         
-        sendEvent(withName: EventName.handleAuthTokenRequestedCalled.rawValue,
+        sendEvent(withName: EventName.handleAuthCalled.rawValue,
                   body: nil)
         
-        let authTokenRetrievalResult = authTokenRequestedHandlerSemaphore.wait(timeout: .now() + 30.0)
+        let authTokenRetrievalResult = authHandlerSemaphore.wait(timeout: .now() + 30.0)
         
         if authTokenRetrievalResult == .success {
             ITBInfo("authTokenRetrieval successful")

@@ -77,7 +77,7 @@ class IterableConfig {
   /**
    * The handler with which your own calls to your backend containing the auth token happen
    */
-  authTokenRequestedHandler?: () => Promise<string | undefined>
+  authHandler?: () => Promise<string | undefined>
 
   /**
    * Set the verbosity of Android and iOS project's log system. 
@@ -99,7 +99,7 @@ class IterableConfig {
       "urlHandlerPresent": this.urlHandler != undefined,
       "customActionHandlerPresent": this.customActionHandler != undefined,
       "inAppHandlerPresent": this.inAppHandler != undefined,
-      "authTokenRequestedHandlerPresent": this.authTokenRequestedHandler != undefined,
+      "authHandlerPresent": this.authHandler != undefined,
       "logLevel": this.logLevel,
       "expiringAuthTokenRefreshPeriod": this.expiringAuthTokenRefreshPeriod
     }
@@ -228,11 +228,11 @@ class Iterable {
       )
     }
 
-    if (config.authTokenRequestedHandler) {
+    if (config.authHandler) {
       RNEventEmitter.addListener(
         EventName.handleAuthTokenRequestedCalled,
         () => {
-          config.authTokenRequestedHandler!()
+          config.authHandler!()
             .then(authToken => {
               RNIterableAPI.passAlongAuthToken(authToken)
             })

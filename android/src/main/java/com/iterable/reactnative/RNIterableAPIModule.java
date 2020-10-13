@@ -83,7 +83,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
             configBuilder.setInAppHandler(this);
         }
 
-        if (configReadableMap.hasKey("authTokenRequestedPresent") && configReadableMap.getBoolean("authTokenRequestedPresent") == true) {
+        if (configReadableMap.hasKey("authHandlerPresent") && configReadableMap.getBoolean("authHandlerPresent") == true) {
             configBuilder.setAuthHandler(this);
         }
 
@@ -442,7 +442,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
 
         try {
             authHandlerCallbackLatch = new CountDownLatch(1);
-            sendEvent(EventName.handleAuthTokenRequestedCalled.name(), null);
+            sendEvent(EventName.handleAuthCalled.name(), null);
             authHandlerCallbackLatch.await(30, TimeUnit.SECONDS);
             authHandlerCallbackLatch = null;
             return passedAuthToken;
@@ -474,5 +474,5 @@ enum EventName {
     handleUrlCalled,
     handleCustomActionCalled,
     handleInAppCalled,
-    handleAuthTokenRequestedCalled
+    handleAuthCalled
 }
