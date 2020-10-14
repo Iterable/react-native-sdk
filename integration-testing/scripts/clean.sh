@@ -6,7 +6,7 @@ cd $IT_DIR
 
 rm -rf node_modules/
 # You should not have to delete yarn.lock. If you do, uncomment the following line.
-# rm -rf yarn.lock 
+rm -rf yarn.lock 
 yarn install
 cd ios/
 rm -rf Podfile.lock
