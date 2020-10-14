@@ -14,7 +14,7 @@ const RNIterableAPI = NativeModules.RNIterableAPI
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
 
 /**
-* Enum representing the source of IteraleAction.
+* Enum representing the source of IterableAction.
 */
 enum IterableActionSource {
   push = 0,
@@ -31,7 +31,6 @@ enum IterableLogLevel {
   error = 3
 }
 
-
 /**
 Iterable Configuration Object. Use this when initializing the API.
 */
@@ -42,26 +41,32 @@ class IterableConfig {
   * To view your existing integrations, navigate to Settings > Mobile Apps
   */
   pushIntegrationName?: string
+
   /**
   * When set to true, IterableSDK will automatically register and deregister notification tokens.
   */
   autoPushRegistration = true
+
   /**
   * When set to true, it will check for deferred deep links on first time app launch after installation from the App Store.
   */
   checkForDeferredDeeplink = false
+
   /**
   * How many seconds to wait before showing the next in-app, if there are more than one present
   */
   inAppDisplayInterval: number = 30.0
+
   /**
   * How many seconds to wait before showing the next in-app, if there are more than one present
   */
   urlHandler?: (url: string, context: IterableActionContext) => boolean
+
   /**
   * How to handle IterableActions which are other than 'openUrl'
   */
   customActionHandler?: (action: IterableAction, context: IterableActionContext) => boolean
+
   /**
   * Implement this protocol to override default in-app behavior.
   * By default, every single in-app will be shown as soon as it is available.
@@ -70,10 +75,20 @@ class IterableConfig {
   inAppHandler?: (message: IterableInAppMessage) => IterableInAppShowResponse
 
   /**
+   * The handler with which your own calls to your backend containing the auth token happen
+   */
+  authHandler?: () => Promise<string | undefined>
+
+  /**
    * Set the verbosity of Android and iOS project's log system. 
    * By default, you will be able to see info level logs printed in IDE when running the app. 
   */
   logLevel: IterableLogLevel = IterableLogLevel.info
+
+  /**
+   * Set the amount of time (in seconds) before the current auth token expires to make a call to retrieve a new one
+   */
+  expiringAuthTokenRefreshPeriod: number = 60.0
 
   toDict(): any {
     return {
@@ -84,7 +99,9 @@ class IterableConfig {
       "urlHandlerPresent": this.urlHandler != undefined,
       "customActionHandlerPresent": this.customActionHandler != undefined,
       "inAppHandlerPresent": this.inAppHandler != undefined,
-      "logLevel": this.logLevel
+      "authHandlerPresent": this.authHandler != undefined,
+      "logLevel": this.logLevel,
+      "expiringAuthTokenRefreshPeriod": this.expiringAuthTokenRefreshPeriod
     }
   }
 }
@@ -137,9 +154,6 @@ class IterableAttributionInfo {
   }
 }
 
-/**
-* How many seconds to wait before showing the next in-app, if there are more than one present
-*/
 class IterableCommerceItem {
   id: string
   name: string
@@ -158,6 +172,7 @@ enum EventName {
   handleUrlCalled = "handleUrlCalled",
   handleCustomActionCalled = "handleCustomActionCalled",
   handleInAppCalled = "handleInAppCalled",
+  handleAuthCalled = "handleAuthCalled"
 }
 
 class Iterable {
@@ -190,6 +205,7 @@ class Iterable {
         }
       )
     }
+
     if (config.customActionHandler) {
       RNEventEmitter.addListener(
         EventName.handleCustomActionCalled,
@@ -200,6 +216,7 @@ class Iterable {
         }
       )
     }
+
     if (config.inAppHandler) {
       RNEventEmitter.addListener(
         EventName.handleInAppCalled,
@@ -207,6 +224,18 @@ class Iterable {
           const message = IterableInAppMessage.fromDict(messageDict)
           const result = config.inAppHandler!(message)
           RNIterableAPI.setInAppShowResponse(result)
+        }
+      )
+    }
+
+    if (config.authHandler) {
+      RNEventEmitter.addListener(
+        EventName.handleAuthCalled,
+        () => {
+          config.authHandler!()
+            .then(authToken => {
+              RNIterableAPI.passAlongAuthToken(authToken)
+            })
         }
       )
     }
