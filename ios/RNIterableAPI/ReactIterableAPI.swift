@@ -514,14 +514,19 @@ extension ReactIterableAPI: IterableAuthDelegate {
     func onAuthTokenRequested(completion: @escaping AuthTokenRetrievalHandler) {
         ITBInfo()
         
-        sendEvent(withName: EventName.handleAuthCalled.rawValue,
-                  body: nil)
-        
-        let authTokenRetrievalResult = authHandlerSemaphore.wait(timeout: .now() + 30.0)
-        
-        if authTokenRetrievalResult == .success {
-            ITBInfo("authTokenRetrieval successful")
-            completion(passedAuthToken)
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.sendEvent(withName: EventName.handleAuthCalled.rawValue,
+                      body: nil)
+            
+            let authTokenRetrievalResult = self.authHandlerSemaphore.wait(timeout: .now() + 30.0)
+            
+            if authTokenRetrievalResult == .success {
+                ITBInfo("authTokenRetrieval successful")
+                
+                DispatchQueue.main.async {
+                    completion(self.passedAuthToken)
+                }
+            }
         }
     }
 }
