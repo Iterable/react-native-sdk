@@ -270,6 +270,12 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     }
 
     @ReactMethod
+    public void registerForRemoteNotifications() {
+        IterableLogger.v(TAG, "Register For Push");
+        IterableApi.getInstance().registerForPush();
+    }
+
+    @ReactMethod
     public void handleAppLink(String uri, Promise promise) {
         IterableLogger.printInfo();
         promise.resolve(IterableApi.getInstance().handleAppLink(uri));

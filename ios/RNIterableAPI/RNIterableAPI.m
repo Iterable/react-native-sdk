@@ -61,6 +61,8 @@ RCT_EXTERN_METHOD(inAppConsume: (nonnull NSString *) messageId
                   location: (nonnull NSNumber *) location
                   source: (nonnull NSNumber *) source)
 
+RCT_EXTERN_METHOD(registerForRemoteNotifications)
+
 RCT_EXTERN_METHOD(trackEvent: (nonnull NSString *) name
                   dataFields: (NSDictionary *) dataFields)
 

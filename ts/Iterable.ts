@@ -58,7 +58,7 @@ class IterableConfig {
   inAppDisplayInterval: number = 30.0
 
   /**
-  * How many seconds to wait before showing the next in-app, if there are more than one present
+  * How to handle IterableActions which are 'openUrl'
   */
   urlHandler?: (url: string, context: IterableActionContext) => boolean
 
@@ -378,6 +378,11 @@ class Iterable {
   static inAppConsume(message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppDeleteSource) {
     console.log("inAppConsume")
     RNIterableAPI.inAppConsume(message.messageId, location, source)
+  }
+
+  static registerForRemoteNotifications() {
+    console.log("registerForRemoteNotifications");
+    RNIterableAPI.registerForRemoteNotifications();
   }
 
   /**
