@@ -246,6 +246,13 @@ class ReactIterableAPI: RCTEventEmitter {
         }
     }
     
+    @objc(registerForRemoteNotifications)
+    func registerForRemoteNotifications() {
+        ITBInfo()
+        
+        IterableAPI.registerForRemoteNotifications()
+    }
+    
     @objc(getHtmlInAppContentForMessage:resolver:rejecter:)
     func getHtmlInAppContent(messageId: String, resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
         ITBInfo()

@@ -73,6 +73,8 @@ export class MockRNIterableAPI {
 
   static inAppConsume = jest.fn()
 
+  static registerForRemoteNotifications = jest.fn()
+
   static updateUser = jest.fn()
 
   static updateEmail = jest.fn()
