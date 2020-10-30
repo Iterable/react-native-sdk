@@ -85,19 +85,16 @@ export interface IterableInAppContent {
 class IterableHtmlInAppContent implements IterableInAppContent {
   type: IterableInAppContentType = IterableInAppContentType.html
   edgeInsets: IterableEdgeInsets
-  backgroundAlpha: number
   html: string
 
-  constructor(edgeInsets: IterableEdgeInsets, backgroundAlpha: number, html: string) {
+  constructor(edgeInsets: IterableEdgeInsets, html: string) {
     this.edgeInsets = edgeInsets
-    this.backgroundAlpha = backgroundAlpha
     this.html = html
   }
 
   static fromDict(dict: any): IterableHtmlInAppContent {
     return new IterableHtmlInAppContent(
       IterableEdgeInsets.fromDict(dict["edgeInsets"]),
-      dict["backgroundAlpha"] as number,
       dict["html"] as string)
   }
 }
