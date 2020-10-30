@@ -144,8 +144,6 @@ extension IterableHtmlInAppContent {
         dict["type"] = type.rawValue
         dict["edgeInsets"] = edgeInsets.toDict()
         dict["html"] = html
-        dict["shouldAnimate"] = shouldAnimate
-        dict["backgroundColor"] = backgroundColor ?? nil
         return dict
     }
 }
