@@ -143,7 +143,6 @@ extension IterableHtmlInAppContent {
         var dict = [AnyHashable: Any]()
         dict["type"] = type.rawValue
         dict["edgeInsets"] = edgeInsets.toDict()
-        dict["backgroundAlpha"] = backgroundAlpha
         dict["html"] = html
         return dict
     }

@@ -94,7 +94,6 @@ class Serialization {
 
         JSONObject messageContent = new JSONObject();
         try {
-            messageContent.put("backgroundAlpha", content.backgroundAlpha);
             messageContent.put("edgeInsets", content.padding);
             messageContent.put("html", content.html);
             if (messageContent.length() == 0) {
