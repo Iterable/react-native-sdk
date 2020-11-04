@@ -18,12 +18,6 @@ Pod::Spec.new do |s|
   s.preserve_paths = 'LICENSE.md', 'README.md', 'package.json', 'index.js'
   s.source_files   = 'ios/**/*.{h,m,swift}'
 
-  # s.pod_target_xcconfig = {
-  #   'SWIFT_VERSION' => '5.3'
-  # }
-
-  s.swift_version = '5.3'
-
-  s.dependency 'Iterable-iOS-SDK', '~> 6.2.14-no-inbox'
+  s.dependency 'Iterable-iOS-SDK', '~> 6.2.14-rn-sdk-fix'
   s.dependency 'React'
 end
