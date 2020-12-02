@@ -189,62 +189,23 @@ class Iterable {
   static initialize(apiKey: string, config: IterableConfig = new IterableConfig()) {
     console.log("initialize: " + apiKey);
 
-    if (config.urlHandler) {
-      RNEventEmitter.addListener(
-        EventName.handleUrlCalled,
-        (dict) => {
-          const url = dict["url"]
-          const context = IterableActionContext.fromDict(dict["context"])
-          if (config.urlHandler!(url, context) == false) {
-            Linking.canOpenURL(url)
-              .then(canOpen => {
-                if (canOpen) { Linking.openURL(url) }
-              })
-              .catch(reason => { console.log("could not open url: " + reason) })
-          }
-        }
-      )
-    }
-
-    if (config.customActionHandler) {
-      RNEventEmitter.addListener(
-        EventName.handleCustomActionCalled,
-        (dict) => {
-          const action = IterableAction.fromDict(dict["action"])
-          const context = IterableActionContext.fromDict(dict["context"])
-          config.customActionHandler!(action, context)
-        }
-      )
-    }
-
-    if (config.inAppHandler) {
-      RNEventEmitter.addListener(
-        EventName.handleInAppCalled,
-        (messageDict) => {
-          const message = IterableInAppMessage.fromDict(messageDict)
-          const result = config.inAppHandler!(message)
-          RNIterableAPI.setInAppShowResponse(result)
-        }
-      )
-    }
-
-    if (config.authHandler) {
-      RNEventEmitter.addListener(
-        EventName.handleAuthCalled,
-        () => {
-          config.authHandler!()
-            .then(authToken => {
-              RNIterableAPI.passAlongAuthToken(authToken)
-            })
-        }
-      )
-    }
-
-    // Set version from package.json
-    const json = require('../package.json')
-    const version = json["version"] as string
+    this.setupEventHandlers(config)
+    const version = this.getVersionFromPackageJson()
 
     RNIterableAPI.initializeWithApiKey(apiKey, config.toDict(), version)
+  }
+
+  /**
+  * DO NOT CALL THIS METHOD. 
+  * This method is used internally to connect to staging environment.
+  */
+  static initialize2(apiKey: string, config: IterableConfig = new IterableConfig(), apiEndPoint: string, linksEndPoint: string) {
+    console.log("initialize2: " + apiKey);
+
+    this.setupEventHandlers(config)
+    const version = this.getVersionFromPackageJson()
+
+    RNIterableAPI.initialize2WithApiKey(apiKey, config.toDict(), version, apiEndPoint, linksEndPoint)
   }
 
   /**
@@ -435,6 +396,66 @@ class Iterable {
     templateId: number) {
     console.log("updateSubscriptions")
     RNIterableAPI.updateSubscriptions(emailListIds, unsubscribedChannelIds, unsubscribedMessageTypeIds, subscribedMessageTypeIds, campaignId, templateId)
+  }
+
+  // PRIVATE
+  private static setupEventHandlers(config: IterableConfig) {
+    if (config.urlHandler) {
+      RNEventEmitter.addListener(
+        EventName.handleUrlCalled,
+        (dict) => {
+          const url = dict["url"]
+          const context = IterableActionContext.fromDict(dict["context"])
+          if (config.urlHandler!(url, context) == false) {
+            Linking.canOpenURL(url)
+              .then(canOpen => {
+                if (canOpen) { Linking.openURL(url) }
+              })
+              .catch(reason => { console.log("could not open url: " + reason) })
+          }
+        }
+      )
+    }
+
+    if (config.customActionHandler) {
+      RNEventEmitter.addListener(
+        EventName.handleCustomActionCalled,
+        (dict) => {
+          const action = IterableAction.fromDict(dict["action"])
+          const context = IterableActionContext.fromDict(dict["context"])
+          config.customActionHandler!(action, context)
+        }
+      )
+    }
+
+    if (config.inAppHandler) {
+      RNEventEmitter.addListener(
+        EventName.handleInAppCalled,
+        (messageDict) => {
+          const message = IterableInAppMessage.fromDict(messageDict)
+          const result = config.inAppHandler!(message)
+          RNIterableAPI.setInAppShowResponse(result)
+        }
+      )
+    }
+
+    if (config.authHandler) {
+      RNEventEmitter.addListener(
+        EventName.handleAuthCalled,
+        () => {
+          config.authHandler!()
+            .then(authToken => {
+              RNIterableAPI.passAlongAuthToken(authToken)
+            })
+        }
+      )
+    }
+  }
+
+  private static getVersionFromPackageJson(): string {
+    const json = require('../package.json')
+    const version = json["version"] as string
+    return version
   }
 }
 
