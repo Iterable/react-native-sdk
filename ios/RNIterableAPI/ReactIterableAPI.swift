@@ -51,31 +51,27 @@ class ReactIterableAPI: RCTEventEmitter {
     }
     
     @objc(initializeWithApiKey:config:version:)
-    func initialize(apiKey: String, config configDict: [AnyHashable: Any], version: String) {
+    func initialize(apiKey: String,
+                    config configDict: [AnyHashable: Any],
+                    version: String) {
         ITBInfo()
         
-        let launchOptions = createLaunchOptions()
-        let iterableConfig = IterableConfig.from(dict: configDict)
-        if let urlHandlerPresent = configDict["urlHandlerPresent"] as? Bool, urlHandlerPresent == true {
-            iterableConfig.urlDelegate = self
-        }
-        
-        if let customActionHandlerPresent = configDict["customActionHandlerPresent"] as? Bool, customActionHandlerPresent == true {
-            iterableConfig.customActionDelegate = self
-        }
-        
-        if let inAppHandlerPresent = configDict["inAppHandlerPresent"] as? Bool, inAppHandlerPresent == true {
-            iterableConfig.inAppDelegate = self
-        }
-        
-        if let authHandlerPresent = configDict["authHandlerPresent"] as? Bool, authHandlerPresent {
-            iterableConfig.authDelegate = self
-        }
-        
-        DispatchQueue.main.async {
-            IterableAPI.initialize(apiKey: apiKey, launchOptions: launchOptions, config: iterableConfig)
-            IterableAPI.setDeviceAttribute(name: "reactNativeSDKVersion", value: version)
-        }
+        initialize(withApiKey: apiKey, config: configDict, version: version)
+    }
+
+    @objc(initialize2WithApiKey:config:apiEndPointOverride:linksEndPointOverride:version:)
+    func initialize2(apiKey: String,
+                     config configDict: [AnyHashable: Any],
+                     version: String,
+                     apiEndPointOverride: String,
+                     linksEndPointOverride: String) {
+        ITBInfo()
+
+        initialize(withApiKey: apiKey,
+                   config: configDict,
+                   version: version,
+                   apiEndPointOverride: apiEndPointOverride,
+                   linksEndPointOverride: linksEndPointOverride)
     }
 
     @objc(setEmail:)
@@ -410,6 +406,42 @@ class ReactIterableAPI: RCTEventEmitter {
     
     private var passedAuthToken: String?
     private var authHandlerSemaphore = DispatchSemaphore(value: 0)
+    
+    private func initialize(withApiKey apiKey: String,
+                            config configDict: [AnyHashable: Any],
+                            version: String,
+                            apiEndPointOverride: String? = nil,
+                            linksEndPointOverride: String? = nil) {
+        
+        ITBInfo()
+        
+        let launchOptions = createLaunchOptions()
+        let iterableConfig = IterableConfig.from(dict: configDict)
+        if let urlHandlerPresent = configDict["urlHandlerPresent"] as? Bool, urlHandlerPresent == true {
+            iterableConfig.urlDelegate = self
+        }
+        
+        if let customActionHandlerPresent = configDict["customActionHandlerPresent"] as? Bool, customActionHandlerPresent == true {
+            iterableConfig.customActionDelegate = self
+        }
+        
+        if let inAppHandlerPresent = configDict["inAppHandlerPresent"] as? Bool, inAppHandlerPresent == true {
+            iterableConfig.inAppDelegate = self
+        }
+        
+        if let authHandlerPresent = configDict["authHandlerPresent"] as? Bool, authHandlerPresent {
+            iterableConfig.authDelegate = self
+        }
+        
+        DispatchQueue.main.async {
+            IterableAPI.initialize2(apiKey: apiKey,
+                                    launchOptions: launchOptions,
+                                    config: iterableConfig,
+                                    apiEndPointOverride: apiEndPointOverride,
+                                    linksEndPointOverride: linksEndPointOverride)
+            IterableAPI.setDeviceAttribute(name: "reactNativeSDKVersion", value: version)
+        }
+    }
     
     private func createLaunchOptions() -> [UIApplication.LaunchOptionsKey: Any]? {
         guard let bridge = bridge else {
