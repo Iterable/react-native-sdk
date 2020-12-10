@@ -10,7 +10,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@iterable/react-native-sdk": "^1.0.18",
+    "@iterable/react-native-sdk": "^1.0.20",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/toolbar-android": "^0.1.0-rc.2",
     "@react-navigation/bottom-tabs": "^5.4.5",
