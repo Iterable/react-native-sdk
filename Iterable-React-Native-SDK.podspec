@@ -19,11 +19,11 @@ Pod::Spec.new do |s|
   s.source_files   = 'ios/**/*.{h,m,swift}'
 
   s.pod_target_xcconfig = {
-    'SWIFT_VERSION' => '5.2'
+    'SWIFT_VERSION' => '5.3'
   }
 
-  s.swift_version = '5.2'
+  s.swift_version = '5.3'
 
-  s.dependency 'Iterable-iOS-SDK', '~> 6.2.19'
+  s.dependency 'Iterable-iOS-SDK', '~> 6.3.0-beta1'
   s.dependency 'React'
 end
