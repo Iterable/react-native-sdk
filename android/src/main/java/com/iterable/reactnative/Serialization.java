@@ -69,9 +69,9 @@ class Serialization {
     static List<CommerceItem> commerceItemsFromReadableArray(ReadableArray array) {
         ArrayList<CommerceItem> list = new ArrayList<>();
         try {
-            JSONArray commerceItemJsonarray = convertArrayToJson(array);
-            for (int i = 0; i < commerceItemJsonarray.length(); i++) {
-                JSONObject item = commerceItemJsonarray.getJSONObject(i);
+            JSONArray commerceItemJsonArray = convertArrayToJson(array);
+            for (int i = 0; i < commerceItemJsonArray.length(); i++) {
+                JSONObject item = commerceItemJsonArray.getJSONObject(i);
                 list.add(commerceItemFromMap(item));
             }
         } catch (JSONException e) {
@@ -106,13 +106,13 @@ class Serialization {
         return messageContent;
     }
 
-    static JSONArray serializeInAppMessages(List<IterableInAppMessage> inappMessages) {
-        JSONArray inappMessagesJson = new JSONArray();
-        for (IterableInAppMessage message : inappMessages) {
+    static JSONArray serializeInAppMessages(List<IterableInAppMessage> inAppMessages) {
+        JSONArray inAppMessagesJson = new JSONArray();
+        for (IterableInAppMessage message : inAppMessages) {
             JSONObject messageJson = RNIterableInternal.getInAppMessageJson(message);
-            inappMessagesJson.put(messageJson);
+            inAppMessagesJson.put(messageJson);
         }
-        return inappMessagesJson;
+        return inAppMessagesJson;
     }
 
     static IterableConfig.Builder getConfigFromReadableMap(ReadableMap iterableContextMap) {
