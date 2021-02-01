@@ -50,28 +50,38 @@ class ReactIterableAPI: RCTEventEmitter {
         shouldEmit = false
     }
     
-    @objc(initializeWithApiKey:config:version:)
+    @objc(initializeWithApiKey:config:version:resolver:rejecter:)
     func initialize(apiKey: String,
                     config configDict: [AnyHashable: Any],
-                    version: String) {
+                    version: String,
+                    resolver: @escaping RCTPromiseResolveBlock,
+                    rejecter: @escaping RCTPromiseRejectBlock) {
         ITBInfo()
         
-        initialize(withApiKey: apiKey, config: configDict, version: version)
+        initialize(withApiKey: apiKey,
+                   config: configDict,
+                   version: version,
+                   resolver: resolver,
+                   rejecter: rejecter)
     }
 
-    @objc(initialize2WithApiKey:config:apiEndPointOverride:linksEndPointOverride:version:)
+    @objc(initialize2WithApiKey:config:apiEndPointOverride:linksEndPointOverride:version:resolver:rejecter:)
     func initialize2(apiKey: String,
                      config configDict: [AnyHashable: Any],
                      version: String,
                      apiEndPointOverride: String,
-                     linksEndPointOverride: String) {
+                     linksEndPointOverride: String,
+                     resolver: @escaping RCTPromiseResolveBlock,
+                     rejecter: @escaping RCTPromiseRejectBlock) {
         ITBInfo()
 
         initialize(withApiKey: apiKey,
                    config: configDict,
                    version: version,
                    apiEndPointOverride: apiEndPointOverride,
-                   linksEndPointOverride: linksEndPointOverride)
+                   linksEndPointOverride: linksEndPointOverride,
+                   resolver: resolver,
+                   rejecter: rejecter)
     }
 
     @objc(setEmail:)
@@ -411,8 +421,9 @@ class ReactIterableAPI: RCTEventEmitter {
                             config configDict: [AnyHashable: Any],
                             version: String,
                             apiEndPointOverride: String? = nil,
-                            linksEndPointOverride: String? = nil) {
-        
+                            linksEndPointOverride: String? = nil,
+                            resolver: @escaping RCTPromiseResolveBlock,
+                            rejecter: @escaping RCTPromiseRejectBlock) {
         ITBInfo()
         
         let launchOptions = createLaunchOptions()
@@ -438,7 +449,9 @@ class ReactIterableAPI: RCTEventEmitter {
                                     launchOptions: launchOptions,
                                     config: iterableConfig,
                                     apiEndPointOverride: apiEndPointOverride,
-                                    linksEndPointOverride: linksEndPointOverride)
+                                    linksEndPointOverride: linksEndPointOverride) { result in
+                resolver(result)
+            }
             IterableAPI.setDeviceAttribute(name: "reactNativeSDKVersion", value: version)
         }
     }

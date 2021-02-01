@@ -9,14 +9,18 @@
 
 // MARK: - SDK Functions
 RCT_EXTERN_METHOD(initializeWithApiKey: (nonnull NSString *) apiKey
-                                config: (nonnull NSDictionary *) config
-                                version: (nonnull NSString *) version)
+                  config: (nonnull NSDictionary *) config
+                  version: (nonnull NSString *) version
+                  resolver: (RCTPromiseResolveBlock) resolve
+                  rejecter: (RCTPromiseRejectBlock) reject)
 
 RCT_EXTERN_METHOD(initialize2WithApiKey: (nonnull NSString *) apiKey
                   config: (nonnull NSDictionary *) config
                   apiEndPointOverride: (nonnull NSString *) apiEndPoint
                   linksEndPointOverride: (nonnull NSString *) linksEndPoint
-                  version: (nonnull NSString *) version)
+                  version: (nonnull NSString *) version
+                  resolver: (RCTPromiseResolveBlock) resolve
+                  rejecter: (RCTPromiseRejectBlock) reject)
                                 
 RCT_EXTERN_METHOD(setEmail: (NSString *) email)
 

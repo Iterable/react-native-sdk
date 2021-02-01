@@ -186,26 +186,26 @@ class Iterable {
   * @param {string} apiKey 
   * @param {IterableConfig} config
   */
-  static initialize(apiKey: string, config: IterableConfig = new IterableConfig()) {
+  static initialize(apiKey: string, config: IterableConfig = new IterableConfig()): Promise<boolean> {
     console.log("initialize: " + apiKey);
 
     this.setupEventHandlers(config)
     const version = this.getVersionFromPackageJson()
 
-    RNIterableAPI.initializeWithApiKey(apiKey, config.toDict(), version)
+    return RNIterableAPI.initializeWithApiKey(apiKey, config.toDict(), version)
   }
 
   /**
   * DO NOT CALL THIS METHOD. 
   * This method is used internally to connect to staging environment.
   */
-  static initialize2(apiKey: string, config: IterableConfig = new IterableConfig(), apiEndPoint: string, linksEndPoint: string) {
+  static initialize2(apiKey: string, config: IterableConfig = new IterableConfig(), apiEndPoint: string, linksEndPoint: string): Promise<boolean> {
     console.log("initialize2: " + apiKey);
 
     this.setupEventHandlers(config)
     const version = this.getVersionFromPackageJson()
 
-    RNIterableAPI.initialize2WithApiKey(apiKey, config.toDict(), version, apiEndPoint, linksEndPoint)
+    return RNIterableAPI.initialize2WithApiKey(apiKey, config.toDict(), version, apiEndPoint, linksEndPoint)
   }
 
   /**
