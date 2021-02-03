@@ -155,6 +155,10 @@ class IterableInAppMessage {
    * Whether this inbox message has been read
    */
   readonly read: boolean
+  /**
+   * the priority value this in-app message has
+   */
+  readonly priorityLevel: number
 
   constructor(messageId: string,
     campaignId: number,
@@ -164,7 +168,8 @@ class IterableInAppMessage {
     saveToInbox: boolean,
     inboxMetadata: IterableInboxMetadata | undefined,
     customPayload: any | undefined,
-    read: boolean) {
+    read: boolean,
+    priorityLevel: number) {
     this.campaignId = campaignId
     this.messageId = messageId
     this.trigger = trigger
@@ -174,6 +179,7 @@ class IterableInAppMessage {
     this.inboxMetadata = inboxMetadata
     this.customPayload = customPayload
     this.read = read
+    this.priorityLevel = priorityLevel
   }
 
   isSilentInbox(): boolean {
@@ -203,6 +209,8 @@ class IterableInAppMessage {
     let customPayload = dict["customPayload"]
     let read = IterableUtil.readBoolean(dict, "read")
 
+    let priorityLevel = dict["priorityLevel"] as number
+
     return new IterableInAppMessage(
       messageId,
       campaignId,
@@ -212,7 +220,8 @@ class IterableInAppMessage {
       saveToInbox,
       inboxMetadata,
       customPayload,
-      read
+      read,
+      priorityLevel
     )
   }
 
