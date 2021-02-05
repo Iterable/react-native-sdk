@@ -192,11 +192,13 @@ class IterableInAppMessage {
     const trigger = IterableInAppTrigger.fromDict(dict["trigger"])
     let createdAt = dict["createdAt"]
     if (createdAt) {
-      createdAt = new Date(createdAt as number)
+      var dateObject = new Date(0)
+      createdAt = dateObject.setUTCMilliseconds(createdAt)
     }
     let expiresAt = dict["expiresAt"]
     if (expiresAt) {
-      expiresAt = new Date(expiresAt as number)
+      var dateObject = new Date(0)
+      expiresAt = dateObject.setUTCMilliseconds(expiresAt)
     }
     let saveToInbox = IterableUtil.readBoolean(dict, "saveToInbox")
     let inboxMetadataDict = dict["inboxMetadata"]
