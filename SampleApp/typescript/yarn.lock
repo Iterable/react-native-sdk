@@ -675,10 +675,10 @@
   dependencies:
     "@hapi/hoek" "^8.3.0"
 
-"@iterable/react-native-sdk@^1.0.23":
-  version "1.0.23"
-  resolved "https://registry.yarnpkg.com/@iterable/react-native-sdk/-/react-native-sdk-1.0.23.tgz#340f820268416e8de8582abe246e8ffd170fbd68"
-  integrity sha512-DNozSvphv4yT6H799+m/on3LD3JrGzTOWMuN7v/gvSy5g8vYAHkgaePV42ZT+BJ0tNbsFDrjWqUrd43bZlZG8A==
+"@iterable/react-native-sdk@^1.0.24":
+  version "1.0.24"
+  resolved "https://registry.yarnpkg.com/@iterable/react-native-sdk/-/react-native-sdk-1.0.24.tgz#d1a3e4496dc690811b577f1cdd15edabc2f217c0"
+  integrity sha512-douU1qD89YB/8Qs7rbDgd22HqVah6u6JV+ScyT/+MYlOoj9NK9M+wz4ooQltt/vnLe/J27i/DLCmD/HqYsSCcw==
 
 "@jest/console@^24.9.0":
   version "24.9.0"
