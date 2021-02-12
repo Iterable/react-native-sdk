@@ -19,7 +19,7 @@ Iterable's React Native SDK relies on:
     - [React Native CLI 2.0.1+](https://reactnative.dev/docs/upgrading#react-native-cli)
 
 - **iOS**
-    - Xcode 11+
+    - Xcode 12+
     - [Deployment target 10.0+](https://help.apple.com/xcode/mac/current/#/deve69552ee5)
     - [Iterable's iOS SDK](https://github.com/Iterable/swift-sdk)
 
