@@ -134,7 +134,6 @@ extension IterableInAppMessage {
         dict["inboxMetadata"] = inboxMetadata?.toDict() ?? nil
         dict["customPayload"] = customPayload
         dict["read"] = read
-        dict["priorityLevel"] = priorityLevel
         return dict
     }
 }

@@ -25,7 +25,7 @@ beforeEach(() => {
 })
 
 test("trackInAppOpen", () => {
-  let msg: IterableInAppMessage = new IterableInAppMessage("someMessageId", 123, new IterableInAppTrigger(IterableInAppTriggerType.event), new Date(1234), new Date(123123), true, new IterableInboxMetadata("title", "subtitle", "iconURL"), { "CustomPayloadKey": "CustomPayloadValue" }, false, 300.5);
+  let msg: IterableInAppMessage = new IterableInAppMessage("someMessageId", 123, new IterableInAppTrigger(IterableInAppTriggerType.event), new Date(1234), new Date(123123), true, new IterableInboxMetadata("title", "subtitle", "iconURL"), { "CustomPayloadKey": "CustomPayloadValue" }, false);
   Iterable.trackInAppOpen(
     msg,
     IterableInAppLocation.inApp
@@ -38,7 +38,7 @@ test("trackInAppOpen", () => {
 })
 
 test("trackInAppClick", () => {
-  let msg: IterableInAppMessage = new IterableInAppMessage("someMessageId", 123, new IterableInAppTrigger(IterableInAppTriggerType.event), new Date(1234), new Date(123123), true, new IterableInboxMetadata("title", "subtitle", "iconURL"), { "CustomPayloadKey": "CustomPayloadValue" }, false, 300.5);
+  let msg: IterableInAppMessage = new IterableInAppMessage("someMessageId", 123, new IterableInAppTrigger(IterableInAppTriggerType.event), new Date(1234), new Date(123123), true, new IterableInboxMetadata("title", "subtitle", "iconURL"), { "CustomPayloadKey": "CustomPayloadValue" }, false);
   Iterable.trackInAppClick(
     msg,
     IterableInAppLocation.inApp,
@@ -53,7 +53,7 @@ test("trackInAppClick", () => {
 })
 
 test("trackInAppClose", () => {
-  let msg: IterableInAppMessage = new IterableInAppMessage("someMessageId", 123, new IterableInAppTrigger(IterableInAppTriggerType.event), new Date(1234), new Date(123123), true, new IterableInboxMetadata("title", "subtitle", "iconURL"), { "CustomPayloadKey": "CustomPayloadValue" }, false, 300.5);
+  let msg: IterableInAppMessage = new IterableInAppMessage("someMessageId", 123, new IterableInAppTrigger(IterableInAppTriggerType.event), new Date(1234), new Date(123123), true, new IterableInboxMetadata("title", "subtitle", "iconURL"), { "CustomPayloadKey": "CustomPayloadValue" }, false);
   Iterable.trackInAppClose(
     msg,
     IterableInAppLocation.inbox,
@@ -70,7 +70,7 @@ test("trackInAppClose", () => {
 })
 
 test("in-app consume", () => {
-  let message = new IterableInAppMessage("asdf", 1234, new IterableInAppTrigger(IterableInAppTriggerType.never), undefined, undefined, false, undefined, undefined, false, 300.5)
+  let message = new IterableInAppMessage("asdf", 1234, new IterableInAppTrigger(IterableInAppTriggerType.never), undefined, undefined, false, undefined, undefined, false)
 
   Iterable.inAppConsume(message, IterableInAppLocation.inApp, IterableInAppDeleteSource.unknown)
 
@@ -94,13 +94,12 @@ test("in-app handler is called", () => {
     "messageId": "message1",
     "campaignId": 1234,
     "trigger": { "type": IterableInAppTriggerType.immediate },
-    "priorityLevel": 300.5
   }
   nativeEmitter.emit(EventName.handleInAppCalled, messageDict);
 
   return TestHelper.delayed(0, () => {
     expect(config.inAppHandler)
-    const expectedMessage = new IterableInAppMessage("message1", 1234, new IterableInAppTrigger(IterableInAppTriggerType.immediate), undefined, undefined, false, undefined, undefined, false, 300.5)
+    const expectedMessage = new IterableInAppMessage("message1", 1234, new IterableInAppTrigger(IterableInAppTriggerType.immediate), undefined, undefined, false, undefined, undefined, false)
     expect(config.inAppHandler).toBeCalledWith(expectedMessage)
     expect(MockRNIterableAPI.setInAppShowResponse).toBeCalledWith(IterableInAppShowResponse.show)
   })
