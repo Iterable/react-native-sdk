@@ -22,5 +22,5 @@ def getModuleVersion() {
 
 dependencies {
     implementation 'com.facebook.react:react-native:+'
-    api 'com.github.Iterable.iterable-android-sdk:iterableapi:3.2.9'
+    api 'com.github.Iterable.iterable-android-sdk:iterableapi:3.2.10'
 }
