@@ -573,7 +573,10 @@ extension ReactIterableAPI: IterableAuthDelegate {
                 }
             } else {
                 ITBInfo("authTokenRetrieval timed out")
-                completion(nil)
+                
+                DispatchQueue.main.async {
+                    completion(nil)
+                }
             }
         }
     }
