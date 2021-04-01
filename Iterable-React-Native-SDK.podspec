@@ -24,6 +24,6 @@ Pod::Spec.new do |s|
 
   s.swift_version = '5.3'
 
-  s.dependency 'Iterable-iOS-SDK', '~> 6.3.0-beta2'
+  s.dependency 'Iterable-iOS-SDK', '~> 6.3.0-beta3'
   s.dependency 'React-Core'
 end
