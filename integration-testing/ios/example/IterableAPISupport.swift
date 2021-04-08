@@ -65,9 +65,9 @@ struct IterableAPISupport {
     private static func getInAppMessages(apiKey: String,
                                          email: String) -> Future<[IterableInAppMessage], SendRequestError> {
         var args: [String: String] = [
-            JsonKey.email.jsonKey: email,
+            JsonKey.email: email,
             JsonKey.InApp.count: maxMessages.description,
-            JsonKey.platform.jsonKey: JsonValue.iOS.jsonStringValue,
+            JsonKey.platform: JsonValue.iOS,
             JsonKey.InApp.sdkVersion: IterableAPI.sdkVersion,
         ]
         
@@ -86,8 +86,8 @@ struct IterableAPISupport {
     }
     
     private static func createIterableHeaders(apiKey: String) -> [String: String] {
-        let headers = [JsonKey.contentType.jsonKey: JsonValue.applicationJson.jsonStringValue,
-                       JsonKey.Header.sdkPlatform: JsonValue.iOS.jsonStringValue,
+        let headers = [JsonKey.contentType: JsonValue.applicationJson,
+                       JsonKey.Header.sdkPlatform: JsonValue.iOS,
                        JsonKey.Header.sdkVersion: IterableAPI.sdkVersion,
                        JsonKey.Header.apiKey: apiKey]
         
@@ -141,8 +141,8 @@ struct IterableAPISupport {
     private static func consumeInAppMessage(apiKey: String, email: String, messageId: String) -> Future<SendRequestValue, SendRequestError> {
         var body = [AnyHashable: Any]()
         
-        body.setValue(for: .messageId, value: messageId)
-        body.setValue(for: .email, value: email)
+        body.setValue(for: JsonKey.messageId, value: messageId)
+        body.setValue(for: JsonKey.email, value: email)
 
         guard let request = IterableRequestUtil.createPostRequest(forApiEndPoint: Const.apiEndpoint,
                                                                   path: Const.Path.consumeInApp,
