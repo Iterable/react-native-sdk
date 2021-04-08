@@ -53,7 +53,7 @@ struct IterableAPISupport {
                                                                     return SendRequestError.createErroredFuture(reason: "Could not create in-app consume request")
         }
         
-        return NetworkHelper.sendRequest(request, usingSession: urlSession)
+        return RequestSender.sendRequest(request, usingSession: urlSession)
     }
 
     private static let urlSession: URLSession = {
@@ -82,7 +82,7 @@ struct IterableAPISupport {
                                                                     return SendRequestError.createErroredFuture(reason: "could not create get in-app request")
         }
         
-        return NetworkHelper.sendRequest(request, usingSession: urlSession).map { inAppMessages(fromPayload: $0) }
+        return RequestSender.sendRequest(request, usingSession: urlSession).map { inAppMessages(fromPayload: $0) }
     }
     
     private static func createIterableHeaders(apiKey: String) -> [String: String] {
@@ -151,6 +151,6 @@ struct IterableAPISupport {
                                                                     return SendRequestError.createErroredFuture(reason: "Could not create in-app consume request")
         }
         
-        return NetworkHelper.sendRequest(request, usingSession: urlSession)
+        return RequestSender.sendRequest(request, usingSession: urlSession)
     }
 }
