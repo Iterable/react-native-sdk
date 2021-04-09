@@ -701,10 +701,10 @@
   dependencies:
     "@hapi/hoek" "^8.3.0"
 
-"@iterable/react-native-sdk@^1.0.20":
-  version "1.0.20"
-  resolved "https://registry.yarnpkg.com/@iterable/react-native-sdk/-/react-native-sdk-1.0.20.tgz#840c1e293910198fa4824b7090c99e1501d242c2"
-  integrity sha512-vHxVkG7eYud0JMXUTC38Rk0R+x3c03bWgXV0bOAVHneztUDRQF+EbVGCHPdVMZAutiGOeNPigsyUimS+tRcrrA==
+"@iterable/react-native-sdk@^1.0.26":
+  version "1.0.26"
+  resolved "https://registry.yarnpkg.com/@iterable/react-native-sdk/-/react-native-sdk-1.0.26.tgz#41ac8a0ba7634ef54293ba10e61c810fc0b840e9"
+  integrity sha512-6QjX+YBtbTunUUqKeao955bspm0xOJhtdGDn35+afKfXP13F0TUUknVngFxhMUxCmUP6oKlKAXpe0mgiJfgH+A==
 
 "@jest/console@^24.9.0":
   version "24.9.0"
@@ -4612,14 +4612,13 @@ react-test-renderer@16.9.0:
     react-is "^16.9.0"
     scheduler "^0.15.0"
 
-react@^16.13.1:
-  version "16.14.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.14.0.tgz#94d776ddd0aaa37da3eda8fc5b6b18a4c9a3114d"
-  integrity sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g==
+react@^17.0.2:
+  version "17.0.2"
+  resolved "https://registry.yarnpkg.com/react/-/react-17.0.2.tgz#d0b5cc516d29eb3eee383f75b62864cfb6800037"
+  integrity sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
-    prop-types "^15.6.2"
 
 readable-stream@^2.0.1, readable-stream@^2.2.2, readable-stream@~2.3.6:
   version "2.3.7"
