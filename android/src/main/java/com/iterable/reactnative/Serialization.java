@@ -128,10 +128,6 @@ class Serialization {
                 configBuilder.setAutoPushRegistration(iterableContextJSON.optBoolean("autoPushRegistration"));
             }
 
-            if (iterableContextJSON.has("checkForDeferredDeeplink")) {
-                configBuilder.setCheckForDeferredDeeplink(iterableContextJSON.optBoolean("checkForDeferredDeeplink"));
-            }
-
             if (iterableContextJSON.has("inAppDisplayInterval")) {
                 configBuilder.setInAppDisplayInterval(iterableContextJSON.optDouble("inAppDisplayInterval"));
             }
