@@ -49,6 +49,7 @@ class IterableConfig {
 
   /**
   * When set to true, it will check for deferred deep links on first time app launch after installation from the App Store.
+  * This is currently deprecated and will be removed in the future.
   */
   checkForDeferredDeeplink = false
 
@@ -94,7 +95,6 @@ class IterableConfig {
     return {
       "pushIntegrationName": this.pushIntegrationName,
       "autoPushRegistration": this.autoPushRegistration,
-      "checkForDeferredDeeplink": this.checkForDeferredDeeplink,
       "inAppDisplayInterval": this.inAppDisplayInterval,
       "urlHandlerPresent": this.urlHandler != undefined,
       "customActionHandlerPresent": this.customActionHandler != undefined,
@@ -199,13 +199,13 @@ class Iterable {
   * DO NOT CALL THIS METHOD. 
   * This method is used internally to connect to staging environment.
   */
-  static initialize2(apiKey: string, config: IterableConfig = new IterableConfig(), apiEndPoint: string, linksEndPoint: string): Promise<boolean> {
+  static initialize2(apiKey: string, config: IterableConfig = new IterableConfig(), apiEndPoint: string): Promise<boolean> {
     console.log("initialize2: " + apiKey);
 
     this.setupEventHandlers(config)
     const version = this.getVersionFromPackageJson()
 
-    return RNIterableAPI.initialize2WithApiKey(apiKey, config.toDict(), version, apiEndPoint, linksEndPoint)
+    return RNIterableAPI.initialize2WithApiKey(apiKey, config.toDict(), version, apiEndPoint)
   }
 
   /**

@@ -51,10 +51,6 @@ extension IterableConfig {
             config.autoPushRegistration = autoPushRegistration
         }
         
-        if let checkForDeferredDeeplink = dict["checkForDeferredDeeplink"] as? Bool {
-            config.checkForDeferredDeeplink = checkForDeferredDeeplink
-        }
-        
         if let inAppDisplayInterval = dict["inAppDisplayInterval"] as? Double {
             config.inAppDisplayInterval = inAppDisplayInterval
         }
