@@ -51,10 +51,6 @@ extension IterableConfig {
             config.autoPushRegistration = autoPushRegistration
         }
         
-        if let checkForDeferredDeeplink = dict["checkForDeferredDeeplink"] as? Bool {
-            config.checkForDeferredDeeplink = checkForDeferredDeeplink
-        }
-        
         if let inAppDisplayInterval = dict["inAppDisplayInterval"] as? Double {
             config.inAppDisplayInterval = inAppDisplayInterval
         }
@@ -134,6 +130,7 @@ extension IterableInAppMessage {
         dict["inboxMetadata"] = inboxMetadata?.toDict() ?? nil
         dict["customPayload"] = customPayload
         dict["read"] = read
+        dict["priorityLevel"] = priorityLevel
         return dict
     }
 }

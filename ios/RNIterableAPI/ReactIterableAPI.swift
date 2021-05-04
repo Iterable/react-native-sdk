@@ -65,12 +65,11 @@ class ReactIterableAPI: RCTEventEmitter {
                    rejecter: rejecter)
     }
 
-    @objc(initialize2WithApiKey:config:apiEndPointOverride:linksEndPointOverride:version:resolver:rejecter:)
+    @objc(initialize2WithApiKey:config:apiEndPointOverride:version:resolver:rejecter:)
     func initialize2(apiKey: String,
                      config configDict: [AnyHashable: Any],
                      version: String,
                      apiEndPointOverride: String,
-                     linksEndPointOverride: String,
                      resolver: @escaping RCTPromiseResolveBlock,
                      rejecter: @escaping RCTPromiseRejectBlock) {
         ITBInfo()
@@ -79,7 +78,6 @@ class ReactIterableAPI: RCTEventEmitter {
                    config: configDict,
                    version: version,
                    apiEndPointOverride: apiEndPointOverride,
-                   linksEndPointOverride: linksEndPointOverride,
                    resolver: resolver,
                    rejecter: rejecter)
     }
@@ -421,7 +419,6 @@ class ReactIterableAPI: RCTEventEmitter {
                             config configDict: [AnyHashable: Any],
                             version: String,
                             apiEndPointOverride: String? = nil,
-                            linksEndPointOverride: String? = nil,
                             resolver: @escaping RCTPromiseResolveBlock,
                             rejecter: @escaping RCTPromiseRejectBlock) {
         ITBInfo()
@@ -448,8 +445,7 @@ class ReactIterableAPI: RCTEventEmitter {
             IterableAPI.initialize2(apiKey: apiKey,
                                     launchOptions: launchOptions,
                                     config: iterableConfig,
-                                    apiEndPointOverride: apiEndPointOverride,
-                                    linksEndPointOverride: linksEndPointOverride) { result in
+                                    apiEndPointOverride: apiEndPointOverride) { result in
                 resolver(result)
             }
             IterableAPI.setDeviceAttribute(name: "reactNativeSDKVersion", value: version)
