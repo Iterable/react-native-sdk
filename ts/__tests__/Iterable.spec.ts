@@ -74,13 +74,13 @@ test("trackPurchase", () => {
 test("trackPurchase with optional fields", () => {
   Iterable.trackPurchase(
     5,
-    [new IterableCommerceItem("id", "swordfish", 64, 1, "SKU", "description", "url", "imageUrl", ["sword"])],
+    [new IterableCommerceItem("id", "swordfish", 64, 1, "SKU", "description", "url", "imageUrl", ["sword", "shield"])],
     {"key": "value"}
   )
 
   expect(MockRNIterableAPI.trackPurchase).toBeCalledWith(
     5,
-    [new IterableCommerceItem("id", "swordfish", 64, 1, "SKU", "description", "url", "imageUrl", ["sword"])],
+    [new IterableCommerceItem("id", "swordfish", 64, 1, "SKU", "description", "url", "imageUrl", ["sword", "shield"])],
     {"key": "value"}
   )
 })
