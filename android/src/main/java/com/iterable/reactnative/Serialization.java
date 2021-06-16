@@ -81,10 +81,27 @@ class Serialization {
     }
 
     static CommerceItem commerceItemFromMap(JSONObject itemMap) throws JSONException {
+
+        String[] categories = null;
+        JSONArray categoriesArray = itemMap.optJSONArray("categories");
+        if (categoriesArray != null) {
+            for (int i = 0; i < categoriesArray.length(); i++) {
+                if (categories == null) {
+                    categories = new String[categoriesArray.length()];
+                }
+                categories[i] = categoriesArray.getString(i);
+            }
+        }
         return new CommerceItem(itemMap.getString("id"),
                 itemMap.getString("name"),
                 itemMap.getDouble("price"),
-                itemMap.getInt("quantity"));
+                itemMap.getInt("quantity"),
+                itemMap.optString("sku", null),
+                itemMap.optString("description", null),
+                itemMap.optString("url", null),
+                itemMap.optString("imageUrl", null),
+                categories
+        );
     }
 
     static JSONObject messageContentToJsonObject(IterableInAppMessage.Content content) {

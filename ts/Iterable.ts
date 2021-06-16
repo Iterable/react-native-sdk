@@ -159,12 +159,22 @@ class IterableCommerceItem {
   name: string
   price: number
   quantity: number
+  sku?: string
+  description?: string
+  url?: string
+  imageUrl?: string
+  categories?: Array<string>
 
-  constructor(id: string, name: string, price: number, quantity: number) {
+  constructor(id: string, name: string, price: number, quantity: number, sku?: string, description?: string, url?: string, imageUrl?: string, categories?: Array<string>) {
     this.id = id
     this.name = name
     this.price = price
     this.quantity = quantity
+    this.sku = sku
+    this.description = description
+    this.url = url
+    this.imageUrl = imageUrl
+    this.categories = categories
   }
 }
 
