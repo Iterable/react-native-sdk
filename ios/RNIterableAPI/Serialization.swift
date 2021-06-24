@@ -51,10 +51,6 @@ extension IterableConfig {
             config.autoPushRegistration = autoPushRegistration
         }
         
-        if let checkForDeferredDeeplink = dict["checkForDeferredDeeplink"] as? Bool {
-            config.checkForDeferredDeeplink = checkForDeferredDeeplink
-        }
-        
         if let inAppDisplayInterval = dict["inAppDisplayInterval"] as? Double {
             config.inAppDisplayInterval = inAppDisplayInterval
         }
@@ -88,8 +84,22 @@ extension CommerceItem {
         guard let quantity = dict["quantity"] as? UInt else {
             return nil
         }
-
-        return CommerceItem(id: id, name: name, price: price, quantity: quantity)
+        
+        let sku = dict["sku"] as? String
+        let description = dict["description"] as? String
+        let url = dict["url"] as? String
+        let imageUrl = dict["imageUrl"] as? String
+        let categories = dict["categories"] as? [String]
+        
+        return CommerceItem(id: id,
+                            name: name,
+                            price: price,
+                            quantity: quantity,
+                            sku: sku,
+                            description: description,
+                            url: url,
+                            imageUrl: imageUrl,
+                            categories: categories)
     }
 }
 

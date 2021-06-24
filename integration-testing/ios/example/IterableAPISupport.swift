@@ -53,7 +53,7 @@ struct IterableAPISupport {
                                                                     return SendRequestError.createErroredFuture(reason: "Could not create in-app consume request")
         }
         
-        return RequestSender.sendRequest(request, usingSession: urlSession)
+        return NetworkHelper.sendRequest(request, usingSession: urlSession)
     }
 
     private static let urlSession: URLSession = {
@@ -67,7 +67,7 @@ struct IterableAPISupport {
         var args: [String: String] = [
             JsonKey.email.jsonKey: email,
             JsonKey.InApp.count: maxMessages.description,
-            JsonKey.platform.jsonKey: JsonValue.iOS.jsonStringValue,
+            JsonKey.platform.jsonKey: JsonValue.iOS.rawValue,
             JsonKey.InApp.sdkVersion: IterableAPI.sdkVersion,
         ]
         
@@ -82,7 +82,7 @@ struct IterableAPISupport {
                                                                     return SendRequestError.createErroredFuture(reason: "could not create get in-app request")
         }
         
-        return RequestSender.sendRequest(request, usingSession: urlSession).map { inAppMessages(fromPayload: $0) }
+        return NetworkHelper.sendRequest(request, usingSession: urlSession).map { inAppMessages(fromPayload: $0) }
     }
     
     private static func createIterableHeaders(apiKey: String) -> [String: String] {
@@ -141,8 +141,8 @@ struct IterableAPISupport {
     private static func consumeInAppMessage(apiKey: String, email: String, messageId: String) -> Future<SendRequestValue, SendRequestError> {
         var body = [AnyHashable: Any]()
         
-        body.setValue(for: .messageId, value: messageId)
-        body.setValue(for: .email, value: email)
+        body.setValue(for: JsonKey.messageId, value: messageId)
+        body.setValue(for: JsonKey.email, value: email)
 
         guard let request = IterableRequestUtil.createPostRequest(forApiEndPoint: Const.apiEndpoint,
                                                                   path: Const.Path.consumeInApp,
@@ -151,6 +151,6 @@ struct IterableAPISupport {
                                                                     return SendRequestError.createErroredFuture(reason: "Could not create in-app consume request")
         }
         
-        return RequestSender.sendRequest(request, usingSession: urlSession)
+        return NetworkHelper.sendRequest(request, usingSession: urlSession)
     }
 }

@@ -71,6 +71,20 @@ test("trackPurchase", () => {
   )
 })
 
+test("trackPurchase with optional fields", () => {
+  Iterable.trackPurchase(
+    5,
+    [new IterableCommerceItem("id", "swordfish", 64, 1, "SKU", "description", "url", "imageUrl", ["sword", "shield"])],
+    {"key": "value"}
+  )
+
+  expect(MockRNIterableAPI.trackPurchase).toBeCalledWith(
+    5,
+    [new IterableCommerceItem("id", "swordfish", 64, 1, "SKU", "description", "url", "imageUrl", ["sword", "shield"])],
+    {"key": "value"}
+  )
+})
+
 test("trackEvent", () => {
   Iterable.trackEvent(
     "EventName",
@@ -118,7 +132,6 @@ test("default config values", () => {
 
   expect(config.pushIntegrationName).toBe(undefined)
   expect(config.autoPushRegistration).toBe(true)
-  expect(config.checkForDeferredDeeplink).toBe(false)
   expect(config.inAppDisplayInterval).toBe(30.0)
   expect(config.urlHandler).toBe(undefined)
   expect(config.customActionHandler).toBe(undefined)
@@ -130,7 +143,6 @@ test("default config dictionary values", () => {
 
   expect(configDict["pushIntegrationName"]).toBe(undefined)
   expect(configDict["autoPushRegistration"]).toBe(true)
-  expect(configDict["checkForDeferredDeeplink"]).toBe(false)
   expect(configDict["inAppDisplayInterval"]).toBe(30.0)
   expect(configDict["urlHandlerPresent"]).toBe(false)
   expect(configDict["customActionHandlerPresent"]).toBe(false)
