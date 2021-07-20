@@ -26,7 +26,6 @@ const styles = StyleSheet.create({
    unreadIndicatorContainer: {
       height: '100%',
       flexDirection: 'column',
-      //marginTop: 0,
       justifyContent: 'flex-start'
    },
 
@@ -55,6 +54,7 @@ const styles = StyleSheet.create({
       backgroundColor: 'white',
       paddingTop: 10,
       paddingBottom: 10,
+      marginBottom: 70,
       width: '100%',
       borderStyle: 'solid',
       borderTopColor: 'lightgray',
@@ -69,7 +69,6 @@ const styles = StyleSheet.create({
    },
 
    title: {
-      //fontWeight: 'bold',
       fontSize: 22,
       paddingBottom: 10
    },

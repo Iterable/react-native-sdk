@@ -1,11 +1,11 @@
 'use strict'
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import { Text, View, StyleSheet } from 'react-native'
-import { Iterable } from '@iterable/react-native-sdk'
+import { IterableInAppManager } from '../IterableInAppClasses'
 import MessageList from '@iterable/react-native-sdk/js/Inbox/components/MessageList/MessageList' 
 
 function Inbox() {
-   const message = "Inbox"
+   const messages = IterableInAppManager.getMessages();
 
    return(
       <View style={styles.container}>
