@@ -16,7 +16,7 @@
     "@react-navigation/native": "^5.4.0",
     "@react-navigation/stack": "^5.3.7",
     "react": "^17.0.2",
-    "react-native": "^0.63",
+    "react-native": "^0.64",
     "react-native-elements": "^1.2.7",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-ionicons": "^5.0.0-rc",
