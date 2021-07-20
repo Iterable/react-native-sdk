@@ -101,12 +101,12 @@ class IterableHtmlInAppContent implements IterableInAppContent {
 
 class IterableInboxMetadata {
   title?: string
-  subTitle?: string
+  subtitle?: string
   icon?: string
 
-  constructor(title: string | undefined, subTitle: string | undefined, icon: string | undefined) {
+  constructor(title: string | undefined, subtitle: string | undefined, icon: string | undefined) {
     this.title = title
-    this.subTitle = subTitle
+    this.subtitle = subtitle
     this.icon = icon
   }
 
@@ -226,7 +226,6 @@ class IterableInAppMessage {
       priorityLevel
     )
   }
-
 }
 
 class IterableInAppManager {
