@@ -2,19 +2,12 @@
 
 import { NativeModules } from 'react-native'
 import {
-    IterableInAppShowResponse,
-    IterableInAppContent,
-    IterableInAppTriggerType,
-    IterableInAppTrigger,
-    IterableInAppContentType,
-    IterableEdgeInsets,
     IterableHtmlInAppContent,
-    IterableInboxMetadata,
-    IterableInAppMessage,
     IterableInAppLocation,
-    IterableInAppCloseSource,
     IterableInAppDeleteSource,
-  } from './IterableInAppClasses'
+} from './IterableInAppClasses'
+
+import { IterableInAppMessage } from './IterableInAppMessage'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
 

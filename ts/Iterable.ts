@@ -2,12 +2,15 @@
 
 import { NativeModules, NativeEventEmitter, Linking } from 'react-native'
 import {
-  IterableInAppMessage,
   IterableInAppShowResponse,
   IterableInAppLocation,
   IterableInAppCloseSource,
   IterableInAppDeleteSource,
 } from './IterableInAppClasses'
+
+import {
+  IterableInAppMessage
+} from './IterableInAppMessage'
 
 import {
   IterableInAppManager
