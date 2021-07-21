@@ -302,6 +302,11 @@ class Iterable {
     RNIterableAPI.trackPushOpenWithCampaignId(campaignId, templateId, messageId, appAlreadyRunning, dataFields)
   }
 
+  static updateCart(items: Array<IterableCommerceItem>, dataFields: any | undefined) {
+    console.log("updateCart")
+    RNIterableAPI.updateCart(items, dataFields)
+  }
+
   /**
   * 
   * @param {number} total 
