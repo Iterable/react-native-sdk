@@ -8,8 +8,9 @@ import {
   EventName,
 } from '../Iterable'
 
+import { IterableInAppMessage } from '../IterableInAppMessage'
+
 import {
-  IterableInAppMessage,
   IterableInAppLocation,
   IterableInAppTrigger,
   IterableInAppTriggerType,
@@ -18,7 +19,6 @@ import {
   IterableInAppShowResponse,
   IterableInAppDeleteSource
 } from '../IterableInAppClasses'
-
 
 beforeEach(() => {
   jest.clearAllMocks()
@@ -135,7 +135,7 @@ test("in-app show message is called", () => {
   }
   const message = IterableInAppMessage.fromDict(messageDict)
   MockRNIterableAPI.showMessage = jest.fn((message, consume) => {
-    return new Promise(res => {
+    return new Promise<void>(res => {
       res()
     })
   })

@@ -1,4 +1,5 @@
 'use strict'
+
 /**
 * React Native module for Iterable.
 * @module react-native-iterable-sdk
@@ -13,6 +14,7 @@ import {
   IterableCommerceItem,
   IterableLogLevel,
 } from './Iterable'
+
 import {
   IterableInAppShowResponse,
   IterableInAppContent,
@@ -22,12 +24,13 @@ import {
   IterableEdgeInsets,
   IterableHtmlInAppContent,
   IterableInboxMetadata,
-  IterableInAppMessage,
   IterableInAppLocation,
   IterableInAppCloseSource,
   IterableInAppDeleteSource,
-  IterableInAppManager,
 } from './IterableInAppClasses'
+
+import { IterableInAppMessage } from './IterableInAppMessage'
+import { IterableInAppManager } from './IterableInAppManager'
 
 export {
   Iterable,
