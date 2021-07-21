@@ -13,6 +13,7 @@ import {
   IterableCommerceItem,
   IterableLogLevel,
 } from './Iterable'
+
 import {
   IterableInAppShowResponse,
   IterableInAppContent,
@@ -26,8 +27,9 @@ import {
   IterableInAppLocation,
   IterableInAppCloseSource,
   IterableInAppDeleteSource,
-  IterableInAppManager,
 } from './IterableInAppClasses'
+
+import { IterableInAppManager } from './IterableInAppManager'
 
 export {
   Iterable,

@@ -7,8 +7,11 @@ import {
   IterableInAppLocation,
   IterableInAppCloseSource,
   IterableInAppDeleteSource,
-  IterableInAppManager,
 } from './IterableInAppClasses'
+
+import {
+  IterableInAppManager
+} from './IterableInAppManager'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
