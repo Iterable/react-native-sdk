@@ -776,10 +776,10 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
-"@iterable/react-native-sdk@^1.0.28":
-  version "1.0.28"
-  resolved "https://registry.yarnpkg.com/@iterable/react-native-sdk/-/react-native-sdk-1.0.28.tgz#9f8c9440ebfdc9e26216c4c9e8f483e3cd242206"
-  integrity sha512-zTZUtAPxP5iGuflj7GiBWli+UBPTLTEqJ4gcj5S9KYz+ZvvIJ7R67ebaktUopT4WkJmpl5tjPzKee3YMCNixoA==
+"@iterable/react-native-sdk@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@iterable/react-native-sdk/-/react-native-sdk-1.1.0.tgz#67235d73f2aa3a2c499c7a609d9f748a91c8323d"
+  integrity sha512-My87barDdjDbC5OzPxqaFhOsYukfB8D1wrawG+0MEvgypsWcS5smGdUf8C+xysgvAvsdG2pbcE3AdeTl1OIlLA==
 
 "@jest/create-cache-key-function@^26.5.0":
   version "26.6.2"
