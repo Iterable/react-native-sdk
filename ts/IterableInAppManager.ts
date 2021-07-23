@@ -1,6 +1,7 @@
 'use strict'
 
 import { NativeModules } from 'react-native'
+
 import {
     IterableHtmlInAppContent,
     IterableInAppLocation,
@@ -69,7 +70,6 @@ class IterableInAppManager {
      */
     setAutoDisplayPaused(paused: boolean) {
       console.log("InAppManager.setAutoDisplayPaused")
-  
       RNIterableAPI.setAutoDisplayPaused(paused)
     }
   }
