@@ -58,10 +58,10 @@ test("trackPushOpenWithCampaignId", () => {
 })
 
 test("updateCart", () => {
-  Iterable.updateCart([new IterableCommerceItem("id1", "Boba Tea", 18, 26)], { "dataFieldKey": "dataFieldValue" })
+  Iterable.updateCart([new IterableCommerceItem("id1", "Boba Tea", 18, 26)])
 
   expect(MockRNIterableAPI.updateCart).toBeCalledWith(
-    [new IterableCommerceItem("id1", "Boba Tea", 18, 26)], { "dataFieldKey": "dataFieldValue" }
+    [new IterableCommerceItem("id1", "Boba Tea", 18, 26)]
   )
 })
 

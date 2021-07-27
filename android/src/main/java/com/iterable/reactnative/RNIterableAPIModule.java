@@ -145,7 +145,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     }
 
     @ReactMethod
-    public void updateCart(ReadableArray items, ReadableMap dataFields) {
+    public void updateCart(ReadableArray items) {
         IterableLogger.v(TAG, "UpdateCart API");
 
         JSONObject dataFieldsJson = null;
@@ -158,7 +158,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
             IterableLogger.e(TAG, "Failed converting JSON to object");
         }
 
-        IterableApi.getInstance().updateCart(Serialization.commerceItemsFromReadableArray(items), dataFieldsJson);
+        IterableApi.getInstance().updateCart(Serialization.commerceItemsFromReadableArray(items));
     }
 
     @ReactMethod

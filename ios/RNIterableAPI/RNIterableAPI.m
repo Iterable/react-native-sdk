@@ -50,8 +50,7 @@ RCT_EXTERN_METHOD(trackPushOpenWithCampaignId: (nonnull NSNumber *) campaignId
                   appAlreadyRunning: (BOOL) appAlreadyRunning
                   dataFields: (NSDictionary *) dataFields)
 
-RCT_EXTERN_METHOD(updateCart: (NSArray *) items
-                  dataFields: (NSDictionary *) dataFields)
+RCT_EXTERN_METHOD(updateCart: (NSArray *) items)
 
 RCT_EXTERN_METHOD(trackPurchase: (nonnull NSNumber *) total
                   items: (NSArray *) items
