@@ -10,6 +10,7 @@ import Foundation
 struct IterableAPISupport {
     enum Const {
         static let apiEndpoint = "https://api.iterable.com/api/"
+        
         enum Path {
             static let sendInApp = "inApp/target"
             static let getInApps = "inApp/getMessages"
@@ -53,7 +54,7 @@ struct IterableAPISupport {
                                                                     return SendRequestError.createErroredFuture(reason: "Could not create in-app consume request")
         }
         
-        return NetworkHelper.sendRequest(request, usingSession: urlSession)
+        return RequestSender.sendRequest(request, usingSession: urlSession)
     }
 
     private static let urlSession: URLSession = {
@@ -65,9 +66,9 @@ struct IterableAPISupport {
     private static func getInAppMessages(apiKey: String,
                                          email: String) -> Future<[IterableInAppMessage], SendRequestError> {
         var args: [String: String] = [
-            JsonKey.email.jsonKey: email,
+            JsonKey.email: email,
             JsonKey.InApp.count: maxMessages.description,
-            JsonKey.platform.jsonKey: JsonValue.iOS.rawValue,
+            JsonKey.platform: JsonValue.iOS,
             JsonKey.InApp.sdkVersion: IterableAPI.sdkVersion,
         ]
         
@@ -82,18 +83,17 @@ struct IterableAPISupport {
                                                                     return SendRequestError.createErroredFuture(reason: "could not create get in-app request")
         }
         
-        return NetworkHelper.sendRequest(request, usingSession: urlSession).map { inAppMessages(fromPayload: $0) }
+        return RequestSender.sendRequest(request, usingSession: urlSession).map { inAppMessages(fromPayload: $0) }
     }
     
     private static func createIterableHeaders(apiKey: String) -> [String: String] {
-        let headers = [JsonKey.contentType.jsonKey: JsonValue.applicationJson.jsonStringValue,
-                       JsonKey.Header.sdkPlatform: JsonValue.iOS.jsonStringValue,
+        let headers = [JsonKey.contentType: JsonValue.applicationJson,
+                       JsonKey.Header.sdkPlatform: JsonValue.iOS,
                        JsonKey.Header.sdkVersion: IterableAPI.sdkVersion,
                        JsonKey.Header.apiKey: apiKey]
         
         return headers
     }
-
     
     private static func inAppMessages(fromPayload payload: [AnyHashable: Any]) -> [IterableInAppMessage] {
         InAppMessageParser.parse(payload: payload).compactMap(parseResultToOptionalMessage)
@@ -151,6 +151,6 @@ struct IterableAPISupport {
                                                                     return SendRequestError.createErroredFuture(reason: "Could not create in-app consume request")
         }
         
-        return NetworkHelper.sendRequest(request, usingSession: urlSession)
+        return RequestSender.sendRequest(request, usingSession: urlSession)
     }
 }
