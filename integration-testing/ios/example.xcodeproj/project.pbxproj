@@ -259,7 +259,7 @@
 		};
 		AC27B479249527230079F714 /* Bundle React Native Code and Images */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			files = (
 			);
 			inputFileListPaths = (
@@ -271,7 +271,7 @@
 			);
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\nexport FORCE_BUNDLING=true\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
