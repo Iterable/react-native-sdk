@@ -1,18 +1,24 @@
 'use strict'
 import React, { Component, useState } from 'react'
 import { Text, View, StyleSheet } from 'react-native'
-import { IterableInAppManager } from '../IterableInAppClasses'
-import MessageList from '@iterable/react-native-sdk/js/Inbox/components/MessageList/MessageList' 
+import MessageList from './components/MessageList/MessageList'
+import EmptyState from './components/EmptyState/EmptyState'
+import sampleMessages from './sampleMessageData.js' 
 
-function Inbox() {
-   const messages = IterableInAppManager.getMessages();
+const Inbox = () => {
+   const message = "Inbox";
+   const [messages, setMessages] = useState(sampleMessages);
+
+   function showMessageList() {
+      return messages.length ? <MessageList messages={messages}></MessageList> : <EmptyState></EmptyState>
+   }
 
    return(
       <View style={styles.container}>
          <Text style={styles.headline}>
             {message}
          </Text>
-         <MessageList></MessageList>   
+         {showMessageList()}
       </View>  
    )
 }
