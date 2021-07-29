@@ -1,8 +1,8 @@
 'use strict'
 import React, { Component, useState } from 'react'
 import { Text, View, StyleSheet } from 'react-native'
-import MessageList from './components/MessageList/MessageList'
-import EmptyState from './components/EmptyState/EmptyState'
+import MessageList from './MessageList'
+import EmptyState from './EmptyState'
 import sampleMessages from './sampleMessageData.js' 
 
 const Inbox = () => {
