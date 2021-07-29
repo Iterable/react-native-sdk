@@ -5,6 +5,23 @@ const sampleMessages = [
        trigger: "",
        createAt: "2021-07-21 12:20:00",
        expiresAt: "2021-10-21 12:20:00",
+       content: {
+          html: "<html><head></head><body>Test</body></html>",
+          inAppDisplaySettings: {
+             top: {
+                percentage: 0
+             },
+             right: {
+                percentage: 0
+             },
+             bottom: {
+                percentage: 0
+             },
+             left: {
+                percentage: 0
+             }
+          }
+       },
        saveToInbox: true,
        inboxMetadata: {
           title: "CATS FOR SALE!! LIMITED TIME!!",
@@ -21,6 +38,23 @@ const sampleMessages = [
        trigger: "",
        createAt: "2021-07-21 2:20:00",
        expiresAt: "2021-10-21 2:20:00",
+       content: {
+         html: "<html><head></head><body>Test</body></html>",
+         inAppDisplaySettings: {
+            top: {
+               percentage: 0
+            },
+            right: {
+               percentage: 0
+            },
+            bottom: {
+               percentage: 0
+            },
+            left: {
+               percentage: 0
+            }
+         }
+      },
        saveToInbox: false,
        inboxMetadata: {
           title: "THIS WEEKEND ONLY",
@@ -37,6 +71,23 @@ const sampleMessages = [
        trigger: "",
        createAt: "2021-07-21 4:00:00",
        expiresAt: "2021-10-21 4:00:00",
+       content: {
+         html: "<html><head></head><body>Test</body></html>",
+         inAppDisplaySettings: {
+            top: {
+               percentage: 0
+            },
+            right: {
+               percentage: 0
+            },
+            bottom: {
+               percentage: 0
+            },
+            left: {
+               percentage: 0
+            }
+         }
+      },
        saveToInbox: true,
        inboxMetadata: {
           title: "Iterable wants you!",
@@ -53,6 +104,23 @@ const sampleMessages = [
        trigger: "",
        createAt: "2021-07-21 2:00:00",
        expiresAt: "2021-10-21 2:00:00",
+       content: {
+         html: "<html><head></head><body>Test</body></html>",
+         inAppDisplaySettings: {
+            top: {
+               percentage: 0
+            },
+            right: {
+               percentage: 0
+            },
+            bottom: {
+               percentage: 0
+            },
+            left: {
+               percentage: 0
+            }
+         }
+      },
        saveToInbox: true,
        inboxMetadata: {
           title: "Happy Birthday Buddy",
@@ -69,6 +137,23 @@ const sampleMessages = [
        trigger: "",
        createAt: "2021-07-21 12:20:00",
        expiresAt: "2021-07-21 12:20:00",
+       content: {
+         html: "<html><head></head><body>Test</body></html>",
+         inAppDisplaySettings: {
+            top: {
+               percentage: 0
+            },
+            right: {
+               percentage: 0
+            },
+            bottom: {
+               percentage: 0
+            },
+            left: {
+               percentage: 0
+            }
+         }
+      },
        saveToInbox: true,
        inboxMetadata: {
           title: "Dog Moms Unite!",
@@ -85,6 +170,23 @@ const sampleMessages = [
         trigger: "",
         createAt: "2021-07-21 12:20:00",
         expiresAt: "2021-07-21 12:20:00",
+        content: {
+         html: "<html><head></head><body>Test</body></html>",
+         inAppDisplaySettings: {
+            top: {
+               percentage: 0
+            },
+            right: {
+               percentage: 0
+            },
+            bottom: {
+               percentage: 0
+            },
+            left: {
+               percentage: 0
+            }
+         }
+      },
         saveToInbox: true,
         inboxMetadata: {
            title: "Dog Moms Unite!",
@@ -101,6 +203,23 @@ const sampleMessages = [
         trigger: "",
         createAt: "2021-07-21 12:20:00",
         expiresAt: "2021-07-21 12:20:00",
+        content: {
+         html: "<html><head></head><body>Test</body></html>",
+         inAppDisplaySettings: {
+            top: {
+               percentage: 0
+            },
+            right: {
+               percentage: 0
+            },
+            bottom: {
+               percentage: 0
+            },
+            left: {
+               percentage: 0
+            }
+         }
+      },
         saveToInbox: true,
         inboxMetadata: {
            title: "Dog Moms Unite!",
@@ -117,6 +236,23 @@ const sampleMessages = [
         trigger: "",
         createAt: "2021-07-21 12:20:00",
         expiresAt: "2021-07-21 12:20:00",
+        content: {
+         html: "<html><head></head><body>Test</body></html>",
+         inAppDisplaySettings: {
+            top: {
+               percentage: 0
+            },
+            right: {
+               percentage: 0
+            },
+            bottom: {
+               percentage: 0
+            },
+            left: {
+               percentage: 0
+            }
+         }
+      },
         saveToInbox: true,
         inboxMetadata: {
            title: "Dog Moms Unite!",
@@ -133,6 +269,23 @@ const sampleMessages = [
         trigger: "",
         createAt: "2021-07-21 12:20:00",
         expiresAt: "2021-07-21 12:20:00",
+        content: {
+         html: "<html><head></head><body>Test</body></html>",
+         inAppDisplaySettings: {
+            top: {
+               percentage: 0
+            },
+            right: {
+               percentage: 0
+            },
+            bottom: {
+               percentage: 0
+            },
+            left: {
+               percentage: 0
+            }
+         }
+      },
         saveToInbox: true,
         inboxMetadata: {
            title: "Dog Moms Unite!",
@@ -149,6 +302,23 @@ const sampleMessages = [
         trigger: "",
         createAt: "2021-07-21 12:20:00",
         expiresAt: "2021-07-21 12:20:00",
+        content: {
+         html: "<html><head></head><body>Test</body></html>",
+         inAppDisplaySettings: {
+            top: {
+               percentage: 0
+            },
+            right: {
+               percentage: 0
+            },
+            bottom: {
+               percentage: 0
+            },
+            left: {
+               percentage: 0
+            }
+         }
+      },
         saveToInbox: true,
         inboxMetadata: {
            title: "Dog Moms Unite!",
