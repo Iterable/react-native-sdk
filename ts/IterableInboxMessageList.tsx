@@ -1,17 +1,17 @@
 'use strict'
 import React, { ReactElement } from 'react'
 import { ScrollView, Text, StyleSheet } from 'react-native'
-import MessageCell from './IterableInboxMessageCell'
+import IterableInboxMessageCell from './IterableInboxMessageCell'
 
 type MessageListProps = {
    messages: Array<any>  
 }
 
-const MessageList = ({ messages }: MessageListProps) => {
+const IterableInboxMessageList = ({ messages }: MessageListProps) => {
    function flaggedMessage(message: { [key: string]: any }, index: number) {
       return (index === messages.length - 1) ?
-         <MessageCell message={message} last={true} /> :
-         <MessageCell message={message} last={false} />
+         <IterableInboxMessageCell message={message} last={true} /> :
+         <IterableInboxMessageCell message={message} last={false} />
    }
 
    function displayMessages() {
@@ -35,4 +35,4 @@ const styles = StyleSheet.create({
    }
 })
 
-export default MessageList;
+export default IterableInboxMessageList;

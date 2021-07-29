@@ -32,10 +32,10 @@ import {
 import { IterableInAppMessage } from './IterableInAppMessage'
 import { IterableInAppManager } from './IterableInAppManager'
 
-import Inbox from './IterableInbox'
-import EmptyState from './IterableInboxEmptyState'
-import MessageCell from './IterableInboxMessageCell'
-import MessageList from './IterableInboxMessageList'
+import IterableInbox from './IterableInbox'
+import IterableInboxEmptyState from './IterableInboxEmptyState'
+import IterableInboxMessageCell from './IterableInboxMessageCell'
+import IterableInboxMessageList from './IterableInboxMessageList'
 
 export {
   Iterable,
@@ -57,6 +57,10 @@ export {
   IterableInAppCloseSource,
   IterableInAppDeleteSource,
   IterableInAppManager,
+  IterableInbox,
+  IterableInboxEmptyState,
+  IterableInboxMessageCell,
+  IterableInboxMessageList,
 }
 export type {
   IterableInAppContent

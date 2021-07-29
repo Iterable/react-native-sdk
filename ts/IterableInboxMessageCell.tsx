@@ -7,11 +7,11 @@ type MessageCellProps = {
    last: boolean 
 }
 
-const MessageCell = ({ message, last }: MessageCellProps) => {
+const IterableInboxMessageCell = ({ message, last }: MessageCellProps) => {
    const unreadIndicator = "\u2022";
    const messageTitle = message.inboxMetaData.title
    const messageBody = message.inboxMetaData.subTitle
-   const messageTS = message.createdAt
+   const messageCreatedAt = message.createdAt
 
    function displayUnreadMessage() {
       return ( 
@@ -22,7 +22,7 @@ const MessageCell = ({ message, last }: MessageCellProps) => {
             <View style={styles.unreadMessageContainer}>
                <Text style={styles.title}>{messageTitle}</Text>
                <Text style={styles.body}>{messageBody}</Text>
-               <Text style={styles.timestamp}>{messageTS}</Text>
+               <Text style={styles.timestamp}>{messageCreatedAt}</Text>
             </View>      
          </View>)    
    }
@@ -33,7 +33,7 @@ const MessageCell = ({ message, last }: MessageCellProps) => {
             <View style={styles.readMessageContainer}>
                <Text style={styles.title}>{messageTitle}</Text>
                <Text style={styles.body}>{messageBody}</Text>
-               <Text style={styles.timestamp}>{messageTS}</Text>
+               <Text style={styles.timestamp}>{messageCreatedAt}</Text>
             </View>      
          </View>)    
    }
@@ -112,4 +112,4 @@ const styles = StyleSheet.create({
    }
 })
 
-export default MessageCell;
+export default IterableInboxMessageCell;
