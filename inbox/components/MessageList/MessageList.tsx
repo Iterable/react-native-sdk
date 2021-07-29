@@ -5,7 +5,7 @@ import MessageCell from '../MessageCell/MessageCell'
 
 type MessageListProps = {
    messages: Array<any>,
-   updateMessage: Function  
+   handleMessageSelect: Function  
 }
 
 const MessageList = ({ messages, handleMessageSelect }: MessageListProps) => {

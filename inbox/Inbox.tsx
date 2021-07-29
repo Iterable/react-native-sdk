@@ -26,8 +26,17 @@ const Inbox = () => {
       setSelectedMessageIdx(index);
    }
 
+   function returnToInbox() {
+      setIsDisplayMessage(false);
+      setSelectedMessageIdx(null);      
+   }
+
    function displayMessage() {
-      return <MessageDisplay></MessageDisplay>
+      let selectedMessage = messages[selectedMessageIdx];
+      return <MessageDisplay
+         selectedMessage={selectedMessage}
+         returnToInbox={returnToInbox}
+      ></MessageDisplay>
    }   
 
    function showMessageList() {

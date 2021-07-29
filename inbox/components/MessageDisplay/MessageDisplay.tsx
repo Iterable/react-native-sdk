@@ -3,17 +3,25 @@ import React, { Component } from 'react'
 import { Text, View, StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons';
 
-export default function MessageDisplay() {
-   const message = "YO YO YO";
+type MessageDisplayProps = {
+   selectedMessage: {[key: string]: any},
+   returnToInbox: Function    
+}
+
+const MessageDisplay = ({ selectedMessage, returnToInbox }: MessageDisplayProps) => {
+   const messageTitle = selectedMessage.inboxMetaData.title;
 
    return(
       <View> 
          <View style={styles.returnButtonContainer}>
-            <Icon name="ios-arrow-back" style={styles.returnButton}/>
+            <Icon 
+               name="ios-arrow-back" 
+               style={styles.returnButton}
+               onPress={returnToInbox}/>
          </View> 
          <View style={styles.container}>
             <Text style={styles.headline}>
-               {message}
+               {messageTitle}
             </Text>
          </View>
       </View>  
@@ -48,3 +56,5 @@ const styles = StyleSheet.create({
        backgroundColor: 'whitesmoke'
     }
  })
+
+ export default MessageDisplay;

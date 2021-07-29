@@ -90,7 +90,7 @@ const MessageCell = ({ index, message, handleMessageSelect, last }: MessageCellP
    }
 
    return(
-      message.read ?
+      last ?
          (message.read ? displayReadLastMessage() : displayUnreadLastMessage()) :
          (message.read ? displayReadMessage() : displayUnreadMessage())
    )
