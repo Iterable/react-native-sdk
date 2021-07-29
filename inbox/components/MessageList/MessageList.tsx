@@ -1,17 +1,26 @@
 'use strict'
 import React, { ReactElement } from 'react'
-import { ScrollView, Text, StyleSheet } from 'react-native'
+import { ScrollView, Text, StyleSheet, ProgressViewIOSComponent } from 'react-native'
 import MessageCell from '../MessageCell/MessageCell'
 
 type MessageListProps = {
-   messages: Array<any>  
+   messages: Array<any>,
+   updateMessage: Function  
 }
 
-const MessageList = ({ messages }: MessageListProps) => {
+const MessageList = ({ messages, updateMessage }: MessageListProps) => {
    function flaggedMessage(message: { [key: string]: any }, index: number) {
       return (index === messages.length - 1) ?
-         <MessageCell message={message} last={true} /> :
-         <MessageCell message={message} last={false} />
+         <MessageCell 
+            index={index}
+            message={message}
+            updateMessage={updateMessage} 
+            last={true} /> :
+         <MessageCell
+            index={index} 
+            message={message}
+            updateMessage={updateMessage} 
+            last={false} />
    }
 
    function displayMessages() {

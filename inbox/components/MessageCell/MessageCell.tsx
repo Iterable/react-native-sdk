@@ -3,11 +3,13 @@ import React, { Component } from "react"
 import { View, Text, StyleSheet, Pressable } from "react-native"
 
 type MessageCellProps = {
+   index: number,
    message: {[key: string]: any},
+   updateMessage: Function
    last: boolean 
 }
 
-const MessageCell = ({ message, last }: MessageCellProps) => {
+const MessageCell = ({ index, message, updateMessage, last }: MessageCellProps) => {
    const unreadIndicator = "\u2022";
    const messageTitle = message.inboxMetaData.title
    const messageBody = message.inboxMetaData.subTitle
@@ -16,6 +18,7 @@ const MessageCell = ({ message, last }: MessageCellProps) => {
    function displayUnreadMessage() {
       return (
          <Pressable
+            onPress={() => updateMessage(index)}
             style={({ pressed }) => [
                (pressed) ? styles.pressedMessageCell : styles.messageCell
             ]}
@@ -53,7 +56,7 @@ const MessageCell = ({ message, last }: MessageCellProps) => {
    function displayUnreadLastMessage() {
       return (
          <Pressable
-            onPress={() => alert('yo')}
+            onPress={() => updateMessage(index)}
             style={({ pressed }) => [
                (pressed) ? styles.pressedLastMessageCell : styles.lastMessageCell
             ]}
@@ -86,8 +89,8 @@ const MessageCell = ({ message, last }: MessageCellProps) => {
 
    return(
       message.read ?
-         displayReadMessage() :
-         displayUnreadMessage()
+         (message.read ? displayReadLastMessage() : displayUnreadLastMessage()) :
+         (message.read ? displayReadMessage() : displayUnreadMessage())
    )
 }
 
@@ -151,7 +154,7 @@ const styles = StyleSheet.create({
 
    pressedLastMessageCell: {
       flexDirection: 'row',
-      backgroundColor: 'white',
+      backgroundColor: 'whitesmoke',
       paddingTop: 10,
       paddingBottom: 10,
       marginBottom: 70,

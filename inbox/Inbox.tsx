@@ -9,8 +9,25 @@ const Inbox = () => {
    const message = "Inbox";
    const [messages, setMessages] = useState(sampleMessages);
 
+   function updateMessage(index) {
+      let updatedMessages = messages;
+      let updatedMessage = messages[index];
+
+      if(!updatedMessage.read) {
+         updatedMessage.read = true
+      }
+      
+      updatedMessages[index] = updatedMessage;
+      setMessages([...updatedMessages]);
+   }
+
    function showMessageList() {
-      return messages.length ? <MessageList messages={messages}></MessageList> : <EmptyState></EmptyState>
+      return messages.length ? 
+         <MessageList 
+            messages={messages}
+            updateMessage={updateMessage}
+         ></MessageList> : 
+         <EmptyState></EmptyState>
    }
 
    return(
