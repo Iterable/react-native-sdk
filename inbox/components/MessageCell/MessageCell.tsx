@@ -5,11 +5,11 @@ import { View, Text, StyleSheet, Pressable } from "react-native"
 type MessageCellProps = {
    index: number,
    message: {[key: string]: any},
-   updateMessage: Function
+   handleMessageSelect: Function
    last: boolean 
 }
 
-const MessageCell = ({ index, message, updateMessage, last }: MessageCellProps) => {
+const MessageCell = ({ index, message, handleMessageSelect, last }: MessageCellProps) => {
    const unreadIndicator = "\u2022";
    const messageTitle = message.inboxMetaData.title
    const messageBody = message.inboxMetaData.subTitle
@@ -18,7 +18,7 @@ const MessageCell = ({ index, message, updateMessage, last }: MessageCellProps) 
    function displayUnreadMessage() {
       return (
          <Pressable
-            onPress={() => updateMessage(index)}
+            onPress={() => handleMessageSelect(index)}
             style={({ pressed }) => [
                (pressed) ? styles.pressedMessageCell : styles.messageCell
             ]}
@@ -39,6 +39,7 @@ const MessageCell = ({ index, message, updateMessage, last }: MessageCellProps) 
    function displayReadMessage() {
       return (
          <Pressable
+            onPress={() => handleMessageSelect(index)}
             style={({ pressed }) => [
                (pressed) ? styles.pressedMessageCell : styles.messageCell
             ]}
@@ -56,7 +57,7 @@ const MessageCell = ({ index, message, updateMessage, last }: MessageCellProps) 
    function displayUnreadLastMessage() {
       return (
          <Pressable
-            onPress={() => updateMessage(index)}
+            onPress={() => handleMessageSelect(index)}
             style={({ pressed }) => [
                (pressed) ? styles.pressedLastMessageCell : styles.lastMessageCell
             ]}
@@ -75,6 +76,7 @@ const MessageCell = ({ index, message, updateMessage, last }: MessageCellProps) 
    function displayReadLastMessage() {
       return (
          <Pressable
+            onPress={() => handleMessageSelect(index)}
             style={({ pressed }) => [
                (pressed) ? styles.pressedLastMessageCell : styles.lastMessageCell
             ]}

@@ -8,18 +8,18 @@ type MessageListProps = {
    updateMessage: Function  
 }
 
-const MessageList = ({ messages, updateMessage }: MessageListProps) => {
+const MessageList = ({ messages, handleMessageSelect }: MessageListProps) => {
    function flaggedMessage(message: { [key: string]: any }, index: number) {
       return (index === messages.length - 1) ?
          <MessageCell 
             index={index}
             message={message}
-            updateMessage={updateMessage} 
+            handleMessageSelect={handleMessageSelect} 
             last={true} /> :
          <MessageCell
             index={index} 
             message={message}
-            updateMessage={updateMessage} 
+            handleMessageSelect={handleMessageSelect} 
             last={false} />
    }
 
