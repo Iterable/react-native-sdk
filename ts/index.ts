@@ -32,6 +32,11 @@ import {
 import { IterableInAppMessage } from './IterableInAppMessage'
 import { IterableInAppManager } from './IterableInAppManager'
 
+import Inbox from './IterableInbox'
+import EmptyState from './IterableInboxEmptyState'
+import MessageCell from './IterableInboxMessageCell'
+import MessageList from './MessageList'
+
 export {
   Iterable,
   IterableConfig,
