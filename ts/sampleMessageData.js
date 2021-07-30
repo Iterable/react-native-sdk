@@ -5,15 +5,32 @@ const sampleMessages = [
        trigger: "",
        createAt: "2021-07-21 12:20:00",
        expiresAt: "2021-10-21 12:20:00",
+       content: {
+          html: "<html><head></head><body>Test</body></html>",
+          inAppDisplaySettings: {
+             top: {
+                percentage: 0
+             },
+             right: {
+                percentage: 0
+             },
+             bottom: {
+                percentage: 0
+             },
+             left: {
+                percentage: 0
+             }
+          }
+       },
        saveToInbox: true,
-       inboxMetaData: {
+       inboxMetadata: {
           title: "CATS FOR SALE!! LIMITED TIME!!",
-          subTitle: "All this week!!",
-          icon: "icon1.png"   
+          subtitle: "All this week!!",
+          icon: "icon1.png"
        },
        customPayload: {},
        read: false,
-       priorityLevel: "high"             
+       priorityLevel: 200.5
     },
     {
        campaignId: 2,
@@ -21,15 +38,32 @@ const sampleMessages = [
        trigger: "",
        createAt: "2021-07-21 2:20:00",
        expiresAt: "2021-10-21 2:20:00",
+       content: {
+         html: "<html><head></head><body>Test</body></html>",
+         inAppDisplaySettings: {
+            top: {
+               percentage: 0
+            },
+            right: {
+               percentage: 0
+            },
+            bottom: {
+               percentage: 0
+            },
+            left: {
+               percentage: 0
+            }
+         }
+      },
        saveToInbox: false,
-       inboxMetaData: {
+       inboxMetadata: {
           title: "THIS WEEKEND ONLY",
-          subTitle: "Trucks Trucks Trucks",
-          icon: "icon2.png"   
+          subtitle: "Trucks Trucks Trucks",
+          icon: "icon2.png"
        },
        customPayload: {},
        read: true,
-       priorityLevel: "high"             
+       priorityLevel: 200.5
     },
     {
        campaignId: 3,
@@ -37,15 +71,32 @@ const sampleMessages = [
        trigger: "",
        createAt: "2021-07-21 4:00:00",
        expiresAt: "2021-10-21 4:00:00",
+       content: {
+         html: "<html><head></head><body>Test</body></html>",
+         inAppDisplaySettings: {
+            top: {
+               percentage: 0
+            },
+            right: {
+               percentage: 0
+            },
+            bottom: {
+               percentage: 0
+            },
+            left: {
+               percentage: 0
+            }
+         }
+      },
        saveToInbox: true,
-       inboxMetaData: {
+       inboxMetadata: {
           title: "Iterable wants you!",
-          subTitle: "Hackathon going on Monday",
-          icon: "icon3.png"   
+          subtitle: "Hackathon going on Monday",
+          icon: "icon3.png"
        },
        customPayload: {},
        read: false,
-       priorityLevel: "low"             
+       priorityLevel: 400.5
     },
     {
        campaignId: 4,
@@ -53,15 +104,32 @@ const sampleMessages = [
        trigger: "",
        createAt: "2021-07-21 2:00:00",
        expiresAt: "2021-10-21 2:00:00",
+       content: {
+         html: "<html><head></head><body>Test</body></html>",
+         inAppDisplaySettings: {
+            top: {
+               percentage: 0
+            },
+            right: {
+               percentage: 0
+            },
+            bottom: {
+               percentage: 0
+            },
+            left: {
+               percentage: 0
+            }
+         }
+      },
        saveToInbox: true,
-       inboxMetaData: {
+       inboxMetadata: {
           title: "Happy Birthday Buddy",
-          subTitle: "All the cake for you!?",
-          icon: "icon4.png"   
+          subtitle: "All the cake for you!?",
+          icon: "icon4.png"
        },
        customPayload: {},
        read: true,
-       priorityLevel: "high"             
+       priorityLevel: 200.5
     },
     {
        campaignId: 5,
@@ -69,15 +137,32 @@ const sampleMessages = [
        trigger: "",
        createAt: "2021-07-21 12:20:00",
        expiresAt: "2021-07-21 12:20:00",
+       content: {
+         html: "<html><head></head><body>Test</body></html>",
+         inAppDisplaySettings: {
+            top: {
+               percentage: 0
+            },
+            right: {
+               percentage: 0
+            },
+            bottom: {
+               percentage: 0
+            },
+            left: {
+               percentage: 0
+            }
+         }
+      },
        saveToInbox: true,
-       inboxMetaData: {
+       inboxMetadata: {
           title: "Dog Moms Unite!",
-          subTitle: "Show up at the dog park",
-          icon: "icon5.png"   
+          subtitle: "Show up at the dog park",
+          icon: "icon5.png"
        },
        customPayload: {},
        read: false,
-       priorityLevel: "low"             
+       priorityLevel: 400.5
     },
     {
         campaignId: 5,
@@ -85,15 +170,32 @@ const sampleMessages = [
         trigger: "",
         createAt: "2021-07-21 12:20:00",
         expiresAt: "2021-07-21 12:20:00",
+        content: {
+         html: "<html><head></head><body>Test</body></html>",
+         inAppDisplaySettings: {
+            top: {
+               percentage: 0
+            },
+            right: {
+               percentage: 0
+            },
+            bottom: {
+               percentage: 0
+            },
+            left: {
+               percentage: 0
+            }
+         }
+      },
         saveToInbox: true,
-        inboxMetaData: {
+        inboxMetadata: {
            title: "Dog Moms Unite!",
-           subTitle: "Show up at the dog park",
-           icon: "icon5.png"   
+           subtitle: "Show up at the dog park",
+           icon: "icon5.png"
         },
         customPayload: {},
         read: false,
-        priorityLevel: "low"             
+        priorityLevel: 400.5
      },
      {
         campaignId: 5,
@@ -101,15 +203,32 @@ const sampleMessages = [
         trigger: "",
         createAt: "2021-07-21 12:20:00",
         expiresAt: "2021-07-21 12:20:00",
+        content: {
+         html: "<html><head></head><body>Test</body></html>",
+         inAppDisplaySettings: {
+            top: {
+               percentage: 0
+            },
+            right: {
+               percentage: 0
+            },
+            bottom: {
+               percentage: 0
+            },
+            left: {
+               percentage: 0
+            }
+         }
+      },
         saveToInbox: true,
-        inboxMetaData: {
+        inboxMetadata: {
            title: "Dog Moms Unite!",
-           subTitle: "Show up at the dog park",
-           icon: "icon5.png"   
+           subtitle: "Show up at the dog park",
+           icon: "icon5.png"
         },
         customPayload: {},
         read: false,
-        priorityLevel: "low"             
+        priorityLevel: 400.5
      },
      {
         campaignId: 5,
@@ -117,15 +236,32 @@ const sampleMessages = [
         trigger: "",
         createAt: "2021-07-21 12:20:00",
         expiresAt: "2021-07-21 12:20:00",
+        content: {
+         html: "<html><head></head><body>Test</body></html>",
+         inAppDisplaySettings: {
+            top: {
+               percentage: 0
+            },
+            right: {
+               percentage: 0
+            },
+            bottom: {
+               percentage: 0
+            },
+            left: {
+               percentage: 0
+            }
+         }
+      },
         saveToInbox: true,
-        inboxMetaData: {
+        inboxMetadata: {
            title: "Dog Moms Unite!",
-           subTitle: "Show up at the dog park",
-           icon: "icon5.png"   
+           subtitle: "Show up at the dog park",
+           icon: "icon5.png"
         },
         customPayload: {},
         read: false,
-        priorityLevel: "low"             
+        priorityLevel: 400.5
      },
      {
         campaignId: 5,
@@ -133,15 +269,32 @@ const sampleMessages = [
         trigger: "",
         createAt: "2021-07-21 12:20:00",
         expiresAt: "2021-07-21 12:20:00",
+        content: {
+         html: "<html><head></head><body>Test</body></html>",
+         inAppDisplaySettings: {
+            top: {
+               percentage: 0
+            },
+            right: {
+               percentage: 0
+            },
+            bottom: {
+               percentage: 0
+            },
+            left: {
+               percentage: 0
+            }
+         }
+      },
         saveToInbox: true,
-        inboxMetaData: {
+        inboxMetadata: {
            title: "Dog Moms Unite!",
-           subTitle: "Show up at the dog park",
-           icon: "icon5.png"   
+           subtitle: "Show up at the dog park",
+           icon: "icon5.png"
         },
         customPayload: {},
         read: false,
-        priorityLevel: "low"             
+        priorityLevel: 400.5
      },
      {
         campaignId: 5,
@@ -149,15 +302,32 @@ const sampleMessages = [
         trigger: "",
         createAt: "2021-07-21 12:20:00",
         expiresAt: "2021-07-21 12:20:00",
+        content: {
+         html: "<html><head></head><body>Test</body></html>",
+         inAppDisplaySettings: {
+            top: {
+               percentage: 0
+            },
+            right: {
+               percentage: 0
+            },
+            bottom: {
+               percentage: 0
+            },
+            left: {
+               percentage: 0
+            }
+         }
+      },
         saveToInbox: true,
-        inboxMetaData: {
+        inboxMetadata: {
            title: "Dog Moms Unite!",
-           subTitle: "Show up at the dog park",
-           icon: "icon5.png"   
+           subtitle: "Show up at the dog park",
+           icon: "icon5.png"
         },
         customPayload: {},
         read: false,
-        priorityLevel: "low"             
+        priorityLevel: 400.5
      }
  ]
  
