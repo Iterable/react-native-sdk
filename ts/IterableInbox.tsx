@@ -1,16 +1,17 @@
 'use strict'
+
 import React, { Component, useState } from 'react'
 import { Text, View, StyleSheet } from 'react-native'
-import MessageList from './components/MessageList/MessageList'
-import EmptyState from './components/EmptyState/EmptyState'
-import sampleMessages from './sampleMessageData.js' 
+import IterableInboxMessageList from './IterableInboxMessageList'
+import IterableInboxEmptyState from './IterableInboxEmptyState'
+import sampleMessages from './sampleMessageData.js'
 
-const Inbox = () => {
+const IterableInbox = () => {
    const message = "Inbox";
    const [messages, setMessages] = useState(sampleMessages);
 
    function showMessageList() {
-      return messages.length ? <MessageList messages={messages}></MessageList> : <EmptyState></EmptyState>
+      return messages.length ? <IterableInboxMessageList messages={messages}></IterableInboxMessageList> : <IterableInboxEmptyState></IterableInboxEmptyState>
    }
 
    return(
@@ -19,7 +20,7 @@ const Inbox = () => {
             {message}
          </Text>
          {showMessageList()}
-      </View>  
+      </View>
    )
 }
 
@@ -43,4 +44,4 @@ const styles = StyleSheet.create({
    }
 })
 
-export default Inbox;
+export default IterableInbox;
