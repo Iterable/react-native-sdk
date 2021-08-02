@@ -31,6 +31,7 @@ import {
 
 import { IterableInAppMessage } from './IterableInAppMessage'
 import { IterableInAppManager } from './IterableInAppManager'
+import { InboxMessageDataModel } from './InboxMessageDataModel'
 
 export {
   Iterable,
@@ -52,6 +53,7 @@ export {
   IterableInAppCloseSource,
   IterableInAppDeleteSource,
   IterableInAppManager,
+  InboxMessageDataModel,
 }
 export type {
   IterableInAppContent
