@@ -10,7 +10,7 @@ type MessageCellProps = {
 const IterableInboxMessageCell = ({ message, last }: MessageCellProps) => {
    const unreadIndicator = "\u2022";
    const messageTitle = message.inboxMetadata.title
-   const messageBody = message.inboxMetadata.subTitle
+   const messageBody = message.inboxMetadata.subtitle
    const messageCreatedAt = message.createdAt
 
    function displayUnreadMessage() {
