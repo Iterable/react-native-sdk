@@ -10,7 +10,10 @@ class IterableInboxDataModel {
     inboxMessages: Array<InboxMessageDataModel> = []
 
     constructor() {
-        // RNIterableAPI.getInboxMessages()
+        // need to set the messages from RNIterableAPI.getInboxMessages() to inboxMessages as InboxMessageDataModel
+        // RNIterableAPI.getInboxMessages().then
+        
+        // also need to figure out how to continually update inboxMessages when new messages arrive?
     }
 
     getItemCount(): number {
