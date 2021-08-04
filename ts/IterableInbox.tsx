@@ -7,18 +7,40 @@ import IterableInboxEmptyState from './IterableInboxEmptyState'
 import sampleMessages from './sampleMessageData.js'
 
 const IterableInbox = () => {
-   const message = "Inbox";
+   const inboxTitle = "Inbox";
+   const [selectedMessageIdx, setSelectedMessageIdx] = useState(null);
    const [messages, setMessages] = useState(sampleMessages);
 
+   function handleMessageSelect(index: number) {
+      let updatedMessages = messages;
+      let updatedMessage = messages[index];
+
+      if(!updatedMessage.read) {
+         updatedMessage.read = true
+      }
+
+      updatedMessages[index] = updatedMessage;
+      setMessages([...updatedMessages]);
+      setSelectedMessageIdx(index);
+   }   
+
    function showMessageList() {
-      return messages.length ? <IterableInboxMessageList messages={messages}></IterableInboxMessageList> : <IterableInboxEmptyState></IterableInboxEmptyState>
+      return (
+         <>
+            <Text style={styles.headline}>
+               {inboxTitle}
+            </Text>
+            {messages.length ? 
+               <IterableInboxMessageList 
+                  messages={messages}
+                  handleMessageSelect={handleMessageSelect}
+               ></IterableInboxMessageList> : 
+               <IterableInboxEmptyState></IterableInboxEmptyState>}
+         </>)
    }
 
    return(
       <View style={styles.container}>
-         <Text style={styles.headline}>
-            {message}
-         </Text>
          {showMessageList()}
       </View>
    )
