@@ -100,12 +100,18 @@ const IterableInboxMessageCell = ({ index, message, handleMessageSelect, last }:
          </TouchableOpacity>)    
    }
 
+   if(last) {
+      return(
+         <View>
+            { message.read ? displayReadLastMessage() : displayUnreadLastMessage() }
+         </View>  
+      )   
+   }
+
    return(
       <View>
-         {last ? 
-            (message.read ? displayReadLastMessage() : displayUnreadLastMessage()) :
-            (message.read ? displayReadMessage() : displayUnreadMessage())}
-      </View>   
+         { message.read ? displayReadMessage() : displayUnreadMessage() }
+      </View> 
    )
 }
 
