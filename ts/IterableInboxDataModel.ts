@@ -1,7 +1,7 @@
 'use strict'
 
 import { NativeModules } from 'react-native'
-import { IterableInAppMessage } from '.'
+import { IterableInAppMessage, IterableInAppLocation, IterableInAppDeleteSource } from '.'
 import { InboxMessageDataModel } from '.'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
@@ -9,21 +9,37 @@ const RNIterableAPI = NativeModules.RNIterableAPI
 class IterableInboxDataModel {
     inboxMessages: Array<InboxMessageDataModel> = []
 
-    getItemCount() {
+    constructor() {
+        // RNIterableAPI.getInboxMessages()
+    }
+
+    getItemCount(): number {
+        console.log("IterableInboxDataModel.getItemCount")
         return this.inboxMessages.length
     }
 
-    deleteItem(row: number) {
-        console.log("IterableInboxDataModel - delete item at row (not implemented)")
+    deleteItem(row: number, deleteSource: IterableInAppDeleteSource) {
+        console.log("IterableInboxDataModel.deleteItem")
+        this.inboxMessages.splice(row, 1)
+        RNIterableAPI.remove(this.idForRow(row), IterableInAppLocation.inbox, deleteSource)
     }
 
-    getItem(row: number) {
-        console.log("IterableInboxDataModel - get item at row (not implemented)")
-        this.inboxMessages[row]
+    getItem(row: number): InboxMessageDataModel {
+        console.log("IterableInboxDataModel.getItem")
+        return this.inboxMessages[row]
     }
 
     setItemAsRead(row: number) {
-        console.log("IterableInboxDataModel - set item at row as read (not implemented)")
+        console.log("IterableInboxDataModel.setItemAsRead")
+        RNIterableAPI.setReadForMessage(this.inboxMessages[row].inAppMessage)
+    }
+
+    private idForRow(row: number): string {
+        return this.inboxMessages[row].inAppMessage.messageId
+    }
+
+    private getDataModel(message: IterableInAppMessage): InboxMessageDataModel {
+        return new InboxMessageDataModel(message)
     }
 }
 

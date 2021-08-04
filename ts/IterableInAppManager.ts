@@ -20,6 +20,13 @@ class IterableInAppManager {
       console.log("InAppManager.getMessages");
       return RNIterableAPI.getInAppMessages().then((messages: Array<any>) => messages.map(message => { return IterableInAppMessage.fromDict(message) }))
     }
+    
+    /**
+     * Returns a list of all in-app messages that are marked with `saveToInbox`
+     */
+    getInboxMessages(): Promise<Array<IterableInAppMessage>> {
+      return RNIterableAPI.getInboxMessages().then((messages: Array<any>) => messages.map(message => { return IterableInAppMessage.fromDict(message) }))
+    }
   
     /**
      * 
