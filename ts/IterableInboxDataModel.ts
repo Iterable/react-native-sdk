@@ -34,6 +34,7 @@ class IterableInboxDataModel {
 
     setItemAsRead(row: number) {
         console.log("IterableInboxDataModel.setItemAsRead")
+        this.inboxMessages[row].read = true
         RNIterableAPI.setReadForMessage(this.inboxMessages[row].inAppMessage)
     }
 
