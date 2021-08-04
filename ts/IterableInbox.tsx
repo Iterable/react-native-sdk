@@ -1,26 +1,20 @@
-'use strict'
-
-import React, { Component, useState } from 'react'
-import { Text, View, StyleSheet } from 'react-native'
-import IterableInboxMessageList from './IterableInboxMessageList'
-import IterableInboxEmptyState from './IterableInboxEmptyState'
-import sampleMessages from './sampleMessageData.js'
+'use strict';
+import React, { Component, useState } from 'react';
+import { Text, View, StyleSheet } from 'react-native';
+import IterableInboxMessageList from './IterableInboxMessageList';
+import IterableInboxEmptyState from './IterableInboxEmptyState';
+import sampleMessages from './sampleMessageData.js';
 
 const IterableInbox = () => {
    const inboxTitle = "Inbox";
-   const [selectedMessageIdx, setSelectedMessageIdx] = useState(null);
+   const [selectedMessageIdx, setSelectedMessageIdx] = useState(0);
    const [messages, setMessages] = useState(sampleMessages);
 
-   function handleMessageSelect(index: number) {
-      let updatedMessages = messages;
-      let updatedMessage = messages[index];
-
-      if(!updatedMessage.read) {
-         updatedMessage.read = true
+   function handleMessageSelect(index: number, messages: Array<any>) {
+      if(!messages[index].read) {
+         messages[index].read = true
       }
-
-      updatedMessages[index] = updatedMessage;
-      setMessages([...updatedMessages]);
+      setMessages([...messages]);
       setSelectedMessageIdx(index);
    }   
 
@@ -33,7 +27,7 @@ const IterableInbox = () => {
             {messages.length ? 
                <IterableInboxMessageList 
                   messages={messages}
-                  handleMessageSelect={handleMessageSelect}
+                  handleMessageSelect={(index: number) => handleMessageSelect(index, messages)}
                ></IterableInboxMessageList> : 
                <IterableInboxEmptyState></IterableInboxEmptyState>}
          </>)

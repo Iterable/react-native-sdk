@@ -1,11 +1,11 @@
-"use strict"
-import React, { Component, useState } from "react"
+"use strict";
+import React, { Component, useState } from "react";
 import { 
    View, 
    Text, 
    StyleSheet, 
    TouchableOpacity 
-} from "react-native"
+} from "react-native";
 
 type MessageCellProps = {
    index: number,
@@ -16,9 +16,9 @@ type MessageCellProps = {
 
 const IterableInboxMessageCell = ({ index, message, handleMessageSelect, last }: MessageCellProps) => {
    const unreadIndicator = "\u2022";
-   const messageTitle = message.inboxMetadata.title
-   const messageBody = message.inboxMetadata.subtitle
-   const messageCreatedAt = message.createdAt
+   const messageTitle = message.inboxMetadata.title;
+   const messageBody = message.inboxMetadata.subtitle;
+   const messageCreatedAt = message.createdAt;
 
    const [active, setActive] = useState(false);
 

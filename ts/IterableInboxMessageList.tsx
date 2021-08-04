@@ -1,7 +1,7 @@
-'use strict'
-import React, { ReactElement } from 'react'
-import { ScrollView, Text, StyleSheet } from 'react-native'
-import IterableInboxMessageCell from './IterableInboxMessageCell'
+'use strict';
+import React, { ReactElement } from 'react';
+import { ScrollView, Text, StyleSheet } from 'react-native';
+import IterableInboxMessageCell from './IterableInboxMessageCell';
 
 type MessageListProps = {
    messages: Array<any>,
@@ -14,12 +14,12 @@ const IterableInboxMessageList = ({ messages, handleMessageSelect }: MessageList
          <IterableInboxMessageCell
             index={index} 
             message={message}
-            handleMessageSelect={handleMessageSelect} 
+            handleMessageSelect={(index: number) => handleMessageSelect(index, messages)} 
             last={true} /> :
          <IterableInboxMessageCell
             index={index} 
             message={message}
-            handleMessageSelect={handleMessageSelect}  
+            handleMessageSelect={(index: number) => handleMessageSelect(index, messages)}  
             last={false} />
    }
 
@@ -39,8 +39,6 @@ const IterableInboxMessageList = ({ messages, handleMessageSelect }: MessageList
 const styles = StyleSheet.create({
    container: {
       flex: 1,
-      // backgroundColor: '',
-      // width: '100%'
    }
 })
 
