@@ -1,8 +1,7 @@
 'use strict'
 
 import { NativeModules } from 'react-native'
-import { IterableInAppMessage, IterableInAppLocation, IterableInAppDeleteSource } from '.'
-import { InboxMessageDataModel } from '.'
+import { IterableInAppMessage, IterableInAppLocation, IterableInAppDeleteSource, InboxMessageDataModel } from '.'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
 
@@ -10,8 +9,9 @@ class IterableInboxDataModel {
     inboxMessages: Array<InboxMessageDataModel> = []
 
     constructor() {
-        // need to set the messages from RNIterableAPI.getInboxMessages() to inboxMessages as InboxMessageDataModel
-        // RNIterableAPI.getInboxMessages().then
+        RNIterableAPI.getInboxMessages().then(
+            (messages: Array<IterableInAppMessage>) => messages.map(IterableInboxDataModel.getDataModelForMessage)
+        )
         
         // also need to figure out how to continually update inboxMessages when new messages arrive?
     }
@@ -42,7 +42,7 @@ class IterableInboxDataModel {
         return this.inboxMessages[row].inAppMessage.messageId
     }
 
-    private getDataModel(message: IterableInAppMessage): InboxMessageDataModel {
+    private static getDataModelForMessage(message: IterableInAppMessage): InboxMessageDataModel {
         return new InboxMessageDataModel(message)
     }
 }
