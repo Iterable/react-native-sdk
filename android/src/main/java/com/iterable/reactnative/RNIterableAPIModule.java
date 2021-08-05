@@ -14,6 +14,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.modules.core.RCTNativeAppEventEmitter;
@@ -32,6 +33,7 @@ import com.iterable.iterableapi.IterableInAppMessage;
 import com.iterable.iterableapi.IterableLogger;
 import com.iterable.iterableapi.IterableUrlHandler;
 import com.iterable.iterableapi.RNIterableInternal;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -367,10 +369,14 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     }
 
     @ReactMethod
-    public void setAutoDisplayPaused(boolean paused) {
+    public void setAutoDisplayPaused(final boolean paused) {
         IterableLogger.printInfo();
-
-        IterableApi.getInstance().getInAppManager().setAutoDisplayPaused(paused);
+        UiThreadUtil.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                IterableApi.getInstance().getInAppManager().setAutoDisplayPaused(paused);
+            }
+        });
     }
 
     // ---------------------------------------------------------------------------------------

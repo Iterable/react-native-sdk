@@ -399,7 +399,9 @@ class ReactIterableAPI: RCTEventEmitter {
     func set(autoDisplayPaused: Bool) {
         ITBInfo()
         
-        IterableAPI.inAppManager.isAutoDisplayPaused = autoDisplayPaused
+        DispatchQueue.main.async {
+            IterableAPI.inAppManager.isAutoDisplayPaused = autoDisplayPaused
+        }
     }
     
     @objc(passAlongAuthToken:)
