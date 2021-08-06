@@ -353,6 +353,18 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     }
 
     @ReactMethod
+    public void getInboxMessages(Promise promise) {
+        IterableLogger.d(TAG, "getInboxMessages");
+        try {
+            JSONArray inboxMessageJsonArray = Serialization.serializeInAppMessages(IterableApi.getInstance().getInAppManager().getInboxMessages());
+            promise.resolve(Serialization.convertJsonToArray(inboxMessageJsonArray));
+        } catch (JSONException e) {
+            IterableLogger.e(TAG, e.getLocalizedMessage());
+            promise.reject("", "Failed to fetch messages with error " + e.getLocalizedMessage());
+        }
+    }
+
+    @ReactMethod
     public void setInAppShowResponse(Integer number) {
         IterableLogger.printInfo();
         inAppResponse = Serialization.getInAppResponse(number);
