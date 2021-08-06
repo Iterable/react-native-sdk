@@ -24,7 +24,7 @@ class IterableInboxDataModel {
     deleteItem(row: number, deleteSource: IterableInAppDeleteSource) {
         console.log("IterableInboxDataModel.deleteItem")
         this.inboxMessages.splice(row, 1)
-        RNIterableAPI.remove(this.idForRow(row), IterableInAppLocation.inbox, deleteSource)
+        RNIterableAPI.removeMessage(this.idForRow(row), IterableInAppLocation.inbox, deleteSource)
     }
 
     getItem(row: number): InboxMessageDataModel {

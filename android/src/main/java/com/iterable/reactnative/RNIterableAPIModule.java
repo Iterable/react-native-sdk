@@ -208,7 +208,16 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
 
     @ReactMethod
     public void setReadForMessage(String messageId, boolean read) {
+        IterableLogger.v(TAG, "setReadForMessage");
+
         IterableApi.getInstance().getInAppManager().setRead(RNIterableInternal.getMessageById(messageId), read);
+    }
+
+    @ReactMethod
+    public void removeMessage(String messageId, Integer location, Integer deleteSource) {
+        IterableLogger.v(TAG, "removeMessage");
+        
+        IterableApi.getInstance().getInAppManager().removeMessage(RNIterableInternal.getMessageById(messageId), Serialization.getIterableDeleteActionTypeFromInteger(deleteSource), Serialization.getIterableInAppLocationFromInteger(location))
     }
 
     @ReactMethod
