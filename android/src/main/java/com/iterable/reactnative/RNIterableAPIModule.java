@@ -147,6 +147,13 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     }
 
     @ReactMethod
+    public void updateCart(ReadableArray items) {
+        IterableLogger.v(TAG, "UpdateCart API");
+
+        IterableApi.getInstance().updateCart(Serialization.commerceItemsFromReadableArray(items));
+    }
+
+    @ReactMethod
     public void trackPurchase(Double total, ReadableArray items, ReadableMap dataFields) {
         IterableLogger.v(TAG, "TrackPurchase API");
         JSONObject dataFieldsJson = null;

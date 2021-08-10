@@ -166,6 +166,13 @@ class ReactIterableAPI: RCTEventEmitter {
                           appAlreadyRunning: appAlreadyRunning,
                           dataFields: dataFields)
     }
+
+    @objc(updateCart:)
+    func updateCart(items: [[AnyHashable: Any]]) {
+        ITBInfo()
+
+        IterableAPI.updateCart(items: items.compactMap(CommerceItem.from(dict:)))
+    }
     
     @objc(trackPurchase:items:dataFields:)
     func trackPurchase(total: NSNumber,

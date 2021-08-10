@@ -81,9 +81,9 @@ class Serialization {
     }
 
     static CommerceItem commerceItemFromMap(JSONObject itemMap) throws JSONException {
-
         String[] categories = null;
         JSONArray categoriesArray = itemMap.optJSONArray("categories");
+
         if (categoriesArray != null) {
             for (int i = 0; i < categoriesArray.length(); i++) {
                 if (categories == null) {
@@ -92,6 +92,7 @@ class Serialization {
                 categories[i] = categoriesArray.getString(i);
             }
         }
+        
         return new CommerceItem(itemMap.getString("id"),
                 itemMap.getString("name"),
                 itemMap.getDouble("price"),
@@ -100,7 +101,8 @@ class Serialization {
                 itemMap.optString("description", null),
                 itemMap.optString("url", null),
                 itemMap.optString("imageUrl", null),
-                categories
+                categories,
+                itemMap.optJSONObject("dataFields")
         );
     }
 

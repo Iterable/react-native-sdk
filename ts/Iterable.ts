@@ -170,8 +170,9 @@ class IterableCommerceItem {
   url?: string
   imageUrl?: string
   categories?: Array<string>
+  dataFields?: any
 
-  constructor(id: string, name: string, price: number, quantity: number, sku?: string, description?: string, url?: string, imageUrl?: string, categories?: Array<string>) {
+  constructor(id: string, name: string, price: number, quantity: number, sku?: string, description?: string, url?: string, imageUrl?: string, categories?: Array<string>, dataFields?: any | undefined) {
     this.id = id
     this.name = name
     this.price = price
@@ -181,6 +182,7 @@ class IterableCommerceItem {
     this.url = url
     this.imageUrl = imageUrl
     this.categories = categories
+    this.dataFields = dataFields
   }
 }
 
@@ -300,6 +302,15 @@ class Iterable {
   static trackPushOpenWithCampaignId(campaignId: number, templateId: number, messageId: string | undefined, appAlreadyRunning: boolean, dataFields: any | undefined) {
     console.log("trackPushOpenWithCampaignId")
     RNIterableAPI.trackPushOpenWithCampaignId(campaignId, templateId, messageId, appAlreadyRunning, dataFields)
+  }
+
+  /**
+   * 
+   * @param {Array<IterableCommerceItem>} items
+   */
+  static updateCart(items: Array<IterableCommerceItem>) {
+    console.log("updateCart")
+    RNIterableAPI.updateCart(items)
   }
 
   /**
