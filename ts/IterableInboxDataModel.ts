@@ -9,11 +9,7 @@ class IterableInboxDataModel {
     inboxMessages: Array<InboxMessageDataModel> = []
 
     constructor() {
-        RNIterableAPI.getInboxMessages().then(
-            (messages: Array<IterableInAppMessage>) => messages.map(IterableInboxDataModel.getDataModelForMessage)
-        )
-        
-        // also need to figure out how to continually update inboxMessages when new messages arrive?
+        IterableInboxDataModel.syncInboxMessages()
     }
 
     getItemCount(): number {
@@ -25,6 +21,7 @@ class IterableInboxDataModel {
         console.log("IterableInboxDataModel.deleteItem")
         this.inboxMessages.splice(row, 1)
         RNIterableAPI.removeMessage(this.idForRow(row), IterableInAppLocation.inbox, deleteSource)
+        IterableInboxDataModel.syncInboxMessages()
     }
 
     getItem(row: number): InboxMessageDataModel {
@@ -44,6 +41,12 @@ class IterableInboxDataModel {
 
     private static getDataModelForMessage(message: IterableInAppMessage): InboxMessageDataModel {
         return new InboxMessageDataModel(message)
+    }
+
+    private static syncInboxMessages() {
+        RNIterableAPI.getInboxMessages().then(
+            (messages: Array<IterableInAppMessage>) => messages.map(IterableInboxDataModel.getDataModelForMessage)
+        )
     }
 }
 
