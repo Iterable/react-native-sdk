@@ -1,17 +1,26 @@
-'use strict'
-import React, { ReactElement } from 'react'
-import { ScrollView, Text, StyleSheet } from 'react-native'
-import IterableInboxMessageCell from './IterableInboxMessageCell'
+'use strict';
+import React, { ReactElement } from 'react';
+import { ScrollView, Text, StyleSheet } from 'react-native';
+import IterableInboxMessageCell from './IterableInboxMessageCell';
 
 type MessageListProps = {
-   messages: Array<any>  
+   messages: Array<any>,
+   handleMessageSelect: Function  
 }
 
-const IterableInboxMessageList = ({ messages }: MessageListProps) => {
+const IterableInboxMessageList = ({ messages, handleMessageSelect }: MessageListProps) => {
    function flaggedMessage(message: { [key: string]: any }, index: number) {
       return (index === messages.length - 1) ?
-         <IterableInboxMessageCell message={message} last={true} /> :
-         <IterableInboxMessageCell message={message} last={false} />
+         <IterableInboxMessageCell
+            index={index} 
+            message={message}
+            handleMessageSelect={(index: number) => handleMessageSelect(index, messages)} 
+            last={true} /> :
+         <IterableInboxMessageCell
+            index={index} 
+            message={message}
+            handleMessageSelect={(index: number) => handleMessageSelect(index, messages)}  
+            last={false} />
    }
 
    function displayMessages() {
@@ -30,8 +39,6 @@ const IterableInboxMessageList = ({ messages }: MessageListProps) => {
 const styles = StyleSheet.create({
    container: {
       flex: 1,
-      // backgroundColor: '',
-      // width: '100%'
    }
 })
 
