@@ -14,11 +14,13 @@ class IterableInboxDataModel {
 
     getItemCount(): number {
         console.log("IterableInboxDataModel.getItemCount")
+
         return this.inboxMessages.length
     }
 
     deleteItem(row: number, deleteSource: IterableInAppDeleteSource) {
         console.log("IterableInboxDataModel.deleteItem")
+
         this.inboxMessages.splice(row, 1)
         RNIterableAPI.removeMessage(this.idForRow(row), IterableInAppLocation.inbox, deleteSource)
         IterableInboxDataModel.syncInboxMessages()
@@ -26,11 +28,13 @@ class IterableInboxDataModel {
 
     getItem(row: number): InboxMessageDataModel {
         console.log("IterableInboxDataModel.getItem")
+
         return this.inboxMessages[row]
     }
 
     setItemAsRead(row: number) {
         console.log("IterableInboxDataModel.setItemAsRead")
+
         this.inboxMessages[row].read = true
         RNIterableAPI.setReadForMessage(this.inboxMessages[row].inAppMessage)
     }
