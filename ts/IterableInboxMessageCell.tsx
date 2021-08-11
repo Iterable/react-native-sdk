@@ -64,7 +64,7 @@ const IterableInboxMessageCell = ({ index, message, handleMessageSelect, last }:
    function displayUnreadLastMessage() {
       return (
          <TouchableOpacity
-            style={(active) ? styles.pressedMessageCell : styles.messageCell}
+            style={(active) ? styles.pressedLastMessageCell : styles.lastMessageCell}
             activeOpacity={1}
             onPress={() => {
                setActive(!active);
@@ -85,7 +85,7 @@ const IterableInboxMessageCell = ({ index, message, handleMessageSelect, last }:
    function displayReadLastMessage() {
       return (
          <TouchableOpacity
-            style={(active) ? styles.pressedMessageCell : styles.messageCell}
+            style={(active) ? styles.pressedLastMessageCell : styles.lastMessageCell}
             activeOpacity={1}
             onPress={() => {
                setActive(!active);

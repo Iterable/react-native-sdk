@@ -9,23 +9,16 @@ type MessageListProps = {
 }
 
 const IterableInboxMessageList = ({ messages, handleMessageSelect }: MessageListProps) => {
-   function flaggedMessage(message: { [key: string]: any }, index: number) {
-      return (index === messages.length - 1) ?
-         <IterableInboxMessageCell
-            index={index} 
-            message={message}
-            handleMessageSelect={(index: number) => handleMessageSelect(index, messages)} 
-            last={true} /> :
-         <IterableInboxMessageCell
-            index={index} 
-            message={message}
-            handleMessageSelect={(index: number) => handleMessageSelect(index, messages)}  
-            last={false} />
-   }
 
    function displayMessages() {
       return messages.map((message, index) => {
-         return flaggedMessage(message, index)
+         let last = (index === messages.length - 1) ? true : false;
+         return (         
+            <IterableInboxMessageCell
+               index={index} 
+               message={message}
+               handleMessageSelect={(index: number) => handleMessageSelect(index, messages)}  
+               last={last} />)
       })
    }
 
