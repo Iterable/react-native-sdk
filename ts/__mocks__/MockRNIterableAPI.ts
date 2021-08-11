@@ -31,6 +31,8 @@ export class MockRNIterableAPI {
 
   static trackPushOpenWithCampaignId = jest.fn()
 
+  static updateCart = jest.fn()
+
   static trackPurchase = jest.fn()
 
   static trackInAppOpen = jest.fn()
