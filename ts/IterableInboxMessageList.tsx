@@ -15,6 +15,7 @@ const IterableInboxMessageList = ({ messages, handleMessageSelect }: MessageList
          let last = (index === messages.length - 1) ? true : false;
          return (         
             <IterableInboxMessageCell
+               key={index}
                index={index} 
                message={message}
                handleMessageSelect={(index: number) => handleMessageSelect(index, messages)}  

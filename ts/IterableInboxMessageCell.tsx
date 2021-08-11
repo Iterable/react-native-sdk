@@ -22,10 +22,14 @@ const IterableInboxMessageCell = ({ index, message, handleMessageSelect, last }:
 
    const [active, setActive] = useState(false);
 
-   function displayUnreadMessage() {
+   function displayMessage() {
       return (
          <TouchableOpacity
-            style={(active) ? styles.pressedMessageCell : styles.messageCell}
+            style={
+               last
+                  ? ((active) ? styles.pressedLastMessageCell : styles.lastMessageCell)
+                  : ((active) ? styles.pressedMessageCell : styles.messageCell)
+            }
             activeOpacity={1}
             onPress={() => {
                setActive(!active);
@@ -33,9 +37,9 @@ const IterableInboxMessageCell = ({ index, message, handleMessageSelect, last }:
             }}
          >
             <View style={styles.unreadIndicatorContainer}>
-                  <View style={styles.unreadIndicator}/>
+               {message.read ? null : <View style={styles.unreadIndicator}/>}
             </View>
-            <View style={styles.unreadMessageContainer}>
+            <View style={message.read ? styles.readMessageContainer : styles.unreadMessageContainer}>
                   <Text style={styles.title}>{messageTitle}</Text>
                   <Text style={styles.body}>{messageBody}</Text>
                   <Text style={styles.timestamp}>{messageCreatedAt}</Text>
@@ -43,76 +47,11 @@ const IterableInboxMessageCell = ({ index, message, handleMessageSelect, last }:
          </TouchableOpacity>)    
    }
 
-   function displayReadMessage() {
-      return (
-         <TouchableOpacity
-            style={(active) ? styles.pressedMessageCell : styles.messageCell}
-            activeOpacity={1}
-            onPress={() => {
-               setActive(!active);
-               handleMessageSelect(index);
-            }}
-         >
-            <View style={styles.readMessageContainer}>
-               <Text style={styles.title}>{messageTitle}</Text>
-               <Text style={styles.body}>{messageBody}</Text>
-               <Text style={styles.timestamp}>{messageCreatedAt}</Text>
-            </View>  
-         </TouchableOpacity>)    
-   }
-
-   function displayUnreadLastMessage() {
-      return (
-         <TouchableOpacity
-            style={(active) ? styles.pressedLastMessageCell : styles.lastMessageCell}
-            activeOpacity={1}
-            onPress={() => {
-               setActive(!active);
-               handleMessageSelect(index);
-            }}
-         >
-            <View style={styles.unreadIndicatorContainer}>
-               <View style={styles.unreadIndicator}/>
-            </View>
-            <View style={styles.unreadMessageContainer}>
-               <Text style={styles.title}>{messageTitle}</Text>
-               <Text style={styles.body}>{messageBody}</Text>
-               <Text style={styles.timestamp}>{messageCreatedAt}</Text>
-            </View>   
-         </TouchableOpacity>)    
-   }
-
-   function displayReadLastMessage() {
-      return (
-         <TouchableOpacity
-            style={(active) ? styles.pressedLastMessageCell : styles.lastMessageCell}
-            activeOpacity={1}
-            onPress={() => {
-               setActive(!active);
-               handleMessageSelect(index);
-            }}
-         >
-            <View style={styles.readMessageContainer}>
-               <Text style={styles.title}>{messageTitle}</Text>
-               <Text style={styles.body}>{messageBody}</Text>
-               <Text style={styles.timestamp}>{messageCreatedAt}</Text>
-            </View> 
-         </TouchableOpacity>)    
-   }
-
-   if(last) {
-      return(
-         <View>
-            { message.read ? displayReadLastMessage() : displayUnreadLastMessage() }
-         </View>  
-      )   
-   }
-
    return(
       <View>
-         { message.read ? displayReadMessage() : displayUnreadMessage() }
-      </View> 
-   )
+         {displayMessage()}
+      </View>  
+   )   
 }
 
 const styles = StyleSheet.create({
