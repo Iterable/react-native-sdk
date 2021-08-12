@@ -20,11 +20,15 @@ class IterableInboxDataModel {
         this.syncInboxMessages()
     }
 
-    private addListener(listener: InboxComponent) {
+    addListener(listener: InboxComponent) {
+        console.log("IterableInboxDataModel.addListener")
+        
         this.listeners.add(listener)
     }
 
-    private removeListener(listener: InboxComponent) {
+    removeListener(listener: InboxComponent) {
+        console.log("IterableInboxDataModel.removeListener")
+
         this.listeners.delete(listener)
     }
 
@@ -35,6 +39,8 @@ class IterableInboxDataModel {
     }
 
     getAllItems(): Array<InboxMessageDataModel> {
+        console.log("IterableInboxDataModel.getAllItems")
+
         return this.inboxMessages
     }
 
@@ -64,6 +70,8 @@ class IterableInboxDataModel {
     }
 
     private syncInboxMessages() {
+        console.log("IterableInboxDataModel.syncInboxMessages")
+
         RNIterableAPI.getInboxMessages().then(
             (messages: Array<IterableInAppMessage>) => {
                 this.inboxMessages = messages.map(IterableInboxDataModel.getDataModelForMessage)
