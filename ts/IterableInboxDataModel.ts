@@ -7,7 +7,7 @@ import { IterableInAppMessage, IterableInAppLocation, IterableInAppDeleteSource,
 const RNIterableAPI = NativeModules.RNIterableAPI
 
 interface InboxComponent {
-    updateView: () => void
+    updateView(): void
 }
 
 class IterableInboxDataModel {
