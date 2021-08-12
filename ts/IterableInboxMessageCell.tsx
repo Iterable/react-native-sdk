@@ -22,7 +22,7 @@ const IterableInboxMessageCell = ({ index, message, handleMessageSelect, last }:
 
    const [active, setActive] = useState(false)
 
-   function displayMessage() {
+   function createMessageCell() {
       return (
          <TouchableOpacity
             style={
@@ -49,7 +49,7 @@ const IterableInboxMessageCell = ({ index, message, handleMessageSelect, last }:
 
    return(
       <View>
-         {displayMessage()}
+         {createMessageCell()}
       </View>  
    )   
 }

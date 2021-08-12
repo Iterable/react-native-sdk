@@ -27,7 +27,7 @@ const IterableInbox = () => {
       setIsDisplayMessage(false)
    }
    
-   function displayMessage(message: {[key: string]: any}) {
+   function showMessageDisplay(message: {[key: string]: any}) {
       return (
          <IterableInboxMessageDisplay 
             message={message}
@@ -52,7 +52,7 @@ const IterableInbox = () => {
 
    return(
       <View style={styles.container}>
-         {isDisplayMessage ? displayMessage(selectedMessage) : showMessageList()}
+         {isDisplayMessage ? showMessageDisplay(selectedMessage) : showMessageList()}
       </View>
    )
 }
