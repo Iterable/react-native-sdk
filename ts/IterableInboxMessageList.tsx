@@ -1,7 +1,7 @@
 'use strict'
 import React, { ReactElement } from 'react'
 import { ScrollView, Text, StyleSheet } from 'react-native'
-import IterableInboxMessageCell from './IterableInboxMessageCell'
+import IterableInboxMessageCell from './IterableInboxClickableRow'
 
 type MessageListProps = {
    messages: Array<any>,
