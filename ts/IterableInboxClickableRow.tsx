@@ -1,6 +1,6 @@
 "use strict"
 import React, { Component, useState } from "react"
-import IterableInboxMessageCell from "./IterableInboxMessageCell"
+import IterableInboxMessageListItem from "./IterableInboxMessageListItem"
 import { 
    View, 
    Text, 
@@ -31,7 +31,7 @@ const IterableInboxClickableRow = ({ index, message, handleMessageSelect, last }
             handleMessageSelect(index)
          }}
       >
-         <IterableInboxMessageCell
+         <IterableInboxMessageListItem
             index={index} 
             message={message}
             last={last}

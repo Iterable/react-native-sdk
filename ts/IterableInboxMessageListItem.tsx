@@ -6,13 +6,13 @@ import {
    StyleSheet 
 } from "react-native"
 
-type MessageCellProps = {
+type MessageListItemProps = {
    index: number,
    message: {[key: string]: any},
    last: boolean 
 }
 
-const IterableInboxMessageCell = ({ index, message, last }: MessageCellProps) => {
+const IterableInboxMessageListItem = ({ index, message, last }: MessageListItemProps) => {
    const unreadIndicator = "\u2022"
    const messageTitle = message.inboxMetadata.title
    const messageBody = message.inboxMetadata.subtitle
@@ -74,4 +74,4 @@ const styles = StyleSheet.create({
    }
 })
 
-export default IterableInboxMessageCell;
+export default IterableInboxMessageListItem;
