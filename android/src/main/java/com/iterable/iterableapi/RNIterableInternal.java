@@ -36,4 +36,8 @@ public class RNIterableInternal {
         IterableApi.getInstance().setAttributionInfo(attributionInfo);
     }
 
+    public static void syncInApp() {
+        IterableApi.getInstance().getInAppManager().syncInApp();
+    }
+
 }
