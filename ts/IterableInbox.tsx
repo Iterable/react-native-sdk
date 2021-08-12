@@ -1,30 +1,30 @@
 'use strict';
-import React, { Component, useState } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import IterableInboxMessageList from './IterableInboxMessageList';
-import IterableInboxEmptyState from './IterableInboxEmptyState';
-import IterableInboxMessageDisplay from './IterableInboxMessageDisplay';
-import sampleMessages from './sampleMessageData.js';
+import React, { Component, useState } from 'react'
+import { Text, View, StyleSheet } from 'react-native'
+import IterableInboxMessageList from './IterableInboxMessageList'
+import IterableInboxEmptyState from './IterableInboxEmptyState'
+import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
+import sampleMessages from './sampleMessageData.js'
 
 const IterableInbox = () => {
-   const inboxTitle = "Inbox";
-   const [isDisplayMessage, setIsDisplayMessage] = useState(false);
-   const [selectedMessageIdx, setSelectedMessageIdx] = useState(0);
-   const [messages, setMessages] = useState(sampleMessages);
+   const inboxTitle = "Inbox"
+   const [isDisplayMessage, setIsDisplayMessage] = useState(false)
+   const [selectedMessageIdx, setSelectedMessageIdx] = useState(0)
+   const [messages, setMessages] = useState(sampleMessages)
 
-   let selectedMessage = messages[selectedMessageIdx];
+   let selectedMessage = messages[selectedMessageIdx]
 
    function handleMessageSelect(index: number, messages: Array<any>) {
       if (!messages[index].read) {
          messages[index].read = true
       }
-      setMessages([...messages]);
-      setIsDisplayMessage(true);
-      setSelectedMessageIdx(index);
+      setMessages([...messages])
+      setIsDisplayMessage(true)
+      setSelectedMessageIdx(index)
    }
 
    function returnToInbox() {
-      setIsDisplayMessage(false);
+      setIsDisplayMessage(false)
    }
    
    function displayMessage(message: {[key: string]: any}) {
@@ -77,4 +77,4 @@ const styles = StyleSheet.create({
    }
 })
 
-export default IterableInbox;
+export default IterableInbox

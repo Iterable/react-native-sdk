@@ -331,4 +331,4 @@ const sampleMessages = [
      }
  ]
  
- export default sampleMessages; 
+ export default sampleMessages

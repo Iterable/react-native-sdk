@@ -1,7 +1,7 @@
-'use strict';
-import React, { ReactElement } from 'react';
-import { ScrollView, Text, StyleSheet } from 'react-native';
-import IterableInboxMessageCell from './IterableInboxMessageCell';
+'use strict'
+import React, { ReactElement } from 'react'
+import { ScrollView, Text, StyleSheet } from 'react-native'
+import IterableInboxMessageCell from './IterableInboxMessageCell'
 
 type MessageListProps = {
    messages: Array<any>,
@@ -12,7 +12,7 @@ const IterableInboxMessageList = ({ messages, handleMessageSelect }: MessageList
 
    function displayMessages() {
       return messages.map((message, index) => {
-         let last = (index === messages.length - 1) ? true : false;
+         let last = (index === messages.length - 1) ? true : false
          return (         
             <IterableInboxMessageCell
                key={index}
@@ -36,4 +36,4 @@ const styles = StyleSheet.create({
    }
 })
 
-export default IterableInboxMessageList;
+export default IterableInboxMessageList

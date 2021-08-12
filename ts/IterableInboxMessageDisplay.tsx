@@ -1,7 +1,7 @@
-'use strict';
-import React, { Component } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+'use strict'
+import React, { Component } from 'react'
+import { Text, View, StyleSheet } from 'react-native'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 type MessageDisplayProps = {
    message: {[key: string]: any},
@@ -9,7 +9,7 @@ type MessageDisplayProps = {
 }
 
 const IterableInboxMessageDisplay = ({ message, returnToInbox }: MessageDisplayProps) => {
-   const messageTitle = message.inboxMetadata.title;
+   const messageTitle = message.inboxMetadata.title
 
    return(
       <View> 
@@ -57,4 +57,4 @@ const styles = StyleSheet.create({
     }
  })
 
- export default IterableInboxMessageDisplay;
+ export default IterableInboxMessageDisplay

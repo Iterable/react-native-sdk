@@ -1,11 +1,11 @@
-"use strict";
-import React, { Component, useState } from "react";
+"use strict"
+import React, { Component, useState } from "react"
 import { 
    View, 
    Text, 
    StyleSheet, 
    TouchableOpacity 
-} from "react-native";
+} from "react-native"
 
 type MessageCellProps = {
    index: number,
@@ -15,12 +15,12 @@ type MessageCellProps = {
 }
 
 const IterableInboxMessageCell = ({ index, message, handleMessageSelect, last }: MessageCellProps) => {
-   const unreadIndicator = "\u2022";
-   const messageTitle = message.inboxMetadata.title;
-   const messageBody = message.inboxMetadata.subtitle;
-   const messageCreatedAt = message.createdAt;
+   const unreadIndicator = "\u2022"
+   const messageTitle = message.inboxMetadata.title
+   const messageBody = message.inboxMetadata.subtitle
+   const messageCreatedAt = message.createdAt
 
-   const [active, setActive] = useState(false);
+   const [active, setActive] = useState(false)
 
    function displayMessage() {
       return (
@@ -32,8 +32,8 @@ const IterableInboxMessageCell = ({ index, message, handleMessageSelect, last }:
             }
             activeOpacity={1}
             onPress={() => {
-               setActive(!active);
-               handleMessageSelect(index);
+               setActive(!active)
+               handleMessageSelect(index)
             }}
          >
             <View style={styles.unreadIndicatorContainer}>
@@ -152,4 +152,4 @@ const styles = StyleSheet.create({
    }
 })
 
-export default IterableInboxMessageCell;
+export default IterableInboxMessageCell
