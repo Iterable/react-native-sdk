@@ -15,7 +15,7 @@ const IterableInbox = () => {
    let selectedMessage = messages[selectedMessageIdx];
 
    function handleMessageSelect(index: number, messages: Array<any>) {
-      if(!messages[index].read) {
+      if (!messages[index].read) {
          messages[index].read = true
       }
       setMessages([...messages]);
