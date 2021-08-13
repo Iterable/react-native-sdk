@@ -12,10 +12,10 @@ const IterableInboxMessageList = ({ messages, handleMessageSelect }: MessageList
 
    function displayMessages() {
       return messages.map((message, index) => {
-         let last = (index === messages.length - 1) ? true : false
+         let last = index === messages.length - 1
          return (         
             <IterableInboxClickableRow
-               key={index}
+               key={message.messageId}
                index={index} 
                message={message}
                handleMessageSelect={(index: number) => handleMessageSelect(index, messages)}  

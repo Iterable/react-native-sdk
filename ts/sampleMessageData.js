@@ -1,7 +1,7 @@
 const sampleMessages = [
     {
        campaignId: 1,
-       messageId: "message1",
+       messageId: 1,
        trigger: "",
        createdAt: "2021-07-21 12:20:00",
        expiresAt: "2021-10-21 12:20:00",
@@ -34,7 +34,7 @@ const sampleMessages = [
     },
     {
        campaignId: 2,
-       messageId: "message2",
+       messageId: 2,
        trigger: "",
        createdAt: "2021-07-21 2:20:00",
        expiresAt: "2021-10-21 2:20:00",
@@ -67,7 +67,7 @@ const sampleMessages = [
     },
     {
        campaignId: 3,
-       messageId: "message3",
+       messageId: 3,
        trigger: "",
        createdAt: "2021-07-21 4:00:00",
        expiresAt: "2021-10-21 4:00:00",
@@ -100,7 +100,7 @@ const sampleMessages = [
     },
     {
        campaignId: 4,
-       messageId: "message4",
+       messageId: 4,
        trigger: "",
        createdAt: "2021-07-21 2:00:00",
        expiresAt: "2021-10-21 2:00:00",
@@ -133,7 +133,7 @@ const sampleMessages = [
     },
     {
        campaignId: 5,
-       messageId: "message5",
+       messageId: 5,
        trigger: "",
        createdAt: "2021-07-21 12:20:00",
        expiresAt: "2021-07-21 12:20:00",
@@ -166,7 +166,7 @@ const sampleMessages = [
     },
     {
         campaignId: 5,
-        messageId: "message6",
+        messageId: 6,
         trigger: "",
         createdAt: "2021-07-21 12:20:00",
         expiresAt: "2021-07-21 12:20:00",
@@ -199,7 +199,7 @@ const sampleMessages = [
      },
      {
         campaignId: 5,
-        messageId: "message7",
+        messageId: 7,
         trigger: "",
         createdAt: "2021-07-21 12:20:00",
         expiresAt: "2021-07-21 12:20:00",
@@ -232,7 +232,7 @@ const sampleMessages = [
      },
      {
         campaignId: 5,
-        messageId: "message8",
+        messageId: 8,
         trigger: "",
         createdAt: "2021-07-21 12:20:00",
         expiresAt: "2021-07-21 12:20:00",
@@ -265,7 +265,7 @@ const sampleMessages = [
      },
      {
         campaignId: 5,
-        messageId: "message9",
+        messageId: 9,
         trigger: "",
         createdAt: "2021-07-21 12:20:00",
         expiresAt: "2021-07-21 12:20:00",
@@ -298,7 +298,7 @@ const sampleMessages = [
      },
      {
         campaignId: 5,
-        messageId: "message10",
+        messageId: 10,
         trigger: "",
         createdAt: "2021-07-21 12:20:00",
         expiresAt: "2021-07-21 12:20:00",
