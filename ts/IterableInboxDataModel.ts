@@ -102,4 +102,5 @@ class IterableInboxDataModel {
     }
 }
 
-export { InboxComponent, IterableInboxDataModel }
+export { IterableInboxDataModel }
+export type { InboxComponent }
