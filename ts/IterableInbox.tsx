@@ -15,10 +15,12 @@ const IterableInbox = () => {
    let selectedMessage = messages[selectedMessageIdx]
 
    function handleMessageSelect(index: number, messages: Array<any>) {
-      if (!messages[index].read) {
-         messages[index].read = true
-      }
-      setMessages([...messages])
+      const newMessages = messages.map((message, messageIndex) => {
+         return (messageIndex === index) ?
+            {...message, read: true } : message
+      })
+
+      setMessages(newMessages)
       setIsDisplayMessage(true)
       setSelectedMessageIdx(index)
    }
