@@ -1,6 +1,5 @@
 'use strict'
 
-import { Component } from 'react'
 import { NativeModules } from 'react-native'
 import { IterableInAppMessage, IterableInAppLocation, IterableInAppDeleteSource, InboxMessageDataModel } from '.'
 
@@ -103,4 +102,4 @@ class IterableInboxDataModel {
     }
 }
 
-export { IterableInboxDataModel }
+export { InboxComponent, IterableInboxDataModel }
