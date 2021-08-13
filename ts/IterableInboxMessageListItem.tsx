@@ -5,10 +5,11 @@ import {
    Text, 
    StyleSheet 
 } from "react-native"
+import Message from "./messageType"
 
 type MessageListItemProps = {
    index: number,
-   message: {[key: string]: any},
+   message: Message,
    last: boolean 
 }
 
@@ -74,4 +75,4 @@ const styles = StyleSheet.create({
    }
 })
 
-export default IterableInboxMessageListItem;
+export default IterableInboxMessageListItem

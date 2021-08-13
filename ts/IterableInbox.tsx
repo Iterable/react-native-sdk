@@ -5,6 +5,7 @@ import IterableInboxMessageList from './IterableInboxMessageList'
 import IterableInboxEmptyState from './IterableInboxEmptyState'
 import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
 import sampleMessages from './sampleMessageData.js'
+import Message from "./messageType"
 
 const IterableInbox = () => {
    const inboxTitle = "Inbox"
@@ -29,7 +30,7 @@ const IterableInbox = () => {
       setIsDisplayMessage(false)
    }
    
-   function showMessageDisplay(message: {[key: string]: any}) {
+   function showMessageDisplay(message: Message) {
       return (
          <IterableInboxMessageDisplay 
             message={message}

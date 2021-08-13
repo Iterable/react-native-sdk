@@ -7,10 +7,11 @@ import {
    StyleSheet, 
    TouchableOpacity 
 } from "react-native"
+import Message from "./messageType"
 
 type MessageClickableRowProps = {
    index: number,
-   message: {[key: string]: any},
+   message: Message,
    handleMessageSelect: Function,
    last: boolean 
 }
