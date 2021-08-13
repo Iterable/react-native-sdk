@@ -17,14 +17,12 @@ type MessageClickableRowProps = {
 
 const IterableInboxClickableRow = ({ index, message, handleMessageSelect, last }: MessageClickableRowProps) => {
    const [active, setActive] = useState(false)
+   const lastStyle = active ? styles.pressedLastMessageCell : styles.lastMessageCell
+   const style = active ? styles.pressedMessageCell : styles.messageCell
 
    return(
       <TouchableOpacity
-         style={
-            last
-               ? ((active) ? styles.pressedLastMessageCell : styles.lastMessageCell)
-               : ((active) ? styles.pressedMessageCell : styles.messageCell)
-         }
+         style={last ? lastStyle : style}
          activeOpacity={1}
          onPress={() => {
             setActive(!active)
