@@ -1,31 +1,26 @@
-'use strict';
-import React, { ReactElement } from 'react';
-import { ScrollView, Text, StyleSheet } from 'react-native';
-import IterableInboxMessageCell from './IterableInboxMessageCell';
+'use strict'
+import React, { ReactElement } from 'react'
+import { ScrollView, Text, StyleSheet } from 'react-native'
+import IterableInboxClickableRow from './IterableInboxClickableRow'
+import Message from "./messageType"
 
 type MessageListProps = {
-   messages: Array<any>,
+   messages: Message[],
    handleMessageSelect: Function  
 }
 
 const IterableInboxMessageList = ({ messages, handleMessageSelect }: MessageListProps) => {
-   function flaggedMessage(message: { [key: string]: any }, index: number) {
-      return (index === messages.length - 1) ?
-         <IterableInboxMessageCell
-            index={index} 
-            message={message}
-            handleMessageSelect={(index: number) => handleMessageSelect(index, messages)} 
-            last={true} /> :
-         <IterableInboxMessageCell
-            index={index} 
-            message={message}
-            handleMessageSelect={(index: number) => handleMessageSelect(index, messages)}  
-            last={false} />
-   }
 
    function displayMessages() {
       return messages.map((message, index) => {
-         return flaggedMessage(message, index)
+         let last = index === messages.length - 1
+         return (         
+            <IterableInboxClickableRow
+               key={message.messageId}
+               index={index} 
+               message={message}
+               handleMessageSelect={(index: number) => handleMessageSelect(index, messages)}  
+               last={last} />)
       })
    }
 
@@ -42,4 +37,4 @@ const styles = StyleSheet.create({
    }
 })
 
-export default IterableInboxMessageList;
+export default IterableInboxMessageList
