@@ -1,6 +1,7 @@
-"use strict";
-import React, { Component } from "react"
-import { View, Text, StyleSheet } from "react-native"
+'use strict'
+
+import React from 'react'
+import { View, Text, StyleSheet } from 'react-native'
 
 const IterableInboxEmptyState = () => {
    const title = "No saved messages"
@@ -9,12 +10,12 @@ const IterableInboxEmptyState = () => {
    return(
       <View style={styles.container}>
          <Text style={styles.title}>
-            {title}    
+            {title}
          </Text>
          <Text style={styles.subtitle}>
             {subtitle}
          </Text>
-      </View>     
+      </View>
    )
 }
 

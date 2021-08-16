@@ -1,11 +1,12 @@
-'use strict';
-import React, { Component, useState } from 'react'
+'use strict'
+
+import React, { useState } from 'react'
 import { Text, View, StyleSheet } from 'react-native'
 import IterableInboxMessageList from './IterableInboxMessageList'
 import IterableInboxEmptyState from './IterableInboxEmptyState'
 import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
 import sampleMessages from './sampleMessageData.js'
-import Message from "./messageType"
+import Message from './messageType'
 
 const IterableInbox = () => {
    const inboxTitle = "Inbox"

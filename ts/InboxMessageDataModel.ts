@@ -20,4 +20,4 @@ class InboxMessageDataModel {
     }
 }
 
-export { InboxMessageDataModel }
+export default InboxMessageDataModel

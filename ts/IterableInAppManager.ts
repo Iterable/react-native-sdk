@@ -82,4 +82,4 @@ class IterableInAppManager {
     }
   }
 
-export { IterableInAppManager }
+export default IterableInAppManager

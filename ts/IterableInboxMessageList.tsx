@@ -1,6 +1,7 @@
 'use strict'
-import React, { ReactElement } from 'react'
-import { ScrollView, Text, StyleSheet } from 'react-native'
+
+import React from 'react'
+import { ScrollView, StyleSheet } from 'react-native'
 import IterableInboxClickableRow from './IterableInboxClickableRow'
 import Message from "./messageType"
 
@@ -10,16 +11,15 @@ type MessageListProps = {
 }
 
 const IterableInboxMessageList = ({ messages, handleMessageSelect }: MessageListProps) => {
-
    function displayMessages() {
       return messages.map((message, index) => {
          let last = index === messages.length - 1
-         return (         
+         return (
             <IterableInboxClickableRow
                key={message.messageId}
-               index={index} 
+               index={index}
                message={message}
-               handleMessageSelect={(index: number) => handleMessageSelect(index, messages)}  
+               handleMessageSelect={(index: number) => handleMessageSelect(index, messages)}
                last={last} />)
       })
    }
@@ -27,7 +27,7 @@ const IterableInboxMessageList = ({ messages, handleMessageSelect }: MessageList
    return(
       <ScrollView style={styles.container}>
          {displayMessages()}
-      </ScrollView>   
+      </ScrollView>
    )
 }
 

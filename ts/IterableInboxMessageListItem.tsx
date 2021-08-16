@@ -1,11 +1,12 @@
-"use strict"
-import React, { Component, useState } from "react"
-import { 
-   View, 
-   Text, 
-   StyleSheet 
-} from "react-native"
-import Message from "./messageType"
+'use strict'
+
+import React from "react"
+import {
+   View,
+   Text,
+   StyleSheet
+} from 'react-native'
+import Message from './messageType'
 
 type MessageListItemProps = {
    index: number,
@@ -27,10 +28,10 @@ const IterableInboxMessageListItem = ({ index, message, last }: MessageListItemP
          <View style={message.read ? styles.readMessageContainer : styles.unreadMessageContainer}>
             <Text style={styles.title}>{messageTitle}</Text>
             <Text style={styles.body}>{messageBody}</Text>
-            <Text style={styles.timestamp}>{messageCreatedAt}</Text>
+            <Text style={styles.createdAt}>{messageCreatedAt}</Text>
          </View>
       </>  
-   )   
+   )
 }
 
 const styles = StyleSheet.create({
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
       paddingBottom: 10
    },
 
-   timestamp: {
+   createdAt: {
       fontSize: 12,
       color: 'lightgray'
    }
