@@ -90,6 +90,7 @@ extension CommerceItem {
         let url = dict["url"] as? String
         let imageUrl = dict["imageUrl"] as? String
         let categories = dict["categories"] as? [String]
+        let dataFields = dict["dataFields"] as? [AnyHashable: Any]
         
         return CommerceItem(id: id,
                             name: name,
@@ -99,7 +100,8 @@ extension CommerceItem {
                             description: description,
                             url: url,
                             imageUrl: imageUrl,
-                            categories: categories)
+                            categories: categories,
+                            dataFields: dataFields)
     }
 }
 
