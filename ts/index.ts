@@ -31,6 +31,7 @@ import {
 import { IterableConfig } from './IterableConfig'
 import { IterableInAppMessage } from './IterableInAppMessage'
 import { IterableInAppManager } from './IterableInAppManager'
+import { InboxMessageDataModel } from './InboxMessageDataModel'
 
 import IterableInbox from './IterableInbox'
 import IterableInboxEmptyState from './IterableInboxEmptyState'
@@ -57,6 +58,7 @@ export {
   IterableInAppCloseSource,
   IterableInAppDeleteSource,
   IterableInAppManager,
+  InboxMessageDataModel,
   IterableInbox,
   IterableInboxEmptyState,
   IterableInboxMessageCell,

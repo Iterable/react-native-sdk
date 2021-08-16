@@ -215,7 +215,16 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
 
     @ReactMethod
     public void setReadForMessage(String messageId, boolean read) {
+        IterableLogger.v(TAG, "setReadForMessage");
+
         IterableApi.getInstance().getInAppManager().setRead(RNIterableInternal.getMessageById(messageId), read);
+    }
+
+    @ReactMethod
+    public void removeMessage(String messageId, Integer location, Integer deleteSource) {
+        IterableLogger.v(TAG, "removeMessage");
+        
+        IterableApi.getInstance().getInAppManager().removeMessage(RNIterableInternal.getMessageById(messageId), Serialization.getIterableDeleteActionTypeFromInteger(deleteSource), Serialization.getIterableInAppLocationFromInteger(location))
     }
 
     @ReactMethod
@@ -353,6 +362,18 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         try {
             JSONArray inAppMessageJsonArray = Serialization.serializeInAppMessages(IterableApi.getInstance().getInAppManager().getMessages());
             promise.resolve(Serialization.convertJsonToArray(inAppMessageJsonArray));
+        } catch (JSONException e) {
+            IterableLogger.e(TAG, e.getLocalizedMessage());
+            promise.reject("", "Failed to fetch messages with error " + e.getLocalizedMessage());
+        }
+    }
+
+    @ReactMethod
+    public void getInboxMessages(Promise promise) {
+        IterableLogger.d(TAG, "getInboxMessages");
+        try {
+            JSONArray inboxMessageJsonArray = Serialization.serializeInAppMessages(IterableApi.getInstance().getInAppManager().getInboxMessages());
+            promise.resolve(Serialization.convertJsonToArray(inboxMessageJsonArray));
         } catch (JSONException e) {
             IterableLogger.e(TAG, e.getLocalizedMessage());
             promise.reject("", "Failed to fetch messages with error " + e.getLocalizedMessage());

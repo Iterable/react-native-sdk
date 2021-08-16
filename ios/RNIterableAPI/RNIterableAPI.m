@@ -20,7 +20,7 @@ RCT_EXTERN_METHOD(initialize2WithApiKey: (nonnull NSString *) apiKey
                   version: (nonnull NSString *) version
                   resolver: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
-                                
+
 RCT_EXTERN_METHOD(setEmail: (NSString *) email)
 
 RCT_EXTERN_METHOD(getEmail: (RCTPromiseResolveBlock) resolve
