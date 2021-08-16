@@ -3,17 +3,18 @@
 import React from 'react'
 import { ScrollView, StyleSheet } from 'react-native'
 import IterableInboxClickableRow from './IterableInboxClickableRow'
-import Message from "./messageType"
+import Message from './messageType'
 
 type MessageListProps = {
    messages: Message[],
-   handleMessageSelect: Function  
+   handleMessageSelect: Function
 }
 
 const IterableInboxMessageList = ({ messages, handleMessageSelect }: MessageListProps) => {
    function displayMessages() {
       return messages.map((message, index) => {
          let last = index === messages.length - 1
+
          return (
             <IterableInboxClickableRow
                key={message.messageId}

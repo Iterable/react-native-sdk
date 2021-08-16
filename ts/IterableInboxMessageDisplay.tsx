@@ -3,7 +3,7 @@
 import React from 'react'
 import { Text, View, StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
-import Message from "./messageType"
+import Message from './messageType'
 
 type MessageDisplayProps = {
    message: Message,
