@@ -12,28 +12,30 @@ import Message from "./messageType"
 type MessageClickableRowProps = {
    index: number,
    message: Message,
-   handleMessageSelect: Function,
-   last: boolean 
+   //handleMessageSelect: Function, 
 }
 
-const IterableInboxClickableRow = ({ index, message, handleMessageSelect, last }: MessageClickableRowProps) => {
+const IterableInboxClickableRow = ({ 
+   index, 
+   message, 
+   //handleMessageSelect 
+}: MessageClickableRowProps) => {
    const [active, setActive] = useState(false)
    const lastStyle = active ? styles.pressedLastMessageCell : styles.lastMessageCell
    const style = active ? styles.pressedMessageCell : styles.messageCell
 
    return(
       <TouchableOpacity
-         style={last ? lastStyle : style}
+         style={message.last ? lastStyle : style}
          activeOpacity={1}
          onPress={() => {
             setActive(!active)
-            handleMessageSelect(index)
+            //handleMessageSelect(index)
          }}
       >
          <IterableInboxMessageListItem
             index={index} 
             message={message}
-            last={last}
          /> 
       </TouchableOpacity>
    )   

@@ -7,33 +7,33 @@ import {
    PanResponder,
    StyleSheet    
 } from 'react-native';
+import IterableInboxClickableRow from './IterableInboxClickableRow';
 import Message from './messageType';
 
 type SwipeableRowProps = {
-   key: number,
    index: number,
    swipingCheck: Function,
    deleteMessage: Function,
+   //handleMessageSelect: Function,
    message: Message,
-   //cleanFromScreen: Function,
 }
 
 const SCREEN_WIDTH = Dimensions.get('window').width
 
 const IterableInboxSwipeableRow = ({
-   key,
    index,
    swipingCheck,
    deleteMessage,
+   //handleMessageSelect,
    message,
 }: SwipeableRowProps) => {
    const position = useRef(new Animated.ValueXY()).current
 
-   const {containerStyle, rightButtonContainer, textContainer} = styles
+   const { textContainer} = styles
    
    let [scrollStopped, setScrollStopped] = useState(false);
    const SCROLL_THRESHOLD = SCREEN_WIDTH / 15
-   const FORCE_TO_OPEN_THRESHOLD = -SCREEN_WIDTH / 3.5
+   const FORCE_TO_OPEN_THRESHOLD = -SCREEN_WIDTH / 2
    const FORCING_DURATION = 350
 
    //stops scrolling and enables swiping when threshold is reached
@@ -109,50 +109,52 @@ const IterableInboxSwipeableRow = ({
    ).current
 
    return(
-      <View style={containerStyle}>
-         <View style={rightButtonContainer} />
-         <Animated.View 
-            style={[textContainer, position.getLayout()]}
-            {...panResponder.panHandlers}>
-            <Text>{message.inboxMetadata.title}</Text>
-         </Animated.View>   
-      </View>
+      <Animated.View 
+         style={[textContainer, position.getLayout()]}
+         {...panResponder.panHandlers}>
+         <IterableInboxClickableRow
+            index={index} 
+            message={message}
+            //handleMessageSelect={(index: number) => handleMessageSelect(index)}
+         />   
+         {/* <Text>{message.inboxMetadata.title}</Text> */}
+      </Animated.View>   
    )
 }
 
 const styles = StyleSheet.create({
-   containerStyle: {
-      flex: 1,
-      flexDirection: 'row',
-      marginBottom: 5,
-      marginHorizontal: 5,
-      marginTop: 30,
-      elevation: 3
-   },
+   // containerStyle: {
+   //    flex: 1,
+   //    flexDirection: 'row',
+   //    marginBottom: 5,
+   //    marginHorizontal: 5,
+   //    marginTop: 30,
+   //    elevation: 3
+   // },
 
    textContainer: {
-      width: SCREEN_WIDTH / 1.03,
-      paddingHorizontal: 30,
-      paddingVertical: 35,
-      borderRadius: 7,
-      backgroundColor: '#CFD8DC',
+      width: '100%',
+      //paddingHorizontal: 30,
+      //paddingVertical: 35,
+      //borderRadius: 7,
+      //backgroundColor: '#CFD8DC',
       elevation: 3,
       zIndex: 2
-   },
-
-   rightButtonContainer: {
-      position: 'absolute',
-      left: SCREEN_WIDTH / 1.24,
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginRight: 5,
-      borderRadius: 7,
-      paddingHorizontal: 18,
-      paddingVertical: 23,
-      elevation: 3,
-      backgroundColor: '#D50000',
-      zIndex: 1
    }
+
+   // rightButtonContainer: {
+   //    position: 'absolute',
+   //    left: SCREEN_WIDTH / 1.24,
+   //    alignItems: 'center',
+   //    justifyContent: 'center',
+   //    marginRight: 5,
+   //    borderRadius: 7,
+   //    paddingHorizontal: 18,
+   //    paddingVertical: 23,
+   //    elevation: 3,
+   //    backgroundColor: '#D50000',
+   //    zIndex: 1
+   // }
 })
 
 export default IterableInboxSwipeableRow

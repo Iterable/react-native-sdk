@@ -28,7 +28,8 @@ type Message = {
     },
     customPayload: any,
     read: boolean,
-    priorityLevel: number
+    priorityLevel: number,
+    last: boolean
  }
 
  export default Message

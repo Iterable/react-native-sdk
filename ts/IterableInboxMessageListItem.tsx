@@ -10,10 +10,9 @@ import Message from "./messageType"
 type MessageListItemProps = {
    index: number,
    message: Message,
-   last: boolean 
 }
 
-const IterableInboxMessageListItem = ({ index, message, last }: MessageListItemProps) => {
+const IterableInboxMessageListItem = ({ index, message }: MessageListItemProps) => {
    const unreadIndicator = "\u2022"
    const messageTitle = message.inboxMetadata.title
    const messageBody = message.inboxMetadata.subtitle
