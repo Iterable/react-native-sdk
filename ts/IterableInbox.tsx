@@ -6,17 +6,25 @@ import IterableInboxEmptyState from './IterableInboxEmptyState'
 import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
 import sampleMessages from './sampleMessageData.js'
 import Message from "./messageType"
+import { Alert } from 'react-native';
 
 const IterableInbox = () => {
    const inboxTitle = "Inbox"
    const [isDisplayMessage, setIsDisplayMessage] = useState(false)
    const [selectedMessageIdx, setSelectedMessageIdx] = useState(0)
-   const [messages, setMessages] = useState(sampleMessages)
+   const [messages, setMessages] = useState(flagLastMessage(sampleMessages))
 
    let selectedMessage = messages[selectedMessageIdx]
 
-   function handleMessageSelect(index: number, messages: Array<any>) {
-      const newMessages = messages.map((message, messageIndex) => {
+   function flagLastMessage(messages : Message[]) {
+      return messages.map((message : Message, index : number) => {
+         return (index === messages.length - 1) ? 
+            {...message, last: true} : {...message, last: false}
+      })
+   }
+
+   function handleMessageSelect(index: number, messages: Message[]) {
+      const newMessages = messages.map((message : Message, messageIndex : number) => {
          return (messageIndex === index) ?
             {...message, read: true } : message
       })
@@ -24,6 +32,14 @@ const IterableInbox = () => {
       setMessages(newMessages)
       setIsDisplayMessage(true)
       setSelectedMessageIdx(index)
+   }
+
+   function deleteMessage(id: number, messages: Message[]) {
+      const newMessages = messages.filter((message : Message) => {
+         return id !== message.meessageId
+      })
+
+      setMessages(newMessages)
    }
 
    function returnToInbox() {
@@ -47,6 +63,7 @@ const IterableInbox = () => {
             {messages.length ? 
                <IterableInboxMessageList 
                   messages={messages}
+                  deleteMessage = {(id: number) => deleteMessage(id, messages)}
                   handleMessageSelect={(index: number) => handleMessageSelect(index, messages)}
                ></IterableInboxMessageList> : 
                <IterableInboxEmptyState></IterableInboxEmptyState>}

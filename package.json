@@ -19,7 +19,11 @@
   "author": "Iterable",
   "license": "MIT",
   "homepage": "https://github.com/Iterable/react-native-sdk",
-  "dependencies": {},
+  "dependencies": {
+    "react-native-gesture-handler": "^1.10.3",
+    "react-native-reanimated": "^2.2.0",
+    "react-native-swipe-list-view": "^3.2.9"
+  },
   "devDependencies": {
     "@babel/core": "^7.10.2",
     "@types/jest": "^26.0.0",
