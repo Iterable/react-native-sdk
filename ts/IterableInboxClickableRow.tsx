@@ -2,8 +2,6 @@
 import React, { Component, useState } from "react"
 import IterableInboxMessageListItem from "./IterableInboxMessageListItem"
 import { 
-   View, 
-   Text, 
    StyleSheet, 
    TouchableOpacity 
 } from "react-native"
@@ -12,13 +10,13 @@ import Message from "./messageType"
 type MessageClickableRowProps = {
    index: number,
    message: Message,
-   //handleMessageSelect: Function, 
+   handleMessageSelect: Function, 
 }
 
 const IterableInboxClickableRow = ({ 
    index, 
    message, 
-   //handleMessageSelect 
+   handleMessageSelect 
 }: MessageClickableRowProps) => {
    const [active, setActive] = useState(false)
    const lastStyle = active ? styles.pressedLastMessageCell : styles.lastMessageCell
@@ -30,7 +28,7 @@ const IterableInboxClickableRow = ({
          activeOpacity={1}
          onPress={() => {
             setActive(!active)
-            //handleMessageSelect(index)
+            handleMessageSelect(index)
          }}
       >
          <IterableInboxMessageListItem

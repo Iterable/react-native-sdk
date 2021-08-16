@@ -355,25 +355,18 @@ const IterableInbox = () => {
    const [selectedMessageIdx, setSelectedMessageIdx] = useState(0)
    const [messages, setMessages] = useState(sampleMessages)
 
-   // const selectedMessage = messages[selectedMessageIdx]
+   const selectedMessage = messages[selectedMessageIdx]
 
-   // function flagLastMessage(messages : Message[]) {
-   //    return messages.map((message : Message, index : number) => {
-   //       return (index === messages.length - 1) ? 
-   //          {...message, last: true} : {...message, last: false}
-   //    })
-   // }
+   function handleMessageSelect(index: number, messages: Message[]) {
+      const newMessages = messages.map((message : Message, messageIndex: number) => {
+         return (messageIndex === index) ?
+            {...message, read: true } : message
+      })
 
-   // function handleMessageSelect(index: number, messages: Message[]) {
-   //    const newMessages = messages.map((message : Message, messageIndex : number) => {
-   //       return (messageIndex === index) ?
-   //          {...message, read: true } : message
-   //    })
-
-   //    setMessages(newMessages)
-   //    setIsDisplayMessage(true)
-   //    setSelectedMessageIdx(index)
-   // }
+      setMessages(newMessages)
+      setIsDisplayMessage(true)
+      setSelectedMessageIdx(index)
+   }
 
    function deleteMessage(id: number, messages: Message[]) {
       let newMessages = sampleMessages.filter((message) => {
@@ -383,17 +376,17 @@ const IterableInbox = () => {
       setMessages(newMessages)
    }
 
-   // function returnToInbox() {
-   //    setIsDisplayMessage(false)
-   // }
+   function returnToInbox() {
+      setIsDisplayMessage(false)
+   }
    
-   // function showMessageDisplay(message: Message) {
-   //    return (
-   //       <IterableInboxMessageDisplay 
-   //          message={message}
-   //          returnToInbox={returnToInbox}
-   //       ></IterableInboxMessageDisplay>)
-   // }
+   function showMessageDisplay(message: Message) {
+      return (
+         <IterableInboxMessageDisplay 
+            message={message}
+            returnToInbox={() => returnToInbox()}
+         ></IterableInboxMessageDisplay>)
+   }
 
    function showMessageList() {
       return (
@@ -402,30 +395,23 @@ const IterableInbox = () => {
                {inboxTitle}
             </Text>
             <IterableInboxMessageList 
-               messages={sampleMessages}
+               messages={messages}
                deleteMessage={(id: number) => deleteMessage(id, messages)}
-               //handleMessageSelect={(index: number, messages: Message[]) => handleMessageSelect(index, messages)} 
-            />
+               handleMessageSelect={(index: number) => handleMessageSelect(index, messages)}/> 
          </>)
    }
 
    return(
-      <SafeAreaView>
-         {showMessageList()}      
-         {/* {isDisplayMessage ? showMessageDisplay(selectedMessage) : showMessageList()} */}
+      <SafeAreaView style={styles.container}>     
+         {isDisplayMessage ? showMessageDisplay(selectedMessage) : showMessageList()}
       </SafeAreaView>
    )
 }
 
 const styles = StyleSheet.create({
-   // container: {
-   //    height: '100%',
-   //    backgroundColor: 'whitesmoke', 
-   //    flexDirection: 'column',
-   //    justifyContent: 'flex-start',
-   //    marginTop: 50
-   // },
-
+   container: {
+      height: '100%'
+   },
    headline: {
       fontWeight: 'bold' ,
       fontSize: 40,

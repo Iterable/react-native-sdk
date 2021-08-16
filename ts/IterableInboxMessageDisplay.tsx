@@ -18,7 +18,7 @@ const IterableInboxMessageDisplay = ({ message, returnToInbox }: MessageDisplayP
             <Icon 
                name="ios-arrow-back" 
                style={styles.returnButton} 
-               onPress={() => {returnToInbox()}}/>
+               onPress={() => returnToInbox()}/>
          </View> 
          <View style={styles.container}>
             <Text style={styles.headline}>

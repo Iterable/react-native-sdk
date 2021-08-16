@@ -1,14 +1,8 @@
 'use strict'
 import React, { useState } from 'react'
-import {
-   View, 
-   ScrollView,
-   LayoutAnimation,  
-   StyleSheet,
-   TouchableHighlight,
-   Animated 
+import { 
+   ScrollView
 } from 'react-native'
-//import IterableInboxClickableRow from './IterableInboxClickableRow'
 import IterableInboxSwipeableRow from './IterableInboxSwipeableRow'
 import IterableInboxEmptyState from './IterableInboxEmptyState'
 import Message from "./messageType"
@@ -16,13 +10,13 @@ import Message from "./messageType"
 type MessageListProps = {
    messages: Message[],
    deleteMessage: Function,
-   //handleMessageSelect: Function 
+   handleMessageSelect: Function 
 }
 
 const IterableInboxMessageList = ({ 
    messages, 
    deleteMessage, 
-   //handleMessageSelect 
+   handleMessageSelect 
 }: MessageListProps) => {
    const [swiping, setSwiping] = useState(false)
 
@@ -34,7 +28,7 @@ const IterableInboxMessageList = ({
                index={index}
                swipingCheck={(swiping : boolean) => setSwiping(swiping)}
                deleteMessage={(id: number) => deleteMessage(id)}
-               //handleMessageSelect={(index: number, messages: Message[]) => handleMessageSelect(index, messages)}
+               handleMessageSelect={(index: number) => handleMessageSelect(index)}
                message={message}
             />
          )

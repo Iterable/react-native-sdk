@@ -14,7 +14,7 @@ type SwipeableRowProps = {
    index: number,
    swipingCheck: Function,
    deleteMessage: Function,
-   //handleMessageSelect: Function,
+   handleMessageSelect: Function,
    message: Message,
 }
 
@@ -24,7 +24,7 @@ const IterableInboxSwipeableRow = ({
    index,
    swipingCheck,
    deleteMessage,
-   //handleMessageSelect,
+   handleMessageSelect,
    message,
 }: SwipeableRowProps) => {
    const position = useRef(new Animated.ValueXY()).current
@@ -115,46 +115,18 @@ const IterableInboxSwipeableRow = ({
          <IterableInboxClickableRow
             index={index} 
             message={message}
-            //handleMessageSelect={(index: number) => handleMessageSelect(index)}
+            handleMessageSelect={(index: number) => handleMessageSelect(index)}
          />   
-         {/* <Text>{message.inboxMetadata.title}</Text> */}
       </Animated.View>   
    )
 }
 
 const styles = StyleSheet.create({
-   // containerStyle: {
-   //    flex: 1,
-   //    flexDirection: 'row',
-   //    marginBottom: 5,
-   //    marginHorizontal: 5,
-   //    marginTop: 30,
-   //    elevation: 3
-   // },
-
    textContainer: {
       width: '100%',
-      //paddingHorizontal: 30,
-      //paddingVertical: 35,
-      //borderRadius: 7,
-      //backgroundColor: '#CFD8DC',
       elevation: 3,
       zIndex: 2
    }
-
-   // rightButtonContainer: {
-   //    position: 'absolute',
-   //    left: SCREEN_WIDTH / 1.24,
-   //    alignItems: 'center',
-   //    justifyContent: 'center',
-   //    marginRight: 5,
-   //    borderRadius: 7,
-   //    paddingHorizontal: 18,
-   //    paddingVertical: 23,
-   //    elevation: 3,
-   //    backgroundColor: '#D50000',
-   //    zIndex: 1
-   // }
 })
 
 export default IterableInboxSwipeableRow
