@@ -20,7 +20,7 @@ RCT_EXTERN_METHOD(initialize2WithApiKey: (nonnull NSString *) apiKey
                   version: (nonnull NSString *) version
                   resolver: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
-                                
+
 RCT_EXTERN_METHOD(setEmail: (NSString *) email)
 
 RCT_EXTERN_METHOD(getEmail: (RCTPromiseResolveBlock) resolve
@@ -49,6 +49,8 @@ RCT_EXTERN_METHOD(trackPushOpenWithCampaignId: (nonnull NSNumber *) campaignId
                   messageId: (nonnull NSString *) messageId
                   appAlreadyRunning: (BOOL) appAlreadyRunning
                   dataFields: (NSDictionary *) dataFields)
+
+RCT_EXTERN_METHOD(updateCart: (NSArray *) items)
 
 RCT_EXTERN_METHOD(trackPurchase: (nonnull NSNumber *) total
                   items: (NSArray *) items

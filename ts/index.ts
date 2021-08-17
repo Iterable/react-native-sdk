@@ -7,7 +7,6 @@
 
 import {
   Iterable,
-  IterableConfig,
   IterableAction,
   IterableActionContext,
   IterableAttributionInfo,
@@ -29,8 +28,10 @@ import {
   IterableInAppDeleteSource,
 } from './IterableInAppClasses'
 
-import { IterableInAppMessage } from './IterableInAppMessage'
-import { IterableInAppManager } from './IterableInAppManager'
+import IterableConfig from './IterableConfig'
+import IterableInAppMessage from './IterableInAppMessage'
+import IterableInAppManager from './IterableInAppManager'
+import InboxRowViewModel from './InboxRowViewModel'
 
 import IterableInbox from './IterableInbox'
 import IterableInboxEmptyState from './IterableInboxEmptyState'
@@ -57,6 +58,7 @@ export {
   IterableInAppCloseSource,
   IterableInAppDeleteSource,
   IterableInAppManager,
+  InboxRowViewModel,
   IterableInbox,
   IterableInboxEmptyState,
   IterableInboxMessageCell,

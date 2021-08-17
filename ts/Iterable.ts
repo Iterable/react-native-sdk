@@ -1,20 +1,16 @@
 'use strict'
 
 import { NativeModules, NativeEventEmitter, Linking } from 'react-native'
+
+import IterableConfig from './IterableConfig'
+import IterableInAppMessage from './IterableInAppMessage'
+import IterableInAppManager from './IterableInAppManager'
+
 import {
-  IterableInAppShowResponse,
   IterableInAppLocation,
   IterableInAppCloseSource,
   IterableInAppDeleteSource,
 } from './IterableInAppClasses'
-
-import {
-  IterableInAppMessage
-} from './IterableInAppMessage'
-
-import {
-  IterableInAppManager
-} from './IterableInAppManager'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
@@ -35,81 +31,6 @@ enum IterableLogLevel {
   debug = 1,
   info = 2,
   error = 3
-}
-
-/**
-Iterable Configuration Object. Use this when initializing the API.
-*/
-class IterableConfig {
-  /**
-  * You don't have to set this variable. Set this value only if you are an existing Iterable customer who has already setup mobile integrations in Iterable Web UI.
-  * In that case, set this variable to the push integration name that you have set for 'APNS' in Iterable Web UI.
-  * To view your existing integrations, navigate to Settings > Mobile Apps
-  */
-  pushIntegrationName?: string
-
-  /**
-  * When set to true, IterableSDK will automatically register and deregister notification tokens.
-  */
-  autoPushRegistration = true
-
-  /**
-  * When set to true, it will check for deferred deep links on first time app launch after installation from the App Store.
-  * This is currently deprecated and will be removed in the future.
-  */
-  checkForDeferredDeeplink = false
-
-  /**
-  * How many seconds to wait before showing the next in-app, if there are more than one present
-  */
-  inAppDisplayInterval: number = 30.0
-
-  /**
-  * How many seconds to wait before showing the next in-app, if there are more than one present
-  */
-  urlHandler?: (url: string, context: IterableActionContext) => boolean
-
-  /**
-  * How to handle IterableActions which are other than 'openUrl'
-  */
-  customActionHandler?: (action: IterableAction, context: IterableActionContext) => boolean
-
-  /**
-  * Implement this protocol to override default in-app behavior.
-  * By default, every single in-app will be shown as soon as it is available.
-  * If more than 1 in-app is available, we show the first.
-  */
-  inAppHandler?: (message: IterableInAppMessage) => IterableInAppShowResponse
-
-  /**
-   * The handler with which your own calls to your backend containing the auth token happen
-   */
-  authHandler?: () => Promise<string | undefined>
-
-  /**
-   * Set the verbosity of Android and iOS project's log system. 
-   * By default, you will be able to see info level logs printed in IDE when running the app. 
-  */
-  logLevel: IterableLogLevel = IterableLogLevel.info
-
-  /**
-   * Set the amount of time (in seconds) before the current auth token expires to make a call to retrieve a new one
-   */
-  expiringAuthTokenRefreshPeriod: number = 60.0
-
-  toDict(): any {
-    return {
-      "pushIntegrationName": this.pushIntegrationName,
-      "autoPushRegistration": this.autoPushRegistration,
-      "inAppDisplayInterval": this.inAppDisplayInterval,
-      "urlHandlerPresent": this.urlHandler != undefined,
-      "customActionHandlerPresent": this.customActionHandler != undefined,
-      "inAppHandlerPresent": this.inAppHandler != undefined,
-      "authHandlerPresent": this.authHandler != undefined,
-      "logLevel": this.logLevel,
-      "expiringAuthTokenRefreshPeriod": this.expiringAuthTokenRefreshPeriod
-    }
-  }
 }
 
 /**
@@ -170,8 +91,9 @@ class IterableCommerceItem {
   url?: string
   imageUrl?: string
   categories?: Array<string>
+  dataFields?: any
 
-  constructor(id: string, name: string, price: number, quantity: number, sku?: string, description?: string, url?: string, imageUrl?: string, categories?: Array<string>) {
+  constructor(id: string, name: string, price: number, quantity: number, sku?: string, description?: string, url?: string, imageUrl?: string, categories?: Array<string>, dataFields?: any | undefined) {
     this.id = id
     this.name = name
     this.price = price
@@ -181,6 +103,7 @@ class IterableCommerceItem {
     this.url = url
     this.imageUrl = imageUrl
     this.categories = categories
+    this.dataFields = dataFields
   }
 }
 
@@ -258,16 +181,25 @@ class Iterable {
     return RNIterableAPI.getUserId()
   }
 
+  /**
+   * 
+   */
   static disableDeviceForCurrentUser() {
     console.log("disableDeviceForCurrentUser")
     RNIterableAPI.disableDeviceForCurrentUser()
   }
 
+  /**
+   * 
+   */
   static getLastPushPayload(): Promise<any | undefined> {
     console.log("getLastPushPayload")
     return RNIterableAPI.getLastPushPayload()
   }
 
+  /**
+   * 
+   */
   static getAttributionInfo(): Promise<IterableAttributionInfo | undefined> {
     console.log("getAttributionInfo")
     return RNIterableAPI.getAttributionInfo().then((dict: any | undefined) => {
@@ -300,6 +232,15 @@ class Iterable {
   static trackPushOpenWithCampaignId(campaignId: number, templateId: number, messageId: string | undefined, appAlreadyRunning: boolean, dataFields: any | undefined) {
     console.log("trackPushOpenWithCampaignId")
     RNIterableAPI.trackPushOpenWithCampaignId(campaignId, templateId, messageId, appAlreadyRunning, dataFields)
+  }
+
+  /**
+   * 
+   * @param {Array<IterableCommerceItem>} items
+   */
+  static updateCart(items: Array<IterableCommerceItem>) {
+    console.log("updateCart")
+    RNIterableAPI.updateCart(items)
   }
 
   /**
@@ -477,7 +418,6 @@ class Iterable {
 
 export {
   Iterable,
-  IterableConfig,
   IterableAction,
   IterableActionContext,
   IterableAttributionInfo,
@@ -485,4 +425,4 @@ export {
   EventName,
   IterableActionSource,
   IterableLogLevel
-};
+}
