@@ -12,7 +12,7 @@ type MessageClickableRowProps = {
    index: number,
    message: IterableInAppMessage,
    handleMessageSelect: Function,
-   last: boolean 
+   last: boolean
 }
 
 const IterableInboxClickableRow = ({ index, message, handleMessageSelect, last }: MessageClickableRowProps) => {
@@ -30,12 +30,12 @@ const IterableInboxClickableRow = ({ index, message, handleMessageSelect, last }
          }}
       >
          <IterableInboxMessageListItem
-            index={index} 
+            index={index}
             message={message}
             last={last}
-         /> 
+         />
       </TouchableOpacity>
-   )   
+   )
 }
 
 const styles = StyleSheet.create({

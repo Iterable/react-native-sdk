@@ -34,7 +34,7 @@ const IterableInbox = () => {
    
    function showMessageDisplay(message: Message) {
       return (
-         <IterableInboxMessageDisplay 
+         <IterableInboxMessageDisplay
             message={message}
             returnToInbox={returnToInbox}
          ></IterableInboxMessageDisplay>)

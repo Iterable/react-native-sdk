@@ -11,7 +11,7 @@ import IterableInAppMessage from './IterableInAppMessage'
 type MessageListItemProps = {
    index: number,
    message: IterableInAppMessage,
-   last: boolean 
+   last: boolean
 }
 
 const IterableInboxMessageListItem = ({ index, message, last }: MessageListItemProps) => {
