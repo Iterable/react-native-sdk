@@ -28,7 +28,7 @@ const IterableInboxMessageList = ({
                index={index}
                swipingCheck={(swiping : boolean) => setSwiping(swiping)}
                deleteMessage={(id: number) => deleteMessage(id)}
-               handleMessageSelect={(index: number) => handleMessageSelect(index)}
+               handleMessageSelect={(id: number) => handleMessageSelect(id)}
                message={message}
             />
          )

@@ -352,26 +352,28 @@ let sampleMessages = [
 const IterableInbox = () => {
    const inboxTitle = "Inbox"
    const [isDisplayMessage, setIsDisplayMessage] = useState(false)
-   const [selectedMessageIdx, setSelectedMessageIdx] = useState(0)
+   const [selectedMessageId, setSelectedMessageId] = useState(0)
    const [messages, setMessages] = useState(sampleMessages)
 
-   const selectedMessage = messages[selectedMessageIdx]
+   const selectedMessage = messages.find(message => message.messageId === selectedMessageId)
 
-   function handleMessageSelect(index: number, messages: Message[]) {
-      const newMessages = messages.map((message : Message, messageIndex: number) => {
-         return (messageIndex === index) ?
+   function handleMessageSelect(id: number, messages: Message[]) {
+      let newMessages = sampleMessages.map((message) => {
+         return (message.messageId === id) ?
             {...message, read: true } : message
       })
 
+      sampleMessages = newMessages
       setMessages(newMessages)
       setIsDisplayMessage(true)
-      setSelectedMessageIdx(index)
+      setSelectedMessageId(id)
    }
 
    function deleteMessage(id: number, messages: Message[]) {
       let newMessages = sampleMessages.filter((message) => {
          return id !== message.messageId
       })
+      newMessages[newMessages.length - 1] = {...newMessages[newMessages.length - 1], last: true}
       sampleMessages = newMessages
       setMessages(newMessages)
    }
@@ -397,7 +399,7 @@ const IterableInbox = () => {
             <IterableInboxMessageList 
                messages={messages}
                deleteMessage={(id: number) => deleteMessage(id, messages)}
-               handleMessageSelect={(index: number) => handleMessageSelect(index, messages)}/> 
+               handleMessageSelect={(id: number) => handleMessageSelect(id, messages)}/> 
          </>)
    }
 

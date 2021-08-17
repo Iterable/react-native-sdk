@@ -28,7 +28,7 @@ const IterableInboxClickableRow = ({
          activeOpacity={1}
          onPress={() => {
             setActive(!active)
-            handleMessageSelect(index)
+            handleMessageSelect(message.messageId)
          }}
       >
          <IterableInboxMessageListItem
@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
       paddingTop: 10,
       paddingBottom: 10,
       width: '100%',
+      height: 100,
       borderStyle: 'solid',
       borderTopColor: 'lightgray',
       borderBottomColor: 'lightgray',
@@ -59,6 +60,7 @@ const styles = StyleSheet.create({
       paddingTop: 10,
       paddingBottom: 10,
       width: '100%',
+      height: 100,
       borderStyle: 'solid',
       borderTopColor: 'lightgray',
       borderBottomColor: 'lightgray',
@@ -73,6 +75,7 @@ const styles = StyleSheet.create({
       paddingBottom: 10,
       marginBottom: 70,
       width: '100%',
+      height: 100,
       borderStyle: 'solid',
       borderTopColor: 'lightgray',
       borderBottomColor: 'lightgray',
@@ -88,6 +91,7 @@ const styles = StyleSheet.create({
       paddingBottom: 10,
       marginBottom: 70,
       width: '100%',
+      height: 100,
       borderStyle: 'solid',
       borderTopColor: 'lightgray',
       borderBottomColor: 'lightgray',

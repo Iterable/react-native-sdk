@@ -29,7 +29,7 @@ const IterableInboxSwipeableRow = ({
 }: SwipeableRowProps) => {
    const position = useRef(new Animated.ValueXY()).current
 
-   const { textContainer} = styles
+   const { textContainer, deleteSlider, textStyle } = styles
    
    let [scrollStopped, setScrollStopped] = useState(false);
    const SCROLL_THRESHOLD = SCREEN_WIDTH / 15
@@ -59,7 +59,7 @@ const IterableInboxSwipeableRow = ({
          toValue: {x, y: 0},
          duration: FORCING_DURATION,
          useNativeDriver: false   
-      }).start(() => deleteMessage(message.messageId))
+      }).start(() => deleteMessage(message.messageId, index))
    }
 
    //
@@ -109,23 +109,47 @@ const IterableInboxSwipeableRow = ({
    ).current
 
    return(
-      <Animated.View 
-         style={[textContainer, position.getLayout()]}
-         {...panResponder.panHandlers}>
-         <IterableInboxClickableRow
-            index={index} 
-            message={message}
-            handleMessageSelect={(index: number) => handleMessageSelect(index)}
-         />   
-      </Animated.View>   
+      <View>
+         <Animated.View style={deleteSlider}>
+            <Text style={textStyle}>DELETE</Text>   
+         </Animated.View>
+         <Animated.View 
+            style={[textContainer, position.getLayout()]}
+            {...panResponder.panHandlers}
+         >
+            <IterableInboxClickableRow
+               index={index} 
+               message={message}
+               handleMessageSelect={(id: number) => handleMessageSelect(id)}
+            />   
+         </Animated.View>
+      </View>   
    )
 }
 
 const styles = StyleSheet.create({
    textContainer: {
       width: '100%',
-      elevation: 3,
       zIndex: 2
+   },
+
+   deleteSlider: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      paddingRight: 10,
+      backgroundColor: 'red',
+      position: 'absolute',
+      elevation: 3,
+      width: '100%',
+      height: 100,
+      zIndex: 1
+   },
+
+   textStyle: {
+      fontWeight: 'bold',
+      fontSize: 15,
+      color: 'white'
    }
 })
 
