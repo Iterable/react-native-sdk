@@ -1,11 +1,11 @@
 'use strict'
+
 import React, { useState } from 'react'
-import { 
-   ScrollView
-} from 'react-native'
+import {  ScrollView } from 'react-native'
+
 import IterableInboxSwipeableRow from './IterableInboxSwipeableRow'
 import IterableInboxEmptyState from './IterableInboxEmptyState'
-import Message from "./messageType"
+import Message from './messageType'
 
 type MessageListProps = {
    messages: Message[],

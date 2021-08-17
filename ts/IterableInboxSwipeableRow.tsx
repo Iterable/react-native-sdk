@@ -1,3 +1,5 @@
+'use strict'
+
 import React, { useState, useRef } from 'react'
 import {
    View,
@@ -6,9 +8,10 @@ import {
    Animated,
    PanResponder,
    StyleSheet    
-} from 'react-native';
-import IterableInboxClickableRow from './IterableInboxClickableRow';
-import Message from './messageType';
+} from 'react-native'
+
+import IterableInboxClickableRow from './IterableInboxClickableRow'
+import Message from './messageType'
 
 type SwipeableRowProps = {
    index: number,

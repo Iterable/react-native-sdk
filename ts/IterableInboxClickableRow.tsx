@@ -1,16 +1,15 @@
-"use strict"
-import React, { Component, useState } from "react"
-import IterableInboxMessageListItem from "./IterableInboxMessageListItem"
-import { 
-   StyleSheet, 
-   TouchableOpacity 
-} from "react-native"
-import Message from "./messageType"
+'use strict'
+
+import React, { useState } from 'react'
+import { StyleSheet, TouchableOpacity } from 'react-native'
+
+import IterableInboxMessageListItem from './IterableInboxMessageListItem'
+import Message from './messageType'
 
 type MessageClickableRowProps = {
    index: number,
    message: Message,
-   handleMessageSelect: Function, 
+   handleMessageSelect: Function,
 }
 
 const IterableInboxClickableRow = ({ 
