@@ -2,7 +2,7 @@
 
 import IterableInAppMessage from './IterableInAppMessage'
 
-class InboxMessageDataModel {
+class InboxRowViewModel {
     title: string
     subtitle?: string
     imageUrl?: string
@@ -20,4 +20,4 @@ class InboxMessageDataModel {
     }
 }
 
-export default InboxMessageDataModel
+export default InboxRowViewModel

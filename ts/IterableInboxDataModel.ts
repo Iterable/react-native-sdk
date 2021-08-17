@@ -1,7 +1,7 @@
 'use strict'
 
 import { NativeModules } from 'react-native'
-import { IterableInAppMessage, IterableInAppLocation, IterableInAppDeleteSource, InboxMessageDataModel } from '.'
+import { IterableInAppMessage, IterableInAppLocation, IterableInAppDeleteSource, InboxRowViewModel } from '.'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
 
@@ -10,7 +10,7 @@ interface InboxComponent {
 }
 
 class IterableInboxDataModel {
-    inboxMessages: Array<InboxMessageDataModel> = []
+    inboxMessages: Array<InboxRowViewModel> = []
 
     private listeners: Set<InboxComponent> = new Set()
 
@@ -37,7 +37,7 @@ class IterableInboxDataModel {
         return this.inboxMessages.length
     }
 
-    getAllItems(): Array<InboxMessageDataModel> {
+    getAllItems(): Array<InboxRowViewModel> {
         console.log("IterableInboxDataModel.getAllItems")
 
         return this.inboxMessages
@@ -51,7 +51,7 @@ class IterableInboxDataModel {
         this.syncInboxMessages()
     }
 
-    getItem(row: number): InboxMessageDataModel {
+    getItem(row: number): InboxRowViewModel {
         console.log("IterableInboxDataModel.getItem")
 
         return this.inboxMessages[row]
@@ -97,8 +97,8 @@ class IterableInboxDataModel {
     //     )
     // }
 
-    private static getDataModelForMessage(message: IterableInAppMessage): InboxMessageDataModel {
-        return new InboxMessageDataModel(message)
+    private static getDataModelForMessage(message: IterableInAppMessage): InboxRowViewModel {
+        return new InboxRowViewModel(message)
     }
 }
 
