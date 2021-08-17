@@ -2,7 +2,7 @@
 
 import IterableUtil from './IterableUtil'
 
-import { 
+import {
   IterableInAppTrigger, 
   IterableInAppTriggerType, 
   IterableInboxMetadata,
