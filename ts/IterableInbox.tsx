@@ -5,7 +5,8 @@ import { Text, View, StyleSheet } from 'react-native'
 import IterableInboxMessageList from './IterableInboxMessageList'
 import IterableInboxEmptyState from './IterableInboxEmptyState'
 import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
-import sampleMessages from './sampleMessageData.js'
+import IterableInAppMessage from './IterableInAppMessage'
+import sampleMessages from './sampleMessageDataOld'
 import Message from './messageType'
 
 const IterableInbox = () => {

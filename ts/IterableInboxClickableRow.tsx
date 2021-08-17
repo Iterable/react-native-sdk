@@ -6,11 +6,11 @@ import {
    StyleSheet,
    TouchableOpacity
 } from 'react-native'
-import Message from './messageType'
+import IterableInAppMessage from './IterableInAppMessage'
 
 type MessageClickableRowProps = {
    index: number,
-   message: Message,
+   message: IterableInAppMessage,
    handleMessageSelect: Function,
    last: boolean 
 }

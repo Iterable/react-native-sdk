@@ -3,15 +3,15 @@
 import React from 'react'
 import { Text, View, StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
-import Message from './messageType'
+import IterableInAppMessage from './IterableInAppMessage'
 
 type MessageDisplayProps = {
-   message: Message,
+   message: IterableInAppMessage,
    returnToInbox: Function
 }
 
 const IterableInboxMessageDisplay = ({ message, returnToInbox }: MessageDisplayProps) => {
-   const messageTitle = message.inboxMetadata.title
+   const messageTitle = message.inboxMetadata?.title
 
    return(
       <View>
