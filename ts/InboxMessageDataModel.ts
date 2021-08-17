@@ -1,6 +1,6 @@
 'use strict'
 
-import { IterableInAppMessage } from '.'
+import IterableInAppMessage from './IterableInAppMessage'
 
 class InboxMessageDataModel {
     title: string

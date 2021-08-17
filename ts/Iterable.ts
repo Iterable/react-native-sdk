@@ -2,23 +2,15 @@
 
 import { NativeModules, NativeEventEmitter, Linking } from 'react-native'
 
-import {
-  IterableConfig
-} from './IterableConfig'
+import IterableConfig from './IterableConfig'
+import IterableInAppMessage from './IterableInAppMessage'
+import IterableInAppManager from './IterableInAppManager'
 
 import {
   IterableInAppLocation,
   IterableInAppCloseSource,
   IterableInAppDeleteSource,
 } from './IterableInAppClasses'
-
-import {
-  IterableInAppMessage
-} from './IterableInAppMessage'
-
-import {
-  IterableInAppManager
-} from './IterableInAppManager'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)

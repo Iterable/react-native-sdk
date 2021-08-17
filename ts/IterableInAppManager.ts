@@ -8,7 +8,7 @@ import {
     IterableInAppDeleteSource,
 } from './IterableInAppClasses'
 
-import { IterableInAppMessage } from './IterableInAppMessage'
+import IterableInAppMessage from './IterableInAppMessage'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
 

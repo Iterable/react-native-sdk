@@ -20,25 +20,25 @@ const IterableInboxEmptyState = () => {
 }
 
 const styles = StyleSheet.create({
-    container: {
-       height: '100%',
-       backgroundColor: 'whitesmoke', 
-       flexDirection: 'column',
-       justifyContent: 'flex-start',
-       alignItems: 'center'
-    },
- 
-    title: {
-       fontWeight: 'bold',
-       fontSize: 20,
-       paddingTop: 250,
-       paddingBottom: 25
-    },
+   container: {
+      height: '100%',
+      backgroundColor: 'whitesmoke', 
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+      alignItems: 'center'
+   },
 
-    subtitle: {
-       fontSize: 15,
-       color: 'grey'
-    }
- })
+   title: {
+      fontWeight: 'bold',
+      fontSize: 20,
+      paddingTop: 250,
+      paddingBottom: 25
+   },
+
+   subtitle: {
+      fontSize: 15,
+      color: 'grey'
+   }
+})
 
 export default IterableInboxEmptyState

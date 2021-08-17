@@ -1,7 +1,7 @@
 'use strict'
 
 import { IterableAction, IterableActionContext, IterableLogLevel, IterableInAppShowResponse } from '.'
-import { IterableInAppMessage } from '.'
+import IterableInAppMessage from './IterableInAppMessage'
 
 /**
 Iterable Configuration Object. Use this when initializing the API.
@@ -78,4 +78,4 @@ class IterableConfig {
     }
   }
 
-  export { IterableConfig }
+  export default IterableConfig
