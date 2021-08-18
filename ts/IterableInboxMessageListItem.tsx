@@ -1,18 +1,19 @@
 'use strict'
+
 import React from 'react'
 import {
    View,
    Text,
    StyleSheet
 } from 'react-native'
+
 import Message from './messageType'
 
 type MessageListItemProps = {
-   index: number,
    message: Message,
 }
 
-const IterableInboxMessageListItem = ({ index, message }: MessageListItemProps) => {
+const IterableInboxMessageListItem = ({ message }: MessageListItemProps) => {
    const messageTitle = message.inboxMetadata.title
    const messageBody = message.inboxMetadata.subtitle
    const messageCreatedAt = message.createdAt

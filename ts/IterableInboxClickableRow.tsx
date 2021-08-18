@@ -1,19 +1,17 @@
 'use strict'
 
 import React, { useState } from 'react'
-import { StyleSheet, TouchableOpacity } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 
 import IterableInboxMessageListItem from './IterableInboxMessageListItem'
 import Message from './messageType'
 
 type MessageClickableRowProps = {
-   index: number,
    message: Message,
    handleMessageSelect: Function,
 }
 
-const IterableInboxClickableRow = ({ 
-   index, 
+const IterableInboxClickableRow = ({  
    message, 
    handleMessageSelect 
 }: MessageClickableRowProps) => {
@@ -30,10 +28,7 @@ const IterableInboxClickableRow = ({
             handleMessageSelect(message.messageId)
          }}
       >
-         <IterableInboxMessageListItem
-            index={index} 
-            message={message}
-         /> 
+         <IterableInboxMessageListItem message={message} /> 
       </TouchableOpacity>
    )   
 }

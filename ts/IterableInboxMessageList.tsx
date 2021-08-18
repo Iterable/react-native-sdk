@@ -25,7 +25,6 @@ const IterableInboxMessageList = ({
          return (
             <IterableInboxSwipeableRow
                key={message.messageId}
-               index={index}
                swipingCheck={(swiping : boolean) => setSwiping(swiping)}
                deleteMessage={(id: number) => deleteMessage(id)}
                handleMessageSelect={(id: number) => handleMessageSelect(id)}
@@ -37,9 +36,7 @@ const IterableInboxMessageList = ({
 
    return(
       <ScrollView scrollEnabled={!swiping}>
-         {messages.length ?
-            renderMessageCells(messages) : 
-            <IterableInboxEmptyState></IterableInboxEmptyState>}
+         {renderMessageCells(messages)}
       </ScrollView>   
    )
 }
