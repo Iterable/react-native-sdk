@@ -69,7 +69,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     }
 
     @ReactMethod
-    public void initializeWithApiKey(String apiKey, ReadableMap configReadableMap, String version) {
+    public void initializeWithApiKey(String apiKey, ReadableMap configReadableMap, String version, Promise promise) {
         IterableLogger.d(TAG, "initializeWithApiKey: " + apiKey);
         IterableConfig.Builder configBuilder = Serialization.getConfigFromReadableMap(configReadableMap);
 
@@ -91,6 +91,9 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
 
         IterableApi.initialize(reactContext, apiKey, configBuilder.build());
         IterableApi.getInstance().setDeviceAttribute("reactNativeSDKVersion", version);
+        // TODO: Figure out what the error cases are and handle them appropriately
+        // This is just here to match the TS types and let the JS thread know when we are done initializing
+        promise.resolve(true);
     }
 
     @ReactMethod
