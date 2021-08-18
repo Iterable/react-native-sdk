@@ -1,5 +1,4 @@
 'use strict'
-
 import React from 'react'
 import {
    View,
@@ -14,22 +13,33 @@ type MessageListItemProps = {
 }
 
 const IterableInboxMessageListItem = ({ index, message }: MessageListItemProps) => {
-   const unreadIndicator = "\u2022"
    const messageTitle = message.inboxMetadata.title
    const messageBody = message.inboxMetadata.subtitle
    const messageCreatedAt = message.createdAt
+
+   const {
+      unreadIndicatorContainer, 
+      unreadIndicator, 
+      readMessageContainer, 
+      unreadMessageContainer,
+      title,
+      body,
+      createdAt,
+      messageRow,
+      lastMessageRow
+   } = styles
    
    return(
-      <>
-         <View style={styles.unreadIndicatorContainer}>
-            {message.read ? null : <View style={styles.unreadIndicator}/>}
+      <View style={message.last ? lastMessageRow : messageRow }>
+         <View style={unreadIndicatorContainer}>
+            {message.read ? null : <View style={unreadIndicator}/>}
          </View>
-         <View style={message.read ? styles.readMessageContainer : styles.unreadMessageContainer}>
-            <Text style={styles.title}>{messageTitle}</Text>
-            <Text style={styles.body}>{messageBody}</Text>
-            <Text style={styles.createdAt}>{messageCreatedAt}</Text>
+         <View style={message.read ? readMessageContainer : unreadMessageContainer}>
+            <Text style={title}>{messageTitle}</Text>
+            <Text style={body}>{messageBody}</Text>
+            <Text style={createdAt}>{messageCreatedAt}</Text>
          </View>
-      </>  
+      </View>  
    )
 }
 
@@ -72,6 +82,64 @@ const styles = StyleSheet.create({
    createdAt: {
       fontSize: 12,
       color: 'lightgray'
+   },
+
+   messageRow: {
+      flexDirection: 'row',
+      backgroundColor: 'white',
+      paddingTop: 10,
+      paddingBottom: 10,
+      width: '100%',
+      height: 100,
+      borderStyle: 'solid',
+      borderTopColor: 'lightgray',
+      borderBottomColor: 'lightgray',
+      borderWidth: 0,
+      borderTopWidth: 1
+   },
+
+   pressedMessageCell: {
+      flexDirection: 'row',
+      backgroundColor: 'whitesmoke',
+      paddingTop: 10,
+      paddingBottom: 10,
+      width: '100%',
+      height: 100,
+      borderStyle: 'solid',
+      borderTopColor: 'lightgray',
+      borderBottomColor: 'lightgray',
+      borderWidth: 0,
+      borderTopWidth: 1
+   },
+
+   lastMessageRow: {
+      flexDirection: 'row',
+      backgroundColor: 'white',
+      paddingTop: 10,
+      paddingBottom: 10,
+      width: '100%',
+      height: 100,
+      borderStyle: 'solid',
+      borderTopColor: 'lightgray',
+      borderBottomColor: 'lightgray',
+      borderWidth: 0,
+      borderTopWidth: 1,
+      borderBottomWidth: 1
+   },
+
+   pressedLastMessageCell: {
+      flexDirection: 'row',
+      backgroundColor: 'whitesmoke',
+      paddingTop: 10,
+      paddingBottom: 10,
+      width: '100%',
+      height: 100,
+      borderStyle: 'solid',
+      borderTopColor: 'lightgray',
+      borderBottomColor: 'lightgray',
+      borderWidth: 0,
+      borderTopWidth: 1,
+      borderBottomWidth: 1
    }
 })
 
