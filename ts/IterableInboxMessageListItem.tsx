@@ -19,41 +19,49 @@ const IterableInboxMessageListItem = ({ message, customization }: MessageListIte
    const messageBody = message.inboxMetadata.subtitle
    const messageCreatedAt = message.createdAt
 
+   function customizeStyles(styles: {[key: string]: any}, customization: {[key: string]: any}) {
+      const elements = Object.keys(styles)
+      const updatedStyles : {[key: string]: any} = {}
+
+      for(let i = 0; i < elements.length; i++) {
+         let element = elements[i]
+         if(customization[element]) {
+            updatedStyles[element] = {...styles[element], ...customization[element]}  
+         } else {
+            updatedStyles[element] = styles[element]
+         }
+
+         //updates the styling for the messageRow if the row is the last row
+         if(element === "messageRow") {
+            updatedStyles[element] = message.last ? 
+               {...updatedStyles[element], borderBottomWidth: 1} :
+               updatedStyles[element]
+         }
+      }
+
+      return updatedStyles
+   }
+
    const {
-      unreadIndicator,
       unreadIndicatorContainer,
+      unreadIndicator,
+      unreadMessageContainer,
+      readMessageContainer,
       title,
       body,
       createdAt,
-      lastMessageRow,
-      messageRow,
-      readMessageContainer,
-      unreadMessageContainer
-   } = styles
-   
-   function updateStyle(element: string, elementStyling: {[key: string]: any}, customization: {[key: string]: any}) {
-      return customization[element] ?
-         {...elementStyling, ...customization[element]} :
-         elementStyling
-   }
-
-   const unreadIndicatorContainerStyle = updateStyle('unreadIndicatorContainer', unreadIndicatorContainer, customization)
-   const unreadIndicatorStyle = updateStyle('unreadIndicator', unreadIndicator, customization)
-   const titleStyle = updateStyle('title', title, customization)
-   const bodyStyle = updateStyle('body', body, customization)
-   const createdAtStyle = updateStyle('createdAt', createdAt, customization)
-   const lastMessageRowStyle = updateStyle('lastMessageRow', lastMessageRow, customization)
-   const messageRowStyle = updateStyle('messageRow', messageRow, customization)
+      messageRow
+   } = customizeStyles(styles, customization)
 
    return(
-      <View style={message.last ? lastMessageRowStyle : messageRowStyle }>
-         <View style={unreadIndicatorContainerStyle}>
-            {message.read ? null : <View style={unreadIndicatorStyle}/>}
+      <View style={messageRow}>
+         <View style={unreadIndicatorContainer}>
+            {message.read ? null : <View style={unreadIndicator}/>}
          </View>
          <View style={message.read ? readMessageContainer : unreadMessageContainer}>
-            <Text style={titleStyle}>{messageTitle}</Text>
-            <Text style={bodyStyle}>{messageBody}</Text>
-            <Text style={createdAtStyle}>{messageCreatedAt}</Text>
+            <Text style={title}>{messageTitle}</Text>
+            <Text style={body}>{messageBody}</Text>
+            <Text style={createdAt}>{messageCreatedAt}</Text>
          </View>
       </View>  
    )
@@ -110,48 +118,6 @@ const styles = StyleSheet.create({
       borderStyle: 'solid',
       borderColor: 'lightgray',
       borderTopWidth: 1
-   },
-
-   pressedMessageCell: {
-      flexDirection: 'row',
-      backgroundColor: 'whitesmoke',
-      paddingTop: 10,
-      paddingBottom: 10,
-      width: '100%',
-      height: 100,
-      borderStyle: 'solid',
-      borderColor: 'lightgray',
-      borderTopWidth: 1
-   },
-
-   lastMessageRow: {
-      flexDirection: 'row',
-      backgroundColor: 'white',
-      paddingTop: 10,
-      paddingBottom: 10,
-      width: '100%',
-      height: 100,
-      borderStyle: 'solid',
-      borderTopColor: 'lightgray',
-      borderBottomColor: 'lightgray',
-      borderWidth: 0,
-      borderTopWidth: 1,
-      borderBottomWidth: 1
-   },
-
-   pressedLastMessageCell: {
-      flexDirection: 'row',
-      backgroundColor: 'whitesmoke',
-      paddingTop: 10,
-      paddingBottom: 10,
-      width: '100%',
-      height: 100,
-      borderStyle: 'solid',
-      borderTopColor: 'lightgray',
-      borderBottomColor: 'lightgray',
-      borderWidth: 0,
-      borderTopWidth: 1,
-      borderBottomWidth: 1
    }
 })
 
