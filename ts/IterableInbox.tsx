@@ -14,7 +14,7 @@ type inboxProps = {
 }
 
 const IterableInbox = ({ customizations }: inboxProps) => {
-   const inboxTitle = "Inbox"
+   const defaultInboxTitle = "Inbox"
    const [isDisplayMessage, setIsDisplayMessage] = useState<boolean>(false)
    const [selectedMessageId, setSelectedMessageId] = useState<number>(1)
    const [messages, setMessages] = useState<Message[]>([])
@@ -55,7 +55,7 @@ const IterableInbox = ({ customizations }: inboxProps) => {
       return (
          <>
             <Text style={styles.headline}>
-               {inboxTitle}
+               {customizations.navTitle ? customizations.navTitle : defaultInboxTitle}
             </Text>
             { messages.length ?
                <IterableInboxMessageList 
