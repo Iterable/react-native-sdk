@@ -8,11 +8,13 @@ import Message from './messageType'
 
 type MessageClickableRowProps = {
    message: Message,
+   customization: {[key: string]: any},
    handleMessageSelect: Function,
 }
 
 const IterableInboxClickableRow = ({  
-   message, 
+   message,
+   customization, 
    handleMessageSelect 
 }: MessageClickableRowProps) => {
    const [active, setActive] = useState(false)
@@ -28,7 +30,9 @@ const IterableInboxClickableRow = ({
             handleMessageSelect(message.messageId)
          }}
       >
-         <IterableInboxMessageListItem message={message} /> 
+         <IterableInboxMessageListItem
+            customization={customization} 
+            message={message} /> 
       </TouchableOpacity>
    )   
 }

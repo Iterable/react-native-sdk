@@ -11,34 +11,49 @@ import Message from './messageType'
 
 type MessageListItemProps = {
    message: Message,
+   customization: {[key: string]: any}
 }
 
-const IterableInboxMessageListItem = ({ message }: MessageListItemProps) => {
+const IterableInboxMessageListItem = ({ message, customization }: MessageListItemProps) => {
    const messageTitle = message.inboxMetadata.title
    const messageBody = message.inboxMetadata.subtitle
    const messageCreatedAt = message.createdAt
 
    const {
-      unreadIndicatorContainer, 
-      unreadIndicator, 
-      readMessageContainer, 
-      unreadMessageContainer,
+      unreadIndicator,
+      unreadIndicatorContainer,
       title,
       body,
       createdAt,
+      lastMessageRow,
       messageRow,
-      lastMessageRow
+      readMessageContainer,
+      unreadMessageContainer
    } = styles
    
+   function updateStyle(element: string, elementStyling: {[key: string]: any}, customization: {[key: string]: any}) {
+      return customization[element] ?
+         {...elementStyling, ...customization[element]} :
+         elementStyling
+   }
+
+   const unreadIndicatorContainerStyle = updateStyle('unreadIndicatorContainer', unreadIndicatorContainer, customization)
+   const unreadIndicatorStyle = updateStyle('unreadIndicator', unreadIndicator, customization)
+   const titleStyle = updateStyle('title', title, customization)
+   const bodyStyle = updateStyle('body', body, customization)
+   const createdAtStyle = updateStyle('createdAt', createdAt, customization)
+   const lastMessageRowStyle = updateStyle('lastMessageRow', lastMessageRow, customization)
+   const messageRowStyle = updateStyle('messageRow', messageRow, customization)
+
    return(
-      <View style={message.last ? lastMessageRow : messageRow }>
-         <View style={unreadIndicatorContainer}>
-            {message.read ? null : <View style={unreadIndicator}/>}
+      <View style={message.last ? lastMessageRowStyle : messageRowStyle }>
+         <View style={unreadIndicatorContainerStyle}>
+            {message.read ? null : <View style={unreadIndicatorStyle}/>}
          </View>
          <View style={message.read ? readMessageContainer : unreadMessageContainer}>
-            <Text style={title}>{messageTitle}</Text>
-            <Text style={body}>{messageBody}</Text>
-            <Text style={createdAt}>{messageCreatedAt}</Text>
+            <Text style={titleStyle}>{messageTitle}</Text>
+            <Text style={bodyStyle}>{messageBody}</Text>
+            <Text style={createdAtStyle}>{messageCreatedAt}</Text>
          </View>
       </View>  
    )
@@ -51,7 +66,7 @@ const styles = StyleSheet.create({
       justifyContent: 'flex-start'
    },
 
-   unreadIndicator: {
+   unreadIndicator: { 
       width: 15,
       height: 15,
       borderRadius: 15 / 2,
@@ -93,9 +108,7 @@ const styles = StyleSheet.create({
       width: '100%',
       height: 100,
       borderStyle: 'solid',
-      borderTopColor: 'lightgray',
-      borderBottomColor: 'lightgray',
-      borderWidth: 0,
+      borderColor: 'lightgray',
       borderTopWidth: 1
    },
 
@@ -107,9 +120,7 @@ const styles = StyleSheet.create({
       width: '100%',
       height: 100,
       borderStyle: 'solid',
-      borderTopColor: 'lightgray',
-      borderBottomColor: 'lightgray',
-      borderWidth: 0,
+      borderColor: 'lightgray',
       borderTopWidth: 1
    },
 

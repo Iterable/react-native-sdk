@@ -9,12 +9,14 @@ import Message from './messageType'
 
 type MessageListProps = {
    messages: Message[],
+   customization: {[key: string]: any}
    deleteMessage: Function,
    handleMessageSelect: Function 
 }
 
 const IterableInboxMessageList = ({ 
-   messages, 
+   messages,
+   customization, 
    deleteMessage, 
    handleMessageSelect 
 }: MessageListProps) => {
@@ -25,6 +27,7 @@ const IterableInboxMessageList = ({
          return (
             <IterableInboxSwipeableRow
                key={message.messageId}
+               customization={customization}
                swipingCheck={(swiping : boolean) => setSwiping(swiping)}
                deleteMessage={(id: number) => deleteMessage(id)}
                handleMessageSelect={(id: number) => handleMessageSelect(id)}

@@ -12,18 +12,18 @@ import Message from './messageType'
 type inboxProps = {
    navTitleCustomization: {[key: string] : string}
    emptyStateCustomization: {[key: string] : string}
-   messageBodyCustomization: {[key: string] : any}
+   messageRowCustomization: {[key: string] : any}
 }
 
 const IterableInbox = ({ 
    navTitleCustomization,
    emptyStateCustomization,
-   messageBodyCustomization 
+   messageRowCustomization 
 }: inboxProps) => {
    const defaultInboxTitle = "Inbox"
    const [isDisplayMessage, setIsDisplayMessage] = useState<boolean>(false)
    const [selectedMessageId, setSelectedMessageId] = useState<number>(1)
-   const [messages, setMessages] = useState<Message[]>([])
+   const [messages, setMessages] = useState<Message[]>(sampleMessages)
 
    const selectedMessage = messages.find(message => message.messageId === selectedMessageId)
 
@@ -66,7 +66,7 @@ const IterableInbox = ({
             { messages.length ?
                <IterableInboxMessageList 
                   messages={messages}
-                  //customization={messageRowCustomization}
+                  customization={messageRowCustomization}
                   deleteMessage={(id: number) => deleteMessage(id, messages)}
                   handleMessageSelect={(id: number) => handleMessageSelect(id, messages)}/>  : 
                <IterableInboxEmptyState
