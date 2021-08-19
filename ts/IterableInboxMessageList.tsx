@@ -3,10 +3,10 @@
 import React from 'react'
 import { ScrollView, StyleSheet } from 'react-native'
 import IterableInboxClickableRow from './IterableInboxClickableRow'
-import Message from './messageType'
+import IterableInAppMessage from './IterableInAppMessage'
 
 type MessageListProps = {
-   messages: Message[],
+   messages: IterableInAppMessage[],
    handleMessageSelect: Function
 }
 

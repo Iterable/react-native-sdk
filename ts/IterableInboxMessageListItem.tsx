@@ -6,18 +6,18 @@ import {
    Text,
    StyleSheet
 } from 'react-native'
-import Message from './messageType'
+import IterableInAppMessage from './IterableInAppMessage'
 
 type MessageListItemProps = {
    index: number,
-   message: Message,
-   last: boolean 
+   message: IterableInAppMessage,
+   last: boolean
 }
 
 const IterableInboxMessageListItem = ({ index, message, last }: MessageListItemProps) => {
    const unreadIndicator = "\u2022"
-   const messageTitle = message.inboxMetadata.title
-   const messageBody = message.inboxMetadata.subtitle
+   const messageTitle = message.inboxMetadata?.title
+   const messageBody = message.inboxMetadata?.subtitle
    const messageCreatedAt = message.createdAt
    
    return(
@@ -30,7 +30,7 @@ const IterableInboxMessageListItem = ({ index, message, last }: MessageListItemP
             <Text style={styles.body}>{messageBody}</Text>
             <Text style={styles.createdAt}>{messageCreatedAt}</Text>
          </View>
-      </>  
+      </>
    )
 }
 
