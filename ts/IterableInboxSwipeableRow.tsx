@@ -12,10 +12,11 @@ import {
 
 import IterableInboxClickableRow from './IterableInboxClickableRow'
 import Message from './messageType'
+import Customization from './customizationType'
 
 type SwipeableRowProps = {
    message: Message,
-   customization: {[key: string]: any},
+   customization: Customization,
    swipingCheck: Function,
    deleteMessage: Function,
    handleMessageSelect: Function,

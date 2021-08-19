@@ -2,9 +2,10 @@
 
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
+import Customization from './customizationType'
 
 type emptyStateProps = {
-   customization: {[key: string]: string}
+   customization: Customization
 }
 
 const IterableInboxEmptyState = ({ customization } : emptyStateProps) => {
@@ -19,7 +20,7 @@ const IterableInboxEmptyState = ({ customization } : emptyStateProps) => {
          <Text style={styles.title}>
             {title ? title : defaultTitle}
          </Text>
-         <Text style={styles.subtitle}>
+         <Text style={styles.body}>
             {body ? body : defaultBody}
          </Text>
       </View>
@@ -42,7 +43,7 @@ const styles = StyleSheet.create({
       paddingBottom: 25
    },
 
-   subtitle: {
+   body: {
       fontSize: 15,
       color: 'grey'
    }

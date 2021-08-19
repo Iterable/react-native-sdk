@@ -8,10 +8,11 @@ import {
 } from 'react-native'
 
 import Message from './messageType'
+import Customization from './customizationType'
 
 type MessageListItemProps = {
    message: Message,
-   customization: {[key: string]: any}
+   customization: Customization
 }
 
 const IterableInboxMessageListItem = ({ message, customization }: MessageListItemProps) => {
@@ -19,28 +20,11 @@ const IterableInboxMessageListItem = ({ message, customization }: MessageListIte
    const messageBody = message.inboxMetadata.subtitle
    const messageCreatedAt = message.createdAt
 
-   function customizeStyles(styles: {[key: string]: any}, customization: {[key: string]: any}) {
-      const elements = Object.keys(styles)
-      const updatedStyles : {[key: string]: any} = {}
+   styles = {...styles, ...customization}
 
-      for(let i = 0; i < elements.length; i++) {
-         let element = elements[i]
-         if(customization[element]) {
-            updatedStyles[element] = {...styles[element], ...customization[element]}  
-         } else {
-            updatedStyles[element] = styles[element]
-         }
-
-         //updates the styling for the messageRow if the row is the last row
-         if(element === "messageRow") {
-            updatedStyles[element] = message.last ? 
-               {...updatedStyles[element], borderBottomWidth: 1} :
-               updatedStyles[element]
-         }
-      }
-
-      return updatedStyles
-   }
+   function messageRowStyle(message: Message) {
+      return message.last ? {...messageRow, borderBottomWidth: 1} : messageRow 
+   } 
 
    const {
       unreadIndicatorContainer,
@@ -51,10 +35,10 @@ const IterableInboxMessageListItem = ({ message, customization }: MessageListIte
       body,
       createdAt,
       messageRow
-   } = customizeStyles(styles, customization)
+   } = styles
 
    return(
-      <View style={messageRow}>
+      <View style={messageRowStyle(message)}>
          <View style={unreadIndicatorContainer}>
             {message.read ? null : <View style={unreadIndicator}/>}
          </View>
@@ -67,7 +51,7 @@ const IterableInboxMessageListItem = ({ message, customization }: MessageListIte
    )
 }
 
-const styles = StyleSheet.create({
+let styles = StyleSheet.create({
    unreadIndicatorContainer: {
       height: '100%',
       flexDirection: 'column',

@@ -5,10 +5,11 @@ import { TouchableOpacity } from 'react-native'
 
 import IterableInboxMessageListItem from './IterableInboxMessageListItem'
 import Message from './messageType'
+import Customization from './customizationType'
 
 type MessageClickableRowProps = {
    message: Message,
-   customization: {[key: string]: any},
+   customization: Customization,
    handleMessageSelect: Function,
 }
 

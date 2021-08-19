@@ -8,17 +8,14 @@ import IterableInboxEmptyState from './IterableInboxEmptyState'
 import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
 import sampleMessages from './sampleMessageData'
 import Message from './messageType'
+import Customization from './customizationType'
 
 type inboxProps = {
-   navTitleCustomization: {[key: string] : string}
-   emptyStateCustomization: {[key: string] : string}
-   messageRowCustomization: {[key: string] : any}
+   customization: Customization
 }
 
 const IterableInbox = ({ 
-   navTitleCustomization,
-   emptyStateCustomization,
-   messageRowCustomization 
+   customization
 }: inboxProps) => {
    const defaultInboxTitle = "Inbox"
    const [isDisplayMessage, setIsDisplayMessage] = useState<boolean>(false)
@@ -61,16 +58,16 @@ const IterableInbox = ({
       return (
          <>
             <Text style={styles.headline}>
-               {navTitleCustomization.navTitle ? navTitleCustomization.navTitle : defaultInboxTitle}
+               {customization.navTitle ? customization.navTitle : defaultInboxTitle}
             </Text>
             { messages.length ?
                <IterableInboxMessageList 
                   messages={messages}
-                  customization={messageRowCustomization}
+                  customization={customization}
                   deleteMessage={(id: number) => deleteMessage(id, messages)}
                   handleMessageSelect={(id: number) => handleMessageSelect(id, messages)}/>  : 
                <IterableInboxEmptyState
-                  customization={emptyStateCustomization} />
+                  customization={customization} />
             }
          </>)
    }
