@@ -12,8 +12,8 @@ const IterableInboxEmptyState = ({ customization } : emptyStateProps) => {
    const defaultTitle = "No saved messages"
    const defaultBody = "Check again later!"
    
-   const title = customization.emptyStateTitle
-   const body = customization.emptyStateBody
+   const title = customization.noMessagesTitle
+   const body = customization.noMessagesBody
 
    return(
       <View style={styles.container}>

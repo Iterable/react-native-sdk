@@ -1,7 +1,7 @@
 type Customization = {
    navTitle: string,
-   emptyStateTitle: string,
-   emptyStateBody: string,
+   noMessagesTitle: string,
+   noMessagesBody: string,
  
    unreadIndicatorContainer: {
       height: string,
