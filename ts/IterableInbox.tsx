@@ -66,8 +66,7 @@ const IterableInbox = ({
                   customization={customization}
                   deleteMessage={(id: number) => deleteMessage(id, messages)}
                   handleMessageSelect={(id: number) => handleMessageSelect(id, messages)}/>  : 
-               <IterableInboxEmptyState
-                  customization={customization} />
+               <IterableInboxEmptyState customization={customization} />
             }
          </>)
    }
