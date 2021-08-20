@@ -10,10 +10,10 @@ import sampleMessages from './sampleMessageData'
 import Message from './messageType'
 
 type inboxProps = {
-   customizations: {[key: string] : string}
+   customization: {[key: string] : string}
 }
 
-const IterableInbox = ({ customizations }: inboxProps) => {
+const IterableInbox = ({ customization }: inboxProps) => {
    const defaultInboxTitle = "Inbox"
    const [isDisplayMessage, setIsDisplayMessage] = useState<boolean>(false)
    const [selectedMessageId, setSelectedMessageId] = useState<number>(1)
@@ -55,7 +55,7 @@ const IterableInbox = ({ customizations }: inboxProps) => {
       return (
          <>
             <Text style={styles.headline}>
-               {customizations.navTitle ? customizations.navTitle : defaultInboxTitle}
+               {customization.navTitle ? customization.navTitle : defaultInboxTitle}
             </Text>
             { messages.length ?
                <IterableInboxMessageList 
@@ -63,8 +63,8 @@ const IterableInbox = ({ customizations }: inboxProps) => {
                   deleteMessage={(id: number) => deleteMessage(id, messages)}
                   handleMessageSelect={(id: number) => handleMessageSelect(id, messages)}/>  : 
                <IterableInboxEmptyState
-                  title={customizations.emptyStateTitle}
-                  body={customizations.emptyStateBody} />
+                  title={customization.noMessagesTitle}
+                  body={customization.noMessagesBody} />
             }
          </>)
    }
