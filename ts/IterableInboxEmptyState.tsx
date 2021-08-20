@@ -2,22 +2,25 @@
 
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
+import Customization from './customizationType'
 
 type emptyStateProps = {
-   title: string,
-   body: string
+   customization: Customization
 }
 
-const IterableInboxEmptyState = ({title, body} : emptyStateProps) => {
+const IterableInboxEmptyState = ({ customization } : emptyStateProps) => {
    const defaultTitle = "No saved messages"
-   const defaultBody = "Check again later!" 
+   const defaultBody = "Check again later!"
+   
+   const title = customization.noMessagesTitle
+   const body = customization.noMessagesBody
 
    return(
       <View style={styles.container}>
          <Text style={styles.title}>
             {title ? title : defaultTitle}
          </Text>
-         <Text style={styles.subtitle}>
+         <Text style={styles.body}>
             {body ? body : defaultBody}
          </Text>
       </View>
@@ -40,7 +43,7 @@ const styles = StyleSheet.create({
       paddingBottom: 25
    },
 
-   subtitle: {
+   body: {
       fontSize: 15,
       color: 'grey'
    }

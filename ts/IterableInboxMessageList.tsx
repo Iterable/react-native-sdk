@@ -5,16 +5,20 @@ import {  ScrollView } from 'react-native'
 
 import IterableInboxSwipeableRow from './IterableInboxSwipeableRow'
 import IterableInboxEmptyState from './IterableInboxEmptyState'
+
 import Message from './messageType'
+import Customization from './customizationType'
 
 type MessageListProps = {
    messages: Message[],
+   customization: Customization
    deleteMessage: Function,
    handleMessageSelect: Function 
 }
 
 const IterableInboxMessageList = ({ 
-   messages, 
+   messages,
+   customization, 
    deleteMessage, 
    handleMessageSelect 
 }: MessageListProps) => {
@@ -25,6 +29,7 @@ const IterableInboxMessageList = ({
          return (
             <IterableInboxSwipeableRow
                key={message.messageId}
+               customization={customization}
                swipingCheck={(swiping : boolean) => setSwiping(swiping)}
                deleteMessage={(id: number) => deleteMessage(id)}
                handleMessageSelect={(id: number) => handleMessageSelect(id)}

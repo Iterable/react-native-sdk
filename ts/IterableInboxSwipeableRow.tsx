@@ -12,21 +12,24 @@ import {
 
 import IterableInboxClickableRow from './IterableInboxClickableRow'
 import Message from './messageType'
+import Customization from './customizationType'
 
 type SwipeableRowProps = {
+   message: Message,
+   customization: Customization,
    swipingCheck: Function,
    deleteMessage: Function,
    handleMessageSelect: Function,
-   message: Message,
 }
 
 const SCREEN_WIDTH = Dimensions.get('window').width
 
 const IterableInboxSwipeableRow = ({
+   message,
+   customization,
    swipingCheck,
    deleteMessage,
    handleMessageSelect,
-   message,
 }: SwipeableRowProps) => {
    const position = useRef(new Animated.ValueXY()).current
 
@@ -120,6 +123,7 @@ const IterableInboxSwipeableRow = ({
          >
             <IterableInboxClickableRow
                message={message}
+               customization={customization}
                handleMessageSelect={(id: number) => handleMessageSelect(id)}
             />   
          </Animated.View>

@@ -8,30 +8,37 @@ import {
 } from 'react-native'
 
 import Message from './messageType'
+import Customization from './customizationType'
 
 type MessageListItemProps = {
    message: Message,
+   customization: Customization
 }
 
-const IterableInboxMessageListItem = ({ message }: MessageListItemProps) => {
+const IterableInboxMessageListItem = ({ message, customization }: MessageListItemProps) => {
    const messageTitle = message.inboxMetadata.title
    const messageBody = message.inboxMetadata.subtitle
    const messageCreatedAt = message.createdAt
 
+   styles = {...styles, ...customization}
+
+   function messageRowStyle(message: Message) {
+      return message.last ? {...messageRow, borderBottomWidth: 1} : messageRow 
+   } 
+
    const {
-      unreadIndicatorContainer, 
-      unreadIndicator, 
-      readMessageContainer, 
+      unreadIndicatorContainer,
+      unreadIndicator,
       unreadMessageContainer,
+      readMessageContainer,
       title,
       body,
       createdAt,
-      messageRow,
-      lastMessageRow
+      messageRow
    } = styles
-   
+
    return(
-      <View style={message.last ? lastMessageRow : messageRow }>
+      <View style={messageRowStyle(message)}>
          <View style={unreadIndicatorContainer}>
             {message.read ? null : <View style={unreadIndicator}/>}
          </View>
@@ -44,14 +51,14 @@ const IterableInboxMessageListItem = ({ message }: MessageListItemProps) => {
    )
 }
 
-const styles = StyleSheet.create({
+let styles = StyleSheet.create({
    unreadIndicatorContainer: {
       height: '100%',
       flexDirection: 'column',
       justifyContent: 'flex-start'
    },
 
-   unreadIndicator: {
+   unreadIndicator: { 
       width: 15,
       height: 15,
       borderRadius: 15 / 2,
@@ -93,54 +100,8 @@ const styles = StyleSheet.create({
       width: '100%',
       height: 100,
       borderStyle: 'solid',
-      borderTopColor: 'lightgray',
-      borderBottomColor: 'lightgray',
-      borderWidth: 0,
+      borderColor: 'lightgray',
       borderTopWidth: 1
-   },
-
-   pressedMessageCell: {
-      flexDirection: 'row',
-      backgroundColor: 'whitesmoke',
-      paddingTop: 10,
-      paddingBottom: 10,
-      width: '100%',
-      height: 100,
-      borderStyle: 'solid',
-      borderTopColor: 'lightgray',
-      borderBottomColor: 'lightgray',
-      borderWidth: 0,
-      borderTopWidth: 1
-   },
-
-   lastMessageRow: {
-      flexDirection: 'row',
-      backgroundColor: 'white',
-      paddingTop: 10,
-      paddingBottom: 10,
-      width: '100%',
-      height: 100,
-      borderStyle: 'solid',
-      borderTopColor: 'lightgray',
-      borderBottomColor: 'lightgray',
-      borderWidth: 0,
-      borderTopWidth: 1,
-      borderBottomWidth: 1
-   },
-
-   pressedLastMessageCell: {
-      flexDirection: 'row',
-      backgroundColor: 'whitesmoke',
-      paddingTop: 10,
-      paddingBottom: 10,
-      width: '100%',
-      height: 100,
-      borderStyle: 'solid',
-      borderTopColor: 'lightgray',
-      borderBottomColor: 'lightgray',
-      borderWidth: 0,
-      borderTopWidth: 1,
-      borderBottomWidth: 1
    }
 })
 
