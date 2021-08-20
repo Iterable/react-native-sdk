@@ -227,7 +227,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     public void removeMessage(String messageId, Integer location, Integer deleteSource) {
         IterableLogger.v(TAG, "removeMessage");
         
-        IterableApi.getInstance().getInAppManager().removeMessage(RNIterableInternal.getMessageById(messageId), Serialization.getIterableDeleteActionTypeFromInteger(deleteSource), Serialization.getIterableInAppLocationFromInteger(location))
+        IterableApi.getInstance().getInAppManager().removeMessage(RNIterableInternal.getMessageById(messageId), Serialization.getIterableDeleteActionTypeFromInteger(deleteSource), Serialization.getIterableInAppLocationFromInteger(location));
     }
 
     @ReactMethod
