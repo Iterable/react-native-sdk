@@ -1,31 +1,47 @@
 'use strict'
 
 import React, { useState } from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import { Text, SafeAreaView, StyleSheet } from 'react-native'
+
 import IterableInboxMessageList from './IterableInboxMessageList'
 import IterableInboxEmptyState from './IterableInboxEmptyState'
 import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
+
 import IterableInAppMessage from './IterableInAppMessage'
 import sampleMessages from './sampleMessageDataOld'
 import Message from './messageType'
+import Customization from './customizationType'
 
-const IterableInbox = () => {
-   const inboxTitle = "Inbox"
-   const [isDisplayMessage, setIsDisplayMessage] = useState(false)
-   const [selectedMessageIdx, setSelectedMessageIdx] = useState(0)
-   const [messages, setMessages] = useState(sampleMessages)
+type inboxProps = {
+   customization: Customization
+}
 
-   let selectedMessage = messages[selectedMessageIdx]
+const IterableInbox = ({ 
+   customization
+}: inboxProps) => {
+   const defaultInboxTitle = "Inbox"
+   const [isDisplayMessage, setIsDisplayMessage] = useState<boolean>(false)
+   const [selectedMessageId, setSelectedMessageId] = useState<number>(1)
+   const [messages, setMessages] = useState<Message[]>(sampleMessages)
 
-   function handleMessageSelect(index: number, messages: Array<any>) {
-      const newMessages = messages.map((message, messageIndex) => {
-         return (messageIndex === index) ?
+   const selectedMessage = messages.find(message => message.messageId === selectedMessageId)
+
+   function handleMessageSelect(id: number, messages: Message[]) {
+      let newMessages = messages.map((message) => {
+         return (message.messageId === id) ?
             {...message, read: true } : message
       })
-
       setMessages(newMessages)
       setIsDisplayMessage(true)
-      setSelectedMessageIdx(index)
+      setSelectedMessageId(id)
+   }
+
+   function deleteMessage(id: number, messages: Message[]) {
+      let newMessages = sampleMessages.filter((message) => {
+         return message.messageId !== id
+      })
+      newMessages[newMessages.length - 1] = {...newMessages[newMessages.length - 1], last: true}
+      setMessages(newMessages)
    }
 
    function returnToInbox() {
@@ -36,7 +52,7 @@ const IterableInbox = () => {
       return (
          <IterableInboxMessageDisplay
             message={message}
-            returnToInbox={returnToInbox}
+            returnToInbox={() => returnToInbox()}
          ></IterableInboxMessageDisplay>)
    }
 
@@ -44,33 +60,30 @@ const IterableInbox = () => {
       return (
          <>
             <Text style={styles.headline}>
-               {inboxTitle}
+               {customization.navTitle ? customization.navTitle : defaultInboxTitle}
             </Text>
-            {messages.length ? 
+            { messages.length ?
                <IterableInboxMessageList 
                   messages={messages}
-                  handleMessageSelect={(index: number) => handleMessageSelect(index, messages)}
-               ></IterableInboxMessageList> : 
-               <IterableInboxEmptyState></IterableInboxEmptyState>}
+                  customization={customization}
+                  deleteMessage={(id: number) => deleteMessage(id, messages)}
+                  handleMessageSelect={(id: number) => handleMessageSelect(id, messages)}/>  : 
+               <IterableInboxEmptyState customization={customization} />
+            }
          </>)
    }
 
    return(
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>     
          {isDisplayMessage ? showMessageDisplay(selectedMessage) : showMessageList()}
-      </View>
+      </SafeAreaView>
    )
 }
 
 const styles = StyleSheet.create({
    container: {
-      height: '100%',
-      backgroundColor: 'whitesmoke', 
-      flexDirection: 'column',
-      justifyContent: 'flex-start',
-      marginTop: 50
+      height: '100%'
    },
-
    headline: {
       fontWeight: 'bold' ,
       fontSize: 40,

@@ -1,41 +1,49 @@
 'use strict'
 
-import React from 'react'
-import { ScrollView, StyleSheet } from 'react-native'
-import IterableInboxClickableRow from './IterableInboxClickableRow'
-import IterableInAppMessage from './IterableInAppMessage'
+import React, { useState } from 'react'
+import {  ScrollView } from 'react-native'
+
+import IterableInboxSwipeableRow from './IterableInboxSwipeableRow'
+import IterableInboxEmptyState from './IterableInboxEmptyState'
+
+import Message from './messageType'
+import Customization from './customizationType'
 
 type MessageListProps = {
-   messages: IterableInAppMessage[],
-   handleMessageSelect: Function
+   messages: Message[],
+   customization: Customization
+   deleteMessage: Function,
+   handleMessageSelect: Function 
 }
 
-const IterableInboxMessageList = ({ messages, handleMessageSelect }: MessageListProps) => {
-   function displayMessages() {
-      return messages.map((message, index) => {
-         let last = index === messages.length - 1
+const IterableInboxMessageList = ({ 
+   messages,
+   customization, 
+   deleteMessage, 
+   handleMessageSelect 
+}: MessageListProps) => {
+   const [swiping, setSwiping] = useState(false)
 
+   const renderMessageCells = (messages: Message[]) => {
+      return messages.map((message, index) => {
          return (
-            <IterableInboxClickableRow
+            <IterableInboxSwipeableRow
                key={message.messageId}
-               index={index}
+               customization={customization}
+               swipingCheck={(swiping : boolean) => setSwiping(swiping)}
+               deleteMessage={(id: number) => deleteMessage(id)}
+               handleMessageSelect={(id: number) => handleMessageSelect(id)}
                message={message}
-               handleMessageSelect={(index: number) => handleMessageSelect(index, messages)}
-               last={last} />)
+            />
+         )
       })
-   }
+   } 
 
    return(
-      <ScrollView style={styles.container}>
-         {displayMessages()}
-      </ScrollView>
+      <ScrollView scrollEnabled={!swiping}>
+         {renderMessageCells(messages)}
+      </ScrollView>   
    )
 }
-
-const styles = StyleSheet.create({
-   container: {
-      flex: 1,
-   }
-})
 
 export default IterableInboxMessageList

@@ -1,6 +1,7 @@
 type Message = {
     campaignId: number,
     messageId: number,
+    trigger: string,
     createdAt: string,
     expiresAt: string,
     content: {
@@ -28,7 +29,8 @@ type Message = {
     },
     customPayload: any,
     read: boolean,
-    priorityLevel: number
+    priorityLevel: number,
+    last: boolean
  }
 
  export default Message
