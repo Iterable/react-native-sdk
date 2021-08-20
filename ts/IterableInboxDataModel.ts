@@ -5,30 +5,11 @@ import { IterableInAppMessage, IterableInAppLocation, IterableInAppDeleteSource,
 
 const RNIterableAPI = NativeModules.RNIterableAPI
 
-interface InboxComponent {
-    updateView(): void
-}
-
 class IterableInboxDataModel {
     inboxMessages: Array<InboxRowViewModel> = []
 
-    private listeners: Set<InboxComponent> = new Set()
-
-    constructor(listener: InboxComponent) {
-        this.addListener(listener)
+    constructor() {
         this.syncInboxMessages()
-    }
-
-    addListener(listener: InboxComponent) {
-        console.log("IterableInboxDataModel.addListener")
-        
-        this.listeners.add(listener)
-    }
-
-    removeListener(listener: InboxComponent) {
-        console.log("IterableInboxDataModel.removeListener")
-
-        this.listeners.delete(listener)
     }
 
     getItemCount(): number {
@@ -74,12 +55,6 @@ class IterableInboxDataModel {
         RNIterableAPI.getInboxMessages().then(
             (messages: Array<IterableInAppMessage>) => {
                 this.inboxMessages = messages.map(IterableInboxDataModel.getDataModelForMessage)
-
-                this.listeners.forEach(
-                    (listener) => {
-                        listener.updateView()
-                    }
-                )
             }
         )
     }
@@ -96,5 +71,4 @@ class IterableInboxDataModel {
     }
 }
 
-export { IterableInboxDataModel }
-export type { InboxComponent }
+export default IterableInboxDataModel
