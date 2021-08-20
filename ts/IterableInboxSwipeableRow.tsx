@@ -14,7 +14,6 @@ import IterableInboxClickableRow from './IterableInboxClickableRow'
 import Message from './messageType'
 
 type SwipeableRowProps = {
-   index: number,
    swipingCheck: Function,
    deleteMessage: Function,
    handleMessageSelect: Function,
@@ -24,7 +23,6 @@ type SwipeableRowProps = {
 const SCREEN_WIDTH = Dimensions.get('window').width
 
 const IterableInboxSwipeableRow = ({
-   index,
    swipingCheck,
    deleteMessage,
    handleMessageSelect,
@@ -62,7 +60,7 @@ const IterableInboxSwipeableRow = ({
          toValue: {x, y: 0},
          duration: FORCING_DURATION,
          useNativeDriver: false   
-      }).start(() => deleteMessage(message.messageId, index))
+      }).start(() => deleteMessage(message.messageId))
    }
 
    //
@@ -121,7 +119,6 @@ const IterableInboxSwipeableRow = ({
             {...panResponder.panHandlers}
          >
             <IterableInboxClickableRow
-               index={index} 
                message={message}
                handleMessageSelect={(id: number) => handleMessageSelect(id)}
             />   

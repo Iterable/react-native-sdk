@@ -1,6 +1,7 @@
 type Message = {
     campaignId: number,
     messageId: number,
+    trigger: string,
     createdAt: string,
     expiresAt: string,
     content: {
