@@ -45,6 +45,18 @@ class IterableInboxDataModel {
         RNIterableAPI.setReadForMessage(this.inboxMessages[row].inAppMessage)
     }
 
+    async refresh(): Promise<Array<InboxRowViewModel>> {
+        return RNIterableAPI.getInboxMessages().then(
+            (messages: Array<IterableInAppMessage>) => {
+                this.inboxMessages = messages.map(IterableInboxDataModel.getInboxRowViewModelForMessage)
+                return this.inboxMessages
+            },
+            () => {
+                return []
+            }
+        )
+    }
+
     private idForRow(row: number): string {
         return this.inboxMessages[row].inAppMessage.messageId
     }
@@ -54,12 +66,12 @@ class IterableInboxDataModel {
 
         RNIterableAPI.getInboxMessages().then(
             (messages: Array<IterableInAppMessage>) => {
-                this.inboxMessages = messages.map(IterableInboxDataModel.getDataModelForMessage)
+                this.inboxMessages = messages.map(IterableInboxDataModel.getInboxRowViewModelForMessage)
             }
         )
     }
 
-    private static getDataModelForMessage(message: IterableInAppMessage): InboxRowViewModel {
+    private static getInboxRowViewModelForMessage(message: IterableInAppMessage): InboxRowViewModel {
         return {
             title: message.inboxMetadata?.title ?? "",
             subtitle: message.inboxMetadata?.subtitle,
