@@ -35,7 +35,7 @@ const IterableInboxClickableRow = ({
             customization={customization} 
             message={message} /> 
       </TouchableOpacity>
-   )   
+   )
 }
 
 export default IterableInboxClickableRow

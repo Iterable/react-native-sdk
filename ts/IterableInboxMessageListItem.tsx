@@ -47,7 +47,11 @@ const IterableInboxMessageListItem = ({ message, customization }: MessageListIte
             <Text style={body}>{messageBody}</Text>
             <Text style={createdAt}>{messageCreatedAt}</Text>
          </View>
+<<<<<<< HEAD
       </View>  
+=======
+      </>
+>>>>>>> inbox
    )
 }
 

@@ -84,21 +84,15 @@ class IterableInboxDataModel {
         )
     }
 
-    //** not sure if this is correct yet */
-    // async refresh(): Promise<Array<InboxMessageDataModel>> {
-    //     return RNIterableAPI.getInboxMessages().then(
-    //         (messages: Array<IterableInAppMessage>) => {
-    //             this.inboxMessages = messages.map(IterableInboxDataModel.getDataModelForMessage)
-    //             return this.inboxMessages
-    //         },
-    //         () => {
-    //             return []
-    //         }
-    //     )
-    // }
-
     private static getDataModelForMessage(message: IterableInAppMessage): InboxRowViewModel {
-        return new InboxRowViewModel(message)
+        return {
+            title: message.inboxMetadata?.title ?? "",
+            subtitle: message.inboxMetadata?.subtitle,
+            imageUrl: message.inboxMetadata?.icon,
+            createdAt: message.createdAt,
+            read: message.read,
+            inAppMessage: message
+        }
     }
 }
 
