@@ -5,30 +5,11 @@ import { IterableInAppMessage, IterableInAppLocation, IterableInAppDeleteSource,
 
 const RNIterableAPI = NativeModules.RNIterableAPI
 
-interface InboxComponent {
-    updateView(): void
-}
-
 class IterableInboxDataModel {
     inboxMessages: Array<InboxRowViewModel> = []
 
-    private listeners: Set<InboxComponent> = new Set()
-
-    constructor(listener: InboxComponent) {
-        this.addListener(listener)
+    constructor() {
         this.syncInboxMessages()
-    }
-
-    addListener(listener: InboxComponent) {
-        console.log("IterableInboxDataModel.addListener")
-        
-        this.listeners.add(listener)
-    }
-
-    removeListener(listener: InboxComponent) {
-        console.log("IterableInboxDataModel.removeListener")
-
-        this.listeners.delete(listener)
     }
 
     getItemCount(): number {
@@ -64,6 +45,18 @@ class IterableInboxDataModel {
         RNIterableAPI.setReadForMessage(this.inboxMessages[row].inAppMessage)
     }
 
+    async refresh(): Promise<Array<InboxRowViewModel>> {
+        return RNIterableAPI.getInboxMessages().then(
+            (messages: Array<IterableInAppMessage>) => {
+                this.inboxMessages = messages.map(IterableInboxDataModel.getInboxRowViewModelForMessage)
+                return this.inboxMessages
+            },
+            () => {
+                return []
+            }
+        )
+    }
+
     private idForRow(row: number): string {
         return this.inboxMessages[row].inAppMessage.messageId
     }
@@ -73,18 +66,12 @@ class IterableInboxDataModel {
 
         RNIterableAPI.getInboxMessages().then(
             (messages: Array<IterableInAppMessage>) => {
-                this.inboxMessages = messages.map(IterableInboxDataModel.getDataModelForMessage)
-
-                this.listeners.forEach(
-                    (listener) => {
-                        listener.updateView()
-                    }
-                )
+                this.inboxMessages = messages.map(IterableInboxDataModel.getInboxRowViewModelForMessage)
             }
         )
     }
 
-    private static getDataModelForMessage(message: IterableInAppMessage): InboxRowViewModel {
+    private static getInboxRowViewModelForMessage(message: IterableInAppMessage): InboxRowViewModel {
         return {
             title: message.inboxMetadata?.title ?? "",
             subtitle: message.inboxMetadata?.subtitle,
@@ -96,5 +83,4 @@ class IterableInboxDataModel {
     }
 }
 
-export { IterableInboxDataModel }
-export type { InboxComponent }
+export default IterableInboxDataModel
