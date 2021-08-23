@@ -47,6 +47,12 @@ class IterableInboxDataModel {
         RNIterableAPI.setReadForMessage(this.inboxMessages[row].inAppMessage, true)
     }
 
+    set(filter?: (message: IterableInAppMessage) => boolean,
+        comparator?: (message1: IterableInAppMessage, message2: IterableInAppMessage) => number) {
+        this.filterFn = filter
+        this.comparatorFn = comparator
+    }
+
     async refresh(): Promise<Array<InboxRowViewModel>> {
         return RNIterableAPI.getInboxMessages().then(
             (messages: Array<IterableInAppMessage>) => {
