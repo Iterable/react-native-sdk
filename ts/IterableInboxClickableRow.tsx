@@ -4,16 +4,18 @@ import React, { useState } from 'react'
 import { TouchableOpacity } from 'react-native'
 
 import IterableInboxMessageListItem from './IterableInboxMessageListItem'
-import Message from './messageType'
+import InboxRowViewModel from './InboxRowViewModel'
 import Customization from './customizationType'
 
 type MessageClickableRowProps = {
-   message: Message,
+   index: number,
+   message: InboxRowViewModel,
    customization: Customization,
    handleMessageSelect: Function,
 }
 
-const IterableInboxClickableRow = ({  
+const IterableInboxClickableRow = ({ 
+   index, 
    message,
    customization, 
    handleMessageSelect 
@@ -28,7 +30,7 @@ const IterableInboxClickableRow = ({
          activeOpacity={1}
          onPress={() => {
             setActive(!active)
-            handleMessageSelect(message.messageId)
+            handleMessageSelect(message.inAppMessage.messageId, index)
          }}
       >
          <IterableInboxMessageListItem

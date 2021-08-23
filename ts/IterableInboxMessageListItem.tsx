@@ -7,24 +7,53 @@ import {
    StyleSheet
 } from 'react-native'
 
-import Message from './messageType'
+import InboxRowViewModel from './InboxRowViewModel'
 import Customization from './customizationType'
 
 type MessageListItemProps = {
-   message: Message,
+   message: InboxRowViewModel,
    customization: Customization
 }
 
 const IterableInboxMessageListItem = ({ message, customization }: MessageListItemProps) => {
-   const messageTitle = message.inboxMetadata.title
-   const messageBody = message.inboxMetadata.subtitle
-   const messageCreatedAt = message.createdAt
+   const messageTitle = message.inAppMessage.inboxMetadata.title
+   const messageBody = message.inAppMessage.inboxMetadata.subtitle
+   const messageCreatedAt = convertTS(message.createdAt)
 
    styles = {...styles, ...customization}
 
-   function messageRowStyle(message: Message) {
-      return message.last ? {...messageRow, borderBottomWidth: 1} : messageRow 
-   } 
+   function convertTS(ts: number) {
+      let t = new Date(ts)
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      let year = t.getFullYear()
+      let month = months[t.getMonth()]
+      let day = t.getDate()
+      let hour = t.getHours()
+      let minute = t.getMinutes()
+      let AMPM = "AM"
+
+      if(hour === 12) {
+         AMPM = "PM"
+      }
+
+      if(hour === 24) {
+         hour -= 12
+      }
+      
+      if(hour > 12 && hour < 24) {
+         hour -= 12
+         AMPM = "PM"
+      }
+
+      if(minute < 10) {
+         return `${month} ${day}, ${year} at ${hour}:0${minute} ${AMPM}`
+      }
+      return `${month} ${day}, ${year} at ${hour}:${minute} ${AMPM}`
+   }
+
+   // function messageRowStyle(message: InboxRowViewModel) {
+   //    return message.last ? {...messageRow, borderBottomWidth: 1} : messageRow 
+   // } 
 
    const {
       unreadIndicatorContainer,
@@ -38,7 +67,7 @@ const IterableInboxMessageListItem = ({ message, customization }: MessageListIte
    } = styles
 
    return(
-      <View style={messageRowStyle(message)}>
+      <View style={messageRow}>
          <View style={unreadIndicatorContainer}>
             {message.read ? null : <View style={unreadIndicator}/>}
          </View>
@@ -47,11 +76,7 @@ const IterableInboxMessageListItem = ({ message, customization }: MessageListIte
             <Text style={body}>{messageBody}</Text>
             <Text style={createdAt}>{messageCreatedAt}</Text>
          </View>
-<<<<<<< HEAD
       </View>  
-=======
-      </>
->>>>>>> inbox
    )
 }
 

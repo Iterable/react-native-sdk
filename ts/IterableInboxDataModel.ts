@@ -42,7 +42,7 @@ class IterableInboxDataModel {
         console.log("IterableInboxDataModel.setItemAsRead")
 
         this.inboxMessages[row].read = true
-        RNIterableAPI.setReadForMessage(this.inboxMessages[row].inAppMessage)
+        RNIterableAPI.setReadForMessage(this.inboxMessages[row].inAppMessage.messageId, true)
     }
 
     async refresh(): Promise<Array<InboxRowViewModel>> {
