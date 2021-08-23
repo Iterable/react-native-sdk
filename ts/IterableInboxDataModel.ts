@@ -7,8 +7,8 @@ const RNIterableAPI = NativeModules.RNIterableAPI
 
 class IterableInboxDataModel {
     inboxMessages: Array<InboxRowViewModel> = []
-    // filter?: (message: IterableInAppMessage) => boolean
-    // comparator?: (message1: IterableInAppMessage, message2: IterableInAppMessage) => boolean
+    filterFn?: (message: IterableInAppMessage) => boolean
+    comparatorFn?: (message1: IterableInAppMessage, message2: IterableInAppMessage) => number
 
     constructor() {
         this.syncInboxMessages()
@@ -60,6 +60,15 @@ class IterableInboxDataModel {
         )
     }
 
+    private static sortByMostRecent = (message1: IterableInAppMessage, message2: IterableInAppMessage) => {
+        let createdAt1 = message1.createdAt ?? new Date(0)
+        let createdAt2 = message2.createdAt ?? new Date(0)
+
+        if (createdAt1 < createdAt2) return -1
+        if (createdAt1 > createdAt2) return 1
+        return 0
+    }
+
     private idForRow(row: number): string {
         return this.inboxMessages[row].inAppMessage.messageId
     }
@@ -79,20 +88,19 @@ class IterableInboxDataModel {
     }
 
     private sortAndFilter(messages: Array<IterableInAppMessage>): Array<IterableInAppMessage> {
-        // TODO: implement filter here
+        var sortedFilteredMessages = messages.slice()
 
-        // TODO: implement sort here
+        if (this.filterFn != undefined) {
+            sortedFilteredMessages = sortedFilteredMessages.filter(this.filterFn)
+        }
+        
+        if (this.comparatorFn != undefined) {
+            sortedFilteredMessages.sort(this.comparatorFn)
+        } else {
+            sortedFilteredMessages.sort(IterableInboxDataModel.sortByMostRecent)
+        }
 
-        // for now, just order by MOST RECENT createdAt
-        return messages.slice().sort(
-            (message1: IterableInAppMessage, message2: IterableInAppMessage) => {
-                let createdAt1 = message1.createdAt ?? new Date(0)
-                let createdAt2 = message2.createdAt ?? new Date(0)
-
-                if (createdAt1 < createdAt2) return -1
-                if (createdAt1 > createdAt2) return 1
-                return 0
-            })
+        return sortedFilteredMessages
     }
 
     private static getInboxRowViewModelForMessage(message: IterableInAppMessage): InboxRowViewModel {
