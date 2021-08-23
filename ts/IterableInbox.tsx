@@ -1,16 +1,18 @@
 'use strict'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Text, SafeAreaView, StyleSheet } from 'react-native'
 
 import IterableInboxMessageList from './IterableInboxMessageList'
 import IterableInboxEmptyState from './IterableInboxEmptyState'
 import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
 
+import InboxRowViewModel from './InboxRowViewModel'
+//import { IterableInboxDataModel } from './IterableInboxDataModel'
 import IterableInAppMessage from './IterableInAppMessage'
-import sampleMessages from './sampleMessageDataOld'
-import Message from './messageType'
+import IterableInAppManager from './IterableInAppManager'
 import Customization from './customizationType'
+//import Message from './messageType'
 
 type inboxProps = {
    customization: Customization
@@ -21,14 +23,20 @@ const IterableInbox = ({
 }: inboxProps) => {
    const defaultInboxTitle = "Inbox"
    const [isDisplayMessage, setIsDisplayMessage] = useState<boolean>(false)
-   const [selectedMessageId, setSelectedMessageId] = useState<number>(1)
-   const [messages, setMessages] = useState<Message[]>(sampleMessages)
+   const [selectedMessageId, setSelectedMessageId] = useState<string>("")
+   const [messages, setMessages] = useState<IterableInAppMessage[]>([])
+
+   const inAppManager = new IterableInAppManager()
+
+   useEffect(() => {
+      inAppManager.getInboxMessages().then(response => setMessages(response))
+   }, [])
 
    const selectedMessage = messages.find(message => message.messageId === selectedMessageId)
 
-   function handleMessageSelect(id: number, messages: Message[]) {
+   function handleMessageSelect(id: string, messages: IterableInAppMessage[]) {
       let newMessages = messages.map((message) => {
-         return (message.messageId === id) ?
+         return (message.messageId == id) ?
             {...message, read: true } : message
       })
       setMessages(newMessages)
@@ -36,19 +44,20 @@ const IterableInbox = ({
       setSelectedMessageId(id)
    }
 
-   function deleteMessage(id: number, messages: Message[]) {
-      let newMessages = sampleMessages.filter((message) => {
-         return message.messageId !== id
-      })
-      newMessages[newMessages.length - 1] = {...newMessages[newMessages.length - 1], last: true}
-      setMessages(newMessages)
-   }
+   // function deleteMessage(id: string, messages: IterableInAppMessage[]) {
+   //    let newMessages = messages.filter((message) => {
+   //       return message.messageId !== id
+   //    })
+   //    //newMessages[newMessages.length - 1] = {...newMessages[newMessages.length - 1], last: true}
+   //    setMessages(newMessages)
+   //    //inAppManager.removeMessage(message.messageId)
+   // }
 
    function returnToInbox() {
       setIsDisplayMessage(false)
    }
    
-   function showMessageDisplay(message: Message) {
+   function showMessageDisplay(message: IterableInAppMessage) {
       return (
          <IterableInboxMessageDisplay
             message={message}
@@ -66,10 +75,10 @@ const IterableInbox = ({
                <IterableInboxMessageList 
                   messages={messages}
                   customization={customization}
-                  deleteMessage={(id: number) => deleteMessage(id, messages)}
-                  handleMessageSelect={(id: number) => handleMessageSelect(id, messages)}/>  : 
+                  // deleteMessage={(id: string) => deleteMessage(id, messages)}
+                  handleMessageSelect={(id: string) => handleMessageSelect(id, messages)}
+               />  : 
                <IterableInboxEmptyState customization={customization} />
-            }
          </>)
    }
 

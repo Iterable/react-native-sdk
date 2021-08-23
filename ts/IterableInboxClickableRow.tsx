@@ -4,11 +4,12 @@ import React, { useState } from 'react'
 import { TouchableOpacity } from 'react-native'
 
 import IterableInboxMessageListItem from './IterableInboxMessageListItem'
-import Message from './messageType'
+import IterableInAppMessage from './IterableInAppMessage'
+//import Message from './messageType'
 import Customization from './customizationType'
 
 type MessageClickableRowProps = {
-   message: Message,
+   message: IterableInAppMessage,
    customization: Customization,
    handleMessageSelect: Function,
 }

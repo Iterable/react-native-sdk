@@ -7,32 +7,34 @@ import IterableInboxSwipeableRow from './IterableInboxSwipeableRow'
 import IterableInboxEmptyState from './IterableInboxEmptyState'
 
 import Message from './messageType'
+import IterableInAppMessage from './IterableInAppMessage'
+// import InboxRowViewModel from './InboxRowViewModel'
 import Customization from './customizationType'
 
 type MessageListProps = {
-   messages: Message[],
+   messages: IterableInAppMessage[],
    customization: Customization
-   deleteMessage: Function,
+   //deleteMessage: Function,
    handleMessageSelect: Function 
 }
 
 const IterableInboxMessageList = ({ 
    messages,
    customization, 
-   deleteMessage, 
+   //deleteMessage, 
    handleMessageSelect 
 }: MessageListProps) => {
    const [swiping, setSwiping] = useState(false)
 
-   const renderMessageCells = (messages: Message[]) => {
+   const renderMessageCells = (messages: IterableInAppMessage[]) => {
       return messages.map((message, index) => {
          return (
             <IterableInboxSwipeableRow
                key={message.messageId}
                customization={customization}
-               swipingCheck={(swiping : boolean) => setSwiping(swiping)}
-               deleteMessage={(id: number) => deleteMessage(id)}
-               handleMessageSelect={(id: number) => handleMessageSelect(id)}
+               //swipingCheck={(swiping : boolean) => setSwiping(swiping)}
+               // deleteMessage={(id: string) => deleteMessage(id)}
+               handleMessageSelect={(id: string) => handleMessageSelect(id)}
                message={message}
             />
          )
