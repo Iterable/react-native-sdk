@@ -7,6 +7,8 @@ const RNIterableAPI = NativeModules.RNIterableAPI
 
 class IterableInboxDataModel {
     inboxMessages: Array<InboxRowViewModel> = []
+    // filter?: (message: IterableInAppMessage) => boolean
+    // comparator?: (message1: IterableInAppMessage, message2: IterableInAppMessage) => boolean
 
     constructor() {
         this.syncInboxMessages()
@@ -48,7 +50,8 @@ class IterableInboxDataModel {
     async refresh(): Promise<Array<InboxRowViewModel>> {
         return RNIterableAPI.getInboxMessages().then(
             (messages: Array<IterableInAppMessage>) => {
-                this.inboxMessages = messages.map(IterableInboxDataModel.getInboxRowViewModelForMessage)
+                this.inboxMessages = this.processMessages(messages)
+
                 return this.inboxMessages
             },
             () => {
@@ -66,9 +69,30 @@ class IterableInboxDataModel {
 
         RNIterableAPI.getInboxMessages().then(
             (messages: Array<IterableInAppMessage>) => {
-                this.inboxMessages = messages.map(IterableInboxDataModel.getInboxRowViewModelForMessage)
+                this.inboxMessages = this.processMessages(messages)
             }
         )
+    }
+
+    private processMessages(messages: Array<IterableInAppMessage>): Array<InboxRowViewModel> {
+        return this.sortAndFilter(messages).map(IterableInboxDataModel.getInboxRowViewModelForMessage)
+    }
+
+    private sortAndFilter(messages: Array<IterableInAppMessage>): Array<IterableInAppMessage> {
+        // TODO: implement filter here
+
+        // TODO: implement sort here
+
+        // for now, just order by MOST RECENT createdAt
+        return messages.slice().sort(
+            (message1: IterableInAppMessage, message2: IterableInAppMessage) => {
+                let createdAt1 = message1.createdAt ?? new Date(0)
+                let createdAt2 = message2.createdAt ?? new Date(0)
+
+                if (createdAt1 < createdAt2) return -1
+                if (createdAt1 > createdAt2) return 1
+                return 0
+            })
     }
 
     private static getInboxRowViewModelForMessage(message: IterableInAppMessage): InboxRowViewModel {
