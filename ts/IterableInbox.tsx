@@ -47,14 +47,14 @@ const IterableInbox = ({
       setSelectedMessageId(id)
    }
 
-   function deleteMessage(id: string, index: number, messages: InboxRowViewModel[]) {
-      let newMessages = messages.filter((message) => {
-         return message.inAppMessage.messageId !== id
-      })
-      inboxDataModel.deleteItem(index, inboxSwipe)
-      //newMessages[newMessages.length - 1] = {...newMessages[newMessages.length - 1], last: true}
-      setMessages(newMessages)
-   }
+   // function deleteMessage(id: string, index: number, messages: InboxRowViewModel[]) {
+   //    let newMessages = messages.filter((message) => {
+   //       return message.inAppMessage.messageId !== id
+   //    })
+   //    inboxDataModel.deleteItem(index, inboxSwipe)
+   //    //newMessages[newMessages.length - 1] = {...newMessages[newMessages.length - 1], last: true}
+   //    setMessages(newMessages)
+   // }
 
    function returnToInbox() {
       setIsDisplayMessage(false)
@@ -78,7 +78,7 @@ const IterableInbox = ({
                <IterableInboxMessageList 
                   messages={messages}
                   customization={customization}
-                  deleteMessage={(id: string) => deleteMessage(id, messages)}
+                  //deleteMessage={(id: string) => deleteMessage(id, messages)}
                   handleMessageSelect={(id: string, index: number) => handleMessageSelect(id, index, messages)}
                />  : 
                <IterableInboxEmptyState customization={customization} />
