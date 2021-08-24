@@ -1,7 +1,8 @@
 'use strict'
 
 import React from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import { Text, View, StyleSheet, useWindowDimensions } from 'react-native'
+import RenderHTML from 'react-native-render-html'
 
 import Icon from 'react-native-vector-icons/Ionicons'
 import InboxRowViewModel from './InboxRowViewModel'
@@ -14,6 +15,8 @@ type MessageDisplayProps = {
 
 const IterableInboxMessageDisplay = ({ message, returnToInbox }: MessageDisplayProps) => {
    const messageTitle = message.inAppMessage.inboxMetadata?.title
+   const html = message.inAppMessage.customPayload.html
+   const { width } = useWindowDimensions()
 
    return(
       <View>
@@ -27,7 +30,8 @@ const IterableInboxMessageDisplay = ({ message, returnToInbox }: MessageDisplayP
             <Text style={styles.headline}>
                {messageTitle}
             </Text>
-         </View>
+            <RenderHTML contentWidth={width} source={{ html }} />
+         </View> 
       </View>
    )
 }
@@ -44,7 +48,7 @@ const styles = StyleSheet.create({
    },
 
    container: {
-      height: '100%',
+      //height: '100%',
       backgroundColor: 'whitesmoke', 
       flexDirection: 'column',
       justifyContent: 'flex-start'
