@@ -1,7 +1,13 @@
 'use strict'
 
 import { NativeModules } from 'react-native'
-import { IterableInAppMessage, IterableInAppLocation, IterableInAppDeleteSource, InboxRowViewModel } from '.'
+import {
+    IterableInAppMessage,
+    IterableInAppLocation,
+    IterableInAppDeleteSource,
+    InboxRowViewModel,
+    IterableHtmlInAppContent
+} from '.'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
 
@@ -38,6 +44,16 @@ class IterableInboxDataModel {
         console.log("IterableInboxDataModel.getItem")
 
         return this.inboxMessages[row]
+    }
+
+    getHtmlContentForItem(row: number): Promise<IterableHtmlInAppContent> {
+        console.log("IterableInboxDataModel.getHtmlContentForItem")
+
+        return RNIterableAPI.getHtmlInAppContentForMessage(this.idForRow(row)).then(
+            (content: any) => {
+                return IterableHtmlInAppContent.fromDict(content)
+            }
+        )
     }
 
     setItemAsRead(row: number) {
