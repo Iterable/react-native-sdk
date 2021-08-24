@@ -72,6 +72,7 @@ class IterableInboxDataModel {
 
         if (createdAt1 < createdAt2) return 1
         if (createdAt1 > createdAt2) return -1
+
         return 0
     }
 
