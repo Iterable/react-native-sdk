@@ -453,8 +453,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         } catch (JSONException e) {
             IterableLogger.e(TAG, e.getLocalizedMessage());
         }
-        // The Android SDK will not bring the app into focus is this is `true`. It still respects the `openApp` bool flag.
-        return false;
+        return true;
     }
 
     @Override
