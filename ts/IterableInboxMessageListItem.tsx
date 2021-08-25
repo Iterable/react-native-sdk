@@ -51,9 +51,9 @@ const IterableInboxMessageListItem = ({ message, customization }: MessageListIte
       return `${month} ${day}, ${year} at ${hour}:${minute} ${AMPM}`
    }
 
-   // function messageRowStyle(message: InboxRowViewModel) {
-   //    return message.last ? {...messageRow, borderBottomWidth: 1} : messageRow 
-   // } 
+   function messageRowStyle(message: InboxRowViewModel) {
+      return message.last ? {...messageRow, borderBottomWidth: 1} : messageRow 
+   } 
 
    const {
       unreadIndicatorContainer,
@@ -67,7 +67,7 @@ const IterableInboxMessageListItem = ({ message, customization }: MessageListIte
    } = styles
 
    return(
-      <View style={messageRow}>
+      <View style={messageRowStyle(message)}>
          <View style={unreadIndicatorContainer}>
             {message.read ? null : <View style={unreadIndicator}/>}
          </View>

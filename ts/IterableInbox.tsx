@@ -25,7 +25,14 @@ const IterableInbox = ({
    const inboxDataModel = new IterableInboxDataModel()
 
    const fetchData = async () => {
-      const newMessages = await inboxDataModel.refresh()
+      let newMessages = await inboxDataModel.refresh()
+      newMessages = newMessages.map((message, index) => {
+         if(index === newMessages.length - 1) {
+            return {...message, last: true}
+         } else {
+            return {...message, last: false}
+         }   
+      })
       setMessages(newMessages)
    }
 
