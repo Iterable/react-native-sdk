@@ -18,38 +18,9 @@ type MessageListItemProps = {
 const IterableInboxMessageListItem = ({ message, customization }: MessageListItemProps) => {
    const messageTitle = message.inAppMessage.inboxMetadata.title
    const messageBody = message.inAppMessage.inboxMetadata.subtitle
-   const messageCreatedAt = convertTS(message.createdAt)
+   const messageCreatedAt = message.createdAt
 
    styles = {...styles, ...customization}
-
-   function convertTS(ts: number) {
-      let t = new Date(ts)
-      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-      let year = t.getFullYear()
-      let month = months[t.getMonth()]
-      let day = t.getDate()
-      let hour = t.getHours()
-      let minute = t.getMinutes()
-      let AMPM = "AM"
-
-      if(hour === 12) {
-         AMPM = "PM"
-      }
-
-      if(hour === 24) {
-         hour -= 12
-      }
-      
-      if(hour > 12 && hour < 24) {
-         hour -= 12
-         AMPM = "PM"
-      }
-
-      if(minute < 10) {
-         return `${month} ${day}, ${year} at ${hour}:0${minute} ${AMPM}`
-      }
-      return `${month} ${day}, ${year} at ${hour}:${minute} ${AMPM}`
-   }
 
    // function messageRowStyle(message: InboxRowViewModel) {
    //    return message.last ? {...messageRow, borderBottomWidth: 1} : messageRow 
