@@ -10,6 +10,7 @@ import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
 import InboxRowViewModel from './InboxRowViewModel'
 import IterableInboxDataModel from './IterableInboxDataModel'
 import Customization from './customizationType'
+import { IterableEdgeInsets, IterableHtmlInAppContent } from './IterableInAppClasses'
 
 type inboxProps = {
    customization: Customization
@@ -36,8 +37,12 @@ const IterableInbox = ({
       setMessages(newMessages)
    }
 
-   const fetchHTML = async (index: number) => {
-      return await inboxDataModel.getHtmlContentForItem(index)
+   // const fetchHTML = async (index: number) => {
+   //    return await inboxDataModel.getHtmlContentForItem(index)
+   // }
+
+   function getHtmlForRow(index: number): IterableHtmlInAppContent {
+      return new IterableHtmlInAppContent(new IterableEdgeInsets(0,0,0,0), "hi")
    }
 
    useEffect(() => {
@@ -76,7 +81,7 @@ const IterableInbox = ({
          <IterableInboxMessageDisplay
             index={index}
             message={message}
-            html={fetchHTML(index)}
+            inAppContent={getHtmlForRow(index)}
             returnToInbox={() => returnToInbox()}
          ></IterableInboxMessageDisplay>)
    }

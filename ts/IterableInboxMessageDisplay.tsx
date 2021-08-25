@@ -8,16 +8,15 @@ import RenderHTML from 'react-native-render-html'
 import Icon from 'react-native-vector-icons/Ionicons'
 import InboxRowViewModel from './InboxRowViewModel'
 import { IterableHtmlInAppContent } from './IterableInAppClasses'
-import IterableInboxDataModel from './IterableInboxDataModel'
 
 type MessageDisplayProps = {
    index: number,
    message: InboxRowViewModel,
-   html: any,
+   inAppContent: IterableHtmlInAppContent,
    returnToInbox: Function
 }
 
-const IterableInboxMessageDisplay = ({ index, message, html, returnToInbox }: MessageDisplayProps) => {
+const IterableInboxMessageDisplay = ({ index, message, inAppContent, returnToInbox }: MessageDisplayProps) => {
    const messageTitle = message.inAppMessage.inboxMetadata?.title
    const { width } = useWindowDimensions()
 
@@ -34,6 +33,7 @@ const IterableInboxMessageDisplay = ({ index, message, html, returnToInbox }: Me
                {messageTitle}
             </Text>
             {/* <RenderHTML contentWidth={width} source={{ html }} /> */}
+            <Text>{inAppContent.html}</Text>
          </View> 
       </View>
    )
