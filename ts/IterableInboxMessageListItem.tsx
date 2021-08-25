@@ -7,24 +7,24 @@ import {
    StyleSheet
 } from 'react-native'
 
-import Message from './messageType'
+import InboxRowViewModel from './InboxRowViewModel'
 import Customization from './customizationType'
 
 type MessageListItemProps = {
-   message: Message,
+   message: InboxRowViewModel,
    customization: Customization
 }
 
 const IterableInboxMessageListItem = ({ message, customization }: MessageListItemProps) => {
-   const messageTitle = message.inboxMetadata.title
-   const messageBody = message.inboxMetadata.subtitle
+   const messageTitle = message.inAppMessage.inboxMetadata.title
+   const messageBody = message.inAppMessage.inboxMetadata.subtitle
    const messageCreatedAt = message.createdAt
 
    styles = {...styles, ...customization}
 
-   function messageRowStyle(message: Message) {
-      return message.last ? {...messageRow, borderBottomWidth: 1} : messageRow 
-   } 
+   // function messageRowStyle(message: InboxRowViewModel) {
+   //    return message.last ? {...messageRow, borderBottomWidth: 1} : messageRow 
+   // } 
 
    const {
       unreadIndicatorContainer,
@@ -38,7 +38,7 @@ const IterableInboxMessageListItem = ({ message, customization }: MessageListIte
    } = styles
 
    return(
-      <View style={messageRowStyle(message)}>
+      <View style={messageRow}>
          <View style={unreadIndicatorContainer}>
             {message.read ? null : <View style={unreadIndicator}/>}
          </View>

@@ -86,8 +86,9 @@ class IterableInboxDataModel {
         let createdAt1 = message1.createdAt ?? new Date(0)
         let createdAt2 = message2.createdAt ?? new Date(0)
 
-        if (createdAt1 < createdAt2) return -1
-        if (createdAt1 > createdAt2) return 1
+        if (createdAt1 < createdAt2) return 1
+        if (createdAt1 > createdAt2) return -1
+
         return 0
     }
 

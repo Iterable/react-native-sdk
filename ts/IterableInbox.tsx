@@ -1,15 +1,14 @@
 'use strict'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Text, SafeAreaView, StyleSheet } from 'react-native'
 
 import IterableInboxMessageList from './IterableInboxMessageList'
 import IterableInboxEmptyState from './IterableInboxEmptyState'
 import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
 
-import IterableInAppMessage from './IterableInAppMessage'
-import sampleMessages from './sampleMessageDataOld'
-import Message from './messageType'
+import InboxRowViewModel from './InboxRowViewModel'
+import IterableInboxDataModel from './IterableInboxDataModel'
 import Customization from './customizationType'
 
 type inboxProps = {
@@ -21,34 +20,47 @@ const IterableInbox = ({
 }: inboxProps) => {
    const defaultInboxTitle = "Inbox"
    const [isDisplayMessage, setIsDisplayMessage] = useState<boolean>(false)
-   const [selectedMessageId, setSelectedMessageId] = useState<number>(1)
-   const [messages, setMessages] = useState<Message[]>(sampleMessages)
+   const [selectedMessageId, setSelectedMessageId] = useState<string>("")
+   const [messages, setMessages] = useState<InboxRowViewModel[]>([])
+   const inboxDataModel = new IterableInboxDataModel()
 
-   const selectedMessage = messages.find(message => message.messageId === selectedMessageId)
+   const fetchData = async () => {
+      const newMessages = await inboxDataModel.refresh()
+      setMessages(newMessages)
+   }
 
-   function handleMessageSelect(id: number, messages: Message[]) {
+   useEffect(() => {
+      fetchData()
+   }, [])
+
+   const selectedMessage = messages.find(message => message.inAppMessage.messageId === selectedMessageId)
+
+   function handleMessageSelect(id: string, index: number, messages: InboxRowViewModel[]) {
       let newMessages = messages.map((message) => {
-         return (message.messageId === id) ?
+         return (message.inAppMessage.messageId === id) ?
             {...message, read: true } : message
       })
       setMessages(newMessages)
+      inboxDataModel.setItemAsRead(index)
+
       setIsDisplayMessage(true)
       setSelectedMessageId(id)
    }
 
-   function deleteMessage(id: number, messages: Message[]) {
-      let newMessages = sampleMessages.filter((message) => {
-         return message.messageId !== id
-      })
-      newMessages[newMessages.length - 1] = {...newMessages[newMessages.length - 1], last: true}
-      setMessages(newMessages)
-   }
+   // function deleteMessage(id: string, index: number, messages: InboxRowViewModel[]) {
+   //    let newMessages = messages.filter((message) => {
+   //       return message.inAppMessage.messageId !== id
+   //    })
+   //    inboxDataModel.deleteItem(index, inboxSwipe)
+   //    //newMessages[newMessages.length - 1] = {...newMessages[newMessages.length - 1], last: true}
+   //    setMessages(newMessages)
+   // }
 
    function returnToInbox() {
       setIsDisplayMessage(false)
    }
    
-   function showMessageDisplay(message: Message) {
+   function showMessageDisplay(message: InboxRowViewModel) {
       return (
          <IterableInboxMessageDisplay
             message={message}
@@ -66,15 +78,16 @@ const IterableInbox = ({
                <IterableInboxMessageList 
                   messages={messages}
                   customization={customization}
-                  deleteMessage={(id: number) => deleteMessage(id, messages)}
-                  handleMessageSelect={(id: number) => handleMessageSelect(id, messages)}/>  : 
+                  //deleteMessage={(id: string) => deleteMessage(id, messages)}
+                  handleMessageSelect={(id: string, index: number) => handleMessageSelect(id, index, messages)}
+               />  : 
                <IterableInboxEmptyState customization={customization} />
             }
          </>)
    }
 
    return(
-      <SafeAreaView style={styles.container}>     
+      <SafeAreaView style={styles.container}>    
          {isDisplayMessage ? showMessageDisplay(selectedMessage) : showMessageList()}
       </SafeAreaView>
    )
