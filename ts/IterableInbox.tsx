@@ -20,7 +20,7 @@ const IterableInbox = ({
 }: inboxProps) => {
    const defaultInboxTitle = "Inbox"
    const [isDisplayMessage, setIsDisplayMessage] = useState<boolean>(false)
-   const [selectedMessageId, setSelectedMessageId] = useState<string>("")
+   const [selectedMessageIdx, setSelectedMessageIdx] = useState<number>(0)
    const [messages, setMessages] = useState<InboxRowViewModel[]>([])
    const inboxDataModel = new IterableInboxDataModel()
 
@@ -40,7 +40,7 @@ const IterableInbox = ({
       fetchData()
    }, [])
 
-   const selectedMessage = messages.find(message => message.inAppMessage.messageId === selectedMessageId)
+   const selectedMessage = messages[selectedMessageIdx]
 
    function handleMessageSelect(id: string, index: number, messages: InboxRowViewModel[]) {
       let newMessages = messages.map((message) => {
@@ -51,25 +51,26 @@ const IterableInbox = ({
       inboxDataModel.setItemAsRead(index)
 
       setIsDisplayMessage(true)
-      setSelectedMessageId(id)
+      setSelectedMessageIdx(index)
    }
 
-   function deleteMessage(id: string, index: number, messages: InboxRowViewModel[]) {
-      let newMessages = messages.filter((message) => {
-         return message.inAppMessage.messageId !== id
-      })
-      inboxDataModel.deleteItem(index, inboxSwipe)
-      //newMessages[newMessages.length - 1] = {...newMessages[newMessages.length - 1], last: true}
-      setMessages(newMessages)
-   }
+   // function deleteMessage(id: string, index: number, messages: InboxRowViewModel[]) {
+   //    let newMessages = messages.filter((message) => {
+   //       return message.inAppMessage.messageId !== id
+   //    })
+   //    //inboxDataModel.deleteItem(index, inboxSwipe)
+   //    //newMessages[newMessages.length - 1] = {...newMessages[newMessages.length - 1], last: true}
+   //    setMessages(newMessages)
+   // }
 
    function returnToInbox() {
       setIsDisplayMessage(false)
    }
    
-   function showMessageDisplay(message: InboxRowViewModel) {
+   function showMessageDisplay(message: InboxRowViewModel, index: number) {
       return (
          <IterableInboxMessageDisplay
+            index={index}
             message={message}
             returnToInbox={() => returnToInbox()}
          ></IterableInboxMessageDisplay>)
@@ -85,7 +86,7 @@ const IterableInbox = ({
                <IterableInboxMessageList 
                   messages={messages}
                   customization={customization}
-                  deleteMessage={(id: string) => deleteMessage(id, messages)}
+                  //deleteMessage={(id: string) => deleteMessage(id, messages)}
                   handleMessageSelect={(id: string, index: number) => handleMessageSelect(id, index, messages)}
                />  : 
                <IterableInboxEmptyState customization={customization} />
@@ -95,7 +96,9 @@ const IterableInbox = ({
 
    return(
       <SafeAreaView style={styles.container}>    
-         {isDisplayMessage ? showMessageDisplay(selectedMessage) : showMessageList()}
+         {isDisplayMessage ? 
+            showMessageDisplay(selectedMessage, selectedMessageIdx) : 
+            showMessageList()}
       </SafeAreaView>
    )
 }
