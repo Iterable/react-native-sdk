@@ -36,6 +36,10 @@ const IterableInbox = ({
       setMessages(newMessages)
    }
 
+   const fetchHTML = async (index: number) => {
+      return await inboxDataModel.getHtmlContentForItem(index)
+   }
+
    useEffect(() => {
       fetchData()
    }, [])
@@ -72,6 +76,7 @@ const IterableInbox = ({
          <IterableInboxMessageDisplay
             index={index}
             message={message}
+            html={fetchHTML(index)}
             returnToInbox={() => returnToInbox()}
          ></IterableInboxMessageDisplay>)
    }

@@ -13,24 +13,13 @@ import IterableInboxDataModel from './IterableInboxDataModel'
 type MessageDisplayProps = {
    index: number,
    message: InboxRowViewModel,
+   html: any,
    returnToInbox: Function
 }
 
-const IterableInboxMessageDisplay = ({ index, message, returnToInbox }: MessageDisplayProps) => {
+const IterableInboxMessageDisplay = ({ index, message, html, returnToInbox }: MessageDisplayProps) => {
    const messageTitle = message.inAppMessage.inboxMetadata?.title
-   const inboxDataModel = new IterableInboxDataModel()
    const { width } = useWindowDimensions()
-
-   const [html, setHtml] = useState<IterableHtmlInAppContent>(null)
-
-   const fetchHTML = async () => {
-      let html = await inboxDataModel.getHtmlContentForItem(index)
-      setHtml(html)
-   }
-
-   useEffect(() => {
-      fetchHTML()
-   }, [])
 
    return(
       <View>

@@ -4,7 +4,8 @@ import { NativeModules } from 'react-native'
 import { 
     IterableInAppMessage, 
     IterableInAppLocation, 
-    IterableInAppDeleteSource, 
+    IterableInAppDeleteSource,
+    IterableEdgeInsets,
     InboxRowViewModel,
     IterableHtmlInAppContent 
 } from '.'
@@ -52,6 +53,9 @@ class IterableInboxDataModel {
         return RNIterableAPI.getHtmlInAppContentForMessage(this.idForRow(row)).then(
             (content: any) => {
                 return IterableHtmlInAppContent.fromDict(content)
+            },
+            () => {
+                return new IterableHtmlInAppContent(new IterableEdgeInsets(0, 0, 0, 0), "")
             }
         )
     }
