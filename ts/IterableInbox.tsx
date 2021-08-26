@@ -16,9 +16,7 @@ type inboxProps = {
    customization: Customization
 }
 
-const IterableInbox = ({ 
-   customization
-}: inboxProps) => {
+const IterableInbox = ({ customization }: inboxProps) => {
    const defaultInboxTitle = "Inbox"
    const [isDisplayMessage, setIsDisplayMessage] = useState<boolean>(false)
    const [selectedMessageIdx, setSelectedMessageIdx] = useState<number>(0)
@@ -27,13 +25,11 @@ const IterableInbox = ({
 
    const fetchData = async () => {
       let newMessages = await inboxDataModel.refresh()
+
       newMessages = newMessages.map((message, index) => {
-         if(index === newMessages.length - 1) {
-            return {...message, last: true}
-         } else {
-            return {...message, last: false}
-         }   
+         return {...message, last: index === newMessages.length - 1}
       })
+
       setMessages(newMessages)
    }
 

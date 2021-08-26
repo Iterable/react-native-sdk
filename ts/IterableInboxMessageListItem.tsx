@@ -18,13 +18,13 @@ type MessageListItemProps = {
 const IterableInboxMessageListItem = ({ message, customization }: MessageListItemProps) => {
    const messageTitle = message.inAppMessage.inboxMetadata?.title
    const messageBody = message.inAppMessage.inboxMetadata?.subtitle
-   const messageCreatedAt = new Date(message.createdAt ?? 0)
+   const messageCreatedAt = message.createdAt
 
-   styles = {...styles, ...customization}
+   let resolvedStyles = {...styles, ...customization}
 
-   // function messageRowStyle(message: InboxRowViewModel) {
-   //    return message.last ? {...messageRow, borderBottomWidth: 1} : messageRow 
-   // } 
+   function messageRowStyle(message: InboxRowViewModel) {
+      return message.last ? {...messageRow, borderBottomWidth: 1} : messageRow 
+   } 
 
    const {
       unreadIndicatorContainer,
