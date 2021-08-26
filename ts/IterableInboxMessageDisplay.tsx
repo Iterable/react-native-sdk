@@ -4,20 +4,19 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 import { Text, View, StyleSheet, useWindowDimensions } from 'react-native'
 import RenderHTML from 'react-native-render-html'
-
 import Icon from 'react-native-vector-icons/Ionicons'
-import InboxRowViewModel from './InboxRowViewModel'
-import { IterableHtmlInAppContent } from './IterableInAppClasses'
+
+import { InboxRowViewModel, IterableHtmlInAppContent } from '.'
 
 type MessageDisplayProps = {
    index: number,
-   message: InboxRowViewModel,
+   rowViewModel: InboxRowViewModel,
    inAppContent: IterableHtmlInAppContent,
    returnToInbox: Function
 }
 
-const IterableInboxMessageDisplay = ({ index, message, inAppContent, returnToInbox }: MessageDisplayProps) => {
-   const messageTitle = message.inAppMessage.inboxMetadata?.title
+const IterableInboxMessageDisplay = ({ index, rowViewModel, inAppContent, returnToInbox }: MessageDisplayProps) => {
+   const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title
    const { width } = useWindowDimensions()
 
    return(

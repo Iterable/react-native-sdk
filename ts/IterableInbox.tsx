@@ -74,11 +74,11 @@ const IterableInbox = ({ customizations }: inboxProps) => {
       setIsDisplayMessage(false)
    }
    
-   function showMessageDisplay(message: InboxRowViewModel, index: number) {
+   function showMessageDisplay(rowViewModel: InboxRowViewModel, index: number) {
       return (
          <IterableInboxMessageDisplay
             index={index}
-            message={message}
+            rowViewModel={rowViewModel}
             inAppContent={getHtmlForRow(index)}
             returnToInbox={() => returnToInbox()}
          ></IterableInboxMessageDisplay>)
