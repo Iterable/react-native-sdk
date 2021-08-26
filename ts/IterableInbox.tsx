@@ -12,10 +12,12 @@ import IterableInboxDataModel from './IterableInboxDataModel'
 import Customization from './customizationType'
 
 type inboxProps = {
+   messageListItemLayout: Function,
    customization: Customization
 }
 
-const IterableInbox = ({ 
+const IterableInbox = ({
+   messageListItemLayout, 
    customization
 }: inboxProps) => {
    const defaultInboxTitle = "Inbox"
@@ -77,6 +79,7 @@ const IterableInbox = ({
             { messages.length ?
                <IterableInboxMessageList 
                   messages={messages}
+                  messageListItemLayout={messageListItemLayout}
                   customization={customization}
                   //deleteMessage={(id: string) => deleteMessage(id, messages)}
                   handleMessageSelect={(id: string, index: number) => handleMessageSelect(id, index, messages)}
