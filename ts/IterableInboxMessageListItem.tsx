@@ -16,9 +16,9 @@ type MessageListItemProps = {
 }
 
 const IterableInboxMessageListItem = ({ message, customization }: MessageListItemProps) => {
-   const messageTitle = message.inAppMessage.inboxMetadata.title
-   const messageBody = message.inAppMessage.inboxMetadata.subtitle
-   const messageCreatedAt = message.createdAt
+   const messageTitle = message.inAppMessage.inboxMetadata?.title
+   const messageBody = message.inAppMessage.inboxMetadata?.subtitle
+   const messageCreatedAt = new Date(message.createdAt ?? 0)
 
    styles = {...styles, ...customization}
 
