@@ -46,19 +46,19 @@ const styles = StyleSheet.create({
 
    returnButton: {
       color: 'blue',
-      fontSize: 40, 
+      fontSize: 40,
       paddingLeft: 10
    },
 
    container: {
       //height: '100%',
-      backgroundColor: 'whitesmoke', 
+      backgroundColor: 'whitesmoke',
       flexDirection: 'column',
       justifyContent: 'flex-start'
    },
 
    headline: {
-      fontWeight: 'bold' ,
+      fontWeight: 'bold',
       fontSize: 40,
       width: '100%',
       paddingTop: 10,

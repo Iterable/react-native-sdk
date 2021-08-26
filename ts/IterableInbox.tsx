@@ -3,20 +3,22 @@
 import React, { useState, useEffect } from 'react'
 import { Text, SafeAreaView, StyleSheet } from 'react-native'
 
-import IterableInboxMessageList from './IterableInboxMessageList'
-import IterableInboxEmptyState from './IterableInboxEmptyState'
-import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
-
-import InboxRowViewModel from './InboxRowViewModel'
-import IterableInboxDataModel from './IterableInboxDataModel'
-import Customization from './customizationType'
-import { IterableEdgeInsets, IterableHtmlInAppContent } from './IterableInAppClasses'
+import {
+   IterableInboxMessageList,
+   IterableInboxEmptyState,
+   IterableInboxMessageDisplay,
+   InboxRowViewModel,
+   IterableInboxDataModel,
+   IterableInboxCustomizations,
+   IterableEdgeInsets,
+   IterableHtmlInAppContent
+} from '.'
 
 type inboxProps = {
-   customization: Customization
+   customizations: IterableInboxCustomizations
 }
 
-const IterableInbox = ({ customization }: inboxProps) => {
+const IterableInbox = ({ customizations }: inboxProps) => {
    const defaultInboxTitle = "Inbox"
    const [isDisplayMessage, setIsDisplayMessage] = useState<boolean>(false)
    const [selectedMessageIdx, setSelectedMessageIdx] = useState<number>(0)
@@ -86,16 +88,16 @@ const IterableInbox = ({ customization }: inboxProps) => {
       return (
          <>
             <Text style={styles.headline}>
-               {customization.navTitle ? customization.navTitle : defaultInboxTitle}
+               {customizations.navTitle ? customizations.navTitle : defaultInboxTitle}
             </Text>
             { messages.length ?
                <IterableInboxMessageList 
                   messages={messages}
-                  customization={customization}
+                  customizations={customizations}
                   //deleteMessage={(id: string) => deleteMessage(id, messages)}
                   handleMessageSelect={(id: string, index: number) => handleMessageSelect(id, index, messages)}
                />  : 
-               <IterableInboxEmptyState customization={customization} />
+               <IterableInboxEmptyState customizations={customizations} />
             }
          </>)
    }

@@ -10,14 +10,20 @@ import {
    StyleSheet    
 } from 'react-native'
 
-import IterableInboxClickableRow from './IterableInboxClickableRow'
-import InboxRowViewModel from './InboxRowViewModel'
-import Customization from './customizationType'
+// import IterableInboxClickableRow from './IterableInboxClickableRow'
+// import InboxRowViewModel from './InboxRowViewModel'
+// import IterableInboxCustomizations from './IterableInboxCustomizations'
+
+import {
+   InboxRowViewModel,
+   IterableInboxClickableRow,
+   IterableInboxCustomizations
+} from '.'
 
 type SwipeableRowProps = {
    index: number,
    message: InboxRowViewModel,
-   customization: Customization,
+   customizations: IterableInboxCustomizations,
    // swipingCheck: Function,
    //deleteMessage: Function,
    handleMessageSelect: Function,
@@ -28,7 +34,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width
 const IterableInboxSwipeableRow = ({
    index,
    message,
-   customization,
+   customizations,
    //swipingCheck,
    //deleteMessage,
    handleMessageSelect,
@@ -126,7 +132,7 @@ const IterableInboxSwipeableRow = ({
             <IterableInboxClickableRow
                index={index}
                message={message}
-               customization={customization}
+               customizations={customizations}
                handleMessageSelect={(id: string, index: number) => handleMessageSelect(id, index)}
             />   
          </Animated.View>

@@ -31,12 +31,17 @@ import {
 import IterableConfig from './IterableConfig'
 import IterableInAppMessage from './IterableInAppMessage'
 import IterableInAppManager from './IterableInAppManager'
-// import InboxRowViewModel from './InboxRowViewModel'
 
+import InboxRowViewModel from './InboxRowViewModel'
 import IterableInbox from './IterableInbox'
+import IterableInboxClickableRow from './IterableInboxClickableRow'
+import IterableInboxCustomizations from './IterableInboxCustomizations'
+import IterableInboxDataModel from './IterableInboxDataModel'
 import IterableInboxEmptyState from './IterableInboxEmptyState'
-import IterableInboxMessageCell from './IterableInboxClickableRow'
+import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
 import IterableInboxMessageList from './IterableInboxMessageList'
+import IterableInboxMessageListItem from './IterableInboxMessageListItem'
+import IterableInboxSwipeableRow from './IterableInboxSwipeableRow'
 
 export {
   Iterable,
@@ -58,12 +63,17 @@ export {
   IterableInAppCloseSource,
   IterableInAppDeleteSource,
   IterableInAppManager,
-  // InboxRowViewModel,
   IterableInbox,
+  IterableInboxClickableRow,
+  IterableInboxCustomizations,
+  IterableInboxDataModel,
+  IterableInboxMessageDisplay,
   IterableInboxEmptyState,
-  IterableInboxMessageCell,
   IterableInboxMessageList,
+  IterableInboxMessageListItem,
+  IterableInboxSwipeableRow,
 }
 export type {
-  IterableInAppContent
+  IterableInAppContent,
+  InboxRowViewModel,
 }

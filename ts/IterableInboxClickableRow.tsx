@@ -3,23 +3,20 @@
 import React, { useState } from 'react'
 import { TouchableOpacity } from 'react-native'
 
-import IterableInboxMessageListItem from './IterableInboxMessageListItem'
-import InboxRowViewModel from './InboxRowViewModel'
-import Customization from './customizationType'
+import {
+   InboxRowViewModel,
+   IterableInboxMessageListItem,
+   IterableInboxCustomizations
+} from '.'
 
 type MessageClickableRowProps = {
    index: number,
    message: InboxRowViewModel,
-   customization: Customization,
+   customizations: IterableInboxCustomizations,
    handleMessageSelect: Function,
 }
 
-const IterableInboxClickableRow = ({ 
-   index, 
-   message,
-   customization, 
-   handleMessageSelect 
-}: MessageClickableRowProps) => {
+const IterableInboxClickableRow = ({ index, message, customizations, handleMessageSelect }: MessageClickableRowProps) => {
    const [active, setActive] = useState(false)
    // const lastStyle = active ? styles.pressedLastMessageCell : styles.lastMessageCell
    // const style = active ? styles.pressedMessageCell : styles.messageCell
@@ -34,7 +31,7 @@ const IterableInboxClickableRow = ({
          }}
       >
          <IterableInboxMessageListItem
-            customization={customization} 
+            customizations={customizations}
             message={message} /> 
       </TouchableOpacity>
    )

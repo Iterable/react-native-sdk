@@ -1,26 +1,21 @@
 'use strict'
 
 import React from 'react'
-import {
-   View,
-   Text,
-   StyleSheet
-} from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 
-import InboxRowViewModel from './InboxRowViewModel'
-import Customization from './customizationType'
+import { InboxRowViewModel, IterableInboxCustomizations } from '.'
 
 type MessageListItemProps = {
    message: InboxRowViewModel,
-   customization: Customization
+   customizations: IterableInboxCustomizations
 }
 
-const IterableInboxMessageListItem = ({ message, customization }: MessageListItemProps) => {
+const IterableInboxMessageListItem = ({ message, customizations }: MessageListItemProps) => {
    const messageTitle = message.inAppMessage.inboxMetadata?.title
    const messageBody = message.inAppMessage.inboxMetadata?.subtitle
    const messageCreatedAt = message.createdAt
 
-   let resolvedStyles = {...styles, ...customization}
+   let resolvedStyles = {...styles, ...customizations}
 
    function messageRowStyle(message: InboxRowViewModel) {
       return message.last ? {...messageRow, borderBottomWidth: 1} : messageRow 

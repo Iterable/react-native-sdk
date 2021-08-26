@@ -2,10 +2,10 @@
 
 import { NativeModules } from 'react-native'
 import {
+    InboxRowViewModel,
     IterableInAppMessage,
     IterableInAppLocation,
     IterableInAppDeleteSource,
-    InboxRowViewModel,
     IterableHtmlInAppContent
 } from '.'
 
