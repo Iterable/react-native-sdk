@@ -6,19 +6,19 @@ import { View, Text, StyleSheet } from 'react-native'
 import { InboxRowViewModel, IterableInboxCustomizations } from '.'
 
 type MessageListItemProps = {
-   message: InboxRowViewModel,
+   rowViewModel: InboxRowViewModel,
    customizations: IterableInboxCustomizations
 }
 
-const IterableInboxMessageListItem = ({ message, customizations }: MessageListItemProps) => {
-   const messageTitle = message.inAppMessage.inboxMetadata?.title
-   const messageBody = message.inAppMessage.inboxMetadata?.subtitle
-   const messageCreatedAt = message.createdAt
+const IterableInboxMessageListItem = ({ rowViewModel, customizations }: MessageListItemProps) => {
+   const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title
+   const messageBody = rowViewModel.inAppMessage.inboxMetadata?.subtitle
+   const messageCreatedAt = rowViewModel.createdAt
 
    let resolvedStyles = {...styles, ...customizations}
 
-   function messageRowStyle(message: InboxRowViewModel) {
-      return message.last ? {...messageRow, borderBottomWidth: 1} : messageRow 
+   function messageRowStyle(rowViewModel: InboxRowViewModel) {
+      return rowViewModel.last ? {...messageRow, borderBottomWidth: 1} : messageRow 
    } 
 
    const {
@@ -33,11 +33,11 @@ const IterableInboxMessageListItem = ({ message, customizations }: MessageListIt
    } = styles
 
    return(
-      <View style={messageRowStyle(message)}>
+      <View style={messageRowStyle(rowViewModel)}>
          <View style={unreadIndicatorContainer}>
-            {message.read ? null : <View style={unreadIndicator}/>}
+            {rowViewModel.read ? null : <View style={unreadIndicator}/>}
          </View>
-         <View style={message.read ? readMessageContainer : unreadMessageContainer}>
+         <View style={rowViewModel.read ? readMessageContainer : unreadMessageContainer}>
             <Text style={title}>{messageTitle}</Text>
             <Text style={body}>{messageBody}</Text>
             <Text style={createdAt}>{messageCreatedAt}</Text>

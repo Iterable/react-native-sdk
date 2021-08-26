@@ -3,32 +3,34 @@
 import React, { useState } from 'react'
 import {  ScrollView } from 'react-native'
 
-import IterableInboxSwipeableRow from './IterableInboxSwipeableRow'
-import InboxRowViewModel from './InboxRowViewModel'
-import IterableInboxCustomizations from './IterableInboxCustomizations'
+import {
+   InboxRowViewModel,
+   IterableInboxCustomizations,
+   IterableInboxSwipeableRow
+} from '.'
 
 type MessageListProps = {
-   messages: InboxRowViewModel[],
+   rowViewModels: InboxRowViewModel[],
    customizations: IterableInboxCustomizations
    //deleteMessage: Function,
    handleMessageSelect: Function 
 }
 
 const IterableInboxMessageList = ({ 
-   messages,
+   rowViewModels,
    customizations, 
    //deleteMessage, 
    handleMessageSelect 
 }: MessageListProps) => {
    const [swiping, setSwiping] = useState(false)
 
-   const renderMessageCells = (messages: InboxRowViewModel[]) => {
-      return messages.map((message, index) => {
+   const renderMessageCells = (rowViewModels: InboxRowViewModel[]) => {
+      return rowViewModels.map((rowViewModel, index) => {
          return (
             <IterableInboxSwipeableRow
-               key={message.inAppMessage.messageId}
+               key={rowViewModel.inAppMessage.messageId}
                index={index}
-               message={message}
+               rowViewModel={rowViewModel}
                customizations={customizations}
                //swipingCheck={(swiping : boolean) => setSwiping(swiping)}
                //deleteMessage={(id: string) => deleteMessage(id)}
@@ -40,7 +42,7 @@ const IterableInboxMessageList = ({
 
    return(
       <ScrollView scrollEnabled={!swiping}>
-         {renderMessageCells(messages)}
+         {renderMessageCells(rowViewModels)}
       </ScrollView>   
    )
 }

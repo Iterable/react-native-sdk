@@ -7,12 +7,8 @@ import {
    Dimensions,
    Animated,
    PanResponder,
-   StyleSheet    
+   StyleSheet
 } from 'react-native'
-
-// import IterableInboxClickableRow from './IterableInboxClickableRow'
-// import InboxRowViewModel from './InboxRowViewModel'
-// import IterableInboxCustomizations from './IterableInboxCustomizations'
 
 import {
    InboxRowViewModel,
@@ -22,7 +18,7 @@ import {
 
 type SwipeableRowProps = {
    index: number,
-   message: InboxRowViewModel,
+   rowViewModel: InboxRowViewModel,
    customizations: IterableInboxCustomizations,
    // swipingCheck: Function,
    //deleteMessage: Function,
@@ -33,7 +29,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width
 
 const IterableInboxSwipeableRow = ({
    index,
-   message,
+   rowViewModel,
    customizations,
    //swipingCheck,
    //deleteMessage,
@@ -73,8 +69,7 @@ const IterableInboxSwipeableRow = ({
          useNativeDriver: false   
       })//.start(() => deleteMessage(message.inAppMessage.messageId))
    }
-
-   //
+   
    const resetPosition = () => {
       Animated.timing(position, {
          toValue: { x: 0, y: 0 },
@@ -131,7 +126,7 @@ const IterableInboxSwipeableRow = ({
          >
             <IterableInboxClickableRow
                index={index}
-               message={message}
+               rowViewModel={rowViewModel}
                customizations={customizations}
                handleMessageSelect={(id: string, index: number) => handleMessageSelect(id, index)}
             />   

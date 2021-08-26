@@ -22,7 +22,7 @@ const IterableInbox = ({ customizations }: inboxProps) => {
    const defaultInboxTitle = "Inbox"
    const [isDisplayMessage, setIsDisplayMessage] = useState<boolean>(false)
    const [selectedMessageIdx, setSelectedMessageIdx] = useState<number>(0)
-   const [messages, setMessages] = useState<InboxRowViewModel[]>([])
+   const [rowViewModels, setRowViewModels] = useState<InboxRowViewModel[]>([])
    const inboxDataModel = new IterableInboxDataModel()
 
    const fetchData = async () => {
@@ -32,7 +32,7 @@ const IterableInbox = ({ customizations }: inboxProps) => {
          return {...message, last: index === newMessages.length - 1}
       })
 
-      setMessages(newMessages)
+      setRowViewModels(newMessages)
    }
 
    // const fetchHTML = async (index: number) => {
@@ -47,14 +47,14 @@ const IterableInbox = ({ customizations }: inboxProps) => {
       fetchData()
    }, [])
 
-   const selectedMessage = messages[selectedMessageIdx]
+   const selectedMessage = rowViewModels[selectedMessageIdx]
 
    function handleMessageSelect(id: string, index: number, messages: InboxRowViewModel[]) {
       let newMessages = messages.map((message) => {
          return (message.inAppMessage.messageId === id) ?
             {...message, read: true } : message
       })
-      setMessages(newMessages)
+      setRowViewModels(newMessages)
       inboxDataModel.setItemAsRead(index)
 
       setIsDisplayMessage(true)
@@ -90,12 +90,12 @@ const IterableInbox = ({ customizations }: inboxProps) => {
             <Text style={styles.headline}>
                {customizations.navTitle ? customizations.navTitle : defaultInboxTitle}
             </Text>
-            { messages.length ?
+            { rowViewModels.length ?
                <IterableInboxMessageList 
-                  messages={messages}
+                  rowViewModels={rowViewModels}
                   customizations={customizations}
                   //deleteMessage={(id: string) => deleteMessage(id, messages)}
-                  handleMessageSelect={(id: string, index: number) => handleMessageSelect(id, index, messages)}
+                  handleMessageSelect={(id: string, index: number) => handleMessageSelect(id, index, rowViewModels)}
                />  : 
                <IterableInboxEmptyState customizations={customizations} />
             }
