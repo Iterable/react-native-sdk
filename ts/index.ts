@@ -74,6 +74,6 @@ export {
 }
 export type {
   IterableInAppContent,
-  IterableInboxCustomizations
+  IterableInboxCustomizations,
   InboxRowViewModel,
 }
