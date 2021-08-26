@@ -65,7 +65,6 @@ export {
   IterableInAppManager,
   IterableInbox,
   IterableInboxClickableRow,
-  IterableInboxCustomizations,
   IterableInboxDataModel,
   IterableInboxMessageDisplay,
   IterableInboxEmptyState,
@@ -75,5 +74,6 @@ export {
 }
 export type {
   IterableInAppContent,
+  IterableInboxCustomizations
   InboxRowViewModel,
 }
