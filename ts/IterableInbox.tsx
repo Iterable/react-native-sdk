@@ -67,7 +67,7 @@ const IterableInbox = ({
    //    let newMessages = messages.filter((message) => {
    //       return message.inAppMessage.messageId !== id
    //    })
-   //    //inboxDataModel.deleteItem(index, inboxSwipe)
+   //    inboxDataModel.deleteItem(index, inboxSwipe)
    //    //newMessages[newMessages.length - 1] = {...newMessages[newMessages.length - 1], last: true}
    //    setMessages(newMessages)
    // }

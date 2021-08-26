@@ -1,13 +1,12 @@
 'use strict'
 
 import { NativeModules } from 'react-native'
-import { 
-    IterableInAppMessage, 
-    IterableInAppLocation, 
+import {
+    IterableInAppMessage,
+    IterableInAppLocation,
     IterableInAppDeleteSource,
-    IterableEdgeInsets,
     InboxRowViewModel,
-    IterableHtmlInAppContent 
+    IterableHtmlInAppContent
 } from '.'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
@@ -53,9 +52,6 @@ class IterableInboxDataModel {
         return RNIterableAPI.getHtmlInAppContentForMessage(this.idForRow(row)).then(
             (content: any) => {
                 return IterableHtmlInAppContent.fromDict(content)
-            },
-            () => {
-                return new IterableHtmlInAppContent(new IterableEdgeInsets(0, 0, 0, 0), "")
             }
         )
     }
@@ -92,6 +88,7 @@ class IterableInboxDataModel {
 
         if (createdAt1 < createdAt2) return 1
         if (createdAt1 > createdAt2) return -1
+
         return 0
     }
 
