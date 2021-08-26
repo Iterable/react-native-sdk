@@ -17,7 +17,7 @@ class IterableInboxDataModel {
     comparatorFn?: (message1: IterableInAppMessage, message2: IterableInAppMessage) => number
 
     constructor() {
-        this.syncInboxMessages()
+       this.syncInboxMessages()
     }
 
     getItemCount(): number {
@@ -35,9 +35,9 @@ class IterableInboxDataModel {
     deleteItem(row: number, deleteSource: IterableInAppDeleteSource) {
         console.log("IterableInboxDataModel.deleteItem")
 
-        this.inboxMessages.splice(row, 1)
         RNIterableAPI.removeMessage(this.idForRow(row), IterableInAppLocation.inbox, deleteSource)
-        this.syncInboxMessages()
+        this.inboxMessages.splice(row, 1)
+        // this.syncInboxMessages()
     }
 
     getItem(row: number): InboxRowViewModel {
@@ -92,7 +92,8 @@ class IterableInboxDataModel {
         return 0
     }
 
-    private idForRow(row: number): string {
+    idForRow(row: number): string {
+        console.log(this.inboxMessages)
         return this.inboxMessages[row].inAppMessage.messageId
     }
 
@@ -133,6 +134,7 @@ class IterableInboxDataModel {
             imageUrl: message.inboxMetadata?.icon,
             createdAt: message.createdAt,
             read: message.read,
+            last: false,
             inAppMessage: message
         }
     }

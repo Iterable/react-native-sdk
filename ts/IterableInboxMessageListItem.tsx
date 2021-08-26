@@ -11,20 +11,20 @@ import InboxRowViewModel from './InboxRowViewModel'
 import Customization from './customizationType'
 
 type MessageListItemProps = {
-   message: InboxRowViewModel,
+   rowViewModel: InboxRowViewModel,
    customization: Customization
 }
 
-const IterableInboxMessageListItem = ({ message, customization }: MessageListItemProps) => {
-   const messageTitle = message.inAppMessage.inboxMetadata.title
-   const messageBody = message.inAppMessage.inboxMetadata.subtitle
-   const messageCreatedAt = message.createdAt
+const IterableInboxMessageListItem = ({ rowViewModel, customization }: MessageListItemProps) => {
+   const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title
+   const messageBody = rowViewModel.inAppMessage.inboxMetadata?.subtitle
+   const messageCreatedAt = rowViewModel.createdAt
 
-   styles = {...styles, ...customization}
+   let resolvedStyles = {...styles, ...customization}
 
-   // function messageRowStyle(message: InboxRowViewModel) {
-   //    return message.last ? {...messageRow, borderBottomWidth: 1} : messageRow 
-   // } 
+   function messageRowStyle(message: InboxRowViewModel) {
+      return message.last ? {...messageRow, borderBottomWidth: 1} : messageRow 
+   } 
 
    const {
       unreadIndicatorContainer,
@@ -35,14 +35,14 @@ const IterableInboxMessageListItem = ({ message, customization }: MessageListIte
       body,
       createdAt,
       messageRow
-   } = styles
+   } = resolvedStyles
 
    return(
-      <View style={messageRow}>
+      <View style={messageRowStyle(rowViewModel)}>
          <View style={unreadIndicatorContainer}>
-            {message.read ? null : <View style={unreadIndicator}/>}
+            {rowViewModel.read ? null : <View style={unreadIndicator}/>}
          </View>
-         <View style={message.read ? readMessageContainer : unreadMessageContainer}>
+         <View style={rowViewModel.read ? readMessageContainer : unreadMessageContainer}>
             <Text style={title}>{messageTitle}</Text>
             <Text style={body}>{messageBody}</Text>
             <Text style={createdAt}>{messageCreatedAt}</Text>
