@@ -1,7 +1,6 @@
 'use strict'
 
 import React from 'react'
-import { useEffect, useState } from 'react'
 import { Text, View, StyleSheet, useWindowDimensions } from 'react-native'
 import RenderHTML from 'react-native-render-html'
 import Icon from 'react-native-vector-icons/Ionicons'
