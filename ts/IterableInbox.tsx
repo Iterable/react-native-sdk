@@ -15,10 +15,11 @@ import {
 } from '.'
 
 type inboxProps = {
+   messageListItemLayout: Function,
    customizations: IterableInboxCustomizations
 }
 
-const IterableInbox = ({ customizations }: inboxProps) => {
+const IterableInbox = ({ messageListItemLayout, customizations}: inboxProps) => {
    const defaultInboxTitle = "Inbox"
    const [isDisplayMessage, setIsDisplayMessage] = useState<boolean>(false)
    const [selectedMessageIdx, setSelectedMessageIdx] = useState<number>(0)
@@ -93,6 +94,7 @@ const IterableInbox = ({ customizations }: inboxProps) => {
             { rowViewModels.length ?
                <IterableInboxMessageList 
                   rowViewModels={rowViewModels}
+                  messageListItemLayout={messageListItemLayout}
                   customizations={customizations}
                   //deleteMessage={(id: string) => deleteMessage(id, messages)}
                   handleMessageSelect={(id: string, index: number) => handleMessageSelect(id, index, rowViewModels)}

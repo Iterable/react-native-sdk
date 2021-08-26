@@ -19,6 +19,7 @@ import {
 type SwipeableRowProps = {
    index: number,
    rowViewModel: InboxRowViewModel,
+   messageListItemLayout: Function,
    customizations: IterableInboxCustomizations,
    // swipingCheck: Function,
    //deleteMessage: Function,
@@ -30,6 +31,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width
 const IterableInboxSwipeableRow = ({
    index,
    rowViewModel,
+   messageListItemLayout,
    customizations,
    //swipingCheck,
    //deleteMessage,
@@ -127,6 +129,7 @@ const IterableInboxSwipeableRow = ({
             <IterableInboxClickableRow
                index={index}
                rowViewModel={rowViewModel}
+               messageListItemLayout={messageListItemLayout}
                customizations={customizations}
                handleMessageSelect={(id: string, index: number) => handleMessageSelect(id, index)}
             />   
