@@ -1,4 +1,4 @@
-type InboxCustomizations = {
+type IterableInboxCustomizations = {
    navTitle: string,
    noMessagesTitle: string,
    noMessagesBody: string,
@@ -56,4 +56,4 @@ type InboxCustomizations = {
    }
 }
 
-export default InboxCustomization
+export default IterableInboxCustomizations
