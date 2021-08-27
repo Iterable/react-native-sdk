@@ -24,9 +24,14 @@ const IterableInbox = ({ messageListItemLayout, customizations}: inboxProps) => 
    const [isDisplayMessage, setIsDisplayMessage] = useState<boolean>(false)
    const [selectedMessageIdx, setSelectedMessageIdx] = useState<number>(0)
    const [rowViewModels, setRowViewModels] = useState<InboxRowViewModel[]>([])
+   const selectedMessage = rowViewModels[selectedMessageIdx]
    const inboxDataModel = new IterableInboxDataModel()
 
-   const fetchData = async () => {
+   useEffect(() => {
+      fetchInboxMessages()
+   }, [])
+
+   const fetchInboxMessages = async () => {
       let newMessages = await inboxDataModel.refresh()
 
       newMessages = newMessages.map((message, index) => {
@@ -36,19 +41,13 @@ const IterableInbox = ({ messageListItemLayout, customizations}: inboxProps) => 
       setRowViewModels(newMessages)
    }
 
-   // const fetchHTML = async (index: number) => {
-   //    return await inboxDataModel.getHtmlContentForItem(index)
-   // }
-
-   function getHtmlForRow(index: number): IterableHtmlInAppContent {
-      return new IterableHtmlInAppContent(new IterableEdgeInsets(0,0,0,0), "hi")
+   function getHtmlContentForRow(row: number) {
+      return inboxDataModel.getHtmlContentForItem(row)
    }
 
-   useEffect(() => {
-      fetchData()
-   }, [])
-
-   const selectedMessage = rowViewModels[selectedMessageIdx]
+   function test(id: string) {
+      return inboxDataModel.getHtmlContentForMessageId(id)
+   }
 
    function handleMessageSelect(id: string, index: number, messages: InboxRowViewModel[]) {
       let newMessages = messages.map((message) => {
@@ -80,7 +79,7 @@ const IterableInbox = ({ messageListItemLayout, customizations}: inboxProps) => 
          <IterableInboxMessageDisplay
             index={index}
             rowViewModel={rowViewModel}
-            inAppContent={getHtmlForRow(index)}
+            inAppContentPromise={test(rowViewModel.inAppMessage.messageId)}
             returnToInbox={() => returnToInbox()}
          ></IterableInboxMessageDisplay>)
    }

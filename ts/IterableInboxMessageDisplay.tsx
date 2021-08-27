@@ -1,22 +1,31 @@
 'use strict'
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Text, View, StyleSheet, useWindowDimensions } from 'react-native'
 import RenderHTML from 'react-native-render-html'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 import { InboxRowViewModel, IterableHtmlInAppContent } from '.'
+import { IterableEdgeInsets } from './IterableInAppClasses'
 
 type MessageDisplayProps = {
    index: number,
    rowViewModel: InboxRowViewModel,
-   inAppContent: IterableHtmlInAppContent,
+   inAppContentPromise: Promise<IterableHtmlInAppContent>,
    returnToInbox: Function
 }
 
-const IterableInboxMessageDisplay = ({ index, rowViewModel, inAppContent, returnToInbox }: MessageDisplayProps) => {
+const IterableInboxMessageDisplay = ({ index, rowViewModel, inAppContentPromise, returnToInbox }: MessageDisplayProps) => {
    const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title
    const { width } = useWindowDimensions()
+   const [inAppContent, setInAppContent] = useState<IterableHtmlInAppContent>(new IterableHtmlInAppContent(new IterableEdgeInsets(0, 0, 0, 0), ""))
+   
+   useEffect(() => {
+      inAppContentPromise.then(
+         (value) => {
+            setInAppContent(value)
+         })
+   })
 
    return(
       <View>
@@ -30,8 +39,7 @@ const IterableInboxMessageDisplay = ({ index, rowViewModel, inAppContent, return
             <Text style={styles.headline}>
                {messageTitle}
             </Text>
-            {/* <RenderHTML contentWidth={width} source={{ html }} /> */}
-            <Text>{inAppContent.html}</Text>
+            <Text>{inAppContent?.html}</Text>
          </View> 
       </View>
    )

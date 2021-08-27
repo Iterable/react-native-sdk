@@ -35,8 +35,8 @@ class IterableInboxDataModel {
     deleteItem(row: number, deleteSource: IterableInAppDeleteSource) {
         console.log("IterableInboxDataModel.deleteItem")
 
-        this.inboxMessages.splice(row, 1)
         RNIterableAPI.removeMessage(this.idForRow(row), IterableInAppLocation.inbox, deleteSource)
+        this.inboxMessages.splice(row, 1)
         this.syncInboxMessages()
     }
 
@@ -50,6 +50,16 @@ class IterableInboxDataModel {
         console.log("IterableInboxDataModel.getHtmlContentForItem")
 
         return RNIterableAPI.getHtmlInAppContentForMessage(this.idForRow(row)).then(
+            (content: any) => {
+                return IterableHtmlInAppContent.fromDict(content)
+            }
+        )
+    }
+
+    getHtmlContentForMessageId(id: string): Promise<IterableHtmlInAppContent> {
+        console.log("IterableInboxDataModel.getHtmlContentForItem messageId: " + id)
+
+        return RNIterableAPI.getHtmlInAppContentForMessage(id).then(
             (content: any) => {
                 return IterableHtmlInAppContent.fromDict(content)
             }
