@@ -13,12 +13,12 @@ import Customization from './customizationType'
 
 type inboxProps = {
    messageListItemLayout: Function,
-   customization: Customization
+   customizations: Customization
 }
 
 const IterableInbox = ({
    messageListItemLayout, 
-   customization
+   customizations
 }: inboxProps) => {
    const defaultInboxTitle = "Inbox"
    const [isDisplayMessage, setIsDisplayMessage] = useState<boolean>(false)
@@ -27,7 +27,12 @@ const IterableInbox = ({
    const inboxDataModel = new IterableInboxDataModel()
 
    const fetchData = async () => {
-      const newMessages = await inboxDataModel.refresh()
+      let newMessages = await inboxDataModel.refresh()
+
+      newMessages = newMessages.map((message, index) => {
+         return {...message, last: index === newMessages.length - 1}
+      })
+
       setMessages(newMessages)
    }
 
@@ -74,17 +79,17 @@ const IterableInbox = ({
       return (
          <>
             <Text style={styles.headline}>
-               {customization.navTitle ? customization.navTitle : defaultInboxTitle}
+               {customizations.navTitle ? customizations.navTitle : defaultInboxTitle}
             </Text>
             { messages.length ?
                <IterableInboxMessageList 
                   messages={messages}
                   messageListItemLayout={messageListItemLayout}
-                  customization={customization}
+                  customizations={customizations}
                   //deleteMessage={(id: string) => deleteMessage(id, messages)}
                   handleMessageSelect={(id: string, index: number) => handleMessageSelect(id, index, messages)}
                />  : 
-               <IterableInboxEmptyState customization={customization} />
+               <IterableInboxEmptyState customizations={customizations} />
             }
          </>)
    }

@@ -18,7 +18,7 @@ type SwipeableRowProps = {
    index: number,
    message: InboxRowViewModel,
    messageListItemLayout: Function,
-   customization: Customization,
+   customizations: Customization,
    // swipingCheck: Function,
    //deleteMessage: Function,
    handleMessageSelect: Function,
@@ -30,7 +30,7 @@ const IterableInboxSwipeableRow = ({
    index,
    message,
    messageListItemLayout,
-   customization,
+   customizations,
    //swipingCheck,
    //deleteMessage,
    handleMessageSelect,
@@ -129,7 +129,7 @@ const IterableInboxSwipeableRow = ({
                index={index}
                message={message}
                messageListItemLayout={messageListItemLayout}
-               customization={customization}
+               customizations={customizations}
                handleMessageSelect={(id: string, index: number) => handleMessageSelect(id, index)}
             />   
          </Animated.View>

@@ -11,7 +11,7 @@ import Customization from './customizationType'
 type MessageListProps = {
    messages: InboxRowViewModel[],
    messageListItemLayout: Function,
-   customization: Customization
+   customizations: Customization
    //deleteMessage: Function,
    handleMessageSelect: Function 
 }
@@ -19,7 +19,7 @@ type MessageListProps = {
 const IterableInboxMessageList = ({ 
    messages,
    messageListItemLayout,
-   customization, 
+   customizations, 
    //deleteMessage, 
    handleMessageSelect 
 }: MessageListProps) => {
@@ -33,7 +33,7 @@ const IterableInboxMessageList = ({
                index={index}
                message={message}
                messageListItemLayout={messageListItemLayout}
-               customization={customization}
+               customizations={customizations}
                //swipingCheck={(swiping : boolean) => setSwiping(swiping)}
                //deleteMessage={(id: string) => deleteMessage(id)}
                handleMessageSelect={(id: string, index: number) => handleMessageSelect(id, index)}

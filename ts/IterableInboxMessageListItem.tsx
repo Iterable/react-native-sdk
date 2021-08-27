@@ -13,12 +13,12 @@ import Customization from './customizationType'
 type MessageListItemProps = {
    message: InboxRowViewModel,
    messageListItemLayout: Function,
-   customization: Customization
+   customizations: Customization
 }
 
-const defaultMessageListLayout = (message: InboxRowViewModel, customization: Customization) => {
-   const messageTitle = message.inAppMessage.inboxMetadata.title
-   const messageBody = message.inAppMessage.inboxMetadata.subtitle
+const defaultMessageListLayout = (message: InboxRowViewModel, customizations: Customization) => {
+   const messageTitle = message.inAppMessage.inboxMetadata?.title
+   const messageBody = message.inAppMessage.inboxMetadata?.subtitle
    const messageCreatedAt = message.createdAt
 
    let styles = StyleSheet.create({
@@ -75,7 +75,7 @@ const defaultMessageListLayout = (message: InboxRowViewModel, customization: Cus
       }
    })
 
-   styles = {...styles, ...customization}
+   styles = {...styles, ...customizations}
 
    const {
       unreadIndicatorContainer,
@@ -87,9 +87,13 @@ const defaultMessageListLayout = (message: InboxRowViewModel, customization: Cus
       createdAt,
       messageRow
    } = styles
+
+   function messageRowStyle(message: InboxRowViewModel) {
+      return message.last ? {...messageRow, borderBottomWidth: 1} : messageRow 
+   } 
    
    return(
-      <View style={messageRow}>
+      <View style={messageRowStyle(message)}>
          <View style={unreadIndicatorContainer}>
             {message.read ? null : <View style={unreadIndicator}/>}
          </View>
@@ -102,16 +106,12 @@ const defaultMessageListLayout = (message: InboxRowViewModel, customization: Cus
    )
 }
 
-const IterableInboxMessageListItem = ({ message, messageListItemLayout, customization }: MessageListItemProps) => {
-
-   // function messageRowStyle(message: InboxRowViewModel) {
-   //    return message.last ? {...messageRow, borderBottomWidth: 1} : messageRow 
-   // } 
+const IterableInboxMessageListItem = ({ message, messageListItemLayout, customizations }: MessageListItemProps) => {
 
    return(
       messageListItemLayout(message) ?
          messageListItemLayout(message) :
-         defaultMessageListLayout(message, customization)  
+         defaultMessageListLayout(message, customizations)  
    )
 }
 

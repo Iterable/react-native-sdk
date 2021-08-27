@@ -5,15 +5,15 @@ import { View, Text, StyleSheet } from 'react-native'
 import Customization from './customizationType'
 
 type emptyStateProps = {
-   customization: Customization
+   customizations: Customization
 }
 
-const IterableInboxEmptyState = ({ customization } : emptyStateProps) => {
+const IterableInboxEmptyState = ({ customizations } : emptyStateProps) => {
    const defaultTitle = "No saved messages"
    const defaultBody = "Check again later!"
    
-   const title = customization.noMessagesTitle
-   const body = customization.noMessagesBody
+   const title = customizations.noMessagesTitle
+   const body = customizations.noMessagesBody
 
    return(
       <View style={styles.container}>
