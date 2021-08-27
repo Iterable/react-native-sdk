@@ -15,6 +15,7 @@ import InboxRowViewModel from './InboxRowViewModel'
 import Customization from './customizationType'
 
 type SwipeableRowProps = {
+   key: string,
    index: number,
    rowViewModel: InboxRowViewModel,
    messageListItemLayout: Function,
@@ -27,6 +28,7 @@ type SwipeableRowProps = {
 const SCREEN_WIDTH = Dimensions.get('window').width
 
 const IterableInboxSwipeableRow = ({
+   key,
    index,
    rowViewModel,
    messageListItemLayout,
