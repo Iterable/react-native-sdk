@@ -13,10 +13,12 @@ import IterableInboxDataModel from './IterableInboxDataModel'
 import Customization from './customizationType'
 
 type inboxProps = {
+   messageListItemLayout: Function,
    customizations: Customization
 }
 
-const IterableInbox = ({ 
+const IterableInbox = ({
+   messageListItemLayout, 
    customizations
 }: inboxProps) => {
    const defaultInboxTitle = "Inbox"
