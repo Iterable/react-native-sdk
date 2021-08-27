@@ -19,7 +19,7 @@ type SwipeableRowProps = {
    rowViewModel: InboxRowViewModel,
    customizations: Customization,
    // swipingCheck: Function,
-   onDelete: Function,
+   deleteMessage: Function,
    handleMessageSelect: Function,
 }
 
@@ -30,7 +30,7 @@ const IterableInboxSwipeableRow = ({
    rowViewModel,
    customizations,
    //swipingCheck,
-   onDelete,
+   deleteMessage,
    handleMessageSelect,
 }: SwipeableRowProps) => {
    const position = useRef(new Animated.ValueXY()).current
@@ -65,7 +65,7 @@ const IterableInboxSwipeableRow = ({
          toValue: {x, y: 0},
          duration: FORCING_DURATION,
          useNativeDriver: false   
-      }).start(() => onDelete(rowViewModel.inAppMessage.messageId, index))
+      }).start(() => deleteMessage(rowViewModel.inAppMessage.messageId, index))
    }
 
    //
