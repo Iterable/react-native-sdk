@@ -11,7 +11,7 @@ type MessageClickableRowProps = {
    index: number,
    message: InboxRowViewModel,
    messageListItemLayout: Function,
-   customization: Customization,
+   customizations: Customization,
    handleMessageSelect: Function,
 }
 
@@ -19,7 +19,7 @@ const IterableInboxClickableRow = ({
    index, 
    message,
    messageListItemLayout,
-   customization, 
+   customizations, 
    handleMessageSelect 
 }: MessageClickableRowProps) => {
    const [active, setActive] = useState(false)
@@ -38,7 +38,7 @@ const IterableInboxClickableRow = ({
          <IterableInboxMessageListItem
             message={message}
             messageListItemLayout={messageListItemLayout}
-            customization={customization} /> 
+            customizations={customizations} /> 
       </TouchableOpacity>
    )
 }
