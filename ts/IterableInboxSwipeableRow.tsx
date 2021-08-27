@@ -17,9 +17,9 @@ import Customization from './customizationType'
 type SwipeableRowProps = {
    index: number,
    rowViewModel: InboxRowViewModel,
-   customization: Customization,
+   customizations: Customization,
    // swipingCheck: Function,
-   deleteMessage: Function,
+   onDelete: Function,
    handleMessageSelect: Function,
 }
 
@@ -28,9 +28,9 @@ const SCREEN_WIDTH = Dimensions.get('window').width
 const IterableInboxSwipeableRow = ({
    index,
    rowViewModel,
-   customization,
+   customizations,
    //swipingCheck,
-   deleteMessage,
+   onDelete,
    handleMessageSelect,
 }: SwipeableRowProps) => {
    const position = useRef(new Animated.ValueXY()).current
@@ -65,7 +65,7 @@ const IterableInboxSwipeableRow = ({
          toValue: {x, y: 0},
          duration: FORCING_DURATION,
          useNativeDriver: false   
-      }).start(() => deleteMessage(rowViewModel.inAppMessage.messageId, index))
+      }).start(() => onDelete(rowViewModel.inAppMessage.messageId, index))
    }
 
    //
@@ -126,7 +126,7 @@ const IterableInboxSwipeableRow = ({
             <IterableInboxClickableRow
                index={index}
                rowViewModel={rowViewModel}
-               customization={customization}
+               customizations={customizations}
                handleMessageSelect={(id: string, index: number) => handleMessageSelect(id, index)}
             />   
          </Animated.View>

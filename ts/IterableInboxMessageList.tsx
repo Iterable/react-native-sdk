@@ -10,15 +10,15 @@ import Customization from './customizationType'
 
 type MessageListProps = {
    rowViewModels: InboxRowViewModel[],
-   customization: Customization
-   deleteMessage: Function,
+   customizations: Customization
+   onDelete: Function,
    handleMessageSelect: Function 
 }
 
 const IterableInboxMessageList = ({ 
    rowViewModels,
-   customization, 
-   deleteMessage, 
+   customizations, 
+   onDelete, 
    handleMessageSelect 
 }: MessageListProps) => {
    const [swiping, setSwiping] = useState(false)
@@ -30,9 +30,9 @@ const IterableInboxMessageList = ({
                key={rowViewModel.inAppMessage.messageId}
                index={index}
                rowViewModel={rowViewModel}
-               customization={customization}
+               customizations={customizations}
                //swipingCheck={(swiping : boolean) => setSwiping(swiping)}
-               deleteMessage={(id: string, index: number) => deleteMessage(id, index)}
+               onDelete={(id: string, index: number) => onDelete(id, index)}
                handleMessageSelect={(id: string, index: number) => handleMessageSelect(id, index)}
             />
          )

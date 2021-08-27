@@ -1,6 +1,6 @@
 'use strict'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Text, SafeAreaView, StyleSheet } from 'react-native'
 
 import IterableInboxMessageList from './IterableInboxMessageList'
@@ -13,11 +13,11 @@ import IterableInboxDataModel from './IterableInboxDataModel'
 import Customization from './customizationType'
 
 type inboxProps = {
-   customization: Customization
+   customizations: Customization
 }
 
 const IterableInbox = ({ 
-   customization
+   customizations
 }: inboxProps) => {
    const defaultInboxTitle = "Inbox"
    const [isDisplayMessage, setIsDisplayMessage] = useState<boolean>(false)
@@ -55,19 +55,24 @@ const IterableInbox = ({
       setSelectedMessageIdx(index)
    }
 
-   const deleteMessage = (id: string, index: number, rowViewModels: InboxRowViewModel[]) => {
-      inboxDataModel.deleteItem(index, IterableInAppDeleteSource.inboxSwipe)
-      
-      let newRowViewModels = rowViewModels.filter((rowViewModel) => {
-         return rowViewModel.inAppMessage.messageId !== id
-      })
+   const onDelete = (id: string, index: number, rowViewModels: InboxRowViewModel[]) => {useCallback(event => {
+      deleteMessage(id, index, rowViewModels)
+   }, rowViewModels)}
 
-      console.log(newRowViewModels)
+   const deleteMessage = async (id: string, index: number, rowViewModels: InboxRowViewModel[]) => {
+      await inboxDataModel.deleteItem(index, IterableInAppDeleteSource.inboxSwipe)
+      fetchData()
+      
+      // let newRowViewModels = rowViewModels.filter((rowViewModel) => {
+      //    return rowViewModel.inAppMessage.messageId !== id
+      // })
+
+      // console.log(newRowViewModels)
 
       // let newRowViewModels = rowViewModels.splice(index, 1)
       
-      newRowViewModels[newRowViewModels.length - 1] = {...newRowViewModels[newRowViewModels.length - 1], last: true}
-      setRowViewModels(newRowViewModels)
+      //newRowViewModels[newRowViewModels.length - 1] = {...newRowViewModels[newRowViewModels.length - 1], last: true}
+      // setRowViewModels(newRowViewModels)
    }
 
    function returnToInbox() {
@@ -86,16 +91,16 @@ const IterableInbox = ({
       return (
          <>
             <Text style={styles.headline}>
-               {customization.navTitle ? customization.navTitle : defaultInboxTitle}
+               {customizations.navTitle ? customizations.navTitle : defaultInboxTitle}
             </Text>
             { rowViewModels.length ?
                <IterableInboxMessageList 
                   rowViewModels={rowViewModels}
-                  customization={customization}
-                  deleteMessage={(id: string, index: number) => deleteMessage(id, index, rowViewModels)}
+                  customizations={customizations}
+                  onDelete={(id: string, index: number) => onDelete(id, index, rowViewModels)}
                   handleMessageSelect={(id: string, index: number) => handleMessageSelect(id, index, rowViewModels)}
                />  : 
-               <IterableInboxEmptyState customization={customization} />
+               <IterableInboxEmptyState customizations={customizations} />
             }
          </>)
    }

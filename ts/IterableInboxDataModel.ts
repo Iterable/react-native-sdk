@@ -37,7 +37,7 @@ class IterableInboxDataModel {
 
         RNIterableAPI.removeMessage(this.idForRow(row), IterableInAppLocation.inbox, deleteSource)
         this.inboxMessages.splice(row, 1)
-        // this.syncInboxMessages()
+        this.syncInboxMessages()
     }
 
     getItem(row: number): InboxRowViewModel {

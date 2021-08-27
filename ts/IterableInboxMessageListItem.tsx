@@ -12,15 +12,15 @@ import Customization from './customizationType'
 
 type MessageListItemProps = {
    rowViewModel: InboxRowViewModel,
-   customization: Customization
+   customizations: Customization
 }
 
-const IterableInboxMessageListItem = ({ rowViewModel, customization }: MessageListItemProps) => {
+const IterableInboxMessageListItem = ({ rowViewModel, customizations }: MessageListItemProps) => {
    const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title
    const messageBody = rowViewModel.inAppMessage.inboxMetadata?.subtitle
    const messageCreatedAt = rowViewModel.createdAt
 
-   let resolvedStyles = {...styles, ...customization}
+   let resolvedStyles = {...styles, ...customizations}
 
    function messageRowStyle(message: InboxRowViewModel) {
       return message.last ? {...messageRow, borderBottomWidth: 1} : messageRow 
