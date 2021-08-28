@@ -1,6 +1,6 @@
 'use strict'
 
-import React, { useState } from 'react'
+import React from 'react'
 import { TouchableOpacity } from 'react-native'
 
 import IterableInboxMessageListItem from './IterableInboxMessageListItem'
@@ -24,16 +24,11 @@ const IterableInboxClickableRow = ({
    customizations, 
    handleMessageSelect 
 }: MessageClickableRowProps) => {
-   const [active, setActive] = useState(false)
-   // const lastStyle = active ? styles.pressedLastMessageCell : styles.lastMessageCell
-   // const style = active ? styles.pressedMessageCell : styles.messageCell
 
    return(
       <TouchableOpacity
-         //style={message.last ? lastStyle : style}
          activeOpacity={1}
          onPress={() => {
-            setActive(!active)
             handleMessageSelect(rowViewModel.inAppMessage.messageId, index)
          }}
       >

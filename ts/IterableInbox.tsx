@@ -1,6 +1,6 @@
 'use strict'
 
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Text, SafeAreaView, StyleSheet } from 'react-native'
 
 import IterableInboxMessageList from './IterableInboxMessageList'
@@ -30,11 +30,6 @@ const IterableInbox = ({
 
    const fetchData = async () => {
       let newRowViewModels = await inboxDataModel.refresh()
-
-      // newRowViewModels = newRowViewModels.map((rowViewModel, index) => {
-      //    return {...rowViewModel, last: index === newRowViewModels.length - 1}
-      // })
-
       setRowViewModels(newRowViewModels)
    }
 
@@ -44,9 +39,13 @@ const IterableInbox = ({
 
    const selectedMessage = rowViewModels[selectedMessageIdx]
 
-   function handleMessageSelect(id: string, index: number, rowViewModels: InboxRowViewModel[]) {
+   const handleMessageSelect = (
+      messageId: string, 
+      index: number, 
+      rowViewModels: InboxRowViewModel[]
+   ) => {
       let newRowViewModels = rowViewModels.map((rowViewModel) => {
-         return (rowViewModel.inAppMessage.messageId === id) ?
+         return (rowViewModel.inAppMessage.messageId === messageId) ?
             {...rowViewModel, read: true } : rowViewModel
       })
       setRowViewModels(newRowViewModels)
@@ -56,8 +55,8 @@ const IterableInbox = ({
       setSelectedMessageIdx(index)
    }
 
-   const deleteMessage = async (id: string, index: number, rowViewModels: InboxRowViewModel[]) => {
-      await inboxDataModel.deleteItemById(id, IterableInAppDeleteSource.inboxSwipe)
+   const deleteRow = (messageId: string) => {
+      inboxDataModel.deleteItemById(messageId, IterableInAppDeleteSource.inboxSwipe)
       fetchData()
    }
 
@@ -65,10 +64,10 @@ const IterableInbox = ({
       setIsDisplayMessage(false)
    }
    
-   function showMessageDisplay(message: InboxRowViewModel) {
+   function showMessageDisplay(rowViewModel: InboxRowViewModel) {
       return (
          <IterableInboxMessageDisplay
-            message={message}
+            rowViewModel={rowViewModel}
             returnToInbox={() => returnToInbox()}
          ></IterableInboxMessageDisplay>)
    }
@@ -84,8 +83,8 @@ const IterableInbox = ({
                   rowViewModels={rowViewModels}
                   customizations={customizations}
                   messageListItemLayout={messageListItemLayout}
-                  deleteMessage={(id: string, index: number) => deleteMessage(id, index, rowViewModels)}
-                  handleMessageSelect={(id: string, index: number) => handleMessageSelect(id, index, rowViewModels)}
+                  deleteRow={(messageId: string) => deleteRow(messageId)}
+                  handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index, rowViewModels)}
                />  : 
                <IterableInboxEmptyState customizations={customizations} />
             }

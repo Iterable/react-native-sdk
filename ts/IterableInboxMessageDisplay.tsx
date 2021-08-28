@@ -5,15 +5,14 @@ import { Text, View, StyleSheet } from 'react-native'
 
 import Icon from 'react-native-vector-icons/Ionicons'
 import InboxRowViewModel from './InboxRowViewModel'
-import IterableInAppMessage from './IterableInAppMessage'
 
 type MessageDisplayProps = {
-   message: InboxRowViewModel,
+   rowViewModel: InboxRowViewModel,
    returnToInbox: Function
 }
 
-const IterableInboxMessageDisplay = ({ message, returnToInbox }: MessageDisplayProps) => {
-   const messageTitle = message.inAppMessage.inboxMetadata?.title
+const IterableInboxMessageDisplay = ({ rowViewModel, returnToInbox }: MessageDisplayProps) => {
+   const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title
 
    return(
       <View>
