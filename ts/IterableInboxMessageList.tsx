@@ -27,10 +27,12 @@ const IterableInboxMessageList = ({
 
    const renderMessageCells = (rowViewModels: InboxRowViewModel[]) => {
       return rowViewModels.map((rowViewModel, index) => {
+         const last = index === rowViewModels.length - 1 ? true : false
          return (
             <IterableInboxSwipeableRow
                key={rowViewModel.inAppMessage.messageId}
                index={index}
+               last={last}
                rowViewModel={rowViewModel}
                messageListItemLayout={messageListItemLayout}
                customizations={customizations}

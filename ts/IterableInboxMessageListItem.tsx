@@ -11,12 +11,17 @@ import InboxRowViewModel from './InboxRowViewModel'
 import Customization from './customizationType'
 
 type MessageListItemProps = {
+   last: boolean,
    rowViewModel: InboxRowViewModel,
    messageListItemLayout: Function,
    customizations: Customization
 }
 
-const defaultMessageListLayout = (rowViewModel: InboxRowViewModel, customizations: Customization) => {
+const defaultMessageListLayout = (
+   last: boolean, 
+   rowViewModel: InboxRowViewModel, 
+   customizations: Customization
+) => {
    const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title
    const messageBody = rowViewModel.inAppMessage.inboxMetadata?.subtitle
    const messageCreatedAt = rowViewModel.createdAt
@@ -89,7 +94,7 @@ const defaultMessageListLayout = (rowViewModel: InboxRowViewModel, customization
    } = resolvedStyles
 
    function messageRowStyle(rowViewModel: InboxRowViewModel) {
-      return rowViewModel.last ? {...messageRow, borderBottomWidth: 1} : messageRow 
+      return last ? {...messageRow, borderBottomWidth: 1} : messageRow 
    } 
    
    return(
@@ -106,12 +111,16 @@ const defaultMessageListLayout = (rowViewModel: InboxRowViewModel, customization
    )
 }
 
-const IterableInboxMessageListItem = ({ rowViewModel, messageListItemLayout, customizations }: MessageListItemProps) => {
-
+const IterableInboxMessageListItem = ({ 
+   last, 
+   rowViewModel, 
+   messageListItemLayout, 
+   customizations 
+}: MessageListItemProps) => {
    return(
-      messageListItemLayout(rowViewModel) ?
-         messageListItemLayout(rowViewModel) :
-         defaultMessageListLayout(rowViewModel, customizations)  
+      messageListItemLayout(last, rowViewModel) ?
+         messageListItemLayout(last, rowViewModel) :
+         defaultMessageListLayout(last, rowViewModel, customizations)  
    )
 }
 

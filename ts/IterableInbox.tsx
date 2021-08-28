@@ -31,9 +31,9 @@ const IterableInbox = ({
    const fetchData = async () => {
       let newRowViewModels = await inboxDataModel.refresh()
 
-      newRowViewModels = newRowViewModels.map((rowViewModel, index) => {
-         return {...rowViewModel, last: index === newRowViewModels.length - 1}
-      })
+      // newRowViewModels = newRowViewModels.map((rowViewModel, index) => {
+      //    return {...rowViewModel, last: index === newRowViewModels.length - 1}
+      // })
 
       setRowViewModels(newRowViewModels)
    }

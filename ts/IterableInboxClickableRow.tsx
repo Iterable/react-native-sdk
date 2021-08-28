@@ -9,6 +9,7 @@ import Customization from './customizationType'
 
 type MessageClickableRowProps = {
    index: number,
+   last: boolean,
    rowViewModel: InboxRowViewModel,
    messageListItemLayout: Function,
    customizations: Customization,
@@ -16,7 +17,8 @@ type MessageClickableRowProps = {
 }
 
 const IterableInboxClickableRow = ({ 
-   index, 
+   index,
+   last, 
    rowViewModel,
    messageListItemLayout,
    customizations, 
@@ -36,6 +38,7 @@ const IterableInboxClickableRow = ({
          }}
       >
          <IterableInboxMessageListItem
+            last={last}
             rowViewModel={rowViewModel}
             messageListItemLayout={messageListItemLayout}
             customizations={customizations} /> 

@@ -8,7 +8,6 @@ type InboxRowViewModel = {
     imageUrl?: string
     createdAt?: Date
     read: boolean
-    last: boolean
     inAppMessage: IterableInAppMessage
 }
 

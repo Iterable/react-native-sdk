@@ -144,7 +144,6 @@ class IterableInboxDataModel {
             imageUrl: message.inboxMetadata?.icon,
             createdAt: message.createdAt,
             read: message.read,
-            last: false,
             inAppMessage: message
         }
     }
