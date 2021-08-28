@@ -32,11 +32,19 @@ class IterableInboxDataModel {
         return this.inboxMessages
     }
 
-    deleteItem(id: string, deleteSource: IterableInAppDeleteSource) {
-        console.log("IterableInboxDataModel.deleteItem")
+    deleteItemById(id: string, deleteSource: IterableInAppDeleteSource) {
+        console.log("IterableInboxDataModel.deleteItemById")
 
         RNIterableAPI.removeMessage(id, IterableInAppLocation.inbox, deleteSource)
         this.inboxMessages.filter(message => message.inAppMessage.messageId !== id)
+        this.syncInboxMessages()
+    }
+
+    deleteItem(row: number, deleteSource: IterableInAppDeleteSource) {
+        console.log("IterableInboxDataModel.deleteItem")
+
+        RNIterableAPI.removeMessage(this.idForRow(row), IterableInAppLocation.inbox, deleteSource)
+        this.inboxMessages.splice(row, 1)
         this.syncInboxMessages()
     }
 

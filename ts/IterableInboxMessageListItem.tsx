@@ -75,7 +75,7 @@ const defaultMessageListLayout = (rowViewModel: InboxRowViewModel, customization
       }
    })
 
-   resolvedStyles = {...styles, ...customizations}
+    const resolvedStyles = {...styles, ...customizations}
 
    const {
       unreadIndicatorContainer,

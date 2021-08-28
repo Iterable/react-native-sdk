@@ -27,7 +27,6 @@ const IterableInbox = ({
    const [rowViewModels, setRowViewModels] = useState<InboxRowViewModel[]>([])
 
    const inboxDataModel = new IterableInboxDataModel()
-   // const inboxDeleteSource = new IterableInAppDeleteSource()
 
    const fetchData = async () => {
       let newRowViewModels = await inboxDataModel.refresh()
@@ -57,24 +56,9 @@ const IterableInbox = ({
       setSelectedMessageIdx(index)
    }
 
-   // const onDelete = (id: string, index: number, rowViewModels: InboxRowViewModel[]) => {useCallback(event => {
-   //    deleteMessage(id, index, rowViewModels)
-   // }, rowViewModels)}
-
    const deleteMessage = async (id: string, index: number, rowViewModels: InboxRowViewModel[]) => {
-      await inboxDataModel.deleteItem(id, IterableInAppDeleteSource.inboxSwipe)
+      await inboxDataModel.deleteItemById(id, IterableInAppDeleteSource.inboxSwipe)
       fetchData()
-      
-      // let newRowViewModels = rowViewModels.filter((rowViewModel) => {
-      //    return rowViewModel.inAppMessage.messageId !== id
-      // })
-
-      // console.log(newRowViewModels)
-
-      // let newRowViewModels = rowViewModels.splice(index, 1)
-      
-      //newRowViewModels[newRowViewModels.length - 1] = {...newRowViewModels[newRowViewModels.length - 1], last: true}
-      // setRowViewModels(newRowViewModels)
    }
 
    function returnToInbox() {
@@ -99,6 +83,7 @@ const IterableInbox = ({
                <IterableInboxMessageList 
                   rowViewModels={rowViewModels}
                   customizations={customizations}
+                  messageListItemLayout={messageListItemLayout}
                   deleteMessage={(id: string, index: number) => deleteMessage(id, index, rowViewModels)}
                   handleMessageSelect={(id: string, index: number) => handleMessageSelect(id, index, rowViewModels)}
                />  : 
