@@ -15,12 +15,14 @@ import InboxRowViewModel from './InboxRowViewModel'
 import Customization from './customizationType'
 
 type SwipeableRowProps = {
+   key: string,
    index: number,
-   message: InboxRowViewModel,
+   last: boolean,
+   rowViewModel: InboxRowViewModel,
    messageListItemLayout: Function,
    customizations: Customization,
    // swipingCheck: Function,
-   //deleteMessage: Function,
+   deleteRow: Function,
    handleMessageSelect: Function,
 }
 
@@ -28,11 +30,12 @@ const SCREEN_WIDTH = Dimensions.get('window').width
 
 const IterableInboxSwipeableRow = ({
    index,
-   message,
+   last,
+   rowViewModel,
    messageListItemLayout,
    customizations,
    //swipingCheck,
-   //deleteMessage,
+   deleteRow,
    handleMessageSelect,
 }: SwipeableRowProps) => {
    const position = useRef(new Animated.ValueXY()).current
@@ -67,7 +70,7 @@ const IterableInboxSwipeableRow = ({
          toValue: {x, y: 0},
          duration: FORCING_DURATION,
          useNativeDriver: false   
-      })//.start(() => deleteMessage(message.inAppMessage.messageId))
+      }).start(() => deleteRow(rowViewModel.inAppMessage.messageId))
    }
 
    //
@@ -127,10 +130,11 @@ const IterableInboxSwipeableRow = ({
          >
             <IterableInboxClickableRow
                index={index}
-               message={message}
+               last={last}
+               rowViewModel={rowViewModel}
                messageListItemLayout={messageListItemLayout}
                customizations={customizations}
-               handleMessageSelect={(id: string, index: number) => handleMessageSelect(id, index)}
+               handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index)}
             />   
          </Animated.View>
       </View>   
