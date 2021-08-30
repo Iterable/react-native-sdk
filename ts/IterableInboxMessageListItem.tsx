@@ -17,8 +17,8 @@ const defaultMessageListLayout = (
    rowViewModel: InboxRowViewModel, 
    customizations: IterableInboxCustomizations
 ) => {
-   const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title
-   const messageBody = rowViewModel.inAppMessage.inboxMetadata?.subtitle
+   const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title ?? ""
+   const messageBody = rowViewModel.inAppMessage.inboxMetadata?.subtitle ?? ""
    const messageCreatedAt = rowViewModel.createdAt
 
    let styles = StyleSheet.create({

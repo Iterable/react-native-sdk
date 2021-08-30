@@ -147,7 +147,7 @@ const IterableInbox = ({
          >
             {showMessageList()}   
             {showMessageDisplay(rowViewModels, selectedRowViewModelIdx)}
-         </Animated.View>      
+         </Animated.View>
       </SafeAreaView>
    )
 }
