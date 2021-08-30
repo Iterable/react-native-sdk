@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import InboxRowViewModel from './InboxRowViewModel'
 
 type MessageDisplayProps = {
-   message: InboxRowViewModel,
+   rowViewModel: InboxRowViewModel,
    returnToInbox: Function
 }
 

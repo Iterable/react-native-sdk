@@ -1,7 +1,11 @@
 'use strict'
 
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { 
+   View, 
+   Text, 
+   StyleSheet 
+} from 'react-native'
 import Customization from './customizationType'
 
 type emptyStateProps = {

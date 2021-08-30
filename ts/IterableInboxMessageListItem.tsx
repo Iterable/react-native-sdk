@@ -11,15 +11,20 @@ import InboxRowViewModel from './InboxRowViewModel'
 import Customization from './customizationType'
 
 type MessageListItemProps = {
-   message: InboxRowViewModel,
+   last: boolean,
+   rowViewModel: InboxRowViewModel,
    messageListItemLayout: Function,
    customizations: Customization
 }
 
-const defaultMessageListLayout = (message: InboxRowViewModel, customizations: Customization) => {
-   const messageTitle = message.inAppMessage.inboxMetadata?.title
-   const messageBody = message.inAppMessage.inboxMetadata?.subtitle
-   const messageCreatedAt = message.createdAt
+const defaultMessageListLayout = (
+   last: boolean, 
+   rowViewModel: InboxRowViewModel, 
+   customizations: Customization
+) => {
+   const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title
+   const messageBody = rowViewModel.inAppMessage.inboxMetadata?.subtitle
+   const messageCreatedAt = rowViewModel.createdAt
 
    let styles = StyleSheet.create({
       unreadIndicatorContainer: {
@@ -75,7 +80,7 @@ const defaultMessageListLayout = (message: InboxRowViewModel, customizations: Cu
       }
    })
 
-   styles = {...styles, ...customizations}
+    const resolvedStyles = {...styles, ...customizations}
 
    const {
       unreadIndicatorContainer,
@@ -86,18 +91,18 @@ const defaultMessageListLayout = (message: InboxRowViewModel, customizations: Cu
       body,
       createdAt,
       messageRow
-   } = styles
+   } = resolvedStyles
 
-   function messageRowStyle(message: InboxRowViewModel) {
-      return message.last ? {...messageRow, borderBottomWidth: 1} : messageRow 
+   function messageRowStyle(rowViewModel: InboxRowViewModel) {
+      return last ? {...messageRow, borderBottomWidth: 1} : messageRow 
    } 
    
    return(
-      <View style={messageRowStyle(message)}>
+      <View style={messageRowStyle(rowViewModel)}>
          <View style={unreadIndicatorContainer}>
-            {message.read ? null : <View style={unreadIndicator}/>}
+            {rowViewModel.read ? null : <View style={unreadIndicator}/>}
          </View>
-         <View style={message.read ? readMessageContainer : unreadMessageContainer}>
+         <View style={rowViewModel.read ? readMessageContainer : unreadMessageContainer}>
             <Text style={title}>{messageTitle}</Text>
             <Text style={body}>{messageBody}</Text>
             <Text style={createdAt}>{messageCreatedAt}</Text>
@@ -106,12 +111,16 @@ const defaultMessageListLayout = (message: InboxRowViewModel, customizations: Cu
    )
 }
 
-const IterableInboxMessageListItem = ({ message, messageListItemLayout, customizations }: MessageListItemProps) => {
-
+const IterableInboxMessageListItem = ({ 
+   last, 
+   rowViewModel, 
+   messageListItemLayout, 
+   customizations 
+}: MessageListItemProps) => {
    return(
-      messageListItemLayout(message) ?
-         messageListItemLayout(message) :
-         defaultMessageListLayout(message, customizations)  
+      messageListItemLayout(last, rowViewModel) ?
+         messageListItemLayout(last, rowViewModel) :
+         defaultMessageListLayout(last, rowViewModel, customizations)  
    )
 }
 
