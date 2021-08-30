@@ -12,56 +12,17 @@ import {
 const RNIterableAPI = NativeModules.RNIterableAPI
 
 class IterableInboxDataModel {
-    inboxMessages: Array<InboxRowViewModel> = []
     filterFn?: (message: IterableInAppMessage) => boolean
     comparatorFn?: (message1: IterableInAppMessage, message2: IterableInAppMessage) => number
 
     constructor() {
-       this.syncInboxMessages()
+
     }
 
-    getItemCount(): number {
-        console.log("IterableInboxDataModel.getItemCount")
-
-        return this.inboxMessages.length
-    }
-
-    getAllItems(): Array<InboxRowViewModel> {
-        console.log("IterableInboxDataModel.getAllItems")
-
-        return this.inboxMessages
-    }
-
-    deleteItemById(id: string, deleteSource: IterableInAppDeleteSource) {
-        console.log("IterableInboxDataModel.deleteItemById")
-
-        RNIterableAPI.removeMessage(id, IterableInAppLocation.inbox, deleteSource)
-        this.inboxMessages.filter(message => message.inAppMessage.messageId !== id)
-        this.syncInboxMessages()
-    }
-
-    deleteItem(row: number, deleteSource: IterableInAppDeleteSource) {
-        console.log("IterableInboxDataModel.deleteItem")
-
-        RNIterableAPI.removeMessage(this.idForRow(row), IterableInAppLocation.inbox, deleteSource)
-        this.inboxMessages.splice(row, 1)
-        this.syncInboxMessages()
-    }
-
-    getItem(row: number): InboxRowViewModel {
-        console.log("IterableInboxDataModel.getItem")
-
-        return this.inboxMessages[row]
-    }
-
-    getHtmlContentForItem(row: number): Promise<IterableHtmlInAppContent> {
-        console.log("IterableInboxDataModel.getHtmlContentForItem")
-
-        return RNIterableAPI.getHtmlInAppContentForMessage(this.idForRow(row)).then(
-            (content: any) => {
-                return IterableHtmlInAppContent.fromDict(content)
-            }
-        )
+    set(filter?: (message: IterableInAppMessage) => boolean,
+        comparator?: (message1: IterableInAppMessage, message2: IterableInAppMessage) => number) {
+        this.filterFn = filter
+        this.comparatorFn = comparator
     }
 
     getHtmlContentForMessageId(id: string): Promise<IterableHtmlInAppContent> {
@@ -74,26 +35,22 @@ class IterableInboxDataModel {
         )
     }
 
-    setItemAsRead(row: number) {
-        console.log("IterableInboxDataModel.setItemAsRead")
+    setMessageAsRead(id: string) {
+        console.log("IterableInboxDataModel.setMessageAsRead")
 
-        this.inboxMessages[row].read = true
-        RNIterableAPI.setReadForMessage(this.idForRow(row), true)
+        RNIterableAPI.setReadForMessage(id, true)
     }
 
-    set(filter?: (message: IterableInAppMessage) => boolean,
-        comparator?: (message1: IterableInAppMessage, message2: IterableInAppMessage) => number) {
-        this.filterFn = filter
-        this.comparatorFn = comparator
+    deleteItemById(id: string, deleteSource: IterableInAppDeleteSource) {
+        console.log("IterableInboxDataModel.deleteItemById")
+
+        RNIterableAPI.removeMessage(id, IterableInAppLocation.inbox, deleteSource)
     }
 
     async refresh(): Promise<Array<InboxRowViewModel>> {
         return RNIterableAPI.getInboxMessages().then(
             (messages: Array<IterableInAppMessage>) => {
-                this.inboxMessages = []
-                this.inboxMessages = this.processMessages(messages)
-
-                return this.inboxMessages
+                return this.processMessages(messages)
             },
             () => {
                 return []
@@ -109,22 +66,6 @@ class IterableInboxDataModel {
         if (createdAt1 > createdAt2) return -1
 
         return 0
-    }
-
-    idForRow(row: number): string {
-        console.log("row: ", row)
-        console.log(this.inboxMessages)
-        return this.inboxMessages[row].inAppMessage.messageId
-    }
-
-    private syncInboxMessages() {
-        console.log("IterableInboxDataModel.syncInboxMessages")
-
-        RNIterableAPI.getInboxMessages().then(
-            (messages: Array<IterableInAppMessage>) => {
-                this.inboxMessages = this.processMessages(messages)
-            }
-        )
     }
 
     private processMessages(messages: Array<IterableInAppMessage>): Array<InboxRowViewModel> {

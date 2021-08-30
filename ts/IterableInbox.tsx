@@ -67,7 +67,7 @@ const IterableInbox = ({
             {...rowViewModel, read: true } : rowViewModel
       })
       setRowViewModels(newRowViewModels)
-      inboxDataModel.setItemAsRead(index)
+      inboxDataModel.setMessageAsRead(id)
       setSelectedRowViewModelIdx(index)
       slideLeft()
    }
