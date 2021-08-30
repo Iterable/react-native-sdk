@@ -1,7 +1,7 @@
 'use strict'
 
 import React, { useState } from 'react'
-import {  ScrollView } from 'react-native'
+import { ScrollView } from 'react-native'
 
 import {
    InboxRowViewModel,
@@ -11,33 +11,35 @@ import {
 
 type MessageListProps = {
    rowViewModels: InboxRowViewModel[],
-   //messageListItemLayout: Function,
-   customizations: IterableInboxCustomizations
-   //deleteMessage: Function,
+   customizations: IterableInboxCustomizations,
+   deleteRow: Function,
+   messageListItemLayout: Function,
    handleMessageSelect: Function 
 }
 
 const IterableInboxMessageList = ({ 
    rowViewModels,
-   //messageListItemLayout,
-   customizations,
-   //deleteMessage, 
+   customizations, 
+   deleteRow, 
+   messageListItemLayout,
    handleMessageSelect 
 }: MessageListProps) => {
    const [swiping, setSwiping] = useState(false)
 
    const renderMessageCells = (rowViewModels: InboxRowViewModel[]) => {
       return rowViewModels.map((rowViewModel, index) => {
+         const last = index === rowViewModels.length - 1 ? true : false
          return (
             <IterableInboxSwipeableRow
                key={rowViewModel.inAppMessage.messageId}
                index={index}
+               last={last}
                rowViewModel={rowViewModel}
-               //messageListItemLayout={messageListItemLayout}
+               messageListItemLayout={messageListItemLayout}
                customizations={customizations}
                //swipingCheck={(swiping : boolean) => setSwiping(swiping)}
-               //deleteMessage={(id: string) => deleteMessage(id)}
-               handleMessageSelect={(id: string, index: number) => handleMessageSelect(id, index)}
+               deleteRow={(messageId: string) => deleteRow(messageId)}
+               handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index)}
             />
          )
       })

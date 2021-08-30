@@ -1,6 +1,6 @@
 'use strict'
 
-import React, { useState } from 'react'
+import React from 'react'
 import { TouchableOpacity } from 'react-native'
 
 import {
@@ -11,35 +11,33 @@ import {
 
 type MessageClickableRowProps = {
    index: number,
+   last: boolean,
    rowViewModel: InboxRowViewModel,
-   // messageListItemLayout: Function,
+   messageListItemLayout: Function,
    customizations: IterableInboxCustomizations,
    handleMessageSelect: Function,
 }
 
 const IterableInboxClickableRow = ({ 
-   index, 
+   index,
+   last, 
    rowViewModel,
-   // messageListItemLayout,
+   messageListItemLayout,
    customizations, 
    handleMessageSelect 
 }: MessageClickableRowProps) => {
-   const [active, setActive] = useState(false)
-   // const lastStyle = active ? styles.pressedLastMessageCell : styles.lastMessageCell
-   // const style = active ? styles.pressedMessageCell : styles.messageCell
-   
+
    return(
       <TouchableOpacity
-         //style={message.last ? lastStyle : style}
          activeOpacity={1}
          onPress={() => {
-            setActive(!active)
             handleMessageSelect(rowViewModel.inAppMessage.messageId, index)
          }}
       >
          <IterableInboxMessageListItem
+            last={last}
             rowViewModel={rowViewModel}
-            // messageListItemLayout={messageListItemLayout}
+            messageListItemLayout={messageListItemLayout}
             customizations={customizations} /> 
       </TouchableOpacity>
    )

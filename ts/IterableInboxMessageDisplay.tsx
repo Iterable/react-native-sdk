@@ -1,28 +1,22 @@
 'use strict'
 
 import React, { useState, useEffect } from 'react'
-import { 
-   Text, 
-   View, 
-   StyleSheet, 
-   TouchableWithoutFeedback, 
-   useWindowDimensions 
-} from 'react-native'
+import { Text, View, Dimensions, StyleSheet, TouchableWithoutFeedback } from 'react-native'
 import RenderHtml from 'react-native-render-html'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-import { InboxRowViewModel, IterableHtmlInAppContent } from '.'
-import { IterableEdgeInsets } from './IterableInAppClasses'
+import { InboxRowViewModel, IterableHtmlInAppContent, IterableEdgeInsets } from '.'
 
 type MessageDisplayProps = {
    rowViewModel: InboxRowViewModel,
-   inAppContentPromise: Promise<IterableHtmlInAppContent>,
+   inAppContentPromise: Promise<IterableHtmlInAppContent>
    returnToInbox: Function
 }
 
+const SCREEN_WIDTH = Dimensions.get('window').width
+
 const IterableInboxMessageDisplay = ({ rowViewModel, inAppContentPromise, returnToInbox }: MessageDisplayProps) => {
    const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title
-   const { width } = useWindowDimensions()
    const [inAppContent, setInAppContent] = useState<IterableHtmlInAppContent>(new IterableHtmlInAppContent(new IterableEdgeInsets(0, 0, 0, 0), ""))
    
    useEffect(() => {
@@ -33,7 +27,7 @@ const IterableInboxMessageDisplay = ({ rowViewModel, inAppContentPromise, return
    })
 
    return(
-      <View>
+      <View style={styles.messageDisplayContainer}>
          <View style={styles.returnButtonContainer}>
             <TouchableWithoutFeedback onPress={() => returnToInbox()}>
                <Icon 
@@ -45,7 +39,7 @@ const IterableInboxMessageDisplay = ({ rowViewModel, inAppContentPromise, return
             <Text style={styles.headline}>
                {messageTitle}
             </Text>
-            <RenderHtml contentWidth={width} source={inAppContent}/>
+            <RenderHtml contentWidth={SCREEN_WIDTH} source={inAppContent}/>
          </View> 
       </View>
    )
@@ -63,8 +57,9 @@ const styles = StyleSheet.create({
    },
 
    messageDisplayContainer: {
+      width: SCREEN_WIDTH,
       height: '100%',
-      backgroundColor: 'whitesmoke',
+      backgroundColor: 'white', 
       flexDirection: 'column',
       justifyContent: 'flex-start'
    },

@@ -1,7 +1,14 @@
 'use strict'
 
 import React, { useState, useEffect } from 'react'
-import { Text, SafeAreaView, StyleSheet } from 'react-native'
+import {
+   View, 
+   Text, 
+   SafeAreaView, 
+   StyleSheet,
+   Animated,
+   Dimensions
+} from 'react-native'
 
 import {
    IterableInboxMessageList,
@@ -10,25 +17,31 @@ import {
    InboxRowViewModel,
    IterableInboxDataModel,
    IterableInboxCustomizations,
-   IterableEdgeInsets,
-   IterableHtmlInAppContent
+   IterableInAppDeleteSource,
 } from '.'
+
+const SCREEN_WIDTH = Dimensions.get('window').width
 
 type inboxProps = {
    messageListItemLayout: Function,
    customizations: IterableInboxCustomizations
 }
 
-const IterableInbox = ({ 
-   // messageListItemLayout, 
+const IterableInbox = ({
+   messageListItemLayout, 
    customizations
 }: inboxProps) => {
    const defaultInboxTitle = "Inbox"
-   const [isDisplayMessage, setIsDisplayMessage] = useState<boolean>(false)
-   const [selectedMessageIdx, setSelectedMessageIdx] = useState<number>(0)
+   const [selectedRowViewModelIdx, setSelectedRowViewModelIdx] = useState<number>(0)
    const [rowViewModels, setRowViewModels] = useState<InboxRowViewModel[]>([])
-   const selectedMessage = rowViewModels[selectedMessageIdx]
    const inboxDataModel = new IterableInboxDataModel()
+
+   const [animatedValue, setAnimatedValue] = useState<any>(new Animated.Value(0))
+
+   const fetchData = async () => {
+      const newRowViewModels = await inboxDataModel.refresh()
+      setRowViewModels(newRowViewModels)
+   }
 
    useEffect(() => {
       fetchInboxMessages()
@@ -44,81 +57,115 @@ const IterableInbox = ({
       setRowViewModels(newMessages)
    }
 
-   function getHtmlContentForRow(row: number) {
-      return inboxDataModel.getHtmlContentForItem(row)
-   }
-
-   function test(id: string) {
+   function getHtmlContentForRow(id: string) {
       return inboxDataModel.getHtmlContentForMessageId(id)
    }
 
-   function handleMessageSelect(id: string, index: number, messages: InboxRowViewModel[]) {
-      let newMessages = messages.map((message) => {
-         return (message.inAppMessage.messageId === id) ?
-            {...message, read: true } : message
+   function handleMessageSelect(id: string, index: number, rowViewModels: InboxRowViewModel[]) {
+      let newRowViewModels = rowViewModels.map((rowViewModel) => {
+         return (rowViewModel.inAppMessage.messageId === id) ?
+            {...rowViewModel, read: true } : rowViewModel
       })
-      setRowViewModels(newMessages)
+      setRowViewModels(newRowViewModels)
       inboxDataModel.setItemAsRead(index)
-
-      setIsDisplayMessage(true)
-      setSelectedMessageIdx(index)
+      setSelectedRowViewModelIdx(index)
+      slideLeft()
    }
 
-   // function deleteMessage(id: string, index: number, messages: InboxRowViewModel[]) {
-   //    let newMessages = messages.filter((message) => {
-   //       return message.inAppMessage.messageId !== id
-   //    })
-   //    inboxDataModel.deleteItem(index, inboxSwipe)
-   //    //newMessages[newMessages.length - 1] = {...newMessages[newMessages.length - 1], last: true}
-   //    setMessages(newMessages)
-   // }
+   const deleteRow = (messageId: string) => {
+      inboxDataModel.deleteItemById(messageId, IterableInAppDeleteSource.inboxSwipe)
+      fetchData()
+   }
 
    function returnToInbox() {
-      setIsDisplayMessage(false)
+      reset()
    }
    
-   function showMessageDisplay(rowViewModel: InboxRowViewModel, index: number) {
+   function showMessageDisplay(rowViewModelList: InboxRowViewModel[], index: number) {
+      const selectedRowViewModel = rowViewModelList[index]
+
       return (
-         <IterableInboxMessageDisplay
-            index={index}
-            rowViewModel={rowViewModel}
-            inAppContentPromise={test(rowViewModel.inAppMessage.messageId)}
-            returnToInbox={() => returnToInbox()}
-         ></IterableInboxMessageDisplay>)
+         selectedRowViewModel ?
+            <IterableInboxMessageDisplay
+               rowViewModel={selectedRowViewModel}
+               inAppContentPromise={getHtmlContentForRow(selectedRowViewModel.inAppMessage.messageId)}
+               returnToInbox={() => returnToInbox()}
+            /> : null
+      )
    }
 
    function showMessageList() {
       return (
-         <>
+         <View style={styles.messageListContainer}>
             <Text style={styles.headline}>
                {customizations.navTitle ? customizations.navTitle : defaultInboxTitle}
             </Text>
             { rowViewModels.length ?
                <IterableInboxMessageList 
                   rowViewModels={rowViewModels}
-                  // messageListItemLayout={messageListItemLayout}
                   customizations={customizations}
-                  //deleteMessage={(id: string) => deleteMessage(id, messages)}
-                  handleMessageSelect={(id: string, index: number) => handleMessageSelect(id, index, rowViewModels)}
+                  messageListItemLayout={messageListItemLayout}
+                  deleteRow={(messageId: string) => deleteRow(messageId)}
+                  handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index, rowViewModels)}
                />  : 
                <IterableInboxEmptyState customizations={customizations} />
             }
-         </>)
+         </View>)
+   }
+
+   const slideLeft = () => {
+      Animated.timing(animatedValue, {
+         toValue: 1,
+         duration: 500,
+         useNativeDriver: false
+      }).start()
+   }
+
+   const reset = () => {
+      Animated.timing(animatedValue, {
+         toValue: 0,
+         duration: 500,
+         useNativeDriver: false
+      }).start()  
    }
 
    return(
-      <SafeAreaView style={styles.container}>    
-         {isDisplayMessage ? 
-            showMessageDisplay(selectedMessage, selectedMessageIdx) : 
-            showMessageList()}
+      <SafeAreaView style={styles.container}>
+         <Animated.View
+            style={{
+               transform: [
+                  {translateX: animatedValue.interpolate({
+                     inputRange: [0, 1],
+                     outputRange: [0, -SCREEN_WIDTH]
+                  })}
+               ],
+               height: "100%",
+               flexDirection: 'row',
+               width: 2 * SCREEN_WIDTH,
+               justifyContent: "flex-start",
+            }}
+         >
+            {showMessageList()}   
+            {showMessageDisplay(rowViewModels, selectedRowViewModelIdx)}
+         </Animated.View>      
       </SafeAreaView>
    )
 }
 
 const styles = StyleSheet.create({
    container: {
-      height: '100%'
+      flex: 1,
+      width: 2 * SCREEN_WIDTH,
+      flexDirection: 'row',
+      height: '100%',
+      alignItems: "center",
+      justifyContent: "flex-start"
    },
+
+   messageListContainer: {
+      width: SCREEN_WIDTH
+   },
+
    headline: {
       fontWeight: 'bold' ,
       fontSize: 40,

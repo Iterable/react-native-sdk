@@ -6,12 +6,17 @@ import { View, Text, StyleSheet } from 'react-native'
 import { InboxRowViewModel, IterableInboxCustomizations } from '.'
 
 type MessageListItemProps = {
+   last: boolean,
    rowViewModel: InboxRowViewModel,
-   // messageListItemLayout: Function,
+   messageListItemLayout: Function,
    customizations: IterableInboxCustomizations
 }
 
-const defaultMessageListLayout = (rowViewModel: InboxRowViewModel, customizations: IterableInboxCustomizations) => {
+const defaultMessageListLayout = (
+   last: boolean, 
+   rowViewModel: InboxRowViewModel, 
+   customizations: IterableInboxCustomizations
+) => {
    const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title
    const messageBody = rowViewModel.inAppMessage.inboxMetadata?.subtitle
    const messageCreatedAt = rowViewModel.createdAt
@@ -70,7 +75,7 @@ const defaultMessageListLayout = (rowViewModel: InboxRowViewModel, customization
       }
    })
 
-   styles = {...styles, ...customizations}
+    const resolvedStyles = {...styles, ...customizations}
 
    const {
       unreadIndicatorContainer,
@@ -81,10 +86,14 @@ const defaultMessageListLayout = (rowViewModel: InboxRowViewModel, customization
       body,
       createdAt,
       messageRow
-   } = styles
+   } = resolvedStyles
+
+   function messageRowStyle(rowViewModel: InboxRowViewModel) {
+      return last ? {...messageRow, borderBottomWidth: 1} : messageRow 
+   } 
    
    return(
-      <View style={messageRow}>
+      <View style={messageRowStyle(rowViewModel)}>
          <View style={unreadIndicatorContainer}>
             {rowViewModel.read ? null : <View style={unreadIndicator}/>}
          </View>
@@ -98,19 +107,15 @@ const defaultMessageListLayout = (rowViewModel: InboxRowViewModel, customization
 }
 
 const IterableInboxMessageListItem = ({ 
+   last, 
    rowViewModel, 
-   // messageListItemLayout, 
+   messageListItemLayout, 
    customizations 
 }: MessageListItemProps) => {
-
-   // function messageRowStyle(message: InboxRowViewModel) {
-   //    return message.last ? {...messageRow, borderBottomWidth: 1} : messageRow 
-   // } 
-
    return(
-      // messageListItemLayout(rowViewModel) ?
-      //    messageListItemLayout(rowViewModel) :
-         defaultMessageListLayout(rowViewModel, customizations)  
+      messageListItemLayout(last, rowViewModel) ?
+         messageListItemLayout(last, rowViewModel) :
+         defaultMessageListLayout(last, rowViewModel, customizations)  
    )
 }
 
