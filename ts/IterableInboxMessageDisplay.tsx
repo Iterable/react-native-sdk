@@ -1,7 +1,7 @@
 'use strict'
 
 import React from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import { Text, View, Dimensions, StyleSheet } from 'react-native'
 
 import Icon from 'react-native-vector-icons/Ionicons'
 import InboxRowViewModel from './InboxRowViewModel'
@@ -11,11 +11,16 @@ type MessageDisplayProps = {
    returnToInbox: Function
 }
 
-const IterableInboxMessageDisplay = ({ rowViewModel, returnToInbox }: MessageDisplayProps) => {
-   const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title
+const SCREEN_WIDTH = Dimensions.get('window').width
+
+const IterableInboxMessageDisplay = ({ 
+   message, 
+   returnToInbox }: 
+MessageDisplayProps) => {
+   const messageTitle = message.inAppMessage.inboxMetadata?.title
 
    return(
-      <View>
+      <View style={styles.messageDisplayContainer}>
          <View style={styles.returnButtonContainer}>
             <Icon 
                name="ios-arrow-back"
@@ -32,6 +37,10 @@ const IterableInboxMessageDisplay = ({ rowViewModel, returnToInbox }: MessageDis
 }
 
 const styles = StyleSheet.create({
+   messageDisplayContainer: {
+      width: SCREEN_WIDTH
+   },
+
    returnButtonContainer: {
       marginTop: 0
    },
@@ -44,7 +53,7 @@ const styles = StyleSheet.create({
 
    container: {
       height: '100%',
-      backgroundColor: 'whitesmoke', 
+      backgroundColor: 'white', 
       flexDirection: 'column',
       justifyContent: 'flex-start'
    },
