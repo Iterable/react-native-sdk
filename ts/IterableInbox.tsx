@@ -31,11 +31,10 @@ const IterableInbox = ({
    customizations
 }: inboxProps) => {
    const defaultInboxTitle = "Inbox"
-   const [selectedMessageIdx, setSelectedMessageIdx] = useState<number>(0)
-   const [messages, setMessages] = useState<InboxRowViewModel[]>([])
+   const [selectedRowViewModelIdx, setSelectedRowViewModelIdx] = useState<number>(0)
+   const [rowViewModels, setRowViewModels] = useState<InboxRowViewModel[]>([])
    const inboxDataModel = new IterableInboxDataModel()
 
-   const [isReady, setIsReady] = useState<boolean>(false)
    const [animatedValue, setAnimatedValue] = useState<any>(new Animated.Value(0))
 
    const fetchData = async () => {
@@ -47,14 +46,14 @@ const IterableInbox = ({
       fetchData()
    }, [])
 
-   function handleMessageSelect(id: string, index: number, messages: InboxRowViewModel[]) {
+   function handleMessageSelect(id: string, index: number, rowViewModels: InboxRowViewModel[]) {
       let newRowViewModels = rowViewModels.map((rowViewModel) => {
          return (rowViewModel.inAppMessage.messageId === id) ?
             {...rowViewModel, read: true } : rowViewModel
       })
       setRowViewModels(newRowViewModels)
       inboxDataModel.setItemAsRead(index)
-      setSelectedMessageIdx(index)
+      setSelectedRowViewModelIdx(index)
       slideLeft()
    }
 
@@ -67,13 +66,13 @@ const IterableInbox = ({
       reset()
    }
    
-   function showMessageDisplay(messagesList: InboxRowViewModel[], index: number) {
-      const selectedMessage = messagesList[index]
+   function showMessageDisplay(rowViewModelList: InboxRowViewModel[], index: number) {
+      const selectedRowViewModel = rowViewModelList[index]
 
       return (
-         selectedMessage ?
+         selectedRowViewModel ?
             <IterableInboxMessageDisplay
-               message={selectedMessage}
+               rowViewModel={selectedRowViewModel}
                returnToInbox={() => returnToInbox()}
             /> : null
       )
@@ -131,7 +130,7 @@ const IterableInbox = ({
             }}
          >
             {showMessageList()}   
-            {showMessageDisplay(messages, selectedMessageIdx)}
+            {showMessageDisplay(rowViewModels, selectedRowViewModelIdx)}
          </Animated.View>      
       </SafeAreaView>
    )

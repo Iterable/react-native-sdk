@@ -14,10 +14,10 @@ type MessageDisplayProps = {
 const SCREEN_WIDTH = Dimensions.get('window').width
 
 const IterableInboxMessageDisplay = ({ 
-   message, 
+   rowViewModel, 
    returnToInbox }: 
 MessageDisplayProps) => {
-   const messageTitle = message.inAppMessage.inboxMetadata?.title
+   const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title
 
    return(
       <View style={styles.messageDisplayContainer}>
