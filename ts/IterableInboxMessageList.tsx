@@ -11,7 +11,7 @@ import {
 
 type MessageListProps = {
    rowViewModels: InboxRowViewModel[],
-   messageListItemLayout: Function,
+   //messageListItemLayout: Function,
    customizations: IterableInboxCustomizations
    //deleteMessage: Function,
    handleMessageSelect: Function 
@@ -19,7 +19,7 @@ type MessageListProps = {
 
 const IterableInboxMessageList = ({ 
    rowViewModels,
-   messageListItemLayout,
+   //messageListItemLayout,
    customizations,
    //deleteMessage, 
    handleMessageSelect 
@@ -33,7 +33,7 @@ const IterableInboxMessageList = ({
                key={rowViewModel.inAppMessage.messageId}
                index={index}
                rowViewModel={rowViewModel}
-               messageListItemLayout={messageListItemLayout}
+               //messageListItemLayout={messageListItemLayout}
                customizations={customizations}
                //swipingCheck={(swiping : boolean) => setSwiping(swiping)}
                //deleteMessage={(id: string) => deleteMessage(id)}

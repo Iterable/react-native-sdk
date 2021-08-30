@@ -7,7 +7,7 @@ import { InboxRowViewModel, IterableInboxCustomizations } from '.'
 
 type MessageListItemProps = {
    rowViewModel: InboxRowViewModel,
-   messageListItemLayout: Function,
+   // messageListItemLayout: Function,
    customizations: IterableInboxCustomizations
 }
 
@@ -84,7 +84,7 @@ const defaultMessageListLayout = (rowViewModel: InboxRowViewModel, customization
    } = styles
    
    return(
-      <View style={messageRowStyle(rowViewModel)}>
+      <View style={messageRow}>
          <View style={unreadIndicatorContainer}>
             {rowViewModel.read ? null : <View style={unreadIndicator}/>}
          </View>
@@ -97,15 +97,19 @@ const defaultMessageListLayout = (rowViewModel: InboxRowViewModel, customization
    )
 }
 
-const IterableInboxMessageListItem = ({ rowViewModel, messageListItemLayout, customizations }: MessageListItemProps) => {
+const IterableInboxMessageListItem = ({ 
+   rowViewModel, 
+   // messageListItemLayout, 
+   customizations 
+}: MessageListItemProps) => {
 
    // function messageRowStyle(message: InboxRowViewModel) {
    //    return message.last ? {...messageRow, borderBottomWidth: 1} : messageRow 
    // } 
 
    return(
-      messageListItemLayout(rowViewModel) ?
-         messageListItemLayout(rowViewModel) :
+      // messageListItemLayout(rowViewModel) ?
+      //    messageListItemLayout(rowViewModel) :
          defaultMessageListLayout(rowViewModel, customizations)  
    )
 }

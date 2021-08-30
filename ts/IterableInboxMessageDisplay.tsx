@@ -1,21 +1,26 @@
 'use strict'
 
 import React, { useState, useEffect } from 'react'
-import { Text, View, StyleSheet, useWindowDimensions } from 'react-native'
-import RenderHTML from 'react-native-render-html'
+import { 
+   Text, 
+   View, 
+   StyleSheet, 
+   TouchableWithoutFeedback, 
+   useWindowDimensions 
+} from 'react-native'
+import RenderHtml from 'react-native-render-html'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 import { InboxRowViewModel, IterableHtmlInAppContent } from '.'
 import { IterableEdgeInsets } from './IterableInAppClasses'
 
 type MessageDisplayProps = {
-   index: number,
    rowViewModel: InboxRowViewModel,
    inAppContentPromise: Promise<IterableHtmlInAppContent>,
    returnToInbox: Function
 }
 
-const IterableInboxMessageDisplay = ({ index, rowViewModel, inAppContentPromise, returnToInbox }: MessageDisplayProps) => {
+const IterableInboxMessageDisplay = ({ rowViewModel, inAppContentPromise, returnToInbox }: MessageDisplayProps) => {
    const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title
    const { width } = useWindowDimensions()
    const [inAppContent, setInAppContent] = useState<IterableHtmlInAppContent>(new IterableHtmlInAppContent(new IterableEdgeInsets(0, 0, 0, 0), ""))
@@ -30,16 +35,17 @@ const IterableInboxMessageDisplay = ({ index, rowViewModel, inAppContentPromise,
    return(
       <View>
          <View style={styles.returnButtonContainer}>
-            <Icon 
-               name="ios-arrow-back"
-               style={styles.returnButton}
-               onPress={() => returnToInbox()} />
+            <TouchableWithoutFeedback onPress={() => returnToInbox()}>
+               <Icon 
+                  name="ios-arrow-back"
+                  style={styles.returnButton} />
+            </TouchableWithoutFeedback>
          </View>
-         <View style={styles.container}>
+         <View style={styles.messageDisplayContainer}>
             <Text style={styles.headline}>
                {messageTitle}
             </Text>
-            <Text>{inAppContent?.html}</Text>
+            <RenderHtml contentWidth={width} source={inAppContent}/>
          </View> 
       </View>
    )
@@ -56,8 +62,8 @@ const styles = StyleSheet.create({
       paddingLeft: 10
    },
 
-   container: {
-      //height: '100%',
+   messageDisplayContainer: {
+      height: '100%',
       backgroundColor: 'whitesmoke',
       flexDirection: 'column',
       justifyContent: 'flex-start'
@@ -65,8 +71,9 @@ const styles = StyleSheet.create({
 
    headline: {
       fontWeight: 'bold',
-      fontSize: 40,
+      fontSize: 30,
       width: '100%',
+      flexWrap: "wrap",
       paddingTop: 10,
       paddingBottom: 10,
       paddingLeft: 15,

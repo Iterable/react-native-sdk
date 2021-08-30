@@ -12,7 +12,7 @@ import {
 type MessageClickableRowProps = {
    index: number,
    rowViewModel: InboxRowViewModel,
-   messageListItemLayout: Function,
+   // messageListItemLayout: Function,
    customizations: IterableInboxCustomizations,
    handleMessageSelect: Function,
 }
@@ -20,7 +20,7 @@ type MessageClickableRowProps = {
 const IterableInboxClickableRow = ({ 
    index, 
    rowViewModel,
-   messageListItemLayout,
+   // messageListItemLayout,
    customizations, 
    handleMessageSelect 
 }: MessageClickableRowProps) => {
@@ -39,7 +39,7 @@ const IterableInboxClickableRow = ({
       >
          <IterableInboxMessageListItem
             rowViewModel={rowViewModel}
-            messageListItemLayout={messageListItemLayout}
+            // messageListItemLayout={messageListItemLayout}
             customizations={customizations} /> 
       </TouchableOpacity>
    )
