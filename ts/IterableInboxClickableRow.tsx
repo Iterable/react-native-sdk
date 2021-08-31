@@ -3,16 +3,18 @@
 import React from 'react'
 import { TouchableOpacity } from 'react-native'
 
-import IterableInboxMessageListItem from './IterableInboxMessageListItem'
-import InboxRowViewModel from './InboxRowViewModel'
-import Customization from './customizationType'
+import {
+   InboxRowViewModel,
+   IterableInboxMessageListItem,
+   IterableInboxCustomizations
+} from '.'
 
 type MessageClickableRowProps = {
    index: number,
    last: boolean,
    rowViewModel: InboxRowViewModel,
    messageListItemLayout: Function,
-   customizations: Customization,
+   customizations: IterableInboxCustomizations,
    handleMessageSelect: Function,
 }
 

@@ -3,14 +3,15 @@
 import React, { useState } from 'react'
 import { ScrollView } from 'react-native'
 
-import IterableInboxSwipeableRow from './IterableInboxSwipeableRow'
-
-import InboxRowViewModel from './InboxRowViewModel'
-import Customization from './customizationType'
+import {
+   InboxRowViewModel,
+   IterableInboxCustomizations,
+   IterableInboxSwipeableRow
+} from '.'
 
 type MessageListProps = {
    rowViewModels: InboxRowViewModel[],
-   customizations: Customization,
+   customizations: IterableInboxCustomizations,
    deleteRow: Function,
    messageListItemLayout: Function,
    handleMessageSelect: Function 

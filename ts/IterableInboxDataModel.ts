@@ -2,10 +2,10 @@
 
 import { NativeModules } from 'react-native'
 import {
+    InboxRowViewModel,
     IterableInAppMessage,
     IterableInAppLocation,
     IterableInAppDeleteSource,
-    InboxRowViewModel,
     IterableHtmlInAppContent
 } from '.'
 
@@ -58,6 +58,16 @@ class IterableInboxDataModel {
         console.log("IterableInboxDataModel.getHtmlContentForItem")
 
         return RNIterableAPI.getHtmlInAppContentForMessage(this.idForRow(row)).then(
+            (content: any) => {
+                return IterableHtmlInAppContent.fromDict(content)
+            }
+        )
+    }
+
+    getHtmlContentForMessageId(id: string): Promise<IterableHtmlInAppContent> {
+        console.log("IterableInboxDataModel.getHtmlContentForItem messageId: " + id)
+
+        return RNIterableAPI.getHtmlInAppContentForMessage(id).then(
             (content: any) => {
                 return IterableHtmlInAppContent.fromDict(content)
             }

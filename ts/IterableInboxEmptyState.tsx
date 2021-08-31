@@ -1,15 +1,12 @@
 'use strict'
 
 import React from 'react'
-import { 
-   View, 
-   Text, 
-   StyleSheet 
-} from 'react-native'
-import Customization from './customizationType'
+import { View, Text, StyleSheet } from 'react-native'
+
+import { IterableInboxCustomizations } from '.'
 
 type emptyStateProps = {
-   customizations: Customization
+   customizations: IterableInboxCustomizations
 }
 
 const IterableInboxEmptyState = ({ customizations } : emptyStateProps) => {
