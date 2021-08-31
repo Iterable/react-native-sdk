@@ -9,6 +9,8 @@ import IterableSDK
 
 @objc(ReactIterableAPI)
 class ReactIterableAPI: RCTEventEmitter {
+    
+    // MARK: - React Native Functions
     @objc static override func moduleName() -> String! {
         return "RNIterableAPI"
     }
@@ -49,6 +51,8 @@ class ReactIterableAPI: RCTEventEmitter {
         
         shouldEmit = false
     }
+    
+    // MARK: - Native SDK Functions
     
     @objc(initializeWithApiKey:config:version:resolver:rejecter:)
     func initialize(apiKey: String,
@@ -109,6 +113,8 @@ class ReactIterableAPI: RCTEventEmitter {
         
         resolver(IterableAPI.userId)
     }
+    
+    // MARK: - Iterable API Request Functions
     
     @objc(setInAppShowResponse:)
     func set(inAppShowResponse number: NSNumber) {
@@ -308,7 +314,8 @@ class ReactIterableAPI: RCTEventEmitter {
         }
     }
     
-    // MARK: In-App Manager methods
+    // MARK: - SDK In-App Manager Functions
+    
     @objc(getInAppMessages:rejecter:)
     func getInAppMessages(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
         ITBInfo()
@@ -404,6 +411,8 @@ class ReactIterableAPI: RCTEventEmitter {
         }
     }
     
+    // MARK: - SDK Auth Manager Functions
+    
     @objc(passAlongAuthToken:)
     func passAlong(authToken: String?) {
         ITBInfo()
@@ -434,6 +443,7 @@ class ReactIterableAPI: RCTEventEmitter {
         
         let launchOptions = createLaunchOptions()
         let iterableConfig = IterableConfig.from(dict: configDict)
+        
         if let urlHandlerPresent = configDict["urlHandlerPresent"] as? Bool, urlHandlerPresent == true {
             iterableConfig.urlDelegate = self
         }
@@ -457,6 +467,7 @@ class ReactIterableAPI: RCTEventEmitter {
                                     apiEndPointOverride: apiEndPointOverride) { result in
                 resolver(result)
             }
+            
             IterableAPI.setDeviceAttribute(name: "reactNativeSDKVersion", value: version)
         }
     }
