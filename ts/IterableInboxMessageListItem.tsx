@@ -4,8 +4,11 @@ import React from 'react'
 import {
    View,
    Text,
+   Image,
    StyleSheet
 } from 'react-native'
+
+import SvgUri from 'react-native-svg-uri'
 
 import InboxRowViewModel from './InboxRowViewModel'
 import Customization from './customizationType'
@@ -18,15 +21,16 @@ type MessageListItemProps = {
 }
 
 const defaultMessageListLayout = (
-   last: boolean, 
+   last: boolean,
    rowViewModel: InboxRowViewModel, 
    customizations: Customization
 ) => {
    const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title
    const messageBody = rowViewModel.inAppMessage.inboxMetadata?.subtitle
    const messageCreatedAt = rowViewModel.createdAt
+   const iconURL = rowViewModel.imageUrl
 
-   let styles = StyleSheet.create({
+   const styles = StyleSheet.create({
       unreadIndicatorContainer: {
          height: '100%',
          flexDirection: 'column',
@@ -80,7 +84,7 @@ const defaultMessageListLayout = (
       }
    })
 
-    const resolvedStyles = {...styles, ...customizations}
+   const resolvedStyles = {...styles, ...customizations}
 
    const {
       unreadIndicatorContainer,
@@ -95,14 +99,19 @@ const defaultMessageListLayout = (
 
    function messageRowStyle(rowViewModel: InboxRowViewModel) {
       return last ? {...messageRow, borderBottomWidth: 1} : messageRow 
-   } 
-   
+   }
+      
    return(
       <View style={messageRowStyle(rowViewModel)}>
          <View style={unreadIndicatorContainer}>
             {rowViewModel.read ? null : <View style={unreadIndicator}/>}
          </View>
+         <View>
+            <Image style={{height: 100, width: 100}} source={require('./mocha.png')}/>
+            {/* {iconURL ? <Image style={{height: 100, width: 100}} source={require('./mocha.png')}/> : null} */}
+         </View>
          <View style={rowViewModel.read ? readMessageContainer : unreadMessageContainer}>
+            
             <Text style={title}>{messageTitle}</Text>
             <Text style={body}>{messageBody}</Text>
             <Text style={createdAt}>{messageCreatedAt}</Text>

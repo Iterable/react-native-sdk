@@ -7,7 +7,7 @@ import {
    Dimensions,
    Animated,
    PanResponder,
-   StyleSheet    
+   StyleSheet  
 } from 'react-native'
 
 import IterableInboxClickableRow from './IterableInboxClickableRow'
@@ -31,6 +31,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width
 const IterableInboxSwipeableRow = ({
    index,
    last,
+   imgSrc,
    rowViewModel,
    messageListItemLayout,
    customizations,

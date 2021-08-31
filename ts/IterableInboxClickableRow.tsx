@@ -1,7 +1,7 @@
 'use strict'
 
 import React from 'react'
-import { TouchableOpacity } from 'react-native'
+import { TouchableOpacity, ImageSourcePropType } from 'react-native'
 
 import IterableInboxMessageListItem from './IterableInboxMessageListItem'
 import InboxRowViewModel from './InboxRowViewModel'
@@ -18,7 +18,7 @@ type MessageClickableRowProps = {
 
 const IterableInboxClickableRow = ({ 
    index,
-   last, 
+   last,
    rowViewModel,
    messageListItemLayout,
    customizations, 
