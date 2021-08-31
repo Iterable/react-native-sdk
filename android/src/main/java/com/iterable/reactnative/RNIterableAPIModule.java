@@ -48,6 +48,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     private static String TAG = "RNIterableAPIModule";
 
     private InAppResponse inAppResponse = InAppResponse.SHOW;
+    private Boolean customActionHandled = false;
 
     //A CountDownLatch. This helps decide whether to handle the in-app in Default way by waiting for JS to respond in runtime.
     private CountDownLatch jsCallBackLatch;
@@ -371,6 +372,16 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         }
     }
 
+
+    @ReactMethod
+    public void setCustomActionHandled(Boolean state) {
+        IterableLogger.printInfo();
+        customActionHandled = state;
+        if (jsCallBackLatch != null) {
+            jsCallBackLatch.countDown();
+        }
+    }
+
     @ReactMethod
     public void setAutoDisplayPaused(final boolean paused) {
         IterableLogger.printInfo();
@@ -403,6 +414,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     @Override
     public boolean handleIterableCustomAction(@NonNull IterableAction action, @NonNull IterableActionContext actionContext) {
         IterableLogger.printInfo();
+        customActionHandled = false;
         JSONObject actionJson = Serialization.actionToJson(action);
         JSONObject actionContextJson = Serialization.actionContextToJson(actionContext);
         JSONObject eventDataJson = new JSONObject();
@@ -410,12 +422,14 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
             eventDataJson.put("action", actionJson);
             eventDataJson.put("context", actionContextJson);
             WritableMap eventData = Serialization.convertJsonToMap(eventDataJson);
+            jsCallBackLatch = new CountDownLatch(1);
             sendEvent(EventName.handleCustomActionCalled.name(), eventData);
-        } catch (JSONException e) {
+            jsCallBackLatch.await(2, TimeUnit.SECONDS);
+            jsCallBackLatch = null;
+        } catch (JSONException | InterruptedException e) {
             IterableLogger.e(TAG, "Failed handling custom action");
         }
-        // The Android SDK will not bring the app into focus is this is `true`. It still respects the `openApp` bool flag.
-        return false;
+        return customActionHandled;
     }
 
     @NonNull

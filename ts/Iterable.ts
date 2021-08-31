@@ -450,7 +450,8 @@ class Iterable {
         (dict) => {
           const action = IterableAction.fromDict(dict["action"])
           const context = IterableActionContext.fromDict(dict["context"])
-          config.customActionHandler!(action, context)
+          const result = config.customActionHandler!(action, context)
+          RNIterableAPI.setCustomActionHandled(result)
         }
       )
     }
