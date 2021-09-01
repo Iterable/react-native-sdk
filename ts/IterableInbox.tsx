@@ -27,10 +27,7 @@ type inboxProps = {
    customizations: IterableInboxCustomizations
 }
 
-const IterableInbox = ({
-   messageListItemLayout, 
-   customizations
-}: inboxProps) => {
+const IterableInbox = ({ messageListItemLayout, customizations }: inboxProps) => {
    const defaultInboxTitle = "Inbox"
    const [selectedRowViewModelIdx, setSelectedRowViewModelIdx] = useState<number>(0)
    const [rowViewModels, setRowViewModels] = useState<InboxRowViewModel[]>([])
