@@ -112,7 +112,7 @@ enum EventName {
   handleCustomActionCalled = "handleCustomActionCalled",
   handleInAppCalled = "handleInAppCalled",
   handleAuthCalled = "handleAuthCalled",
-  receivedNewInApps = "receivedNewInApps"
+  receivedIterableInboxChanged = "receivedIterableInboxChanged"
 }
 
 class Iterable {
@@ -415,9 +415,9 @@ class Iterable {
 
   private static addSilentPushHandler() {
     RNEventEmitter.addListener(
-      EventName.receivedNewInApps,
+      EventName.receivedIterableInboxChanged,
       () => {
-        console.log("received new in-apps")
+        console.log("received new inbox in-apps")
       })
   }
 

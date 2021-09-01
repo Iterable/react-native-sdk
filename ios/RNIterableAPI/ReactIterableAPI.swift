@@ -32,7 +32,7 @@ class ReactIterableAPI: RCTEventEmitter {
         case handleCustomActionCalled
         case handleInAppCalled
         case handleAuthCalled
-        case receivedNewInApps
+        case receivedIterableInboxChanged
     }
     
     override func supportedEvents() -> [String]! {
@@ -486,7 +486,7 @@ class ReactIterableAPI: RCTEventEmitter {
             return
         }
         
-        sendEvent(withName: EventName.receivedNewInApps.rawValue, body: nil)
+        sendEvent(withName: EventName.receivedIterableInboxChanged.rawValue, body: nil)
     }
     
     private func createLaunchOptions() -> [UIApplication.LaunchOptionsKey: Any]? {
