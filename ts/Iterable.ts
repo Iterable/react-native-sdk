@@ -111,7 +111,8 @@ enum EventName {
   handleUrlCalled = "handleUrlCalled",
   handleCustomActionCalled = "handleCustomActionCalled",
   handleInAppCalled = "handleInAppCalled",
-  handleAuthCalled = "handleAuthCalled"
+  handleAuthCalled = "handleAuthCalled",
+  receivedNewInApps = "receivedNewInApps"
 }
 
 class Iterable {
@@ -407,6 +408,17 @@ class Iterable {
         }
       )
     }
+
+    // setup silent push support
+    Iterable.addSilentPushHandler()
+  }
+
+  private static addSilentPushHandler() {
+    RNEventEmitter.addListener(
+      EventName.receivedNewInApps,
+      () => {
+        console.log("received new in-apps")
+      })
   }
 
   private static getVersionFromPackageJson(): string {

@@ -28,6 +28,7 @@ class ReactIterableAPI: RCTEventEmitter {
         case handleCustomActionCalled
         case handleInAppCalled
         case handleAuthCalled
+        case receivedNewInApps
     }
     
     override func supportedEvents() -> [String]! {
@@ -460,6 +461,8 @@ class ReactIterableAPI: RCTEventEmitter {
             iterableConfig.authDelegate = self
         }
         
+        // add self to receive silent pushes?
+        
         DispatchQueue.main.async {
             IterableAPI.initialize2(apiKey: apiKey,
                                     launchOptions: launchOptions,
@@ -470,6 +473,14 @@ class ReactIterableAPI: RCTEventEmitter {
             
             IterableAPI.setDeviceAttribute(name: "reactNativeSDKVersion", value: version)
         }
+    }
+    
+    private func receivedNewInApps() {
+        guard shouldEmit else {
+            return
+        }
+        
+        sendEvent(withName: EventName.receivedNewInApps.rawValue, body: nil)
     }
     
     private func createLaunchOptions() -> [UIApplication.LaunchOptionsKey: Any]? {
@@ -543,7 +554,9 @@ extension ReactIterableAPI: IterableCustomActionDelegate {
         let actionDict = ReactIterableAPI.actionToDictionary(action: action)
         let contextDict = ReactIterableAPI.contextToDictionary(context: context)
         
-        sendEvent(withName: EventName.handleCustomActionCalled.rawValue, body: ["action": actionDict, "context": contextDict])
+        sendEvent(withName: EventName.handleCustomActionCalled.rawValue,
+                  body: ["action": actionDict,
+                         "context": contextDict])
         
         return true
     }
@@ -557,8 +570,9 @@ extension ReactIterableAPI: IterableInAppDelegate {
             return .show
         }
         
-        let messageDict = message.toDict()
-        sendEvent(withName: EventName.handleInAppCalled.rawValue, body: messageDict)
+        sendEvent(withName: EventName.handleInAppCalled.rawValue,
+                  body: message.toDict())
+        
         let timeoutResult = inAppHandlerSemaphore.wait(timeout: .now() + 2.0)
         
         if timeoutResult == .success {
