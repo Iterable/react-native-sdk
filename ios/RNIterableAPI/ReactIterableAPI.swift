@@ -9,8 +9,12 @@ import IterableSDK
 
 @objc(ReactIterableAPI)
 class ReactIterableAPI: RCTEventEmitter {
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
     
     // MARK: - React Native Functions
+    
     @objc static override func moduleName() -> String! {
         return "RNIterableAPI"
     }
@@ -461,7 +465,8 @@ class ReactIterableAPI: RCTEventEmitter {
             iterableConfig.authDelegate = self
         }
         
-        // add self to receive silent pushes?
+        // connect new inbox in-app payloads to the RN SDK
+        NotificationCenter.default.addObserver(self, selector: #selector(receivedNewInApps), name: Notification.Name.iterableInboxChanged, object: nil)
         
         DispatchQueue.main.async {
             IterableAPI.initialize2(apiKey: apiKey,
@@ -475,6 +480,7 @@ class ReactIterableAPI: RCTEventEmitter {
         }
     }
     
+    @objc(receivedNewInApps)
     private func receivedNewInApps() {
         guard shouldEmit else {
             return
