@@ -13,6 +13,7 @@ import {
 import {
    IterableInboxMessageList,
    IterableInboxEmptyState,
+   IterableInboxLoadingState,
    IterableInboxMessageDisplay,
    InboxRowViewModel,
    IterableInboxDataModel,
@@ -34,6 +35,7 @@ const IterableInbox = ({
    const defaultInboxTitle = "Inbox"
    const [selectedRowViewModelIdx, setSelectedRowViewModelIdx] = useState<number>(0)
    const [rowViewModels, setRowViewModels] = useState<InboxRowViewModel[]>([])
+   const [loading, setLoading] = useState<boolean>(true)
    const inboxDataModel = new IterableInboxDataModel()
 
    const [animatedValue, setAnimatedValue] = useState<any>(new Animated.Value(0))
@@ -55,6 +57,7 @@ const IterableInbox = ({
       })
 
       setRowViewModels(newMessages)
+      setLoading(false)
    }
 
    function getHtmlContentForRow(id: string) {
@@ -94,7 +97,7 @@ const IterableInbox = ({
       )
    }
 
-   function showMessageList() {
+   function showMessageList(loading: boolean) {
       return (
          <View style={styles.messageListContainer}>
             <Text style={styles.headline}>
@@ -107,10 +110,16 @@ const IterableInbox = ({
                   messageListItemLayout={messageListItemLayout}
                   deleteRow={(messageId: string) => deleteRow(messageId)}
                   handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index, rowViewModels)}
-               />  : 
-               <IterableInboxEmptyState customizations={customizations} />
-            }
+               />  :
+               renderEmptyState()
+            }   
          </View>)
+   }
+
+   function renderEmptyState() {
+      return loading ? 
+         <IterableInboxLoadingState /> : 
+         <IterableInboxEmptyState customizations={customizations} /> 
    }
 
    const slideLeft = () => {
@@ -145,7 +154,7 @@ const IterableInbox = ({
                justifyContent: "flex-start",
             }}
          >
-            {showMessageList()}   
+            {showMessageList(loading)}   
             {showMessageDisplay(rowViewModels, selectedRowViewModelIdx)}
          </Animated.View>
       </SafeAreaView>
