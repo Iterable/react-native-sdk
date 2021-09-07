@@ -1,57 +1,63 @@
 'use strict'
 
-import React from 'react'
-import { Text, View, Dimensions, StyleSheet } from 'react-native'
-
+import React, { useState, useEffect } from 'react'
+import { Text, View, Dimensions, StyleSheet, TouchableWithoutFeedback } from 'react-native'
+import RenderHtml from 'react-native-render-html'
 import Icon from 'react-native-vector-icons/Ionicons'
-import InboxRowViewModel from './InboxRowViewModel'
+
+import { InboxRowViewModel, IterableHtmlInAppContent, IterableEdgeInsets } from '.'
 
 type MessageDisplayProps = {
    rowViewModel: InboxRowViewModel,
+   inAppContentPromise: Promise<IterableHtmlInAppContent>
    returnToInbox: Function
 }
 
 const SCREEN_WIDTH = Dimensions.get('window').width
 
-const IterableInboxMessageDisplay = ({ 
-   rowViewModel, 
-   returnToInbox }: 
-MessageDisplayProps) => {
+const IterableInboxMessageDisplay = ({ rowViewModel, inAppContentPromise, returnToInbox }: MessageDisplayProps) => {
    const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title
+   const [inAppContent, setInAppContent] = useState<IterableHtmlInAppContent>(new IterableHtmlInAppContent(new IterableEdgeInsets(0, 0, 0, 0), ""))
+   
+   useEffect(() => {
+      inAppContentPromise.then(
+         (value) => {
+            setInAppContent(value)
+         })
+   })
 
    return(
       <View style={styles.messageDisplayContainer}>
          <View style={styles.returnButtonContainer}>
-            <Icon 
-               name="ios-arrow-back"
-               style={styles.returnButton}
-               onPress={() => returnToInbox()} />
+            <TouchableWithoutFeedback onPress={() => returnToInbox()}>
+               <Icon 
+                  name="ios-arrow-back"
+                  style={styles.returnButton} />
+            </TouchableWithoutFeedback>
          </View>
-         <View style={styles.container}>
+         <View style={styles.messageDisplayContainer}>
             <Text style={styles.headline}>
                {messageTitle}
             </Text>
-         </View>
+            <RenderHtml contentWidth={SCREEN_WIDTH} source={inAppContent}/>
+         </View> 
       </View>
    )
 }
 
 const styles = StyleSheet.create({
-   messageDisplayContainer: {
-      width: SCREEN_WIDTH
-   },
-
    returnButtonContainer: {
       marginTop: 0
    },
 
    returnButton: {
       color: 'blue',
-      fontSize: 40, 
+      fontSize: 40,
       paddingLeft: 10
    },
 
-   container: {
+   messageDisplayContainer: {
+      width: SCREEN_WIDTH,
       height: '100%',
       backgroundColor: 'white', 
       flexDirection: 'column',
@@ -59,9 +65,10 @@ const styles = StyleSheet.create({
    },
 
    headline: {
-      fontWeight: 'bold' ,
-      fontSize: 40,
+      fontWeight: 'bold',
+      fontSize: 30,
       width: '100%',
+      flexWrap: "wrap",
       paddingTop: 10,
       paddingBottom: 10,
       paddingLeft: 15,

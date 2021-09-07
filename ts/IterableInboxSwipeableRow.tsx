@@ -10,9 +10,11 @@ import {
    StyleSheet  
 } from 'react-native'
 
-import IterableInboxClickableRow from './IterableInboxClickableRow'
-import InboxRowViewModel from './InboxRowViewModel'
-import Customization from './customizationType'
+import {
+   InboxRowViewModel,
+   IterableInboxClickableRow,
+   IterableInboxCustomizations
+} from '.'
 
 type SwipeableRowProps = {
    key: string,
@@ -20,7 +22,7 @@ type SwipeableRowProps = {
    last: boolean,
    rowViewModel: InboxRowViewModel,
    messageListItemLayout: Function,
-   customizations: Customization,
+   customizations: IterableInboxCustomizations,
    // swipingCheck: Function,
    deleteRow: Function,
    handleMessageSelect: Function,
@@ -73,8 +75,7 @@ const IterableInboxSwipeableRow = ({
          useNativeDriver: false   
       }).start(() => deleteRow(rowViewModel.inAppMessage.messageId))
    }
-
-   //
+   
    const resetPosition = () => {
       Animated.timing(position, {
          toValue: { x: 0, y: 0 },

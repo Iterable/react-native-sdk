@@ -8,23 +8,22 @@ import {
    StyleSheet
 } from 'react-native'
 
-import InboxRowViewModel from './InboxRowViewModel'
-import Customization from './customizationType'
+import { InboxRowViewModel, IterableInboxCustomizations } from '.'
 
 type MessageListItemProps = {
    last: boolean,
    rowViewModel: InboxRowViewModel,
    messageListItemLayout: Function,
-   customizations: Customization
+   customizations: IterableInboxCustomizations
 }
 
 const defaultMessageListLayout = (
    last: boolean,
    rowViewModel: InboxRowViewModel, 
-   customizations: Customization
+   customizations: IterableInboxCustomizations
 ) => {
-   const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title
-   const messageBody = rowViewModel.inAppMessage.inboxMetadata?.subtitle
+   const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title ?? ""
+   const messageBody = rowViewModel.inAppMessage.inboxMetadata?.subtitle ?? ""
    const messageCreatedAt = rowViewModel.createdAt
    const iconURL = rowViewModel.imageUrl
 
