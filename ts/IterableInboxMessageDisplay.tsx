@@ -47,7 +47,8 @@ const IterableInboxMessageDisplay = ({ rowViewModel, inAppContentPromise, return
 
 const styles = StyleSheet.create({
    returnButtonContainer: {
-      marginTop: 0
+      marginTop: 0,
+      backgroundColor: 'whitesmoke'
    },
 
    returnButton: {
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
    messageDisplayContainer: {
       width: SCREEN_WIDTH,
       height: '100%',
-      backgroundColor: 'white', 
+      backgroundColor: 'whitesmoke', 
       flexDirection: 'column',
       justifyContent: 'flex-start'
    },
