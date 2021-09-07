@@ -1,13 +1,16 @@
 'use strict'
 
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, Image, StyleSheet, DatePickerIOS } from 'react-native'
+import { PanGestureHandler } from 'react-native-gesture-handler'
 
 const IterableInboxLoadingState = () => {
-
    return(
       <View style={styles.container}>
-
+         <Image 
+            style={{height: 100, width: 100}} 
+            source={require('./circle-of-dots-png.png')} 
+         />
       </View>
    )
 }

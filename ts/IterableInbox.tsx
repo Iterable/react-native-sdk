@@ -13,13 +13,14 @@ import {
 import {
    IterableInboxMessageList,
    IterableInboxEmptyState,
-   IterableInboxLoadingState,
-   IterableInboxMessageDisplay,
    InboxRowViewModel,
-   IterableInboxDataModel,
-   IterableInboxCustomizations,
-   IterableInAppDeleteSource,
+   IterableInAppDeleteSource
 } from '.'
+
+import IterableInboxLoadingState from './IterableInboxLoadingState'
+import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
+import IterableInboxDataModel from './IterableInboxDataModel'
+import IterableInboxCustomizations from './IterableInboxCustomizations'
 
 const SCREEN_WIDTH = Dimensions.get('window').width
 
