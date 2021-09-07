@@ -7,7 +7,9 @@ import {
    SafeAreaView, 
    StyleSheet,
    Animated,
-   Dimensions
+   Dimensions,
+   NativeModules,
+   NativeEventEmitter
 } from 'react-native'
 
 import {
@@ -20,6 +22,9 @@ import {
 import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
 import IterableInboxDataModel from './IterableInboxDataModel'
 import IterableInboxCustomizations from './IterableInboxCustomizations'
+
+const RNIterableAPI = NativeModules.RNIterableAPI
+const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
 
 const SCREEN_WIDTH = Dimensions.get('window').width
 
@@ -43,8 +48,18 @@ const IterableInbox = ({ messageListItemLayout, customizations }: inboxProps) =>
    }
 
    useEffect(() => {
+      addSilentPushHandler()
       fetchInboxMessages()
    }, [])
+
+   function addSilentPushHandler() {
+      RNEventEmitter.addListener(
+         "receivedIterableInboxChanged",
+         () => {
+            console.log("jay it works")
+            fetchInboxMessages()
+         })
+   }
 
    const fetchInboxMessages = async () => {
       let newMessages = await inboxDataModel.refresh()

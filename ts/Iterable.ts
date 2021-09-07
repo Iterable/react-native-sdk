@@ -408,17 +408,8 @@ class Iterable {
         }
       )
     }
-
-    // setup silent push support
-    Iterable.addSilentPushHandler()
   }
 
-  private static addSilentPushHandler() {
-    RNEventEmitter.addListener(
-      EventName.receivedIterableInboxChanged,
-      () => {
-        console.log("received new inbox in-apps")
-      })
   }
 
   private static getVersionFromPackageJson(): string {
