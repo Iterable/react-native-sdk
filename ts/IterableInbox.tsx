@@ -17,7 +17,6 @@ import {
    IterableInAppDeleteSource
 } from '.'
 
-import IterableInboxLoadingState from './IterableInboxLoadingState'
 import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
 import IterableInboxDataModel from './IterableInboxDataModel'
 import IterableInboxCustomizations from './IterableInboxCustomizations'
@@ -119,7 +118,7 @@ const IterableInbox = ({
 
    function renderEmptyState() {
       return loading ? 
-         <IterableInboxLoadingState /> : 
+         <View style={styles.loadingScreen} /> : 
          <IterableInboxEmptyState customizations={customizations} /> 
    }
 
@@ -163,6 +162,11 @@ const IterableInbox = ({
 }
 
 const styles = StyleSheet.create({
+   loadingScreen: {
+      height: '100%',
+      backgroundColor: 'whitesmoke'
+   },
+
    container: {
       flex: 1,
       width: 2 * SCREEN_WIDTH,
