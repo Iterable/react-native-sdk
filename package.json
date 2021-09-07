@@ -6,7 +6,8 @@
   "types": "./js/index.d.ts",
   "scripts": {
     "test": "jest",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "postinstall": "npx patch-package"
   },
   "keywords": [
     "react-native",

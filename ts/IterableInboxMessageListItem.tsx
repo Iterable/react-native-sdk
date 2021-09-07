@@ -8,8 +8,6 @@ import {
    StyleSheet
 } from 'react-native'
 
-import SvgUri from 'react-native-svg-uri'
-
 import InboxRowViewModel from './InboxRowViewModel'
 import Customization from './customizationType'
 
@@ -46,13 +44,17 @@ const defaultMessageListLayout = (
          marginRight: 5,
          marginTop: 7
       },
-   
-      unreadMessageContainer: {
-         paddingLeft: 5
+
+      unreadMessageIconContainer: {
+         paddingLeft: 10
+      },
+
+      readMessageIconContainer: {
+         paddingLeft: 30
       },
    
-      readMessageContainer: {
-         paddingLeft: 30
+      messageContainer: {
+         paddingLeft: 10
       },
    
       title: {
@@ -89,8 +91,9 @@ const defaultMessageListLayout = (
    const {
       unreadIndicatorContainer,
       unreadIndicator,
-      unreadMessageContainer,
-      readMessageContainer,
+      unreadMessageIconContainer,
+      readMessageIconContainer,
+      messageContainer,
       title,
       body,
       createdAt,
@@ -106,12 +109,10 @@ const defaultMessageListLayout = (
          <View style={unreadIndicatorContainer}>
             {rowViewModel.read ? null : <View style={unreadIndicator}/>}
          </View>
-         <View>
-            <Image style={{height: 100, width: 100}} source={require('./mocha.png')}/>
-            {/* {iconURL ? <Image style={{height: 100, width: 100}} source={require('./mocha.png')}/> : null} */}
+         <View style={rowViewModel.read ? readMessageIconContainer : unreadMessageIconContainer}>
+            <Image style={{height: 80, width: 80}} source={{uri: iconURL}}/>
          </View>
-         <View style={rowViewModel.read ? readMessageContainer : unreadMessageContainer}>
-            
+         <View style={messageContainer}>
             <Text style={title}>{messageTitle}</Text>
             <Text style={body}>{messageBody}</Text>
             <Text style={createdAt}>{messageCreatedAt}</Text>
