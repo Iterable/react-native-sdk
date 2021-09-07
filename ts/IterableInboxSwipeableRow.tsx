@@ -109,7 +109,7 @@ const IterableInboxSwipeableRow = ({
          onPanResponderRelease: (event, gesture) => {
             position.flattenOffset()
             if(gesture.dx < 0) {
-               userSwipedLeft(gesture)
+               userSwipedLeft(gesture) 
             }
          },
          onPanResponderTerminate: () => {

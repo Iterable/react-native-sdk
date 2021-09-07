@@ -13,12 +13,13 @@ import {
 import {
    IterableInboxMessageList,
    IterableInboxEmptyState,
-   IterableInboxMessageDisplay,
    InboxRowViewModel,
-   IterableInboxDataModel,
-   IterableInboxCustomizations,
-   IterableInAppDeleteSource,
+   IterableInAppDeleteSource
 } from '.'
+
+import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
+import IterableInboxDataModel from './IterableInboxDataModel'
+import IterableInboxCustomizations from './IterableInboxCustomizations'
 
 const SCREEN_WIDTH = Dimensions.get('window').width
 
@@ -34,6 +35,7 @@ const IterableInbox = ({
    const defaultInboxTitle = "Inbox"
    const [selectedRowViewModelIdx, setSelectedRowViewModelIdx] = useState<number>(0)
    const [rowViewModels, setRowViewModels] = useState<InboxRowViewModel[]>([])
+   const [loading, setLoading] = useState<boolean>(true)
    const inboxDataModel = new IterableInboxDataModel()
 
    const [animatedValue, setAnimatedValue] = useState<any>(new Animated.Value(0))
@@ -55,6 +57,7 @@ const IterableInbox = ({
       })
 
       setRowViewModels(newMessages)
+      setLoading(false)
    }
 
    function getHtmlContentForRow(id: string) {
@@ -94,7 +97,7 @@ const IterableInbox = ({
       )
    }
 
-   function showMessageList() {
+   function showMessageList(loading: boolean) {
       return (
          <View style={styles.messageListContainer}>
             <Text style={styles.headline}>
@@ -107,10 +110,16 @@ const IterableInbox = ({
                   messageListItemLayout={messageListItemLayout}
                   deleteRow={(messageId: string) => deleteRow(messageId)}
                   handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index, rowViewModels)}
-               />  : 
-               <IterableInboxEmptyState customizations={customizations} />
-            }
+               />  :
+               renderEmptyState()
+            }   
          </View>)
+   }
+
+   function renderEmptyState() {
+      return loading ? 
+         <View style={styles.loadingScreen} /> : 
+         <IterableInboxEmptyState customizations={customizations} /> 
    }
 
    const slideLeft = () => {
@@ -145,7 +154,7 @@ const IterableInbox = ({
                justifyContent: "flex-start",
             }}
          >
-            {showMessageList()}   
+            {showMessageList(loading)}   
             {showMessageDisplay(rowViewModels, selectedRowViewModelIdx)}
          </Animated.View>
       </SafeAreaView>
@@ -153,6 +162,11 @@ const IterableInbox = ({
 }
 
 const styles = StyleSheet.create({
+   loadingScreen: {
+      height: '100%',
+      backgroundColor: 'whitesmoke'
+   },
+
    container: {
       flex: 1,
       width: 2 * SCREEN_WIDTH,
