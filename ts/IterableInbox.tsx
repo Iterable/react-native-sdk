@@ -50,14 +50,28 @@ const IterableInbox = ({ messageListItemLayout, customizations }: inboxProps) =>
    useEffect(() => {
       addSilentPushHandler()
       fetchInboxMessages()
-   }, [])
+
+      return removeSilentPushHandler
+   })
 
    function addSilentPushHandler() {
+      console.log("jay addSilentPushHandler")
+
       RNEventEmitter.addListener(
          "receivedIterableInboxChanged",
          () => {
-            console.log("jay it works")
+            console.log("jay added listener")
             fetchInboxMessages()
+         })
+   }
+
+   function removeSilentPushHandler() {
+      console.log("jay removeSilentPushHandler")
+
+      RNEventEmitter.removeListener(
+         "receivedIterableInboxChanged",
+         () => {
+            console.log("jay removed listener")
          })
    }
 
