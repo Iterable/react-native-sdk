@@ -62,7 +62,8 @@ const IterableInbox = ({ messageListItemLayout, customizations }: inboxProps) =>
          () => {
             console.log("jay added listener")
             fetchInboxMessages()
-         })
+         }
+      )
    }
 
    function removeSilentPushHandler() {
@@ -72,7 +73,8 @@ const IterableInbox = ({ messageListItemLayout, customizations }: inboxProps) =>
          "receivedIterableInboxChanged",
          () => {
             console.log("jay removed listener")
-         })
+         }
+      )
    }
 
    const fetchInboxMessages = async () => {
