@@ -55,26 +55,16 @@ const IterableInbox = ({ messageListItemLayout, customizations }: inboxProps) =>
    }, [])
 
    function addSilentPushHandler() {
-      console.log("jay addSilentPushHandler")
-
       RNEventEmitter.addListener(
          "receivedIterableInboxChanged",
          () => {
-            console.log("jay added listener")
             fetchInboxMessages()
          }
       )
    }
 
    function removeSilentPushHandler() {
-      console.log("jay removeSilentPushHandler")
-
-      RNEventEmitter.removeListener(
-         "receivedIterableInboxChanged",
-         () => {
-            console.log("jay removed listener")
-         }
-      )
+      RNEventEmitter.removeAllListeners("receivedIterableInboxChanged")
    }
 
    const fetchInboxMessages = async () => {
