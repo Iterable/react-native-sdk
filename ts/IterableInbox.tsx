@@ -52,7 +52,7 @@ const IterableInbox = ({ messageListItemLayout, customizations }: inboxProps) =>
       fetchInboxMessages()
 
       return removeSilentPushHandler
-   })
+   }, [])
 
    function addSilentPushHandler() {
       console.log("jay addSilentPushHandler")
