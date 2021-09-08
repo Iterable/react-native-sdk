@@ -29,11 +29,11 @@ import com.iterable.iterableapi.IterableHelper;
 import com.iterable.iterableapi.IterableInAppCloseAction;
 import com.iterable.iterableapi.IterableInAppHandler;
 import com.iterable.iterableapi.IterableInAppLocation;
+import com.iterable.iterableapi.IterableInAppManager;
 import com.iterable.iterableapi.IterableInAppMessage;
 import com.iterable.iterableapi.IterableLogger;
 import com.iterable.iterableapi.IterableUrlHandler;
 import com.iterable.iterableapi.RNIterableInternal;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,7 +42,7 @@ import org.json.JSONObject;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-public class RNIterableAPIModule extends ReactContextBaseJavaModule implements IterableUrlHandler, IterableCustomActionHandler, IterableInAppHandler, IterableAuthHandler {
+public class RNIterableAPIModule extends ReactContextBaseJavaModule implements IterableUrlHandler, IterableCustomActionHandler, IterableInAppHandler, IterableAuthHandler, IterableInAppManager.Listener {
 
     private final ReactApplicationContext reactContext;
     private static String TAG = "RNIterableAPIModule";
@@ -88,6 +88,8 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         if (configReadableMap.hasKey("authHandlerPresent") && configReadableMap.getBoolean("authHandlerPresent") == true) {
             configBuilder.setAuthHandler(this);
         }
+
+        IterableApi.getInstance().getInAppManager().addListener(this);
 
         IterableApi.initialize(reactContext, apiKey, configBuilder.build());
         IterableApi.getInstance().setDeviceAttribute("reactNativeSDKVersion", version);
@@ -510,11 +512,16 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, eventData);
     }
 
+    @Override
+    public void onInboxUpdated() {
+        sendEvent(EventName.receivedIterableInboxChanged.name(), null);
+    }
 }
 
 enum EventName {
     handleUrlCalled,
     handleCustomActionCalled,
     handleInAppCalled,
-    handleAuthCalled
+    handleAuthCalled,
+    receivedIterableInboxChanged
 }
