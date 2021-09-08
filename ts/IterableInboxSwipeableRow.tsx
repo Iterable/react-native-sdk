@@ -33,7 +33,6 @@ const SCREEN_WIDTH = Dimensions.get('window').width
 const IterableInboxSwipeableRow = ({
    index,
    last,
-   imgSrc,
    rowViewModel,
    messageListItemLayout,
    customizations,
