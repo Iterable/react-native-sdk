@@ -18,15 +18,7 @@ type MessageClickableRowProps = {
    handleMessageSelect: Function,
 }
 
-const IterableInboxClickableRow = ({ 
-   index,
-   last, 
-   rowViewModel,
-   messageListItemLayout,
-   customizations, 
-   handleMessageSelect 
-}: MessageClickableRowProps) => {
-
+const IterableInboxClickableRow = ({ index, last, rowViewModel, messageListItemLayout, customizations, handleMessageSelect }: MessageClickableRowProps) => {
    return(
       <TouchableOpacity
          activeOpacity={1}

@@ -2,14 +2,13 @@
 
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-
 import { IterableInboxCustomizations } from '.'
 
 type emptyStateProps = {
    customizations: IterableInboxCustomizations
 }
 
-const IterableInboxEmptyState = ({ customizations } : emptyStateProps) => {
+const IterableInboxEmptyState = ({ customizations }: emptyStateProps) => {
    const defaultTitle = "No saved messages"
    const defaultBody = "Check again later!"
    

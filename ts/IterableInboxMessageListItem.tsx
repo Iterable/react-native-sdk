@@ -2,7 +2,6 @@
 
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-
 import { InboxRowViewModel, IterableInboxCustomizations } from '.'
 
 type MessageListItemProps = {
@@ -75,7 +74,7 @@ const defaultMessageListLayout = (
       }
    })
 
-    const resolvedStyles = {...styles, ...customizations}
+   const resolvedStyles = {...styles, ...customizations}
 
    const {
       unreadIndicatorContainer,
@@ -90,9 +89,9 @@ const defaultMessageListLayout = (
 
    function messageRowStyle(rowViewModel: InboxRowViewModel) {
       return last ? {...messageRow, borderBottomWidth: 1} : messageRow 
-   } 
+   }
    
-   return(
+   return (
       <View style={messageRowStyle(rowViewModel)}>
          <View style={unreadIndicatorContainer}>
             {rowViewModel.read ? null : <View style={unreadIndicator}/>}
@@ -106,13 +105,8 @@ const defaultMessageListLayout = (
    )
 }
 
-const IterableInboxMessageListItem = ({ 
-   last, 
-   rowViewModel, 
-   messageListItemLayout, 
-   customizations 
-}: MessageListItemProps) => {
-   return(
+const IterableInboxMessageListItem = ({ last, rowViewModel, messageListItemLayout, customizations }: MessageListItemProps) => {
+   return (
       messageListItemLayout(last, rowViewModel) ?
          messageListItemLayout(last, rowViewModel) :
          defaultMessageListLayout(last, rowViewModel, customizations)  

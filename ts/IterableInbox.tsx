@@ -16,12 +16,11 @@ import {
    IterableInboxMessageList,
    IterableInboxEmptyState,
    InboxRowViewModel,
-   IterableInAppDeleteSource
+   IterableInAppDeleteSource,
+   IterableInboxMessageDisplay,
+   IterableInboxDataModel,
+   IterableInboxCustomizations
 } from '.'
-
-import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
-import IterableInboxDataModel from './IterableInboxDataModel'
-import IterableInboxCustomizations from './IterableInboxCustomizations'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
@@ -38,14 +37,8 @@ const IterableInbox = ({ messageListItemLayout, customizations }: inboxProps) =>
    const [selectedRowViewModelIdx, setSelectedRowViewModelIdx] = useState<number>(0)
    const [rowViewModels, setRowViewModels] = useState<InboxRowViewModel[]>([])
    const [loading, setLoading] = useState<boolean>(true)
-   const inboxDataModel = new IterableInboxDataModel()
-
    const [animatedValue, setAnimatedValue] = useState<any>(new Animated.Value(0))
-
-   const fetchData = async () => {
-      const newRowViewModels = await inboxDataModel.refresh()
-      setRowViewModels(newRowViewModels)
-   }
+   const inboxDataModel = new IterableInboxDataModel()
 
    useEffect(() => {
       addSilentPushHandler()
@@ -87,6 +80,7 @@ const IterableInbox = ({ messageListItemLayout, customizations }: inboxProps) =>
          return (rowViewModel.inAppMessage.messageId === id) ?
             {...rowViewModel, read: true } : rowViewModel
       })
+
       setRowViewModels(newRowViewModels)
       inboxDataModel.setMessageAsRead(id)
       setSelectedRowViewModelIdx(index)
@@ -95,7 +89,7 @@ const IterableInbox = ({ messageListItemLayout, customizations }: inboxProps) =>
 
    const deleteRow = (messageId: string) => {
       inboxDataModel.deleteItemById(messageId, IterableInAppDeleteSource.inboxSwipe)
-      fetchData()
+      fetchInboxMessages()
    }
 
    function returnToInbox() {

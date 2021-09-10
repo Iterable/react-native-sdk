@@ -17,18 +17,13 @@ type MessageListProps = {
    handleMessageSelect: Function 
 }
 
-const IterableInboxMessageList = ({ 
-   rowViewModels,
-   customizations, 
-   deleteRow, 
-   messageListItemLayout,
-   handleMessageSelect 
-}: MessageListProps) => {
+const IterableInboxMessageList = ({ rowViewModels, customizations, deleteRow, messageListItemLayout, handleMessageSelect }: MessageListProps) => {
    const [swiping, setSwiping] = useState(false)
 
    const renderMessageCells = (rowViewModels: InboxRowViewModel[]) => {
       return rowViewModels.map((rowViewModel, index) => {
-         const last = index === rowViewModels.length - 1 ? true : false
+         const last = index === rowViewModels.length - 1
+         
          return (
             <IterableInboxSwipeableRow
                key={rowViewModel.inAppMessage.messageId}
