@@ -2,15 +2,16 @@
 
 import { NativeModules, NativeEventEmitter, Linking } from 'react-native'
 
-import IterableConfig from './IterableConfig'
-import IterableInAppMessage from './IterableInAppMessage'
-import IterableInAppManager from './IterableInAppManager'
-
 import {
+  EventName,
+  IterableConfig,
+  IterableInAppMessage,
+  IterableInAppManager,
+  IterableCommerceItem,
   IterableInAppLocation,
   IterableInAppCloseSource,
-  IterableInAppDeleteSource,
-} from './IterableInAppClasses'
+  IterableInAppDeleteSource
+} from '.'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
@@ -79,40 +80,6 @@ class IterableAttributionInfo {
     this.templateId = templateId
     this.messageId = messageId
   }
-}
-
-class IterableCommerceItem {
-  id: string
-  name: string
-  price: number
-  quantity: number
-  sku?: string
-  description?: string
-  url?: string
-  imageUrl?: string
-  categories?: Array<string>
-  dataFields?: any
-
-  constructor(id: string, name: string, price: number, quantity: number, sku?: string, description?: string, url?: string, imageUrl?: string, categories?: Array<string>, dataFields?: any | undefined) {
-    this.id = id
-    this.name = name
-    this.price = price
-    this.quantity = quantity
-    this.sku = sku
-    this.description = description
-    this.url = url
-    this.imageUrl = imageUrl
-    this.categories = categories
-    this.dataFields = dataFields
-  }
-}
-
-enum EventName {
-  handleUrlCalled = "handleUrlCalled",
-  handleCustomActionCalled = "handleCustomActionCalled",
-  handleInAppCalled = "handleInAppCalled",
-  handleAuthCalled = "handleAuthCalled",
-  receivedIterableInboxChanged = "receivedIterableInboxChanged"
 }
 
 class Iterable {
@@ -422,8 +389,6 @@ export {
   IterableAction,
   IterableActionContext,
   IterableAttributionInfo,
-  IterableCommerceItem,
-  EventName,
   IterableActionSource,
   IterableLogLevel
 }

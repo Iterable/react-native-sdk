@@ -10,7 +10,6 @@ import {
   IterableAction,
   IterableActionContext,
   IterableAttributionInfo,
-  IterableCommerceItem,
   IterableLogLevel,
 } from './Iterable'
 
@@ -28,6 +27,7 @@ import {
   IterableInAppDeleteSource,
 } from './IterableInAppClasses'
 
+import EventName from './EventName'
 import IterableConfig from './IterableConfig'
 import IterableInAppMessage from './IterableInAppMessage'
 import IterableInAppManager from './IterableInAppManager'
@@ -43,8 +43,11 @@ import IterableInboxMessageList from './IterableInboxMessageList'
 import IterableInboxMessageListItem from './IterableInboxMessageListItem'
 import IterableInboxSwipeableRow from './IterableInboxSwipeableRow'
 
+import IterableCommerceItem from './IterableCommerceItem'
+
 export {
   Iterable,
+  EventName,
   IterableConfig,
   IterableAction,
   IterableActionContext,
@@ -72,6 +75,7 @@ export {
   IterableInboxMessageListItem,
   IterableInboxSwipeableRow,
 }
+
 export type {
   IterableInAppContent,
   IterableInboxCustomizations,
