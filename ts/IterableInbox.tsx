@@ -13,6 +13,7 @@ import {
 } from 'react-native'
 
 import {
+   EventName,
    IterableInboxMessageList,
    IterableInboxEmptyState,
    InboxRowViewModel,
@@ -49,7 +50,7 @@ const IterableInbox = ({ messageListItemLayout, customizations }: inboxProps) =>
 
    function addSilentPushHandler() {
       RNEventEmitter.addListener(
-         "receivedIterableInboxChanged",
+         EventName.receivedIterableInboxChanged,
          () => {
             fetchInboxMessages()
          }
@@ -57,7 +58,7 @@ const IterableInbox = ({ messageListItemLayout, customizations }: inboxProps) =>
    }
 
    function removeSilentPushHandler() {
-      RNEventEmitter.removeAllListeners("receivedIterableInboxChanged")
+      RNEventEmitter.removeAllListeners(EventName.receivedIterableInboxChanged)
    }
 
    const fetchInboxMessages = async () => {
@@ -77,8 +78,7 @@ const IterableInbox = ({ messageListItemLayout, customizations }: inboxProps) =>
 
    function handleMessageSelect(id: string, index: number, rowViewModels: InboxRowViewModel[]) {
       let newRowViewModels = rowViewModels.map((rowViewModel) => {
-         return (rowViewModel.inAppMessage.messageId === id) ?
-            {...rowViewModel, read: true } : rowViewModel
+         return (rowViewModel.inAppMessage.messageId === id) ? {...rowViewModel, read: true } : rowViewModel
       })
 
       setRowViewModels(newRowViewModels)
@@ -96,14 +96,12 @@ const IterableInbox = ({ messageListItemLayout, customizations }: inboxProps) =>
       reset()
    }
    
-   function showMessageDisplay(rowViewModelList: InboxRowViewModel[], index: number) {
-      const selectedRowViewModel = rowViewModelList[index]
-
+   function showMessageDisplay(rowViewModel: InboxRowViewModel) {
       return (
-         selectedRowViewModel ?
+         rowViewModel ?
             <IterableInboxMessageDisplay
-               rowViewModel={selectedRowViewModel}
-               inAppContentPromise={getHtmlContentForRow(selectedRowViewModel.inAppMessage.messageId)}
+               rowViewModel={rowViewModel}
+               inAppContentPromise={getHtmlContentForRow(rowViewModel.inAppMessage.messageId)}
                returnToInbox={() => returnToInbox()}
             /> : null
       )
@@ -166,8 +164,8 @@ const IterableInbox = ({ messageListItemLayout, customizations }: inboxProps) =>
                justifyContent: "flex-start",
             }}
          >
-            {showMessageList(loading)}   
-            {showMessageDisplay(rowViewModels, selectedRowViewModelIdx)}
+            {showMessageList(loading)}
+            {showMessageDisplay(rowViewModels[selectedRowViewModelIdx])}
          </Animated.View>
       </SafeAreaView>
    )
