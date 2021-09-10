@@ -123,7 +123,7 @@ const IterableInboxSwipeableRow = ({
    return(
       <View>
          <Animated.View style={deleteSlider}>
-            <Text style={textStyle}>DELETE</Text>   
+            <Text style={textStyle}>Delete</Text>
          </Animated.View>
          <Animated.View 
             style={[textContainer, position.getLayout()]}
