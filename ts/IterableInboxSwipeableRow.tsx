@@ -7,7 +7,8 @@ import {
    Dimensions,
    Animated,
    PanResponder,
-   StyleSheet
+   StyleSheet,
+   useWindowDimensions
 } from 'react-native'
 
 import {
@@ -15,6 +16,8 @@ import {
    IterableInboxClickableRow,
    IterableInboxCustomizations
 } from '.'
+
+import { useOrientation } from './useOrientation'
 
 type SwipeableRowProps = {
    key: string,
@@ -27,8 +30,6 @@ type SwipeableRowProps = {
    deleteRow: Function,
    handleMessageSelect: Function,
 }
-
-const SCREEN_WIDTH = Dimensions.get('window').width
 
 const IterableInboxSwipeableRow = ({
    index,
@@ -43,11 +44,16 @@ const IterableInboxSwipeableRow = ({
    const position = useRef(new Animated.ValueXY()).current
 
    const { textContainer, deleteSlider, textStyle } = styles
+
+   const SCREEN_WIDTH = useWindowDimensions().width
    
    let [scrollStopped, setScrollStopped] = useState(false);
+
    const SCROLL_THRESHOLD = SCREEN_WIDTH / 15
-   const FORCE_TO_OPEN_THRESHOLD = -SCREEN_WIDTH / 2
+   let FORCE_TO_OPEN_THRESHOLD = -SCREEN_WIDTH / 2
    const FORCING_DURATION = 350
+
+   const orientation = useOrientation()
 
    //stops scrolling and enables swiping when threshold is reached
    const enableScrollView = (isEnabled: boolean) => {

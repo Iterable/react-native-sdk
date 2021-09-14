@@ -7,7 +7,7 @@ import {
    SafeAreaView, 
    StyleSheet,
    Animated,
-   Dimensions
+   useWindowDimensions
 } from 'react-native'
 
 import {
@@ -21,16 +21,20 @@ import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
 import IterableInboxDataModel from './IterableInboxDataModel'
 import IterableInboxCustomizations from './IterableInboxCustomizations'
 
-const SCREEN_WIDTH = Dimensions.get('window').width
+import { useOrientation } from './useOrientation'
 
 type inboxProps = {
    messageListItemLayout: Function,
-   customizations: IterableInboxCustomizations
+   customizations: IterableInboxCustomizations,
+   tabBarHeight: number,
+   tabBarPadding: number
 }
 
 const IterableInbox = ({
    messageListItemLayout, 
-   customizations
+   customizations,
+   tabBarHeight,
+   tabBarPadding
 }: inboxProps) => {
    const defaultInboxTitle = "Inbox"
    const [selectedRowViewModelIdx, setSelectedRowViewModelIdx] = useState<number>(0)
@@ -38,7 +42,24 @@ const IterableInbox = ({
    const [loading, setLoading] = useState<boolean>(true)
    const inboxDataModel = new IterableInboxDataModel()
 
+   const SCREEN_WIDTH = useWindowDimensions().width
+   const SCREEN_HEIGHT = useWindowDimensions().height
+   const navTitleHeight = 80
+
    const [animatedValue, setAnimatedValue] = useState<any>(new Animated.Value(0))
+
+   const orientation = useOrientation()
+
+   let {
+      loadingScreen,
+      container,
+      headline
+   } = styles
+
+   const updatedContainer = {...container, width: 2 * SCREEN_WIDTH, height: SCREEN_HEIGHT - navTitleHeight - 40}
+   const messageListContainer = { width: SCREEN_WIDTH }
+   
+   headline = (orientation === 'PORTRAIT') ? {...headline, marginTop: 40} : {...headline, paddingLeft: 30}
 
    const fetchData = async () => {
       const newRowViewModels = await inboxDataModel.refresh()
@@ -99,8 +120,8 @@ const IterableInbox = ({
 
    function showMessageList(loading: boolean) {
       return (
-         <View style={styles.messageListContainer}>
-            <Text style={styles.headline}>
+         <View style={messageListContainer}>
+            <Text style={headline}>
                {customizations.navTitle ? customizations.navTitle : defaultInboxTitle}
             </Text>
             { rowViewModels.length ?
@@ -118,8 +139,13 @@ const IterableInbox = ({
 
    function renderEmptyState() {
       return loading ? 
-         <View style={styles.loadingScreen} /> : 
-         <IterableInboxEmptyState customizations={customizations} /> 
+         <View style={loadingScreen} /> : 
+         <IterableInboxEmptyState 
+            customizations={customizations} 
+            tabBarHeight={tabBarHeight}
+            tabBarPadding={tabBarPadding}
+            navTitleHeight={navTitleHeight}
+         /> 
    }
 
    const slideLeft = () => {
@@ -139,7 +165,7 @@ const IterableInbox = ({
    }
 
    return(
-      <SafeAreaView style={styles.container}>
+      <View style={updatedContainer}>
          <Animated.View
             style={{
                transform: [
@@ -157,7 +183,7 @@ const IterableInbox = ({
             {showMessageList(loading)}   
             {showMessageDisplay(rowViewModels, selectedRowViewModelIdx)}
          </Animated.View>
-      </SafeAreaView>
+      </View>
    )
 }
 
@@ -169,21 +195,17 @@ const styles = StyleSheet.create({
 
    container: {
       flex: 1,
-      width: 2 * SCREEN_WIDTH,
       flexDirection: 'row',
-      height: '100%',
+      //height: '100%',
       alignItems: "center",
       justifyContent: "flex-start"
-   },
-
-   messageListContainer: {
-      width: SCREEN_WIDTH
    },
 
    headline: {
       fontWeight: 'bold' ,
       fontSize: 40,
       width: '100%',
+      height: 60,
       paddingTop: 10,
       paddingBottom: 10,
       paddingLeft: 15,

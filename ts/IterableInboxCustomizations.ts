@@ -19,11 +19,15 @@ type IterableInboxCustomizations = {
       marginTop: number
    },
  
-   unreadMessageContainer: {
+   unreadMessageIconContainer: {
       paddingLeft: number
    },
- 
-   readMessageContainer: {
+
+   readMessageIconContainer: {
+      paddingLeft: number
+   },
+
+   messageContainer: {
       paddingLeft: number
    },
  

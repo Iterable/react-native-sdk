@@ -1,7 +1,14 @@
 'use strict'
 
 import React, { useState, useEffect } from 'react'
-import { Text, View, Dimensions, StyleSheet, TouchableWithoutFeedback } from 'react-native'
+import { 
+  Text, 
+  View, 
+  Dimensions, 
+  StyleSheet, 
+  TouchableWithoutFeedback,
+  useWindowDimensions 
+} from 'react-native'
 import RenderHtml from 'react-native-render-html'
 import Icon from 'react-native-vector-icons/Ionicons'
 
@@ -13,12 +20,21 @@ type MessageDisplayProps = {
    returnToInbox: Function
 }
 
-const SCREEN_WIDTH = Dimensions.get('window').width
-
 const IterableInboxMessageDisplay = ({ rowViewModel, inAppContentPromise, returnToInbox }: MessageDisplayProps) => {
    const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title
    const [inAppContent, setInAppContent] = useState<IterableHtmlInAppContent>(new IterableHtmlInAppContent(new IterableEdgeInsets(0, 0, 0, 0), ""))
    
+   const SCREEN_WIDTH = useWindowDimensions().width
+
+   let {
+      returnButtonContainer,
+      returnButton,
+      messageDisplayContainer,
+      headline
+   } = styles
+
+   let updatedMessageDisplayContainer = {...messageDisplayContainer, width: SCREEN_WIDTH}
+
    useEffect(() => {
       inAppContentPromise.then(
          (value) => {
@@ -27,16 +43,16 @@ const IterableInboxMessageDisplay = ({ rowViewModel, inAppContentPromise, return
    })
 
    return(
-      <View style={styles.messageDisplayContainer}>
-         <View style={styles.returnButtonContainer}>
+      <View style={updatedMessageDisplayContainer}>
+         <View style={returnButtonContainer}>
             <TouchableWithoutFeedback onPress={() => returnToInbox()}>
                <Icon 
                   name="ios-arrow-back"
-                  style={styles.returnButton} />
+                  style={returnButton} />
             </TouchableWithoutFeedback>
          </View>
-         <View style={styles.messageDisplayContainer}>
-            <Text style={styles.headline}>
+         <View style={messageDisplayContainer}>
+            <Text style={headline}>
                {messageTitle}
             </Text>
             <RenderHtml contentWidth={SCREEN_WIDTH} source={inAppContent}/>
@@ -47,7 +63,7 @@ const IterableInboxMessageDisplay = ({ rowViewModel, inAppContentPromise, return
 
 const styles = StyleSheet.create({
    returnButtonContainer: {
-      marginTop: 0,
+      marginTop: 40,
       backgroundColor: 'whitesmoke'
    },
 
@@ -58,7 +74,6 @@ const styles = StyleSheet.create({
    },
 
    messageDisplayContainer: {
-      width: SCREEN_WIDTH,
       height: '100%',
       backgroundColor: 'whitesmoke', 
       flexDirection: 'column',

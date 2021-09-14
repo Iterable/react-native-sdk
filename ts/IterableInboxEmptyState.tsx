@@ -1,28 +1,54 @@
 'use strict'
 
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { 
+   View, 
+   Text, 
+   StyleSheet,
+   useWindowDimensions
+} from 'react-native'
 
 import { IterableInboxCustomizations } from '.'
+import { useOrientation } from './useOrientation'
 
 type emptyStateProps = {
-   customizations: IterableInboxCustomizations
+   customizations: IterableInboxCustomizations,
+   tabBarHeight: number,
+   tabBarPadding: number,
+   navTitleHeight: number
 }
 
-const IterableInboxEmptyState = ({ customizations } : emptyStateProps) => {
+const IterableInboxEmptyState = ({ 
+   customizations, 
+   tabBarHeight,
+   tabBarPadding, 
+   navTitleHeight 
+} : emptyStateProps) => {
    const defaultTitle = "No saved messages"
    const defaultBody = "Check again later!"
    
-   const title = customizations.noMessagesTitle
-   const body = customizations.noMessagesBody
+   const emptyStateTitle = customizations.noMessagesTitle
+   const emptyStateBody = customizations.noMessagesBody
+
+   const orientation = useOrientation()
+
+   const SCREEN_HEIGHT = useWindowDimensions().height
+
+   let {
+      container,
+      title,
+      body   
+   } = styles
+
+   let updatedContainer = {...container, height: SCREEN_HEIGHT }
 
    return(
-      <View style={styles.container}>
-         <Text style={styles.title}>
-            {title ? title : defaultTitle}
+      <View style={updatedContainer}>
+         <Text style={title}>
+            {emptyStateTitle ? emptyStateTitle : defaultTitle}
          </Text>
-         <Text style={styles.body}>
-            {body ? body : defaultBody}
+         <Text style={body}>
+            {emptyStateBody ? emptyStateBody : defaultBody}
          </Text>
       </View>
    )
@@ -30,17 +56,17 @@ const IterableInboxEmptyState = ({ customizations } : emptyStateProps) => {
 
 const styles = StyleSheet.create({
    container: {
-      height: '100%',
+      //height: '100%',
       backgroundColor: 'whitesmoke', 
       flexDirection: 'column',
-      justifyContent: 'flex-start',
+      justifyContent: 'center',
       alignItems: 'center'
    },
 
    title: {
       fontWeight: 'bold',
       fontSize: 20,
-      paddingTop: 250,
+      // paddingTop: 250,
       paddingBottom: 25
    },
 
