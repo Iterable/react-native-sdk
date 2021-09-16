@@ -48,7 +48,7 @@ const IterableInboxMessageList = ({
                handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index)}
                contentWidth={contentWidth}
                height={height}
-               // orientation={orientation}
+               orientation={orientation}
             />
          )
       })

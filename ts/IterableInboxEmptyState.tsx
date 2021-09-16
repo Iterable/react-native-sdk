@@ -9,7 +9,6 @@ import {
 } from 'react-native'
 
 import { IterableInboxCustomizations } from '.'
-import { useOrientation } from './useOrientation'
 
 type emptyStateProps = {
    customizations: IterableInboxCustomizations,
@@ -26,7 +25,6 @@ const IterableInboxEmptyState = ({
    tabBarHeight,
    tabBarPadding, 
    navTitleHeight,
-   contentWidth,
    height,
    orientation 
 } : emptyStateProps) => {
@@ -36,18 +34,20 @@ const IterableInboxEmptyState = ({
    const emptyStateTitle = customizations.noMessagesTitle
    const emptyStateBody = customizations.noMessagesBody
 
-   const SCREEN_HEIGHT = useWindowDimensions().height
-
    let {
       container,
       title,
       body   
    } = styles
 
-   let updatedContainer = {...container, height: SCREEN_HEIGHT }
+   container = {...container, height: height - navTitleHeight - tabBarHeight - tabBarPadding}
+
+   if(orientation === 'LANDSCAPE') {
+      container = {...container, height: height - navTitleHeight}
+   }
 
    return(
-      <View style={updatedContainer}>
+      <View style={container}>
          <Text style={title}>
             {emptyStateTitle ? emptyStateTitle : defaultTitle}
          </Text>
@@ -60,11 +60,12 @@ const IterableInboxEmptyState = ({
 
 const styles = StyleSheet.create({
    container: {
-      //height: '100%',
-      backgroundColor: 'whitesmoke', 
+      height: 0,
+      //backgroundColor: 'whitesmoke', 
       flexDirection: 'column',
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
+      backgroundColor: 'yellow'
    },
 
    title: {

@@ -36,6 +36,10 @@ const IterableInboxMessageDisplay = ({ rowViewModel, inAppContentPromise, return
 
    let updatedMessageDisplayContainer = {...messageDisplayContainer, width: contentWidth}
 
+   headline = (orientation === 'LANDSCAPE') ? {...headline, paddingLeft: 45} : headline
+   returnButton = (orientation === 'LANDSCAPE') ? {...returnButton, paddingLeft: 40} : returnButton
+   returnButtonContainer = (orientation === 'LANDSCAPE') ? {...returnButtonContainer, marginTop: 10} : returnButtonContainer
+
    useEffect(() => {
       inAppContentPromise.then(
          (value) => {

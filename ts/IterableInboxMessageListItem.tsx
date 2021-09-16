@@ -9,13 +9,15 @@ type MessageListItemProps = {
    last: boolean,
    rowViewModel: InboxRowViewModel,
    messageListItemLayout: Function,
-   customizations: IterableInboxCustomizations
+   customizations: IterableInboxCustomizations,
+   orientation: string
 }
 
 const defaultMessageListLayout = (
    last: boolean, 
    rowViewModel: InboxRowViewModel, 
-   customizations: IterableInboxCustomizations
+   customizations: IterableInboxCustomizations,
+   orientation: string
 ) => {
    const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title ?? ""
    const messageBody = rowViewModel.inAppMessage.inboxMetadata?.subtitle ?? ""
@@ -75,9 +77,9 @@ const defaultMessageListLayout = (
       }
    })
 
-    const resolvedStyles = {...styles, ...customizations}
+   const resolvedStyles = {...styles, ...customizations}
 
-   const {
+   let {
       unreadIndicatorContainer,
       unreadIndicator,
       unreadMessageContainer,
@@ -87,6 +89,9 @@ const defaultMessageListLayout = (
       createdAt,
       messageRow
    } = resolvedStyles
+
+   unreadIndicator = (orientation === 'LANDSCAPE') ? {...unreadIndicator, marginLeft: 40} : unreadIndicator
+   readMessageContainer = (orientation === 'LANDSCAPE') ? {...readMessageContainer, paddingLeft: 65} : readMessageContainer 
 
    function messageRowStyle(rowViewModel: InboxRowViewModel) {
       return last ? {...messageRow, borderBottomWidth: 1} : messageRow 
@@ -110,12 +115,14 @@ const IterableInboxMessageListItem = ({
    last, 
    rowViewModel, 
    messageListItemLayout, 
-   customizations 
+   customizations,
+   orientation 
 }: MessageListItemProps) => {
+
    return(
       messageListItemLayout(last, rowViewModel) ?
          messageListItemLayout(last, rowViewModel) :
-         defaultMessageListLayout(last, rowViewModel, customizations)  
+         defaultMessageListLayout(last, rowViewModel, customizations, orientation)  
    )
 }
 

@@ -16,8 +16,6 @@ import {
    IterableInboxCustomizations
 } from '.'
 
-import { useOrientation } from './useOrientation'
-
 type SwipeableRowProps = {
    key: string,
    index: number,
@@ -29,7 +27,8 @@ type SwipeableRowProps = {
    deleteRow: Function,
    handleMessageSelect: Function,
    contentWidth: number,
-   height: number
+   height: number,
+   orientation: string
 }
 
 const IterableInboxSwipeableRow = ({
@@ -42,7 +41,8 @@ const IterableInboxSwipeableRow = ({
    deleteRow,
    handleMessageSelect,
    contentWidth,
-   height
+   height,
+   orientation
 }: SwipeableRowProps) => {
    const position = useRef(new Animated.ValueXY()).current
 
@@ -53,8 +53,6 @@ const IterableInboxSwipeableRow = ({
    let [scrollThreshold, setScrollThreshold] = useState(contentWidth / 15)
 
    const FORCING_DURATION = 350
-
-   let orientation = useOrientation()
 
    useEffect(() => {
       setDeleteThreshold(-contentWidth / 2)
@@ -148,6 +146,7 @@ const IterableInboxSwipeableRow = ({
                messageListItemLayout={messageListItemLayout}
                customizations={customizations}
                handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index)}
+               orientation={orientation}
             />   
          </Animated.View>
       </View>   

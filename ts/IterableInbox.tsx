@@ -56,7 +56,7 @@ const IterableInbox = ({
    const updatedContainer = {...container, width: 2 * width, height: height - navTitleHeight - 40}
    const messageListContainer = { width: width}
    
-   headline = (orientation === 'PORTRAIT') ? {...headline, marginTop: 40} : {...headline, paddingLeft: 30}
+   headline = (orientation === 'PORTRAIT') ? {...headline, marginTop: 40} : {...headline, paddingLeft: 65}
 
    const fetchData = async () => {
       const newRowViewModels = await inboxDataModel.refresh()
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
       marginTop: 0,
       paddingTop: 10,
       paddingBottom: 10,
-      paddingLeft: 15,
+      paddingLeft: 30,
       backgroundColor: 'whitesmoke'
    }
 })
