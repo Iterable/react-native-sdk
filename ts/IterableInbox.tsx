@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react'
 import {
    View, 
    Text, 
-   SafeAreaView, 
    StyleSheet,
    Animated,
    useWindowDimensions
@@ -41,23 +40,21 @@ const IterableInbox = ({
    const [rowViewModels, setRowViewModels] = useState<InboxRowViewModel[]>([])
    const [loading, setLoading] = useState<boolean>(true)
    const inboxDataModel = new IterableInboxDataModel()
-
-   const SCREEN_WIDTH = useWindowDimensions().width
-   const SCREEN_HEIGHT = useWindowDimensions().height
-   const navTitleHeight = 80
-
    const [animatedValue, setAnimatedValue] = useState<any>(new Animated.Value(0))
 
-   const orientation = useOrientation()
+   let orientation = useOrientation()
 
+   const { width, height } = useWindowDimensions()
+   const navTitleHeight = 80
+  
    let {
       loadingScreen,
       container,
       headline
    } = styles
 
-   const updatedContainer = {...container, width: 2 * SCREEN_WIDTH, height: SCREEN_HEIGHT - navTitleHeight - 40}
-   const messageListContainer = { width: SCREEN_WIDTH }
+   const updatedContainer = {...container, width: 2 * width, height: height - navTitleHeight - 40}
+   const messageListContainer = { width: width}
    
    headline = (orientation === 'PORTRAIT') ? {...headline, marginTop: 40} : {...headline, paddingLeft: 30}
 
@@ -114,6 +111,9 @@ const IterableInbox = ({
                rowViewModel={selectedRowViewModel}
                inAppContentPromise={getHtmlContentForRow(selectedRowViewModel.inAppMessage.messageId)}
                returnToInbox={() => returnToInbox()}
+               contentWidth={width}
+               height={height}
+               orientation={orientation}
             /> : null
       )
    }
@@ -131,6 +131,9 @@ const IterableInbox = ({
                   messageListItemLayout={messageListItemLayout}
                   deleteRow={(messageId: string) => deleteRow(messageId)}
                   handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index, rowViewModels)}
+                  contentWidth={width}
+                  height={height}
+                  orientation={orientation}
                />  :
                renderEmptyState()
             }   
@@ -145,6 +148,9 @@ const IterableInbox = ({
             tabBarHeight={tabBarHeight}
             tabBarPadding={tabBarPadding}
             navTitleHeight={navTitleHeight}
+            contentWidth={width}
+            height={height}
+            orientation={orientation}
          /> 
    }
 
@@ -171,12 +177,12 @@ const IterableInbox = ({
                transform: [
                   {translateX: animatedValue.interpolate({
                      inputRange: [0, 1],
-                     outputRange: [0, -SCREEN_WIDTH]
+                     outputRange: [0, -width]
                   })}
                ],
                height: "100%",
                flexDirection: 'row',
-               width: 2 * SCREEN_WIDTH,
+               width: 2 * width,
                justifyContent: "flex-start",
             }}
          >
@@ -206,6 +212,7 @@ const styles = StyleSheet.create({
       fontSize: 40,
       width: '100%',
       height: 60,
+      marginTop: 0,
       paddingTop: 10,
       paddingBottom: 10,
       paddingLeft: 15,

@@ -1,10 +1,9 @@
 'use strict'
 
-import React, { useState, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
    View,
    Text,
-   Dimensions,
    Animated,
    PanResponder,
    StyleSheet,
@@ -29,6 +28,8 @@ type SwipeableRowProps = {
    // swipingCheck: Function,
    deleteRow: Function,
    handleMessageSelect: Function,
+   contentWidth: number,
+   height: number
 }
 
 const IterableInboxSwipeableRow = ({
@@ -40,20 +41,25 @@ const IterableInboxSwipeableRow = ({
    //swipingCheck,
    deleteRow,
    handleMessageSelect,
+   contentWidth,
+   height
 }: SwipeableRowProps) => {
    const position = useRef(new Animated.ValueXY()).current
 
    const { textContainer, deleteSlider, textStyle } = styles
-
-   const SCREEN_WIDTH = useWindowDimensions().width
    
-   let [scrollStopped, setScrollStopped] = useState(false);
+   let [scrollStopped, setScrollStopped] = useState(false)
+   let [deleteThreshold, setDeleteThreshold] = useState(-contentWidth / 2)
+   let [scrollThreshold, setScrollThreshold] = useState(contentWidth / 15)
 
-   const SCROLL_THRESHOLD = SCREEN_WIDTH / 15
-   let FORCE_TO_OPEN_THRESHOLD = -SCREEN_WIDTH / 2
    const FORCING_DURATION = 350
 
-   const orientation = useOrientation()
+   let orientation = useOrientation()
+
+   useEffect(() => {
+      setDeleteThreshold(-contentWidth / 2)
+      setScrollThreshold(contentWidth / 15)
+   }, [orientation, contentWidth])
 
    //stops scrolling and enables swiping when threshold is reached
    const enableScrollView = (isEnabled: boolean) => {
@@ -65,7 +71,7 @@ const IterableInboxSwipeableRow = ({
 
    //If user swipes, either complete swipe or reset 
    const userSwipedLeft = (gesture : any) => {
-      if(gesture.dx < FORCE_TO_OPEN_THRESHOLD) {
+      if(gesture.dx < deleteThreshold) {
          completeSwipe()   
       } else {
          resetPosition()
@@ -73,7 +79,7 @@ const IterableInboxSwipeableRow = ({
    }
 
    const completeSwipe = () => {
-      const x = -SCREEN_WIDTH
+      const x = -contentWidth
       Animated.timing(position, {
          toValue: {x, y: 0},
          duration: FORCING_DURATION,
@@ -102,11 +108,11 @@ const IterableInboxSwipeableRow = ({
             position.setValue({ x: 0, y: 0 })
          },
          onPanResponderMove: (event, gesture) => {
-            if(gesture.dx <= -SCROLL_THRESHOLD) {
+            if(gesture.dx <= -scrollThreshold) {
                //enables swipeing when threshold is reached
                enableScrollView(true)
                //threshold value is deleted from movement
-               const x = gesture.dx + SCROLL_THRESHOLD
+               const x = gesture.dx + scrollThreshold
                //position is set to the new value
                position.setValue({x, y: 0})
             }

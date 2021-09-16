@@ -15,22 +15,26 @@ type emptyStateProps = {
    customizations: IterableInboxCustomizations,
    tabBarHeight: number,
    tabBarPadding: number,
-   navTitleHeight: number
+   navTitleHeight: number,
+   contentWidth: number,
+   height: number,
+   orientation: string
 }
 
 const IterableInboxEmptyState = ({ 
    customizations, 
    tabBarHeight,
    tabBarPadding, 
-   navTitleHeight 
+   navTitleHeight,
+   contentWidth,
+   height,
+   orientation 
 } : emptyStateProps) => {
    const defaultTitle = "No saved messages"
    const defaultBody = "Check again later!"
    
    const emptyStateTitle = customizations.noMessagesTitle
    const emptyStateBody = customizations.noMessagesBody
-
-   const orientation = useOrientation()
 
    const SCREEN_HEIGHT = useWindowDimensions().height
 
