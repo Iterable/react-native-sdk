@@ -1,7 +1,12 @@
 'use strict'
 
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import {
+   View,
+   Text,
+   Image,
+   StyleSheet
+} from 'react-native'
 
 import { InboxRowViewModel, IterableInboxCustomizations } from '.'
 
@@ -14,7 +19,7 @@ type MessageListItemProps = {
 }
 
 const defaultMessageListLayout = (
-   last: boolean, 
+   last: boolean,
    rowViewModel: InboxRowViewModel, 
    customizations: IterableInboxCustomizations,
    orientation: string
@@ -22,8 +27,9 @@ const defaultMessageListLayout = (
    const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title ?? ""
    const messageBody = rowViewModel.inAppMessage.inboxMetadata?.subtitle ?? ""
    const messageCreatedAt = rowViewModel.createdAt
+   const iconURL = rowViewModel.imageUrl
 
-   let styles = StyleSheet.create({
+   const styles = StyleSheet.create({
       unreadIndicatorContainer: {
          height: '100%',
          flexDirection: 'column',
@@ -39,13 +45,17 @@ const defaultMessageListLayout = (
          marginRight: 5,
          marginTop: 7
       },
-   
-      unreadMessageContainer: {
-         paddingLeft: 5
+
+      unreadMessageIconContainer: {
+         paddingLeft: 10
+      },
+
+      readMessageIconContainer: {
+         paddingLeft: 30
       },
    
-      readMessageContainer: {
-         paddingLeft: 30
+      messageContainer: {
+         paddingLeft: 10
       },
    
       title: {
@@ -82,8 +92,9 @@ const defaultMessageListLayout = (
    let {
       unreadIndicatorContainer,
       unreadIndicator,
-      unreadMessageContainer,
-      readMessageContainer,
+      unreadMessageIconContainer,
+      readMessageIconContainer,
+      messageContainer,
       title,
       body,
       createdAt,
@@ -95,14 +106,17 @@ const defaultMessageListLayout = (
 
    function messageRowStyle(rowViewModel: InboxRowViewModel) {
       return last ? {...messageRow, borderBottomWidth: 1} : messageRow 
-   } 
-   
+   }
+      
    return(
       <View style={messageRowStyle(rowViewModel)}>
          <View style={unreadIndicatorContainer}>
             {rowViewModel.read ? null : <View style={unreadIndicator}/>}
          </View>
-         <View style={rowViewModel.read ? readMessageContainer : unreadMessageContainer}>
+         <View style={rowViewModel.read ? readMessageIconContainer : unreadMessageIconContainer}>
+            <Image style={{height: 80, width: 80}} source={{uri: iconURL}}/>
+         </View>
+         <View style={messageContainer}>
             <Text style={title}>{messageTitle}</Text>
             <Text style={body}>{messageBody}</Text>
             <Text style={createdAt}>{messageCreatedAt}</Text>
