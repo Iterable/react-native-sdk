@@ -20,6 +20,7 @@
   "license": "MIT",
   "homepage": "https://github.com/Iterable/react-native-sdk",
   "dependencies": {
+    "@react-native-community/hooks": "^2.6.0",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-reanimated": "^2.2.0",
     "react-native-render-html": "^6.1.0",

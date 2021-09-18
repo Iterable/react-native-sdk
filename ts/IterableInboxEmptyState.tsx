@@ -60,12 +60,11 @@ const IterableInboxEmptyState = ({
 
 const styles = StyleSheet.create({
    container: {
-      height: 0,
-      //backgroundColor: 'whitesmoke', 
+      height: 0, 
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: 'yellow'
+      backgroundColor: 'whitesmoke'
    },
 
    title: {

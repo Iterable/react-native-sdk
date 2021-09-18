@@ -16,6 +16,7 @@ type MessageClickableRowProps = {
    messageListItemLayout: Function,
    customizations: IterableInboxCustomizations,
    handleMessageSelect: Function,
+   contentWidth: number,
    orientation: string
 }
 
@@ -26,6 +27,7 @@ const IterableInboxClickableRow = ({
    messageListItemLayout,
    customizations, 
    handleMessageSelect,
+   contentWidth,
    orientation 
 }: MessageClickableRowProps) => {
 

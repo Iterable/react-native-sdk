@@ -19,11 +19,16 @@ type MessageDisplayProps = {
    inAppContentPromise: Promise<IterableHtmlInAppContent>,
    returnToInbox: Function,
    contentWidth: number,
-   height: number,
    orientation: string
 }
 
-const IterableInboxMessageDisplay = ({ rowViewModel, inAppContentPromise, returnToInbox, contentWidth, height, orientation }: MessageDisplayProps) => {
+const IterableInboxMessageDisplay = ({ 
+   rowViewModel, 
+   inAppContentPromise, 
+   returnToInbox, 
+   contentWidth, 
+   orientation 
+}: MessageDisplayProps) => {
    const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title
    const [inAppContent, setInAppContent] = useState<IterableHtmlInAppContent>(new IterableHtmlInAppContent(new IterableEdgeInsets(0, 0, 0, 0), ""))
 

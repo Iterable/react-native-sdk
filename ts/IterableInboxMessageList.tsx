@@ -16,7 +16,6 @@ type MessageListProps = {
    messageListItemLayout: Function,
    handleMessageSelect: Function,
    contentWidth: number,
-   height: number,
    orientation: string 
 }
 
@@ -27,7 +26,6 @@ const IterableInboxMessageList = ({
    messageListItemLayout,
    handleMessageSelect,
    contentWidth,
-   height,
    orientation
 }: MessageListProps) => {
    const [swiping, setSwiping] = useState(false)
@@ -47,7 +45,6 @@ const IterableInboxMessageList = ({
                deleteRow={(messageId: string) => deleteRow(messageId)}
                handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index)}
                contentWidth={contentWidth}
-               height={height}
                orientation={orientation}
             />
          )

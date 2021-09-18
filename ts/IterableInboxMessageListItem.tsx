@@ -90,8 +90,8 @@ const defaultMessageListLayout = (
       messageRow
    } = resolvedStyles
 
-   unreadIndicator = (orientation === 'LANDSCAPE') ? {...unreadIndicator, marginLeft: 40} : unreadIndicator
-   readMessageContainer = (orientation === 'LANDSCAPE') ? {...readMessageContainer, paddingLeft: 65} : readMessageContainer 
+   unreadIndicator = (orientation === "LANDSCAPE") ? {...unreadIndicator, marginLeft: 40} : unreadIndicator
+   readMessageContainer = (orientation === "LANDSCAPE") ? {...readMessageContainer, paddingLeft: 65} : readMessageContainer 
 
    function messageRowStyle(rowViewModel: InboxRowViewModel) {
       return last ? {...messageRow, borderBottomWidth: 1} : messageRow 
