@@ -62,7 +62,7 @@ const IterableInboxSwipeableRow = ({
 
    //If user swipes, either complete swipe or reset 
    const userSwipedLeft = (gesture : any) => {
-      if(gesture.dx < -0.75 * contentWidth) {
+      if(gesture.dx < -0.6 * contentWidth) {
          completeSwipe()   
       } else {
          resetPosition()
