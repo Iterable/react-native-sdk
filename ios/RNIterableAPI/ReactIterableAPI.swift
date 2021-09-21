@@ -480,8 +480,7 @@ class ReactIterableAPI: RCTEventEmitter {
         }
     }
     
-    @objc(receivedIterableInboxChanged)
-    private func receivedIterableInboxChanged() {
+    @objc private func receivedIterableInboxChanged() {
         guard shouldEmit else {
             return
         }
