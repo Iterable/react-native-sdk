@@ -1,16 +1,14 @@
 'use strict'
 
 import React, { useState, useEffect } from 'react'
-import { Alert } from 'react-native'
 import { 
   Text, 
   View,
   ScrollView,  
-  StyleSheet, 
+  StyleSheet,
   TouchableWithoutFeedback,
-  useWindowDimensions 
 } from 'react-native'
-import HTML from 'react-native-render-html'
+import { WebView } from 'react-native-webview'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 import { InboxRowViewModel, IterableHtmlInAppContent, IterableEdgeInsets } from '.'
@@ -33,18 +31,6 @@ const IterableInboxMessageDisplay = ({
    const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title
    const [inAppContent, setInAppContent] = useState<IterableHtmlInAppContent>(new IterableHtmlInAppContent(new IterableEdgeInsets(0, 0, 0, 0), ""))
 
-   const sampleHTML = `
-      <html>
-         <head>
-         </head>
-         <body>
-            <h2>Hey Iterator,</h2>
-            <br/>
-            <a href="iterable://dismiss" onClick="sayHello()">dismiss</a>
-            <br/>
-         </body>
-      </html>`
-
    let {
       returnButtonContainer,
       returnButton,
@@ -57,10 +43,6 @@ const IterableInboxMessageDisplay = ({
    headline = (orientation === 'LANDSCAPE') ? {...headline, paddingLeft: 45} : headline
    returnButton = (orientation === 'LANDSCAPE') ? {...returnButton, paddingLeft: 40} : returnButton
    returnButtonContainer = (orientation === 'LANDSCAPE') ? {...returnButtonContainer, marginTop: 10} : returnButtonContainer
-
-   const sayHello = () => {
-      returnToInbox()
-   }
 
    useEffect(() => {
       inAppContentPromise.then(
@@ -82,7 +64,7 @@ const IterableInboxMessageDisplay = ({
             <Text style={headline}>
                {messageTitle}
             </Text>
-            <HTML source={{ html: sampleHTML }} />
+            <WebView source={{ html: inAppContent.html }} style={{ width: contentWidth }} />
          </ScrollView> 
       </View>
    )
