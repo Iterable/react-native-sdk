@@ -15,6 +15,14 @@ class ReactIterableAPI: RCTEventEmitter {
     
     // MARK: - React Native Functions
     
+    enum EventName: String, CaseIterable {
+        case handleUrlCalled
+        case handleCustomActionCalled
+        case handleInAppCalled
+        case handleAuthCalled
+        case receivedIterableInboxChanged
+    }
+    
     @objc static override func moduleName() -> String! {
         return "RNIterableAPI"
     }
@@ -25,14 +33,6 @@ class ReactIterableAPI: RCTEventEmitter {
     
     @objc override static func requiresMainQueueSetup() -> Bool {
         false
-    }
-    
-    enum EventName: String, CaseIterable {
-        case handleUrlCalled
-        case handleCustomActionCalled
-        case handleInAppCalled
-        case handleAuthCalled
-        case receivedIterableInboxChanged
     }
     
     override func supportedEvents() -> [String]! {

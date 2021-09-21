@@ -12,9 +12,6 @@ import {
 const RNIterableAPI = NativeModules.RNIterableAPI
 
 class IterableInboxDataModel {
-    filterFn?: (message: IterableInAppMessage) => boolean
-    comparatorFn?: (message1: IterableInAppMessage, message2: IterableInAppMessage) => number
-
     constructor() {
 
     }
@@ -24,6 +21,8 @@ class IterableInboxDataModel {
         this.filterFn = filter
         this.comparatorFn = comparator
     }
+
+    // inbox in-app functions
 
     getHtmlContentForMessageId(id: string): Promise<IterableHtmlInAppContent> {
         console.log("IterableInboxDataModel.getHtmlContentForItem messageId: " + id)
@@ -58,15 +57,10 @@ class IterableInboxDataModel {
         )
     }
 
-    private static sortByMostRecent = (message1: IterableInAppMessage, message2: IterableInAppMessage) => {
-        let createdAt1 = message1.createdAt ?? new Date(0)
-        let createdAt2 = message2.createdAt ?? new Date(0)
+    // PRIVATE/INTERNAL
 
-        if (createdAt1 < createdAt2) return 1
-        if (createdAt1 > createdAt2) return -1
-
-        return 0
-    }
+    private filterFn?: (message: IterableInAppMessage) => boolean
+    private comparatorFn?: (message1: IterableInAppMessage, message2: IterableInAppMessage) => number
 
     private processMessages(messages: Array<IterableInAppMessage>): Array<InboxRowViewModel> {
         return this.sortAndFilter(messages).map(IterableInboxDataModel.getInboxRowViewModelForMessage)
@@ -97,6 +91,16 @@ class IterableInboxDataModel {
             read: message.read,
             inAppMessage: message
         }
+    }
+
+    private static sortByMostRecent = (message1: IterableInAppMessage, message2: IterableInAppMessage) => {
+        let createdAt1 = message1.createdAt ?? new Date(0)
+        let createdAt2 = message2.createdAt ?? new Date(0)
+
+        if (createdAt1 < createdAt2) return 1
+        if (createdAt1 > createdAt2) return -1
+
+        return 0
     }
 }
 
