@@ -1,6 +1,6 @@
 'use strict'
 
-import React from 'react'
+import React, {useState} from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
 import { InboxRowViewModel, IterableInboxCustomizations } from '.'
@@ -8,16 +8,20 @@ import { InboxRowViewModel, IterableInboxCustomizations } from '.'
 type MessageListItemProps = {
    last: boolean,
    rowViewModel: InboxRowViewModel,
+   getHeight: Function,
    messageListItemLayout: Function,
    customizations: IterableInboxCustomizations,
+   contentWidth: number,
    orientation: string
 }
 
 const defaultMessageListLayout = (
    last: boolean, 
-   rowViewModel: InboxRowViewModel, 
+   rowViewModel: InboxRowViewModel,
    customizations: IterableInboxCustomizations,
-   orientation: string
+   orientation: string,
+   contentWidth: number, 
+   getHeight: Function
 ) => {
    const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title ?? ""
    const messageBody = rowViewModel.inAppMessage.inboxMetadata?.subtitle ?? ""
@@ -56,6 +60,8 @@ const defaultMessageListLayout = (
       body: {
          fontSize: 15,
          color: 'lightgray',
+         width: contentWidth * 0.85,
+         flexWrap: "wrap",
          paddingBottom: 10
       },
    
@@ -69,8 +75,8 @@ const defaultMessageListLayout = (
          backgroundColor: 'white',
          paddingTop: 10,
          paddingBottom: 10,
-         width: '100%',
-         height: 100,
+         width: '80%',
+         //height: 200,
          borderStyle: 'solid',
          borderColor: 'lightgray',
          borderTopWidth: 1
@@ -98,7 +104,7 @@ const defaultMessageListLayout = (
    } 
    
    return(
-      <View style={messageRowStyle(rowViewModel)}>
+      <View style={messageRowStyle(rowViewModel)} onLayout={(event) => getHeight(event.nativeEvent.layout)}>
          <View style={unreadIndicatorContainer}>
             {rowViewModel.read ? null : <View style={unreadIndicator}/>}
          </View>
@@ -113,16 +119,18 @@ const defaultMessageListLayout = (
 
 const IterableInboxMessageListItem = ({ 
    last, 
-   rowViewModel, 
+   rowViewModel,
+   getHeight, 
    messageListItemLayout, 
    customizations,
+   contentWidth,
    orientation 
 }: MessageListItemProps) => {
 
    return(
       messageListItemLayout(last, rowViewModel) ?
          messageListItemLayout(last, rowViewModel) :
-         defaultMessageListLayout(last, rowViewModel, customizations, orientation)  
+         defaultMessageListLayout(last, rowViewModel, customizations, orientation, contentWidth, getHeight)  
    )
 }
 

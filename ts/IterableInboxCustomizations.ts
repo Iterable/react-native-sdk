@@ -36,11 +36,11 @@ type IterableInboxCustomizations = {
       paddingBottom: number
    },
  
-   body: {
-      fontSize: number,
-      color: string,
-      paddingBottom: number
-   },
+   // body: {
+   //    fontSize: number,
+   //    color: string,
+   //    paddingBottom: number
+   // },
  
    createdAt: {
       fontSize: number,
