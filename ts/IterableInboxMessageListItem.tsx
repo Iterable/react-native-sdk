@@ -1,7 +1,7 @@
 'use strict'
 
 import React, {useState} from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, Image, StyleSheet } from 'react-native'
 
 import { InboxRowViewModel, IterableInboxCustomizations } from '.'
 
@@ -103,7 +103,7 @@ const defaultMessageListLayout = (
    } = resolvedStyles
 
    unreadIndicator = (orientation === "LANDSCAPE") ? {...unreadIndicator, marginLeft: 40} : unreadIndicator
-   readMessageContainer = (orientation === "LANDSCAPE") ? {...readMessageContainer, paddingLeft: 65} : readMessageContainer 
+   readMessageIconContainer = (orientation === "LANDSCAPE") ? {...readMessageIconContainer, paddingLeft: 65} : readMessageIconContainer 
 
    function messageRowStyle(rowViewModel: InboxRowViewModel) {
       return last ? {...messageRow, borderBottomWidth: 1} : messageRow 
