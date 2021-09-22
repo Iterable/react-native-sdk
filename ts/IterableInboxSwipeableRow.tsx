@@ -6,7 +6,7 @@ import {
    Text,
    Animated,
    PanResponder,
-   StyleSheet
+   StyleSheet  
 } from 'react-native'
 
 import {
