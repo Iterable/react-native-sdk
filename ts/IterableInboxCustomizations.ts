@@ -59,7 +59,7 @@ type IterableInboxCustomizations = {
       borderStyle: string,
       borderColor: string,
       borderTopWidth: number
-   }
+   } | undefined
 }
 
 export default IterableInboxCustomizations

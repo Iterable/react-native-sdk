@@ -1,6 +1,6 @@
 'use strict'
 
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import {
    View,
    Text,
@@ -20,11 +20,11 @@ type SwipeableRowProps = {
    index: number,
    last: boolean,
    rowViewModel: InboxRowViewModel,
-   messageListItemLayout: Function,
    customizations: IterableInboxCustomizations,
-   // swipingCheck: Function,
+   messageListItemLayout: Function,
    deleteRow: Function,
    handleMessageSelect: Function,
+   // swipingCheck: Function,
    contentWidth: number,
    orientation: string
 }
@@ -33,17 +33,16 @@ const IterableInboxSwipeableRow = ({
    index,
    last,
    rowViewModel,
-   messageListItemLayout,
    customizations,
-   //swipingCheck,
+   messageListItemLayout,
    deleteRow,
    handleMessageSelect,
+   //swipingCheck,
    contentWidth,
    orientation
 }: SwipeableRowProps) => {
    const position = useRef(new Animated.ValueXY()).current
    const [height, setHeight] = useState<number>(100) 
-   const [width, setWidth] = useState<number>(100) 
 
    let { textContainer, deleteSlider, textStyle } = styles
 
@@ -58,7 +57,6 @@ const IterableInboxSwipeableRow = ({
    function getHeight(layout: any) {
       const {height, width} = layout
       setHeight(height)
-      setWidth(width)
    }
 
    //stops scrolling and enables swiping when threshold is reached
@@ -145,8 +143,8 @@ const IterableInboxSwipeableRow = ({
                index={index}
                last={last}
                rowViewModel={rowViewModel}
-               messageListItemLayout={messageListItemLayout}
                customizations={customizations}
+               messageListItemLayout={messageListItemLayout}
                handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index)}
                getHeight={(layout: any) => getHeight(layout)}
                contentWidth={contentWidth}

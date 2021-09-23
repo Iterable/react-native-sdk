@@ -1,6 +1,6 @@
 'use strict'
 
-import React, { useState } from 'react'
+import React from 'react'
 import { ScrollView } from 'react-native'
 
 import {
@@ -12,8 +12,8 @@ import {
 type MessageListProps = {
    rowViewModels: InboxRowViewModel[],
    customizations: IterableInboxCustomizations,
-   deleteRow: Function,
    messageListItemLayout: Function,
+   deleteRow: Function,
    handleMessageSelect: Function,
    contentWidth: number,
    orientation: string 
@@ -21,14 +21,14 @@ type MessageListProps = {
 
 const IterableInboxMessageList = ({ 
    rowViewModels,
-   customizations, 
+   customizations,
+   messageListItemLayout, 
    deleteRow, 
-   messageListItemLayout,
    handleMessageSelect,
    contentWidth,
    orientation
 }: MessageListProps) => {
-   const [swiping, setSwiping] = useState(false)
+   //const [swiping, setSwiping] = useState(false)
 
    const renderMessageCells = (rowViewModels: InboxRowViewModel[]) => {
       return rowViewModels.map((rowViewModel, index) => {
@@ -39,11 +39,11 @@ const IterableInboxMessageList = ({
                index={index}
                last={last}
                rowViewModel={rowViewModel}
-               messageListItemLayout={messageListItemLayout}
                customizations={customizations}
-               //swipingCheck={(swiping : boolean) => setSwiping(swiping)}
+               messageListItemLayout={messageListItemLayout}
                deleteRow={(messageId: string) => deleteRow(messageId)}
                handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index)}
+               //swipingCheck={(swiping : boolean) => setSwiping(swiping)}
                contentWidth={contentWidth}
                orientation={orientation}
             />
@@ -52,7 +52,7 @@ const IterableInboxMessageList = ({
    } 
 
    return(
-      <ScrollView scrollEnabled={!swiping}>
+      <ScrollView>
          {renderMessageCells(rowViewModels)}
       </ScrollView>   
    )

@@ -23,17 +23,17 @@ import IterableInboxCustomizations from './IterableInboxCustomizations'
 import { useOrientation } from './useOrientation'
 
 type inboxProps = {
-   messageListItemLayout: Function,
-   customizations: IterableInboxCustomizations,
-   tabBarHeight: number,
-   tabBarPadding: number
+   messageListItemLayout?: Function,
+   customizations?: IterableInboxCustomizations,
+   tabBarHeight?: number,
+   tabBarPadding?: number
 }
 
 const IterableInbox = ({
-   messageListItemLayout, 
-   customizations,
-   tabBarHeight,
-   tabBarPadding
+   messageListItemLayout = () => {return null}, 
+   customizations = {} as IterableInboxCustomizations,
+   tabBarHeight = 80,
+   tabBarPadding = 20
 }: inboxProps) => {
    const defaultInboxTitle = "Inbox"
    const inboxDataModel = new IterableInboxDataModel()
@@ -41,20 +41,20 @@ const IterableInbox = ({
    let orientation = useOrientation()
    const { width, height } = useWindowDimensions()
 
-   const navTitleHeight = 80
-
    const [screenWidth, setScreenWidth] = useState<number>(width)
    const [selectedRowViewModelIdx, setSelectedRowViewModelIdx] = useState<number>(0)
    const [rowViewModels, setRowViewModels] = useState<InboxRowViewModel[]>([])
    const [loading, setLoading] = useState<boolean>(true)
    const [animatedValue, setAnimatedValue] = useState<any>(new Animated.Value(0))
-   const [isMessageDisplay, setIsMessageDisplay] = useState<boolean>(false) 
+   const [isMessageDisplay, setIsMessageDisplay] = useState<boolean>(false)
   
    let {
       loadingScreen,
       container,
       headline
    } = styles
+
+   const navTitleHeight = headline.height + headline.paddingTop + headline.paddingBottom
 
    const updatedContainer = {...container, width: 2 * width, height: height - navTitleHeight - 40}
    const messageListContainer = { width: width}
@@ -131,7 +131,7 @@ const IterableInbox = ({
       return (
          <View style={messageListContainer}>
             <Text style={headline}>
-               {customizations.navTitle ? customizations.navTitle : defaultInboxTitle}
+               {customizations?.navTitle ? customizations?.navTitle : defaultInboxTitle}
             </Text>
             { rowViewModels.length ?
                <IterableInboxMessageList 

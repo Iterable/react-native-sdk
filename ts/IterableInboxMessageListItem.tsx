@@ -8,9 +8,9 @@ import { InboxRowViewModel, IterableInboxCustomizations } from '.'
 type MessageListItemProps = {
    last: boolean,
    rowViewModel: InboxRowViewModel,
-   getHeight: Function,
-   messageListItemLayout: Function,
    customizations: IterableInboxCustomizations,
+   messageListItemLayout: Function,
+   getHeight: Function,
    contentWidth: number,
    orientation: string
 }
@@ -28,7 +28,7 @@ const defaultMessageListLayout = (
    const messageCreatedAt = rowViewModel.createdAt
    const iconURL = rowViewModel.imageUrl
 
-   const styles = StyleSheet.create({
+   let styles = StyleSheet.create({
       unreadIndicatorContainer: {
          height: '100%',
          flexDirection: 'column',
@@ -65,7 +65,7 @@ const defaultMessageListLayout = (
       body: {
          fontSize: 15,
          color: 'lightgray',
-         width: contentWidth * 0.85,
+         width: contentWidth * 0.6,
          flexWrap: "wrap",
          paddingBottom: 10
       },
@@ -80,7 +80,7 @@ const defaultMessageListLayout = (
          backgroundColor: 'white',
          paddingTop: 10,
          paddingBottom: 10,
-         width: '80%',
+         width: '100%',
          //height: 200,
          borderStyle: 'solid',
          borderColor: 'lightgray',
@@ -129,9 +129,9 @@ const defaultMessageListLayout = (
 const IterableInboxMessageListItem = ({ 
    last, 
    rowViewModel,
-   getHeight, 
-   messageListItemLayout, 
    customizations,
+   messageListItemLayout, 
+   getHeight, 
    contentWidth,
    orientation 
 }: MessageListItemProps) => {
