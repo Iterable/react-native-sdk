@@ -17,7 +17,7 @@ type MessageListProps = {
    handleMessageSelect: Function,
    contentWidth: number,
    height: number,
-   orientation: string 
+   isPortrait: boolean 
 }
 
 const IterableInboxMessageList = ({ 
@@ -28,7 +28,7 @@ const IterableInboxMessageList = ({
    handleMessageSelect,
    contentWidth,
    height,
-   orientation
+   isPortrait
 }: MessageListProps) => {
    const [swiping, setSwiping] = useState(false)
 
@@ -48,7 +48,7 @@ const IterableInboxMessageList = ({
                handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index)}
                contentWidth={contentWidth}
                height={height}
-               orientation={orientation}
+               isPortrait={isPortrait}
             />
          )
       })

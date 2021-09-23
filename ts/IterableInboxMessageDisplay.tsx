@@ -7,7 +7,6 @@ import {
   ScrollView,  
   StyleSheet, 
   TouchableWithoutFeedback,
-  useWindowDimensions 
 } from 'react-native'
 import HTML from 'react-native-render-html'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -20,10 +19,16 @@ type MessageDisplayProps = {
    returnToInbox: Function,
    contentWidth: number,
    height: number,
-   orientation: string
+   isPortrait: boolean
 }
 
-const IterableInboxMessageDisplay = ({ rowViewModel, inAppContentPromise, returnToInbox, contentWidth, height, orientation }: MessageDisplayProps) => {
+const IterableInboxMessageDisplay = ({ 
+   rowViewModel, 
+   inAppContentPromise, 
+   returnToInbox, 
+   contentWidth,
+   isPortrait 
+}: MessageDisplayProps) => {
    const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title
    const [inAppContent, setInAppContent] = useState<IterableHtmlInAppContent>(new IterableHtmlInAppContent(new IterableEdgeInsets(0, 0, 0, 0), ""))
 
@@ -36,9 +41,9 @@ const IterableInboxMessageDisplay = ({ rowViewModel, inAppContentPromise, return
 
    let updatedMessageDisplayContainer = {...messageDisplayContainer, width: contentWidth}
 
-   headline = (orientation === 'LANDSCAPE') ? {...headline, paddingLeft: 45} : headline
-   returnButton = (orientation === 'LANDSCAPE') ? {...returnButton, paddingLeft: 40} : returnButton
-   returnButtonContainer = (orientation === 'LANDSCAPE') ? {...returnButtonContainer, marginTop: 10} : returnButtonContainer
+   headline = (!isPortrait) ? {...headline, paddingLeft: 45} : headline
+   returnButton = (!isPortrait) ? {...returnButton, paddingLeft: 40} : returnButton
+   returnButtonContainer = (!isPortrait) ? {...returnButtonContainer, marginTop: 10} : returnButtonContainer
 
    useEffect(() => {
       inAppContentPromise.then(

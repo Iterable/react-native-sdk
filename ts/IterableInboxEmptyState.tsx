@@ -5,7 +5,6 @@ import {
    View, 
    Text, 
    StyleSheet,
-   useWindowDimensions
 } from 'react-native'
 
 import { IterableInboxCustomizations } from '.'
@@ -17,7 +16,7 @@ type emptyStateProps = {
    navTitleHeight: number,
    contentWidth: number,
    height: number,
-   orientation: string
+   isPortrait: boolean
 }
 
 const IterableInboxEmptyState = ({ 
@@ -26,7 +25,7 @@ const IterableInboxEmptyState = ({
    tabBarPadding, 
    navTitleHeight,
    height,
-   orientation 
+   isPortrait
 } : emptyStateProps) => {
    const defaultTitle = "No saved messages"
    const defaultBody = "Check again later!"
@@ -42,7 +41,7 @@ const IterableInboxEmptyState = ({
 
    container = {...container, height: height - navTitleHeight - tabBarHeight - tabBarPadding}
 
-   if(orientation === 'LANDSCAPE') {
+   if(!isPortrait) {
       container = {...container, height: height - navTitleHeight}
    }
 
@@ -61,17 +60,15 @@ const IterableInboxEmptyState = ({
 const styles = StyleSheet.create({
    container: {
       height: 0,
-      //backgroundColor: 'whitesmoke', 
+      backgroundColor: 'whitesmoke', 
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: 'yellow'
    },
 
    title: {
       fontWeight: 'bold',
       fontSize: 20,
-      // paddingTop: 250,
       paddingBottom: 25
    },
 

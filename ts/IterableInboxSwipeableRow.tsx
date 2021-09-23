@@ -7,7 +7,6 @@ import {
    Animated,
    PanResponder,
    StyleSheet,
-   useWindowDimensions
 } from 'react-native'
 
 import {
@@ -28,7 +27,7 @@ type SwipeableRowProps = {
    handleMessageSelect: Function,
    contentWidth: number,
    height: number,
-   orientation: string
+   isPortrait: boolean
 }
 
 const IterableInboxSwipeableRow = ({
@@ -41,8 +40,7 @@ const IterableInboxSwipeableRow = ({
    deleteRow,
    handleMessageSelect,
    contentWidth,
-   height,
-   orientation
+   isPortrait
 }: SwipeableRowProps) => {
    const position = useRef(new Animated.ValueXY()).current
 
@@ -57,7 +55,7 @@ const IterableInboxSwipeableRow = ({
    useEffect(() => {
       setDeleteThreshold(-contentWidth / 2)
       setScrollThreshold(contentWidth / 15)
-   }, [orientation, contentWidth])
+   }, [isPortrait, contentWidth])
 
    //stops scrolling and enables swiping when threshold is reached
    const enableScrollView = (isEnabled: boolean) => {
@@ -146,7 +144,7 @@ const IterableInboxSwipeableRow = ({
                messageListItemLayout={messageListItemLayout}
                customizations={customizations}
                handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index)}
-               orientation={orientation}
+               isPortrait={isPortrait}
             />   
          </Animated.View>
       </View>   

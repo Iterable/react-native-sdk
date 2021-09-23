@@ -20,7 +20,7 @@ import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
 import IterableInboxDataModel from './IterableInboxDataModel'
 import IterableInboxCustomizations from './IterableInboxCustomizations'
 
-import { useOrientation } from './useOrientation'
+import { useIsPortrait } from './useIsPortrait'
 
 type inboxProps = {
    messageListItemLayout: Function,
@@ -42,7 +42,7 @@ const IterableInbox = ({
    const inboxDataModel = new IterableInboxDataModel()
    const [animatedValue, setAnimatedValue] = useState<any>(new Animated.Value(0))
 
-   let orientation = useOrientation()
+   let isPortrait = useIsPortrait()
 
    const { width, height } = useWindowDimensions()
    const navTitleHeight = 80
@@ -56,7 +56,7 @@ const IterableInbox = ({
    const updatedContainer = {...container, width: 2 * width, height: height - navTitleHeight - 40}
    const messageListContainer = { width: width}
    
-   headline = (orientation === 'PORTRAIT') ? {...headline, marginTop: 40} : {...headline, paddingLeft: 65}
+   headline = (isPortrait) ? {...headline, marginTop: 40} : {...headline, paddingLeft: 65}
 
    const fetchData = async () => {
       const newRowViewModels = await inboxDataModel.refresh()
@@ -113,7 +113,7 @@ const IterableInbox = ({
                returnToInbox={() => returnToInbox()}
                contentWidth={width}
                height={height}
-               orientation={orientation}
+               isPortrait={isPortrait}
             /> : null
       )
    }
@@ -133,7 +133,7 @@ const IterableInbox = ({
                   handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index, rowViewModels)}
                   contentWidth={width}
                   height={height}
-                  orientation={orientation}
+                  isPortrait={isPortrait}
                />  :
                renderEmptyState()
             }   
@@ -150,7 +150,7 @@ const IterableInbox = ({
             navTitleHeight={navTitleHeight}
             contentWidth={width}
             height={height}
-            orientation={orientation}
+            isPortrait={isPortrait}
          /> 
    }
 
