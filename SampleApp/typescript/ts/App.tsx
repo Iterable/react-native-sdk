@@ -15,6 +15,7 @@ import {
 // ITERABLE:
 // Make sure you have a file called Config.js and your apiKey is in there.
 import { iterableAPIKey } from './Config'
+import { Linking } from 'react-native';
 
 interface Props { }
 export default class App extends React.Component {
@@ -27,6 +28,19 @@ export default class App extends React.Component {
     config.inAppDisplayInterval = 1.0 // Min gap between in-apps. No need to set this in production.
     config.urlHandler = this.urlHandler
     Iterable.initialize(iterableAPIKey, config)
+
+    Linking.getInitialURL().then(url => {
+      console.log('url receieved: ' + url)
+      if (url != null) {
+        Iterable.handleAppLink(url)
+      }
+    });
+    Linking.addEventListener('url', event => {
+      console.log('url receieved: ' + event.url)
+      if (event.url != null) {
+        Iterable.handleAppLink(event.url)
+      }
+    });
   }
 
   render() {
