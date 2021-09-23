@@ -40,11 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
         ITBInfo()
-        guard let url = userActivity.webpageURL else {
-            return false
-        }
-
-        return IterableAPI.handle(universalLink: url)
+      return RCTLinkingManager.application(application, continue: userActivity, restorationHandler: restorationHandler)
     }
     
     private func setupUserNotificationCenter() {
@@ -62,6 +58,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
+  
+  func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+          RCTLinkingManager.application(app, open: url, options: options)
+      }
     
 }
 
