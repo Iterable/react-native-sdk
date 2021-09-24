@@ -7,7 +7,7 @@ import {
    Dimensions,
    Animated,
    PanResponder,
-   StyleSheet
+   StyleSheet  
 } from 'react-native'
 
 import {
