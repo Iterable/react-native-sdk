@@ -32,6 +32,8 @@ const IterableInboxMessageDisplay = ({
    const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title
    const [inAppContent, setInAppContent] = useState<IterableHtmlInAppContent>(new IterableHtmlInAppContent(new IterableEdgeInsets(0, 0, 0, 0), ""))
 
+   let webview = null
+
    let sampleHTML = `
       <html>
          <head>
@@ -71,6 +73,14 @@ const IterableInboxMessageDisplay = ({
          })
    })
 
+   const handleWebViewNavigationStateChange = (newNavState : any) => {
+      const { url } = newNavState
+      console.log("url: ", url)
+      // if(!url) return
+      // if(url.includes('iterable://dismiss')) {
+      returnToInbox()
+   }
+
    return(
       <View style={updatedMessageDisplayContainer}>
          <View style={returnButtonContainer}>
@@ -84,10 +94,12 @@ const IterableInboxMessageDisplay = ({
             <Text style={headline}>
                {messageTitle}
             </Text>
-            <WebView 
+            <WebView
+               originWhiteList={['*']}
                source={{ html: inAppContent.html }} 
                style={{ width: contentWidth }}
-               onMessage={event => {returnToInbox()}} 
+               onNavigationStateChange={(newNavState: any) => handleWebViewNavigationStateChange(newNavState)}
+               ref={(ref) => (webview = ref)}
             />
          </ScrollView> 
       </View>
