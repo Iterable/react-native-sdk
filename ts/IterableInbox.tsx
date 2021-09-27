@@ -61,8 +61,24 @@ const IterableInbox = ({
    }
 
    useEffect(() => {
+      addSilentPushHandler()
       fetchInboxMessages()
+
+      return removeSilentPushHandler
    }, [])
+
+   function addSilentPushHandler() {
+      RNEventEmitter.addListener(
+         "receivedIterableInboxChanged",
+         () => {
+            fetchInboxMessages()
+         }
+      )
+   }
+
+   function removeSilentPushHandler() {
+      RNEventEmitter.removeAllListeners("receivedIterableInboxChanged")
+   }
 
    const fetchInboxMessages = async () => {
       let newMessages = await inboxDataModel.refresh()
