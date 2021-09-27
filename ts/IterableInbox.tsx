@@ -6,7 +6,6 @@ import {
    Text, 
    StyleSheet,
    Animated,
-   useWindowDimensions
 } from 'react-native'
 
 import {
@@ -20,7 +19,7 @@ import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
 import IterableInboxDataModel from './IterableInboxDataModel'
 import IterableInboxCustomizations from './IterableInboxCustomizations'
 
-import { useIsPortrait } from './useIsPortrait'
+import useDeviceOrientation from './useDeviceOrientation'
 
 type inboxProps = {
    messageListItemLayout: Function,
@@ -42,9 +41,7 @@ const IterableInbox = ({
    const inboxDataModel = new IterableInboxDataModel()
    const [animatedValue, setAnimatedValue] = useState<any>(new Animated.Value(0))
 
-   let isPortrait = useIsPortrait()
-
-   const { width, height } = useWindowDimensions()
+   let { width, height, isPortrait } = useDeviceOrientation()
    const navTitleHeight = 80
   
    let {
