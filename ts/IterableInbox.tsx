@@ -6,6 +6,8 @@ import {
    Text, 
    StyleSheet,
    Animated,
+   NativeModules,
+   NativeEventEmitter
 } from 'react-native'
 
 import {
@@ -18,6 +20,9 @@ import {
 import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
 import IterableInboxDataModel from './IterableInboxDataModel'
 import IterableInboxCustomizations from './IterableInboxCustomizations'
+
+const RNIterableAPI = NativeModules.RNIterableAPI
+const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
 
 import useDeviceOrientation from './useDeviceOrientation'
 

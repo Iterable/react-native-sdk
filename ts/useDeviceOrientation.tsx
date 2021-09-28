@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useWindowDimensions } from 'react-native'
 
-const useIsPortrait = () => {
+const useDeviceOrientation = () => {
    const { height, width } = useWindowDimensions()
 
    const [isPortrait, setIsPortrait] = useState<boolean>(height >= width)
@@ -13,4 +13,4 @@ const useIsPortrait = () => {
    return { height, width, isPortrait }
 }
 
-export default useIsPortrait
+export default useDeviceOrientation
