@@ -2,7 +2,7 @@ import React from 'react'
 import Inbox, {showMessageList} from '../../inbox/Inbox'
 import MessageList from '../../inbox/components/MessageList/MessageList'
 import EmptyState from '../../inbox/components/EmptyState/EmptyState'
-import sampleMessages from '../../Inbox/sampleMessageData.js' 
+import sampleMessages from '../../inbox/sampleMessageData.js' 
 
 import renderer from 'react-test-renderer'
 

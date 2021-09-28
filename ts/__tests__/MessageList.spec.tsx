@@ -1,7 +1,7 @@
 import React from 'react'
 import MessageList, { flaggedMessage, displayMessages } from '../../inbox/components/MessageList/MessageList'
 import MessageCell from '../../inbox/components/MessageCell/MessageCell'
-import sampleMessages from '../../Inbox/sampleMessageData.js' 
+import sampleMessages from '../../inbox/sampleMessageData.js' 
 
 beforeEach(() => {
    jest.clearAllMocks()
