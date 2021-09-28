@@ -7,22 +7,22 @@ type MessageListProps = {
    messages: Array<any>  
 }
 
+export const flaggedMessage = (messages: Array<any>, message: { [key: string]: any }, index: number) => {
+   return (index === messages.length - 1) ?
+      <MessageCell key={index} message={message} last={true} /> :
+      <MessageCell key={index} message={message} last={false} />
+}
+
+export const displayMessages = (messages: Array<any>) => {
+   return messages.map((message, index) => {
+      return flaggedMessage(messages, message, index)
+   })
+}
+
 const MessageList = ({ messages }: MessageListProps) => {
-   function flaggedMessage(message: { [key: string]: any }, index: number) {
-      return (index === messages.length - 1) ?
-         <MessageCell key={index} message={message} last={true} /> :
-         <MessageCell key={index} message={message} last={false} />
-   }
-
-   function displayMessages() {
-      return messages.map((message, index) => {
-         return flaggedMessage(message, index)
-      })
-   }
-
    return(
       <ScrollView style={styles.container}>
-         {displayMessages()}
+         {displayMessages(messages)}
       </ScrollView>   
    )
 }

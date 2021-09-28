@@ -8,10 +8,10 @@ const EmptyState = () => {
 
    return(
       <View style={styles.container}>
-         <Text style={styles.title}>
+         <Text testID="title" style={styles.title}>
             {title}    
          </Text>
-         <Text style={styles.subTitle}>
+         <Text testID="subtitle" style={styles.subTitle}>
             {subTitle}    
          </Text>
       </View>     

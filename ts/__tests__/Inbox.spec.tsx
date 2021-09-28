@@ -6,6 +6,10 @@ import sampleMessages from '../../Inbox/sampleMessageData.js'
 
 import renderer from 'react-test-renderer'
 
+beforeEach(() => {
+   jest.clearAllMocks()
+})
+
 describe('Testing Inbox Component functionality', () => {
    it('Inbox renders correctly', () => {
       let component = renderer.create(
