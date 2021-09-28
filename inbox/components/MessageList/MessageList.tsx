@@ -10,8 +10,8 @@ type MessageListProps = {
 const MessageList = ({ messages }: MessageListProps) => {
    function flaggedMessage(message: { [key: string]: any }, index: number) {
       return (index === messages.length - 1) ?
-         <MessageCell message={message} last={true} /> :
-         <MessageCell message={message} last={false} />
+         <MessageCell key={index} message={message} last={true} /> :
+         <MessageCell key={index} message={message} last={false} />
    }
 
    function displayMessages() {

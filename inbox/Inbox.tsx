@@ -5,20 +5,20 @@ import MessageList from './components/MessageList/MessageList'
 import EmptyState from './components/EmptyState/EmptyState'
 import sampleMessages from './sampleMessageData.js' 
 
+export const showMessageList = (messages) => {
+   return messages.length ? <MessageList messages={messages}></MessageList> : <EmptyState></EmptyState>
+}
+
 const Inbox = () => {
    const message = "Inbox";
    const [messages, setMessages] = useState(sampleMessages);
-
-   function showMessageList() {
-      return messages.length ? <MessageList messages={messages}></MessageList> : <EmptyState></EmptyState>
-   }
 
    return(
       <View style={styles.container}>
          <Text style={styles.headline}>
             {message}
          </Text>
-         {showMessageList()}
+         {showMessageList(messages)}
       </View>  
    )
 }

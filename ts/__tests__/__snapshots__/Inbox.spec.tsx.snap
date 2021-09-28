@@ -1,0 +1,759 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing Inbox Component functionality Inbox renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "backgroundColor": "whitesmoke",
+      "flexDirection": "column",
+      "height": "100%",
+      "justifyContent": "flex-start",
+      "marginTop": 50,
+    }
+  }
+>
+  <Text
+    style={
+      Object {
+        "backgroundColor": "whitesmoke",
+        "fontSize": 40,
+        "fontWeight": "bold",
+        "paddingBottom": 10,
+        "paddingLeft": 15,
+        "paddingTop": 10,
+        "width": "100%",
+      }
+    }
+  >
+    Inbox
+  </Text>
+  <RCTScrollView
+    style={
+      Object {
+        "flex": 1,
+      }
+    }
+  >
+    <View>
+      <View
+        style={
+          Object {
+            "backgroundColor": "white",
+            "borderBottomColor": "lightgray",
+            "borderStyle": "solid",
+            "borderTopColor": "lightgray",
+            "borderTopWidth": 1,
+            "borderWidth": 0,
+            "flexDirection": "row",
+            "paddingBottom": 10,
+            "paddingTop": 10,
+            "width": "100%",
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "flexDirection": "column",
+              "height": "100%",
+              "justifyContent": "flex-start",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "blue",
+                "flexDirection": "row",
+                "fontSize": 60,
+                "justifyContent": "flex-start",
+              }
+            }
+          >
+            •
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "paddingLeft": 5,
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "fontSize": 22,
+                "paddingBottom": 10,
+              }
+            }
+          >
+            CATS FOR SALE!! LIMITED TIME!!
+          </Text>
+          <Text
+            style={
+              Object {
+                "color": "lightgray",
+                "fontSize": 15,
+                "paddingBottom": 10,
+              }
+            }
+          >
+            All this week!!
+          </Text>
+          <Text
+            style={
+              Object {
+                "color": "lightgray",
+                "fontSize": 12,
+              }
+            }
+          />
+        </View>
+      </View>
+      <View
+        style={
+          Object {
+            "backgroundColor": "white",
+            "borderBottomColor": "lightgray",
+            "borderStyle": "solid",
+            "borderTopColor": "lightgray",
+            "borderTopWidth": 1,
+            "borderWidth": 0,
+            "flexDirection": "row",
+            "paddingBottom": 10,
+            "paddingTop": 10,
+            "width": "100%",
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "paddingLeft": 30,
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "fontSize": 22,
+                "paddingBottom": 10,
+              }
+            }
+          >
+            THIS WEEKEND ONLY
+          </Text>
+          <Text
+            style={
+              Object {
+                "color": "lightgray",
+                "fontSize": 15,
+                "paddingBottom": 10,
+              }
+            }
+          >
+            Trucks Trucks Trucks
+          </Text>
+          <Text
+            style={
+              Object {
+                "color": "lightgray",
+                "fontSize": 12,
+              }
+            }
+          />
+        </View>
+      </View>
+      <View
+        style={
+          Object {
+            "backgroundColor": "white",
+            "borderBottomColor": "lightgray",
+            "borderStyle": "solid",
+            "borderTopColor": "lightgray",
+            "borderTopWidth": 1,
+            "borderWidth": 0,
+            "flexDirection": "row",
+            "paddingBottom": 10,
+            "paddingTop": 10,
+            "width": "100%",
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "flexDirection": "column",
+              "height": "100%",
+              "justifyContent": "flex-start",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "blue",
+                "flexDirection": "row",
+                "fontSize": 60,
+                "justifyContent": "flex-start",
+              }
+            }
+          >
+            •
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "paddingLeft": 5,
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "fontSize": 22,
+                "paddingBottom": 10,
+              }
+            }
+          >
+            Iterable wants you!
+          </Text>
+          <Text
+            style={
+              Object {
+                "color": "lightgray",
+                "fontSize": 15,
+                "paddingBottom": 10,
+              }
+            }
+          >
+            Hackathon going on Monday
+          </Text>
+          <Text
+            style={
+              Object {
+                "color": "lightgray",
+                "fontSize": 12,
+              }
+            }
+          />
+        </View>
+      </View>
+      <View
+        style={
+          Object {
+            "backgroundColor": "white",
+            "borderBottomColor": "lightgray",
+            "borderStyle": "solid",
+            "borderTopColor": "lightgray",
+            "borderTopWidth": 1,
+            "borderWidth": 0,
+            "flexDirection": "row",
+            "paddingBottom": 10,
+            "paddingTop": 10,
+            "width": "100%",
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "paddingLeft": 30,
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "fontSize": 22,
+                "paddingBottom": 10,
+              }
+            }
+          >
+            Happy Birthday Buddy
+          </Text>
+          <Text
+            style={
+              Object {
+                "color": "lightgray",
+                "fontSize": 15,
+                "paddingBottom": 10,
+              }
+            }
+          >
+            All the cake for you!?
+          </Text>
+          <Text
+            style={
+              Object {
+                "color": "lightgray",
+                "fontSize": 12,
+              }
+            }
+          />
+        </View>
+      </View>
+      <View
+        style={
+          Object {
+            "backgroundColor": "white",
+            "borderBottomColor": "lightgray",
+            "borderStyle": "solid",
+            "borderTopColor": "lightgray",
+            "borderTopWidth": 1,
+            "borderWidth": 0,
+            "flexDirection": "row",
+            "paddingBottom": 10,
+            "paddingTop": 10,
+            "width": "100%",
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "flexDirection": "column",
+              "height": "100%",
+              "justifyContent": "flex-start",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "blue",
+                "flexDirection": "row",
+                "fontSize": 60,
+                "justifyContent": "flex-start",
+              }
+            }
+          >
+            •
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "paddingLeft": 5,
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "fontSize": 22,
+                "paddingBottom": 10,
+              }
+            }
+          >
+            Dog Moms Unite!
+          </Text>
+          <Text
+            style={
+              Object {
+                "color": "lightgray",
+                "fontSize": 15,
+                "paddingBottom": 10,
+              }
+            }
+          >
+            Show up at the dog park
+          </Text>
+          <Text
+            style={
+              Object {
+                "color": "lightgray",
+                "fontSize": 12,
+              }
+            }
+          />
+        </View>
+      </View>
+      <View
+        style={
+          Object {
+            "backgroundColor": "white",
+            "borderBottomColor": "lightgray",
+            "borderStyle": "solid",
+            "borderTopColor": "lightgray",
+            "borderTopWidth": 1,
+            "borderWidth": 0,
+            "flexDirection": "row",
+            "paddingBottom": 10,
+            "paddingTop": 10,
+            "width": "100%",
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "flexDirection": "column",
+              "height": "100%",
+              "justifyContent": "flex-start",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "blue",
+                "flexDirection": "row",
+                "fontSize": 60,
+                "justifyContent": "flex-start",
+              }
+            }
+          >
+            •
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "paddingLeft": 5,
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "fontSize": 22,
+                "paddingBottom": 10,
+              }
+            }
+          >
+            Dog Moms Unite!
+          </Text>
+          <Text
+            style={
+              Object {
+                "color": "lightgray",
+                "fontSize": 15,
+                "paddingBottom": 10,
+              }
+            }
+          >
+            Show up at the dog park
+          </Text>
+          <Text
+            style={
+              Object {
+                "color": "lightgray",
+                "fontSize": 12,
+              }
+            }
+          />
+        </View>
+      </View>
+      <View
+        style={
+          Object {
+            "backgroundColor": "white",
+            "borderBottomColor": "lightgray",
+            "borderStyle": "solid",
+            "borderTopColor": "lightgray",
+            "borderTopWidth": 1,
+            "borderWidth": 0,
+            "flexDirection": "row",
+            "paddingBottom": 10,
+            "paddingTop": 10,
+            "width": "100%",
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "flexDirection": "column",
+              "height": "100%",
+              "justifyContent": "flex-start",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "blue",
+                "flexDirection": "row",
+                "fontSize": 60,
+                "justifyContent": "flex-start",
+              }
+            }
+          >
+            •
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "paddingLeft": 5,
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "fontSize": 22,
+                "paddingBottom": 10,
+              }
+            }
+          >
+            Dog Moms Unite!
+          </Text>
+          <Text
+            style={
+              Object {
+                "color": "lightgray",
+                "fontSize": 15,
+                "paddingBottom": 10,
+              }
+            }
+          >
+            Show up at the dog park
+          </Text>
+          <Text
+            style={
+              Object {
+                "color": "lightgray",
+                "fontSize": 12,
+              }
+            }
+          />
+        </View>
+      </View>
+      <View
+        style={
+          Object {
+            "backgroundColor": "white",
+            "borderBottomColor": "lightgray",
+            "borderStyle": "solid",
+            "borderTopColor": "lightgray",
+            "borderTopWidth": 1,
+            "borderWidth": 0,
+            "flexDirection": "row",
+            "paddingBottom": 10,
+            "paddingTop": 10,
+            "width": "100%",
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "flexDirection": "column",
+              "height": "100%",
+              "justifyContent": "flex-start",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "blue",
+                "flexDirection": "row",
+                "fontSize": 60,
+                "justifyContent": "flex-start",
+              }
+            }
+          >
+            •
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "paddingLeft": 5,
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "fontSize": 22,
+                "paddingBottom": 10,
+              }
+            }
+          >
+            Dog Moms Unite!
+          </Text>
+          <Text
+            style={
+              Object {
+                "color": "lightgray",
+                "fontSize": 15,
+                "paddingBottom": 10,
+              }
+            }
+          >
+            Show up at the dog park
+          </Text>
+          <Text
+            style={
+              Object {
+                "color": "lightgray",
+                "fontSize": 12,
+              }
+            }
+          />
+        </View>
+      </View>
+      <View
+        style={
+          Object {
+            "backgroundColor": "white",
+            "borderBottomColor": "lightgray",
+            "borderStyle": "solid",
+            "borderTopColor": "lightgray",
+            "borderTopWidth": 1,
+            "borderWidth": 0,
+            "flexDirection": "row",
+            "paddingBottom": 10,
+            "paddingTop": 10,
+            "width": "100%",
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "flexDirection": "column",
+              "height": "100%",
+              "justifyContent": "flex-start",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "blue",
+                "flexDirection": "row",
+                "fontSize": 60,
+                "justifyContent": "flex-start",
+              }
+            }
+          >
+            •
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "paddingLeft": 5,
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "fontSize": 22,
+                "paddingBottom": 10,
+              }
+            }
+          >
+            Dog Moms Unite!
+          </Text>
+          <Text
+            style={
+              Object {
+                "color": "lightgray",
+                "fontSize": 15,
+                "paddingBottom": 10,
+              }
+            }
+          >
+            Show up at the dog park
+          </Text>
+          <Text
+            style={
+              Object {
+                "color": "lightgray",
+                "fontSize": 12,
+              }
+            }
+          />
+        </View>
+      </View>
+      <View
+        style={
+          Object {
+            "backgroundColor": "white",
+            "borderBottomColor": "lightgray",
+            "borderBottomWidth": 1,
+            "borderStyle": "solid",
+            "borderTopColor": "lightgray",
+            "borderTopWidth": 1,
+            "borderWidth": 0,
+            "flexDirection": "row",
+            "marginBottom": 70,
+            "paddingBottom": 10,
+            "paddingTop": 10,
+            "width": "100%",
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "flexDirection": "column",
+              "height": "100%",
+              "justifyContent": "flex-start",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "blue",
+                "flexDirection": "row",
+                "fontSize": 60,
+                "justifyContent": "flex-start",
+              }
+            }
+          >
+            •
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "paddingLeft": 5,
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "fontSize": 22,
+                "paddingBottom": 10,
+              }
+            }
+          >
+            Dog Moms Unite!
+          </Text>
+          <Text
+            style={
+              Object {
+                "color": "lightgray",
+                "fontSize": 15,
+                "paddingBottom": 10,
+              }
+            }
+          >
+            Show up at the dog park
+          </Text>
+          <Text
+            style={
+              Object {
+                "color": "lightgray",
+                "fontSize": 12,
+              }
+            }
+          />
+        </View>
+      </View>
+    </View>
+  </RCTScrollView>
+</View>
+`;
