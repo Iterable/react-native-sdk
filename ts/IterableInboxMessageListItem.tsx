@@ -5,6 +5,8 @@ import {
    View,
    Text,
    Image,
+   ViewStyle,
+   TextStyle,
    StyleSheet
 } from 'react-native'
 
@@ -118,14 +120,14 @@ const defaultMessageListLayout = (
    }
       
    return(
-      <View style={messageRowStyle(rowViewModel)}>
-         <View style={unreadIndicatorContainer}>
+      <View style={messageRowStyle(rowViewModel) as ViewStyle}>
+         <View style={unreadIndicatorContainer as ViewStyle}>
             {rowViewModel.read ? null : <View style={unreadIndicator}/>}
          </View>
-         <View style={rowViewModel.read ? readMessageIconContainer : unreadMessageIconContainer}>
+         <View style={(rowViewModel.read ? readMessageIconContainer : unreadMessageIconContainer) as ViewStyle}>
             <Image style={{height: 80, width: 80}} source={{uri: iconURL}}/>
          </View>
-         <View style={messageContainer}>
+         <View style={messageContainer as ViewStyle}>
             <Text style={title}>{messageTitle}</Text>
             <Text numberOfLines={2} ellipsizeMode='tail' style={body}>{messageBody}</Text>
             <Text style={createdAt}>{messageCreatedAt}</Text>
