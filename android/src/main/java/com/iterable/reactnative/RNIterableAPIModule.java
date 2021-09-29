@@ -369,6 +369,26 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         });
     }
 
+    @ReactMethod
+    public void wakeApp() {
+        Intent launcherIntent = getMainActivityIntent(reactContext);
+        launcherIntent.setFlags(Intent.FLAG_FROM_BACKGROUND);
+        if (launcherIntent.resolveActivity(getReactApplicationContext().getPackageManager()) != null) {
+            reactContext.startActivity(launcherIntent);
+        }
+    }
+
+    public Intent getMainActivityIntent(Context context) {
+        Context appContext = context.getApplicationContext();
+        PackageManager packageManager = appContext.getPackageManager();
+        Intent intent = packageManager.getLaunchIntentForPackage(appContext.getPackageName());
+        if (intent == null) {
+            intent = new Intent(Intent.ACTION_MAIN, null);
+            intent.addCategory(Intent.CATEGORY_LAUNCHER);
+            intent.setPackage(appContext.getPackageName());
+        }
+        return intent;
+    }
     // ---------------------------------------------------------------------------------------
     // endregion
 

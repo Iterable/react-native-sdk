@@ -1,6 +1,6 @@
 'use strict'
 
-import { NativeModules, NativeEventEmitter, Linking } from 'react-native'
+import { NativeModules, NativeEventEmitter, Linking, Platform } from 'react-native'
 import {
   IterableInAppShowResponse,
   IterableInAppLocation,
@@ -313,6 +313,11 @@ class Iterable {
     RNIterableAPI.updateCart(items)
   }
 
+  static wakeApp() {
+    console.log('Attempting to wake the app')
+    RNIterableAPI.wakeApp();
+  }
+
   /**
   * 
   * @param {number} total 
@@ -433,12 +438,14 @@ class Iterable {
         (dict) => {
           const url = dict["url"]
           const context = IterableActionContext.fromDict(dict["context"])
-          if (config.urlHandler!(url, context) == false) {
-            Linking.canOpenURL(url)
-              .then(canOpen => {
-                if (canOpen) { Linking.openURL(url) }
-              })
-              .catch(reason => { console.log("could not open url: " + reason) })
+          if (Platform.OS === "android") {
+            Iterable.wakeApp()
+            //Give enough time for Activity to wake up.
+            setTimeout(() => {
+              callUrlHandler(url, context)
+            }, 1000)
+          } else {
+            callUrlHandler(url, context)
           }
         }
       )
@@ -476,6 +483,16 @@ class Iterable {
             })
         }
       )
+    }
+
+    function callUrlHandler(url: any, context: IterableActionContext) {
+      if (config.urlHandler!(url, context) == false) {
+        Linking.canOpenURL(url)
+          .then(canOpen => {
+            if (canOpen) { Linking.openURL(url) }
+          })
+          .catch(reason => { console.log("could not open url: " + reason) })
+      }
     }
   }
 
