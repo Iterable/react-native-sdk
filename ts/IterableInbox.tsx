@@ -6,7 +6,8 @@ import {
    Text, 
    StyleSheet,
    Animated,
-   useWindowDimensions
+   NativeModules,
+   NativeEventEmitter
 } from 'react-native'
 
 import {
@@ -20,7 +21,10 @@ import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
 import IterableInboxDataModel from './IterableInboxDataModel'
 import IterableInboxCustomizations from './IterableInboxCustomizations'
 
-import { useOrientation } from './useOrientation'
+const RNIterableAPI = NativeModules.RNIterableAPI
+const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
+
+import useDeviceOrientation from './useDeviceOrientation'
 
 type inboxProps = {
    messageListItemLayout: Function,
@@ -38,9 +42,7 @@ const IterableInbox = ({
    const defaultInboxTitle = "Inbox"
    const inboxDataModel = new IterableInboxDataModel()
 
-   let orientation = useOrientation()
-   const { width, height } = useWindowDimensions()
-
+   let { height, width, isPortrait } = useDeviceOrientation()
    const navTitleHeight = 80
 
    const [screenWidth, setScreenWidth] = useState<number>(width)
@@ -59,7 +61,7 @@ const IterableInbox = ({
    const updatedContainer = {...container, width: 2 * width, height: height - navTitleHeight - 40}
    const messageListContainer = { width: width}
    
-   headline = (orientation === 'PORTRAIT') ? {...headline, marginTop: 40} : {...headline, paddingLeft: 65}
+   headline = (isPortrait) ? {...headline, marginTop: 40} : {...headline, paddingLeft: 65}
 
    const fetchData = async () => {
       const newRowViewModels = await inboxDataModel.refresh()
@@ -67,7 +69,10 @@ const IterableInbox = ({
    }
 
    useEffect(() => {
+      addSilentPushHandler()
       fetchInboxMessages()
+
+      return removeSilentPushHandler
    }, [])
 
    useEffect(() => {
@@ -76,6 +81,19 @@ const IterableInbox = ({
          slideLeft() 
       } 
    }, [width])
+
+   function addSilentPushHandler() {
+      RNEventEmitter.addListener(
+         "receivedIterableInboxChanged",
+         () => {
+            fetchInboxMessages()
+         }
+      )
+   }
+
+   function removeSilentPushHandler() {
+      RNEventEmitter.removeAllListeners("receivedIterableInboxChanged")
+   }
 
    const fetchInboxMessages = async () => {
       let newMessages = await inboxDataModel.refresh()
@@ -122,7 +140,8 @@ const IterableInbox = ({
                inAppContentPromise={getHtmlContentForRow(selectedRowViewModel.inAppMessage.messageId)}
                returnToInbox={() => returnToInbox()}
                contentWidth={width}
-               orientation={orientation}
+               height={height}
+               isPortrait={isPortrait}
             /> : null
       )
    }
@@ -141,7 +160,8 @@ const IterableInbox = ({
                   deleteRow={(messageId: string) => deleteRow(messageId)}
                   handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index, rowViewModels)}
                   contentWidth={width}
-                  orientation={orientation}
+                  height={height}
+                  isPortrait={isPortrait}
                />  :
                renderEmptyState()
             }   
@@ -158,7 +178,7 @@ const IterableInbox = ({
             navTitleHeight={navTitleHeight}
             contentWidth={width}
             height={height}
-            orientation={orientation}
+            isPortrait={isPortrait}
          /> 
    }
 

@@ -26,7 +26,8 @@ type SwipeableRowProps = {
    deleteRow: Function,
    handleMessageSelect: Function,
    contentWidth: number,
-   orientation: string
+   height: number,
+   isPortrait: boolean
 }
 
 const IterableInboxSwipeableRow = ({
@@ -39,7 +40,7 @@ const IterableInboxSwipeableRow = ({
    deleteRow,
    handleMessageSelect,
    contentWidth,
-   orientation
+   isPortrait
 }: SwipeableRowProps) => {
    const position = useRef(new Animated.ValueXY()).current
 
@@ -51,6 +52,7 @@ const IterableInboxSwipeableRow = ({
 
    const scrollThreshold = contentWidth / 15
    const FORCING_DURATION = 350
+
 
    //stops scrolling and enables swiping when threshold is reached
    const enableScrollView = (isEnabled: boolean) => {
@@ -139,8 +141,7 @@ const IterableInboxSwipeableRow = ({
                messageListItemLayout={messageListItemLayout}
                customizations={customizations}
                handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index)}
-               contentWidth={contentWidth}
-               orientation={orientation}
+               isPortrait={isPortrait}
             />   
          </Animated.View>
       </View>   

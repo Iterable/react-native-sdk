@@ -7,7 +7,8 @@
 
 @interface RCT_EXTERN_REMAP_MODULE(RNIterableAPI, ReactIterableAPI, NSObject)
 
-// MARK: - SDK Functions
+// MARK: - Native SDK Functions
+
 RCT_EXTERN_METHOD(initializeWithApiKey: (nonnull NSString *) apiKey
                   config: (nonnull NSDictionary *) config
                   version: (nonnull NSString *) version
@@ -32,6 +33,7 @@ RCT_EXTERN_METHOD(getUserId: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
 
 // MARK: - Iterable API Request Functions
+
 RCT_EXTERN_METHOD(disableDeviceForCurrentUser)
 
 RCT_EXTERN_METHOD(setInAppShowResponse: (nonnull NSNumber *) inAppShowResponse)

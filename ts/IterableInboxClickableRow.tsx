@@ -1,7 +1,7 @@
 'use strict'
 
 import React from 'react'
-import { TouchableOpacity } from 'react-native'
+import { TouchableOpacity, ImageSourcePropType } from 'react-native'
 
 import {
    InboxRowViewModel,
@@ -16,19 +16,17 @@ type MessageClickableRowProps = {
    messageListItemLayout: Function,
    customizations: IterableInboxCustomizations,
    handleMessageSelect: Function,
-   contentWidth: number,
-   orientation: string
+   isPortrait: boolean
 }
 
 const IterableInboxClickableRow = ({ 
    index,
-   last, 
+   last,
    rowViewModel,
    messageListItemLayout,
    customizations, 
    handleMessageSelect,
-   contentWidth,
-   orientation 
+   isPortrait 
 }: MessageClickableRowProps) => {
 
    return(
@@ -43,7 +41,7 @@ const IterableInboxClickableRow = ({
             rowViewModel={rowViewModel}
             messageListItemLayout={messageListItemLayout}
             customizations={customizations}
-            orientation={orientation} /> 
+            isPortrait={isPortrait} /> 
       </TouchableOpacity>
    )
 }
