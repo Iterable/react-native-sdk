@@ -55,7 +55,8 @@ const defaultMessageListLayout = (
       },
    
       messageContainer: {
-         paddingLeft: 10
+         paddingLeft: 10,
+         width: '65%'
       },
    
       title: {
@@ -65,7 +66,8 @@ const defaultMessageListLayout = (
    
       body: {
          fontSize: 15,
-         color: 'lightgray',
+         color: 'gray',
+         flexWrap: "wrap",
          paddingBottom: 10
       },
    
@@ -80,7 +82,7 @@ const defaultMessageListLayout = (
          paddingTop: 10,
          paddingBottom: 10,
          width: '100%',
-         height: 100,
+         height: 120,
          borderStyle: 'solid',
          borderColor: 'lightgray',
          borderTopWidth: 1
@@ -118,7 +120,7 @@ const defaultMessageListLayout = (
          </View>
          <View style={messageContainer}>
             <Text style={title}>{messageTitle}</Text>
-            <Text style={body}>{messageBody}</Text>
+            <Text numberOfLines={2} ellipsizeMode='tail' style={body}>{messageBody}</Text>
             <Text style={createdAt}>{messageCreatedAt}</Text>
          </View>
       </View>
