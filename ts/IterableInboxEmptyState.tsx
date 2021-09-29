@@ -1,28 +1,57 @@
 'use strict'
 
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { 
+   View, 
+   Text, 
+   StyleSheet,
+} from 'react-native'
 
 import { IterableInboxCustomizations } from '.'
 
 type emptyStateProps = {
-   customizations: IterableInboxCustomizations
+   customizations: IterableInboxCustomizations,
+   tabBarHeight: number,
+   tabBarPadding: number,
+   navTitleHeight: number,
+   contentWidth: number,
+   height: number,
+   isPortrait: boolean
 }
 
-const IterableInboxEmptyState = ({ customizations } : emptyStateProps) => {
+const IterableInboxEmptyState = ({ 
+   customizations, 
+   tabBarHeight,
+   tabBarPadding, 
+   navTitleHeight,
+   height,
+   isPortrait
+} : emptyStateProps) => {
    const defaultTitle = "No saved messages"
    const defaultBody = "Check again later!"
    
-   const title = customizations.noMessagesTitle
-   const body = customizations.noMessagesBody
+   const emptyStateTitle = customizations.noMessagesTitle
+   const emptyStateBody = customizations.noMessagesBody
+
+   let {
+      container,
+      title,
+      body   
+   } = styles
+
+   container = {...container, height: height - navTitleHeight - tabBarHeight - tabBarPadding}
+
+   if(!isPortrait) {
+      container = {...container, height: height - navTitleHeight}
+   }
 
    return(
-      <View style={styles.container}>
-         <Text style={styles.title}>
-            {title ? title : defaultTitle}
+      <View style={container}>
+         <Text style={title}>
+            {emptyStateTitle ? emptyStateTitle : defaultTitle}
          </Text>
-         <Text style={styles.body}>
-            {body ? body : defaultBody}
+         <Text style={body}>
+            {emptyStateBody ? emptyStateBody : defaultBody}
          </Text>
       </View>
    )
@@ -30,17 +59,16 @@ const IterableInboxEmptyState = ({ customizations } : emptyStateProps) => {
 
 const styles = StyleSheet.create({
    container: {
-      height: '100%',
+      height: 0,
       backgroundColor: 'whitesmoke', 
       flexDirection: 'column',
-      justifyContent: 'flex-start',
-      alignItems: 'center'
+      justifyContent: 'center',
+      alignItems: 'center',
    },
 
    title: {
       fontWeight: 'bold',
       fontSize: 20,
-      paddingTop: 250,
       paddingBottom: 25
    },
 

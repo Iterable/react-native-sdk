@@ -1,24 +1,50 @@
 'use strict'
 
 import React, { useState, useEffect } from 'react'
-import { Text, View, Dimensions, StyleSheet, TouchableWithoutFeedback } from 'react-native'
-import RenderHtml from 'react-native-render-html'
+import { 
+  Text, 
+  View,
+  ScrollView,  
+  StyleSheet, 
+  TouchableWithoutFeedback,
+} from 'react-native'
+import HTML from 'react-native-render-html'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 import { InboxRowViewModel, IterableHtmlInAppContent, IterableEdgeInsets } from '.'
 
 type MessageDisplayProps = {
    rowViewModel: InboxRowViewModel,
-   inAppContentPromise: Promise<IterableHtmlInAppContent>
-   returnToInbox: Function
+   inAppContentPromise: Promise<IterableHtmlInAppContent>,
+   returnToInbox: Function,
+   contentWidth: number,
+   height: number,
+   isPortrait: boolean
 }
 
-const SCREEN_WIDTH = Dimensions.get('window').width
-
-const IterableInboxMessageDisplay = ({ rowViewModel, inAppContentPromise, returnToInbox }: MessageDisplayProps) => {
+const IterableInboxMessageDisplay = ({ 
+   rowViewModel, 
+   inAppContentPromise, 
+   returnToInbox, 
+   contentWidth,
+   isPortrait 
+}: MessageDisplayProps) => {
    const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title
    const [inAppContent, setInAppContent] = useState<IterableHtmlInAppContent>(new IterableHtmlInAppContent(new IterableEdgeInsets(0, 0, 0, 0), ""))
-   
+
+   let {
+      returnButtonContainer,
+      returnButton,
+      messageDisplayContainer,
+      headline
+   } = styles
+
+   let updatedMessageDisplayContainer = {...messageDisplayContainer, width: contentWidth}
+
+   headline = (!isPortrait) ? {...headline, paddingLeft: 45} : headline
+   returnButton = (!isPortrait) ? {...returnButton, paddingLeft: 40} : returnButton
+   returnButtonContainer = (!isPortrait) ? {...returnButtonContainer, marginTop: 10} : returnButtonContainer
+
    useEffect(() => {
       inAppContentPromise.then(
          (value) => {
@@ -27,28 +53,33 @@ const IterableInboxMessageDisplay = ({ rowViewModel, inAppContentPromise, return
    })
 
    return(
-      <View style={styles.messageDisplayContainer}>
-         <View style={styles.returnButtonContainer}>
+      <View style={updatedMessageDisplayContainer}>
+         <View style={returnButtonContainer}>
             <TouchableWithoutFeedback onPress={() => returnToInbox()}>
                <Icon 
                   name="ios-arrow-back"
-                  style={styles.returnButton} />
+                  style={returnButton} />
             </TouchableWithoutFeedback>
          </View>
-         <View style={styles.messageDisplayContainer}>
-            <Text style={styles.headline}>
+         <ScrollView contentContainerStyle={styles.contentContainer}>
+            <Text style={headline}>
                {messageTitle}
             </Text>
-            <RenderHtml contentWidth={SCREEN_WIDTH} source={inAppContent}/>
-         </View> 
+            <HTML source={{ html: inAppContent.html }} />
+         </ScrollView> 
       </View>
    )
 }
 
 const styles = StyleSheet.create({
    returnButtonContainer: {
-      marginTop: 0,
+      marginTop: 40,
       backgroundColor: 'whitesmoke'
+   },
+
+   contentContainer: {
+      flex: 1,
+      height: '50%'
    },
 
    returnButton: {
@@ -58,7 +89,6 @@ const styles = StyleSheet.create({
    },
 
    messageDisplayContainer: {
-      width: SCREEN_WIDTH,
       height: '100%',
       backgroundColor: 'whitesmoke', 
       flexDirection: 'column',

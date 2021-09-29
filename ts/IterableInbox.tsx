@@ -4,10 +4,8 @@ import React, { useState, useEffect } from 'react'
 import {
    View, 
    Text, 
-   SafeAreaView, 
    StyleSheet,
    Animated,
-   Dimensions,
    NativeModules,
    NativeEventEmitter
 } from 'react-native'
@@ -26,21 +24,41 @@ import IterableInboxCustomizations from './IterableInboxCustomizations'
 const RNIterableAPI = NativeModules.RNIterableAPI
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
 
-const SCREEN_WIDTH = Dimensions.get('window').width
+import useDeviceOrientation from './useDeviceOrientation'
 
 type inboxProps = {
    messageListItemLayout: Function,
-   customizations: IterableInboxCustomizations
+   customizations: IterableInboxCustomizations,
+   tabBarHeight: number,
+   tabBarPadding: number
 }
 
-const IterableInbox = ({ messageListItemLayout, customizations }: inboxProps) => {
+const IterableInbox = ({
+   messageListItemLayout, 
+   customizations,
+   tabBarHeight,
+   tabBarPadding
+}: inboxProps) => {
    const defaultInboxTitle = "Inbox"
    const [selectedRowViewModelIdx, setSelectedRowViewModelIdx] = useState<number>(0)
    const [rowViewModels, setRowViewModels] = useState<InboxRowViewModel[]>([])
    const [loading, setLoading] = useState<boolean>(true)
    const inboxDataModel = new IterableInboxDataModel()
-
    const [animatedValue, setAnimatedValue] = useState<any>(new Animated.Value(0))
+
+   let { height, width, isPortrait } = useDeviceOrientation()
+   const navTitleHeight = 80
+  
+   let {
+      loadingScreen,
+      container,
+      headline
+   } = styles
+
+   const updatedContainer = {...container, width: 2 * width, height: height - navTitleHeight - 40}
+   const messageListContainer = { width: width}
+   
+   headline = (isPortrait) ? {...headline, marginTop: 40} : {...headline, paddingLeft: 65}
 
    const fetchData = async () => {
       const newRowViewModels = await inboxDataModel.refresh()
@@ -111,14 +129,17 @@ const IterableInbox = ({ messageListItemLayout, customizations }: inboxProps) =>
                rowViewModel={selectedRowViewModel}
                inAppContentPromise={getHtmlContentForRow(selectedRowViewModel.inAppMessage.messageId)}
                returnToInbox={() => returnToInbox()}
+               contentWidth={width}
+               height={height}
+               isPortrait={isPortrait}
             /> : null
       )
    }
 
    function showMessageList(loading: boolean) {
       return (
-         <View style={styles.messageListContainer}>
-            <Text style={styles.headline}>
+         <View style={messageListContainer}>
+            <Text style={headline}>
                {customizations.navTitle ? customizations.navTitle : defaultInboxTitle}
             </Text>
             { rowViewModels.length ?
@@ -128,6 +149,9 @@ const IterableInbox = ({ messageListItemLayout, customizations }: inboxProps) =>
                   messageListItemLayout={messageListItemLayout}
                   deleteRow={(messageId: string) => deleteRow(messageId)}
                   handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index, rowViewModels)}
+                  contentWidth={width}
+                  height={height}
+                  isPortrait={isPortrait}
                />  :
                renderEmptyState()
             }   
@@ -136,8 +160,16 @@ const IterableInbox = ({ messageListItemLayout, customizations }: inboxProps) =>
 
    function renderEmptyState() {
       return loading ? 
-         <View style={styles.loadingScreen} /> : 
-         <IterableInboxEmptyState customizations={customizations} /> 
+         <View style={loadingScreen} /> : 
+         <IterableInboxEmptyState 
+            customizations={customizations} 
+            tabBarHeight={tabBarHeight}
+            tabBarPadding={tabBarPadding}
+            navTitleHeight={navTitleHeight}
+            contentWidth={width}
+            height={height}
+            isPortrait={isPortrait}
+         /> 
    }
 
    const slideLeft = () => {
@@ -157,25 +189,25 @@ const IterableInbox = ({ messageListItemLayout, customizations }: inboxProps) =>
    }
 
    return(
-      <SafeAreaView style={styles.container}>
+      <View style={updatedContainer}>
          <Animated.View
             style={{
                transform: [
                   {translateX: animatedValue.interpolate({
                      inputRange: [0, 1],
-                     outputRange: [0, -SCREEN_WIDTH]
+                     outputRange: [0, -width]
                   })}
                ],
                height: "100%",
                flexDirection: 'row',
-               width: 2 * SCREEN_WIDTH,
+               width: 2 * width,
                justifyContent: "flex-start",
             }}
          >
             {showMessageList(loading)}   
             {showMessageDisplay(rowViewModels, selectedRowViewModelIdx)}
          </Animated.View>
-      </SafeAreaView>
+      </View>
    )
 }
 
@@ -187,24 +219,20 @@ const styles = StyleSheet.create({
 
    container: {
       flex: 1,
-      width: 2 * SCREEN_WIDTH,
       flexDirection: 'row',
-      height: '100%',
       alignItems: "center",
       justifyContent: "flex-start"
-   },
-
-   messageListContainer: {
-      width: SCREEN_WIDTH
    },
 
    headline: {
       fontWeight: 'bold' ,
       fontSize: 40,
       width: '100%',
+      height: 60,
+      marginTop: 0,
       paddingTop: 10,
       paddingBottom: 10,
-      paddingLeft: 15,
+      paddingLeft: 30,
       backgroundColor: 'whitesmoke'
    }
 })
