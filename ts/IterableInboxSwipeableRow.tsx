@@ -46,26 +46,16 @@ const IterableInboxSwipeableRow = ({
 
    const { textContainer, deleteSlider, textStyle } = styles
    
-   let [scrollStopped, setScrollStopped] = useState(false)
-   let [deleteThreshold, setDeleteThreshold] = useState(-contentWidth / 2)
-   let [scrollThreshold, setScrollThreshold] = useState(contentWidth / 15)
-
-   //let [swiping, setSwiping] = useState(false)
+   // let [scrollStopped, setScrollStopped] = useState(false)
+   let deleteThreshold = -contentWidth / 2
+   let scrollThreshold = contentWidth / 15
 
    const FORCING_DURATION = 350
 
-   useEffect(() => {
-      setDeleteThreshold(-contentWidth / 2)
-      setScrollThreshold(contentWidth / 15)
-   }, [isPortrait, contentWidth])
-
-   //stops scrolling and enables swiping when threshold is reached
-   const stopScrollView = (swiping: boolean) => {
-      // if(scrollStopped !== isEnabled) {
-      // (swiping: boolean) => swipingCheck(swiping)
-      //    setScrollStopped(isEnabled)
-      // }
-   }
+   // useEffect(() => {
+   //    setDeleteThreshold(-contentWidth / 2)
+   //    setScrollThreshold(contentWidth / 15)
+   // }, [isPortrait, contentWidth])
 
    //If user swipes, either complete swipe or reset 
    const userSwipedLeft = (gesture : any) => {
@@ -78,7 +68,7 @@ const IterableInboxSwipeableRow = ({
    }
 
    const completeSwipe = () => {
-      const x = -contentWidth
+      const x = -2000
       Animated.timing(position, {
          toValue: {x, y: 0},
          duration: FORCING_DURATION,
@@ -122,12 +112,6 @@ const IterableInboxSwipeableRow = ({
                userSwipedLeft(gesture) 
             }
          }
-         // onPanResponderTerminate: () => {
-         //    Animated.spring(position, {
-         //       toValue: {x: 0, y: 0},
-         //       useNativeDriver: false
-         //    }).start()
-         // }
       })
    ).current
 
