@@ -46,7 +46,7 @@ const IterableInbox = ({
    const inboxDataModel = new IterableInboxDataModel()
    const [animatedValue, setAnimatedValue] = useState<any>(new Animated.Value(0))
 
-   let { width, height, isPortrait } = useDeviceOrientation()
+   let { height, width, isPortrait } = useDeviceOrientation()
    const navTitleHeight = 80
   
    let {
