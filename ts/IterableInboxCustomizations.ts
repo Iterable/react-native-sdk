@@ -20,15 +20,22 @@ type IterableInboxCustomizations = {
    },
  
    unreadMessageIconContainer: {
-      paddingLeft: number
+      paddingLeft: number,
+      flexDirection: string,
+      justifyContent: string
    },
 
    readMessageIconContainer: {
-      paddingLeft: number
+      paddingLeft: number,
+      flexDirection: string,
+      justifyContent: string
    },
 
    messageContainer: {
-      paddingLeft: number
+      paddingLeft: number,
+      width: string,
+      flexDirection: string,
+      justifyContent: string
    },
  
    title: {

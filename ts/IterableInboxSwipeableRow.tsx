@@ -75,7 +75,7 @@ const IterableInboxSwipeableRow = ({
    }
 
    const completeSwipe = () => {
-      const x = -contentWidth
+      const x = -2000
       Animated.timing(position, {
          toValue: {x, y: 0},
          duration: FORCING_DURATION,
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
       position: 'absolute',
       elevation: 3,
       width: '100%',
-      height: 100,
+      height: 120,
       zIndex: 1
    },
 
