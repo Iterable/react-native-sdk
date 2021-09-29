@@ -43,7 +43,7 @@ const IterableInboxMessageList = ({
                rowViewModel={rowViewModel}
                messageListItemLayout={messageListItemLayout}
                customizations={customizations}
-               //swipingCheck={(swiping : boolean) => setSwiping(swiping)}
+               swipingCheck={(swiping : boolean) => setSwiping(swiping)}
                deleteRow={(messageId: string) => deleteRow(messageId)}
                handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index)}
                contentWidth={contentWidth}

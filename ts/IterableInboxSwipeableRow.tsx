@@ -22,7 +22,7 @@ type SwipeableRowProps = {
    rowViewModel: InboxRowViewModel,
    messageListItemLayout: Function,
    customizations: IterableInboxCustomizations,
-   // swipingCheck: Function,
+   swipingCheck: Function,
    deleteRow: Function,
    handleMessageSelect: Function,
    contentWidth: number,
@@ -36,7 +36,7 @@ const IterableInboxSwipeableRow = ({
    rowViewModel,
    messageListItemLayout,
    customizations,
-   //swipingCheck,
+   swipingCheck,
    deleteRow,
    handleMessageSelect,
    contentWidth,
@@ -50,6 +50,8 @@ const IterableInboxSwipeableRow = ({
    let [deleteThreshold, setDeleteThreshold] = useState(-contentWidth / 2)
    let [scrollThreshold, setScrollThreshold] = useState(contentWidth / 15)
 
+   //let [swiping, setSwiping] = useState(false)
+
    const FORCING_DURATION = 350
 
    useEffect(() => {
@@ -58,11 +60,11 @@ const IterableInboxSwipeableRow = ({
    }, [isPortrait, contentWidth])
 
    //stops scrolling and enables swiping when threshold is reached
-   const enableScrollView = (isEnabled: boolean) => {
-      if(scrollStopped !== isEnabled) {
-         // swipingCheck(isEnabled)
-         // setScrollStopped(isEnabled)
-      }
+   const stopScrollView = (swiping: boolean) => {
+      // if(scrollStopped !== isEnabled) {
+      // (swiping: boolean) => swipingCheck(swiping)
+      //    setScrollStopped(isEnabled)
+      // }
    }
 
    //If user swipes, either complete swipe or reset 
@@ -71,6 +73,7 @@ const IterableInboxSwipeableRow = ({
          completeSwipe()   
       } else {
          resetPosition()
+         swipingCheck(false)
       }
    }
 
@@ -106,7 +109,7 @@ const IterableInboxSwipeableRow = ({
          onPanResponderMove: (event, gesture) => {
             if(gesture.dx <= -scrollThreshold) {
                //enables swipeing when threshold is reached
-               enableScrollView(true)
+               swipingCheck(true)
                //threshold value is deleted from movement
                const x = gesture.dx + scrollThreshold
                //position is set to the new value
@@ -118,13 +121,13 @@ const IterableInboxSwipeableRow = ({
             if(gesture.dx < 0) {
                userSwipedLeft(gesture) 
             }
-         },
-         onPanResponderTerminate: () => {
-            Animated.spring(position, {
-               toValue: {x: 0, y: 0},
-               useNativeDriver: false
-            }).start()
          }
+         // onPanResponderTerminate: () => {
+         //    Animated.spring(position, {
+         //       toValue: {x: 0, y: 0},
+         //       useNativeDriver: false
+         //    }).start()
+         // }
       })
    ).current
 
