@@ -6,7 +6,7 @@ import {
    Text,
    Animated,
    PanResponder,
-   StyleSheet,
+   StyleSheet
 } from 'react-native'
 
 import {
@@ -44,18 +44,15 @@ const IterableInboxSwipeableRow = ({
 }: SwipeableRowProps) => {
    const position = useRef(new Animated.ValueXY()).current
 
-   const { textContainer, deleteSlider, textStyle } = styles
+   let { textContainer, deleteSlider, textStyle } = styles
+
+   deleteSlider = (orientation === 'PORTRAIT') ? deleteSlider : {...deleteSlider, paddingRight: 40 } 
    
    let [scrollStopped, setScrollStopped] = useState(false)
-   let [deleteThreshold, setDeleteThreshold] = useState(-contentWidth / 2)
-   let [scrollThreshold, setScrollThreshold] = useState(contentWidth / 15)
 
+   const scrollThreshold = contentWidth / 15
    const FORCING_DURATION = 350
 
-   useEffect(() => {
-      setDeleteThreshold(-contentWidth / 2)
-      setScrollThreshold(contentWidth / 15)
-   }, [isPortrait, contentWidth])
 
    //stops scrolling and enables swiping when threshold is reached
    const enableScrollView = (isEnabled: boolean) => {
@@ -67,7 +64,7 @@ const IterableInboxSwipeableRow = ({
 
    //If user swipes, either complete swipe or reset 
    const userSwipedLeft = (gesture : any) => {
-      if(gesture.dx < deleteThreshold) {
+      if(gesture.dx < -0.6 * contentWidth) {
          completeSwipe()   
       } else {
          resetPosition()
@@ -75,7 +72,7 @@ const IterableInboxSwipeableRow = ({
    }
 
    const completeSwipe = () => {
-      const x = -contentWidth
+      const x = -2000
       Animated.timing(position, {
          toValue: {x, y: 0},
          duration: FORCING_DURATION,

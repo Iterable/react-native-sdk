@@ -40,14 +40,17 @@ const IterableInbox = ({
    tabBarPadding
 }: inboxProps) => {
    const defaultInboxTitle = "Inbox"
-   const [selectedRowViewModelIdx, setSelectedRowViewModelIdx] = useState<number>(0)
-   const [rowViewModels, setRowViewModels] = useState<InboxRowViewModel[]>([])
-   const [loading, setLoading] = useState<boolean>(true)
    const inboxDataModel = new IterableInboxDataModel()
-   const [animatedValue, setAnimatedValue] = useState<any>(new Animated.Value(0))
 
    let { height, width, isPortrait } = useDeviceOrientation()
    const navTitleHeight = 80
+
+   const [screenWidth, setScreenWidth] = useState<number>(width)
+   const [selectedRowViewModelIdx, setSelectedRowViewModelIdx] = useState<number>(0)
+   const [rowViewModels, setRowViewModels] = useState<InboxRowViewModel[]>([])
+   const [loading, setLoading] = useState<boolean>(true)
+   const [animatedValue, setAnimatedValue] = useState<any>(new Animated.Value(0))
+   const [isMessageDisplay, setIsMessageDisplay] = useState<boolean>(false) 
   
    let {
       loadingScreen,
@@ -71,6 +74,13 @@ const IterableInbox = ({
 
       return removeSilentPushHandler
    }, [])
+
+   useEffect(() => {
+      setScreenWidth(width)
+      if(isMessageDisplay) { 
+         slideLeft() 
+      } 
+   }, [width])
 
    function addSilentPushHandler() {
       RNEventEmitter.addListener(
@@ -178,6 +188,7 @@ const IterableInbox = ({
          duration: 500,
          useNativeDriver: false
       }).start()
+      setIsMessageDisplay(true)
    }
 
    const reset = () => {
@@ -185,7 +196,8 @@ const IterableInbox = ({
          toValue: 0,
          duration: 500,
          useNativeDriver: false
-      }).start()  
+      }).start()
+      setIsMessageDisplay(false)  
    }
 
    return(
@@ -195,12 +207,12 @@ const IterableInbox = ({
                transform: [
                   {translateX: animatedValue.interpolate({
                      inputRange: [0, 1],
-                     outputRange: [0, -width]
+                     outputRange: [0, -screenWidth]
                   })}
                ],
                height: "100%",
                flexDirection: 'row',
-               width: 2 * width,
+               width: 2 * screenWidth,
                justifyContent: "flex-start",
             }}
          >
