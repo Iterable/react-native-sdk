@@ -16,8 +16,7 @@ type MessageClickableRowProps = {
    customizations: IterableInboxCustomizations,
    messageListItemLayout: Function,
    handleMessageSelect: Function,
-   contentWidth: number,
-   orientation: string
+   isPortrait: boolean
 }
 
 const IterableInboxClickableRow = ({ 
@@ -27,8 +26,7 @@ const IterableInboxClickableRow = ({
    customizations, 
    messageListItemLayout,
    handleMessageSelect,
-   contentWidth,
-   orientation 
+   isPortrait
 }: MessageClickableRowProps) => {
 
    return(
@@ -44,7 +42,7 @@ const IterableInboxClickableRow = ({
             customizations={customizations}
             messageListItemLayout={messageListItemLayout}
             contentWidth={contentWidth}
-            orientation={orientation} /> 
+            isPortrait={isPortrait} /> 
       </TouchableOpacity>
    )
 }

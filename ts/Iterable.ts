@@ -111,7 +111,8 @@ enum EventName {
   handleUrlCalled = "handleUrlCalled",
   handleCustomActionCalled = "handleCustomActionCalled",
   handleInAppCalled = "handleInAppCalled",
-  handleAuthCalled = "handleAuthCalled"
+  handleAuthCalled = "handleAuthCalled",
+  receivedIterableInboxChanged = "receivedIterableInboxChanged"
 }
 
 class Iterable {

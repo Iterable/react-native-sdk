@@ -9,6 +9,12 @@ import IterableSDK
 
 @objc(ReactIterableAPI)
 class ReactIterableAPI: RCTEventEmitter {
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    // MARK: - React Native Functions
+    
     @objc static override func moduleName() -> String! {
         return "RNIterableAPI"
     }
@@ -26,6 +32,7 @@ class ReactIterableAPI: RCTEventEmitter {
         case handleCustomActionCalled
         case handleInAppCalled
         case handleAuthCalled
+        case receivedIterableInboxChanged
     }
     
     override func supportedEvents() -> [String]! {
@@ -49,6 +56,8 @@ class ReactIterableAPI: RCTEventEmitter {
         
         shouldEmit = false
     }
+    
+    // MARK: - Native SDK Functions
     
     @objc(initializeWithApiKey:config:version:resolver:rejecter:)
     func initialize(apiKey: String,
@@ -109,6 +118,8 @@ class ReactIterableAPI: RCTEventEmitter {
         
         resolver(IterableAPI.userId)
     }
+    
+    // MARK: - Iterable API Request Functions
     
     @objc(setInAppShowResponse:)
     func set(inAppShowResponse number: NSNumber) {
@@ -308,7 +319,8 @@ class ReactIterableAPI: RCTEventEmitter {
         }
     }
     
-    // MARK: In-App Manager methods
+    // MARK: - SDK In-App Manager Functions
+    
     @objc(getInAppMessages:rejecter:)
     func getInAppMessages(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
         ITBInfo()
@@ -404,6 +416,8 @@ class ReactIterableAPI: RCTEventEmitter {
         }
     }
     
+    // MARK: - SDK Auth Manager Functions
+    
     @objc(passAlongAuthToken:)
     func passAlong(authToken: String?) {
         ITBInfo()
@@ -434,6 +448,7 @@ class ReactIterableAPI: RCTEventEmitter {
         
         let launchOptions = createLaunchOptions()
         let iterableConfig = IterableConfig.from(dict: configDict)
+        
         if let urlHandlerPresent = configDict["urlHandlerPresent"] as? Bool, urlHandlerPresent == true {
             iterableConfig.urlDelegate = self
         }
@@ -450,6 +465,9 @@ class ReactIterableAPI: RCTEventEmitter {
             iterableConfig.authDelegate = self
         }
         
+        // connect new inbox in-app payloads to the RN SDK
+        NotificationCenter.default.addObserver(self, selector: #selector(receivedIterableInboxChanged), name: Notification.Name.iterableInboxChanged, object: nil)
+        
         DispatchQueue.main.async {
             IterableAPI.initialize2(apiKey: apiKey,
                                     launchOptions: launchOptions,
@@ -457,8 +475,18 @@ class ReactIterableAPI: RCTEventEmitter {
                                     apiEndPointOverride: apiEndPointOverride) { result in
                 resolver(result)
             }
+            
             IterableAPI.setDeviceAttribute(name: "reactNativeSDKVersion", value: version)
         }
+    }
+    
+    @objc(receivedIterableInboxChanged)
+    private func receivedIterableInboxChanged() {
+        guard shouldEmit else {
+            return
+        }
+        
+        sendEvent(withName: EventName.receivedIterableInboxChanged.rawValue, body: nil)
     }
     
     private func createLaunchOptions() -> [UIApplication.LaunchOptionsKey: Any]? {
@@ -532,7 +560,9 @@ extension ReactIterableAPI: IterableCustomActionDelegate {
         let actionDict = ReactIterableAPI.actionToDictionary(action: action)
         let contextDict = ReactIterableAPI.contextToDictionary(context: context)
         
-        sendEvent(withName: EventName.handleCustomActionCalled.rawValue, body: ["action": actionDict, "context": contextDict])
+        sendEvent(withName: EventName.handleCustomActionCalled.rawValue,
+                  body: ["action": actionDict,
+                         "context": contextDict])
         
         return true
     }
@@ -546,8 +576,9 @@ extension ReactIterableAPI: IterableInAppDelegate {
             return .show
         }
         
-        let messageDict = message.toDict()
-        sendEvent(withName: EventName.handleInAppCalled.rawValue, body: messageDict)
+        sendEvent(withName: EventName.handleInAppCalled.rawValue,
+                  body: message.toDict())
+        
         let timeoutResult = inAppHandlerSemaphore.wait(timeout: .now() + 2.0)
         
         if timeoutResult == .success {

@@ -8,7 +8,7 @@ import {
   EventName,
 } from '../Iterable'
 
-import { IterableInAppMessage } from '../IterableInAppMessage'
+import {  IterableInAppMessage } from '../IterableInAppMessage'
 
 import {
   IterableInAppLocation,

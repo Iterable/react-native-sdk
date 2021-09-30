@@ -104,12 +104,9 @@ describe('messageRowStyle unit tests', () => {
             rowViewModel={rowViewModel}
             messageListItemLayout={messageListItemLayout}
             customizations={customizations}
+            isPortrait={true}
          />
       )
-
-      console.log(messageListItem.defaultMessageListLayout())
-
-      expect(global.utils.findById(tree, 'title')).toBeDefined()
    })
 
 })

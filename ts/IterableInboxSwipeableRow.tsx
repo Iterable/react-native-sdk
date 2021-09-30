@@ -6,7 +6,7 @@ import {
    Text,
    Animated,
    PanResponder,
-   StyleSheet  
+   StyleSheet
 } from 'react-native'
 
 import {
@@ -25,7 +25,8 @@ type SwipeableRowProps = {
    deleteRow: Function,
    handleMessageSelect: Function,
    contentWidth: number,
-   orientation: string
+   height: number,
+   isPortrait: boolean
 }
 
 const IterableInboxSwipeableRow = ({
@@ -37,15 +38,14 @@ const IterableInboxSwipeableRow = ({
    deleteRow,
    handleMessageSelect,
    contentWidth,
-   orientation
+   isPortrait
 }: SwipeableRowProps) => {
    const position = useRef(new Animated.ValueXY()).current
    const [height, setHeight] = useState<number>(100) 
 
    let { textContainer, deleteSlider, textStyle } = styles
 
-   deleteSlider = (orientation === 'PORTRAIT') ? deleteSlider : {...deleteSlider, paddingRight: 40 }
-   deleteSlider = {...deleteSlider, height: height} 
+   deleteSlider = (isPortrait) ? deleteSlider : {...deleteSlider, paddingRight: 40 } 
    
    let [scrollStopped, setScrollStopped] = useState(false)
 
@@ -130,7 +130,7 @@ const IterableInboxSwipeableRow = ({
                messageListItemLayout={messageListItemLayout}
                handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index)}
                contentWidth={contentWidth}
-               orientation={orientation}
+               isPortrait={isPortrait}
             />   
          </Animated.View>
       </View>   
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
       position: 'absolute',
       elevation: 3,
       width: '100%',
-      height: 100,
+      height: 120,
       zIndex: 1
    },
 

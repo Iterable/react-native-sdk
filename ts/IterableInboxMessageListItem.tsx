@@ -18,15 +18,16 @@ type MessageListItemProps = {
    customizations: IterableInboxCustomizations,
    messageListItemLayout: Function,
    contentWidth: number,
-   orientation: string
+   isPortrait: boolean
 }
 
 const defaultMessageListLayout = (
-   last: boolean, 
-   rowViewModel: InboxRowViewModel,
+   last: boolean,
+   rowViewModel: InboxRowViewModel, 
    customizations: IterableInboxCustomizations,
    orientation: string,
    contentWidth: number, 
+   isPortrait: boolean
 ) => {
    const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title ?? ""
    const messageBody = rowViewModel.inAppMessage.inboxMetadata?.subtitle ?? ""
@@ -70,7 +71,7 @@ const defaultMessageListLayout = (
       body: {
          fontSize: 15,
          color: 'lightgray',
-         width: contentWidth * 0.6,
+         width: '65%',
          flexWrap: "wrap",
          paddingBottom: 10
       },
@@ -86,7 +87,7 @@ const defaultMessageListLayout = (
          paddingTop: 10,
          paddingBottom: 10,
          width: '100%',
-         //height: 200,
+         height: 120,
          borderStyle: 'solid',
          borderColor: 'lightgray',
          borderTopWidth: 1
@@ -107,8 +108,8 @@ const defaultMessageListLayout = (
       messageRow
    } = resolvedStyles
 
-   unreadIndicator = (orientation === "LANDSCAPE") ? {...unreadIndicator, marginLeft: 40} : unreadIndicator
-   readMessageIconContainer = (orientation === "LANDSCAPE") ? {...readMessageIconContainer, paddingLeft: 65} : readMessageIconContainer 
+   unreadIndicator = (!isPortrait) ? {...unreadIndicator, marginLeft: 40} : unreadIndicator
+   readMessageIconContainer = (!isPortrait) ? {...readMessageIconContainer, paddingLeft: 65} : readMessageIconContainer 
 
    function messageRowStyle(rowViewModel: InboxRowViewModel) {
       return last ? {...messageRow, borderBottomWidth: 1} : messageRow 
@@ -137,13 +138,13 @@ const IterableInboxMessageListItem = ({
    customizations,
    messageListItemLayout,  
    contentWidth,
-   orientation 
+   isPortrait
 }: MessageListItemProps) => {
 
    return(
       messageListItemLayout(last, rowViewModel) ?
          messageListItemLayout(last, rowViewModel) :
-         defaultMessageListLayout(last, rowViewModel, customizations, orientation, contentWidth)  
+         defaultMessageListLayout(last, rowViewModel, customizations, isPortrait)  
    )
 }
 
