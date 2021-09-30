@@ -62,7 +62,7 @@ const defaultMessageListLayout = (
       body: {
          fontSize: 15,
          color: 'lightgray',
-         width: contentWidth * 0.85,
+         width: '65%',
          flexWrap: "wrap",
          paddingBottom: 10
       },
@@ -107,7 +107,7 @@ const defaultMessageListLayout = (
    }
       
    return(
-      <View style={messageRowStyle(rowViewModel)} onLayout={(event) => getHeight(event.nativeEvent.layout)}>
+      <View style={messageRowStyle(rowViewModel)}>
          <View style={unreadIndicatorContainer}>
             {rowViewModel.read ? null : <View style={unreadIndicator}/>}
          </View>
