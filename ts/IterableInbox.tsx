@@ -27,36 +27,37 @@ const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
 import useDeviceOrientation from './useDeviceOrientation'
 
 type inboxProps = {
-   messageListItemLayout: Function,
-   customizations: IterableInboxCustomizations,
-   tabBarHeight: number,
-   tabBarPadding: number
+   messageListItemLayout?: Function,
+   customizations?: IterableInboxCustomizations,
+   tabBarHeight?: number,
+   tabBarPadding?: number
 }
 
 const IterableInbox = ({
-   messageListItemLayout, 
-   customizations,
-   tabBarHeight,
-   tabBarPadding
+   messageListItemLayout = () => {return null}, 
+   customizations = {} as IterableInboxCustomizations,
+   tabBarHeight = 80,
+   tabBarPadding = 20
 }: inboxProps) => {
    const defaultInboxTitle = "Inbox"
    const inboxDataModel = new IterableInboxDataModel()
 
    let { height, width, isPortrait } = useDeviceOrientation()
-   const navTitleHeight = 80
 
    const [screenWidth, setScreenWidth] = useState<number>(width)
    const [selectedRowViewModelIdx, setSelectedRowViewModelIdx] = useState<number>(0)
    const [rowViewModels, setRowViewModels] = useState<InboxRowViewModel[]>([])
    const [loading, setLoading] = useState<boolean>(true)
    const [animatedValue, setAnimatedValue] = useState<any>(new Animated.Value(0))
-   const [isMessageDisplay, setIsMessageDisplay] = useState<boolean>(false) 
+   const [isMessageDisplay, setIsMessageDisplay] = useState<boolean>(false)
   
    let {
       loadingScreen,
       container,
       headline
    } = styles
+
+   const navTitleHeight = headline.height + headline.paddingTop + headline.paddingBottom
 
    const updatedContainer = {...container, width: 2 * width, height: height - navTitleHeight - 40}
    const messageListContainer = { width: width}
@@ -140,7 +141,6 @@ const IterableInbox = ({
                inAppContentPromise={getHtmlContentForRow(selectedRowViewModel.inAppMessage.messageId)}
                returnToInbox={() => returnToInbox()}
                contentWidth={width}
-               height={height}
                isPortrait={isPortrait}
             /> : null
       )
@@ -150,7 +150,7 @@ const IterableInbox = ({
       return (
          <View style={messageListContainer}>
             <Text style={headline}>
-               {customizations.navTitle ? customizations.navTitle : defaultInboxTitle}
+               {customizations?.navTitle ? customizations?.navTitle : defaultInboxTitle}
             </Text>
             { rowViewModels.length ?
                <IterableInboxMessageList 
@@ -160,7 +160,6 @@ const IterableInbox = ({
                   deleteRow={(messageId: string) => deleteRow(messageId)}
                   handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index, rowViewModels)}
                   contentWidth={width}
-                  height={height}
                   isPortrait={isPortrait}
                />  :
                renderEmptyState()
