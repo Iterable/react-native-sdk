@@ -113,6 +113,7 @@ const defaultMessageListLayout = (
    }
       
    return(
+
       <View style={messageRowStyle(rowViewModel) as ViewStyle} >
          <View style={unreadIndicatorContainer as ViewStyle}>
             {rowViewModel.read ? null : <View style={unreadIndicator}/>}
