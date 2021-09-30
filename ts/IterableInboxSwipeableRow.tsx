@@ -1,6 +1,6 @@
 'use strict'
 
-import React, { useState, useRef } from 'react'
+import React, { useRef } from 'react'
 import {
    View,
    Text,
@@ -25,7 +25,6 @@ type SwipeableRowProps = {
    deleteRow: Function,
    handleMessageSelect: Function,
    contentWidth: number,
-   height: number,
    isPortrait: boolean
 }
 
@@ -41,13 +40,10 @@ const IterableInboxSwipeableRow = ({
    isPortrait
 }: SwipeableRowProps) => {
    const position = useRef(new Animated.ValueXY()).current
-   const [height, setHeight] = useState<number>(100) 
 
    let { textContainer, deleteSlider, textStyle } = styles
 
    deleteSlider = (isPortrait) ? deleteSlider : {...deleteSlider, paddingRight: 40 } 
-   
-   let [scrollStopped, setScrollStopped] = useState(false)
 
    const scrollThreshold = contentWidth / 15
    const FORCING_DURATION = 350
@@ -129,7 +125,6 @@ const IterableInboxSwipeableRow = ({
                customizations={customizations}
                messageListItemLayout={messageListItemLayout}
                handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index)}
-               contentWidth={contentWidth}
                isPortrait={isPortrait}
             />   
          </Animated.View>

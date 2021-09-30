@@ -17,7 +17,6 @@ type MessageListItemProps = {
    rowViewModel: InboxRowViewModel,
    customizations: IterableInboxCustomizations,
    messageListItemLayout: Function,
-   contentWidth: number,
    isPortrait: boolean
 }
 
@@ -25,8 +24,6 @@ const defaultMessageListLayout = (
    last: boolean,
    rowViewModel: InboxRowViewModel, 
    customizations: IterableInboxCustomizations,
-   orientation: string,
-   contentWidth: number, 
    isPortrait: boolean
 ) => {
    const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title ?? ""
@@ -137,7 +134,6 @@ const IterableInboxMessageListItem = ({
    rowViewModel,
    customizations,
    messageListItemLayout,  
-   contentWidth,
    isPortrait
 }: MessageListItemProps) => {
 

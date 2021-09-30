@@ -19,7 +19,6 @@ type MessageDisplayProps = {
    inAppContentPromise: Promise<IterableHtmlInAppContent>,
    returnToInbox: Function,
    contentWidth: number,
-   height: number,
    isPortrait: boolean
 }
 

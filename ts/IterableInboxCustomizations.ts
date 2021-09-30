@@ -39,7 +39,7 @@ type IterableInboxCustomizations = {
    body: {
       fontSize: number,
       color: string,
-      width: number,
+      width: string,
       flexWrap: string,
       paddingBottom: number
    },

@@ -41,7 +41,6 @@ const IterableInboxClickableRow = ({
             rowViewModel={rowViewModel}
             customizations={customizations}
             messageListItemLayout={messageListItemLayout}
-            contentWidth={contentWidth}
             isPortrait={isPortrait} /> 
       </TouchableOpacity>
    )

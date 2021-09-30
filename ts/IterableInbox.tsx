@@ -43,7 +43,6 @@ const IterableInbox = ({
    const inboxDataModel = new IterableInboxDataModel()
 
    let { height, width, isPortrait } = useDeviceOrientation()
-   const navTitleHeight = 80
 
    const [screenWidth, setScreenWidth] = useState<number>(width)
    const [selectedRowViewModelIdx, setSelectedRowViewModelIdx] = useState<number>(0)
@@ -142,7 +141,6 @@ const IterableInbox = ({
                inAppContentPromise={getHtmlContentForRow(selectedRowViewModel.inAppMessage.messageId)}
                returnToInbox={() => returnToInbox()}
                contentWidth={width}
-               height={height}
                isPortrait={isPortrait}
             /> : null
       )
@@ -162,7 +160,6 @@ const IterableInbox = ({
                   deleteRow={(messageId: string) => deleteRow(messageId)}
                   handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index, rowViewModels)}
                   contentWidth={width}
-                  height={height}
                   isPortrait={isPortrait}
                />  :
                renderEmptyState()
