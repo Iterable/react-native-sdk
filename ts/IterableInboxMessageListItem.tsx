@@ -1,11 +1,13 @@
 'use strict'
 
-import React from 'react'
-import {
-   View,
-   Text,
-   Image,
-   StyleSheet
+import React, {useState} from 'react'
+import { 
+   View, 
+   Text, 
+   Image, 
+   ViewStyle,
+   TextStyle, 
+   StyleSheet 
 } from 'react-native'
 
 import { InboxRowViewModel, IterableInboxCustomizations } from '.'
@@ -13,8 +15,8 @@ import { InboxRowViewModel, IterableInboxCustomizations } from '.'
 type MessageListItemProps = {
    last: boolean,
    rowViewModel: InboxRowViewModel,
-   messageListItemLayout: Function,
    customizations: IterableInboxCustomizations,
+   messageListItemLayout: Function,
    isPortrait: boolean
 }
 
@@ -29,7 +31,7 @@ const defaultMessageListLayout = (
    const messageCreatedAt = rowViewModel.createdAt
    const iconURL = rowViewModel.imageUrl
 
-   const styles = StyleSheet.create({
+   let styles = StyleSheet.create({
       unreadIndicatorContainer: {
          height: '100%',
          flexDirection: 'column',
@@ -66,6 +68,8 @@ const defaultMessageListLayout = (
       body: {
          fontSize: 15,
          color: 'lightgray',
+         width: '65%',
+         flexWrap: "wrap",
          paddingBottom: 10
       },
    
@@ -80,7 +84,7 @@ const defaultMessageListLayout = (
          paddingTop: 10,
          paddingBottom: 10,
          width: '100%',
-         height: 100,
+         height: 120,
          borderStyle: 'solid',
          borderColor: 'lightgray',
          borderTopWidth: 1
@@ -109,17 +113,17 @@ const defaultMessageListLayout = (
    }
       
    return(
-      <View style={messageRowStyle(rowViewModel)}>
-         <View style={unreadIndicatorContainer}>
+      <View style={messageRowStyle(rowViewModel) as ViewStyle} >
+         <View style={unreadIndicatorContainer as ViewStyle}>
             {rowViewModel.read ? null : <View style={unreadIndicator}/>}
          </View>
-         <View style={rowViewModel.read ? readMessageIconContainer : unreadMessageIconContainer}>
+         <View style={(rowViewModel.read ? readMessageIconContainer : unreadMessageIconContainer) as ViewStyle}>
             <Image style={{height: 80, width: 80}} source={{uri: iconURL}}/>
          </View>
-         <View style={messageContainer}>
-            <Text style={title}>{messageTitle}</Text>
-            <Text style={body}>{messageBody}</Text>
-            <Text style={createdAt}>{messageCreatedAt}</Text>
+         <View style={messageContainer as ViewStyle}>
+            <Text style={title as TextStyle}>{messageTitle}</Text>
+            <Text style={body as TextStyle}>{messageBody}</Text>
+            <Text style={createdAt as TextStyle}>{messageCreatedAt}</Text>
          </View>
       </View>
    )
@@ -127,10 +131,10 @@ const defaultMessageListLayout = (
 
 const IterableInboxMessageListItem = ({ 
    last, 
-   rowViewModel, 
-   messageListItemLayout, 
+   rowViewModel,
    customizations,
-   isPortrait 
+   messageListItemLayout,  
+   isPortrait
 }: MessageListItemProps) => {
 
    return(

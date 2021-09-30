@@ -27,33 +27,37 @@ const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
 import useDeviceOrientation from './useDeviceOrientation'
 
 type inboxProps = {
-   messageListItemLayout: Function,
-   customizations: IterableInboxCustomizations,
-   tabBarHeight: number,
-   tabBarPadding: number
+   messageListItemLayout?: Function,
+   customizations?: IterableInboxCustomizations,
+   tabBarHeight?: number,
+   tabBarPadding?: number
 }
 
 const IterableInbox = ({
-   messageListItemLayout, 
-   customizations,
-   tabBarHeight,
-   tabBarPadding
+   messageListItemLayout = () => {return null}, 
+   customizations = {} as IterableInboxCustomizations,
+   tabBarHeight = 80,
+   tabBarPadding = 20
 }: inboxProps) => {
    const defaultInboxTitle = "Inbox"
+   const inboxDataModel = new IterableInboxDataModel()
+
+   let { height, width, isPortrait } = useDeviceOrientation()
+
+   const [screenWidth, setScreenWidth] = useState<number>(width)
    const [selectedRowViewModelIdx, setSelectedRowViewModelIdx] = useState<number>(0)
    const [rowViewModels, setRowViewModels] = useState<InboxRowViewModel[]>([])
    const [loading, setLoading] = useState<boolean>(true)
-   const inboxDataModel = new IterableInboxDataModel()
    const [animatedValue, setAnimatedValue] = useState<any>(new Animated.Value(0))
-
-   let { width, height, isPortrait } = useDeviceOrientation()
-   const navTitleHeight = 80
+   const [isMessageDisplay, setIsMessageDisplay] = useState<boolean>(false)
   
    let {
       loadingScreen,
       container,
       headline
    } = styles
+
+   const navTitleHeight = headline.height + headline.paddingTop + headline.paddingBottom
 
    const updatedContainer = {...container, width: 2 * width, height: height - navTitleHeight - 40}
    const messageListContainer = { width: width}
@@ -71,6 +75,13 @@ const IterableInbox = ({
 
       return removeSilentPushHandler
    }, [])
+
+   useEffect(() => {
+      setScreenWidth(width)
+      if(isMessageDisplay) { 
+         slideLeft() 
+      } 
+   }, [width])
 
    function addSilentPushHandler() {
       RNEventEmitter.addListener(
@@ -130,7 +141,6 @@ const IterableInbox = ({
                inAppContentPromise={getHtmlContentForRow(selectedRowViewModel.inAppMessage.messageId)}
                returnToInbox={() => returnToInbox()}
                contentWidth={width}
-               height={height}
                isPortrait={isPortrait}
             /> : null
       )
@@ -140,7 +150,7 @@ const IterableInbox = ({
       return (
          <View style={messageListContainer}>
             <Text style={headline}>
-               {customizations.navTitle ? customizations.navTitle : defaultInboxTitle}
+               {customizations?.navTitle ? customizations?.navTitle : defaultInboxTitle}
             </Text>
             { rowViewModels.length ?
                <IterableInboxMessageList 
@@ -150,7 +160,6 @@ const IterableInbox = ({
                   deleteRow={(messageId: string) => deleteRow(messageId)}
                   handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index, rowViewModels)}
                   contentWidth={width}
-                  height={height}
                   isPortrait={isPortrait}
                />  :
                renderEmptyState()
@@ -178,6 +187,7 @@ const IterableInbox = ({
          duration: 500,
          useNativeDriver: false
       }).start()
+      setIsMessageDisplay(true)
    }
 
    const reset = () => {
@@ -185,7 +195,8 @@ const IterableInbox = ({
          toValue: 0,
          duration: 500,
          useNativeDriver: false
-      }).start()  
+      }).start()
+      setIsMessageDisplay(false)  
    }
 
    return(
@@ -195,12 +206,12 @@ const IterableInbox = ({
                transform: [
                   {translateX: animatedValue.interpolate({
                      inputRange: [0, 1],
-                     outputRange: [0, -width]
+                     outputRange: [0, -screenWidth]
                   })}
                ],
                height: "100%",
                flexDirection: 'row',
-               width: 2 * width,
+               width: 2 * screenWidth,
                justifyContent: "flex-start",
             }}
          >
@@ -220,7 +231,6 @@ const styles = StyleSheet.create({
    container: {
       flex: 1,
       flexDirection: 'row',
-      //height: '100%',
       alignItems: "center",
       justifyContent: "flex-start"
    },
