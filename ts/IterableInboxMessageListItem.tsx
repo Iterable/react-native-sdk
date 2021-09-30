@@ -11,17 +11,14 @@ type MessageListItemProps = {
    getHeight: Function,
    messageListItemLayout: Function,
    customizations: IterableInboxCustomizations,
-   contentWidth: number,
-   orientation: string
+   isPortrait: boolean
 }
 
 const defaultMessageListLayout = (
-   last: boolean, 
-   rowViewModel: InboxRowViewModel,
+   last: boolean,
+   rowViewModel: InboxRowViewModel, 
    customizations: IterableInboxCustomizations,
-   orientation: string,
-   contentWidth: number, 
-   getHeight: Function
+   isPortrait: boolean
 ) => {
    const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title ?? ""
    const messageBody = rowViewModel.inAppMessage.inboxMetadata?.subtitle ?? ""
@@ -81,7 +78,7 @@ const defaultMessageListLayout = (
          paddingTop: 10,
          paddingBottom: 10,
          width: '80%',
-         //height: 200,
+         height: 120,
          borderStyle: 'solid',
          borderColor: 'lightgray',
          borderTopWidth: 1
@@ -102,8 +99,8 @@ const defaultMessageListLayout = (
       messageRow
    } = resolvedStyles
 
-   unreadIndicator = (orientation === "LANDSCAPE") ? {...unreadIndicator, marginLeft: 40} : unreadIndicator
-   readMessageIconContainer = (orientation === "LANDSCAPE") ? {...readMessageIconContainer, paddingLeft: 65} : readMessageIconContainer 
+   unreadIndicator = (!isPortrait) ? {...unreadIndicator, marginLeft: 40} : unreadIndicator
+   readMessageIconContainer = (!isPortrait) ? {...readMessageIconContainer, paddingLeft: 65} : readMessageIconContainer 
 
    function messageRowStyle(rowViewModel: InboxRowViewModel) {
       return last ? {...messageRow, borderBottomWidth: 1} : messageRow 
@@ -132,14 +129,13 @@ const IterableInboxMessageListItem = ({
    getHeight, 
    messageListItemLayout, 
    customizations,
-   contentWidth,
-   orientation 
+   isPortrait
 }: MessageListItemProps) => {
 
    return(
       messageListItemLayout(last, rowViewModel) ?
          messageListItemLayout(last, rowViewModel) :
-         defaultMessageListLayout(last, rowViewModel, customizations, orientation, contentWidth, getHeight)  
+         defaultMessageListLayout(last, rowViewModel, customizations, isPortrait)  
    )
 }
 

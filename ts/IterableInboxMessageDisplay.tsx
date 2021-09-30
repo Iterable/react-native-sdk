@@ -18,15 +18,16 @@ type MessageDisplayProps = {
    inAppContentPromise: Promise<IterableHtmlInAppContent>,
    returnToInbox: Function,
    contentWidth: number,
-   orientation: string
+   height: number,
+   isPortrait: boolean
 }
 
 const IterableInboxMessageDisplay = ({ 
    rowViewModel, 
    inAppContentPromise, 
    returnToInbox, 
-   contentWidth, 
-   orientation 
+   contentWidth,
+   isPortrait
 }: MessageDisplayProps) => {
    const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title
    const [inAppContent, setInAppContent] = useState<IterableHtmlInAppContent>(new IterableHtmlInAppContent(new IterableEdgeInsets(0, 0, 0, 0), ""))
@@ -40,9 +41,9 @@ const IterableInboxMessageDisplay = ({
 
    let updatedMessageDisplayContainer = {...messageDisplayContainer, width: contentWidth}
 
-   headline = (orientation === 'LANDSCAPE') ? {...headline, paddingLeft: 45} : headline
-   returnButton = (orientation === 'LANDSCAPE') ? {...returnButton, paddingLeft: 40} : returnButton
-   returnButtonContainer = (orientation === 'LANDSCAPE') ? {...returnButtonContainer, marginTop: 10} : returnButtonContainer
+   headline = (!isPortrait) ? {...headline, paddingLeft: 45} : headline
+   returnButton = (!isPortrait) ? {...returnButton, paddingLeft: 40} : returnButton
+   returnButtonContainer = (!isPortrait) ? {...returnButtonContainer, marginTop: 10} : returnButtonContainer
 
    useEffect(() => {
       inAppContentPromise.then(
