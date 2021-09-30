@@ -62,7 +62,7 @@ const defaultMessageListLayout = (
    
       messageContainer: {
          paddingLeft: 10,
-         width: '65%',
+         width: '75%',
          flexDirection: 'column',
          justifyContent: 'center'
       },
@@ -113,7 +113,7 @@ const defaultMessageListLayout = (
 
    unreadIndicator = (!isPortrait) ? {...unreadIndicator, marginLeft: 40} : unreadIndicator
    readMessageIconContainer = (!isPortrait) ? {...readMessageIconContainer, paddingLeft: 65} : readMessageIconContainer
-   messageContainer = (!isPortrait) ? {...messageContainer, width: '75%'} : messageContainer 
+   messageContainer = (!isPortrait) ? {...messageContainer, width: '85%'} : messageContainer 
 
    function messageRowStyle(rowViewModel: InboxRowViewModel) {
       return last ? {...messageRow, borderBottomWidth: 1} : messageRow 
