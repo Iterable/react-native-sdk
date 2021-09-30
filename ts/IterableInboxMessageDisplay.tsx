@@ -32,27 +32,6 @@ const IterableInboxMessageDisplay = ({
    const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title
    const [inAppContent, setInAppContent] = useState<IterableHtmlInAppContent>(new IterableHtmlInAppContent(new IterableEdgeInsets(0, 0, 0, 0), ""))
 
-   let webview = null
-
-   let sampleHTML = `
-      <html>
-         <head>
-         </head>
-         <body>
-            <script>
-               function clickLink(data) {
-                  setTimeout(function() {
-                     window.ReactNativeWebView.postMessage(data)
-                  }, 0)
-               }
-            </script>
-            <div class="modal-container" style="display: flex; flex-direction: column; font-size: 20pt; justify-content: center; align-items: center; margin: auto; width: 100%; border: none; padding: none;background:#ffffff">
-               <p><a href="iterable://dismiss" onClick={clickLink('cats')}>CLICK ME!!</a></p>
-            </div>
-         </body>
-      </html>
-   `
-
    let {
       returnButtonContainer,
       returnButton,
@@ -73,14 +52,6 @@ const IterableInboxMessageDisplay = ({
          })
    })
 
-   const handleWebViewNavigationStateChange = (newNavState : any) => {
-      const { url } = newNavState
-      console.log("url: ", url)
-      // if(!url) return
-      // if(url.includes('iterable://dismiss')) {
-      returnToInbox()
-   }
-
    return(
       <View style={updatedMessageDisplayContainer}>
          <View style={returnButtonContainer}>
@@ -98,8 +69,6 @@ const IterableInboxMessageDisplay = ({
                originWhiteList={['*']}
                source={{ html: inAppContent.html }} 
                style={{ width: contentWidth }}
-               onNavigationStateChange={(newNavState: any) => handleWebViewNavigationStateChange(newNavState)}
-               ref={(ref) => (webview = ref)}
             />
          </ScrollView> 
       </View>

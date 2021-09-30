@@ -1,7 +1,14 @@
 'use strict'
 
 import React, {useState} from 'react'
-import { View, Text, Image, StyleSheet } from 'react-native'
+import { 
+   View, 
+   Text, 
+   Image, 
+   ViewStyle,
+   TextStyle, 
+   StyleSheet 
+} from 'react-native'
 
 import { InboxRowViewModel, IterableInboxCustomizations } from '.'
 
@@ -10,7 +17,6 @@ type MessageListItemProps = {
    rowViewModel: InboxRowViewModel,
    customizations: IterableInboxCustomizations,
    messageListItemLayout: Function,
-   getHeight: Function,
    contentWidth: number,
    orientation: string
 }
@@ -21,7 +27,6 @@ const defaultMessageListLayout = (
    customizations: IterableInboxCustomizations,
    orientation: string,
    contentWidth: number, 
-   getHeight: Function
 ) => {
    const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title ?? ""
    const messageBody = rowViewModel.inAppMessage.inboxMetadata?.subtitle ?? ""
@@ -110,17 +115,17 @@ const defaultMessageListLayout = (
    }
       
    return(
-      <View style={messageRowStyle(rowViewModel)} onLayout={(event) => getHeight(event.nativeEvent.layout)}>
-         <View style={unreadIndicatorContainer}>
+      <View style={messageRowStyle(rowViewModel) as ViewStyle} >
+         <View style={unreadIndicatorContainer as ViewStyle}>
             {rowViewModel.read ? null : <View style={unreadIndicator}/>}
          </View>
-         <View style={rowViewModel.read ? readMessageIconContainer : unreadMessageIconContainer}>
+         <View style={(rowViewModel.read ? readMessageIconContainer : unreadMessageIconContainer) as ViewStyle}>
             <Image style={{height: 80, width: 80}} source={{uri: iconURL}}/>
          </View>
-         <View style={messageContainer}>
-            <Text style={title}>{messageTitle}</Text>
-            <Text style={body}>{messageBody}</Text>
-            <Text style={createdAt}>{messageCreatedAt}</Text>
+         <View style={messageContainer as ViewStyle}>
+            <Text style={title as TextStyle}>{messageTitle}</Text>
+            <Text style={body as TextStyle}>{messageBody}</Text>
+            <Text style={createdAt as TextStyle}>{messageCreatedAt}</Text>
          </View>
       </View>
    )
@@ -130,8 +135,7 @@ const IterableInboxMessageListItem = ({
    last, 
    rowViewModel,
    customizations,
-   messageListItemLayout, 
-   getHeight, 
+   messageListItemLayout,  
    contentWidth,
    orientation 
 }: MessageListItemProps) => {
@@ -139,7 +143,7 @@ const IterableInboxMessageListItem = ({
    return(
       messageListItemLayout(last, rowViewModel) ?
          messageListItemLayout(last, rowViewModel) :
-         defaultMessageListLayout(last, rowViewModel, customizations, orientation, contentWidth, getHeight)  
+         defaultMessageListLayout(last, rowViewModel, customizations, orientation, contentWidth)  
    )
 }
 

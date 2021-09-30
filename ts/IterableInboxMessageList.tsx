@@ -28,7 +28,6 @@ const IterableInboxMessageList = ({
    contentWidth,
    orientation
 }: MessageListProps) => {
-   //const [swiping, setSwiping] = useState(false)
 
    const renderMessageCells = (rowViewModels: InboxRowViewModel[]) => {
       return rowViewModels.map((rowViewModel, index) => {
@@ -43,7 +42,6 @@ const IterableInboxMessageList = ({
                messageListItemLayout={messageListItemLayout}
                deleteRow={(messageId: string) => deleteRow(messageId)}
                handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index)}
-               //swipingCheck={(swiping : boolean) => setSwiping(swiping)}
                contentWidth={contentWidth}
                orientation={orientation}
             />

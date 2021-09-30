@@ -24,7 +24,6 @@ type SwipeableRowProps = {
    messageListItemLayout: Function,
    deleteRow: Function,
    handleMessageSelect: Function,
-   // swipingCheck: Function,
    contentWidth: number,
    orientation: string
 }
@@ -37,7 +36,6 @@ const IterableInboxSwipeableRow = ({
    messageListItemLayout,
    deleteRow,
    handleMessageSelect,
-   //swipingCheck,
    contentWidth,
    orientation
 }: SwipeableRowProps) => {
@@ -53,19 +51,6 @@ const IterableInboxSwipeableRow = ({
 
    const scrollThreshold = contentWidth / 15
    const FORCING_DURATION = 350
-
-   function getHeight(layout: any) {
-      const {height, width} = layout
-      setHeight(height)
-   }
-
-   //stops scrolling and enables swiping when threshold is reached
-   const enableScrollView = (isEnabled: boolean) => {
-      if(scrollStopped !== isEnabled) {
-         // swipingCheck(isEnabled)
-         // setScrollStopped(isEnabled)
-      }
-   }
 
    //If user swipes, either complete swipe or reset 
    const userSwipedLeft = (gesture : any) => {
@@ -107,8 +92,6 @@ const IterableInboxSwipeableRow = ({
          },
          onPanResponderMove: (event, gesture) => {
             if(gesture.dx <= -scrollThreshold) {
-               //enables swipeing when threshold is reached
-               enableScrollView(true)
                //threshold value is deleted from movement
                const x = gesture.dx + scrollThreshold
                //position is set to the new value
@@ -146,7 +129,6 @@ const IterableInboxSwipeableRow = ({
                customizations={customizations}
                messageListItemLayout={messageListItemLayout}
                handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index)}
-               getHeight={(layout: any) => getHeight(layout)}
                contentWidth={contentWidth}
                orientation={orientation}
             />   
