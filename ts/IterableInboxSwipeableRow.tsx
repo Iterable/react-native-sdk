@@ -43,16 +43,17 @@ const IterableInboxSwipeableRow = ({
    isPortrait
 }: SwipeableRowProps) => {
    const position = useRef(new Animated.ValueXY()).current
+   const [height, setHeight] = useState<number>(100) 
+   const [width, setWidth] = useState<number>(100) 
 
    let { textContainer, deleteSlider, textStyle } = styles
 
-   deleteSlider = (orientation === 'PORTRAIT') ? deleteSlider : {...deleteSlider, paddingRight: 40 } 
+   deleteSlider = (isPortrait) ? deleteSlider : {...deleteSlider, paddingRight: 40 } 
    
    let [scrollStopped, setScrollStopped] = useState(false)
 
    const scrollThreshold = contentWidth / 15
    const FORCING_DURATION = 350
-
 
    //stops scrolling and enables swiping when threshold is reached
    const enableScrollView = (isEnabled: boolean) => {
@@ -163,7 +164,7 @@ const styles = StyleSheet.create({
       position: 'absolute',
       elevation: 3,
       width: '100%',
-      height: 100,
+      height: 120,
       zIndex: 1
    },
 

@@ -1,18 +1,14 @@
 'use strict'
 
-import React from 'react'
-import {
-   View,
-   Text,
-   Image,
-   StyleSheet
-} from 'react-native'
+import React, {useState} from 'react'
+import { View, Text, Image, StyleSheet } from 'react-native'
 
 import { InboxRowViewModel, IterableInboxCustomizations } from '.'
 
 type MessageListItemProps = {
    last: boolean,
    rowViewModel: InboxRowViewModel,
+   getHeight: Function,
    messageListItemLayout: Function,
    customizations: IterableInboxCustomizations,
    isPortrait: boolean
@@ -66,6 +62,8 @@ const defaultMessageListLayout = (
       body: {
          fontSize: 15,
          color: 'lightgray',
+         width: contentWidth * 0.85,
+         flexWrap: "wrap",
          paddingBottom: 10
       },
    
@@ -79,8 +77,8 @@ const defaultMessageListLayout = (
          backgroundColor: 'white',
          paddingTop: 10,
          paddingBottom: 10,
-         width: '100%',
-         height: 100,
+         width: '80%',
+         height: 120,
          borderStyle: 'solid',
          borderColor: 'lightgray',
          borderTopWidth: 1
@@ -109,7 +107,7 @@ const defaultMessageListLayout = (
    }
       
    return(
-      <View style={messageRowStyle(rowViewModel)}>
+      <View style={messageRowStyle(rowViewModel)} onLayout={(event) => getHeight(event.nativeEvent.layout)}>
          <View style={unreadIndicatorContainer}>
             {rowViewModel.read ? null : <View style={unreadIndicator}/>}
          </View>
@@ -127,10 +125,11 @@ const defaultMessageListLayout = (
 
 const IterableInboxMessageListItem = ({ 
    last, 
-   rowViewModel, 
+   rowViewModel,
+   getHeight, 
    messageListItemLayout, 
    customizations,
-   isPortrait 
+   isPortrait
 }: MessageListItemProps) => {
 
    return(

@@ -5,10 +5,10 @@ import {
   Text, 
   View,
   ScrollView,  
-  StyleSheet, 
+  StyleSheet,
   TouchableWithoutFeedback,
 } from 'react-native'
-import HTML from 'react-native-render-html'
+import { WebView } from 'react-native-webview'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 import { InboxRowViewModel, IterableHtmlInAppContent, IterableEdgeInsets } from '.'
@@ -27,7 +27,7 @@ const IterableInboxMessageDisplay = ({
    inAppContentPromise, 
    returnToInbox, 
    contentWidth,
-   isPortrait 
+   isPortrait
 }: MessageDisplayProps) => {
    const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title
    const [inAppContent, setInAppContent] = useState<IterableHtmlInAppContent>(new IterableHtmlInAppContent(new IterableEdgeInsets(0, 0, 0, 0), ""))
@@ -65,7 +65,7 @@ const IterableInboxMessageDisplay = ({
             <Text style={headline}>
                {messageTitle}
             </Text>
-            <HTML source={{ html: inAppContent.html }} />
+            <WebView source={{ html: inAppContent.html }} style={{ width: contentWidth }} />
          </ScrollView> 
       </View>
    )
