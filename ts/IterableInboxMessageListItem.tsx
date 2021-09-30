@@ -15,8 +15,8 @@ import { InboxRowViewModel, IterableInboxCustomizations } from '.'
 type MessageListItemProps = {
    last: boolean,
    rowViewModel: InboxRowViewModel,
-   messageListItemLayout: Function,
    customizations: IterableInboxCustomizations,
+   messageListItemLayout: Function,
    isPortrait: boolean
 }
 
@@ -31,7 +31,7 @@ const defaultMessageListLayout = (
    const messageCreatedAt = rowViewModel.createdAt
    const iconURL = rowViewModel.imageUrl
 
-   const styles = StyleSheet.create({
+   let styles = StyleSheet.create({
       unreadIndicatorContainer: {
          height: '100%',
          flexDirection: 'column',
@@ -74,7 +74,8 @@ const defaultMessageListLayout = (
    
       body: {
          fontSize: 15,
-         color: 'gray',
+         color: 'lightgray',
+         width: '65%',
          flexWrap: "wrap",
          paddingBottom: 10
       },
@@ -120,7 +121,7 @@ const defaultMessageListLayout = (
    }
       
    return(
-      <View style={messageRowStyle(rowViewModel) as ViewStyle}>
+      <View style={messageRowStyle(rowViewModel) as ViewStyle} >
          <View style={unreadIndicatorContainer as ViewStyle}>
             {rowViewModel.read ? null : <View style={unreadIndicator}/>}
          </View>
@@ -128,9 +129,9 @@ const defaultMessageListLayout = (
             <Image style={{height: 80, width: 80}} source={{uri: iconURL}}/>
          </View>
          <View style={messageContainer as ViewStyle}>
-            <Text style={title}>{messageTitle}</Text>
-            <Text numberOfLines={2} ellipsizeMode='tail' style={body}>{messageBody}</Text>
-            <Text style={createdAt}>{messageCreatedAt}</Text>
+            <Text style={title}>{messageTitle as TextStyle}</Text>
+            <Text numberOfLines={2} ellipsizeMode='tail' style={body as TextStyle}>{messageBody}</Text>
+            <Text style={createdAt}>{messageCreatedAt as TextStyle}</Text>
          </View>
       </View>
    )
@@ -138,10 +139,10 @@ const defaultMessageListLayout = (
 
 const IterableInboxMessageListItem = ({ 
    last, 
-   rowViewModel, 
-   messageListItemLayout, 
+   rowViewModel,
    customizations,
-   isPortrait 
+   messageListItemLayout,  
+   isPortrait
 }: MessageListItemProps) => {
 
    return(

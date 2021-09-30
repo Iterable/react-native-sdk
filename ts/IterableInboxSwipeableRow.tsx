@@ -1,12 +1,12 @@
 'use strict'
 
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useRef } from 'react'
 import {
    View,
    Text,
    Animated,
    PanResponder,
-   StyleSheet,
+   StyleSheet
 } from 'react-native'
 
 import {
@@ -20,13 +20,11 @@ type SwipeableRowProps = {
    index: number,
    last: boolean,
    rowViewModel: InboxRowViewModel,
-   messageListItemLayout: Function,
    customizations: IterableInboxCustomizations,
-   // swipingCheck: Function,
+   messageListItemLayout: Function,
    deleteRow: Function,
    handleMessageSelect: Function,
    contentWidth: number,
-   height: number,
    isPortrait: boolean
 }
 
@@ -34,9 +32,8 @@ const IterableInboxSwipeableRow = ({
    index,
    last,
    rowViewModel,
-   messageListItemLayout,
    customizations,
-   //swipingCheck,
+   messageListItemLayout,
    deleteRow,
    handleMessageSelect,
    contentWidth,
@@ -44,30 +41,16 @@ const IterableInboxSwipeableRow = ({
 }: SwipeableRowProps) => {
    const position = useRef(new Animated.ValueXY()).current
 
-   const { textContainer, deleteSlider, textStyle } = styles
-   
-   let [scrollStopped, setScrollStopped] = useState(false)
-   let [deleteThreshold, setDeleteThreshold] = useState(-contentWidth / 2)
-   let [scrollThreshold, setScrollThreshold] = useState(contentWidth / 15)
+   let { textContainer, deleteSlider, textStyle } = styles
 
+   deleteSlider = (isPortrait) ? deleteSlider : {...deleteSlider, paddingRight: 40 } 
+
+   const scrollThreshold = contentWidth / 15
    const FORCING_DURATION = 350
-
-   useEffect(() => {
-      setDeleteThreshold(-contentWidth / 2)
-      setScrollThreshold(contentWidth / 15)
-   }, [isPortrait, contentWidth])
-
-   //stops scrolling and enables swiping when threshold is reached
-   const enableScrollView = (isEnabled: boolean) => {
-      if(scrollStopped !== isEnabled) {
-         // swipingCheck(isEnabled)
-         // setScrollStopped(isEnabled)
-      }
-   }
 
    //If user swipes, either complete swipe or reset 
    const userSwipedLeft = (gesture : any) => {
-      if(gesture.dx < deleteThreshold) {
+      if(gesture.dx < -0.6 * contentWidth) {
          completeSwipe()   
       } else {
          resetPosition()
@@ -105,8 +88,6 @@ const IterableInboxSwipeableRow = ({
          },
          onPanResponderMove: (event, gesture) => {
             if(gesture.dx <= -scrollThreshold) {
-               //enables swipeing when threshold is reached
-               enableScrollView(true)
                //threshold value is deleted from movement
                const x = gesture.dx + scrollThreshold
                //position is set to the new value
@@ -141,8 +122,8 @@ const IterableInboxSwipeableRow = ({
                index={index}
                last={last}
                rowViewModel={rowViewModel}
-               messageListItemLayout={messageListItemLayout}
                customizations={customizations}
+               messageListItemLayout={messageListItemLayout}
                handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index)}
                isPortrait={isPortrait}
             />   
