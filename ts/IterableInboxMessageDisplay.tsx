@@ -1,11 +1,12 @@
 'use strict'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { 
   Text, 
   View,
   ScrollView,  
   StyleSheet,
+  Alert,
   TouchableWithoutFeedback,
 } from 'react-native'
 import { WebView } from 'react-native-webview'
@@ -18,7 +19,6 @@ type MessageDisplayProps = {
    inAppContentPromise: Promise<IterableHtmlInAppContent>,
    returnToInbox: Function,
    contentWidth: number,
-   height: number,
    isPortrait: boolean
 }
 
@@ -65,7 +65,11 @@ const IterableInboxMessageDisplay = ({
             <Text style={headline}>
                {messageTitle}
             </Text>
-            <WebView source={{ html: inAppContent.html }} style={{ width: contentWidth }} />
+            <WebView
+               originWhiteList={['*']}
+               source={{ html: inAppContent.html }} 
+               style={{ width: contentWidth }}
+            />
          </ScrollView> 
       </View>
    )
