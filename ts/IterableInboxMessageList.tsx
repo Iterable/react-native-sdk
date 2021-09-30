@@ -1,6 +1,6 @@
 'use strict'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { ScrollView } from 'react-native'
 
 import {
@@ -28,6 +28,7 @@ const IterableInboxMessageList = ({
    contentWidth,
    isPortrait
 }: MessageListProps) => {
+   const [swiping, setSwiping] = useState<boolean>(false)
 
    const renderMessageCells = (rowViewModels: InboxRowViewModel[]) => {
       return rowViewModels.map((rowViewModel, index) => {
@@ -51,7 +52,7 @@ const IterableInboxMessageList = ({
    } 
 
    return(
-      <ScrollView>
+      <ScrollView scrollEnabled={!swiping}>
          {renderMessageCells(rowViewModels)}
       </ScrollView>   
    )

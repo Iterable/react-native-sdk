@@ -43,13 +43,9 @@ const IterableInboxSwipeableRow = ({
 }: SwipeableRowProps) => {
    const position = useRef(new Animated.ValueXY()).current
 
-   const { textContainer, deleteSlider, textStyle } = styles
-
-   const FORCING_DURATION = 350
+   let { textContainer, deleteSlider, textStyle } = styles
 
    deleteSlider = (isPortrait) ? deleteSlider : {...deleteSlider, paddingRight: 40 }
-        
-   const deleteThreshold = -contentWidth / 2
 
    const scrollThreshold = contentWidth / 15
    const FORCING_DURATION = 350
