@@ -69,6 +69,7 @@ const IterableInboxMessageDisplay = ({
                originWhiteList={['*']}
                source={{ html: inAppContent.html }} 
                style={{ width: contentWidth }}
+               onNavigationStateChange={handleWebViewNavigationStateChange}
             />
          </ScrollView> 
       </View>
