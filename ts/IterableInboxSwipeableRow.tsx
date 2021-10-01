@@ -21,6 +21,7 @@ type SwipeableRowProps = {
    last: boolean,
    rowViewModel: InboxRowViewModel,
    customizations: IterableInboxCustomizations,
+   swipingCheck: Function,
    messageListItemLayout: Function,
    deleteRow: Function,
    handleMessageSelect: Function,
@@ -33,6 +34,7 @@ const IterableInboxSwipeableRow = ({
    last,
    rowViewModel,
    customizations,
+   swipingCheck,
    messageListItemLayout,
    deleteRow,
    handleMessageSelect,
@@ -43,7 +45,7 @@ const IterableInboxSwipeableRow = ({
 
    let { textContainer, deleteSlider, textStyle } = styles
 
-   deleteSlider = (isPortrait) ? deleteSlider : {...deleteSlider, paddingRight: 40 } 
+   deleteSlider = (isPortrait) ? deleteSlider : {...deleteSlider, paddingRight: 40 }
 
    const scrollThreshold = contentWidth / 15
    const FORCING_DURATION = 350
@@ -54,6 +56,7 @@ const IterableInboxSwipeableRow = ({
          completeSwipe()   
       } else {
          resetPosition()
+         swipingCheck(false)
       }
    }
 
@@ -88,6 +91,9 @@ const IterableInboxSwipeableRow = ({
          },
          onPanResponderMove: (event, gesture) => {
             if(gesture.dx <= -scrollThreshold) {
+               //enables swipeing when threshold is reached
+               swipingCheck(true)
+
                //threshold value is deleted from movement
                const x = gesture.dx + scrollThreshold
                //position is set to the new value
@@ -99,12 +105,6 @@ const IterableInboxSwipeableRow = ({
             if(gesture.dx < 0) {
                userSwipedLeft(gesture) 
             }
-         },
-         onPanResponderTerminate: () => {
-            Animated.spring(position, {
-               toValue: {x: 0, y: 0},
-               useNativeDriver: false
-            }).start()
          }
       })
    ).current
