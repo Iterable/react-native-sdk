@@ -1,13 +1,13 @@
 'use strict'
 
-import React, {useState} from 'react'
-import { 
-   View, 
-   Text, 
-   Image, 
+import React from 'react'
+import {
+   View,
+   Text,
+   Image,
    ViewStyle,
-   TextStyle, 
-   StyleSheet 
+   TextStyle,
+   StyleSheet
 } from 'react-native'
 
 import { InboxRowViewModel, IterableInboxCustomizations } from '.'
@@ -45,19 +45,26 @@ const defaultMessageListLayout = (
          backgroundColor: 'blue',
          marginLeft: 10,
          marginRight: 5,
-         marginTop: 7
+         marginTop: 10
       },
 
       unreadMessageIconContainer: {
-         paddingLeft: 10
+         paddingLeft: 10,
+         flexDirection: 'column',
+         justifyContent: 'center'
       },
 
       readMessageIconContainer: {
-         paddingLeft: 30
+         paddingLeft: 30,
+         flexDirection: 'column',
+         justifyContent: 'center'
       },
    
       messageContainer: {
-         paddingLeft: 10
+         paddingLeft: 10,
+         width: '75%',
+         flexDirection: 'column',
+         justifyContent: 'center'
       },
    
       title: {
@@ -68,7 +75,7 @@ const defaultMessageListLayout = (
       body: {
          fontSize: 15,
          color: 'lightgray',
-         width: '65%',
+         width: '85%',
          flexWrap: "wrap",
          paddingBottom: 10
       },
@@ -106,7 +113,8 @@ const defaultMessageListLayout = (
    } = resolvedStyles
 
    unreadIndicator = (!isPortrait) ? {...unreadIndicator, marginLeft: 40} : unreadIndicator
-   readMessageIconContainer = (!isPortrait) ? {...readMessageIconContainer, paddingLeft: 65} : readMessageIconContainer 
+   readMessageIconContainer = (!isPortrait) ? {...readMessageIconContainer, paddingLeft: 65} : readMessageIconContainer
+   messageContainer = (!isPortrait) ? {...messageContainer, width: '90%'} : messageContainer 
 
    function messageRowStyle(rowViewModel: InboxRowViewModel) {
       return last ? {...messageRow, borderBottomWidth: 1} : messageRow 
@@ -122,9 +130,9 @@ const defaultMessageListLayout = (
             <Image style={{height: 80, width: 80}} source={{uri: iconURL}}/>
          </View>
          <View style={messageContainer as ViewStyle}>
-            <Text style={title as TextStyle}>{messageTitle}</Text>
-            <Text style={body as TextStyle}>{messageBody}</Text>
-            <Text style={createdAt as TextStyle}>{messageCreatedAt}</Text>
+            <Text style={title}>{messageTitle as TextStyle}</Text>
+            <Text numberOfLines={2} ellipsizeMode='tail' style={body as TextStyle}>{messageBody}</Text>
+            <Text style={createdAt}>{messageCreatedAt as TextStyle}</Text>
          </View>
       </View>
    )
