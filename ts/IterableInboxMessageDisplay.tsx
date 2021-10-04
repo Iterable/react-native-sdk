@@ -46,7 +46,12 @@ const IterableInboxMessageDisplay = ({
    returnButtonContainer = (!isPortrait) ? {...returnButtonContainer, marginTop: 10} : returnButtonContainer
 
    let JS = `
-      document.querySelector('a').onclick = clickLink
+      const links = document.querySelectorAll('a')
+      links.forEach(link => {
+         if(link.href === 'iterable://dismiss') {
+            link.onclick = clickLink
+         }
+      })
       function clickLink(data) {
          window.ReactNativeWebView.postMessage(data)
       }
@@ -74,7 +79,7 @@ const IterableInboxMessageDisplay = ({
             </Text>
             <WebView
                originWhiteList={['*']}
-               source={{ html: inAppContent. }} 
+               source={{ html: inAppContent.html }} 
                style={{ width: contentWidth }}
                onMessage={(event) => returnToInbox()}
                injectedJavaScript={JS}
