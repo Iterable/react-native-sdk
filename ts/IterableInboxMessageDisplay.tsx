@@ -45,11 +45,10 @@ const IterableInboxMessageDisplay = ({
    returnButton = (!isPortrait) ? {...returnButton, paddingLeft: 40} : returnButton
    returnButtonContainer = (!isPortrait) ? {...returnButtonContainer, marginTop: 10} : returnButtonContainer
 
-   let jsCode = `
-      document.querySelector('a').href = '.';
-      document.querySelector('a').onClick = function() {
-         console.log("Send post message")
-         window.postMessage("Hello")   
+   let JS = `
+      document.querySelector('a').onclick = clickLink
+      function clickLink(data) {
+         window.ReactNativeWebView.postMessage(data)
       }
    `
 
@@ -57,13 +56,8 @@ const IterableInboxMessageDisplay = ({
       inAppContentPromise.then(
          (value) => {
             setInAppContent(value)
-            console.log(value.html)
          })
    })
-
-   let onMessage = (m: any) => {
-      returnToInbox()
-   }
 
    return(
       <View style={updatedMessageDisplayContainer}>
@@ -80,10 +74,10 @@ const IterableInboxMessageDisplay = ({
             </Text>
             <WebView
                originWhiteList={['*']}
-               source={{ html: inAppContent.html }} 
+               source={{ html: inAppContent. }} 
                style={{ width: contentWidth }}
-               onMessage={message => onMessage(message)}
-               injectedJavaScript={jsCode}
+               onMessage={(event) => returnToInbox()}
+               injectedJavaScript={JS}
             />
          </ScrollView> 
       </View>
