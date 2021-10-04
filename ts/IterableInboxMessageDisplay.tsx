@@ -45,12 +45,25 @@ const IterableInboxMessageDisplay = ({
    returnButton = (!isPortrait) ? {...returnButton, paddingLeft: 40} : returnButton
    returnButtonContainer = (!isPortrait) ? {...returnButtonContainer, marginTop: 10} : returnButtonContainer
 
+   let jsCode = `
+      document.querySelector('a').href = '.';
+      document.querySelector('a').onClick = function() {
+         console.log("Send post message")
+         window.postMessage("Hello")   
+      }
+   `
+
    useEffect(() => {
       inAppContentPromise.then(
          (value) => {
             setInAppContent(value)
+            console.log(value.html)
          })
    })
+
+   let onMessage = (m: any) => {
+      returnToInbox()
+   }
 
    return(
       <View style={updatedMessageDisplayContainer}>
@@ -69,7 +82,8 @@ const IterableInboxMessageDisplay = ({
                originWhiteList={['*']}
                source={{ html: inAppContent.html }} 
                style={{ width: contentWidth }}
-               onNavigationStateChange={handleWebViewNavigationStateChange}
+               onMessage={message => onMessage(message)}
+               injectedJavaScript={jsCode}
             />
          </ScrollView> 
       </View>
