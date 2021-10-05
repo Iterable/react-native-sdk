@@ -1,13 +1,13 @@
 'use strict'
 
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { 
   Text, 
   View,
   ScrollView,  
   StyleSheet,
-  Alert,
   TouchableWithoutFeedback,
+  Linking,
 } from 'react-native'
 import { WebView } from 'react-native-webview'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -69,6 +69,13 @@ const IterableInboxMessageDisplay = ({
                originWhiteList={['*']}
                source={{ html: inAppContent.html }} 
                style={{ width: contentWidth }}
+               onShouldStartLoadWithRequest={event => {
+                  if(event.url.slice(0,4) === 'http') {
+                     Linking.openURL(event.url)
+                     return false
+                  }
+                  return true 
+               }}
             />
          </ScrollView> 
       </View>
