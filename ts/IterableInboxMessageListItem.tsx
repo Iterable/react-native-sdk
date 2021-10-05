@@ -127,7 +127,7 @@ const defaultMessageListLayout = (
             {rowViewModel.read ? null : <View style={unreadIndicator}/>}
          </View>
          <View style={(rowViewModel.read ? readMessageIconContainer : unreadMessageIconContainer) as ViewStyle}>
-            <Image style={{height: 80, width: 80}} source={{uri: iconURL}}/>
+            {iconURL ? <Image style={{height: 80, width: 80}} source={{uri: iconURL}}/> : null}
          </View>
          <View style={messageContainer as ViewStyle}>
             <Text style={title}>{messageTitle as TextStyle}</Text>
