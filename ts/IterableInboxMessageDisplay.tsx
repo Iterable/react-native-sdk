@@ -1,12 +1,12 @@
 'use strict'
 
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { 
   Text, 
   View,
   ScrollView,  
   StyleSheet,
-  Alert,
+  Linking,
   TouchableWithoutFeedback,
 } from 'react-native'
 import { WebView } from 'react-native-webview'
@@ -83,6 +83,13 @@ const IterableInboxMessageDisplay = ({
                style={{ width: contentWidth }}
                onMessage={(event) => returnToInbox()}
                injectedJavaScript={JS}
+               onShouldStartLoadWithRequest={event => {
+                  if(event.url.slice(0,4) === 'http') {
+                     Linking.openURL(event.url)
+                     return false
+                  }
+                  return true 
+               }}
             />
          </ScrollView> 
       </View>
