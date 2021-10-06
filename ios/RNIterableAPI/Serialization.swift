@@ -210,3 +210,23 @@ extension LogLevel {
         }
     }
 }
+
+extension InboxImpressionTracker.RowInfo {
+    static func from(dict: [AnyHashable: Any]) -> InboxImpressionTracker.RowInfo? {
+        guard let messageId = dict["messageId"] as? String else {
+            return nil
+        }
+        
+        guard let silentInbox = dict["silentInbox"] as? Bool else {
+            return nil
+        }
+        
+        let rowInfo = InboxImpressionTracker.RowInfo(messageId: messageId, silentInbox: silentInbox)
+        
+        return rowInfo
+    }
+    
+    static func from(rows: [[AnyHashable: Any]]) -> [InboxImpressionTracker.RowInfo]? {
+        return rows.compactMap({ InboxImpressionTracker.RowInfo.from(dict: $0) })
+    }
+}

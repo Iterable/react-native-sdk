@@ -416,6 +416,41 @@ class ReactIterableAPI: RCTEventEmitter {
         }
     }
     
+    // MARK: - SDK Inbox Session Tracking Functions
+    
+    @objc(startSession:)
+    func startSession(visibleRows: [[AnyHashable: Any]]) {
+        let serializedRows = InboxImpressionTracker.RowInfo.from(rows: visibleRows) ?? []
+        
+        inboxSessionManager.startSession(visibleRows: serializedRows)
+    }
+    
+    @objc(endSession)
+    func endSession() {
+        guard let sessionInfo = inboxSessionManager.endSession() else {
+            ITBError("Could not find session info")
+            return
+        }
+        
+        let inboxSession = IterableInboxSession(id: sessionInfo.startInfo.id,
+                                                sessionStartTime: sessionInfo.startInfo.startTime,
+                                                sessionEndTime: Date(),
+                                                startTotalMessageCount: sessionInfo.startInfo.totalMessageCount,
+                                                startUnreadMessageCount: sessionInfo.startInfo.unreadMessageCount,
+                                                endTotalMessageCount: IterableAPI.inAppManager.getInboxMessages().count,
+                                                endUnreadMessageCount: IterableAPI.inAppManager.getUnreadInboxMessagesCount(),
+                                                impressions: sessionInfo.impressions.map { $0.toIterableInboxImpression() })
+        
+        IterableAPI.track(inboxSession: inboxSession)
+    }
+    
+    @objc(updateVisibleRows:)
+    func updateVisibleRows(visibleRows: [[AnyHashable: Any]]) {
+        let serializedRows = InboxImpressionTracker.RowInfo.from(rows: visibleRows) ?? []
+        
+        inboxSessionManager.updateVisibleRows(visibleRows: serializedRows)
+    }
+    
     // MARK: - SDK Auth Manager Functions
     
     @objc(passAlongAuthToken:)
@@ -437,6 +472,8 @@ class ReactIterableAPI: RCTEventEmitter {
     
     private var passedAuthToken: String?
     private var authHandlerSemaphore = DispatchSemaphore(value: 0)
+    
+    private let inboxSessionManager = InboxSessionManager()
     
     private func initialize(withApiKey apiKey: String,
                             config configDict: [AnyHashable: Any],
