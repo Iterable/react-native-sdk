@@ -20,6 +20,7 @@ import IterableInboxDataModel from './IterableInboxDataModel'
 import IterableInboxCustomizations from './IterableInboxCustomizations'
 
 import useInboxChangedListener from './useInboxChangedListener'
+import useAppStateListener from './useAppStateListener'
 import useDeviceOrientation from './useDeviceOrientation'
 
 type inboxProps = {
@@ -37,6 +38,7 @@ const IterableInbox = ({
 }: inboxProps) => {
    const defaultInboxTitle = "Inbox"
    const inboxDataModel = new IterableInboxDataModel()
+   const appState = useAppStateListener()
 
    let { height, width, isPortrait } = useDeviceOrientation()
 
@@ -66,6 +68,14 @@ const IterableInbox = ({
 
       return () => {}
    }, [])
+
+   useEffect(() => {
+      if (appState === 'active') {
+         // inboxDataModel.startSession()
+      } else {
+         // inboxDataModel.endSession()
+      }
+   }, [appState])
 
    useEffect(() => {
       setScreenWidth(width)
