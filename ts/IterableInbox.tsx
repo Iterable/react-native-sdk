@@ -6,8 +6,6 @@ import {
    Text, 
    StyleSheet,
    Animated,
-   NativeModules,
-   NativeEventEmitter
 } from 'react-native'
 
 import {
@@ -21,9 +19,7 @@ import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
 import IterableInboxDataModel from './IterableInboxDataModel'
 import IterableInboxCustomizations from './IterableInboxCustomizations'
 
-const RNIterableAPI = NativeModules.RNIterableAPI
-const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
-
+import useInboxChangedListener from './useInboxChangedListener'
 import useDeviceOrientation from './useDeviceOrientation'
 
 type inboxProps = {
@@ -64,16 +60,11 @@ const IterableInbox = ({
    
    headline = (isPortrait) ? {...headline, marginTop: 40} : {...headline, paddingLeft: 65}
 
-   const fetchData = async () => {
-      const newRowViewModels = await inboxDataModel.refresh()
-      setRowViewModels(newRowViewModels)
-   }
-
    useEffect(() => {
-      addSilentPushHandler()
       fetchInboxMessages()
+      addInboxChangedListener()
 
-      return removeSilentPushHandler
+      return () => {}
    }, [])
 
    useEffect(() => {
@@ -83,17 +74,10 @@ const IterableInbox = ({
       } 
    }, [width])
 
-   function addSilentPushHandler() {
-      RNEventEmitter.addListener(
-         "receivedIterableInboxChanged",
-         () => {
-            fetchInboxMessages()
-         }
-      )
-   }
-
-   function removeSilentPushHandler() {
-      RNEventEmitter.removeAllListeners("receivedIterableInboxChanged")
+   function addInboxChangedListener() {
+      useInboxChangedListener({
+         onInboxChanged: () => { fetchInboxMessages() }
+      })
    }
 
    const fetchInboxMessages = async () => {
@@ -124,7 +108,7 @@ const IterableInbox = ({
 
    const deleteRow = (messageId: string) => {
       inboxDataModel.deleteItemById(messageId, IterableInAppDeleteSource.inboxSwipe)
-      fetchData()
+      fetchInboxMessages()
    }
 
    function returnToInbox() {
