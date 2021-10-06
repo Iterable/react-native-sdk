@@ -409,6 +409,28 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     // ---------------------------------------------------------------------------------------
     // endregion
 
+
+    // ---------------------------------------------------------------------------------------
+    // region Inbox In-App Session Tracking APIs
+
+    @ReactMethod
+    public void startSession(ReadableArray visibleRows) {
+
+    }
+
+    @ReactMethod
+    public void endSession() {
+
+    }
+
+    @ReactMethod
+    public void updateVisibleRows(ReadableArray visibleRows) {
+
+    }
+
+    // ---------------------------------------------------------------------------------------
+    // endregion
+
     private static Integer[] readableArrayToIntegerArray(ReadableArray array) {
         if (array == null) {
             return null;
