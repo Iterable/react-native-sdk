@@ -9,6 +9,8 @@ import {
     IterableHtmlInAppContent
 } from '.'
 
+import InboxImpressionRowInfo from './InboxImpressionRowInfo'
+
 const RNIterableAPI = NativeModules.RNIterableAPI
 
 class IterableInboxDataModel {
@@ -56,6 +58,27 @@ class IterableInboxDataModel {
                 return []
             }
         )
+    }
+
+    // inbox session tracking functions
+
+    startSession() {
+        RNIterableAPI.startSession(this.getCurrentVisibleRows())
+    }
+
+    endSession() {
+        RNIterableAPI.endSession()
+    }
+
+    updateVisibleRows() {
+        RNIterableAPI.updateVisibleRows(this.getCurrentVisibleRows())
+    }
+
+    // private/internal
+
+    private getCurrentVisibleRows(): InboxImpressionRowInfo[] {
+        console.log("jay getCurrentVisibleRows")
+        return []
     }
 
     private static sortByMostRecent = (message1: IterableInAppMessage, message2: IterableInAppMessage) => {
