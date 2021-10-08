@@ -199,7 +199,7 @@ const IterableInbox = ({
                justifyContent: "flex-start",
             }}
          >
-            {showMessageList(loading)}   
+            {showMessageList(loading)}
             {showMessageDisplay(rowViewModels, selectedRowViewModelIdx)}
          </Animated.View>
       </View>
@@ -215,8 +215,8 @@ const styles = StyleSheet.create({
    container: {
       flex: 1,
       flexDirection: 'row',
-      alignItems: "center",
-      justifyContent: "flex-start"
+      alignItems: 'center',
+      justifyContent: 'flex-start'
    },
 
    headline: {
