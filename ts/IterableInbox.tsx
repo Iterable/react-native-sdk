@@ -62,9 +62,11 @@ const IterableInbox = ({
    
    headline = (isPortrait) ? {...headline, marginTop: 40} : {...headline, paddingLeft: 65}
 
+
+   
    useEffect(() => {
       fetchInboxMessages()
-      addInboxChangedListener()
+      // addInboxChangedListener()
 
       return () => {}
    }, [])
