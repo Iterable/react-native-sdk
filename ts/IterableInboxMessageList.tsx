@@ -1,7 +1,7 @@
 'use strict'
 
-import React, { useState } from 'react'
-import { ViewabilityConfig, ViewabilityConfigCallbackPair, ViewabilityConfigCallbackPairs, ViewToken } from 'react-native'
+import React, { useCallback, useState } from 'react'
+import { ViewabilityConfig, ViewToken } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
 
 import {
@@ -51,20 +51,15 @@ const IterableInboxMessageList = ({
 
    const inboxSessionViewabilityConfig: ViewabilityConfig = {
       minimumViewTime: 0.5,
-      viewAreaCoveragePercentThreshold: 100,
-      itemVisiblePercentThreshold: 100,
+      itemVisiblePercentThreshold: 50,
       waitForInteraction: true
-
    }
 
-   function inboxSessionItemsChanged(info: {viewableItems: Array<ViewToken>, changed: Array<ViewToken>}) {
-      console.log("jay onViewableItemsChanged ", info.viewableItems.length, " ", info.changed.length)
-   }
-
-   const pair: ViewabilityConfigCallbackPair = {
-      viewabilityConfig: inboxSessionViewabilityConfig,
-      onViewableItemsChanged: inboxSessionItemsChanged
-   }
+   const inboxSessionItemsChanged = useCallback((
+      (info: {viewableItems: Array<ViewToken>, changed: Array<ViewToken>}) => {
+         console.log("jay onViewableItemsChanged ", info.viewableItems.length, " ", info.changed.length)
+      }
+   ), [])
 
    return (
       <FlatList
@@ -73,8 +68,7 @@ const IterableInboxMessageList = ({
          renderItem = {({item, index}: {item: InboxRowViewModel, index: number }) => renderRowViewModel(item, index, index === rowViewModels.length - 1)}
          keyExtractor = {(item: InboxRowViewModel) => item.inAppMessage.messageId}
          viewabilityConfig = {inboxSessionViewabilityConfig}
-         onViewableItemsChanged = {(info) => inboxSessionItemsChanged(info)}
-         // viewabilityConfigCallbackPairs = {[pair]}
+         onViewableItemsChanged = {inboxSessionItemsChanged}
       />
    )
 }
