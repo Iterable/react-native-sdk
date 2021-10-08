@@ -226,7 +226,7 @@ extension InboxImpressionTracker.RowInfo {
         return rowInfo
     }
     
-    static func from(rows: [[AnyHashable: Any]]) -> [InboxImpressionTracker.RowInfo]? {
-        return rows.compactMap({ InboxImpressionTracker.RowInfo.from(dict: $0) })
+    static func rowInfos(from rows: [[AnyHashable: Any]]) -> [InboxImpressionTracker.RowInfo] {
+        return rows.compactMap(InboxImpressionTracker.RowInfo.from(dict:))
     }
 }
