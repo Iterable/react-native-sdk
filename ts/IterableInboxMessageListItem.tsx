@@ -121,7 +121,6 @@ const defaultMessageListLayout = (
    }
       
    return(
-
       <View style={messageRowStyle(rowViewModel) as ViewStyle} >
          <View style={unreadIndicatorContainer as ViewStyle}>
             {rowViewModel.read ? null : <View style={unreadIndicator}/>}
@@ -139,13 +138,12 @@ const defaultMessageListLayout = (
 }
 
 const IterableInboxMessageListItem = ({ 
-   last, 
+   last,
    rowViewModel,
    customizations,
-   messageListItemLayout,  
+   messageListItemLayout,
    isPortrait
 }: MessageListItemProps) => {
-
    return(
       messageListItemLayout(last, rowViewModel) ?
          messageListItemLayout(last, rowViewModel) :
