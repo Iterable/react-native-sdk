@@ -18,6 +18,7 @@ type MessageDisplayProps = {
    rowViewModel: InboxRowViewModel,
    inAppContentPromise: Promise<IterableHtmlInAppContent>,
    returnToInbox: Function,
+   deleteRow: Function,
    contentWidth: number,
    isPortrait: boolean
 }
@@ -25,7 +26,8 @@ type MessageDisplayProps = {
 const IterableInboxMessageDisplay = ({ 
    rowViewModel, 
    inAppContentPromise, 
-   returnToInbox, 
+   returnToInbox,
+   deleteRow, 
    contentWidth,
    isPortrait
 }: MessageDisplayProps) => {
@@ -49,11 +51,18 @@ const IterableInboxMessageDisplay = ({
       const links = document.querySelectorAll('a')
       links.forEach(link => {
          if(link.href === 'iterable://dismiss') {
-            link.onclick = clickLink
+            link.onclick = clickDismissLink
+         } else if(link.href === 'iterable://delete') {
+            link.onclick = clickDeleteLink
          }
       })
-      function clickLink(data) {
-         window.ReactNativeWebView.postMessage(data)
+
+      function clickDismissLink(data) {
+         window.ReactNativeWebView.postMessage("DISMISS")
+      }
+
+      function clickDeleteLink(data) {
+         window.ReactNativeWebView.postMessage("DELETE")
       }
    `
 
@@ -63,6 +72,15 @@ const IterableInboxMessageDisplay = ({
             setInAppContent(value)
          })
    })
+
+   const handleHTMLMessage = (event: any) => {
+      if(event.nativeEvent.data === 'DELETE') {
+         deleteRow(rowViewModel.inAppMessage.messageId)
+         returnToInbox()
+      } else {
+         returnToInbox()
+      }
+   }
 
    return(
       <View style={updatedMessageDisplayContainer}>
@@ -81,7 +99,7 @@ const IterableInboxMessageDisplay = ({
                originWhiteList={['*']}
                source={{ html: inAppContent.html }} 
                style={{ width: contentWidth }}
-               onMessage={(event) => returnToInbox()}
+               onMessage={(event) => handleHTMLMessage(event)}
                injectedJavaScript={JS}
             />
          </ScrollView> 

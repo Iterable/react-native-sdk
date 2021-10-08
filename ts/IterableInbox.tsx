@@ -140,6 +140,7 @@ const IterableInbox = ({
                rowViewModel={selectedRowViewModel}
                inAppContentPromise={getHtmlContentForRow(selectedRowViewModel.inAppMessage.messageId)}
                returnToInbox={() => returnToInbox()}
+               deleteRow={(messageId: string) => deleteRow(messageId)}
                contentWidth={width}
                isPortrait={isPortrait}
             /> : null
