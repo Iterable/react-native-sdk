@@ -6,6 +6,8 @@ import {
    Text, 
    StyleSheet,
    Animated,
+   NativeModules,
+   NativeEventEmitter,
 } from 'react-native'
 
 import {
@@ -19,9 +21,11 @@ import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
 import IterableInboxDataModel from './IterableInboxDataModel'
 import IterableInboxCustomizations from './IterableInboxCustomizations'
 
-import useInboxChangedListener from './useInboxChangedListener'
 import useAppStateListener from './useAppStateListener'
 import useDeviceOrientation from './useDeviceOrientation'
+
+const RNIterableAPI = NativeModules.RNIterableAPI
+const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
 
 type inboxProps = {
    messageListItemLayout?: Function,
@@ -66,9 +70,11 @@ const IterableInbox = ({
    
    useEffect(() => {
       fetchInboxMessages()
-      // addInboxChangedListener()
+      addInboxChangedListener()
 
-      return () => {}
+      return () => {
+         removeInboxChangedListener()
+      }
    }, [])
 
    useEffect(() => {
@@ -87,9 +93,16 @@ const IterableInbox = ({
    }, [width])
 
    function addInboxChangedListener() {
-      useInboxChangedListener({
-         onInboxChanged: () => { fetchInboxMessages() }
-      })
+      RNEventEmitter.addListener(
+         "receivedIterableInboxChanged",
+         () => {
+            fetchInboxMessages()
+         }
+     )
+   }
+
+   function removeInboxChangedListener() {
+      RNEventEmitter.removeAllListeners("receivedIterableInboxChanged")
    }
 
    const fetchInboxMessages = async () => {
