@@ -6,6 +6,8 @@ import {
    Text, 
    StyleSheet,
    Animated,
+   NativeModules,
+   NativeEventEmitter,
 } from 'react-native'
 
 import {
@@ -19,8 +21,11 @@ import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
 import IterableInboxDataModel from './IterableInboxDataModel'
 import IterableInboxCustomizations from './IterableInboxCustomizations'
 
-import useInboxChangedListener from './useInboxChangedListener'
+import useAppStateListener from './useAppStateListener'
 import useDeviceOrientation from './useDeviceOrientation'
+
+const RNIterableAPI = NativeModules.RNIterableAPI
+const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
 
 type inboxProps = {
    messageListItemLayout?: Function,
@@ -37,6 +42,7 @@ const IterableInbox = ({
 }: inboxProps) => {
    const defaultInboxTitle = "Inbox"
    const inboxDataModel = new IterableInboxDataModel()
+   const appState = useAppStateListener()
 
    let { height, width, isPortrait } = useDeviceOrientation()
 
@@ -60,12 +66,24 @@ const IterableInbox = ({
    
    headline = (isPortrait) ? {...headline, marginTop: 40} : {...headline, paddingLeft: 65}
 
+
+   
    useEffect(() => {
       fetchInboxMessages()
       addInboxChangedListener()
 
-      return () => {}
+      return () => {
+         removeInboxChangedListener()
+      }
    }, [])
+
+   useEffect(() => {
+      if (appState === 'active') {
+         // inboxDataModel.startSession()
+      } else {
+         // inboxDataModel.endSession()
+      }
+   }, [appState])
 
    useEffect(() => {
       setScreenWidth(width)
@@ -75,9 +93,16 @@ const IterableInbox = ({
    }, [width])
 
    function addInboxChangedListener() {
-      useInboxChangedListener({
-         onInboxChanged: () => { fetchInboxMessages() }
-      })
+      RNEventEmitter.addListener(
+         "receivedIterableInboxChanged",
+         () => {
+            fetchInboxMessages()
+         }
+     )
+   }
+
+   function removeInboxChangedListener() {
+      RNEventEmitter.removeAllListeners("receivedIterableInboxChanged")
    }
 
    const fetchInboxMessages = async () => {
