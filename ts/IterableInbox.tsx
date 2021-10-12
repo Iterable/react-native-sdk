@@ -72,7 +72,9 @@ const IterableInbox = ({
       fetchInboxMessages()
       addInboxChangedListener()
 
-      return () => {}
+      return () => {
+         removeInboxChangedListener()
+      }
    }, [])
 
    useEffect(() => {
@@ -97,8 +99,10 @@ const IterableInbox = ({
             fetchInboxMessages()
          }
      )
-     
-     return RNEventEmitter.removeAllListeners("receivedIterableInboxChanged")
+   }
+
+   function removeInboxChangedListener() {
+      RNEventEmitter.removeAllListeners("receivedIterableInboxChanged")
    }
 
    const fetchInboxMessages = async () => {
