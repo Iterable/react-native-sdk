@@ -23,6 +23,7 @@ import IterableInboxCustomizations from './IterableInboxCustomizations'
 
 import useAppStateListener from './useAppStateListener'
 import useDeviceOrientation from './useDeviceOrientation'
+import InboxImpressionRowInfo from './InboxImpressionRowInfo'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
@@ -60,9 +61,8 @@ const IterableInbox = ({
    } = styles
 
    const navTitleHeight = headline.height + headline.paddingTop + headline.paddingBottom
-
    const updatedContainer = {...container, width: 2 * width, height: height - navTitleHeight - 40}
-   const messageListContainer = { width: width}
+   const messageListContainer = { width: width }
    
    headline = (isPortrait) ? {...headline, marginTop: 40} : {...headline, paddingLeft: 65}
 
@@ -206,6 +206,15 @@ const IterableInbox = ({
          useNativeDriver: false
       }).start()
       setIsMessageDisplay(false)  
+   }
+
+   function updateCurrentVisibleRows() {
+      // inboxDataModel.updateVisibleRows(getCurrentVisibleRows())
+   }
+
+   function getCurrentVisibleRows(): InboxImpressionRowInfo[] {
+
+      return []
    }
 
    return(
