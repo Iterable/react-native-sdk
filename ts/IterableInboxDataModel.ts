@@ -16,15 +16,30 @@ const RNIterableAPI = NativeModules.RNIterableAPI
 class IterableInboxDataModel {
     filterFn?: (message: IterableInAppMessage) => boolean
     comparatorFn?: (message1: IterableInAppMessage, message2: IterableInAppMessage) => number
+    dateMapperFn?: (message: IterableInAppMessage) => string | undefined
 
     constructor() {
 
     }
 
     set(filter?: (message: IterableInAppMessage) => boolean,
-        comparator?: (message1: IterableInAppMessage, message2: IterableInAppMessage) => number) {
+        comparator?: (message1: IterableInAppMessage, message2: IterableInAppMessage) => number,
+        dateMapper?: (message: IterableInAppMessage) => string | undefined) {
         this.filterFn = filter
         this.comparatorFn = comparator
+        this.dateMapperFn = dateMapper
+    }
+
+    getFormattedDate(message: IterableInAppMessage) {
+        if (message.createdAt === undefined) {
+            return ""
+        }
+
+        if (this.dateMapperFn) {
+            return this.dateMapperFn(message)
+        } else {
+            return this.defaultDateMapper(message)
+        }
     }
 
     getHtmlContentForMessageId(id: string): Promise<IterableHtmlInAppContent> {
@@ -89,6 +104,10 @@ class IterableInboxDataModel {
         if (createdAt1 > createdAt2) return -1
 
         return 0
+    }
+
+    private defaultDateMapper = (message: IterableInAppMessage) => {
+        return message.createdAt?.toString
     }
 
     private processMessages(messages: Array<IterableInAppMessage>): Array<InboxRowViewModel> {
