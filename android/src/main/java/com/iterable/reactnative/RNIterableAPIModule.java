@@ -124,18 +124,14 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
 
     @ReactMethod
     public void setUserId(@Nullable String userId) {
-        IterableLogger.d(TAG, "setUserId");
+        IterableLogger.d(TAG, "setUserId: " + userId);
         IterableApi.getInstance().setUserId(userId);
     }
 
     @ReactMethod
     public void updateUser(ReadableMap dataFields, Boolean mergeNestedObjects) {
-        IterableLogger.v(TAG, "Update User");
-        try {
-            IterableApi.getInstance().updateUser(Serialization.convertMapToJson(dataFields));
-        } catch (JSONException e) {
-            IterableLogger.e(TAG, "Failed passing dataFields to updateUser API");
-        }
+        IterableLogger.v(TAG, "updateUser");
+        IterableApi.getInstance().updateUser(optSerializedDataFields(dataFields));
     }
 
     @ReactMethod
@@ -145,45 +141,25 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
 
     @ReactMethod
     public void trackEvent(String name, ReadableMap dataFields) {
-        try {
-            IterableApi.getInstance().track(name, Serialization.convertMapToJson(dataFields));
-        } catch (JSONException e) {
-            IterableLogger.e(TAG, "Failed to convert datafields to JSON");
-        }
+        IterableLogger.v(TAG, "trackEvent");
+        IterableApi.getInstance().track(name, optSerializedDataFields(dataFields));
     }
 
     @ReactMethod
     public void updateCart(ReadableArray items) {
-        IterableLogger.v(TAG, "UpdateCart API");
-
+        IterableLogger.v(TAG, "updateCart");
         IterableApi.getInstance().updateCart(Serialization.commerceItemsFromReadableArray(items));
     }
 
     @ReactMethod
     public void trackPurchase(Double total, ReadableArray items, ReadableMap dataFields) {
-        IterableLogger.v(TAG, "TrackPurchase API");
-        JSONObject dataFieldsJson = null;
-        try {
-            if (dataFields != null) {
-                dataFieldsJson = Serialization.convertMapToJson(dataFields);
-            }
-        } catch (JSONException e) {
-            IterableLogger.e(TAG, "Failed converting JSON to object");
-        }
-        IterableApi.getInstance().trackPurchase(total, Serialization.commerceItemsFromReadableArray(items), dataFieldsJson);
+        IterableLogger.v(TAG, "trackPurchase");
+        IterableApi.getInstance().trackPurchase(total, Serialization.commerceItemsFromReadableArray(items), optSerializedDataFields(dataFields));
     }
 
     @ReactMethod
     public void trackPushOpenWithCampaignId(Integer campaignId, Integer templateId, String messageId, Boolean appAlreadyRunning, ReadableMap dataFields) {
-        JSONObject dataFieldsJson = null;
-        if (dataFields != null) {
-            try {
-                dataFieldsJson = Serialization.convertMapToJson(dataFields);
-            } catch (JSONException e) {
-                IterableLogger.d(TAG, "Failed to convert to JSON");
-            }
-        }
-        RNIterableInternal.trackPushOpenWithCampaignId(campaignId, templateId, messageId, dataFieldsJson);
+        RNIterableInternal.trackPushOpenWithCampaignId(campaignId, templateId, messageId, optSerializedDataFields(dataFields));
     }
 
     @ReactMethod
@@ -222,14 +198,12 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     @ReactMethod
     public void setReadForMessage(String messageId, boolean read) {
         IterableLogger.v(TAG, "setReadForMessage");
-
         IterableApi.getInstance().getInAppManager().setRead(RNIterableInternal.getMessageById(messageId), read);
     }
 
     @ReactMethod
     public void removeMessage(String messageId, Integer location, Integer deleteSource) {
         IterableLogger.v(TAG, "removeMessage");
-        
         IterableApi.getInstance().getInAppManager().removeMessage(RNIterableInternal.getMessageById(messageId), Serialization.getIterableDeleteActionTypeFromInteger(deleteSource), Serialization.getIterableInAppLocationFromInteger(location));
     }
 
@@ -237,15 +211,19 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     public void getHtmlInAppContentForMessage(String messageId, final Promise promise) {
         IterableLogger.printInfo();
         IterableInAppMessage message = RNIterableInternal.getMessageById(messageId);
+
         if (message == null) {
             promise.reject("", "Could not find message with id: " + messageId);
             return;
         }
+
         JSONObject messageContent = Serialization.messageContentToJsonObject(message.getContent());
+
         if (messageContent == null) {
             promise.reject("", "messageContent is null for message id: " + messageId);
             return;
         }
+
         try {
             promise.resolve(Serialization.convertJsonToMap(messageContent));
         } catch (JSONException e) {
@@ -294,7 +272,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
 
     @ReactMethod
     public void disableDeviceForCurrentUser() {
-        IterableLogger.v(TAG, "Disable Device");
+        IterableLogger.v(TAG, "disableDevice");
         IterableApi.getInstance().disablePush();
     }
 
@@ -442,6 +420,20 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         return integers;
     }
 
+    @Nullable
+    private static JSONObject optSerializedDataFields(ReadableMap dataFields) {
+        JSONObject dataFieldsJson = null;
+
+        if (dataFields != null) {
+            try {
+                dataFieldsJson = Serialization.convertMapToJson(dataFields);
+            } catch (JSONException e) {
+                IterableLogger.d(TAG, "Failed to convert dataFields to JSON");
+            }
+        }
+
+        return dataFieldsJson;
+    }
 
     // ---------------------------------------------------------------------------------------
     // region IterableSDK callbacks
@@ -499,8 +491,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         } catch (JSONException e) {
             IterableLogger.e(TAG, e.getLocalizedMessage());
         }
-        // The Android SDK will not bring the app into focus is this is `true`. It still respects the `openApp` bool flag.
-        return false;
+        return true;
     }
 
     @Override
