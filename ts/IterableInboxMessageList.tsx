@@ -57,7 +57,7 @@ const IterableInboxMessageList = ({
 
    const inboxSessionItemsChanged = useCallback((
       (info: {viewableItems: Array<ViewToken>, changed: Array<ViewToken>}) => {
-         console.log("jay onViewableItemsChanged ", info.viewableItems.length, " ", info.changed.length)
+         
       }
    ), [])
 
