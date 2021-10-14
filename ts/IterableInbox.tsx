@@ -162,7 +162,8 @@ const IterableInbox = ({
                {customizations?.navTitle ? customizations?.navTitle : defaultInboxTitle}
             </Text>
             { rowViewModels.length ?
-               <IterableInboxMessageList 
+               <IterableInboxMessageList
+                  dataModel = {inboxDataModel}
                   rowViewModels={rowViewModels}
                   customizations={customizations}
                   messageListItemLayout={messageListItemLayout}

@@ -106,8 +106,16 @@ class IterableInboxDataModel {
         return 0
     }
 
-    private defaultDateMapper = (message: IterableInAppMessage) => {
-        return message.createdAt?.toString
+    private defaultDateMapper(message: IterableInAppMessage): string {
+        if (message.createdAt === undefined) {
+            return ""
+        }
+
+        const createdAt = new Date(message.createdAt)
+
+        var defaultDateString = `${createdAt.toLocaleDateString()} at ${createdAt.toLocaleTimeString()}`
+
+        return defaultDateString
     }
 
     private processMessages(messages: Array<IterableInAppMessage>): Array<InboxRowViewModel> {

@@ -10,10 +10,11 @@ import {
    StyleSheet
 } from 'react-native'
 
-import { InboxRowViewModel, IterableInboxCustomizations } from '.'
+import { InboxRowViewModel, IterableInboxCustomizations, IterableInboxDataModel } from '.'
 
 type MessageListItemProps = {
    last: boolean,
+   dataModel: IterableInboxDataModel,
    rowViewModel: InboxRowViewModel,
    customizations: IterableInboxCustomizations,
    messageListItemLayout: Function,
@@ -22,13 +23,14 @@ type MessageListItemProps = {
 
 const defaultMessageListLayout = (
    last: boolean,
-   rowViewModel: InboxRowViewModel, 
+   dataModel: IterableInboxDataModel,
+   rowViewModel: InboxRowViewModel,
    customizations: IterableInboxCustomizations,
    isPortrait: boolean
 ) => {
    const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title ?? ""
    const messageBody = rowViewModel.inAppMessage.inboxMetadata?.subtitle ?? ""
-   const messageCreatedAt = rowViewModel.createdAt
+   const messageCreatedAt = dataModel.getFormattedDate(rowViewModel.inAppMessage) ?? ""
    const iconURL = rowViewModel.imageUrl
 
    let styles = StyleSheet.create({
@@ -139,15 +141,14 @@ const defaultMessageListLayout = (
 
 const IterableInboxMessageListItem = ({ 
    last,
+   dataModel,
    rowViewModel,
    customizations,
    messageListItemLayout,
    isPortrait
 }: MessageListItemProps) => {
    return(
-      messageListItemLayout(last, rowViewModel) ?
-         messageListItemLayout(last, rowViewModel) :
-         defaultMessageListLayout(last, rowViewModel, customizations, isPortrait)  
+      messageListItemLayout(last, rowViewModel) ? messageListItemLayout(last, rowViewModel) : defaultMessageListLayout(last, dataModel, rowViewModel, customizations, isPortrait)  
    )
 }
 
