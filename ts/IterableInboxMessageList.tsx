@@ -77,9 +77,7 @@ const IterableInboxMessageList = ({
 
    const inboxSessionItemsChanged = useCallback((
       (info: {viewableItems: Array<ViewToken>, changed: Array<ViewToken>}) => {
-         const rowInfos = convertViewTokensToRowInfos(info.viewableItems)
-
-         // dataModel.updateVisibleRows(rowInfos)
+         dataModel.updateVisibleRows(convertViewTokensToRowInfos(info.viewableItems))
       }
    ), [])
 
