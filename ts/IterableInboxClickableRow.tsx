@@ -6,12 +6,14 @@ import { TouchableOpacity, ImageSourcePropType } from 'react-native'
 import {
    InboxRowViewModel,
    IterableInboxMessageListItem,
-   IterableInboxCustomizations
+   IterableInboxCustomizations,
+   IterableInboxDataModel
 } from '.'
 
 type MessageClickableRowProps = {
    index: number,
    last: boolean,
+   dataModel: IterableInboxDataModel,
    rowViewModel: InboxRowViewModel,
    customizations: IterableInboxCustomizations,
    messageListItemLayout: Function,
@@ -22,6 +24,7 @@ type MessageClickableRowProps = {
 const IterableInboxClickableRow = ({ 
    index,
    last,
+   dataModel,
    rowViewModel,
    customizations, 
    messageListItemLayout,
@@ -38,6 +41,7 @@ const IterableInboxClickableRow = ({
       >
          <IterableInboxMessageListItem
             last={last}
+            dataModel = {dataModel}
             rowViewModel={rowViewModel}
             customizations={customizations}
             messageListItemLayout={messageListItemLayout}

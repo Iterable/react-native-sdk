@@ -7,10 +7,12 @@ import { FlatList } from 'react-native-gesture-handler'
 import {
    InboxRowViewModel,
    IterableInboxCustomizations,
+   IterableInboxDataModel,
    IterableInboxSwipeableRow
 } from '.'
 
 type MessageListProps = {
+   dataModel: IterableInboxDataModel,
    rowViewModels: InboxRowViewModel[],
    customizations: IterableInboxCustomizations,
    messageListItemLayout: Function,
@@ -20,7 +22,8 @@ type MessageListProps = {
    isPortrait: boolean 
 }
 
-const IterableInboxMessageList = ({ 
+const IterableInboxMessageList = ({
+   dataModel,
    rowViewModels,
    customizations,
    messageListItemLayout, 
@@ -35,6 +38,7 @@ const IterableInboxMessageList = ({
       return (
          <IterableInboxSwipeableRow
             key = {rowViewModel.inAppMessage.messageId}
+            dataModel = {dataModel}
             index = {index}
             last = {last}
             rowViewModel = {rowViewModel}

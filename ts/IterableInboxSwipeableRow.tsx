@@ -12,13 +12,15 @@ import {
 import {
    InboxRowViewModel,
    IterableInboxClickableRow,
-   IterableInboxCustomizations
+   IterableInboxCustomizations,
+   IterableInboxDataModel
 } from '.'
 
 type SwipeableRowProps = {
    key: string,
    index: number,
    last: boolean,
+   dataModel: IterableInboxDataModel,
    rowViewModel: InboxRowViewModel,
    customizations: IterableInboxCustomizations,
    swipingCheck: Function,
@@ -32,6 +34,7 @@ type SwipeableRowProps = {
 const IterableInboxSwipeableRow = ({
    index,
    last,
+   dataModel,
    rowViewModel,
    customizations,
    swipingCheck,
@@ -121,6 +124,7 @@ const IterableInboxSwipeableRow = ({
             <IterableInboxClickableRow
                index={index}
                last={last}
+               dataModel = {dataModel}
                rowViewModel={rowViewModel}
                customizations={customizations}
                messageListItemLayout={messageListItemLayout}
