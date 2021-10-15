@@ -209,15 +209,6 @@ const IterableInbox = ({
       setIsMessageDisplay(false)  
    }
 
-   function updateCurrentVisibleRows() {
-      // inboxDataModel.updateVisibleRows(getCurrentVisibleRows())
-   }
-
-   function getCurrentVisibleRows(): InboxImpressionRowInfo[] {
-
-      return []
-   }
-
    return(
       <View style={updatedContainer}>
          <Animated.View

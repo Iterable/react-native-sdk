@@ -6,10 +6,13 @@ import { FlatList } from 'react-native-gesture-handler'
 
 import {
    InboxRowViewModel,
+   IterableInAppMessage,
    IterableInboxCustomizations,
    IterableInboxDataModel,
    IterableInboxSwipeableRow
 } from '.'
+
+import InboxImpressionRowInfo from './InboxImpressionRowInfo'
 
 type MessageListProps = {
    dataModel: IterableInboxDataModel,
@@ -53,6 +56,19 @@ const IterableInboxMessageList = ({
       )
    }
 
+   function convertViewTokensToRowInfos(viewTokens: Array<ViewToken>): Array<InboxImpressionRowInfo> {
+      return viewTokens.map(function(viewToken) {
+         var inAppMessage = IterableInAppMessage.fromInApp(viewToken.item["inAppMessage"] as IterableInAppMessage)
+
+         const impression = {
+            messageId: inAppMessage.messageId,
+            silentInbox: inAppMessage.isSilentInbox()
+         } as InboxImpressionRowInfo
+
+         return impression
+      })
+   }
+
    const inboxSessionViewabilityConfig: ViewabilityConfig = {
       minimumViewTime: 0.5,
       itemVisiblePercentThreshold: 50,
@@ -61,7 +77,9 @@ const IterableInboxMessageList = ({
 
    const inboxSessionItemsChanged = useCallback((
       (info: {viewableItems: Array<ViewToken>, changed: Array<ViewToken>}) => {
-         
+         const rowInfos = convertViewTokensToRowInfos(info.viewableItems)
+
+         // dataModel.updateVisibleRows(rowInfos)
       }
    ), [])
 
