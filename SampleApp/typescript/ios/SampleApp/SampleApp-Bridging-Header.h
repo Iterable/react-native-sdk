@@ -6,3 +6,4 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import <React/RCTEventEmitter.h>
+#import <React/RCTLinkingManager.h>
