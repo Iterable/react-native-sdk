@@ -372,8 +372,8 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     @ReactMethod
     public void wakeApp() {
         Intent launcherIntent = getMainActivityIntent(reactContext);
-        launcherIntent.setFlags(Intent.FLAG_FROM_BACKGROUND);
-        if (launcherIntent.resolveActivity(getReactApplicationContext().getPackageManager()) != null) {
+        launcherIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        if (launcherIntent.resolveActivity(reactContext.getPackageManager()) != null) {
             reactContext.startActivity(launcherIntent);
         }
     }
