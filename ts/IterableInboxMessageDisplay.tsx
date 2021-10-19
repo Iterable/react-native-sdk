@@ -9,7 +9,7 @@ import {
   Alert,
   TouchableWithoutFeedback,
 } from 'react-native'
-import { WebView } from 'react-native-webview'
+// import { WebView } from 'react-native-webview'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 import { InboxRowViewModel, IterableHtmlInAppContent, IterableEdgeInsets } from '.'
@@ -65,11 +65,11 @@ const IterableInboxMessageDisplay = ({
             <Text style={headline}>
                {messageTitle}
             </Text>
-            <WebView
+            {/* <WebView
                originWhiteList={['*']}
                source={{ html: inAppContent.html }} 
                style={{ width: contentWidth }}
-            />
+            /> */}
          </ScrollView> 
       </View>
    )

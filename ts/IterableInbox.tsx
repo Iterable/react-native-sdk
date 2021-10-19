@@ -17,7 +17,7 @@ import {
    IterableInAppDeleteSource
 } from '.'
 
-import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
+// import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
 import IterableInboxDataModel from './IterableInboxDataModel'
 import IterableInboxCustomizations from './IterableInboxCustomizations'
 
@@ -50,7 +50,7 @@ const IterableInbox = ({
    const [screenWidth, setScreenWidth] = useState<number>(width)
    const [selectedRowViewModelIdx, setSelectedRowViewModelIdx] = useState<number>(0)
    const [rowViewModels, setRowViewModels] = useState<InboxRowViewModel[]>([])
-   const [loading, setLoading] = useState<boolean>(true)
+   const [loading, setLoading] = useState<boolean>(false)
    const [animatedValue, setAnimatedValue] = useState<any>(new Animated.Value(0))
    const [isMessageDisplay, setIsMessageDisplay] = useState<boolean>(false)
   
@@ -66,94 +66,92 @@ const IterableInbox = ({
    
    headline = (isPortrait) ? {...headline, marginTop: 40} : {...headline, paddingLeft: 65}
 
+   // useEffect(() => {
+   //    fetchInboxMessages()
+   //    addInboxChangedListener()
 
+   //    return () => {
+   //       removeInboxChangedListener()
+   //    }
+   // }, [])
+
+   // useEffect(() => {
+   //    if (appState === 'active') {
+   //       // inboxDataModel.startSession()
+   //    } else {
+   //       // inboxDataModel.endSession()
+   //    }
+   // }, [appState])
+
+   // useEffect(() => {
+   //    setScreenWidth(width)
+   //    if(isMessageDisplay) { 
+   //       slideLeft() 
+   //    } 
+   // }, [width])
+
+   // function addInboxChangedListener() {
+   //    RNEventEmitter.addListener(
+   //       "receivedIterableInboxChanged",
+   //       () => {
+   //          fetchInboxMessages()
+   //       }
+   //   )
+   // }
+
+   // function removeInboxChangedListener() {
+   //    RNEventEmitter.removeAllListeners("receivedIterableInboxChanged")
+   // }
+
+   // const fetchInboxMessages = async () => {
+   //    let newMessages = await inboxDataModel.refresh()
+
+   //    newMessages = newMessages.map((message, index) => {
+   //       return {...message, last: index === newMessages.length - 1}
+   //    })
+
+   //    setRowViewModels(newMessages)
+   //    setLoading(false)
+   // }
+
+   // function getHtmlContentForRow(id: string) {
+   //    return inboxDataModel.getHtmlContentForMessageId(id)
+   // }
+
+   // function handleMessageSelect(id: string, index: number, rowViewModels: InboxRowViewModel[]) {
+   //    let newRowViewModels = rowViewModels.map((rowViewModel) => {
+   //       return (rowViewModel.inAppMessage.messageId === id) ?
+   //          {...rowViewModel, read: true } : rowViewModel
+   //    })
+   //    setRowViewModels(newRowViewModels)
+   //    inboxDataModel.setMessageAsRead(id)
+   //    setSelectedRowViewModelIdx(index)
+   //    slideLeft()
+   // }
+
+   // const deleteRow = (messageId: string) => {
+   //    inboxDataModel.deleteItemById(messageId, IterableInAppDeleteSource.inboxSwipe)
+   //    fetchInboxMessages()
+   // }
+
+   // function returnToInbox() {
+   //    reset()
+   // }
    
-   useEffect(() => {
-      fetchInboxMessages()
-      addInboxChangedListener()
+   // function showMessageDisplay(rowViewModelList: InboxRowViewModel[], index: number) {
+   //    const selectedRowViewModel = rowViewModelList[index]
 
-      return () => {
-         removeInboxChangedListener()
-      }
-   }, [])
-
-   useEffect(() => {
-      if (appState === 'active') {
-         // inboxDataModel.startSession()
-      } else {
-         // inboxDataModel.endSession()
-      }
-   }, [appState])
-
-   useEffect(() => {
-      setScreenWidth(width)
-      if(isMessageDisplay) { 
-         slideLeft() 
-      } 
-   }, [width])
-
-   function addInboxChangedListener() {
-      RNEventEmitter.addListener(
-         "receivedIterableInboxChanged",
-         () => {
-            fetchInboxMessages()
-         }
-     )
-   }
-
-   function removeInboxChangedListener() {
-      RNEventEmitter.removeAllListeners("receivedIterableInboxChanged")
-   }
-
-   const fetchInboxMessages = async () => {
-      let newMessages = await inboxDataModel.refresh()
-
-      newMessages = newMessages.map((message, index) => {
-         return {...message, last: index === newMessages.length - 1}
-      })
-
-      setRowViewModels(newMessages)
-      setLoading(false)
-   }
-
-   function getHtmlContentForRow(id: string) {
-      return inboxDataModel.getHtmlContentForMessageId(id)
-   }
-
-   function handleMessageSelect(id: string, index: number, rowViewModels: InboxRowViewModel[]) {
-      let newRowViewModels = rowViewModels.map((rowViewModel) => {
-         return (rowViewModel.inAppMessage.messageId === id) ?
-            {...rowViewModel, read: true } : rowViewModel
-      })
-      setRowViewModels(newRowViewModels)
-      inboxDataModel.setMessageAsRead(id)
-      setSelectedRowViewModelIdx(index)
-      slideLeft()
-   }
-
-   const deleteRow = (messageId: string) => {
-      inboxDataModel.deleteItemById(messageId, IterableInAppDeleteSource.inboxSwipe)
-      fetchInboxMessages()
-   }
-
-   function returnToInbox() {
-      reset()
-   }
-   
-   function showMessageDisplay(rowViewModelList: InboxRowViewModel[], index: number) {
-      const selectedRowViewModel = rowViewModelList[index]
-
-      return (
-         selectedRowViewModel ?
-            <IterableInboxMessageDisplay
-               rowViewModel={selectedRowViewModel}
-               inAppContentPromise={getHtmlContentForRow(selectedRowViewModel.inAppMessage.messageId)}
-               returnToInbox={() => returnToInbox()}
-               contentWidth={width}
-               isPortrait={isPortrait}
-            /> : null
-      )
-   }
+   //    return (
+   //       selectedRowViewModel ?
+   //          <IterableInboxMessageDisplay
+   //             rowViewModel={selectedRowViewModel}
+   //             inAppContentPromise={getHtmlContentForRow(selectedRowViewModel.inAppMessage.messageId)}
+   //             returnToInbox={() => returnToInbox()}
+   //             contentWidth={width}
+   //             isPortrait={isPortrait}
+   //          /> : null
+   //    )
+   // }
 
    function showMessageList(loading: boolean) {
       return (
@@ -167,9 +165,9 @@ const IterableInbox = ({
                   rowViewModels={rowViewModels}
                   customizations={customizations}
                   messageListItemLayout={messageListItemLayout}
-                  deleteRow={(messageId: string) => deleteRow(messageId)}
-                  handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index, rowViewModels)}
-                  contentWidth={width}
+                  // deleteRow={(messageId: string) => deleteRow(messageId)}
+                  // handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index, rowViewModels)}
+                  // contentWidth={width}
                   isPortrait={isPortrait}
                />  :
                renderEmptyState()
@@ -191,32 +189,32 @@ const IterableInbox = ({
          /> 
    }
 
-   const slideLeft = () => {
-      Animated.timing(animatedValue, {
-         toValue: 1,
-         duration: 500,
-         useNativeDriver: false
-      }).start()
-      setIsMessageDisplay(true)
-   }
+   // const slideLeft = () => {
+   //    Animated.timing(animatedValue, {
+   //       toValue: 1,
+   //       duration: 500,
+   //       useNativeDriver: false
+   //    }).start()
+   //    setIsMessageDisplay(true)
+   // }
 
-   const reset = () => {
-      Animated.timing(animatedValue, {
-         toValue: 0,
-         duration: 500,
-         useNativeDriver: false
-      }).start()
-      setIsMessageDisplay(false)  
-   }
+   // const reset = () => {
+   //    Animated.timing(animatedValue, {
+   //       toValue: 0,
+   //       duration: 500,
+   //       useNativeDriver: false
+   //    }).start()
+   //    setIsMessageDisplay(false)  
+   // }
 
-   function updateCurrentVisibleRows() {
-      // inboxDataModel.updateVisibleRows(getCurrentVisibleRows())
-   }
+   // function updateCurrentVisibleRows() {
+   //    // inboxDataModel.updateVisibleRows(getCurrentVisibleRows())
+   // }
 
-   function getCurrentVisibleRows(): InboxImpressionRowInfo[] {
+   // function getCurrentVisibleRows(): InboxImpressionRowInfo[] {
 
-      return []
-   }
+   //    return []
+   // }
 
    return(
       <View style={updatedContainer}>
@@ -235,7 +233,7 @@ const IterableInbox = ({
             }}
          >
             {showMessageList(loading)}
-            {showMessageDisplay(rowViewModels, selectedRowViewModelIdx)}
+            {/* {showMessageDisplay(rowViewModels, selectedRowViewModelIdx)} */}
          </Animated.View>
       </View>
    )
