@@ -455,7 +455,14 @@ class Iterable {
           const url = dict["url"]
           const context = IterableActionContext.fromDict(dict["context"])
           Iterable.wakeApp()
-          callUrlHandler(url, context)
+          if (Platform.OS === "android") {
+            //Give enough time for Activity to wake up.
+            setTimeout(() => {
+              callUrlHandler(url, context)
+            }, 1000)
+          } else {
+            callUrlHandler(url, context)
+          }
         }
       )
     }
