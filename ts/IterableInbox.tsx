@@ -123,16 +123,16 @@ const IterableInbox = ({
    //    return inboxDataModel.getHtmlContentForMessageId(id)
    // }
 
-   // function handleMessageSelect(id: string, index: number, rowViewModels: InboxRowViewModel[]) {
-   //    let newRowViewModels = rowViewModels.map((rowViewModel) => {
-   //       return (rowViewModel.inAppMessage.messageId === id) ?
-   //          {...rowViewModel, read: true } : rowViewModel
-   //    })
-   //    setRowViewModels(newRowViewModels)
-   //    inboxDataModel.setMessageAsRead(id)
-   //    setSelectedRowViewModelIdx(index)
-   //    slideLeft()
-   // }
+   function handleMessageSelect(id: string, index: number, rowViewModels: InboxRowViewModel[]) {
+      let newRowViewModels = rowViewModels.map((rowViewModel) => {
+         return (rowViewModel.inAppMessage.messageId === id) ?
+            {...rowViewModel, read: true } : rowViewModel
+      })
+      setRowViewModels(newRowViewModels)
+      inboxDataModel.setMessageAsRead(id)
+      setSelectedRowViewModelIdx(index)
+      // slideLeft()
+   }
 
    // const deleteRow = (messageId: string) => {
    //    inboxDataModel.deleteItemById(messageId, IterableInAppDeleteSource.inboxSwipe)
@@ -171,7 +171,7 @@ const IterableInbox = ({
                   customizations={customizations}
                   messageListItemLayout={messageListItemLayout}
                   // deleteRow={(messageId: string) => deleteRow(messageId)}
-                  // handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index, rowViewModels)}
+                  handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index, rowViewModels)}
                   // contentWidth={width}
                   isPortrait={isPortrait}
                />  :
