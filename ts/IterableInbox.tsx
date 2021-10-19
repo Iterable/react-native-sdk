@@ -66,14 +66,14 @@ const IterableInbox = ({
    
    headline = (isPortrait) ? {...headline, marginTop: 40} : {...headline, paddingLeft: 65}
 
-   // useEffect(() => {
-   //    fetchInboxMessages()
-   //    addInboxChangedListener()
+   useEffect(() => {
+      fetchInboxMessages()
+      // addInboxChangedListener()
 
-   //    return () => {
-   //       removeInboxChangedListener()
-   //    }
-   // }, [])
+      // return () => {
+      //    removeInboxChangedListener()
+      // }
+   }, [])
 
    // useEffect(() => {
    //    if (appState === 'active') {
@@ -103,16 +103,16 @@ const IterableInbox = ({
    //    RNEventEmitter.removeAllListeners("receivedIterableInboxChanged")
    // }
 
-   // const fetchInboxMessages = async () => {
-   //    let newMessages = await inboxDataModel.refresh()
+   const fetchInboxMessages = async () => {
+      let newMessages = await inboxDataModel.refresh()
 
-   //    newMessages = newMessages.map((message, index) => {
-   //       return {...message, last: index === newMessages.length - 1}
-   //    })
+      newMessages = newMessages.map((message, index) => {
+         return {...message, last: index === newMessages.length - 1}
+      })
 
-   //    setRowViewModels(newMessages)
-   //    setLoading(false)
-   // }
+      setRowViewModels(newMessages)
+      setLoading(false)
+   }
 
    // function getHtmlContentForRow(id: string) {
    //    return inboxDataModel.getHtmlContentForMessageId(id)
