@@ -8,6 +8,7 @@ import {
    Animated,
    NativeModules,
    NativeEventEmitter,
+   Platform
 } from 'react-native'
 
 import {
@@ -64,7 +65,9 @@ const IterableInbox = ({
    const updatedContainer = {...container, width: 2 * width, height: height - navTitleHeight - 40}
    const messageListContainer = { width: width }
    
-   headline = (isPortrait) ? {...headline, marginTop: 40} : {...headline, paddingLeft: 65}
+   headline = (isPortrait) ? 
+      {...headline, marginTop: Platform.OS === "android" ? 0 : 40} : 
+      {...headline, paddingLeft: 65}
 
    useEffect(() => {
       fetchInboxMessages()
