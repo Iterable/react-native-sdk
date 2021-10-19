@@ -64,6 +64,8 @@ const IterableInbox = ({
    const navTitleHeight = headline.height + headline.paddingTop + headline.paddingBottom
    const updatedContainer = {...container, width: 2 * width, height: height - navTitleHeight - 40}
    const messageListContainer = { width: width }
+
+   headline = {...headline, height: Platform.OS === "android" ? 70 : 60}
    
    headline = (isPortrait) ? 
       {...headline, marginTop: Platform.OS === "android" ? 0 : 40} : 
