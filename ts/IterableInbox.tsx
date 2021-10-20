@@ -134,10 +134,10 @@ const IterableInbox = ({
       slideLeft()
    }
 
-   // const deleteRow = (messageId: string) => {
-   //    inboxDataModel.deleteItemById(messageId, IterableInAppDeleteSource.inboxSwipe)
-   //    fetchInboxMessages()
-   // }
+   const deleteRow = (messageId: string) => {
+      inboxDataModel.deleteItemById(messageId, IterableInAppDeleteSource.inboxSwipe)
+      fetchInboxMessages()
+   }
 
    function returnToInbox() {
       reset()
@@ -170,7 +170,7 @@ const IterableInbox = ({
                   rowViewModels={rowViewModels}
                   customizations={customizations}
                   messageListItemLayout={messageListItemLayout}
-                  // deleteRow={(messageId: string) => deleteRow(messageId)}
+                  deleteRow={(messageId: string) => deleteRow(messageId)}
                   handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index, rowViewModels)}
                   contentWidth={width}
                   isPortrait={isPortrait}

@@ -25,7 +25,7 @@ type SwipeableRowProps = {
    customizations: IterableInboxCustomizations,
    // swipingCheck: Function,
    messageListItemLayout: Function,
-   // deleteRow: Function,
+   deleteRow: Function,
    handleMessageSelect: Function,
    contentWidth: number,
    isPortrait: boolean
@@ -39,7 +39,7 @@ const IterableInboxSwipeableRow = ({
    customizations,
    // swipingCheck,
    messageListItemLayout,
-   // deleteRow,
+   deleteRow,
    handleMessageSelect,
    contentWidth,
    isPortrait
@@ -56,7 +56,7 @@ const IterableInboxSwipeableRow = ({
    //If user swipes, either complete swipe or reset 
    const userSwipedLeft = (gesture : any) => {
       if(gesture.dx < -0.6 * contentWidth) {
-         completeSwipe()   
+         completeSwipe()  
       } else {
          resetPosition()
          // swipingCheck(false)
@@ -69,8 +69,7 @@ const IterableInboxSwipeableRow = ({
          toValue: {x, y: 0},
          duration: FORCING_DURATION,
          useNativeDriver: false   
-      }).start()
-      // .start(() => deleteRow(rowViewModel.inAppMessage.messageId))
+      }).start(() => deleteRow(rowViewModel.inAppMessage.messageId))
    }
    
    const resetPosition = () => {
@@ -91,7 +90,7 @@ const IterableInboxSwipeableRow = ({
                x: position.x._value, 
                y: 0 
             })
-            position.setValue({ x: 0, y: 0 })
+            position.setValue({ x: 0.01, y: 0.01 })
          },
          onPanResponderMove: (event, gesture) => {
             if(gesture.dx <= -scrollThreshold) {
@@ -115,9 +114,7 @@ const IterableInboxSwipeableRow = ({
 
    return(
       <View>
-         <Animated.View style={deleteSlider}>
-            <Text style={textStyle}>DELETE</Text>   
-         </Animated.View>
+
          <Animated.View 
             style={[textContainer, position.getLayout()]}
             {...panResponder.panHandlers}
@@ -133,6 +130,9 @@ const IterableInboxSwipeableRow = ({
                isPortrait={isPortrait}
             />   
          </Animated.View>
+         {/* <View style={deleteSlider}>
+            <Text style={textStyle}>DELETE</Text>   
+         </View> */}
       </View>   
    )
 }
