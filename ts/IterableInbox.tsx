@@ -18,7 +18,7 @@ import {
    IterableInAppDeleteSource
 } from '.'
 
-// import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
+import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
 import IterableInboxDataModel from './IterableInboxDataModel'
 import IterableInboxCustomizations from './IterableInboxCustomizations'
 
@@ -51,7 +51,7 @@ const IterableInbox = ({
    const [screenWidth, setScreenWidth] = useState<number>(width)
    const [selectedRowViewModelIdx, setSelectedRowViewModelIdx] = useState<number>(0)
    const [rowViewModels, setRowViewModels] = useState<InboxRowViewModel[]>([])
-   const [loading, setLoading] = useState<boolean>(false)
+   const [loading, setLoading] = useState<boolean>(true)
    const [animatedValue, setAnimatedValue] = useState<any>(new Animated.Value(0))
    const [isMessageDisplay, setIsMessageDisplay] = useState<boolean>(false)
   
@@ -88,12 +88,12 @@ const IterableInbox = ({
    //    }
    // }, [appState])
 
-   // useEffect(() => {
-   //    setScreenWidth(width)
-   //    if(isMessageDisplay) { 
-   //       slideLeft() 
-   //    } 
-   // }, [width])
+   useEffect(() => {
+      setScreenWidth(width)
+      if(isMessageDisplay) { 
+         slideLeft() 
+      } 
+   }, [width])
 
    // function addInboxChangedListener() {
    //    RNEventEmitter.addListener(
@@ -119,9 +119,9 @@ const IterableInbox = ({
       setLoading(false)
    }
 
-   // function getHtmlContentForRow(id: string) {
-   //    return inboxDataModel.getHtmlContentForMessageId(id)
-   // }
+   function getHtmlContentForRow(id: string) {
+      return inboxDataModel.getHtmlContentForMessageId(id)
+   }
 
    function handleMessageSelect(id: string, index: number, rowViewModels: InboxRowViewModel[]) {
       let newRowViewModels = rowViewModels.map((rowViewModel) => {
@@ -131,7 +131,7 @@ const IterableInbox = ({
       setRowViewModels(newRowViewModels)
       inboxDataModel.setMessageAsRead(id)
       setSelectedRowViewModelIdx(index)
-      // slideLeft()
+      slideLeft()
    }
 
    // const deleteRow = (messageId: string) => {
@@ -139,24 +139,24 @@ const IterableInbox = ({
    //    fetchInboxMessages()
    // }
 
-   // function returnToInbox() {
-   //    reset()
-   // }
+   function returnToInbox() {
+      reset()
+   }
    
-   // function showMessageDisplay(rowViewModelList: InboxRowViewModel[], index: number) {
-   //    const selectedRowViewModel = rowViewModelList[index]
+   function showMessageDisplay(rowViewModelList: InboxRowViewModel[], index: number) {
+      const selectedRowViewModel = rowViewModelList[index]
 
-   //    return (
-   //       selectedRowViewModel ?
-   //          <IterableInboxMessageDisplay
-   //             rowViewModel={selectedRowViewModel}
-   //             inAppContentPromise={getHtmlContentForRow(selectedRowViewModel.inAppMessage.messageId)}
-   //             returnToInbox={() => returnToInbox()}
-   //             contentWidth={width}
-   //             isPortrait={isPortrait}
-   //          /> : null
-   //    )
-   // }
+      return (
+         selectedRowViewModel ?
+            <IterableInboxMessageDisplay
+               rowViewModel={selectedRowViewModel}
+               inAppContentPromise={getHtmlContentForRow(selectedRowViewModel.inAppMessage.messageId)}
+               returnToInbox={() => returnToInbox()}
+               contentWidth={width}
+               isPortrait={isPortrait}
+            /> : null
+      )
+   }
 
    function showMessageList(loading: boolean) {
       return (
@@ -194,23 +194,23 @@ const IterableInbox = ({
          /> 
    }
 
-   // const slideLeft = () => {
-   //    Animated.timing(animatedValue, {
-   //       toValue: 1,
-   //       duration: 500,
-   //       useNativeDriver: false
-   //    }).start()
-   //    setIsMessageDisplay(true)
-   // }
+   const slideLeft = () => {
+      Animated.timing(animatedValue, {
+         toValue: 1,
+         duration: 500,
+         useNativeDriver: false
+      }).start()
+      setIsMessageDisplay(true)
+   }
 
-   // const reset = () => {
-   //    Animated.timing(animatedValue, {
-   //       toValue: 0,
-   //       duration: 500,
-   //       useNativeDriver: false
-   //    }).start()
-   //    setIsMessageDisplay(false)  
-   // }
+   const reset = () => {
+      Animated.timing(animatedValue, {
+         toValue: 0,
+         duration: 500,
+         useNativeDriver: false
+      }).start()
+      setIsMessageDisplay(false)  
+   }
 
    // function updateCurrentVisibleRows() {
    //    // inboxDataModel.updateVisibleRows(getCurrentVisibleRows())
@@ -238,7 +238,7 @@ const IterableInbox = ({
             }}
          >
             {showMessageList(loading)}
-            {/* {showMessageDisplay(rowViewModels, selectedRowViewModelIdx)} */}
+            {showMessageDisplay(rowViewModels, selectedRowViewModelIdx)}
          </Animated.View>
       </View>
    )
