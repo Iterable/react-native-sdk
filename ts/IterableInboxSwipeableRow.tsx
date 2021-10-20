@@ -6,8 +6,7 @@ import {
    Text,
    Animated,
    PanResponder,
-   StyleSheet,
-   Platform
+   StyleSheet
 } from 'react-native'
 
 import {
@@ -87,11 +86,7 @@ const IterableInboxSwipeableRow = ({
          onMoveShouldSetPanResponder: () => true,
          onPanResponderTerminationRequest: () => false,
          onPanResponderGrant: () => {
-            position.setOffset({ 
-               x: position.x._value, 
-               y: 0 
-            })
-            position.setValue({ x: 0.01, y: 0.01 })
+            position.setValue({ x: 0, y: 0 })
          },
          onPanResponderMove: (event, gesture) => {
             if(gesture.dx <= -scrollThreshold) {
