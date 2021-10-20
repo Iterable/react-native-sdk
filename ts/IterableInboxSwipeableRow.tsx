@@ -6,7 +6,8 @@ import {
    Text,
    Animated,
    PanResponder,
-   StyleSheet
+   StyleSheet,
+   Platform
 } from 'react-native'
 
 import {
@@ -114,7 +115,9 @@ const IterableInboxSwipeableRow = ({
 
    return(
       <View>
-
+         <View style={deleteSlider}>
+            <Text style={textStyle}>DELETE</Text>   
+         </View>
          <Animated.View 
             style={[textContainer, position.getLayout()]}
             {...panResponder.panHandlers}
@@ -130,9 +133,6 @@ const IterableInboxSwipeableRow = ({
                isPortrait={isPortrait}
             />   
          </Animated.View>
-         {/* <View style={deleteSlider}>
-            <Text style={textStyle}>DELETE</Text>   
-         </View> */}
       </View>   
    )
 }
@@ -140,7 +140,7 @@ const IterableInboxSwipeableRow = ({
 const styles = StyleSheet.create({
    textContainer: {
       width: '100%',
-      zIndex: 2
+      elevation: 2
    },
 
    deleteSlider: {
@@ -150,10 +150,9 @@ const styles = StyleSheet.create({
       paddingRight: 10,
       backgroundColor: 'red',
       position: 'absolute',
-      elevation: 3,
+      elevation: 1,
       width: '100%',
-      height: 120,
-      zIndex: 1
+      height: 120
    },
 
    textStyle: {
