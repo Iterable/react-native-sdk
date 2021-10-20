@@ -23,7 +23,7 @@ type SwipeableRowProps = {
    dataModel: IterableInboxDataModel,
    rowViewModel: InboxRowViewModel,
    customizations: IterableInboxCustomizations,
-   // swipingCheck: Function,
+   swipingCheck: Function,
    messageListItemLayout: Function,
    deleteRow: Function,
    handleMessageSelect: Function,
@@ -37,7 +37,7 @@ const IterableInboxSwipeableRow = ({
    dataModel,
    rowViewModel,
    customizations,
-   // swipingCheck,
+   swipingCheck,
    messageListItemLayout,
    deleteRow,
    handleMessageSelect,
@@ -59,7 +59,7 @@ const IterableInboxSwipeableRow = ({
          completeSwipe()  
       } else {
          resetPosition()
-         // swipingCheck(false)
+         swipingCheck(false)
       }
    }
 
@@ -95,7 +95,7 @@ const IterableInboxSwipeableRow = ({
          onPanResponderMove: (event, gesture) => {
             if(gesture.dx <= -scrollThreshold) {
                //enables swipeing when threshold is reached
-               // swipingCheck(true)
+               swipingCheck(true)
 
                //threshold value is deleted from movement
                const x = gesture.dx + scrollThreshold
