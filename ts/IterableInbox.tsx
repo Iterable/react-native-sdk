@@ -172,7 +172,7 @@ const IterableInbox = ({
                   messageListItemLayout={messageListItemLayout}
                   // deleteRow={(messageId: string) => deleteRow(messageId)}
                   handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index, rowViewModels)}
-                  // contentWidth={width}
+                  contentWidth={width}
                   isPortrait={isPortrait}
                />  :
                renderEmptyState()
