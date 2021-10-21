@@ -8,7 +8,7 @@ import {
    InboxRowViewModel,
    IterableInboxCustomizations,
    IterableInboxDataModel,
-   IterableInboxMessageListItem
+   IterableInboxClickableRow
    // IterableInboxSwipeableRow
 } from '.'
 
@@ -18,7 +18,7 @@ type MessageListProps = {
    customizations: IterableInboxCustomizations,
    messageListItemLayout: Function,
    // deleteRow: Function,
-   // handleMessageSelect: Function,
+   handleMessageSelect: Function,
    // contentWidth: number,
    isPortrait: boolean 
 }
@@ -29,7 +29,7 @@ const IterableInboxMessageList = ({
    customizations,
    messageListItemLayout, 
    // deleteRow, 
-   // handleMessageSelect,
+   handleMessageSelect,
    // contentWidth,
    isPortrait
 }: MessageListProps) => {
@@ -37,13 +37,15 @@ const IterableInboxMessageList = ({
 
    function renderRowViewModel(rowViewModel: InboxRowViewModel, index: number, last: boolean) {
       return (
-         <IterableInboxMessageListItem
+         <IterableInboxClickableRow
+            index={index}
             last={last}
             dataModel = {dataModel}
             rowViewModel={rowViewModel}
             customizations={customizations}
             messageListItemLayout={messageListItemLayout}
-            isPortrait={isPortrait} 
+            handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index)}
+            isPortrait={isPortrait}
          /> 
 
          // <IterableInboxSwipeableRow

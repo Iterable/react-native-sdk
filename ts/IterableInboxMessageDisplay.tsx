@@ -1,12 +1,12 @@
 'use strict'
 
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { 
   Text, 
   View,
   ScrollView,  
   StyleSheet,
-  Alert,
+  Platform,
   TouchableWithoutFeedback,
 } from 'react-native'
 // import { WebView } from 'react-native-webview'
@@ -43,6 +43,7 @@ const IterableInboxMessageDisplay = ({
 
    headline = (!isPortrait) ? {...headline, paddingLeft: 45} : headline
    returnButton = (!isPortrait) ? {...returnButton, paddingLeft: 40} : returnButton
+   returnButtonContainer = {...returnButtonContainer, marginTop: Platform.OS === 'android' ? 0 : 40}
    returnButtonContainer = (!isPortrait) ? {...returnButtonContainer, marginTop: 10} : returnButtonContainer
 
    useEffect(() => {
