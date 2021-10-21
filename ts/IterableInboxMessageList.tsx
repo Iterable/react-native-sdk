@@ -2,14 +2,12 @@
 
 import React, { useCallback, useState } from 'react'
 import { ViewabilityConfig, ViewToken, FlatList } from 'react-native'
-// import { FlatList } from 'react-native-gesture-handler'
 
 import {
    InboxRowViewModel,
    IterableInboxCustomizations,
    IterableInboxDataModel,
-   IterableInboxClickableRow
-   // IterableInboxSwipeableRow
+   IterableInboxSwipeableRow
 } from '.'
 
 type MessageListProps = {
@@ -17,9 +15,9 @@ type MessageListProps = {
    rowViewModels: InboxRowViewModel[],
    customizations: IterableInboxCustomizations,
    messageListItemLayout: Function,
-   // deleteRow: Function,
+   deleteRow: Function,
    handleMessageSelect: Function,
-   // contentWidth: number,
+   contentWidth: number,
    isPortrait: boolean 
 }
 
@@ -28,40 +26,29 @@ const IterableInboxMessageList = ({
    rowViewModels,
    customizations,
    messageListItemLayout, 
-   // deleteRow, 
+   deleteRow, 
    handleMessageSelect,
-   // contentWidth,
+   contentWidth,
    isPortrait
 }: MessageListProps) => {
    const [swiping, setSwiping] = useState<boolean>(false)
 
    function renderRowViewModel(rowViewModel: InboxRowViewModel, index: number, last: boolean) {
       return (
-         <IterableInboxClickableRow
-            index={index}
-            last={last}
+         <IterableInboxSwipeableRow
+            key = {rowViewModel.inAppMessage.messageId}
             dataModel = {dataModel}
-            rowViewModel={rowViewModel}
-            customizations={customizations}
-            messageListItemLayout={messageListItemLayout}
-            handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index)}
-            isPortrait={isPortrait}
-         /> 
-
-         // <IterableInboxSwipeableRow
-         //    key = {rowViewModel.inAppMessage.messageId}
-         //    dataModel = {dataModel}
-         //    index = {index}
-         //    last = {last}
-         //    rowViewModel = {rowViewModel}
-         //    customizations = {customizations}
-         //    swipingCheck = {(swiping: boolean) => setSwiping(swiping)}
-         //    messageListItemLayout = {messageListItemLayout}
-         //    deleteRow = {(messageId: string) => deleteRow(messageId)}
-         //    handleMessageSelect = {(messageId: string, index: number) => handleMessageSelect(messageId, index)}
-         //    contentWidth = {contentWidth}
-         //    isPortrait = {isPortrait}
-         // />
+            index = {index}
+            last = {last}
+            rowViewModel = {rowViewModel}
+            customizations = {customizations}
+            swipingCheck = {(swiping: boolean) => setSwiping(swiping)}
+            messageListItemLayout = {messageListItemLayout}
+            deleteRow = {(messageId: string) => deleteRow(messageId)}
+            handleMessageSelect = {(messageId: string, index: number) => handleMessageSelect(messageId, index)}
+            contentWidth = {contentWidth}
+            isPortrait = {isPortrait}
+         />
       )
    }
 
