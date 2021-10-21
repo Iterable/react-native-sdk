@@ -1,7 +1,7 @@
 'use strict'
 
 import React from 'react'
-import { TouchableOpacity, ImageSourcePropType } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 
 import {
    InboxRowViewModel,
