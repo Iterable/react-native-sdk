@@ -20,7 +20,8 @@
   "license": "MIT",
   "homepage": "https://github.com/Iterable/react-native-sdk",
   "dependencies": {
-    "@react-native-community/hooks": "^2.6.0"
+    "@react-native-community/hooks": "^2.6.0",
+    "react-native-webview": "^11.14.1"
   },
   "devDependencies": {
     "@babel/core": "^7.10.2",
