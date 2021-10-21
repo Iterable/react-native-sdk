@@ -73,20 +73,20 @@ const IterableInbox = ({
 
    useEffect(() => {
       fetchInboxMessages()
-      // addInboxChangedListener()
+      addInboxChangedListener()
 
-      // return () => {
-      //    removeInboxChangedListener()
-      // }
+      return () => {
+         removeInboxChangedListener()
+      }
    }, [])
 
-   // useEffect(() => {
-   //    if (appState === 'active') {
-   //       // inboxDataModel.startSession()
-   //    } else {
-   //       // inboxDataModel.endSession()
-   //    }
-   // }, [appState])
+   useEffect(() => {
+      if (appState === 'active') {
+         // inboxDataModel.startSession()
+      } else {
+         // inboxDataModel.endSession()
+      }
+   }, [appState])
 
    useEffect(() => {
       setScreenWidth(width)
@@ -95,18 +95,18 @@ const IterableInbox = ({
       } 
    }, [width])
 
-   // function addInboxChangedListener() {
-   //    RNEventEmitter.addListener(
-   //       "receivedIterableInboxChanged",
-   //       () => {
-   //          fetchInboxMessages()
-   //       }
-   //   )
-   // }
+   function addInboxChangedListener() {
+      RNEventEmitter.addListener(
+         "receivedIterableInboxChanged",
+         () => {
+            fetchInboxMessages()
+         }
+     )
+   }
 
-   // function removeInboxChangedListener() {
-   //    RNEventEmitter.removeAllListeners("receivedIterableInboxChanged")
-   // }
+   function removeInboxChangedListener() {
+      RNEventEmitter.removeAllListeners("receivedIterableInboxChanged")
+   }
 
    const fetchInboxMessages = async () => {
       let newMessages = await inboxDataModel.refresh()
@@ -212,14 +212,14 @@ const IterableInbox = ({
       setIsMessageDisplay(false)  
    }
 
-   // function updateCurrentVisibleRows() {
-   //    // inboxDataModel.updateVisibleRows(getCurrentVisibleRows())
-   // }
+   function updateCurrentVisibleRows() {
+      // inboxDataModel.updateVisibleRows(getCurrentVisibleRows())
+   }
 
-   // function getCurrentVisibleRows(): InboxImpressionRowInfo[] {
+   function getCurrentVisibleRows(): InboxImpressionRowInfo[] {
 
-   //    return []
-   // }
+      return []
+   }
 
    return(
       <View style={updatedContainer}>
