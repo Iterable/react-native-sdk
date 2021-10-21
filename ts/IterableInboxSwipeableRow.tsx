@@ -56,7 +56,7 @@ const IterableInboxSwipeableRow = ({
    //If user swipes, either complete swipe or reset 
    const userSwipedLeft = (gesture : any) => {
       if(gesture.dx < -0.6 * contentWidth) {
-         completeSwipe()   
+         completeSwipe()  
       } else {
          resetPosition()
          swipingCheck(false)
@@ -86,10 +86,6 @@ const IterableInboxSwipeableRow = ({
          onMoveShouldSetPanResponder: () => true,
          onPanResponderTerminationRequest: () => false,
          onPanResponderGrant: () => {
-            position.setOffset({ 
-               x: position.x._value, 
-               y: 0 
-            })
             position.setValue({ x: 0, y: 0 })
          },
          onPanResponderMove: (event, gesture) => {
@@ -114,9 +110,9 @@ const IterableInboxSwipeableRow = ({
 
    return(
       <View>
-         <Animated.View style={deleteSlider}>
+         <View style={deleteSlider}>
             <Text style={textStyle}>DELETE</Text>   
-         </Animated.View>
+         </View>
          <Animated.View 
             style={[textContainer, position.getLayout()]}
             {...panResponder.panHandlers}
@@ -139,7 +135,7 @@ const IterableInboxSwipeableRow = ({
 const styles = StyleSheet.create({
    textContainer: {
       width: '100%',
-      zIndex: 2
+      elevation: 2
    },
 
    deleteSlider: {
@@ -149,10 +145,9 @@ const styles = StyleSheet.create({
       paddingRight: 10,
       backgroundColor: 'red',
       position: 'absolute',
-      elevation: 3,
+      elevation: 1,
       width: '100%',
-      height: 120,
-      zIndex: 1
+      height: 120
    },
 
    textStyle: {

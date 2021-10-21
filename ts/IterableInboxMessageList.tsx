@@ -1,8 +1,7 @@
 'use strict'
 
 import React, { useCallback, useState } from 'react'
-import { ViewabilityConfig, ViewToken } from 'react-native'
-import { FlatList } from 'react-native-gesture-handler'
+import { ViewabilityConfig, ViewToken, FlatList } from 'react-native'
 
 import {
    InboxRowViewModel,
