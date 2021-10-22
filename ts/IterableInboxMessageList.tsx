@@ -1,15 +1,17 @@
 'use strict'
 
-import React from 'react'
-import { ScrollView } from 'react-native'
+import React, { useCallback, useState } from 'react'
+import { ViewabilityConfig, ViewToken, FlatList } from 'react-native'
 
 import {
    InboxRowViewModel,
    IterableInboxCustomizations,
+   IterableInboxDataModel,
    IterableInboxSwipeableRow
 } from '.'
 
 type MessageListProps = {
+   dataModel: IterableInboxDataModel,
    rowViewModels: InboxRowViewModel[],
    customizations: IterableInboxCustomizations,
    messageListItemLayout: Function,
@@ -19,7 +21,8 @@ type MessageListProps = {
    isPortrait: boolean 
 }
 
-const IterableInboxMessageList = ({ 
+const IterableInboxMessageList = ({
+   dataModel,
    rowViewModels,
    customizations,
    messageListItemLayout, 
@@ -28,31 +31,48 @@ const IterableInboxMessageList = ({
    contentWidth,
    isPortrait
 }: MessageListProps) => {
+   const [swiping, setSwiping] = useState<boolean>(false)
 
-   const renderMessageCells = (rowViewModels: InboxRowViewModel[]) => {
-      return rowViewModels.map((rowViewModel, index) => {
-         const last = index === rowViewModels.length - 1 ? true : false
-         return (
-            <IterableInboxSwipeableRow
-               key={rowViewModel.inAppMessage.messageId}
-               index={index}
-               last={last}
-               rowViewModel={rowViewModel}
-               customizations={customizations}
-               messageListItemLayout={messageListItemLayout}
-               deleteRow={(messageId: string) => deleteRow(messageId)}
-               handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index)}
-               contentWidth={contentWidth}
-               isPortrait={isPortrait}
-            />
-         )
-      })
-   } 
+   function renderRowViewModel(rowViewModel: InboxRowViewModel, index: number, last: boolean) {
+      return (
+         <IterableInboxSwipeableRow
+            key = {rowViewModel.inAppMessage.messageId}
+            dataModel = {dataModel}
+            index = {index}
+            last = {last}
+            rowViewModel = {rowViewModel}
+            customizations = {customizations}
+            swipingCheck = {(swiping: boolean) => setSwiping(swiping)}
+            messageListItemLayout = {messageListItemLayout}
+            deleteRow = {(messageId: string) => deleteRow(messageId)}
+            handleMessageSelect = {(messageId: string, index: number) => handleMessageSelect(messageId, index)}
+            contentWidth = {contentWidth}
+            isPortrait = {isPortrait}
+         />
+      )
+   }
 
-   return(
-      <ScrollView>
-         {renderMessageCells(rowViewModels)}
-      </ScrollView>   
+   const inboxSessionViewabilityConfig: ViewabilityConfig = {
+      minimumViewTime: 0.5,
+      itemVisiblePercentThreshold: 50,
+      waitForInteraction: true
+   }
+
+   const inboxSessionItemsChanged = useCallback((
+      (info: {viewableItems: Array<ViewToken>, changed: Array<ViewToken>}) => {
+         
+      }
+   ), [])
+
+   return (
+      <FlatList
+         scrollEnabled = {!swiping}
+         data = {rowViewModels}
+         renderItem = {({item, index}: {item: InboxRowViewModel, index: number }) => renderRowViewModel(item, index, index === rowViewModels.length - 1)}
+         keyExtractor = {(item: InboxRowViewModel) => item.inAppMessage.messageId}
+         viewabilityConfig = {inboxSessionViewabilityConfig}
+         onViewableItemsChanged = {inboxSessionItemsChanged}
+      />
    )
 }
 

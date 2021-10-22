@@ -12,15 +12,18 @@ import {
 import {
    InboxRowViewModel,
    IterableInboxClickableRow,
-   IterableInboxCustomizations
+   IterableInboxCustomizations,
+   IterableInboxDataModel
 } from '.'
 
 type SwipeableRowProps = {
    key: string,
    index: number,
    last: boolean,
+   dataModel: IterableInboxDataModel,
    rowViewModel: InboxRowViewModel,
    customizations: IterableInboxCustomizations,
+   swipingCheck: Function,
    messageListItemLayout: Function,
    deleteRow: Function,
    handleMessageSelect: Function,
@@ -31,8 +34,10 @@ type SwipeableRowProps = {
 const IterableInboxSwipeableRow = ({
    index,
    last,
+   dataModel,
    rowViewModel,
    customizations,
+   swipingCheck,
    messageListItemLayout,
    deleteRow,
    handleMessageSelect,
@@ -43,7 +48,7 @@ const IterableInboxSwipeableRow = ({
 
    let { textContainer, deleteSlider, textStyle } = styles
 
-   deleteSlider = (isPortrait) ? deleteSlider : {...deleteSlider, paddingRight: 40 } 
+   deleteSlider = (isPortrait) ? deleteSlider : {...deleteSlider, paddingRight: 40 }
 
    const scrollThreshold = contentWidth / 15
    const FORCING_DURATION = 350
@@ -51,9 +56,10 @@ const IterableInboxSwipeableRow = ({
    //If user swipes, either complete swipe or reset 
    const userSwipedLeft = (gesture : any) => {
       if(gesture.dx < -0.6 * contentWidth) {
-         completeSwipe()   
+         completeSwipe()  
       } else {
          resetPosition()
+         swipingCheck(false)
       }
    }
 
@@ -80,14 +86,13 @@ const IterableInboxSwipeableRow = ({
          onMoveShouldSetPanResponder: () => true,
          onPanResponderTerminationRequest: () => false,
          onPanResponderGrant: () => {
-            position.setOffset({ 
-               x: position.x._value, 
-               y: 0 
-            })
             position.setValue({ x: 0, y: 0 })
          },
          onPanResponderMove: (event, gesture) => {
             if(gesture.dx <= -scrollThreshold) {
+               //enables swipeing when threshold is reached
+               swipingCheck(true)
+
                //threshold value is deleted from movement
                const x = gesture.dx + scrollThreshold
                //position is set to the new value
@@ -99,21 +104,15 @@ const IterableInboxSwipeableRow = ({
             if(gesture.dx < 0) {
                userSwipedLeft(gesture) 
             }
-         },
-         onPanResponderTerminate: () => {
-            Animated.spring(position, {
-               toValue: {x: 0, y: 0},
-               useNativeDriver: false
-            }).start()
          }
       })
    ).current
 
    return(
       <View>
-         <Animated.View style={deleteSlider}>
+         <View style={deleteSlider}>
             <Text style={textStyle}>DELETE</Text>   
-         </Animated.View>
+         </View>
          <Animated.View 
             style={[textContainer, position.getLayout()]}
             {...panResponder.panHandlers}
@@ -121,6 +120,7 @@ const IterableInboxSwipeableRow = ({
             <IterableInboxClickableRow
                index={index}
                last={last}
+               dataModel = {dataModel}
                rowViewModel={rowViewModel}
                customizations={customizations}
                messageListItemLayout={messageListItemLayout}
@@ -135,7 +135,7 @@ const IterableInboxSwipeableRow = ({
 const styles = StyleSheet.create({
    textContainer: {
       width: '100%',
-      zIndex: 2
+      elevation: 2
    },
 
    deleteSlider: {
@@ -145,10 +145,9 @@ const styles = StyleSheet.create({
       paddingRight: 10,
       backgroundColor: 'red',
       position: 'absolute',
-      elevation: 3,
+      elevation: 1,
       width: '100%',
-      height: 120,
-      zIndex: 1
+      height: 120
    },
 
    textStyle: {

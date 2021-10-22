@@ -9,20 +9,37 @@ import {
     IterableHtmlInAppContent
 } from '.'
 
+import InboxImpressionRowInfo from './InboxImpressionRowInfo'
+
 const RNIterableAPI = NativeModules.RNIterableAPI
 
 class IterableInboxDataModel {
     filterFn?: (message: IterableInAppMessage) => boolean
     comparatorFn?: (message1: IterableInAppMessage, message2: IterableInAppMessage) => number
+    dateMapperFn?: (message: IterableInAppMessage) => string | undefined
 
     constructor() {
 
     }
 
     set(filter?: (message: IterableInAppMessage) => boolean,
-        comparator?: (message1: IterableInAppMessage, message2: IterableInAppMessage) => number) {
+        comparator?: (message1: IterableInAppMessage, message2: IterableInAppMessage) => number,
+        dateMapper?: (message: IterableInAppMessage) => string | undefined) {
         this.filterFn = filter
         this.comparatorFn = comparator
+        this.dateMapperFn = dateMapper
+    }
+
+    getFormattedDate(message: IterableInAppMessage) {
+        if (message.createdAt === undefined) {
+            return ""
+        }
+
+        if (this.dateMapperFn) {
+            return this.dateMapperFn(message)
+        } else {
+            return this.defaultDateMapper(message)
+        }
     }
 
     getHtmlContentForMessageId(id: string): Promise<IterableHtmlInAppContent> {
@@ -58,6 +75,27 @@ class IterableInboxDataModel {
         )
     }
 
+    // inbox session tracking functions
+
+    startSession() {
+        RNIterableAPI.startSession(this.getCurrentVisibleRows())
+    }
+
+    endSession() {
+        RNIterableAPI.endSession()
+    }
+
+    updateVisibleRows() {
+        RNIterableAPI.updateVisibleRows(this.getCurrentVisibleRows())
+    }
+
+    // private/internal
+
+    private getCurrentVisibleRows(): InboxImpressionRowInfo[] {
+        console.log("jay getCurrentVisibleRows")
+        return []
+    }
+
     private static sortByMostRecent = (message1: IterableInAppMessage, message2: IterableInAppMessage) => {
         let createdAt1 = message1.createdAt ?? new Date(0)
         let createdAt2 = message2.createdAt ?? new Date(0)
@@ -66,6 +104,18 @@ class IterableInboxDataModel {
         if (createdAt1 > createdAt2) return -1
 
         return 0
+    }
+
+    private defaultDateMapper(message: IterableInAppMessage): string {
+        if (message.createdAt === undefined) {
+            return ""
+        }
+
+        const createdAt = new Date(message.createdAt)
+
+        var defaultDateString = `${createdAt.toLocaleDateString()} at ${createdAt.toLocaleTimeString()}`
+
+        return defaultDateString
     }
 
     private processMessages(messages: Array<IterableInAppMessage>): Array<InboxRowViewModel> {

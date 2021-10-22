@@ -1,19 +1,20 @@
 'use strict'
 
-import React, {useState} from 'react'
-import { 
-   View, 
-   Text, 
-   Image, 
+import React from 'react'
+import {
+   View,
+   Text,
+   Image,
    ViewStyle,
-   TextStyle, 
-   StyleSheet 
+   TextStyle,
+   StyleSheet
 } from 'react-native'
 
-import { InboxRowViewModel, IterableInboxCustomizations } from '.'
+import { InboxRowViewModel, IterableInboxCustomizations, IterableInboxDataModel } from '.'
 
 type MessageListItemProps = {
    last: boolean,
+   dataModel: IterableInboxDataModel,
    rowViewModel: InboxRowViewModel,
    customizations: IterableInboxCustomizations,
    messageListItemLayout: Function,
@@ -22,13 +23,14 @@ type MessageListItemProps = {
 
 const defaultMessageListLayout = (
    last: boolean,
-   rowViewModel: InboxRowViewModel, 
+   dataModel: IterableInboxDataModel,
+   rowViewModel: InboxRowViewModel,
    customizations: IterableInboxCustomizations,
    isPortrait: boolean
 ) => {
    const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title ?? ""
    const messageBody = rowViewModel.inAppMessage.inboxMetadata?.subtitle ?? ""
-   const messageCreatedAt = rowViewModel.createdAt
+   const messageCreatedAt = dataModel.getFormattedDate(rowViewModel.inAppMessage) ?? ""
    const iconURL = rowViewModel.imageUrl
 
    let styles = StyleSheet.create({
@@ -45,19 +47,26 @@ const defaultMessageListLayout = (
          backgroundColor: 'blue',
          marginLeft: 10,
          marginRight: 5,
-         marginTop: 7
+         marginTop: 10
       },
 
       unreadMessageIconContainer: {
-         paddingLeft: 10
+         paddingLeft: 10,
+         flexDirection: 'column',
+         justifyContent: 'center'
       },
 
       readMessageIconContainer: {
-         paddingLeft: 30
+         paddingLeft: 30,
+         flexDirection: 'column',
+         justifyContent: 'center'
       },
    
       messageContainer: {
-         paddingLeft: 10
+         paddingLeft: 10,
+         width: '75%',
+         flexDirection: 'column',
+         justifyContent: 'center'
       },
    
       title: {
@@ -68,7 +77,7 @@ const defaultMessageListLayout = (
       body: {
          fontSize: 15,
          color: 'lightgray',
-         width: '65%',
+         width: '85%',
          flexWrap: "wrap",
          paddingBottom: 10
       },
@@ -106,42 +115,40 @@ const defaultMessageListLayout = (
    } = resolvedStyles
 
    unreadIndicator = (!isPortrait) ? {...unreadIndicator, marginLeft: 40} : unreadIndicator
-   readMessageIconContainer = (!isPortrait) ? {...readMessageIconContainer, paddingLeft: 65} : readMessageIconContainer 
+   readMessageIconContainer = (!isPortrait) ? {...readMessageIconContainer, paddingLeft: 65} : readMessageIconContainer
+   messageContainer = (!isPortrait) ? {...messageContainer, width: '90%'} : messageContainer 
 
    function messageRowStyle(rowViewModel: InboxRowViewModel) {
       return last ? {...messageRow, borderBottomWidth: 1} : messageRow 
    }
       
    return(
-
       <View style={messageRowStyle(rowViewModel) as ViewStyle} >
          <View style={unreadIndicatorContainer as ViewStyle}>
             {rowViewModel.read ? null : <View style={unreadIndicator}/>}
          </View>
          <View style={(rowViewModel.read ? readMessageIconContainer : unreadMessageIconContainer) as ViewStyle}>
-            <Image style={{height: 80, width: 80}} source={{uri: iconURL}}/>
+            {iconURL ? <Image style={{height: 80, width: 80}} source={{uri: iconURL}}/> : null}
          </View>
          <View style={messageContainer as ViewStyle}>
-            <Text style={title as TextStyle}>{messageTitle}</Text>
-            <Text style={body as TextStyle}>{messageBody}</Text>
-            <Text style={createdAt as TextStyle}>{messageCreatedAt}</Text>
+            <Text style={title}>{messageTitle as TextStyle}</Text>
+            <Text numberOfLines={2} ellipsizeMode='tail' style={body as TextStyle}>{messageBody}</Text>
+            <Text style={createdAt}>{messageCreatedAt as TextStyle}</Text>
          </View>
       </View>
    )
 }
 
 const IterableInboxMessageListItem = ({ 
-   last, 
+   last,
+   dataModel,
    rowViewModel,
    customizations,
-   messageListItemLayout,  
+   messageListItemLayout,
    isPortrait
 }: MessageListItemProps) => {
-
    return(
-      messageListItemLayout(last, rowViewModel) ?
-         messageListItemLayout(last, rowViewModel) :
-         defaultMessageListLayout(last, rowViewModel, customizations, isPortrait)  
+      messageListItemLayout(last, rowViewModel) ? messageListItemLayout(last, rowViewModel) : defaultMessageListLayout(last, dataModel, rowViewModel, customizations, isPortrait)  
    )
 }
 
