@@ -20,6 +20,7 @@ import com.iterable.iterableapi.IterableInAppDeleteActionType;
 import com.iterable.iterableapi.IterableInAppHandler;
 import com.iterable.iterableapi.IterableInAppLocation;
 import com.iterable.iterableapi.IterableInAppMessage;
+import com.iterable.iterableapi.IterableInboxSession;
 import com.iterable.iterableapi.IterableLogger;
 import com.iterable.iterableapi.RNIterableInternal;
 
@@ -207,6 +208,32 @@ class Serialization {
         }
         return actionContextJson;
     }
+
+    static IterableInboxSession.Impression inboxImpressionFromMap(JSONObject impressionMap) throws JSONException {
+        return new IterableInboxSession.Impression(impressionMap.getString("messageId"),
+                impressionMap.getBoolean("silentInbox"),
+                impressionMap.getInt("displayCount"),
+                (float) impressionMap.getDouble("duration"));
+    }
+
+    static List<IterableInboxSession.Impression> impressionsFromReadableArray(ReadableArray array) {
+        ArrayList<IterableInboxSession.Impression> list = new ArrayList<>();
+
+        try {
+            JSONArray impressionJsonArray = convertArrayToJson(array);
+
+            for (int i = 0; i < impressionJsonArray.length(); i++) {
+                JSONObject impressionObj = impressionJsonArray.getJSONObject(i);
+                list.add(inboxImpressionFromMap(impressionObj));
+            }
+        } catch (JSONException e) {
+            IterableLogger.e(TAG, "Failed converting to JSONObject");
+        }
+
+        return list;
+    }
+
+
 
     // ---------------------------------------------------------------------------------------
     // region React Native JSON conversion methods

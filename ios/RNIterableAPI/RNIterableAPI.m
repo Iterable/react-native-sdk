@@ -122,6 +122,14 @@ RCT_EXTERN_METHOD(setReadForMessage: (nonnull NSString *) messageId
 
 RCT_EXTERN_METHOD(setAutoDisplayPaused: (BOOL) paused)
 
+// MARK: - SDK Inbox Session Tracking Functions
+
+RCT_EXTERN_METHOD(startSession: (nonnull NSArray *) visibleRows)
+
+RCT_EXTERN_METHOD(endSession)
+
+RCT_EXTERN_METHOD(updateVisibleRows: (nonnull NSArray *) visibleRows)
+
 // MARK: - SDK Auth Manager Functions
 
 RCT_EXTERN_METHOD(passAlongAuthToken: (NSString *) authToken)

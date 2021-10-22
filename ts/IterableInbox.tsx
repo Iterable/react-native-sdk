@@ -7,7 +7,8 @@ import {
    StyleSheet,
    Animated,
    NativeModules,
-   NativeEventEmitter
+   NativeEventEmitter,
+   Platform
 } from 'react-native'
 
 import {
@@ -21,10 +22,12 @@ import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
 import IterableInboxDataModel from './IterableInboxDataModel'
 import IterableInboxCustomizations from './IterableInboxCustomizations'
 
+import useAppStateListener from './useAppStateListener'
+import useDeviceOrientation from './useDeviceOrientation'
+import InboxImpressionRowInfo from './InboxImpressionRowInfo'
+
 const RNIterableAPI = NativeModules.RNIterableAPI
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
-
-import useDeviceOrientation from './useDeviceOrientation'
 
 type inboxProps = {
    messageListItemLayout?: Function,
@@ -41,6 +44,7 @@ const IterableInbox = ({
 }: inboxProps) => {
    const defaultInboxTitle = "Inbox"
    const inboxDataModel = new IterableInboxDataModel()
+   const appState = useAppStateListener()
 
    let { height, width, isPortrait } = useDeviceOrientation()
 
@@ -58,23 +62,31 @@ const IterableInbox = ({
    } = styles
 
    const navTitleHeight = headline.height + headline.paddingTop + headline.paddingBottom
-
    const updatedContainer = {...container, width: 2 * width, height: height - navTitleHeight - 40}
-   const messageListContainer = { width: width}
-   
-   headline = (isPortrait) ? {...headline, marginTop: 40} : {...headline, paddingLeft: 65}
+   const messageListContainer = { width: width }
 
-   const fetchData = async () => {
-      const newRowViewModels = await inboxDataModel.refresh()
-      setRowViewModels(newRowViewModels)
-   }
+   headline = {...headline, height: Platform.OS === "android" ? 70 : 60}
+   
+   headline = (isPortrait) ? 
+      {...headline, marginTop: Platform.OS === "android" ? 0 : 40} : 
+      {...headline, paddingLeft: 65}
 
    useEffect(() => {
-      addSilentPushHandler()
       fetchInboxMessages()
+      addInboxChangedListener()
 
-      return removeSilentPushHandler
+      return () => {
+         removeInboxChangedListener()
+      }
    }, [])
+
+   useEffect(() => {
+      if (appState === 'active') {
+         // inboxDataModel.startSession()
+      } else {
+         // inboxDataModel.endSession()
+      }
+   }, [appState])
 
    useEffect(() => {
       setScreenWidth(width)
@@ -83,16 +95,16 @@ const IterableInbox = ({
       } 
    }, [width])
 
-   function addSilentPushHandler() {
+   function addInboxChangedListener() {
       RNEventEmitter.addListener(
          "receivedIterableInboxChanged",
          () => {
             fetchInboxMessages()
          }
-      )
+     )
    }
 
-   function removeSilentPushHandler() {
+   function removeInboxChangedListener() {
       RNEventEmitter.removeAllListeners("receivedIterableInboxChanged")
    }
 
@@ -124,7 +136,7 @@ const IterableInbox = ({
 
    const deleteRow = (messageId: string) => {
       inboxDataModel.deleteItemById(messageId, IterableInAppDeleteSource.inboxSwipe)
-      fetchData()
+      fetchInboxMessages()
    }
 
    function returnToInbox() {
@@ -153,7 +165,8 @@ const IterableInbox = ({
                {customizations?.navTitle ? customizations?.navTitle : defaultInboxTitle}
             </Text>
             { rowViewModels.length ?
-               <IterableInboxMessageList 
+               <IterableInboxMessageList
+                  dataModel = {inboxDataModel}
                   rowViewModels={rowViewModels}
                   customizations={customizations}
                   messageListItemLayout={messageListItemLayout}
@@ -199,6 +212,15 @@ const IterableInbox = ({
       setIsMessageDisplay(false)  
    }
 
+   function updateCurrentVisibleRows() {
+      // inboxDataModel.updateVisibleRows(getCurrentVisibleRows())
+   }
+
+   function getCurrentVisibleRows(): InboxImpressionRowInfo[] {
+
+      return []
+   }
+
    return(
       <View style={updatedContainer}>
          <Animated.View
@@ -215,7 +237,7 @@ const IterableInbox = ({
                justifyContent: "flex-start",
             }}
          >
-            {showMessageList(loading)}   
+            {showMessageList(loading)}
             {showMessageDisplay(rowViewModels, selectedRowViewModelIdx)}
          </Animated.View>
       </View>
@@ -231,8 +253,8 @@ const styles = StyleSheet.create({
    container: {
       flex: 1,
       flexDirection: 'row',
-      alignItems: "center",
-      justifyContent: "flex-start"
+      alignItems: 'center',
+      justifyContent: 'flex-start'
    },
 
    headline: {

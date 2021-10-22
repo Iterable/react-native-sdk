@@ -7,6 +7,7 @@ import {
   ScrollView,  
   StyleSheet,
   Linking,
+  Platform,
   TouchableWithoutFeedback,
 } from 'react-native'
 import { WebView } from 'react-native-webview'
@@ -43,6 +44,7 @@ const IterableInboxMessageDisplay = ({
 
    headline = (!isPortrait) ? {...headline, paddingLeft: 45} : headline
    returnButton = (!isPortrait) ? {...returnButton, paddingLeft: 40} : returnButton
+   returnButtonContainer = {...returnButtonContainer, marginTop: Platform.OS === 'android' ? 0 : 40}
    returnButtonContainer = (!isPortrait) ? {...returnButtonContainer, marginTop: 10} : returnButtonContainer
 
    let JS = `
