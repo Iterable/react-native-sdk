@@ -77,7 +77,7 @@ class IterableInboxDataModel {
 
     // inbox session tracking functions
 
-    startSession(visibleRows: Array<InboxImpressionRowInfo>) {
+    startSession(visibleRows: Array<InboxImpressionRowInfo> = []) {
         RNIterableAPI.startSession(visibleRows)
     }
 
@@ -85,7 +85,7 @@ class IterableInboxDataModel {
         RNIterableAPI.endSession()
     }
 
-    updateVisibleRows(visibleRows: Array<InboxImpressionRowInfo>) {
+    updateVisibleRows(visibleRows: Array<InboxImpressionRowInfo> = []) {
         RNIterableAPI.updateVisibleRows(visibleRows)
     }
 

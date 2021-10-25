@@ -56,27 +56,46 @@ const IterableInboxMessageList = ({
    }
 
    function convertViewTokensToRowInfos(viewTokens: Array<ViewToken>): Array<InboxImpressionRowInfo> {
-      return viewTokens.map(function(viewToken) {
-         var inAppMessage = IterableInAppMessage.fromInApp(viewToken.item["inAppMessage"] as IterableInAppMessage)
+      return viewTokens.map(
+         function(viewToken) {
+            var inAppMessage = IterableInAppMessage.fromInApp(viewToken.item["inAppMessage"] as IterableInAppMessage)
 
-         const impression = {
-            messageId: inAppMessage.messageId,
-            silentInbox: inAppMessage.isSilentInbox()
-         } as InboxImpressionRowInfo
+            const impression = {
+               messageId: inAppMessage.messageId,
+               silentInbox: inAppMessage.isSilentInbox()
+            } as InboxImpressionRowInfo
 
-         return impression
-      })
+            return impression
+         }
+      )
+   }
+
+   function tempGetInAppMessagesFromViewTokens(viewTokens: Array<ViewToken>): Array<IterableInAppMessage> {
+      return viewTokens.map(
+         function(viewToken) {
+            return IterableInAppMessage.fromInApp(viewToken.item["inAppMessage"] as IterableInAppMessage)
+         }
+      )
    }
 
    const inboxSessionViewabilityConfig: ViewabilityConfig = {
-      minimumViewTime: 0.5,
+      minimumViewTime: 500,
       itemVisiblePercentThreshold: 50,
-      waitForInteraction: true
+      waitForInteraction: false
    }
 
    const inboxSessionItemsChanged = useCallback((
       (info: {viewableItems: Array<ViewToken>, changed: Array<ViewToken>}) => {
-         dataModel.updateVisibleRows(convertViewTokensToRowInfos(info.viewableItems))
+         const rowInfos = convertViewTokensToRowInfos(info.viewableItems)
+         const inAppMessages = tempGetInAppMessagesFromViewTokens(info.viewableItems)
+         
+         console.log("updateVisibleRows", inAppMessages.length, inAppMessages.map(
+            function(impression) {
+               return impression.inboxMetadata?.title ?? "<none>"
+            })
+         )
+
+         dataModel.updateVisibleRows(rowInfos)
       }
    ), [])
 
