@@ -55,25 +55,25 @@ const IterableInboxMessageList = ({
       )
    }
 
-   function convertViewTokensToRowInfos(viewTokens: Array<ViewToken>): Array<InboxImpressionRowInfo> {
+   function getInAppMessageFromViewToken(viewToken: ViewToken): IterableInAppMessage {
+      return IterableInAppMessage.fromInApp(viewToken.item["inAppMessage"] as IterableInAppMessage)
+   }
+
+   function getInAppMessagesFromViewTokens(viewTokens: Array<ViewToken>): Array<IterableInAppMessage> {
+      return viewTokens.map(getInAppMessageFromViewToken)
+   }
+
+   function getRowInfosFromViewTokens(viewTokens: Array<ViewToken>): Array<InboxImpressionRowInfo> {
       return viewTokens.map(
          function(viewToken) {
-            var inAppMessage = IterableInAppMessage.fromInApp(viewToken.item["inAppMessage"] as IterableInAppMessage)
-
+            var inAppMessage = getInAppMessageFromViewToken(viewToken)
+            
             const impression = {
                messageId: inAppMessage.messageId,
                silentInbox: inAppMessage.isSilentInbox()
             } as InboxImpressionRowInfo
 
             return impression
-         }
-      )
-   }
-
-   function tempGetInAppMessagesFromViewTokens(viewTokens: Array<ViewToken>): Array<IterableInAppMessage> {
-      return viewTokens.map(
-         function(viewToken) {
-            return IterableInAppMessage.fromInApp(viewToken.item["inAppMessage"] as IterableInAppMessage)
          }
       )
    }
@@ -86,18 +86,24 @@ const IterableInboxMessageList = ({
 
    const inboxSessionItemsChanged = useCallback((
       (info: {viewableItems: Array<ViewToken>, changed: Array<ViewToken>}) => {
-         const rowInfos = convertViewTokensToRowInfos(info.viewableItems)
-         const inAppMessages = tempGetInAppMessagesFromViewTokens(info.viewableItems)
-         
-         console.log("updateVisibleRows", inAppMessages.length, inAppMessages.map(
-            function(impression) {
-               return impression.inboxMetadata?.title ?? "<none>"
-            })
-         )
+         logCurrentVisibleRows(info)
+
+         const rowInfos = getRowInfosFromViewTokens(info.viewableItems)
 
          dataModel.updateVisibleRows(rowInfos)
       }
    ), [])
+
+   function logCurrentVisibleRows(info: {viewableItems: Array<ViewToken>, changed: Array<ViewToken>}) {
+      const rowInfos = getRowInfosFromViewTokens(info.viewableItems)
+      const inAppMessages = getInAppMessagesFromViewTokens(info.viewableItems)
+      
+      console.log("updateVisibleRows", inAppMessages.length, inAppMessages.map(
+         function(impression) {
+            return impression.inboxMetadata?.title ?? "<none>"
+         })
+      )
+   }
 
    return (
       <FlatList
