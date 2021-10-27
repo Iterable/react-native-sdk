@@ -1,5 +1,8 @@
 package com.iterable.reactnative;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -369,6 +372,26 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         });
     }
 
+    @ReactMethod
+    public void wakeApp() {
+        Intent launcherIntent = getMainActivityIntent(reactContext);
+        launcherIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        if (launcherIntent.resolveActivity(reactContext.getPackageManager()) != null) {
+            reactContext.startActivity(launcherIntent);
+        }
+    }
+
+    public Intent getMainActivityIntent(Context context) {
+        Context appContext = context.getApplicationContext();
+        PackageManager packageManager = appContext.getPackageManager();
+        Intent intent = packageManager.getLaunchIntentForPackage(appContext.getPackageName());
+        if (intent == null) {
+            intent = new Intent(Intent.ACTION_MAIN, null);
+            intent.addCategory(Intent.CATEGORY_LAUNCHER);
+            intent.setPackage(appContext.getPackageName());
+        }
+        return intent;
+    }
     // ---------------------------------------------------------------------------------------
     // endregion
 
