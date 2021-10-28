@@ -121,6 +121,12 @@ class Iterable {
   */
   static inAppManager = new IterableInAppManager()
 
+  
+  /**
+   * savedConfig instance.
+   */ 
+  static savedConfig: IterableConfig
+
   /**
   * 
   * @param {string} apiKey 
@@ -129,7 +135,8 @@ class Iterable {
   static initialize(apiKey: string, config: IterableConfig = new IterableConfig()): Promise<boolean> {
     console.log("initialize: " + apiKey);
 
-    this.setupEventHandlers(config)
+    Iterable.savedConfig = config
+    this.setupEventHandlers()
     const version = this.getVersionFromPackageJson()
 
     return RNIterableAPI.initializeWithApiKey(apiKey, config.toDict(), version)
@@ -142,7 +149,8 @@ class Iterable {
   static initialize2(apiKey: string, config: IterableConfig = new IterableConfig(), apiEndPoint: string): Promise<boolean> {
     console.log("initialize2: " + apiKey);
 
-    this.setupEventHandlers(config)
+    Iterable.savedConfig = config
+    this.setupEventHandlers()
     const version = this.getVersionFromPackageJson()
 
     return RNIterableAPI.initialize2WithApiKey(apiKey, config.toDict(), version, apiEndPoint)
@@ -242,6 +250,13 @@ class Iterable {
   static updateCart(items: Array<IterableCommerceItem>) {
     console.log("updateCart")
     RNIterableAPI.updateCart(items)
+  }
+
+  static wakeApp() {
+    if (Platform.OS === "android") {
+      console.log('Attempting to wake the app')
+      RNIterableAPI.wakeApp();
+    }
   }
 
   /**
@@ -357,56 +372,74 @@ class Iterable {
   }
 
   // PRIVATE
-  private static setupEventHandlers(config: IterableConfig) {
-    if (config.urlHandler) {
+  private static setupEventHandlers() {
+     //Remove all listeners to avoid duplicate listeners
+     RNEventEmitter.removeAllListeners(EventName.handleUrlCalled)
+     RNEventEmitter.removeAllListeners(EventName.handleInAppCalled)
+     RNEventEmitter.removeAllListeners(EventName.handleCustomActionCalled)
+     RNEventEmitter.removeAllListeners(EventName.handleAuthCalled)
+
+    if (Iterable.savedConfig.urlHandler) {
       RNEventEmitter.addListener(
         EventName.handleUrlCalled,
         (dict) => {
           const url = dict["url"]
           const context = IterableActionContext.fromDict(dict["context"])
-          if (config.urlHandler!(url, context) == false) {
-            Linking.canOpenURL(url)
-              .then(canOpen => {
-                if (canOpen) { Linking.openURL(url) }
-              })
-              .catch(reason => { console.log("could not open url: " + reason) })
+          Iterable.wakeApp()
+          if (Platform.OS === "android") {
+            //Give enough time for Activity to wake up.
+            setTimeout(() => {
+              callUrlHandler(url, context)
+            }, 1000)
+          } else {
+            callUrlHandler(url, context)
           }
         }
       )
     }
 
-    if (config.customActionHandler) {
+    if (Iterable.savedConfig.customActionHandler) {
       RNEventEmitter.addListener(
         EventName.handleCustomActionCalled,
         (dict) => {
           const action = IterableAction.fromDict(dict["action"])
           const context = IterableActionContext.fromDict(dict["context"])
-          config.customActionHandler!(action, context)
+          Iterable.savedConfig.customActionHandler!(action, context)
         }
       )
     }
 
-    if (config.inAppHandler) {
+    if (Iterable.savedConfig.inAppHandler) {
       RNEventEmitter.addListener(
         EventName.handleInAppCalled,
         (messageDict) => {
           const message = IterableInAppMessage.fromDict(messageDict)
-          const result = config.inAppHandler!(message)
+          const result = Iterable.savedConfig.inAppHandler!(message)
           RNIterableAPI.setInAppShowResponse(result)
         }
       )
     }
 
-    if (config.authHandler) {
+    if (Iterable.savedConfig.authHandler) {
       RNEventEmitter.addListener(
         EventName.handleAuthCalled,
         () => {
-          config.authHandler!()
+          Iterable.savedConfig.authHandler!()
             .then(authToken => {
               RNIterableAPI.passAlongAuthToken(authToken)
             })
         }
       )
+    }
+
+    function callUrlHandler(url: any, context: IterableActionContext) {
+      if (Iterable.savedConfig.urlHandler!(url, context) == false) {
+        Linking.canOpenURL(url)
+          .then(canOpen => {
+            if (canOpen) { Linking.openURL(url) }
+          })
+          .catch(reason => { console.log("could not open url: " + reason) })
+      }
     }
   }
 
