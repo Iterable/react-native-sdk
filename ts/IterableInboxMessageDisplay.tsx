@@ -13,6 +13,7 @@ import { WebView } from 'react-native-webview'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 import { InboxRowViewModel, IterableHtmlInAppContent, IterableEdgeInsets } from '.'
+import { Iterable } from './Iterable'
 
 type MessageDisplayProps = {
    rowViewModel: InboxRowViewModel,
@@ -65,14 +66,13 @@ const IterableInboxMessageDisplay = ({
    })
 
    const handleHTMLMessage = (event: any) => {
-      console.log(event.nativeEvent.data)
       if(event.nativeEvent.data === 'iterable://delete') {
          deleteRow(rowViewModel.inAppMessage.messageId)
          returnToInbox()
       } else if(event.nativeEvent.data === 'iterable://dismiss') {
          returnToInbox()
       } else {
-         console.log('YO')
+         Iterable.savedConfig.urlHandler(event.nativeEvent.data, null)
       }
    }
 
