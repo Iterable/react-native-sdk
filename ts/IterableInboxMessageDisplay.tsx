@@ -13,7 +13,7 @@ import { WebView } from 'react-native-webview'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 import { InboxRowViewModel, IterableHtmlInAppContent, IterableEdgeInsets } from '.'
-import { Iterable } from './Iterable'
+import { Iterable, IterableAction, IterableActionSource, IterableActionContext } from './Iterable'
 
 type MessageDisplayProps = {
    rowViewModel: InboxRowViewModel,
@@ -58,6 +58,10 @@ const IterableInboxMessageDisplay = ({
       })
    `
 
+   let action = new IterableAction("", "", "")
+   let source = IterableActionSource.inApp
+   let context = new IterableActionContext(action, source)
+
    useEffect(() => {
       inAppContentPromise.then(
          (value) => {
@@ -73,8 +77,9 @@ const IterableInboxMessageDisplay = ({
          returnToInbox()
       } else {
          if(Iterable.savedConfig.urlHandler) {
-            Iterable.savedConfig.urlHandler(event.nativeEvent.data, null)
+            Iterable.savedConfig.urlHandler(event.nativeEvent.data, context)
          }
+         returnToInbox()
       }
    }
 
