@@ -1,6 +1,6 @@
 'use strict'
 
-import { NativeModules, NativeEventEmitter, Linking } from 'react-native'
+import { NativeModules, NativeEventEmitter, Linking, Platform } from 'react-native'
 
 import IterableConfig from './IterableConfig'
 import IterableInAppMessage from './IterableInAppMessage'
