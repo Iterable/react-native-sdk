@@ -72,7 +72,9 @@ const IterableInboxMessageDisplay = ({
       } else if(event.nativeEvent.data === 'iterable://dismiss') {
          returnToInbox()
       } else {
-         Iterable.savedConfig.urlHandler(event.nativeEvent.data, null)
+         if(Iterable.savedConfig.urlHandler) {
+            Iterable.savedConfig.urlHandler(event.nativeEvent.data, null)
+         }
       }
    }
 
