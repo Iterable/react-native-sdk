@@ -51,20 +51,10 @@ const IterableInboxMessageDisplay = ({
    let JS = `
       const links = document.querySelectorAll('a')
       links.forEach(link => {
-         if(link.href === 'iterable://dismiss') {
-            link.onclick = clickDismissLink
-         } else if(link.href === 'iterable://delete') {
-            link.onclick = clickDeleteLink
-         }
+         link.addEventListener("click", () => {
+            window.ReactNativeWebView.postMessage(link.href)
+         })
       })
-
-      function clickDismissLink(data) {
-         window.ReactNativeWebView.postMessage("DISMISS")
-      }
-
-      function clickDeleteLink(data) {
-         window.ReactNativeWebView.postMessage("DELETE")
-      }
    `
 
    useEffect(() => {
@@ -75,11 +65,14 @@ const IterableInboxMessageDisplay = ({
    })
 
    const handleHTMLMessage = (event: any) => {
-      if(event.nativeEvent.data === 'DELETE') {
+      console.log(event.nativeEvent.data)
+      if(event.nativeEvent.data === 'iterable://delete') {
          deleteRow(rowViewModel.inAppMessage.messageId)
          returnToInbox()
-      } else {
+      } else if(event.nativeEvent.data === 'iterable://dismiss') {
          returnToInbox()
+      } else {
+         console.log('YO')
       }
    }
 
