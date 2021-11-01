@@ -7,6 +7,7 @@ import {
   ScrollView,  
   StyleSheet,
   Platform,
+  Linking,
   TouchableWithoutFeedback,
 } from 'react-native'
 import { WebView } from 'react-native-webview'
@@ -70,17 +71,27 @@ const IterableInboxMessageDisplay = ({
    })
 
    const handleHTMLMessage = (event: any) => {
-      if(event.nativeEvent.data === 'iterable://delete') {
+      let url = event.nativeEvent.data
+      if(url === 'iterable://delete') {
          deleteRow(rowViewModel.inAppMessage.messageId)
          returnToInbox()
-      } else if(event.nativeEvent.data === 'iterable://dismiss') {
+      } else if(url === 'iterable://dismiss') {
          returnToInbox()
       } else {
-         if(Iterable.savedConfig.urlHandler) {
-            Iterable.savedConfig.urlHandler(event.nativeEvent.data, context)
+         if(Iterable.savedConfig.urlHandler && Iterable.savedConfig.urlHandler(url, context)) {
+            Iterable.savedConfig.urlHandler(url, context)
+            returnToInbox()
          }
-         returnToInbox()
       }
+   }
+
+   const openExternalURL = (event: any) => {
+      if(event.url.slice(0,4) === 'http') {
+         Linking.openURL(event.url)
+         returnToInbox()
+         return false
+      }
+      return true 
    }
 
    return(
@@ -102,6 +113,7 @@ const IterableInboxMessageDisplay = ({
                style={{ width: contentWidth }}
                onMessage={(event) => handleHTMLMessage(event)}
                injectedJavaScript={JS}
+               onShouldStartLoadWithRequest={(event) => openExternalURL(event)}
             />
          </ScrollView> 
       </View>
