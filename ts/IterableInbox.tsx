@@ -15,8 +15,11 @@ import {
    IterableInboxMessageList,
    IterableInboxEmptyState,
    InboxRowViewModel,
-   IterableInAppDeleteSource
+   IterableInAppDeleteSource,
+   Iterable,
 } from '.'
+
+import { IterableInAppLocation } from './IterableInAppClasses'
 
 import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
 import IterableInboxDataModel from './IterableInboxDataModel'
@@ -131,6 +134,9 @@ const IterableInbox = ({
       setRowViewModels(newRowViewModels)
       inboxDataModel.setMessageAsRead(id)
       setSelectedRowViewModelIdx(index)
+
+      Iterable.trackInAppOpen(rowViewModels[index].inAppMessage, IterableInAppLocation.inbox)
+
       slideLeft()
    }
 
