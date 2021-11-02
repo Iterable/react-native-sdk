@@ -15,6 +15,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 
 import { InboxRowViewModel, IterableHtmlInAppContent, IterableEdgeInsets } from '.'
 import { Iterable, IterableAction, IterableActionSource, IterableActionContext } from './Iterable'
+import { IterableInAppLocation } from './IterableInAppClasses'
 
 type MessageDisplayProps = {
    rowViewModel: InboxRowViewModel,
@@ -72,6 +73,7 @@ const IterableInboxMessageDisplay = ({
 
    const handleHTMLMessage = (event: any) => {
       let url = event.nativeEvent.data
+      Iterable.trackInAppClick(rowViewModel.inAppMessage, IterableInAppLocation.inApp, url)
       if(url === 'iterable://delete') {
          deleteRow(rowViewModel.inAppMessage.messageId)
          returnToInbox()
