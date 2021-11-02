@@ -59,9 +59,9 @@ const IterableInboxMessageList = ({
       return IterableInAppMessage.fromInApp(viewToken.item["inAppMessage"] as IterableInAppMessage)
    }
 
-   function getInAppMessagesFromViewTokens(viewTokens: Array<ViewToken>): Array<IterableInAppMessage> {
-      return viewTokens.map(getInAppMessageFromViewToken)
-   }
+   // function getInAppMessagesFromViewTokens(viewTokens: Array<ViewToken>): Array<IterableInAppMessage> {
+   //    return viewTokens.map(getInAppMessageFromViewToken)
+   // }
 
    function getRowInfosFromViewTokens(viewTokens: Array<ViewToken>): Array<InboxImpressionRowInfo> {
       return viewTokens.map(
@@ -80,13 +80,13 @@ const IterableInboxMessageList = ({
 
    const inboxSessionViewabilityConfig: ViewabilityConfig = {
       minimumViewTime: 500,
-      itemVisiblePercentThreshold: 50,
+      itemVisiblePercentThreshold: 100,
       waitForInteraction: false
    }
 
    const inboxSessionItemsChanged = useCallback((
       (info: {viewableItems: Array<ViewToken>, changed: Array<ViewToken>}) => {
-         logCurrentVisibleRows(info)
+         // logCurrentVisibleRows(info)
 
          const rowInfos = getRowInfosFromViewTokens(info.viewableItems)
 
@@ -94,16 +94,16 @@ const IterableInboxMessageList = ({
       }
    ), [])
 
-   function logCurrentVisibleRows(info: {viewableItems: Array<ViewToken>, changed: Array<ViewToken>}) {
-      const rowInfos = getRowInfosFromViewTokens(info.viewableItems)
-      const inAppMessages = getInAppMessagesFromViewTokens(info.viewableItems)
+   // function logCurrentVisibleRows(info: {viewableItems: Array<ViewToken>, changed: Array<ViewToken>}) {
+   //    const rowInfos = getRowInfosFromViewTokens(info.viewableItems)
+   //    const inAppMessages = getInAppMessagesFromViewTokens(info.viewableItems)
       
-      console.log("updateVisibleRows", inAppMessages.length, inAppMessages.map(
-         function(impression) {
-            return impression.inboxMetadata?.title ?? "<none>"
-         })
-      )
-   }
+   //    console.log("updateVisibleRows", inAppMessages.length, inAppMessages.map(
+   //       function(impression) {
+   //          return impression.inboxMetadata?.title ?? "<none>"
+   //       })
+   //    )
+   // }
 
    return (
       <FlatList
