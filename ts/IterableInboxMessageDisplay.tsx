@@ -73,7 +73,9 @@ const IterableInboxMessageDisplay = ({
 
    const handleHTMLMessage = (event: any) => {
       let url = event.nativeEvent.data
+
       Iterable.trackInAppClick(rowViewModel.inAppMessage, IterableInAppLocation.inApp, url)
+      
       if(url === 'iterable://delete') {
          deleteRow(rowViewModel.inAppMessage.messageId)
          returnToInbox()
