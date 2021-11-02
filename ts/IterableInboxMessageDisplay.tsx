@@ -15,7 +15,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 
 import { InboxRowViewModel, IterableHtmlInAppContent, IterableEdgeInsets } from '.'
 import { Iterable, IterableAction, IterableActionSource, IterableActionContext } from './Iterable'
-import { IterableInAppLocation } from './IterableInAppClasses'
+import { IterableInAppLocation, IterableInAppCloseSource } from './IterableInAppClasses'
 
 type MessageDisplayProps = {
    rowViewModel: InboxRowViewModel,
@@ -81,6 +81,7 @@ const IterableInboxMessageDisplay = ({
          returnToInbox()
       } else if(url === 'iterable://dismiss') {
          returnToInbox()
+         Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.link, 'iterable://dismiss')
       } else {
          if(Iterable.savedConfig.urlHandler && Iterable.savedConfig.urlHandler(url, context)) {
             Iterable.savedConfig.urlHandler(url, context)
@@ -101,7 +102,11 @@ const IterableInboxMessageDisplay = ({
    return(
       <View style={updatedMessageDisplayContainer}>
          <View style={returnButtonContainer}>
-            <TouchableWithoutFeedback onPress={() => returnToInbox()}>
+            <TouchableWithoutFeedback 
+               onPress={() => {
+                  returnToInbox()
+                  Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.back, 'iterable://dismiss')
+               }}>
                <Icon 
                   name="ios-arrow-back"
                   style={returnButton} />
