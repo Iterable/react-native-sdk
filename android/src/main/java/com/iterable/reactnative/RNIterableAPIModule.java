@@ -340,6 +340,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
 
         if (closeAction == null) {
             IterableLogger.d(TAG, "in-app close action is null");
+            return;
         }
 
         IterableApi.getInstance().trackInAppClose(inAppMessage, clickedUrl, closeAction, inAppCloseLocation);
