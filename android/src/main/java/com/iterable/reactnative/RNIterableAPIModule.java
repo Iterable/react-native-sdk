@@ -290,10 +290,12 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     @ReactMethod
     public void trackInAppOpen(String messageId, @Nullable Integer location) {
         IterableInAppMessage message = RNIterableInternal.getMessageById(messageId);
+
         if (message == null) {
-            IterableLogger.d(TAG, "Failed to get InApp for message id : " + messageId);
+            IterableLogger.d(TAG, "Failed to get in-app for message ID: " + messageId);
             return;
         }
+
         IterableApi.getInstance().trackInAppOpen(message, Serialization.getIterableInAppLocationFromInteger(location));
     }
 
@@ -301,30 +303,46 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     public void trackInAppClick(String messageId, @Nullable Integer location, String clickedUrl) {
         IterableInAppMessage message = RNIterableInternal.getMessageById(messageId);
         IterableInAppLocation inAppOpenLocation = Serialization.getIterableInAppLocationFromInteger(location);
+
         if (message == null) {
-            IterableLogger.d(TAG, "Failed to get InApp for message id : " + messageId);
+            IterableLogger.d(TAG, "Failed to get in-app for message ID: " + messageId);
             return;
         }
+
         if (clickedUrl == null) {
-            IterableLogger.d(TAG, "clickedURL is null");
+            IterableLogger.d(TAG, "clickedUrl is null");
             return;
         }
+
         if (inAppOpenLocation == null) {
             IterableLogger.d(TAG, "in-app open location is null");
             return;
         }
+
         IterableApi.getInstance().trackInAppClick(message, clickedUrl, inAppOpenLocation);
     }
 
     @ReactMethod
-    public void trackInAppClose(String messageId, Integer location, Integer source, String clickedUrl) {
+    public void trackInAppClose(String messageId, Integer location, Integer source, @Nullable String clickedUrl) {
+        IterableInAppMessage inAppMessage = RNIterableInternal.getMessageById(messageId);
         IterableInAppLocation inAppCloseLocation = Serialization.getIterableInAppLocationFromInteger(location);
         IterableInAppCloseAction closeAction = Serialization.getIterableInAppCloseSourceFromInteger(source);
-        if (messageId == null || clickedUrl == null || inAppCloseLocation == null || closeAction == null) {
-            IterableLogger.d(TAG, "null parameter passed to IterableAPI API");
+
+        if (inAppMessage == null) {
+            IterableLogger.d(TAG, "Failed to get in-app for message ID: " + messageId);
             return;
         }
-        RNIterableInternal.trackInAppClose(messageId, clickedUrl, closeAction, inAppCloseLocation);
+
+        if (inAppCloseLocation == null) {
+            IterableLogger.d(TAG, "in-app close location is null");
+            return;
+        }
+
+        if (closeAction == null) {
+            IterableLogger.d(TAG, "in-app close action is null");
+        }
+
+        IterableApi.getInstance().trackInAppClose(inAppMessage, clickedUrl, inAppCloseLocation, closeAction);
     }
     // ---------------------------------------------------------------------------------------
     // endregion
