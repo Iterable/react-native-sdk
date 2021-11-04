@@ -58,9 +58,7 @@ const IterableInboxMessageDisplay = ({
       })
    `
 
-   let action = new IterableAction("", "", "")
-   let source = IterableActionSource.inApp
-   let context = new IterableActionContext(action, source)
+
 
    useEffect(() => {
       inAppContentPromise.then(
@@ -70,13 +68,18 @@ const IterableInboxMessageDisplay = ({
    })
 
    const handleHTMLMessage = (event: any) => {
-      if(event.nativeEvent.data === 'iterable://delete') {
+      let URL = event.nativeEvent.data
+      if(URL === 'iterable://delete') {
          deleteRow(rowViewModel.inAppMessage.messageId)
          returnToInbox()
-      } else if(event.nativeEvent.data === 'iterable://dismiss') {
+      } else if(URL === 'iterable://dismiss') {
          returnToInbox()
       } else {
          if(Iterable.savedConfig.urlHandler) {
+            let action = new IterableAction("openUrl", URL, "")
+            let source = IterableActionSource.inApp
+            let context = new IterableActionContext(action, source)
+
             Iterable.savedConfig.urlHandler(event.nativeEvent.data, context)
          }
          returnToInbox()
