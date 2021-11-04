@@ -81,7 +81,7 @@ const IterableInboxMessageDisplay = ({
          returnToInbox()
       } else if(url === 'iterable://dismiss') {
          returnToInbox()
-         Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.link, "")
+         Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.link, undefined)
       } else {
          if(Iterable.savedConfig.urlHandler && Iterable.savedConfig.urlHandler(url, context)) {
             Iterable.savedConfig.urlHandler(url, context)
@@ -105,7 +105,7 @@ const IterableInboxMessageDisplay = ({
             <TouchableWithoutFeedback 
                onPress={() => {
                   returnToInbox()
-                  Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.back, "")
+                  Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.back, undefined)
                }}>
                <Icon 
                   name="ios-arrow-back"
