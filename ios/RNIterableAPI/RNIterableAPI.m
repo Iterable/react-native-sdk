@@ -68,7 +68,7 @@ RCT_EXTERN_METHOD(trackInAppClick: (nonnull NSString *) messageId
 RCT_EXTERN_METHOD(trackInAppClose: (nonnull NSString *) messageId
                   location: (nonnull NSNumber *) location
                   source: (nonnull NSNumber *) source
-                  clickedUrl: (nonnull NSString *) clickedUrl)
+                  clickedUrl: (NSString *) clickedUrl)
 
 RCT_EXTERN_METHOD(inAppConsume: (nonnull NSString *) messageId
                   location: (nonnull NSNumber *) location
