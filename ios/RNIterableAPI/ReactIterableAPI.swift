@@ -227,7 +227,7 @@ class ReactIterableAPI: RCTEventEmitter {
     func trackInAppClose(messageId: String,
                          location locationNumber: NSNumber,
                          source sourceNumber: NSNumber,
-                         clickedUrl: String) {
+                         clickedUrl: String?) {
         ITBInfo()
         
         guard let message = IterableAPI.inAppManager.getMessage(withId: messageId) else {
