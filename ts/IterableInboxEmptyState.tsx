@@ -1,9 +1,9 @@
 'use strict'
 
 import React from 'react'
-import { 
-   View, 
-   Text, 
+import {
+   View,
+   Text,
    StyleSheet,
 } from 'react-native'
 
@@ -19,33 +19,33 @@ type emptyStateProps = {
    isPortrait: boolean
 }
 
-const IterableInboxEmptyState = ({ 
-   customizations, 
+const IterableInboxEmptyState = ({
+   customizations,
    tabBarHeight,
-   tabBarPadding, 
+   tabBarPadding,
    navTitleHeight,
    height,
    isPortrait
-} : emptyStateProps) => {
+}: emptyStateProps) => {
    const defaultTitle = "No saved messages"
    const defaultBody = "Check again later!"
-   
+
    const emptyStateTitle = customizations.noMessagesTitle
    const emptyStateBody = customizations.noMessagesBody
 
    let {
       container,
       title,
-      body   
+      body
    } = styles
 
-   container = {...container, height: height - navTitleHeight - tabBarHeight - tabBarPadding}
+   container = { ...container, height: height - navTitleHeight - tabBarHeight - tabBarPadding }
 
-   if(!isPortrait) {
-      container = {...container, height: height - navTitleHeight}
+   if (!isPortrait) {
+      container = { ...container, height: height - navTitleHeight }
    }
 
-   return(
+   return (
       <View style={container}>
          <Text style={title}>
             {emptyStateTitle ? emptyStateTitle : defaultTitle}
@@ -60,7 +60,7 @@ const IterableInboxEmptyState = ({
 const styles = StyleSheet.create({
    container: {
       height: 0,
-      backgroundColor: 'whitesmoke', 
+      backgroundColor: 'whitesmoke',
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',

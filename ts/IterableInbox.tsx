@@ -93,7 +93,7 @@ const IterableInbox = ({
 
    useEffect(() => {
       setScreenWidth(width)
-      if(isMessageDisplay) { 
+      if (isMessageDisplay) { 
          slideLeft() 
       } 
    }, [width])
