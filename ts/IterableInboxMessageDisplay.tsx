@@ -60,9 +60,7 @@ const IterableInboxMessageDisplay = ({
       })
    `
 
-   let action = new IterableAction("", "", "")
-   let source = IterableActionSource.inApp
-   let context = new IterableActionContext(action, source)
+
 
    useEffect(() => {
       inAppContentPromise.then(
@@ -83,8 +81,12 @@ const IterableInboxMessageDisplay = ({
          returnToInbox()
          Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.link)
       } else {
-         if (Iterable.savedConfig.urlHandler && Iterable.savedConfig.urlHandler(url, context)) {
-            Iterable.savedConfig.urlHandler(url, context)
+         if(Iterable.savedConfig.urlHandler) {
+            let action = new IterableAction("openUrl", url, "")
+            let source = IterableActionSource.inApp
+            let context = new IterableActionContext(action, source)
+
+            Iterable.savedConfig.urlHandler(event.nativeEvent.data, context)
             returnToInbox()
          }
       }
