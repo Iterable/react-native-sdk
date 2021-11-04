@@ -367,7 +367,7 @@ class Iterable {
   * @param {IterableInAppCloseSource} source
   * @param {string} clickedUrl 
   */
-  static trackInAppClose(message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppCloseSource, clickedUrl: string) {
+  static trackInAppClose(message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppCloseSource, clickedUrl: string | undefined) {
     console.log("trackInAppClose")
     RNIterableAPI.trackInAppClose(message.messageId, location, source, clickedUrl)
   }
