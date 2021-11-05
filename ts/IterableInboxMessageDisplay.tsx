@@ -7,6 +7,7 @@ import {
   ScrollView,  
   StyleSheet,
   Platform,
+  Alert,
   TouchableWithoutFeedback,
 } from 'react-native'
 import { WebView } from 'react-native-webview'
@@ -52,13 +53,29 @@ const IterableInboxMessageDisplay = ({
    let JS = `
       const links = document.querySelectorAll('a')
       links.forEach(link => {
+         if(link.href === "iterable://dismiss") {
+            link.class = "dismiss"   
+         }
+
+         if(link.href === "iterable://delete") {
+            link.class = "delete"
+         }
+
          link.addEventListener("click", () => {
-            window.ReactNativeWebView.postMessage(link.href)
+            if(link.class === "dismiss") {
+               window.ReactNativeWebView.postMessage("iterable://dismiss")
+            } else if(link.class === "delete") {
+               window.ReactNativeWebView.postMessage("iterable://delete")
+            } else {
+               window.ReactNativeWebView.postMessage(link.href)
+            }
          })
+
+         if(link.href === "iterable://dismiss" || link.href === "iterable://delete") {
+            link.href = "javascript:void(0)"
+         }
       })
    `
-
-
 
    useEffect(() => {
       inAppContentPromise.then(
