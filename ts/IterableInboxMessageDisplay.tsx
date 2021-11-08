@@ -17,8 +17,9 @@ import {
    InboxRowViewModel, 
    IterableHtmlInAppContent, 
    IterableEdgeInsets,
-   Iterable,
-   IterableInAppLocation 
+   IterableInAppLocation,
+   IterableInAppCloseSource, 
+   Iterable 
 } from '.'
 
 type MessageDisplayProps = {
@@ -72,7 +73,11 @@ const IterableInboxMessageDisplay = ({
    return (
       <View style={updatedMessageDisplayContainer}>
          <View style={returnButtonContainer}>
-            <TouchableWithoutFeedback onPress={() => returnToInbox()}>
+            <TouchableWithoutFeedback 
+               onPress={() => {
+                  returnToInbox()
+                  Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.back)
+               }}>
                <Icon
                   name="ios-arrow-back"
                   style={returnButton} />
