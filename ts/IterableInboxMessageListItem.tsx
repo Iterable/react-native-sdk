@@ -39,8 +39,8 @@ const defaultMessageListLayout = (
          flexDirection: 'column',
          justifyContent: 'flex-start'
       },
-   
-      unreadIndicator: { 
+
+      unreadIndicator: {
          width: 15,
          height: 15,
          borderRadius: 15 / 2,
@@ -61,19 +61,19 @@ const defaultMessageListLayout = (
          flexDirection: 'column',
          justifyContent: 'center'
       },
-   
+
       messageContainer: {
          paddingLeft: 10,
          width: '75%',
          flexDirection: 'column',
          justifyContent: 'center'
       },
-   
+
       title: {
          fontSize: 22,
          paddingBottom: 10
       },
-   
+
       body: {
          fontSize: 15,
          color: 'lightgray',
@@ -81,12 +81,12 @@ const defaultMessageListLayout = (
          flexWrap: "wrap",
          paddingBottom: 10
       },
-   
+
       createdAt: {
          fontSize: 12,
          color: 'lightgray'
       },
-   
+
       messageRow: {
          flexDirection: 'row',
          backgroundColor: 'white',
@@ -100,7 +100,7 @@ const defaultMessageListLayout = (
       }
    })
 
-   const resolvedStyles = {...styles, ...customizations}
+   const resolvedStyles = { ...styles, ...customizations }
 
    let {
       unreadIndicatorContainer,
@@ -114,21 +114,21 @@ const defaultMessageListLayout = (
       messageRow
    } = resolvedStyles
 
-   unreadIndicator = (!isPortrait) ? {...unreadIndicator, marginLeft: 40} : unreadIndicator
-   readMessageIconContainer = (!isPortrait) ? {...readMessageIconContainer, paddingLeft: 65} : readMessageIconContainer
-   messageContainer = (!isPortrait) ? {...messageContainer, width: '90%'} : messageContainer 
+   unreadIndicator = (!isPortrait) ? { ...unreadIndicator, marginLeft: 40 } : unreadIndicator
+   readMessageIconContainer = (!isPortrait) ? { ...readMessageIconContainer, paddingLeft: 65 } : readMessageIconContainer
+   messageContainer = (!isPortrait) ? { ...messageContainer, width: '90%' } : messageContainer
 
    function messageRowStyle(rowViewModel: InboxRowViewModel) {
-      return last ? {...messageRow, borderBottomWidth: 1} : messageRow 
+      return last ? { ...messageRow, borderBottomWidth: 1 } : messageRow
    }
-      
-   return(
+
+   return (
       <View style={messageRowStyle(rowViewModel) as ViewStyle} >
          <View style={unreadIndicatorContainer as ViewStyle}>
-            {rowViewModel.read ? null : <View style={unreadIndicator}/>}
+            {rowViewModel.read ? null : <View style={unreadIndicator} />}
          </View>
          <View style={(rowViewModel.read ? readMessageIconContainer : unreadMessageIconContainer) as ViewStyle}>
-            {iconURL ? <Image style={{height: 80, width: 80}} source={{uri: iconURL}}/> : null}
+            {iconURL ? <Image style={{ height: 80, width: 80 }} source={{ uri: iconURL }} /> : null}
          </View>
          <View style={messageContainer as ViewStyle}>
             <Text style={title}>{messageTitle as TextStyle}</Text>
@@ -139,7 +139,7 @@ const defaultMessageListLayout = (
    )
 }
 
-const IterableInboxMessageListItem = ({ 
+const IterableInboxMessageListItem = ({
    last,
    dataModel,
    rowViewModel,
@@ -147,8 +147,8 @@ const IterableInboxMessageListItem = ({
    messageListItemLayout,
    isPortrait
 }: MessageListItemProps) => {
-   return(
-      messageListItemLayout(last, rowViewModel) ? messageListItemLayout(last, rowViewModel) : defaultMessageListLayout(last, dataModel, rowViewModel, customizations, isPortrait)  
+   return (
+      messageListItemLayout(last, rowViewModel) ? messageListItemLayout(last, rowViewModel) : defaultMessageListLayout(last, dataModel, rowViewModel, customizations, isPortrait)
    )
 }
 
