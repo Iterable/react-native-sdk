@@ -12,7 +12,14 @@ import {
 import { WebView } from 'react-native-webview'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-import { InboxRowViewModel, IterableHtmlInAppContent, IterableEdgeInsets } from '.'
+import { 
+   InboxRowViewModel, 
+   IterableHtmlInAppContent, 
+   IterableEdgeInsets,
+   IterableInAppLocation,
+   IterableInAppCloseSource, 
+   Iterable 
+} from '.'
 
 type MessageDisplayProps = {
    rowViewModel: InboxRowViewModel,
@@ -56,7 +63,11 @@ const IterableInboxMessageDisplay = ({
    return (
       <View style={updatedMessageDisplayContainer}>
          <View style={returnButtonContainer}>
-            <TouchableWithoutFeedback onPress={() => returnToInbox()}>
+            <TouchableWithoutFeedback 
+               onPress={() => {
+                  returnToInbox()
+                  Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.back)
+               }}>
                <Icon
                   name="ios-arrow-back"
                   style={returnButton} />
