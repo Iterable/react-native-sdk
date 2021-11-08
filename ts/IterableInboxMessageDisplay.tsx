@@ -1,13 +1,13 @@
 'use strict'
 
 import React, { useState, useEffect } from 'react'
-import { 
-  Text, 
-  View,
-  ScrollView,  
-  StyleSheet,
-  Platform,
-  TouchableWithoutFeedback,
+import {
+   Text,
+   View,
+   ScrollView,
+   StyleSheet,
+   Platform,
+   TouchableWithoutFeedback,
 } from 'react-native'
 import { WebView } from 'react-native-webview'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -22,10 +22,10 @@ type MessageDisplayProps = {
    isPortrait: boolean
 }
 
-const IterableInboxMessageDisplay = ({ 
-   rowViewModel, 
-   inAppContentPromise, 
-   returnToInbox, 
+const IterableInboxMessageDisplay = ({
+   rowViewModel,
+   inAppContentPromise,
+   returnToInbox,
    contentWidth,
    isPortrait
 }: MessageDisplayProps) => {
@@ -39,12 +39,12 @@ const IterableInboxMessageDisplay = ({
       headline
    } = styles
 
-   let updatedMessageDisplayContainer = {...messageDisplayContainer, width: contentWidth}
+   let updatedMessageDisplayContainer = { ...messageDisplayContainer, width: contentWidth }
 
-   headline = (!isPortrait) ? {...headline, paddingLeft: 45} : headline
-   returnButton = (!isPortrait) ? {...returnButton, paddingLeft: 40} : returnButton
-   returnButtonContainer = {...returnButtonContainer, marginTop: Platform.OS === 'android' ? 0 : 40}
-   returnButtonContainer = (!isPortrait) ? {...returnButtonContainer, marginTop: 10} : returnButtonContainer
+   headline = (!isPortrait) ? { ...headline, paddingLeft: 45 } : headline
+   returnButton = (!isPortrait) ? { ...returnButton, paddingLeft: 40 } : returnButton
+   returnButtonContainer = { ...returnButtonContainer, marginTop: Platform.OS === 'android' ? 0 : 40 }
+   returnButtonContainer = (!isPortrait) ? { ...returnButtonContainer, marginTop: 10 } : returnButtonContainer
 
    useEffect(() => {
       inAppContentPromise.then(
@@ -53,11 +53,11 @@ const IterableInboxMessageDisplay = ({
          })
    })
 
-   return(
+   return (
       <View style={updatedMessageDisplayContainer}>
          <View style={returnButtonContainer}>
             <TouchableWithoutFeedback onPress={() => returnToInbox()}>
-               <Icon 
+               <Icon
                   name="ios-arrow-back"
                   style={returnButton} />
             </TouchableWithoutFeedback>
@@ -68,10 +68,10 @@ const IterableInboxMessageDisplay = ({
             </Text>
             <WebView
                originWhiteList={['*']}
-               source={{ html: inAppContent.html }} 
+               source={{ html: inAppContent.html }}
                style={{ width: contentWidth }}
             />
-         </ScrollView> 
+         </ScrollView>
       </View>
    )
 }
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
 
    messageDisplayContainer: {
       height: '100%',
-      backgroundColor: 'whitesmoke', 
+      backgroundColor: 'whitesmoke',
       flexDirection: 'column',
       justifyContent: 'flex-start'
    },
@@ -110,6 +110,6 @@ const styles = StyleSheet.create({
       paddingLeft: 15,
       backgroundColor: 'whitesmoke'
    }
- })
+})
 
 export default IterableInboxMessageDisplay

@@ -3,8 +3,8 @@
 import IterableUtil from './IterableUtil'
 
 import {
-  IterableInAppTrigger, 
-  IterableInAppTriggerType, 
+  IterableInAppTrigger,
+  IterableInAppTriggerType,
   IterableInboxMetadata,
 } from './IterableInAppClasses'
 

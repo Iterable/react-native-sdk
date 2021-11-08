@@ -2,14 +2,14 @@ type IterableInboxCustomizations = {
    navTitle: string,
    noMessagesTitle: string,
    noMessagesBody: string,
- 
+
    unreadIndicatorContainer: {
       height: string,
       flexDirection: string,
       justifyContent: string
    },
- 
-   unreadIndicator: { 
+
+   unreadIndicator: {
       width: number,
       height: number,
       borderRadius: number,
@@ -18,7 +18,7 @@ type IterableInboxCustomizations = {
       marginRight: number,
       marginTop: number
    },
- 
+
    unreadMessageIconContainer: {
       paddingLeft: number,
       flexDirection: string,
@@ -37,12 +37,12 @@ type IterableInboxCustomizations = {
       flexDirection: string,
       justifyContent: string
    },
- 
+
    title: {
       fontSize: number,
       paddingBottom: number
    },
- 
+
    body: {
       fontSize: number,
       color: string,
@@ -50,12 +50,12 @@ type IterableInboxCustomizations = {
       flexWrap: string,
       paddingBottom: number
    },
- 
+
    createdAt: {
       fontSize: number,
       color: string
    },
- 
+
    messageRow: {
       flexDirection: string,
       backgroundColor: string,
