@@ -13,8 +13,18 @@ import {
 import { WebView } from 'react-native-webview'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-import { InboxRowViewModel, IterableHtmlInAppContent, IterableEdgeInsets } from '.'
-import { Iterable, IterableAction, IterableActionSource, IterableActionContext } from './Iterable'
+import { 
+   InboxRowViewModel, 
+   IterableHtmlInAppContent, 
+   IterableEdgeInsets,
+   IterableInAppLocation,
+   IterableInAppCloseSource,
+   Iterable,
+   IterableAction,
+   IterableActionContext 
+} from '.'
+
+import { IterableActionSource } from './Iterable'
 
 type MessageDisplayProps = {
    rowViewModel: InboxRowViewModel,
@@ -86,11 +96,15 @@ const IterableInboxMessageDisplay = ({
 
    const handleHTMLMessage = (event: any) => {
       let URL = event.nativeEvent.data
+
+      Iterable.trackInAppClick(rowViewModel.inAppMessage, IterableInAppLocation.inbox, URL)
+
       if(URL === 'iterable://delete') {
          deleteRow(rowViewModel.inAppMessage.messageId)
          returnToInbox()
       } else if(URL === 'iterable://dismiss') {
          returnToInbox()
+         Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.link)
       } else {
          if(Iterable.savedConfig.urlHandler) {
             let action = new IterableAction("openUrl", URL, "")
@@ -98,8 +112,8 @@ const IterableInboxMessageDisplay = ({
             let context = new IterableActionContext(action, source)
 
             Iterable.savedConfig.urlHandler(event.nativeEvent.data, context)
+            returnToInbox()
          }
-         returnToInbox()
       }
    }
 
