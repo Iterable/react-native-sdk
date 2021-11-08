@@ -7,6 +7,7 @@ import {
    ScrollView,
    StyleSheet,
    Platform,
+   Linking,
    TouchableWithoutFeedback,
 } from 'react-native'
 import { WebView } from 'react-native-webview'
@@ -60,6 +61,15 @@ const IterableInboxMessageDisplay = ({
          })
    })
 
+   const openExternalURL = (event: any) => {
+      if (event.url.slice(0, 4) === 'http') {
+         Linking.openURL(event.url)
+         returnToInbox()
+         return false
+      }
+      return true
+   }
+
    return (
       <View style={updatedMessageDisplayContainer}>
          <View style={returnButtonContainer}>
@@ -81,6 +91,7 @@ const IterableInboxMessageDisplay = ({
                originWhiteList={['*']}
                source={{ html: inAppContent.html }}
                style={{ width: contentWidth }}
+               onShouldStartLoadWithRequest={(event) => openExternalURL(event)}
             />
          </ScrollView>
       </View>
