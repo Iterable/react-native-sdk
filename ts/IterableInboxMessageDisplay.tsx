@@ -7,7 +7,6 @@ import {
   ScrollView,  
   StyleSheet,
   Platform,
-  Alert,
   TouchableWithoutFeedback,
 } from 'react-native'
 import { WebView } from 'react-native-webview'
@@ -86,21 +85,18 @@ const IterableInboxMessageDisplay = ({
 
    const handleHTMLMessage = (event: any) => {
       let URL = event.nativeEvent.data
-      if(URL === 'iterable://delete') {
-         deleteRow(rowViewModel.inAppMessage.messageId)
-         returnToInbox()
-      } else if(URL === 'iterable://dismiss') {
-         returnToInbox()
-      } else {
-         if(Iterable.savedConfig.urlHandler) {
-            let action = new IterableAction("openUrl", URL, "")
-            let source = IterableActionSource.inApp
-            let context = new IterableActionContext(action, source)
 
-            Iterable.savedConfig.urlHandler(event.nativeEvent.data, context)
-         }
-         returnToInbox()
+      if (URL === 'iterable://delete') {
+         deleteRow(rowViewModel.inAppMessage.messageId)
+      } else if (Iterable.savedConfig.urlHandler) {
+         let action = new IterableAction("openUrl", URL, "")
+         let source = IterableActionSource.inApp
+         let context = new IterableActionContext(action, source)
+
+         Iterable.savedConfig.urlHandler(event.nativeEvent.data, context)
       }
+
+      returnToInbox()
    }
 
    return(
