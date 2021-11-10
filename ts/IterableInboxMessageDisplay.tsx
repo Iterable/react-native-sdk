@@ -8,7 +8,6 @@ import {
    StyleSheet,
    Platform,
    Linking,
-   Alert,
    TouchableWithoutFeedback,
 } from 'react-native'
 import { WebView } from 'react-native-webview'
