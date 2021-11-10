@@ -292,8 +292,8 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     // ---------------------------------------------------------------------------------------
     // endregion
 
-    // region Track APIs
     // ---------------------------------------------------------------------------------------
+    // region Track APIs
     @ReactMethod
     public void trackInAppOpen(String messageId, @Nullable Integer location) {
         IterableInAppMessage message = RNIterableInternal.getMessageById(messageId);
@@ -352,6 +352,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
 
         IterableApi.getInstance().trackInAppClose(inAppMessage, clickedUrl, closeAction, inAppCloseLocation);
     }
+
     // ---------------------------------------------------------------------------------------
     // endregion
 
@@ -433,7 +434,6 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     // ---------------------------------------------------------------------------------------
     // endregion
 
-
     // ---------------------------------------------------------------------------------------
     // region Inbox In-App Session Tracking APIs
 
@@ -458,6 +458,9 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
 
     // ---------------------------------------------------------------------------------------
     // endregion
+
+    // ---------------------------------------------------------------------------------------
+    // region Private Serialization Functions
 
     private static Integer[] readableArrayToIntegerArray(ReadableArray array) {
         if (array == null) {
@@ -484,6 +487,9 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
 
         return dataFieldsJson;
     }
+
+    // ---------------------------------------------------------------------------------------
+    // endregion
 
     // ---------------------------------------------------------------------------------------
     // region IterableSDK callbacks
@@ -573,6 +579,9 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     // ---------------------------------------------------------------------------------------
     // endregion
 
+    // ---------------------------------------------------------------------------------------
+    // region Misc Bridge Functions
+
     @ReactMethod
     public void passAlongAuthToken(String authToken) {
         passedAuthToken = authToken;
@@ -590,6 +599,9 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     public void onInboxUpdated() {
         sendEvent(EventName.receivedIterableInboxChanged.name(), null);
     }
+
+    // ---------------------------------------------------------------------------------------
+    // endregion
 }
 
 enum EventName {
