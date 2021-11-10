@@ -8,6 +8,7 @@ import {
    StyleSheet,
    Platform,
    Linking,
+   Alert,
    TouchableWithoutFeedback,
 } from 'react-native'
 import { WebView } from 'react-native-webview'
@@ -62,28 +63,15 @@ const IterableInboxMessageDisplay = ({
 
    let JS = `
       const links = document.querySelectorAll('a')
-      links.forEach(link => {
-         if(link.href === "iterable://dismiss") {
-            link.class = "dismiss"   
-         }
 
-         if(link.href === "iterable://delete") {
-            link.class = "delete"
-         }
+      links.forEach(link => {
+         link.class = link.href
+
+         link.href = "javascript:void(0)"
 
          link.addEventListener("click", () => {
-            if(link.class === "dismiss") {
-               window.ReactNativeWebView.postMessage("iterable://dismiss")
-            } else if(link.class === "delete") {
-               window.ReactNativeWebView.postMessage("iterable://delete")
-            } else {
-               window.ReactNativeWebView.postMessage(link.href)
-            }
+            window.ReactNativeWebView.postMessage(link.class)   
          })
-
-         if(link.href === "iterable://dismiss" || link.href === "iterable://delete") {
-            link.href = "javascript:void(0)"
-         }
       })
    `
 
@@ -107,16 +95,11 @@ const IterableInboxMessageDisplay = ({
          Iterable.savedConfig.urlHandler(event.nativeEvent.data, context)
       }
 
-      returnToInbox()
-   }
-       
-   const openExternalURL = (event: any) => {
-      if (event.url.slice(0, 4) === 'http') {
-         Linking.openURL(event.url)
-         returnToInbox()
-         return false
+      if (URL.slice(0, 4) === 'http') {
+         Linking.openURL(URL)
       }
-      return true
+
+      returnToInbox()
    }
 
    return (
@@ -142,7 +125,6 @@ const IterableInboxMessageDisplay = ({
                style={{ width: contentWidth }}
                onMessage={(event) => handleHTMLMessage(event)}
                injectedJavaScript={JS}
-               onShouldStartLoadWithRequest={(event) => openExternalURL(event)}
             />
          </ScrollView>
       </View>

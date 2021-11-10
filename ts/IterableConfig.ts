@@ -33,6 +33,7 @@ class IterableConfig {
   /**
   * How many seconds to wait before showing the next in-app, if there are more than one present
   */
+  urlList?: string[]
   urlHandler?: (url: string, context: IterableActionContext) => boolean
 
   /**
