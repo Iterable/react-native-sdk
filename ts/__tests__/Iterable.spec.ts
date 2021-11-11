@@ -6,7 +6,6 @@ import { NativeEventEmitter } from 'react-native'
 import {
   Iterable,
   IterableAttributionInfo,
-  //IterableConfig,
   IterableCommerceItem,
   IterableActionContext,
   EventName,
