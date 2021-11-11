@@ -4,11 +4,12 @@ import { NativeEventEmitter } from 'react-native'
 
 import {
   Iterable,
-  IterableConfig,
-  EventName,
+  EventName
 } from '../Iterable'
 
-import {  IterableInAppMessage } from '../IterableInAppMessage'
+import IterableConfig from '../IterableConfig'
+
+import IterableInAppMessage from '../IterableInAppMessage'
 
 import {
   IterableInAppLocation,
