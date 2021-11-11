@@ -7,7 +7,6 @@ import {
   ScrollView,  
   StyleSheet,
   Platform,
-  Alert,
   TouchableWithoutFeedback,
 } from 'react-native'
 import { WebView } from 'react-native-webview'
@@ -111,7 +110,7 @@ const IterableInboxMessageDisplay = ({
             let source = IterableActionSource.inApp
             let context = new IterableActionContext(action, source)
 
-            Iterable.savedConfig.urlHandler(event.nativeEvent.data, context)
+            Iterable.savedConfig.urlHandler(URL, context)
             returnToInbox()
          }
       }
