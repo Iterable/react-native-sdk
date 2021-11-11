@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react'
 import {
-   View, 
-   Text, 
+   View,
+   Text,
    StyleSheet,
    Animated,
    NativeModules,
@@ -15,8 +15,11 @@ import {
    IterableInboxMessageList,
    IterableInboxEmptyState,
    InboxRowViewModel,
-   IterableInAppDeleteSource
+   IterableInAppDeleteSource,
+   Iterable
 } from '.'
+
+import { IterableInAppLocation } from './IterableInAppClasses'
 
 import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
 import IterableInboxDataModel from './IterableInboxDataModel'
@@ -37,7 +40,7 @@ type inboxProps = {
 }
 
 const IterableInbox = ({
-   messageListItemLayout = () => {return null}, 
+   messageListItemLayout = () => { return null },
    customizations = {} as IterableInboxCustomizations,
    tabBarHeight = 80,
    tabBarPadding = 20
@@ -54,7 +57,7 @@ const IterableInbox = ({
    const [loading, setLoading] = useState<boolean>(true)
    const [animatedValue, setAnimatedValue] = useState<any>(new Animated.Value(0))
    const [isMessageDisplay, setIsMessageDisplay] = useState<boolean>(false)
-  
+
    let {
       loadingScreen,
       container,
@@ -62,14 +65,14 @@ const IterableInbox = ({
    } = styles
 
    const navTitleHeight = headline.height + headline.paddingTop + headline.paddingBottom
-   const updatedContainer = {...container, width: 2 * width, height: height - navTitleHeight - 40}
+   const updatedContainer = { ...container, width: 2 * width, height: height - navTitleHeight - 40 }
    const messageListContainer = { width: width }
 
-   headline = {...headline, height: Platform.OS === "android" ? 70 : 60}
-   
-   headline = (isPortrait) ? 
-      {...headline, marginTop: Platform.OS === "android" ? 0 : 40} : 
-      {...headline, paddingLeft: 65}
+   headline = { ...headline, height: Platform.OS === "android" ? 70 : 60 }
+
+   headline = (isPortrait) ?
+      { ...headline, marginTop: Platform.OS === "android" ? 0 : 40 } :
+      { ...headline, paddingLeft: 65 }
 
    useEffect(() => {
       fetchInboxMessages()
@@ -93,9 +96,9 @@ const IterableInbox = ({
 
    useEffect(() => {
       setScreenWidth(width)
-      if(isMessageDisplay) { 
-         slideLeft() 
-      } 
+      if (isMessageDisplay) {
+         slideLeft()
+      }
    }, [width])
 
    function addInboxChangedListener() {
@@ -104,7 +107,7 @@ const IterableInbox = ({
          () => {
             fetchInboxMessages()
          }
-     )
+      )
    }
 
    function removeInboxChangedListener() {
@@ -115,7 +118,7 @@ const IterableInbox = ({
       let newMessages = await inboxDataModel.refresh()
 
       newMessages = newMessages.map((message, index) => {
-         return {...message, last: index === newMessages.length - 1}
+         return { ...message, last: index === newMessages.length - 1 }
       })
 
       setRowViewModels(newMessages)
@@ -129,11 +132,14 @@ const IterableInbox = ({
    function handleMessageSelect(id: string, index: number, rowViewModels: InboxRowViewModel[]) {
       let newRowViewModels = rowViewModels.map((rowViewModel) => {
          return (rowViewModel.inAppMessage.messageId === id) ?
-            {...rowViewModel, read: true } : rowViewModel
+            { ...rowViewModel, read: true } : rowViewModel
       })
       setRowViewModels(newRowViewModels)
       inboxDataModel.setMessageAsRead(id)
       setSelectedRowViewModelIdx(index)
+
+      Iterable.trackInAppOpen(rowViewModels[index].inAppMessage, IterableInAppLocation.inbox)
+
       slideLeft()
    }
 
@@ -145,7 +151,7 @@ const IterableInbox = ({
    function returnToInbox() {
       reset()
    }
-   
+
    function showMessageDisplay(rowViewModelList: InboxRowViewModel[], index: number) {
       const selectedRowViewModel = rowViewModelList[index]
 
@@ -155,6 +161,7 @@ const IterableInbox = ({
                rowViewModel={selectedRowViewModel}
                inAppContentPromise={getHtmlContentForRow(selectedRowViewModel.inAppMessage.messageId)}
                returnToInbox={() => returnToInbox()}
+               deleteRow={(messageId: string) => deleteRow(messageId)}
                contentWidth={width}
                isPortrait={isPortrait}
             /> : null
@@ -167,9 +174,9 @@ const IterableInbox = ({
             <Text style={headline}>
                {customizations?.navTitle ? customizations?.navTitle : defaultInboxTitle}
             </Text>
-            { rowViewModels.length ?
+            {rowViewModels.length ?
                <IterableInboxMessageList
-                  dataModel = {inboxDataModel}
+                  dataModel={inboxDataModel}
                   rowViewModels={rowViewModels}
                   customizations={customizations}
                   messageListItemLayout={messageListItemLayout}
@@ -177,24 +184,24 @@ const IterableInbox = ({
                   handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index, rowViewModels)}
                   contentWidth={width}
                   isPortrait={isPortrait}
-               />  :
+               /> :
                renderEmptyState()
-            }   
+            }
          </View>)
    }
 
    function renderEmptyState() {
-      return loading ? 
-         <View style={loadingScreen} /> : 
-         <IterableInboxEmptyState 
-            customizations={customizations} 
+      return loading ?
+         <View style={loadingScreen} /> :
+         <IterableInboxEmptyState
+            customizations={customizations}
             tabBarHeight={tabBarHeight}
             tabBarPadding={tabBarPadding}
             navTitleHeight={navTitleHeight}
             contentWidth={width}
             height={height}
             isPortrait={isPortrait}
-         /> 
+         />
    }
 
    const slideLeft = () => {
@@ -212,7 +219,7 @@ const IterableInbox = ({
          duration: 500,
          useNativeDriver: false
       }).start()
-      setIsMessageDisplay(false)  
+      setIsMessageDisplay(false)
    }
 
    return(
@@ -220,10 +227,12 @@ const IterableInbox = ({
          <Animated.View
             style={{
                transform: [
-                  {translateX: animatedValue.interpolate({
-                     inputRange: [0, 1],
-                     outputRange: [0, -screenWidth]
-                  })}
+                  {
+                     translateX: animatedValue.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [0, -screenWidth]
+                     })
+                  }
                ],
                height: "100%",
                flexDirection: 'row',
@@ -252,7 +261,7 @@ const styles = StyleSheet.create({
    },
 
    headline: {
-      fontWeight: 'bold' ,
+      fontWeight: 'bold',
       fontSize: 40,
       width: '100%',
       height: 60,

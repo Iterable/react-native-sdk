@@ -123,7 +123,7 @@ class IterableInboxDataModel {
         if (this.filterFn != undefined) {
             sortedFilteredMessages = sortedFilteredMessages.filter(this.filterFn)
         }
-        
+
         if (this.comparatorFn != undefined) {
             sortedFilteredMessages.sort(this.comparatorFn)
         } else {

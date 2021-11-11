@@ -1,23 +1,36 @@
 'use strict'
 
 import React, { useState, useEffect } from 'react'
-import { 
-  Text, 
-  View,
-  ScrollView,  
-  StyleSheet,
-  Platform,
-  TouchableWithoutFeedback,
+import {
+   Text,
+   View,
+   ScrollView,
+   StyleSheet,
+   Platform,
+   Linking,
+   TouchableWithoutFeedback,
 } from 'react-native'
 import { WebView } from 'react-native-webview'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-import { InboxRowViewModel, IterableHtmlInAppContent, IterableEdgeInsets } from '.'
+import { 
+   InboxRowViewModel, 
+   IterableHtmlInAppContent, 
+   IterableEdgeInsets,
+   IterableInAppLocation,
+   IterableInAppCloseSource,
+   IterableAction,  
+   IterableActionContext,  
+   Iterable 
+} from '.'
+  
+import { IterableActionSource } from './Iterable'  
 
 type MessageDisplayProps = {
    rowViewModel: InboxRowViewModel,
    inAppContentPromise: Promise<IterableHtmlInAppContent>,
    returnToInbox: Function,
+   deleteRow: Function,
    contentWidth: number,
    isPortrait: boolean
 }
@@ -25,7 +38,8 @@ type MessageDisplayProps = {
 const IterableInboxMessageDisplay = ({ 
    rowViewModel, 
    inAppContentPromise, 
-   returnToInbox, 
+   returnToInbox,
+   deleteRow, 
    contentWidth,
    isPortrait
 }: MessageDisplayProps) => {
@@ -39,12 +53,39 @@ const IterableInboxMessageDisplay = ({
       headline
    } = styles
 
-   let updatedMessageDisplayContainer = {...messageDisplayContainer, width: contentWidth}
+   let updatedMessageDisplayContainer = { ...messageDisplayContainer, width: contentWidth }
 
-   headline = (!isPortrait) ? {...headline, paddingLeft: 45} : headline
-   returnButton = (!isPortrait) ? {...returnButton, paddingLeft: 40} : returnButton
-   returnButtonContainer = {...returnButtonContainer, marginTop: Platform.OS === 'android' ? 0 : 40}
-   returnButtonContainer = (!isPortrait) ? {...returnButtonContainer, marginTop: 10} : returnButtonContainer
+   headline = (!isPortrait) ? { ...headline, paddingLeft: 45 } : headline
+   returnButton = (!isPortrait) ? { ...returnButton, paddingLeft: 40 } : returnButton
+   returnButtonContainer = { ...returnButtonContainer, marginTop: Platform.OS === 'android' ? 0 : 40 }
+   returnButtonContainer = (!isPortrait) ? { ...returnButtonContainer, marginTop: 10 } : returnButtonContainer
+
+   let JS = `
+      const links = document.querySelectorAll('a')
+      links.forEach(link => {
+         if(link.href === "iterable://dismiss") {
+            link.class = "dismiss"   
+         }
+
+         if(link.href === "iterable://delete") {
+            link.class = "delete"
+         }
+
+         link.addEventListener("click", () => {
+            if(link.class === "dismiss") {
+               window.ReactNativeWebView.postMessage("iterable://dismiss")
+            } else if(link.class === "delete") {
+               window.ReactNativeWebView.postMessage("iterable://delete")
+            } else {
+               window.ReactNativeWebView.postMessage(link.href)
+            }
+         })
+
+         if(link.href === "iterable://dismiss" || link.href === "iterable://delete") {
+            link.href = "javascript:void(0)"
+         }
+      })
+   `
 
    useEffect(() => {
       inAppContentPromise.then(
@@ -53,11 +94,40 @@ const IterableInboxMessageDisplay = ({
          })
    })
 
-   return(
+   const handleHTMLMessage = (event: any) => {
+      let URL = event.nativeEvent.data
+
+      if (URL === 'iterable://delete') {
+         deleteRow(rowViewModel.inAppMessage.messageId)
+      } else if (Iterable.savedConfig.urlHandler) {
+         let action = new IterableAction("openUrl", URL, "")
+         let source = IterableActionSource.inApp
+         let context = new IterableActionContext(action, source)
+
+         Iterable.savedConfig.urlHandler(event.nativeEvent.data, context)
+      }
+
+      returnToInbox()
+   }
+       
+   const openExternalURL = (event: any) => {
+      if (event.url.slice(0, 4) === 'http') {
+         Linking.openURL(event.url)
+         returnToInbox()
+         return false
+      }
+      return true
+   }
+
+   return (
       <View style={updatedMessageDisplayContainer}>
          <View style={returnButtonContainer}>
-            <TouchableWithoutFeedback onPress={() => returnToInbox()}>
-               <Icon 
+            <TouchableWithoutFeedback 
+               onPress={() => {
+                  returnToInbox()
+                  Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.back)
+               }}>
+               <Icon
                   name="ios-arrow-back"
                   style={returnButton} />
             </TouchableWithoutFeedback>
@@ -68,10 +138,13 @@ const IterableInboxMessageDisplay = ({
             </Text>
             <WebView
                originWhiteList={['*']}
-               source={{ html: inAppContent.html }} 
+               source={{ html: inAppContent.html }}
                style={{ width: contentWidth }}
+               onMessage={(event) => handleHTMLMessage(event)}
+               injectedJavaScript={JS}
+               onShouldStartLoadWithRequest={(event) => openExternalURL(event)}
             />
-         </ScrollView> 
+         </ScrollView>
       </View>
    )
 }
@@ -95,7 +168,7 @@ const styles = StyleSheet.create({
 
    messageDisplayContainer: {
       height: '100%',
-      backgroundColor: 'whitesmoke', 
+      backgroundColor: 'whitesmoke',
       flexDirection: 'column',
       justifyContent: 'flex-start'
    },
@@ -110,6 +183,6 @@ const styles = StyleSheet.create({
       paddingLeft: 15,
       backgroundColor: 'whitesmoke'
    }
- })
+})
 
 export default IterableInboxMessageDisplay
