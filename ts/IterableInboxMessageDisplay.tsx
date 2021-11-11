@@ -90,25 +90,17 @@ const IterableInboxMessageDisplay = ({
 
       if (URL === 'iterable://delete') {
          deleteRow(rowViewModel.inAppMessage.messageId)
-         returnToInbox()
-         return
-      } 
-
-      if (URL === 'iterable://dismiss') {
-         returnToInbox()
-         return
       } 
       
       if (URL.slice(0, 4) === 'http') {
          Linking.openURL(URL)
-         returnToInbox()
-         return
       }
 
-      if (Iterable.savedConfig.urlHandler && Iterable.savedConfig.urlHandler(URL, context)) {
-         returnToInbox()
-         return
+      if(Iterable.savedConfig.urlHandler) {
+         Iterable.savedConfig.urlHandler(URL, context)
       }
+      
+      returnToInbox()
    }
 
    return (
