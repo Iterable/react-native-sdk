@@ -34,13 +34,11 @@ import IterableInAppManager from './IterableInAppManager'
 
 import InboxRowViewModel from './InboxRowViewModel'
 import IterableInbox from './IterableInbox'
-//import IterableInboxClickableRow from './IterableInboxClickableRow'
 import IterableInboxCustomizations from './IterableInboxCustomizations'
 import IterableInboxDataModel from './IterableInboxDataModel'
 import IterableInboxEmptyState from './IterableInboxEmptyState'
 import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
 import IterableInboxMessageList from './IterableInboxMessageList'
-//import IterableInboxMessageListItem from './IterableInboxMessageListItem'
 import IterableInboxMessageCell from './IterableInboxMessageCell'
 
 export {
