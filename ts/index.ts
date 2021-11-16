@@ -40,7 +40,7 @@ import IterableInboxDataModel from './IterableInboxDataModel'
 import IterableInboxEmptyState from './IterableInboxEmptyState'
 import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
 import IterableInboxMessageList from './IterableInboxMessageList'
-import IterableInboxMessageListItem from './IterableInboxMessageListItem'
+//import IterableInboxMessageListItem from './IterableInboxMessageListItem'
 import IterableInboxMessageCell from './IterableInboxMessageCell'
 
 export {
@@ -69,7 +69,7 @@ export {
   IterableInboxMessageDisplay,
   IterableInboxEmptyState,
   IterableInboxMessageList,
-  IterableInboxMessageListItem,
+  // IterableInboxMessageListItem,
   IterableInboxMessageCell
 }
 export type {
