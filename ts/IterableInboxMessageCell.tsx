@@ -138,7 +138,6 @@ const defaultMessageListLayout = (
 }
 
 type MessageCellProps = {
-   key: string,
    index: number,
    last: boolean,
    dataModel: IterableInboxDataModel,
@@ -153,7 +152,6 @@ type MessageCellProps = {
 }
 
 const IterableInboxMessageCell = ({
-   key,
    index,
    last,
    dataModel,
