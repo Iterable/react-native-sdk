@@ -6,12 +6,13 @@ import {
    Text,
    Animated,
    PanResponder,
-   StyleSheet
+   StyleSheet,
+   TouchableOpacity
 } from 'react-native'
 
 import {
    InboxRowViewModel,
-   IterableInboxClickableRow,
+   IterableInboxMessageListItem,
    IterableInboxCustomizations,
    IterableInboxDataModel
 } from '.'
@@ -118,16 +119,20 @@ const IterableInboxMessageCell = ({
             style={[textContainer, position.getLayout()]}
             {...panResponder.panHandlers}
          >
-            <IterableInboxClickableRow
-               index={index}
-               last={last}
-               dataModel={dataModel}
-               rowViewModel={rowViewModel}
-               customizations={customizations}
-               messageListItemLayout={messageListItemLayout}
-               handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index)}
-               isPortrait={isPortrait}
-            />
+            <TouchableOpacity
+               activeOpacity={1}
+               onPress={() => {
+                  handleMessageSelect(rowViewModel.inAppMessage.messageId, index)
+               }}
+            >
+               <IterableInboxMessageListItem
+                  last={last}
+                  dataModel={dataModel}
+                  rowViewModel={rowViewModel}
+                  customizations={customizations}
+                  messageListItemLayout={messageListItemLayout}
+                  isPortrait={isPortrait} />
+            </TouchableOpacity>
          </Animated.View>
       </View>
    )

@@ -1,14 +1,14 @@
-'use strict'
+// 'use strict'
 
-import React from 'react'
-import { TouchableOpacity } from 'react-native'
+// import React from 'react'
+// import { TouchableOpacity } from 'react-native'
 
-import {
-   InboxRowViewModel,
-   IterableInboxMessageListItem,
-   IterableInboxCustomizations,
-   IterableInboxDataModel
-} from '.'
+// import {
+//    InboxRowViewModel,
+//    IterableInboxMessageListItem,
+//    IterableInboxCustomizations,
+//    IterableInboxDataModel
+// } from '.'
 
 type MessageClickableRowProps = {
    index: number,
@@ -33,20 +33,20 @@ const IterableInboxClickableRow = ({
 }: MessageClickableRowProps) => {
 
    return (
-      <TouchableOpacity
-         activeOpacity={1}
-         onPress={() => {
-            handleMessageSelect(rowViewModel.inAppMessage.messageId, index)
-         }}
-      >
-         <IterableInboxMessageListItem
-            last={last}
-            dataModel={dataModel}
-            rowViewModel={rowViewModel}
-            customizations={customizations}
-            messageListItemLayout={messageListItemLayout}
-            isPortrait={isPortrait} />
-      </TouchableOpacity>
+      // <TouchableOpacity
+      //    activeOpacity={1}
+      //    onPress={() => {
+      //       handleMessageSelect(rowViewModel.inAppMessage.messageId, index)
+      //    }}
+      // >
+         // <IterableInboxMessageListItem
+         //    last={last}
+         //    dataModel={dataModel}
+         //    rowViewModel={rowViewModel}
+         //    customizations={customizations}
+         //    messageListItemLayout={messageListItemLayout}
+         //    isPortrait={isPortrait} />
+      // </TouchableOpacity>
    )
 }
 
