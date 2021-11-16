@@ -37,9 +37,9 @@ const IterableInboxMessageList = ({
       return (
          <IterableInboxMessageCell
             key={rowViewModel.inAppMessage.messageId}
-            dataModel={dataModel}
             index={index}
             last={last}
+            dataModel={dataModel}
             rowViewModel={rowViewModel}
             customizations={customizations}
             swipingCheck={(swiping: boolean) => setSwiping(swiping)}

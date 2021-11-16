@@ -41,7 +41,7 @@ import IterableInboxEmptyState from './IterableInboxEmptyState'
 import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
 import IterableInboxMessageList from './IterableInboxMessageList'
 import IterableInboxMessageListItem from './IterableInboxMessageListItem'
-import IterableInboxSwipeableRow from './IterableInboxSwipeableRow'
+import IterableInboxMessageCell from './IterableInboxMessageCell'
 
 export {
   Iterable,
@@ -70,7 +70,7 @@ export {
   IterableInboxEmptyState,
   IterableInboxMessageList,
   IterableInboxMessageListItem,
-  IterableInboxSwipeableRow,
+  IterableInboxMessageCell
 }
 export type {
   IterableInAppContent,
