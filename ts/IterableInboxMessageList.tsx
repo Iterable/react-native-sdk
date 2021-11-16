@@ -7,7 +7,7 @@ import {
    InboxRowViewModel,
    IterableInboxCustomizations,
    IterableInboxDataModel,
-   IterableInboxSwipeableRow
+   IterableInboxMessageCell
 } from '.'
 
 type MessageListProps = {
@@ -35,7 +35,7 @@ const IterableInboxMessageList = ({
 
    function renderRowViewModel(rowViewModel: InboxRowViewModel, index: number, last: boolean) {
       return (
-         <IterableInboxSwipeableRow
+         <IterableInboxMessageCell
             key={rowViewModel.inAppMessage.messageId}
             dataModel={dataModel}
             index={index}

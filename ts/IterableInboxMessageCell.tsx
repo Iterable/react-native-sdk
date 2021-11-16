@@ -16,7 +16,7 @@ import {
    IterableInboxDataModel
 } from '.'
 
-type SwipeableRowProps = {
+type MessageCellProps = {
    key: string,
    index: number,
    last: boolean,
@@ -31,7 +31,8 @@ type SwipeableRowProps = {
    isPortrait: boolean
 }
 
-const IterableInboxSwipeableRow = ({
+const IterableInboxMessageCell = ({
+   key,
    index,
    last,
    dataModel,
@@ -43,7 +44,7 @@ const IterableInboxSwipeableRow = ({
    handleMessageSelect,
    contentWidth,
    isPortrait
-}: SwipeableRowProps) => {
+}: MessageCellProps) => {
    const position = useRef(new Animated.ValueXY()).current
 
    let { textContainer, deleteSlider, textStyle } = styles
@@ -157,4 +158,4 @@ const styles = StyleSheet.create({
    }
 })
 
-export default IterableInboxSwipeableRow
+export default IterableInboxMessageCell
