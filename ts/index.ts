@@ -64,12 +64,10 @@ export {
   IterableInAppDeleteSource,
   IterableInAppManager,
   IterableInbox,
-  //IterableInboxClickableRow,
   IterableInboxDataModel,
   IterableInboxMessageDisplay,
   IterableInboxEmptyState,
   IterableInboxMessageList,
-  // IterableInboxMessageListItem,
   IterableInboxMessageCell
 }
 export type {
