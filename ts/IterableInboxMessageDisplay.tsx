@@ -104,11 +104,12 @@ const IterableInboxMessageDisplay = ({
          Linking.openURL(URL)
       }
 
+      Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.link) 
+
       if(Iterable.savedConfig.urlHandler) {
          Iterable.savedConfig.urlHandler(URL, context)
       }
       
-      Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.link) 
       returnToInbox()
    }
 
