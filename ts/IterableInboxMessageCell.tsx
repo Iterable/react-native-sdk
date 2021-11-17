@@ -1,6 +1,6 @@
 'use strict'
 
-import React, { useRef, useEffect } from 'react'
+import React, { useRef } from 'react'
 import {
    View,
    Text,
