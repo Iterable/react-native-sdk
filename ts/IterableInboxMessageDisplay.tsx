@@ -62,28 +62,15 @@ const IterableInboxMessageDisplay = ({
 
    let JS = `
       const links = document.querySelectorAll('a')
-      links.forEach(link => {
-         if(link.href === "iterable://dismiss") {
-            link.class = "dismiss"   
-         }
 
-         if(link.href === "iterable://delete") {
-            link.class = "delete"
-         }
+      links.forEach(link => {
+         link.class = link.href
+
+         link.href = "javascript:void(0)"
 
          link.addEventListener("click", () => {
-            if(link.class === "dismiss") {
-               window.ReactNativeWebView.postMessage("iterable://dismiss")
-            } else if(link.class === "delete") {
-               window.ReactNativeWebView.postMessage("iterable://delete")
-            } else {
-               window.ReactNativeWebView.postMessage(link.href)
-            }
+            window.ReactNativeWebView.postMessage(link.class)   
          })
-
-         if(link.href === "iterable://dismiss" || link.href === "iterable://delete") {
-            link.href = "javascript:void(0)"
-         }
       })
    `
 
@@ -97,26 +84,31 @@ const IterableInboxMessageDisplay = ({
    const handleHTMLMessage = (event: any) => {
       let URL = event.nativeEvent.data
 
+      let action = new IterableAction("openUrl", URL, "")
+      let source = IterableActionSource.inApp
+      let context = new IterableActionContext(action, source)
+
+      Iterable.trackInAppClick(rowViewModel.inAppMessage, IterableInAppLocation.inbox, URL)
+
       if (URL === 'iterable://delete') {
          deleteRow(rowViewModel.inAppMessage.messageId)
-      } else if (Iterable.savedConfig.urlHandler) {
-         let action = new IterableAction("openUrl", URL, "")
-         let source = IterableActionSource.inApp
-         let context = new IterableActionContext(action, source)
-
-         Iterable.savedConfig.urlHandler(event.nativeEvent.data, context)
+      }
+      
+      if(URL === 'iterable://dismiss') {
+         Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.link)
       }
 
+      if (URL.slice(0, 4) === 'http') {
+         Linking.openURL(URL)
+      }
+
+      if(Iterable.savedConfig.urlHandler) {
+         if(!Iterable.savedConfig.urlHandler(URL, context)) {
+            Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.link)
+         }
+      } 
+      
       returnToInbox()
-   }
-       
-   const openExternalURL = (event: any) => {
-      if (event.url.slice(0, 4) === 'http') {
-         Linking.openURL(event.url)
-         returnToInbox()
-         return false
-      }
-      return true
    }
 
    return (
@@ -142,7 +134,6 @@ const IterableInboxMessageDisplay = ({
                style={{ width: contentWidth }}
                onMessage={(event) => handleHTMLMessage(event)}
                injectedJavaScript={JS}
-               onShouldStartLoadWithRequest={(event) => openExternalURL(event)}
             />
          </ScrollView>
       </View>
