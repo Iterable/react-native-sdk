@@ -96,6 +96,8 @@ const IterableInboxMessageDisplay = ({
       
       if(URL === 'iterable://dismiss') {
          Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.link)
+         returnToInbox()
+         return
       }
 
       if (URL.slice(0, 4) === 'http') {
@@ -103,11 +105,10 @@ const IterableInboxMessageDisplay = ({
       }
 
       if(Iterable.savedConfig.urlHandler) {
-         if(!Iterable.savedConfig.urlHandler(URL, context)) {
-            Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.link)
-         }
-      } 
+         Iterable.savedConfig.urlHandler(URL, context)
+      }
       
+      Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.link) 
       returnToInbox()
    }
 
