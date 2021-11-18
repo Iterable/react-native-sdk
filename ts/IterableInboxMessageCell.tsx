@@ -151,7 +151,7 @@ type MessageCellProps = {
    isPortrait: boolean
 }
 
-function IterableInboxMessageCell({
+const IterableInboxMessageCell = ({
    index,
    last,
    dataModel,
@@ -163,7 +163,7 @@ function IterableInboxMessageCell({
    handleMessageSelect,
    contentWidth,
    isPortrait
-}: MessageCellProps) {
+}: MessageCellProps) => {
    const position = useRef(new Animated.ValueXY()).current
 
    let { textContainer, deleteSlider, textStyle } = styles

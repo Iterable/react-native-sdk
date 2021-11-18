@@ -25,7 +25,7 @@ type MessageListProps = {
    isPortrait: boolean
 }
 
-function IterableInboxMessageList({
+const IterableInboxMessageList = ({
    dataModel,
    rowViewModels,
    customizations,
@@ -34,7 +34,7 @@ function IterableInboxMessageList({
    handleMessageSelect,
    contentWidth,
    isPortrait
-}: MessageListProps) {
+}: MessageListProps) => {
    const [swiping, setSwiping] = useState<boolean>(false)
 
    function renderRowViewModel(rowViewModel: InboxRowViewModel, index: number, last: boolean) {

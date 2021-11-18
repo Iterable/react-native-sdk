@@ -19,14 +19,14 @@ type emptyStateProps = {
    isPortrait: boolean
 }
 
-function IterableInboxEmptyState({
+const IterableInboxEmptyState = ({
    customizations,
    tabBarHeight,
    tabBarPadding,
    navTitleHeight,
    height,
    isPortrait
-}: emptyStateProps) {
+}: emptyStateProps) => {
    const defaultTitle = "No saved messages"
    const defaultBody = "Check again later!"
 

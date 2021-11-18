@@ -36,12 +36,12 @@ type inboxProps = {
    tabBarPadding?: number
 }
 
-function IterableInbox({
+const IterableInbox = ({
    messageListItemLayout = () => { return null },
    customizations = {} as IterableInboxCustomizations,
    tabBarHeight = 80,
    tabBarPadding = 20
-}: inboxProps) {
+}: inboxProps) => {
    const defaultInboxTitle = "Inbox"
    const inboxDataModel = new IterableInboxDataModel()
    const appState = useAppStateListener()
