@@ -34,14 +34,14 @@ type MessageDisplayProps = {
    isPortrait: boolean
 }
 
-function IterableInboxMessageDisplay({ 
+const IterableInboxMessageDisplay = ({ 
    rowViewModel, 
    inAppContentPromise, 
    returnToInbox,
    deleteRow, 
    contentWidth,
    isPortrait
-}: MessageDisplayProps) {
+}: MessageDisplayProps) => {
    const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title
    const [inAppContent, setInAppContent] = useState<IterableHtmlInAppContent>(new IterableHtmlInAppContent(new IterableEdgeInsets(0, 0, 0, 0), ""))
 
