@@ -1,7 +1,11 @@
 'use strict'
 
 import React, { useCallback, useState } from 'react'
-import { ViewabilityConfig, ViewToken, FlatList } from 'react-native'
+import { 
+   ViewabilityConfig, 
+   ViewToken, 
+   FlatList 
+} from 'react-native'
 
 import {
    InboxRowViewModel,
@@ -21,7 +25,7 @@ type MessageListProps = {
    isPortrait: boolean
 }
 
-const IterableInboxMessageList = ({
+function IterableInboxMessageList({
    dataModel,
    rowViewModels,
    customizations,
@@ -30,7 +34,7 @@ const IterableInboxMessageList = ({
    handleMessageSelect,
    contentWidth,
    isPortrait
-}: MessageListProps) => {
+}: MessageListProps) {
    const [swiping, setSwiping] = useState<boolean>(false)
 
    function renderRowViewModel(rowViewModel: InboxRowViewModel, index: number, last: boolean) {

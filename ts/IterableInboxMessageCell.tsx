@@ -19,13 +19,13 @@ import {
    IterableInboxDataModel
 } from '.'
 
-const defaultMessageListLayout = (
+function defaultMessageListLayout(
    last: boolean,
    dataModel: IterableInboxDataModel,
    rowViewModel: InboxRowViewModel,
    customizations: IterableInboxCustomizations,
    isPortrait: boolean
-) => {
+) {
    const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title ?? ""
    const messageBody = rowViewModel.inAppMessage.inboxMetadata?.subtitle ?? ""
    const messageCreatedAt = dataModel.getFormattedDate(rowViewModel.inAppMessage) ?? ""
@@ -151,7 +151,7 @@ type MessageCellProps = {
    isPortrait: boolean
 }
 
-const IterableInboxMessageCell = ({
+function IterableInboxMessageCell({
    index,
    last,
    dataModel,
@@ -163,7 +163,7 @@ const IterableInboxMessageCell = ({
    handleMessageSelect,
    contentWidth,
    isPortrait
-}: MessageCellProps) => {
+}: MessageCellProps) {
    const position = useRef(new Animated.ValueXY()).current
 
    let { textContainer, deleteSlider, textStyle } = styles
@@ -174,7 +174,7 @@ const IterableInboxMessageCell = ({
    const FORCING_DURATION = 350
 
    //If user swipes, either complete swipe or reset 
-   const userSwipedLeft = (gesture: any) => {
+   function userSwipedLeft(gesture: any) {
       if (gesture.dx < -0.6 * contentWidth) {
          completeSwipe()
       } else {
@@ -183,7 +183,7 @@ const IterableInboxMessageCell = ({
       }
    }
 
-   const completeSwipe = () => {
+   function completeSwipe() {
       const x = -2000
       Animated.timing(position, {
          toValue: { x, y: 0 },
@@ -192,7 +192,7 @@ const IterableInboxMessageCell = ({
       }).start(() => deleteRow(rowViewModel.inAppMessage.messageId))
    }
 
-   const resetPosition = () => {
+   function resetPosition() {
       Animated.timing(position, {
          toValue: { x: 0, y: 0 },
          duration: 200,

@@ -8,6 +8,7 @@
 import {
   Iterable,
   IterableAction,
+  IterableActionSource,
   IterableActionContext,
   IterableAttributionInfo,
   IterableCommerceItem,
@@ -41,11 +42,16 @@ import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
 import IterableInboxMessageList from './IterableInboxMessageList'
 import IterableInboxMessageCell from './IterableInboxMessageCell'
 
+import useAppStateListener from './useAppStateListener'
+import useDeviceOrientation from './useDeviceOrientation'
+import InboxImpressionRowInfo from './InboxImpressionRowInfo'
+
 export {
   Iterable,
   IterableConfig,
   IterableAction,
   IterableActionContext,
+  IterableActionSource,
   IterableAttributionInfo,
   IterableCommerceItem,
   IterableLogLevel,
@@ -66,10 +72,13 @@ export {
   IterableInboxMessageDisplay,
   IterableInboxEmptyState,
   IterableInboxMessageList,
-  IterableInboxMessageCell
+  IterableInboxMessageCell,
+  useAppStateListener,
+  useDeviceOrientation
 }
 export type {
   IterableInAppContent,
   IterableInboxCustomizations,
   InboxRowViewModel,
+  InboxImpressionRowInfo
 }

@@ -21,10 +21,9 @@ import {
    IterableInAppCloseSource,
    IterableAction,  
    IterableActionContext,  
+   IterableActionSource,
    Iterable 
-} from '.'
-  
-import { IterableActionSource } from './Iterable'  
+} from '.' 
 
 type MessageDisplayProps = {
    rowViewModel: InboxRowViewModel,
@@ -35,14 +34,14 @@ type MessageDisplayProps = {
    isPortrait: boolean
 }
 
-const IterableInboxMessageDisplay = ({ 
+function IterableInboxMessageDisplay({ 
    rowViewModel, 
    inAppContentPromise, 
    returnToInbox,
    deleteRow, 
    contentWidth,
    isPortrait
-}: MessageDisplayProps) => {
+}: MessageDisplayProps) {
    const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title
    const [inAppContent, setInAppContent] = useState<IterableHtmlInAppContent>(new IterableHtmlInAppContent(new IterableEdgeInsets(0, 0, 0, 0), ""))
 
@@ -81,7 +80,7 @@ const IterableInboxMessageDisplay = ({
          })
    })
 
-   const handleHTMLMessage = (event: any) => {
+   function handleHTMLMessage(event: any) {
       let URL = event.nativeEvent.data
 
       let action = new IterableAction("openUrl", URL, "")
