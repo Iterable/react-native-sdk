@@ -13,21 +13,18 @@ import {
 
 import {
    IterableInboxMessageList,
+   IterableInboxMessageDisplay,
    IterableInboxEmptyState,
+   IterableInboxDataModel,
    InboxRowViewModel,
+   IterableInboxCustomizations,
    IterableInAppDeleteSource,
-   Iterable
+   useAppStateListener,
+   useDeviceOrientation,
+   InboxImpressionRowInfo,
+   Iterable,
+   IterableInAppLocation
 } from '.'
-
-import { IterableInAppLocation } from './IterableInAppClasses'
-
-import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
-import IterableInboxDataModel from './IterableInboxDataModel'
-import IterableInboxCustomizations from './IterableInboxCustomizations'
-
-import useAppStateListener from './useAppStateListener'
-import useDeviceOrientation from './useDeviceOrientation'
-import InboxImpressionRowInfo from './InboxImpressionRowInfo'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
@@ -55,7 +52,7 @@ const IterableInbox = ({
    const [selectedRowViewModelIdx, setSelectedRowViewModelIdx] = useState<number>(0)
    const [rowViewModels, setRowViewModels] = useState<InboxRowViewModel[]>([])
    const [loading, setLoading] = useState<boolean>(true)
-   const [animatedValue, setAnimatedValue] = useState<any>(new Animated.Value(0))
+   const [animatedValue] = useState<any>(new Animated.Value(0))
    const [isMessageDisplay, setIsMessageDisplay] = useState<boolean>(false)
 
    let {
@@ -111,7 +108,7 @@ const IterableInbox = ({
       RNEventEmitter.removeAllListeners("receivedIterableInboxChanged")
    }
 
-   const fetchInboxMessages = async () => {
+   async function fetchInboxMessages() {
       let newMessages = await inboxDataModel.refresh()
 
       newMessages = newMessages.map((message, index) => {
@@ -140,7 +137,7 @@ const IterableInbox = ({
       slideLeft()
    }
 
-   const deleteRow = (messageId: string) => {
+   function deleteRow(messageId: string) {
       inboxDataModel.deleteItemById(messageId, IterableInAppDeleteSource.inboxSwipe)
       fetchInboxMessages()
    }
@@ -201,7 +198,7 @@ const IterableInbox = ({
          />
    }
 
-   const slideLeft = () => {
+   function slideLeft() {
       Animated.timing(animatedValue, {
          toValue: 1,
          duration: 500,
@@ -210,7 +207,7 @@ const IterableInbox = ({
       setIsMessageDisplay(true)
    }
 
-   const reset = () => {
+   function reset() {
       Animated.timing(animatedValue, {
          toValue: 0,
          duration: 500,

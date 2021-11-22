@@ -1,7 +1,11 @@
 'use strict'
 
 import React, { useCallback, useState } from 'react'
-import { ViewabilityConfig, ViewToken, FlatList } from 'react-native'
+import { 
+   ViewabilityConfig, 
+   ViewToken, 
+   FlatList 
+} from 'react-native'
 
 import {
    InboxRowViewModel,

@@ -1,16 +1,21 @@
 'use strict'
 
-import { NativeModules, NativeEventEmitter, Linking, Platform } from 'react-native'
+import { 
+  NativeModules, 
+  NativeEventEmitter, 
+  Linking, 
+  Platform 
+} from 'react-native'
 
-import IterableConfig from './IterableConfig'
-import IterableInAppMessage from './IterableInAppMessage'
 import IterableInAppManager from './IterableInAppManager'
 
 import {
+  IterableInAppMessage,
+  IterableConfig,
   IterableInAppLocation,
   IterableInAppCloseSource,
   IterableInAppDeleteSource,
-} from './IterableInAppClasses'
+} from '.'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)

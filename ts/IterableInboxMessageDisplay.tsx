@@ -21,10 +21,9 @@ import {
    IterableInAppCloseSource,
    IterableAction,  
    IterableActionContext,  
+   IterableActionSource,
    Iterable 
-} from '.'
-  
-import { IterableActionSource } from './Iterable'  
+} from '.' 
 
 type MessageDisplayProps = {
    rowViewModel: InboxRowViewModel,
@@ -81,7 +80,7 @@ const IterableInboxMessageDisplay = ({
          })
    })
 
-   const handleHTMLMessage = (event: any) => {
+   function handleHTMLMessage(event: any) {
       let URL = event.nativeEvent.data
 
       let action = new IterableAction("openUrl", URL, "")

@@ -6,7 +6,7 @@ import {
   IterableInAppTrigger,
   IterableInAppTriggerType,
   IterableInboxMetadata,
-} from './IterableInAppClasses'
+} from '.'
 
 /**
  * Iterable in-app message
