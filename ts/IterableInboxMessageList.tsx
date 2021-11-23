@@ -1,14 +1,18 @@
 'use strict'
 
 import React, { useCallback, useState } from 'react'
-import { ViewabilityConfig, ViewToken, FlatList } from 'react-native'
+import { 
+   ViewabilityConfig, 
+   ViewToken, 
+   FlatList 
+} from 'react-native'
 
 import {
    InboxRowViewModel,
    IterableInAppMessage,
    IterableInboxCustomizations,
    IterableInboxDataModel,
-   IterableInboxSwipeableRow
+   IterableInboxMessageCell
 } from '.'
 
 import InboxImpressionRowInfo from './InboxImpressionRowInfo'
@@ -38,11 +42,11 @@ const IterableInboxMessageList = ({
 
    function renderRowViewModel(rowViewModel: InboxRowViewModel, index: number, last: boolean) {
       return (
-         <IterableInboxSwipeableRow
+         <IterableInboxMessageCell
             key={rowViewModel.inAppMessage.messageId}
-            dataModel={dataModel}
             index={index}
             last={last}
+            dataModel={dataModel}
             rowViewModel={rowViewModel}
             customizations={customizations}
             swipingCheck={(swiping: boolean) => setSwiping(swiping)}

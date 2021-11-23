@@ -8,6 +8,7 @@
 import {
   Iterable,
   IterableAction,
+  IterableActionSource,
   IterableActionContext,
   IterableAttributionInfo,
   IterableCommerceItem,
@@ -34,20 +35,23 @@ import IterableInAppManager from './IterableInAppManager'
 
 import InboxRowViewModel from './InboxRowViewModel'
 import IterableInbox from './IterableInbox'
-import IterableInboxClickableRow from './IterableInboxClickableRow'
 import IterableInboxCustomizations from './IterableInboxCustomizations'
 import IterableInboxDataModel from './IterableInboxDataModel'
 import IterableInboxEmptyState from './IterableInboxEmptyState'
 import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
 import IterableInboxMessageList from './IterableInboxMessageList'
-import IterableInboxMessageListItem from './IterableInboxMessageListItem'
-import IterableInboxSwipeableRow from './IterableInboxSwipeableRow'
+import IterableInboxMessageCell from './IterableInboxMessageCell'
+
+import useAppStateListener from './useAppStateListener'
+import useDeviceOrientation from './useDeviceOrientation'
+import InboxImpressionRowInfo from './InboxImpressionRowInfo'
 
 export {
   Iterable,
   IterableConfig,
   IterableAction,
   IterableActionContext,
+  IterableActionSource,
   IterableAttributionInfo,
   IterableCommerceItem,
   IterableLogLevel,
@@ -64,16 +68,17 @@ export {
   IterableInAppDeleteSource,
   IterableInAppManager,
   IterableInbox,
-  IterableInboxClickableRow,
   IterableInboxDataModel,
   IterableInboxMessageDisplay,
   IterableInboxEmptyState,
   IterableInboxMessageList,
-  IterableInboxMessageListItem,
-  IterableInboxSwipeableRow,
+  IterableInboxMessageCell,
+  useAppStateListener,
+  useDeviceOrientation
 }
 export type {
   IterableInAppContent,
   IterableInboxCustomizations,
   InboxRowViewModel,
+  InboxImpressionRowInfo
 }

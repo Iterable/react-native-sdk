@@ -1,0 +1,280 @@
+'use strict'
+
+import React, { useRef } from 'react'
+import {
+   View,
+   Text,
+   Image,
+   Animated,
+   PanResponder,
+   ViewStyle,
+   TextStyle,
+   StyleSheet,
+   TouchableOpacity
+} from 'react-native'
+
+import {
+   InboxRowViewModel,
+   IterableInboxCustomizations,
+   IterableInboxDataModel
+} from '.'
+
+function defaultMessageListLayout(
+   last: boolean,
+   dataModel: IterableInboxDataModel,
+   rowViewModel: InboxRowViewModel,
+   customizations: IterableInboxCustomizations,
+   isPortrait: boolean
+) {
+   const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title ?? ""
+   const messageBody = rowViewModel.inAppMessage.inboxMetadata?.subtitle ?? ""
+   const messageCreatedAt = dataModel.getFormattedDate(rowViewModel.inAppMessage) ?? ""
+   const iconURL = rowViewModel.imageUrl
+
+   let styles = StyleSheet.create({
+      unreadIndicatorContainer: {
+         height: '100%',
+         flexDirection: 'column',
+         justifyContent: 'flex-start'
+      },
+
+      unreadIndicator: {
+         width: 15,
+         height: 15,
+         borderRadius: 15 / 2,
+         backgroundColor: 'blue',
+         marginLeft: 10,
+         marginRight: 5,
+         marginTop: 10
+      },
+
+      unreadMessageIconContainer: {
+         paddingLeft: 10,
+         flexDirection: 'column',
+         justifyContent: 'center'
+      },
+
+      readMessageIconContainer: {
+         paddingLeft: 30,
+         flexDirection: 'column',
+         justifyContent: 'center'
+      },
+
+      messageContainer: {
+         paddingLeft: 10,
+         width: '75%',
+         flexDirection: 'column',
+         justifyContent: 'center'
+      },
+
+      title: {
+         fontSize: 22,
+         paddingBottom: 10
+      },
+
+      body: {
+         fontSize: 15,
+         color: 'lightgray',
+         width: '85%',
+         flexWrap: "wrap",
+         paddingBottom: 10
+      },
+
+      createdAt: {
+         fontSize: 12,
+         color: 'lightgray'
+      },
+
+      messageRow: {
+         flexDirection: 'row',
+         backgroundColor: 'white',
+         paddingTop: 10,
+         paddingBottom: 10,
+         width: '100%',
+         height: 120,
+         borderStyle: 'solid',
+         borderColor: 'lightgray',
+         borderTopWidth: 1
+      }
+   })
+
+   const resolvedStyles = { ...styles, ...customizations }
+
+   let {
+      unreadIndicatorContainer,
+      unreadIndicator,
+      unreadMessageIconContainer,
+      readMessageIconContainer,
+      messageContainer,
+      title,
+      body,
+      createdAt,
+      messageRow
+   } = resolvedStyles
+
+   unreadIndicator = (!isPortrait) ? { ...unreadIndicator, marginLeft: 40 } : unreadIndicator
+   readMessageIconContainer = (!isPortrait) ? { ...readMessageIconContainer, paddingLeft: 65 } : readMessageIconContainer
+   messageContainer = (!isPortrait) ? { ...messageContainer, width: '90%' } : messageContainer
+
+   function messageRowStyle(rowViewModel: InboxRowViewModel) {
+      return last ? { ...messageRow, borderBottomWidth: 1 } : messageRow
+   }
+
+   return (
+      <View style={messageRowStyle(rowViewModel) as ViewStyle} >
+         <View style={unreadIndicatorContainer as ViewStyle}>
+            {rowViewModel.read ? null : <View style={unreadIndicator} />}
+         </View>
+         <View style={(rowViewModel.read ? readMessageIconContainer : unreadMessageIconContainer) as ViewStyle}>
+            {iconURL ? <Image style={{ height: 80, width: 80 }} source={{ uri: iconURL }} /> : null}
+         </View>
+         <View style={messageContainer as ViewStyle}>
+            <Text style={title}>{messageTitle as TextStyle}</Text>
+            <Text numberOfLines={2} ellipsizeMode='tail' style={body as TextStyle}>{messageBody}</Text>
+            <Text style={createdAt}>{messageCreatedAt as TextStyle}</Text>
+         </View>
+      </View>
+   )
+}
+
+type MessageCellProps = {
+   index: number,
+   last: boolean,
+   dataModel: IterableInboxDataModel,
+   rowViewModel: InboxRowViewModel,
+   customizations: IterableInboxCustomizations,
+   swipingCheck: Function,
+   messageListItemLayout: Function,
+   deleteRow: Function,
+   handleMessageSelect: Function,
+   contentWidth: number,
+   isPortrait: boolean
+}
+
+const IterableInboxMessageCell = ({
+   index,
+   last,
+   dataModel,
+   rowViewModel,
+   customizations,
+   swipingCheck,
+   messageListItemLayout,
+   deleteRow,
+   handleMessageSelect,
+   contentWidth,
+   isPortrait
+}: MessageCellProps) => {
+   const position = useRef(new Animated.ValueXY()).current
+
+   let { textContainer, deleteSlider, textStyle } = styles
+
+   deleteSlider = (isPortrait) ? deleteSlider : { ...deleteSlider, paddingRight: 40 }
+
+   const scrollThreshold = contentWidth / 15
+   const FORCING_DURATION = 350
+
+   //If user swipes, either complete swipe or reset 
+   function userSwipedLeft(gesture: any) {
+      if (gesture.dx < -0.6 * contentWidth) {
+         completeSwipe()
+      } else {
+         resetPosition()
+         swipingCheck(false)
+      }
+   }
+
+   function completeSwipe() {
+      const x = -2000
+      Animated.timing(position, {
+         toValue: { x, y: 0 },
+         duration: FORCING_DURATION,
+         useNativeDriver: false
+      }).start(() => deleteRow(rowViewModel.inAppMessage.messageId))
+   }
+
+   function resetPosition() {
+      Animated.timing(position, {
+         toValue: { x: 0, y: 0 },
+         duration: 200,
+         useNativeDriver: false
+      }).start()
+   }
+
+   const panResponder = useRef(
+      PanResponder.create({
+         onStartShouldSetPanResponder: () => false,
+         onMoveShouldSetPanResponder: () => true,
+         onPanResponderTerminationRequest: () => false,
+         onPanResponderGrant: () => {
+            position.setValue({ x: 0, y: 0 })
+         },
+         onPanResponderMove: (event, gesture) => {
+            if (gesture.dx <= -scrollThreshold) {
+               //enables swipeing when threshold is reached
+               swipingCheck(true)
+
+               //threshold value is deleted from movement
+               const x = gesture.dx + scrollThreshold
+               //position is set to the new value
+               position.setValue({ x, y: 0 })
+            }
+         },
+         onPanResponderRelease: (event, gesture) => {
+            position.flattenOffset()
+            if (gesture.dx < 0) {
+               userSwipedLeft(gesture)
+            }
+         }
+      })
+   ).current
+
+   return (
+      <View>
+         <View style={deleteSlider}>
+            <Text style={textStyle}>DELETE</Text>
+         </View>
+         <Animated.View
+            style={[textContainer, position.getLayout()]}
+            {...panResponder.panHandlers}
+         >
+            <TouchableOpacity
+               activeOpacity={1}
+               onPress={() => {
+                  handleMessageSelect(rowViewModel.inAppMessage.messageId, index)
+               }}
+            >
+               {messageListItemLayout(last, rowViewModel) ? 
+                  messageListItemLayout(last, rowViewModel) : 
+                  defaultMessageListLayout(last, dataModel, rowViewModel, customizations, isPortrait)}
+            </TouchableOpacity>
+         </Animated.View>
+      </View>
+   )
+}
+
+const styles = StyleSheet.create({
+   textContainer: {
+      width: '100%',
+      elevation: 2
+   },
+
+   deleteSlider: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      paddingRight: 10,
+      backgroundColor: 'red',
+      position: 'absolute',
+      elevation: 1,
+      width: '100%',
+      height: 120
+   },
+
+   textStyle: {
+      fontWeight: 'bold',
+      fontSize: 15,
+      color: 'white'
+   }
+})
+
+export default IterableInboxMessageCell

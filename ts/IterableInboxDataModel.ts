@@ -6,10 +6,9 @@ import {
     IterableInAppMessage,
     IterableInAppLocation,
     IterableInAppDeleteSource,
-    IterableHtmlInAppContent
+    IterableHtmlInAppContent,
+    InboxImpressionRowInfo
 } from '.'
-
-import InboxImpressionRowInfo from './InboxImpressionRowInfo'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
 
