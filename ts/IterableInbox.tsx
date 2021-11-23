@@ -81,10 +81,13 @@ const IterableInbox = ({
    }, [])
 
    useEffect(() => {
+      // need to check for foreground boolean?
       if (appState === 'active') {
          // inboxDataModel.startSession()
+         // need to set foreground boolean?
       } else {
          // inboxDataModel.endSession()
+         // need to set foreground boolean?
       }
    }, [appState])
 
@@ -216,16 +219,7 @@ const IterableInbox = ({
       setIsMessageDisplay(false)
    }
 
-   function updateCurrentVisibleRows() {
-      // inboxDataModel.updateVisibleRows(getCurrentVisibleRows())
-   }
-
-   function getCurrentVisibleRows(): InboxImpressionRowInfo[] {
-
-      return []
-   }
-
-   return (
+   return(
       <View style={updatedContainer}>
          <Animated.View
             style={{

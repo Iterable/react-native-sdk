@@ -84,6 +84,21 @@ class IterableInAppMessage {
     this.priorityLevel = priorityLevel
   }
 
+  static fromInApp(inAppMessage: IterableInAppMessage) {
+    return new IterableInAppMessage(
+      inAppMessage.messageId,
+      inAppMessage.campaignId,
+      inAppMessage.trigger,
+      inAppMessage.createdAt,
+      inAppMessage.expiresAt,
+      inAppMessage.saveToInbox,
+      inAppMessage.inboxMetadata,
+      inAppMessage.customPayload,
+      inAppMessage.read,
+      inAppMessage.priorityLevel
+    )
+  }
+
   isSilentInbox(): boolean {
     return this.saveToInbox && this.trigger.type == IterableInAppTriggerType.never
   }

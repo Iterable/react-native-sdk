@@ -76,24 +76,19 @@ class IterableInboxDataModel {
 
     // inbox session tracking functions
 
-    startSession() {
-        RNIterableAPI.startSession(this.getCurrentVisibleRows())
+    startSession(visibleRows: Array<InboxImpressionRowInfo> = []) {
+        RNIterableAPI.startSession(visibleRows)
     }
 
     endSession() {
         RNIterableAPI.endSession()
     }
 
-    updateVisibleRows() {
-        RNIterableAPI.updateVisibleRows(this.getCurrentVisibleRows())
+    updateVisibleRows(visibleRows: Array<InboxImpressionRowInfo> = []) {
+        RNIterableAPI.updateVisibleRows(visibleRows)
     }
 
     // private/internal
-
-    private getCurrentVisibleRows(): InboxImpressionRowInfo[] {
-        console.log("jay getCurrentVisibleRows")
-        return []
-    }
 
     private static sortByMostRecent = (message1: IterableInAppMessage, message2: IterableInAppMessage) => {
         let createdAt1 = message1.createdAt ?? new Date(0)

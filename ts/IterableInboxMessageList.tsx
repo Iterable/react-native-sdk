@@ -9,10 +9,13 @@ import {
 
 import {
    InboxRowViewModel,
+   IterableInAppMessage,
    IterableInboxCustomizations,
    IterableInboxDataModel,
    IterableInboxMessageCell
 } from '.'
+
+import InboxImpressionRowInfo from './InboxImpressionRowInfo'
 
 type MessageListProps = {
    dataModel: IterableInboxDataModel,
@@ -56,17 +59,55 @@ const IterableInboxMessageList = ({
       )
    }
 
+   function getInAppMessageFromViewToken(viewToken: ViewToken): IterableInAppMessage {
+      return IterableInAppMessage.fromInApp(viewToken.item["inAppMessage"] as IterableInAppMessage)
+   }
+
+   // function getInAppMessagesFromViewTokens(viewTokens: Array<ViewToken>): Array<IterableInAppMessage> {
+   //    return viewTokens.map(getInAppMessageFromViewToken)
+   // }
+
+   function getRowInfosFromViewTokens(viewTokens: Array<ViewToken>): Array<InboxImpressionRowInfo> {
+      return viewTokens.map(
+         function(viewToken) {
+            var inAppMessage = getInAppMessageFromViewToken(viewToken)
+            
+            const impression = {
+               messageId: inAppMessage.messageId,
+               silentInbox: inAppMessage.isSilentInbox()
+            } as InboxImpressionRowInfo
+
+            return impression
+         }
+      )
+   }
+
    const inboxSessionViewabilityConfig: ViewabilityConfig = {
-      minimumViewTime: 0.5,
-      itemVisiblePercentThreshold: 50,
-      waitForInteraction: true
+      minimumViewTime: 500,
+      itemVisiblePercentThreshold: 100,
+      waitForInteraction: false
    }
 
    const inboxSessionItemsChanged = useCallback((
-      (info: { viewableItems: Array<ViewToken>, changed: Array<ViewToken> }) => {
+      (info: {viewableItems: Array<ViewToken>, changed: Array<ViewToken>}) => {
+         // logCurrentVisibleRows(info)
 
+         const rowInfos = getRowInfosFromViewTokens(info.viewableItems)
+
+         dataModel.updateVisibleRows(rowInfos)
       }
    ), [])
+
+   // function logCurrentVisibleRows(info: {viewableItems: Array<ViewToken>, changed: Array<ViewToken>}) {
+   //    const rowInfos = getRowInfosFromViewTokens(info.viewableItems)
+   //    const inAppMessages = getInAppMessagesFromViewTokens(info.viewableItems)
+      
+   //    console.log("updateVisibleRows", inAppMessages.length, inAppMessages.map(
+   //       function(impression) {
+   //          return impression.inboxMetadata?.title ?? "<none>"
+   //       })
+   //    )
+   // }
 
    return (
       <FlatList
