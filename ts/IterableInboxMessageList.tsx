@@ -59,18 +59,10 @@ const IterableInboxMessageList = ({
       )
    }
 
-   function getInAppMessageFromViewToken(viewToken: ViewToken): IterableInAppMessage {
-      return IterableInAppMessage.fromInApp(viewToken.item["inAppMessage"] as IterableInAppMessage)
-   }
-
-   // function getInAppMessagesFromViewTokens(viewTokens: Array<ViewToken>): Array<IterableInAppMessage> {
-   //    return viewTokens.map(getInAppMessageFromViewToken)
-   // }
-
    function getRowInfosFromViewTokens(viewTokens: Array<ViewToken>): Array<InboxImpressionRowInfo> {
       return viewTokens.map(
          function(viewToken) {
-            var inAppMessage = getInAppMessageFromViewToken(viewToken)
+            var inAppMessage = IterableInAppMessage.fromViewToken(viewToken)
             
             const impression = {
                messageId: inAppMessage.messageId,
@@ -98,16 +90,16 @@ const IterableInboxMessageList = ({
       }
    ), [])
 
-   // function logCurrentVisibleRows(info: {viewableItems: Array<ViewToken>, changed: Array<ViewToken>}) {
-   //    const rowInfos = getRowInfosFromViewTokens(info.viewableItems)
-   //    const inAppMessages = getInAppMessagesFromViewTokens(info.viewableItems)
+   function logCurrentVisibleRows(info: {viewableItems: Array<ViewToken>, changed: Array<ViewToken>}) {
+      const rowInfos = getRowInfosFromViewTokens(info.viewableItems)
+      const inAppMessages = info.viewableItems.map(IterableInAppMessage.fromViewToken)
       
-   //    console.log("updateVisibleRows", inAppMessages.length, inAppMessages.map(
-   //       function(impression) {
-   //          return impression.inboxMetadata?.title ?? "<none>"
-   //       })
-   //    )
-   // }
+      console.log("updateVisibleRows", inAppMessages.length, inAppMessages.map(
+         function(impression) {
+            return impression.inboxMetadata?.title ?? "<none>"
+         })
+      )
+   }
 
    return (
       <FlatList
