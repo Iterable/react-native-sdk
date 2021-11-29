@@ -74,10 +74,14 @@ const IterableInboxMessageDisplay = ({
    `
 
    useEffect(() => {
+      let mounted = true
       inAppContentPromise.then(
          (value) => {
-            setInAppContent(value)
+            if(mounted) {
+               setInAppContent(value)
+            }
          })
+      return () => {mounted = false}
    })
 
    function handleHTMLMessage(event: any) {
