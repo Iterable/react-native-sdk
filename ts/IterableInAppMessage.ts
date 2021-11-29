@@ -7,6 +7,7 @@ import {
   IterableInAppTriggerType,
   IterableInboxMetadata,
 } from '.'
+import { ViewToken } from 'react-native'
 
 /**
  * Iterable in-app message
@@ -84,7 +85,9 @@ class IterableInAppMessage {
     this.priorityLevel = priorityLevel
   }
 
-  static fromInApp(inAppMessage: IterableInAppMessage) {
+  static fromViewToken(viewToken: ViewToken) {
+    var inAppMessage = viewToken.item["inAppMessage"] as IterableInAppMessage
+
     return new IterableInAppMessage(
       inAppMessage.messageId,
       inAppMessage.campaignId,
