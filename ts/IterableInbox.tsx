@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react'
 import {
    View,
    Text,
-   Alert,
    StyleSheet,
    Animated,
    NativeModules,
@@ -26,13 +25,12 @@ import {
    IterableInAppLocation
 } from '.'
 
-import { useFocusEffect, useIsFocused } from '@react-navigation/native'
+import { useIsFocused } from '@react-navigation/native'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
 
 type inboxProps = {
-   navigation: any,
    messageListItemLayout?: Function,
    customizations?: IterableInboxCustomizations,
    tabBarHeight?: number,
@@ -40,7 +38,6 @@ type inboxProps = {
 }
 
 const IterableInbox = ({
-   navigation,
    messageListItemLayout = () => { return null },
    customizations = {} as IterableInboxCustomizations,
    tabBarHeight = 80,
@@ -86,9 +83,6 @@ const IterableInbox = ({
    useEffect(() => {
       fetchInboxMessages()
       addInboxChangedListener()
-
-      //inboxDataModel.startSession()
-      //console.log('start')
 
       return () => {
          removeInboxChangedListener()
