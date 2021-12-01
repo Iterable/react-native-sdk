@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import {
    View,
    Text,
+   Alert,
    StyleSheet,
    Animated,
    NativeModules,
@@ -25,12 +26,13 @@ import {
    IterableInAppLocation
 } from '.'
 
-import { useIsFocused } from '@react-navigation/native'
+import { useFocusEffect, useIsFocused } from '@react-navigation/native'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
 
 type inboxProps = {
+   navigation: any,
    messageListItemLayout?: Function,
    customizations?: IterableInboxCustomizations,
    tabBarHeight?: number,
@@ -38,6 +40,7 @@ type inboxProps = {
 }
 
 const IterableInbox = ({
+   navigation,
    messageListItemLayout = () => { return null },
    customizations = {} as IterableInboxCustomizations,
    tabBarHeight = 80,
@@ -56,8 +59,14 @@ const IterableInbox = ({
    const [animatedValue] = useState<any>(new Animated.Value(0))
    const [isMessageDisplay, setIsMessageDisplay] = useState<boolean>(false)
 
-   const isFocused = useState<boolean>(useIsFocused())
+   const isFocused = useIsFocused()
 
+   if(isFocused) {
+      inboxDataModel.startSession()
+   } else {
+      inboxDataModel.endSession()
+   }
+   
    let {
       loadingScreen,
       container,
@@ -77,6 +86,9 @@ const IterableInbox = ({
    useEffect(() => {
       fetchInboxMessages()
       addInboxChangedListener()
+
+      //inboxDataModel.startSession()
+      //console.log('start')
 
       return () => {
          removeInboxChangedListener()
