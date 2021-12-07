@@ -8,7 +8,8 @@ import {
    Animated,
    NativeModules,
    NativeEventEmitter,
-   Platform
+   Platform,
+   Alert
 } from 'react-native'
 
 import {
@@ -45,9 +46,10 @@ const IterableInbox = ({
 }: inboxProps) => {
    const defaultInboxTitle = "Inbox"
    const inboxDataModel = new IterableInboxDataModel()
-   const appState = useAppStateListener()
 
    let { height, width, isPortrait } = useDeviceOrientation()
+   const appState = useAppStateListener()
+   const isFocused = useIsFocused()
 
    const [screenWidth, setScreenWidth] = useState<number>(width)
    const [selectedRowViewModelIdx, setSelectedRowViewModelIdx] = useState<number>(0)
@@ -56,13 +58,15 @@ const IterableInbox = ({
    const [animatedValue] = useState<any>(new Animated.Value(0))
    const [isMessageDisplay, setIsMessageDisplay] = useState<boolean>(false)
 
-   const isFocused = useIsFocused()
-
-   if(isFocused) {
-      inboxDataModel.startSession()
-   } else {
-      inboxDataModel.endSession()
-   }
+   if(appState === 'active') {
+      if(isFocused) {
+         inboxDataModel.startSession()
+         console.log('start session')
+      } else {
+         inboxDataModel.endSession()
+         console.log('end session')
+      }
+   } 
    
    let {
       loadingScreen,
@@ -89,14 +93,21 @@ const IterableInbox = ({
       }
    }, [])
 
+   // useEffect(() => {
+   //    // need to check for foreground boolean?
+   //    if (appState === 'active') {
+   //       // inboxDataModel.startSession()
+   //       // need to set foreground boolean?
+   //    } else {
+   //       // inboxDataModel.endSession()
+   //       // need to set foreground boolean?
+   //    }
+   // }, [appState])
+
    useEffect(() => {
-      // need to check for foreground boolean?
-      if (appState === 'active') {
-         // inboxDataModel.startSession()
-         // need to set foreground boolean?
-      } else {
-         // inboxDataModel.endSession()
-         // need to set foreground boolean?
+      if(appState === 'inactive' && isFocused) {
+         inboxDataModel.endSession()
+         console.log('end session')
       }
    }, [appState])
 
