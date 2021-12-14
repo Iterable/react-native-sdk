@@ -8,8 +8,7 @@ import {
    Animated,
    NativeModules,
    NativeEventEmitter,
-   Platform,
-   Alert
+   Platform
 } from 'react-native'
 
 import {
@@ -61,10 +60,8 @@ const IterableInbox = ({
    if(appState === 'active') {
       if(isFocused) {
          inboxDataModel.startSession()
-         console.log('start session')
       } else {
          inboxDataModel.endSession()
-         console.log('end session')
       }
    } 
    
@@ -97,12 +94,10 @@ const IterableInbox = ({
       if(Platform.OS === "android" && isFocused) {
          if(appState === 'background') {
             inboxDataModel.endSession()
-            console.log('end session')
          }
       } else {
          if(appState === 'inactive') {
             inboxDataModel.endSession()
-            console.log('end session')
          }
       }
    }, [appState])
