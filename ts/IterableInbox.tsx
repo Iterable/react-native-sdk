@@ -21,10 +21,11 @@ import {
    IterableInAppDeleteSource,
    useAppStateListener,
    useDeviceOrientation,
-   InboxImpressionRowInfo,
    Iterable,
    IterableInAppLocation
 } from '.'
+
+import { useIsFocused } from '@react-navigation/native'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
@@ -55,6 +56,14 @@ const IterableInbox = ({
    const [animatedValue] = useState<any>(new Animated.Value(0))
    const [isMessageDisplay, setIsMessageDisplay] = useState<boolean>(false)
 
+   const isFocused = useIsFocused()
+
+   if(isFocused) {
+      inboxDataModel.startSession()
+   } else {
+      inboxDataModel.endSession()
+   }
+   
    let {
       loadingScreen,
       container,

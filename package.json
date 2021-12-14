@@ -21,6 +21,7 @@
   "homepage": "https://github.com/Iterable/react-native-sdk",
   "dependencies": {
     "@react-native-community/hooks": "^2.6.0",
+    "@react-navigation/native": "^6.0.6",
     "react-native-vector-icons": "^9.0.0",
     "react-native-webview": "^11.14.1"
   },
