@@ -15,7 +15,7 @@ import {
    IterableInboxMessageCell
 } from '.'
 
-import InboxImpressionRowInfo from './InboxImpressionRowInfo'
+//import InboxImpressionRowInfo from './InboxImpressionRowInfo'
 
 type MessageListProps = {
    dataModel: IterableInboxDataModel,
@@ -43,15 +43,17 @@ const IterableInboxMessageList = ({
    isPortrait
 }: MessageListProps) => {
    const [swiping, setSwiping] = useState<boolean>(false)
+   // const [visibleRowImpressions, setVisibleRowImpressions] = useState<InboxImpressionRowInfo[]>()
 
    useEffect(() => {
-      getInitialMessageImpressions()
-      // const visibleRows = getInitialMessageImpressions()
-      // dataModel.updateVisibleRows(visibleRows)
-   
-      // console.log(messageListHeight)
-      // console.log(customizations.messageRow?.height)
+      getInitialMessageImpressions(messageListHeight, customizations.messageRow?.height, rowViewModels)
    }, [])
+
+   // useEffect(() => {
+   //    console.log(visibleRowImpressions)
+   //    dataModel.updateVisibleRows(visibleRowImpressions)
+   //    console.log("impressions sent")
+   // }, [visibleRowImpressions])
 
    function renderRowViewModel(rowViewModel: InboxRowViewModel, index: number, last: boolean) {
       return (
@@ -71,6 +73,38 @@ const IterableInboxMessageList = ({
          />
       )
    }
+
+   // function getInitialMessageImpressions(messageListHeight: number, messageRowHeight: number | undefined, rowViewModels: InboxRowViewModel[]) {
+   //    let numMessages = Math.floor(messageListHeight / 120)
+
+   //    if(messageRowHeight) {
+   //       numMessages = Math.floor(messageListHeight / messageRowHeight)
+   //    }
+
+   //    let visibleRowViewModels = rowViewModels.slice(0, numMessages)
+
+   //    setVisibleRowImpressions(visibleRowViewModels.map(rowViewModel => {
+   //       const inAppMessage = new IterableInAppMessage(
+   //          rowViewModel.inAppMessage.messageId,
+   //          rowViewModel.inAppMessage.campaignId,
+   //          rowViewModel.inAppMessage.trigger,
+   //          rowViewModel.inAppMessage.createdAt,
+   //          rowViewModel.inAppMessage.expiresAt,
+   //          rowViewModel.inAppMessage.saveToInbox,
+   //          rowViewModel.inAppMessage.inboxMetadata,
+   //          rowViewModel.inAppMessage.customPayload,
+   //          rowViewModel.inAppMessage.read,
+   //          rowViewModel.inAppMessage.priorityLevel
+   //        )
+
+   //       const impression = {
+   //          messageId: inAppMessage.messageId,
+   //          silentInbox:  inAppMessage.isSilentInbox()
+   //       } as InboxImpressionRowInfo
+
+   //       return impression
+   //    }))
+   // }
 
    // function getInitialMessageImpressions() {
    //    let numMessages = Math.floor(messageListHeight / 120)
@@ -93,9 +127,12 @@ const IterableInboxMessageList = ({
    // }
 
    // function getRowInfosFromViewTokens(viewTokens: Array<ViewToken>): Array<InboxImpressionRowInfo> {
+   //    //console.log(viewTokens)
+      
    //    return viewTokens.map(
    //       function(viewToken) {
    //          var inAppMessage = IterableInAppMessage.fromViewToken(viewToken)
+   //          //console.log(inAppMessage)
             
    //          const impression = {
    //             messageId: inAppMessage.messageId,
@@ -119,6 +156,7 @@ const IterableInboxMessageList = ({
 
    //       const rowInfos = getRowInfosFromViewTokens(info.viewableItems)
 
+   //       //console.log(rowInfos)
    //       dataModel.updateVisibleRows(rowInfos)
    //    }
    // ), [])
@@ -141,7 +179,7 @@ const IterableInboxMessageList = ({
          renderItem={({ item, index }: { item: InboxRowViewModel, index: number }) => renderRowViewModel(item, index, index === rowViewModels.length - 1)}
          keyExtractor={(item: InboxRowViewModel) => item.inAppMessage.messageId}
          viewabilityConfig={inboxSessionViewabilityConfig}
-         // onViewableItemsChanged={inboxSessionItemsChanged}
+         //onViewableItemsChanged={inboxSessionItemsChanged}
       />
    )
 }
