@@ -81,7 +81,7 @@ const IterableInbox = ({
    useEffect(() => {
       fetchInboxMessages()
       addInboxChangedListener()
-      getInitialMessageImpressions(updatedContainer.height - headline.height, customizations.messageRow?.height, rowViewModels)
+      getInitialMessageImpressions(updatedContainer.height - headline.height, customizations.messageRow.height, rowViewModels)
 
       return () => {
          removeInboxChangedListener()
@@ -89,9 +89,7 @@ const IterableInbox = ({
    }, [])
 
    useEffect(() => {
-      console.log(visibleRowImpressions)
       inboxDataModel.updateVisibleRows(visibleRowImpressions)
-      console.log("impressions sent")
    }, [visibleRowImpressions])
 
    useEffect(() => {
@@ -122,13 +120,8 @@ const IterableInbox = ({
       }
    }
 
-   function getInitialMessageImpressions(messageListHeight: number, messageRowHeight: number | undefined, rowViewModels: InboxRowViewModel[]) {
-      let numMessages = Math.floor(messageListHeight / 120)
-
-      if(messageRowHeight) {
-         numMessages = Math.floor(messageListHeight / messageRowHeight)
-      }
-
+   function getInitialMessageImpressions(messageListHeight: number, messageRowHeight: number, rowViewModels: InboxRowViewModel[]) {
+      let numMessages = Math.floor(messageListHeight / messageRowHeight)
       let visibleRowViewModels = rowViewModels.slice(0, numMessages)
 
       setVisibleRowImpressions(visibleRowViewModels.map(rowViewModel => {

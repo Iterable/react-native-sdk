@@ -43,17 +43,10 @@ const IterableInboxMessageList = ({
    isPortrait
 }: MessageListProps) => {
    const [swiping, setSwiping] = useState<boolean>(false)
-   // const [visibleRowImpressions, setVisibleRowImpressions] = useState<InboxImpressionRowInfo[]>()
 
    useEffect(() => {
-      getInitialMessageImpressions(messageListHeight, customizations.messageRow?.height, rowViewModels)
+      getInitialMessageImpressions(messageListHeight, customizations.messageRow.height, rowViewModels)
    }, [])
-
-   // useEffect(() => {
-   //    console.log(visibleRowImpressions)
-   //    dataModel.updateVisibleRows(visibleRowImpressions)
-   //    console.log("impressions sent")
-   // }, [visibleRowImpressions])
 
    function renderRowViewModel(rowViewModel: InboxRowViewModel, index: number, last: boolean) {
       return (
@@ -73,58 +66,6 @@ const IterableInboxMessageList = ({
          />
       )
    }
-
-   // function getInitialMessageImpressions(messageListHeight: number, messageRowHeight: number | undefined, rowViewModels: InboxRowViewModel[]) {
-   //    let numMessages = Math.floor(messageListHeight / 120)
-
-   //    if(messageRowHeight) {
-   //       numMessages = Math.floor(messageListHeight / messageRowHeight)
-   //    }
-
-   //    let visibleRowViewModels = rowViewModels.slice(0, numMessages)
-
-   //    setVisibleRowImpressions(visibleRowViewModels.map(rowViewModel => {
-   //       const inAppMessage = new IterableInAppMessage(
-   //          rowViewModel.inAppMessage.messageId,
-   //          rowViewModel.inAppMessage.campaignId,
-   //          rowViewModel.inAppMessage.trigger,
-   //          rowViewModel.inAppMessage.createdAt,
-   //          rowViewModel.inAppMessage.expiresAt,
-   //          rowViewModel.inAppMessage.saveToInbox,
-   //          rowViewModel.inAppMessage.inboxMetadata,
-   //          rowViewModel.inAppMessage.customPayload,
-   //          rowViewModel.inAppMessage.read,
-   //          rowViewModel.inAppMessage.priorityLevel
-   //        )
-
-   //       const impression = {
-   //          messageId: inAppMessage.messageId,
-   //          silentInbox:  inAppMessage.isSilentInbox()
-   //       } as InboxImpressionRowInfo
-
-   //       return impression
-   //    }))
-   // }
-
-   // function getInitialMessageImpressions() {
-   //    let numMessages = Math.floor(messageListHeight / 120)
-
-   //    if(customizations.messageRow?.height) {
-   //       numMessages = Math.floor(messageListHeight / customizations.messageRow.height)
-   //    }
-
-   //    let viewableRowViewModels = rowViewModels.slice(0, numMessages)
-   //    let impressions
-
-   //    return viewableRowViewModels.map(rowViewModel => {
-   //       const impression = {
-   //          messageId: rowViewModel.inAppMessage.messageId,
-   //          //silentInbox: rowViewModel.inAppMessage.isSilentInbox()
-   //       } as InboxImpressionRowInfo
-         
-   //       return impression
-   //    })
-   // }
 
    // function getRowInfosFromViewTokens(viewTokens: Array<ViewToken>): Array<InboxImpressionRowInfo> {
    //    //console.log(viewTokens)
