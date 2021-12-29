@@ -19,7 +19,6 @@ import {
    InboxRowViewModel,
    IterableInboxCustomizations,
    IterableInAppDeleteSource,
-   IterableInAppMessage,
    useAppStateListener,
    useDeviceOrientation,
    Iterable,
@@ -60,7 +59,7 @@ const IterableInbox = ({
    const [animatedValue] = useState<any>(new Animated.Value(0))
    const [isMessageDisplay, setIsMessageDisplay] = useState<boolean>(false)
 
-   const [visibleRowImpressions, setVisibleRowImpressions] = useState<InboxImpressionRowInfo[]>()
+   const [visibleMessageImpressions, setVisibleMessageImpressions] = useState<InboxImpressionRowInfo[]>()
    
    let {
       loadingScreen,
@@ -81,16 +80,11 @@ const IterableInbox = ({
    useEffect(() => {
       fetchInboxMessages()
       addInboxChangedListener()
-      getInitialMessageImpressions(updatedContainer.height - headline.height, customizations.messageRow.height, rowViewModels)
 
       return () => {
          removeInboxChangedListener()
       }
    }, [])
-
-   useEffect(() => {
-      inboxDataModel.updateVisibleRows(visibleRowImpressions)
-   }, [visibleRowImpressions])
 
    useEffect(() => {
       if(Platform.OS === "android" && isFocused) {
@@ -114,37 +108,10 @@ const IterableInbox = ({
    if(appState === 'active') {
       if(isFocused) {
          inboxDataModel.startSession()
-         inboxDataModel.updateVisibleRows(visibleRowImpressions)
+         inboxDataModel.updateVisibleRows(visibleMessageImpressions)
       } else {
          inboxDataModel.endSession()
       }
-   }
-
-   function getInitialMessageImpressions(messageListHeight: number, messageRowHeight: number, rowViewModels: InboxRowViewModel[]) {
-      let numMessages = Math.floor(messageListHeight / messageRowHeight)
-      let visibleRowViewModels = rowViewModels.slice(0, numMessages)
-
-      setVisibleRowImpressions(visibleRowViewModels.map(rowViewModel => {
-         const inAppMessage = new IterableInAppMessage(
-            rowViewModel.inAppMessage.messageId,
-            rowViewModel.inAppMessage.campaignId,
-            rowViewModel.inAppMessage.trigger,
-            rowViewModel.inAppMessage.createdAt,
-            rowViewModel.inAppMessage.expiresAt,
-            rowViewModel.inAppMessage.saveToInbox,
-            rowViewModel.inAppMessage.inboxMetadata,
-            rowViewModel.inAppMessage.customPayload,
-            rowViewModel.inAppMessage.read,
-            rowViewModel.inAppMessage.priorityLevel
-          )
-
-         const impression = {
-            messageId: inAppMessage.messageId,
-            silentInbox:  inAppMessage.isSilentInbox()
-         } as InboxImpressionRowInfo
-
-         return impression
-      }))
    }
 
    function addInboxChangedListener() {
@@ -198,6 +165,10 @@ const IterableInbox = ({
       reset()
    }
 
+   function updateVisibleMessageImpressions(messageImpressions: InboxImpressionRowInfo[]) {
+      setVisibleMessageImpressions(messageImpressions)
+   }
+
    function showMessageDisplay(rowViewModelList: InboxRowViewModel[], index: number) {
       const selectedRowViewModel = rowViewModelList[index]
 
@@ -228,9 +199,8 @@ const IterableInbox = ({
                   messageListItemLayout={messageListItemLayout}
                   deleteRow={(messageId: string) => deleteRow(messageId)}
                   handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index, rowViewModels)}
-                  getInitialMessageImpressions={(messageListHeight: number, messageRowHeight: number) => getInitialMessageImpressions(messageListHeight, messageRowHeight, rowViewModels)}
+                  updateVisibleMessageImpressions={(messageImpressions: InboxImpressionRowInfo[]) => updateVisibleMessageImpressions(messageImpressions)}
                   contentWidth={width}
-                  messageListHeight={updatedContainer.height - headline.height}
                   isPortrait={isPortrait}
                /> :
                renderEmptyState()

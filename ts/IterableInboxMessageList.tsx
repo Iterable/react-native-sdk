@@ -1,6 +1,6 @@
 'use strict'
 
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import { 
    ViewabilityConfig, 
    ViewToken, 
@@ -15,7 +15,7 @@ import {
    IterableInboxMessageCell
 } from '.'
 
-//import InboxImpressionRowInfo from './InboxImpressionRowInfo'
+import InboxImpressionRowInfo from './InboxImpressionRowInfo'
 
 type MessageListProps = {
    dataModel: IterableInboxDataModel,
@@ -24,9 +24,8 @@ type MessageListProps = {
    messageListItemLayout: Function,
    deleteRow: Function,
    handleMessageSelect: Function,
-   getInitialMessageImpressions: Function,
+   updateVisibleMessageImpressions: Function,
    contentWidth: number,
-   messageListHeight: number,
    isPortrait: boolean
 }
 
@@ -37,16 +36,12 @@ const IterableInboxMessageList = ({
    messageListItemLayout,
    deleteRow,
    handleMessageSelect,
-   getInitialMessageImpressions,
+   updateVisibleMessageImpressions,
    contentWidth,
-   messageListHeight,
    isPortrait
 }: MessageListProps) => {
    const [swiping, setSwiping] = useState<boolean>(false)
-
-   useEffect(() => {
-      getInitialMessageImpressions(messageListHeight, customizations.messageRow.height, rowViewModels)
-   }, [])
+   const flatListRef = useRef<FlatList>(null);
 
    function renderRowViewModel(rowViewModel: InboxRowViewModel, index: number, last: boolean) {
       return (
@@ -67,23 +62,21 @@ const IterableInboxMessageList = ({
       )
    }
 
-   // function getRowInfosFromViewTokens(viewTokens: Array<ViewToken>): Array<InboxImpressionRowInfo> {
-   //    //console.log(viewTokens)
+   function getRowInfosFromViewTokens(viewTokens: Array<ViewToken>): Array<InboxImpressionRowInfo> {
       
-   //    return viewTokens.map(
-   //       function(viewToken) {
-   //          var inAppMessage = IterableInAppMessage.fromViewToken(viewToken)
-   //          //console.log(inAppMessage)
+      return viewTokens.map(
+         function(viewToken) {
+            var inAppMessage = IterableInAppMessage.fromViewToken(viewToken)
             
-   //          const impression = {
-   //             messageId: inAppMessage.messageId,
-   //             silentInbox: inAppMessage.isSilentInbox()
-   //          } as InboxImpressionRowInfo
+            const impression = {
+               messageId: inAppMessage.messageId,
+               silentInbox: inAppMessage.isSilentInbox()
+            } as InboxImpressionRowInfo
 
-   //          return impression
-   //       }
-   //    )
-   // }
+            return impression
+         }
+      )
+   }
 
    const inboxSessionViewabilityConfig: ViewabilityConfig = {
       minimumViewTime: 500,
@@ -91,36 +84,37 @@ const IterableInboxMessageList = ({
       waitForInteraction: false
    }
 
-   // const inboxSessionItemsChanged = useCallback((
-   //    (info: {viewableItems: Array<ViewToken>, changed: Array<ViewToken>}) => {
-   //       logCurrentVisibleRows(info)
+   const inboxSessionItemsChanged = useCallback((
+      (info: {viewableItems: Array<ViewToken>, changed: Array<ViewToken>}) => {
+         logCurrentVisibleRows(info)
 
-   //       const rowInfos = getRowInfosFromViewTokens(info.viewableItems)
+         const rowInfos = getRowInfosFromViewTokens(info.viewableItems)
 
-   //       //console.log(rowInfos)
-   //       dataModel.updateVisibleRows(rowInfos)
-   //    }
-   // ), [])
+         updateVisibleMessageImpressions(rowInfos)
+      }
+   ), [])
 
-   // function logCurrentVisibleRows(info: {viewableItems: Array<ViewToken>, changed: Array<ViewToken>}) {
-   //    const rowInfos = getRowInfosFromViewTokens(info.viewableItems)
-   //    const inAppMessages = info.viewableItems.map(IterableInAppMessage.fromViewToken)
+   function logCurrentVisibleRows(info: {viewableItems: Array<ViewToken>, changed: Array<ViewToken>}) {
+      const rowInfos = getRowInfosFromViewTokens(info.viewableItems)
+      const inAppMessages = info.viewableItems.map(IterableInAppMessage.fromViewToken)
       
-   //    console.log("updateVisibleRows", inAppMessages.length, inAppMessages.map(
-   //       function(impression) {
-   //          return impression.inboxMetadata?.title ?? "<none>"
-   //       })
-   //    )
-   // }
+      console.log("updateVisibleRows", inAppMessages.length, inAppMessages.map(
+         function(impression) {
+            return impression.inboxMetadata?.title ?? "<none>"
+         })
+      )
+   }
 
    return (
       <FlatList
+         ref={flatListRef}
          scrollEnabled={!swiping}
          data={rowViewModels}
          renderItem={({ item, index }: { item: InboxRowViewModel, index: number }) => renderRowViewModel(item, index, index === rowViewModels.length - 1)}
          keyExtractor={(item: InboxRowViewModel) => item.inAppMessage.messageId}
          viewabilityConfig={inboxSessionViewabilityConfig}
-         //onViewableItemsChanged={inboxSessionItemsChanged}
+         onViewableItemsChanged={inboxSessionItemsChanged}
+         onLayout={() => {flatListRef.current?.recordInteraction()}}
       />
    )
 }
