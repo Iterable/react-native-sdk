@@ -244,7 +244,7 @@ const IterableInboxMessageCell = ({
                }}
             >
                {messageListItemLayout(last, rowViewModel) ? 
-                  messageListItemLayout(last, rowViewModel)[0] : 
+                  messageListItemLayout(last, rowViewModel) : 
                   defaultMessageListLayout(last, dataModel, rowViewModel, customizations, isPortrait)}
             </TouchableOpacity>
          </Animated.View>
