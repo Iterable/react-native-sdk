@@ -166,6 +166,12 @@ const IterableInboxMessageCell = ({
 }: MessageCellProps) => {
    const position = useRef(new Animated.ValueXY()).current
 
+   let deleteSliderHeight = customizations.messageRow?.height ? customizations.messageRow.height: 120
+   
+   if(messageListItemLayout(last, rowViewModel)) {
+      deleteSliderHeight = messageListItemLayout(last, rowViewModel)[1]
+   }
+
    const styles = StyleSheet.create({
       textContainer: {
          width: '100%',
@@ -181,7 +187,7 @@ const IterableInboxMessageCell = ({
          position: 'absolute',
          elevation: 1,
          width: '100%',
-         height: customizations.messageRow?.height ? customizations.messageRow.height : 120
+         height: deleteSliderHeight
       },
    
       textStyle: {
@@ -269,7 +275,7 @@ const IterableInboxMessageCell = ({
                }}
             >
                {messageListItemLayout(last, rowViewModel) ? 
-                  messageListItemLayout(last, rowViewModel) : 
+                  messageListItemLayout(last, rowViewModel)[0] : 
                   defaultMessageListLayout(last, dataModel, rowViewModel, customizations, isPortrait)}
             </TouchableOpacity>
          </Animated.View>
