@@ -449,7 +449,6 @@ class ReactIterableAPI: RCTEventEmitter {
         let serializedRows = InboxImpressionTracker.RowInfo.rowInfos(from: visibleRows)
         
         inboxSessionManager.updateVisibleRows(visibleRows: serializedRows)
-        
     }
     
     // MARK: - SDK Auth Manager Functions
