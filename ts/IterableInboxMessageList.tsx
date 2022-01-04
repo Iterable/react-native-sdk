@@ -63,7 +63,6 @@ const IterableInboxMessageList = ({
    }
 
    function getRowInfosFromViewTokens(viewTokens: Array<ViewToken>): Array<InboxImpressionRowInfo> {
-      
       return viewTokens.map(
          function(viewToken) {
             var inAppMessage = IterableInAppMessage.fromViewToken(viewToken)
