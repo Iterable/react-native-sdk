@@ -92,7 +92,7 @@ const IterableInbox = ({
             inboxDataModel.startSession(visibleMessageImpressions)
          } else if(appState === 'background' && Platform.OS === 'android' || appState === 'inactive') {
             inboxDataModel.endSession()
-         } 
+         }
       }
    }, [appState])
 
