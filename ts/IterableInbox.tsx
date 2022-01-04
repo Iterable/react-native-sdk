@@ -113,6 +113,10 @@ const IterableInbox = ({
       }
    }, [isFocused])
 
+   useEffect(() => {
+      inboxDataModel.updateVisibleRows(visibleMessageImpressions)
+   }, [visibleMessageImpressions])
+
    function addInboxChangedListener() {
       RNEventEmitter.addListener(
          "receivedIterableInboxChanged",
@@ -195,7 +199,6 @@ const IterableInbox = ({
                   dataModel={inboxDataModel}
                   rowViewModels={rowViewModels}
                   customizations={customizations}
-                  visibleMessageImpressions={visibleMessageImpressions}
                   messageListItemLayout={messageListItemLayout}
                   deleteRow={(messageId: string) => deleteRow(messageId)}
                   handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index, rowViewModels)}
