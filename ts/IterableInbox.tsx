@@ -91,7 +91,7 @@ const IterableInbox = ({
          if(appState === 'active') {
             inboxDataModel.startSession(visibleMessageImpressions)
          } else if(appState === 'background' && Platform.OS === 'android' || appState === 'inactive') {
-            inboxDataModel.endSession()
+            inboxDataModel.endSession(visibleMessageImpressions)
          }
       }
    }, [appState])
@@ -108,7 +108,7 @@ const IterableInbox = ({
          if(isFocused) {
             inboxDataModel.startSession(visibleMessageImpressions)
          } else {
-            inboxDataModel.endSession()
+            inboxDataModel.endSession(visibleMessageImpressions)
          }
       }
    }, [isFocused])
