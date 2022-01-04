@@ -166,6 +166,31 @@ const IterableInboxMessageCell = ({
 }: MessageCellProps) => {
    const position = useRef(new Animated.ValueXY()).current
 
+   const styles = StyleSheet.create({
+      textContainer: {
+         width: '100%',
+         elevation: 2
+      },
+   
+      deleteSlider: {
+         flexDirection: 'row',
+         alignItems: 'center',
+         justifyContent: 'flex-end',
+         paddingRight: 10,
+         backgroundColor: 'red',
+         position: 'absolute',
+         elevation: 1,
+         width: '100%',
+         height: customizations.messageRow?.height ? customizations.messageRow.height : 120
+      },
+   
+      textStyle: {
+         fontWeight: 'bold',
+         fontSize: 15,
+         color: 'white'
+      }
+   })
+
    let { textContainer, deleteSlider, textStyle } = styles
 
    deleteSlider = (isPortrait) ? deleteSlider : { ...deleteSlider, paddingRight: 40 }
@@ -252,29 +277,6 @@ const IterableInboxMessageCell = ({
    )
 }
 
-const styles = StyleSheet.create({
-   textContainer: {
-      width: '100%',
-      elevation: 2
-   },
 
-   deleteSlider: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'flex-end',
-      paddingRight: 10,
-      backgroundColor: 'red',
-      position: 'absolute',
-      elevation: 1,
-      width: '100%',
-      height: 120
-   },
-
-   textStyle: {
-      fontWeight: 'bold',
-      fontSize: 15,
-      color: 'white'
-   }
-})
 
 export default IterableInboxMessageCell
