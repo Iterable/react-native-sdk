@@ -58,9 +58,9 @@ const IterableInbox = ({
    const [loading, setLoading] = useState<boolean>(true)
    const [animatedValue] = useState<any>(new Animated.Value(0))
    const [isMessageDisplay, setIsMessageDisplay] = useState<boolean>(false)
-
-   const [visibleMessageImpressions, setVisibleMessageImpressions] = useState<InboxImpressionRowInfo[]>()
    
+   const [visibleMessageImpressions, setVisibleMessageImpressions] = useState<InboxImpressionRowInfo[]>([])
+
    let {
       loadingScreen,
       container,
@@ -87,13 +87,11 @@ const IterableInbox = ({
    }, [])
 
    useEffect(() => {
-      if(Platform.OS === "android" && isFocused) {
-         if(appState === 'background') {
+      if(isFocused) {
+         if(appState === 'background' && Platform.OS === 'android' || appState === 'inactive') {
             inboxDataModel.endSession()
-         }
-      } else {
-         if(appState === 'inactive') {
-            inboxDataModel.endSession()
+         } else if(appState === 'active') {
+            inboxDataModel.startSession(visibleMessageImpressions)
          }
       }
    }, [appState])
@@ -105,14 +103,15 @@ const IterableInbox = ({
       }
    }, [width])
 
-   if(appState === 'active') {
-      if(isFocused) {
-         inboxDataModel.startSession()
-         inboxDataModel.updateVisibleRows(visibleMessageImpressions)
-      } else {
-         inboxDataModel.endSession()
+   useEffect(() => {
+      if(appState === 'active') {
+         if(isFocused) {
+            inboxDataModel.startSession(visibleMessageImpressions)
+         } else {
+            inboxDataModel.endSession()
+         }
       }
-   }
+   }, [isFocused])
 
    function addInboxChangedListener() {
       RNEventEmitter.addListener(
@@ -196,6 +195,7 @@ const IterableInbox = ({
                   dataModel={inboxDataModel}
                   rowViewModels={rowViewModels}
                   customizations={customizations}
+                  visibleMessageImpressions={visibleMessageImpressions}
                   messageListItemLayout={messageListItemLayout}
                   deleteRow={(messageId: string) => deleteRow(messageId)}
                   handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index, rowViewModels)}

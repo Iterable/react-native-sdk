@@ -1,6 +1,6 @@
 'use strict'
 
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { 
    ViewabilityConfig, 
    ViewToken, 
@@ -21,6 +21,7 @@ type MessageListProps = {
    dataModel: IterableInboxDataModel,
    rowViewModels: InboxRowViewModel[],
    customizations: IterableInboxCustomizations,
+   visibleMessageImpressions: InboxImpressionRowInfo[],
    messageListItemLayout: Function,
    deleteRow: Function,
    handleMessageSelect: Function,
@@ -33,6 +34,7 @@ const IterableInboxMessageList = ({
    dataModel,
    rowViewModels,
    customizations,
+   visibleMessageImpressions,
    messageListItemLayout,
    deleteRow,
    handleMessageSelect,
@@ -42,6 +44,11 @@ const IterableInboxMessageList = ({
 }: MessageListProps) => {
    const [swiping, setSwiping] = useState<boolean>(false)
    const flatListRef = useRef<FlatList>(null);
+   
+   useEffect(() => {
+      dataModel.updateVisibleRows(visibleMessageImpressions)
+      console.log("impressions sent")
+   }, [visibleMessageImpressions])
 
    function renderRowViewModel(rowViewModel: InboxRowViewModel, index: number, last: boolean) {
       return (
