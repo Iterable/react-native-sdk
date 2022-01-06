@@ -90,8 +90,6 @@ const IterableInbox = ({
       if(isFocused) {
          if(appState === 'active') {
             inboxDataModel.startSession(visibleMessageImpressions)
-            console.log("Evan - session start")
-            console.log("Evan - visible rows", visibleMessageImpressions)
          } else if(appState === 'background' && Platform.OS === 'android' || appState === 'inactive') {
             inboxDataModel.endSession(visibleMessageImpressions)
          }
@@ -109,8 +107,6 @@ const IterableInbox = ({
       if(appState === 'active') {
          if(isFocused) {
             inboxDataModel.startSession(visibleMessageImpressions)
-            console.log("Evan - session start")
-            console.log("Evan - visible rows", visibleMessageImpressions)
          } else {
             inboxDataModel.endSession(visibleMessageImpressions)
          }
@@ -119,7 +115,6 @@ const IterableInbox = ({
 
    useEffect(() => {
       inboxDataModel.updateVisibleRows(visibleMessageImpressions)
-      console.log("Evan - visible rows", visibleMessageImpressions)
    }, [visibleMessageImpressions])
 
    function addInboxChangedListener() {
