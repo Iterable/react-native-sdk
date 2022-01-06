@@ -212,8 +212,9 @@ class Serialization {
     static IterableInboxSession.Impression inboxImpressionFromMap(JSONObject impressionMap) throws JSONException {
         return new IterableInboxSession.Impression(impressionMap.getString("messageId"),
                 impressionMap.getBoolean("silentInbox"),
-                impressionMap.getInt("displayCount"),
-                (float) impressionMap.getDouble("duration"));
+                impressionMap.optInt("displayCount", 0),
+                (float) impressionMap.optDouble("duration", 0)
+        );
     }
 
     static List<IterableInboxSession.Impression> impressionsFromReadableArray(ReadableArray array) {

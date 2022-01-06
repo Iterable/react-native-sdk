@@ -89,6 +89,7 @@ const IterableInboxMessageList = ({
 
          const rowInfos = getRowInfosFromViewTokens(info.viewableItems)
 
+         console.log("Evan - update visible rows", rowInfos)
          updateVisibleMessageImpressions(rowInfos)
       }
    ), [])
@@ -97,7 +98,7 @@ const IterableInboxMessageList = ({
       const rowInfos = getRowInfosFromViewTokens(info.viewableItems)
       const inAppMessages = info.viewableItems.map(IterableInAppMessage.fromViewToken)
       
-      console.log("updateVisibleRows", inAppMessages.length, inAppMessages.map(
+      console.log("Evan - updateVisibleRows", inAppMessages.length, inAppMessages.map(
          function(impression) {
             return impression.inboxMetadata?.title ?? "<none>"
          })
