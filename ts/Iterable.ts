@@ -97,6 +97,12 @@ class IterableConfig {
    */
   expiringAuthTokenRefreshPeriod: number = 60.0
 
+  /**
+   * We allow navigation only to urls with `https` protocol (for deep links within your app or external links).
+   * If you want to allow other protocols, such as,  `http`, `tel` etc., please add them to the list below
+  */
+  allowedProtocols: Array<string> = []
+
   toDict(): any {
     return {
       "pushIntegrationName": this.pushIntegrationName,
@@ -107,7 +113,8 @@ class IterableConfig {
       "inAppHandlerPresent": this.inAppHandler != undefined,
       "authHandlerPresent": this.authHandler != undefined,
       "logLevel": this.logLevel,
-      "expiringAuthTokenRefreshPeriod": this.expiringAuthTokenRefreshPeriod
+      "expiringAuthTokenRefreshPeriod": this.expiringAuthTokenRefreshPeriod,
+      "allowedProtocols": this.allowedProtocols
     }
   }
 }
