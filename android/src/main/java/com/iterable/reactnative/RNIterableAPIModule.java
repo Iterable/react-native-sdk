@@ -76,14 +76,6 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         IterableLogger.d(TAG, "initializeWithApiKey: " + apiKey);
         IterableConfig.Builder configBuilder = Serialization.getConfigFromReadableMap(configReadableMap);
 
-        if (configReadableMap.hasKey("allowedProtocols")) {
-            String[] allowedProtocols = readableArrayToStringArray(configReadableMap.getArray("allowedProtocols"));
-
-            if (allowedProtocols != null) {
-                configBuilder.setAllowedProtocols(allowedProtocols);
-            }
-        }
-
         if (configReadableMap.hasKey("urlHandlerPresent") && configReadableMap.getBoolean("urlHandlerPresent") == true) {
             configBuilder.setUrlHandler(this);
         }
@@ -431,20 +423,6 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
             integers[i] = array.getInt(i);
         }
         return integers;
-    }
-
-    private static String[] readableArrayToStringArray(ReadableArray array) {
-        if (array == null) {
-            return null;
-        }
-
-        String[] strings = new String[array.size()];
-
-        for (int i = 0; i < array.size(); i++) {
-            strings[i] = array.getString(i);
-        }
-
-        return strings;
     }
 
     @Nullable
