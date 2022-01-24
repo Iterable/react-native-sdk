@@ -24,10 +24,12 @@ import {
    IterableActionSource,
    Iterable 
 } from '.' 
+import IterableInboxDataModel from './IterableInboxDataModel'
 
 type MessageDisplayProps = {
    rowViewModel: InboxRowViewModel,
    inAppContentPromise: Promise<IterableHtmlInAppContent>,
+   inboxDataModel: IterableInboxDataModel,
    returnToInbox: Function,
    deleteRow: Function,
    contentWidth: number,
@@ -36,7 +38,8 @@ type MessageDisplayProps = {
 
 const IterableInboxMessageDisplay = ({ 
    rowViewModel, 
-   inAppContentPromise, 
+   inAppContentPromise,
+   inboxDataModel, 
    returnToInbox,
    deleteRow, 
    contentWidth,
@@ -98,6 +101,7 @@ const IterableInboxMessageDisplay = ({
       }
       
       if(URL === 'iterable://dismiss') {
+         inboxDataModel.endSession()
          Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.link)
          returnToInbox()
          return
@@ -107,6 +111,7 @@ const IterableInboxMessageDisplay = ({
          Linking.openURL(URL)
       }
 
+      inboxDataModel.endSession()
       Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.link) 
 
       if(Iterable.savedConfig.urlHandler) {

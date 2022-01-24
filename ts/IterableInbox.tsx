@@ -180,6 +180,7 @@ const IterableInbox = ({
             <IterableInboxMessageDisplay
                rowViewModel={selectedRowViewModel}
                inAppContentPromise={getHtmlContentForRow(selectedRowViewModel.inAppMessage.messageId)}
+               inboxDataModel={inboxDataModel}
                returnToInbox={() => returnToInbox()}
                deleteRow={(messageId: string) => deleteRow(messageId)}
                contentWidth={width}
