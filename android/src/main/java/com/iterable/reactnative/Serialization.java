@@ -140,6 +140,21 @@ class Serialization {
             JSONObject iterableContextJSON = convertMapToJson(iterableContextMap);
 
             IterableConfig.Builder configBuilder = new IterableConfig.Builder();
+
+            if (iterableContextJSON.has("allowedProtocols")) {
+                WritableArray allowedProtocolsArray = convertJsonToArray(iterableContextJSON.getJSONArray("allowedProtocols"));
+
+                String[] allowedProtocols = new String[allowedProtocolsArray.size()];
+
+                for (int i = 0; i < allowedProtocolsArray.size(); i++) {
+                    allowedProtocols[i] = allowedProtocolsArray.getString(i);
+                }
+
+                if (allowedProtocols != null) {
+                    configBuilder.setAllowedProtocols(allowedProtocols);
+                }
+            }
+
             if (iterableContextJSON.has("pushIntegrationName")) {
                 configBuilder.setPushIntegrationName(iterableContextJSON.optString("pushIntegrationName"));
             }
