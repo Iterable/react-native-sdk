@@ -111,10 +111,12 @@ class IterableInAppMessage {
     const campaignId = dict["campaignId"] as number
     const trigger = IterableInAppTrigger.fromDict(dict["trigger"])
     let createdAt = dict["createdAt"]
+    console.log("from Dict 1 - ", createdAt)
     if (createdAt) {
       var dateObject = new Date(0)
       createdAt = dateObject.setUTCMilliseconds(createdAt)
     }
+    console.log("from Dict 2 - ", createdAt)
     let expiresAt = dict["expiresAt"]
     if (expiresAt) {
       var dateObject = new Date(0)

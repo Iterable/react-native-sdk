@@ -106,9 +106,18 @@ class IterableInboxDataModel {
             return ""
         }
 
-        const createdAt = new Date(message.createdAt)
+        let createdAt
 
-        var defaultDateString = `${createdAt.toLocaleDateString()} at ${createdAt.toLocaleTimeString()}`
+        if(typeof message.createdAt === "string") {
+            createdAt = new Date(parseInt(message.createdAt))
+        } else {
+            createdAt = new Date(message.createdAt)
+        }
+
+        console.log("Debug created at (type) - ", typeof message.createdAt)
+        console.log("Debug created at Date - ", createdAt)
+
+        var defaultDateString = `${createdAt.toLocaleDateString('en-US')} at ${createdAt.toLocaleTimeString('en-US')}`
 
         return defaultDateString
     }
