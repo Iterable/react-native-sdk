@@ -105,9 +105,59 @@ class IterableInboxDataModel {
             return ""
         }
 
-        const createdAt = new Date(message.createdAt)
+        let createdAt
 
-        var defaultDateString = `${createdAt.toLocaleDateString()} at ${createdAt.toLocaleTimeString()}`
+        if(typeof message.createdAt === "string") {
+            createdAt = new Date(parseInt(message.createdAt))
+        } else {
+            createdAt = new Date(message.createdAt)
+        }
+
+        let hour = createdAt.getHours() > 12 ? createdAt.getHours() - 12 : createdAt.getHours()
+        let AMPM = createdAt.getHours() > 12 ? 'PM' : 'AM'
+        let monthStr
+        switch (createdAt.getMonth()) {
+            case 0:
+                monthStr = 'Jan'
+                break
+            case 1:
+                monthStr = 'Feb'
+                break  
+            case 2:
+                monthStr = 'Mar';
+                break
+            case 3:
+                monthStr = 'Apr';
+                break
+            case 4:
+                monthStr = 'May'
+                break
+            case 5:
+                monthStr = 'Jun';
+                break
+            case 6:
+                monthStr = 'Jul';
+                break
+            case 7:
+                monthStr = 'Aug';
+                break
+            case 8:
+                monthStr = 'Sep';
+                break
+            case 9:
+                monthStr = 'Oct';
+                break
+            case 10:
+                monthStr = 'Nov';
+                break
+            case 11:
+                monthStr = 'Dec';
+                break
+            default:
+                console.log('Invalid Month');
+        }
+          
+        let defaultDateString = `${monthStr} ${createdAt.getDay()}, ${createdAt.getFullYear()} at ${hour}:${createdAt.getMinutes()} ${AMPM}}`
 
         return defaultDateString
     }
