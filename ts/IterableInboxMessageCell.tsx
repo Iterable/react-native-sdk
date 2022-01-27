@@ -166,6 +166,37 @@ const IterableInboxMessageCell = ({
 }: MessageCellProps) => {
    const position = useRef(new Animated.ValueXY()).current
 
+   let deleteSliderHeight = customizations.messageRow?.height ? customizations.messageRow.height: 120
+   
+   if(messageListItemLayout(last, rowViewModel)) {
+      deleteSliderHeight = messageListItemLayout(last, rowViewModel)[1]
+   }
+
+   const styles = StyleSheet.create({
+      textContainer: {
+         width: '100%',
+         elevation: 2
+      },
+   
+      deleteSlider: {
+         flexDirection: 'row',
+         alignItems: 'center',
+         justifyContent: 'flex-end',
+         paddingRight: 10,
+         backgroundColor: 'red',
+         position: 'absolute',
+         elevation: 1,
+         width: '100%',
+         height: deleteSliderHeight
+      },
+   
+      textStyle: {
+         fontWeight: 'bold',
+         fontSize: 15,
+         color: 'white'
+      }
+   })
+
    let { textContainer, deleteSlider, textStyle } = styles
 
    deleteSlider = (isPortrait) ? deleteSlider : { ...deleteSlider, paddingRight: 40 }
@@ -244,7 +275,7 @@ const IterableInboxMessageCell = ({
                }}
             >
                {messageListItemLayout(last, rowViewModel) ? 
-                  messageListItemLayout(last, rowViewModel) : 
+                  messageListItemLayout(last, rowViewModel)[0] : 
                   defaultMessageListLayout(last, dataModel, rowViewModel, customizations, isPortrait)}
             </TouchableOpacity>
          </Animated.View>
@@ -252,29 +283,6 @@ const IterableInboxMessageCell = ({
    )
 }
 
-const styles = StyleSheet.create({
-   textContainer: {
-      width: '100%',
-      elevation: 2
-   },
 
-   deleteSlider: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'flex-end',
-      paddingRight: 10,
-      backgroundColor: 'red',
-      position: 'absolute',
-      elevation: 1,
-      width: '100%',
-      height: 120
-   },
-
-   textStyle: {
-      fontWeight: 'bold',
-      fontSize: 15,
-      color: 'white'
-   }
-})
 
 export default IterableInboxMessageCell
