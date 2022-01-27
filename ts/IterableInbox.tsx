@@ -25,6 +25,8 @@ import {
    IterableInAppLocation
 } from '.'
 
+import InboxImpressionRowInfo from './InboxImpressionRowInfo'
+
 import { useIsFocused } from '@react-navigation/native'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
@@ -56,15 +58,9 @@ const IterableInbox = ({
    const [loading, setLoading] = useState<boolean>(true)
    const [animatedValue] = useState<any>(new Animated.Value(0))
    const [isMessageDisplay, setIsMessageDisplay] = useState<boolean>(false)
-
-   if(appState === 'active') {
-      if(isFocused) {
-         inboxDataModel.startSession()
-      } else {
-         inboxDataModel.endSession()
-      }
-   } 
    
+   const [visibleMessageImpressions, setVisibleMessageImpressions] = useState<InboxImpressionRowInfo[]>([])
+
    let {
       loadingScreen,
       container,
@@ -91,13 +87,11 @@ const IterableInbox = ({
    }, [])
 
    useEffect(() => {
-      if(Platform.OS === "android" && isFocused) {
-         if(appState === 'background') {
-            inboxDataModel.endSession()
-         }
-      } else {
-         if(appState === 'inactive') {
-            inboxDataModel.endSession()
+      if(isFocused) {
+         if(appState === 'active') {
+            inboxDataModel.startSession(visibleMessageImpressions)
+         } else if(appState === 'background' && Platform.OS === 'android' || appState === 'inactive') {
+            inboxDataModel.endSession(visibleMessageImpressions)
          }
       }
    }, [appState])
@@ -108,6 +102,20 @@ const IterableInbox = ({
          slideLeft()
       }
    }, [width])
+
+   useEffect(() => {
+      if(appState === 'active') {
+         if(isFocused) {
+            inboxDataModel.startSession(visibleMessageImpressions)
+         } else {
+            inboxDataModel.endSession(visibleMessageImpressions)
+         }
+      }
+   }, [isFocused])
+
+   useEffect(() => {
+      inboxDataModel.updateVisibleRows(visibleMessageImpressions)
+   }, [visibleMessageImpressions])
 
    function addInboxChangedListener() {
       RNEventEmitter.addListener(
@@ -160,6 +168,10 @@ const IterableInbox = ({
       reset()
    }
 
+   function updateVisibleMessageImpressions(messageImpressions: InboxImpressionRowInfo[]) {
+      setVisibleMessageImpressions(messageImpressions)
+   }
+
    function showMessageDisplay(rowViewModelList: InboxRowViewModel[], index: number) {
       const selectedRowViewModel = rowViewModelList[index]
 
@@ -190,6 +202,7 @@ const IterableInbox = ({
                   messageListItemLayout={messageListItemLayout}
                   deleteRow={(messageId: string) => deleteRow(messageId)}
                   handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index, rowViewModels)}
+                  updateVisibleMessageImpressions={(messageImpressions: InboxImpressionRowInfo[]) => updateVisibleMessageImpressions(messageImpressions)}
                   contentWidth={width}
                   isPortrait={isPortrait}
                /> :

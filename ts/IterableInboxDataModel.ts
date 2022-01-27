@@ -80,7 +80,8 @@ class IterableInboxDataModel {
         RNIterableAPI.startSession(visibleRows)
     }
 
-    endSession() {
+    async endSession(visibleRows: Array<InboxImpressionRowInfo> = []) {
+        await this.updateVisibleRows(visibleRows)
         RNIterableAPI.endSession()
     }
 
