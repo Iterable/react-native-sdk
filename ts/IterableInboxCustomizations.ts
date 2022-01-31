@@ -4,7 +4,6 @@ type IterableInboxCustomizations = {
    noMessagesBody: string,
 
    unreadIndicatorContainer: {
-      height: string,
       flexDirection: string,
       justifyContent: string
    },
@@ -61,7 +60,6 @@ type IterableInboxCustomizations = {
       backgroundColor: string,
       paddingTop: number,
       paddingBottom: number,
-      width: string,
       height: number,
       borderStyle: string,
       borderColor: string,
