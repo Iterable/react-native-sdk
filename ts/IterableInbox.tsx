@@ -12,18 +12,20 @@ import {
 } from 'react-native'
 
 import {
-   IterableInboxMessageList,
-   IterableInboxMessageDisplay,
-   IterableInboxEmptyState,
-   IterableInboxDataModel,
-   InboxRowViewModel,
    IterableInboxCustomizations,
-   IterableInAppDeleteSource,
    useAppStateListener,
    useDeviceOrientation,
-   Iterable,
-   IterableInAppLocation
 } from '.'
+
+import { Iterable } from './Iterable'
+
+import { IterableInAppDeleteSource, IterableInAppLocation } from './IterableInAppClasses'
+
+import IterableInboxMessageList from './IterableInboxMessageList'
+import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
+import IterableInboxEmptyState from './IterableInboxEmptyState'
+import IterableInboxDataModel from './IterableInboxDataModel'
+import InboxRowViewModel from './InboxRowViewModel'
 
 import InboxImpressionRowInfo from './InboxImpressionRowInfo'
 

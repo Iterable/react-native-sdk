@@ -9,13 +9,13 @@ import {
 
 import {
    InboxRowViewModel,
-   IterableInAppMessage,
    IterableInboxCustomizations,
-   IterableInboxDataModel,
-   IterableInboxMessageCell
+   InboxImpressionRowInfo
 } from '.'
 
-import InboxImpressionRowInfo from './InboxImpressionRowInfo'
+import IterableInAppMessage from './IterableInAppMessage'
+import IterableInboxDataModel from './IterableInboxDataModel'
+import IterableInboxMessageCell from './IterableInboxMessageCell'
 
 type MessageListProps = {
    dataModel: IterableInboxDataModel,

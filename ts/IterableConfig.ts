@@ -3,10 +3,12 @@
 import { 
   IterableAction, 
   IterableActionContext, 
-  IterableLogLevel, 
-  IterableInAppShowResponse,
-  IterableInAppMessage
-} from '.'
+  IterableLogLevel,
+} from './IterableAction'
+
+import { IterableInAppShowResponse } from './IterableInAppClasses'
+
+import IterableInAppMessage from './IterableInAppMessage'
 
 /**
 Iterable Configuration Object. Use this when initializing the API.

@@ -6,8 +6,9 @@ import {
   IterableHtmlInAppContent,
   IterableInAppLocation,
   IterableInAppDeleteSource,
-  IterableInAppMessage
 } from '.'
+
+import IterableInAppMessage from './IterableInAppMessage'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
 
