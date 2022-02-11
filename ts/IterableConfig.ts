@@ -4,7 +4,7 @@ import {
   IterableAction, 
   IterableActionContext, 
   IterableLogLevel,
-} from './IterableAction'
+} from '.'
 
 import { IterableInAppShowResponse } from './IterableInAppClasses'
 

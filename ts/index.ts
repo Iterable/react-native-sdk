@@ -5,15 +5,21 @@
 * @module react-native-iterable-sdk
 */
 
-import {
-  //Iterable,
-  IterableAction,
-  IterableActionSource,
-  IterableActionContext,
-  IterableAttributionInfo,
-  IterableCommerceItem,
+// import {
+//   //Iterable,
+//   IterableAction,
+//   IterableActionSource,
+//   IterableActionContext,
+//   IterableAttributionInfo,
+//   IterableCommerceItem,
+//   IterableLogLevel,
+// } from './Iterable'
+
+import { 
+  IterableAction, 
+  IterableActionContext, 
   IterableLogLevel,
-} from './Iterable'
+} from './IterableAction'
 
 import {
   IterableInAppShowResponse,
@@ -41,9 +47,9 @@ import InboxImpressionRowInfo from './InboxImpressionRowInfo'
 export {
   IterableAction,
   IterableActionContext,
-  IterableActionSource,
-  IterableAttributionInfo,
-  IterableCommerceItem,
+  // IterableActionSource,
+  // IterableAttributionInfo,
+  // IterableCommerceItem,
   IterableLogLevel,
   IterableInAppShowResponse,
   IterableInAppTriggerType,

@@ -43,9 +43,9 @@ extension IterableConfig {
             return config
         }
         
-        if let allowedProtocols = dict["allowedProtocols"] as? [String] {
-            config.allowedProtocols = allowedProtocols
-        }
+        // if let allowedProtocols = dict["allowedProtocols"] as? [String] {
+        //     config.allowedProtocols = allowedProtocols
+        // }
         
         if let pushIntegrationName = dict["pushIntegrationName"] as? String {
             config.pushIntegrationName = pushIntegrationName

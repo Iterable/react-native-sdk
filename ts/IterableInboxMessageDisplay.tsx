@@ -20,11 +20,10 @@ import {
    IterableInAppLocation,
    IterableInAppCloseSource,
    IterableAction, 
-   IterableActionContext, 
-   IterableActionSource 
+   IterableActionContext
 } from '.'
 
-import { Iterable } from './Iterable'
+import { Iterable, IterableActionSource } from './Iterable'
 
 type MessageDisplayProps = {
    rowViewModel: InboxRowViewModel,

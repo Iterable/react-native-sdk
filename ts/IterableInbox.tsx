@@ -15,19 +15,18 @@ import {
    IterableInboxCustomizations,
    useAppStateListener,
    useDeviceOrientation,
+   IterableInAppDeleteSource,
+   IterableInAppLocation,
+   IterableInboxEmptyState,
+   InboxImpressionRowInfo
 } from '.'
 
 import { Iterable } from './Iterable'
 
-import { IterableInAppDeleteSource, IterableInAppLocation } from './IterableInAppClasses'
-
 import IterableInboxMessageList from './IterableInboxMessageList'
 import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
-import IterableInboxEmptyState from './IterableInboxEmptyState'
 import IterableInboxDataModel from './IterableInboxDataModel'
 import InboxRowViewModel from './InboxRowViewModel'
-
-import InboxImpressionRowInfo from './InboxImpressionRowInfo'
 
 import { useIsFocused } from '@react-navigation/native'
 

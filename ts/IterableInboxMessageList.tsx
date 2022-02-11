@@ -10,12 +10,12 @@ import {
 import {
    InboxRowViewModel,
    IterableInboxCustomizations,
-   InboxImpressionRowInfo
+   InboxImpressionRowInfo,
+   IterableInboxMessageCell
 } from '.'
 
 import IterableInAppMessage from './IterableInAppMessage'
 import IterableInboxDataModel from './IterableInboxDataModel'
-import IterableInboxMessageCell from './IterableInboxMessageCell'
 
 type MessageListProps = {
    dataModel: IterableInboxDataModel,
