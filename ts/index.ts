@@ -5,15 +5,11 @@
 * @module react-native-iterable-sdk
 */
 
-import {
-  Iterable,
-  IterableAction,
-  IterableActionSource,
-  IterableActionContext,
-  IterableAttributionInfo,
-  IterableCommerceItem,
+import { 
+  IterableAction, 
+  IterableActionContext, 
   IterableLogLevel,
-} from './Iterable'
+} from './IterableAction'
 
 import {
   IterableInAppShowResponse,
@@ -29,17 +25,9 @@ import {
   IterableInAppDeleteSource,
 } from './IterableInAppClasses'
 
-import IterableConfig from './IterableConfig'
-import IterableInAppMessage from './IterableInAppMessage'
-import IterableInAppManager from './IterableInAppManager'
-
 import InboxRowViewModel from './InboxRowViewModel'
-import IterableInbox from './IterableInbox'
 import IterableInboxCustomizations from './IterableInboxCustomizations'
-import IterableInboxDataModel from './IterableInboxDataModel'
 import IterableInboxEmptyState from './IterableInboxEmptyState'
-import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
-import IterableInboxMessageList from './IterableInboxMessageList'
 import IterableInboxMessageCell from './IterableInboxMessageCell'
 
 import useAppStateListener from './useAppStateListener'
@@ -47,13 +35,8 @@ import useDeviceOrientation from './useDeviceOrientation'
 import InboxImpressionRowInfo from './InboxImpressionRowInfo'
 
 export {
-  Iterable,
-  IterableConfig,
   IterableAction,
   IterableActionContext,
-  IterableActionSource,
-  IterableAttributionInfo,
-  IterableCommerceItem,
   IterableLogLevel,
   IterableInAppShowResponse,
   IterableInAppTriggerType,
@@ -62,16 +45,10 @@ export {
   IterableEdgeInsets,
   IterableHtmlInAppContent,
   IterableInboxMetadata,
-  IterableInAppMessage,
   IterableInAppLocation,
   IterableInAppCloseSource,
   IterableInAppDeleteSource,
-  IterableInAppManager,
-  IterableInbox,
-  IterableInboxDataModel,
-  IterableInboxMessageDisplay,
   IterableInboxEmptyState,
-  IterableInboxMessageList,
   IterableInboxMessageCell,
   useAppStateListener,
   useDeviceOrientation

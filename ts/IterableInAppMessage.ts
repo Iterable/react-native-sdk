@@ -7,6 +7,7 @@ import {
   IterableInAppTriggerType,
   IterableInboxMetadata,
 } from '.'
+
 import { ViewToken } from 'react-native'
 
 /**

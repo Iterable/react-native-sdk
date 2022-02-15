@@ -7,15 +7,15 @@ import {
   Platform 
 } from 'react-native'
 
-import IterableInAppManager from './IterableInAppManager'
-
 import {
-  IterableInAppMessage,
-  IterableConfig,
   IterableInAppLocation,
   IterableInAppCloseSource,
   IterableInAppDeleteSource,
 } from '.'
+
+import IterableInAppManager from './IterableInAppManager'
+import IterableInAppMessage from './IterableInAppMessage'
+import IterableConfig from './IterableConfig'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)

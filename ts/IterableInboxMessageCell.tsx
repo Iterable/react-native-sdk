@@ -16,8 +16,9 @@ import {
 import {
    InboxRowViewModel,
    IterableInboxCustomizations,
-   IterableInboxDataModel
 } from '.'
+
+import IterableInboxDataModel from './IterableInboxDataModel'
 
 function defaultMessageListLayout(
    last: boolean,
