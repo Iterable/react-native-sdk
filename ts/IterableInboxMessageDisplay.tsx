@@ -94,7 +94,9 @@ const IterableInboxMessageDisplay = ({
       Iterable.trackInAppClick(rowViewModel.inAppMessage, IterableInAppLocation.inbox, URL)
 
       if (URL === 'iterable://delete') {
-         deleteRow(rowViewModel.inAppMessage.messageId)
+         setTimeout(() => {
+            deleteRow(rowViewModel.inAppMessage.messageId)
+         }, 500)
       }
       
       if(URL === 'iterable://dismiss') {
