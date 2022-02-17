@@ -29,6 +29,9 @@ type MessageDisplayProps = {
    rowViewModel: InboxRowViewModel,
    inAppContentPromise: Promise<IterableHtmlInAppContent>,
    returnToInbox: Function,
+   //returnToInboxDelete: Function,
+   //returnToInboxExternalLink: Function,
+   //returnToInboxInternalLink: Function,
    deleteRow: Function,
    contentWidth: number,
    isPortrait: boolean
@@ -38,6 +41,9 @@ const IterableInboxMessageDisplay = ({
    rowViewModel, 
    inAppContentPromise, 
    returnToInbox,
+   //returnToInboxDelete,
+   //returnToInboxExternalLink,
+   //returnToInboxInternalLink,
    deleteRow, 
    contentWidth,
    isPortrait
@@ -92,30 +98,21 @@ const IterableInboxMessageDisplay = ({
       let context = new IterableActionContext(action, source)
 
       Iterable.trackInAppClick(rowViewModel.inAppMessage, IterableInAppLocation.inbox, URL)
-
-      if (URL === 'iterable://delete') {
-         setTimeout(() => {
-            deleteRow(rowViewModel.inAppMessage.messageId)
-         }, 500)
-      }
-      
-      if(URL === 'iterable://dismiss') {
-         Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.link, URL)
-         returnToInbox()
-         return
-      }
-
-      if (URL.slice(0, 4) === 'http') {
-         Linking.openURL(URL)
-      }
-
       Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.link, URL) 
 
-      if(Iterable.savedConfig.urlHandler) {
-         Iterable.savedConfig.urlHandler(URL, context)
+      if (URL === 'iterable://delete') { 
+         returnToInbox(() => deleteRow(rowViewModel.inAppMessage.messageId))
+      } else if(URL === 'iterable://dismiss') {
+         returnToInbox(() => {})
+      } else if (URL.slice(0, 4) === 'http') {
+         returnToInbox(() => Linking.openURL(URL))
+      } else {
+         returnToInbox(() => {
+            if(Iterable.savedConfig.urlHandler) {
+               Iterable.savedConfig.urlHandler(URL, context)
+            } 
+         })
       }
-      
-      returnToInbox()
    }
 
    return (

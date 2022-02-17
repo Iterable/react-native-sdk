@@ -8,7 +8,8 @@ import {
    Animated,
    NativeModules,
    NativeEventEmitter,
-   Platform
+   Platform,
+   Linking
 } from 'react-native'
 
 import {
@@ -18,6 +19,7 @@ import {
    IterableInAppDeleteSource,
    IterableInAppLocation,
    IterableInboxEmptyState,
+   IterableActionContext,
    InboxImpressionRowInfo
 } from '.'
 
@@ -165,8 +167,13 @@ const IterableInbox = ({
       fetchInboxMessages()
    }
 
-   function returnToInbox() {
-      reset()
+   function returnToInbox(callback: Function) {
+      Animated.timing(animatedValue, {
+         toValue: 0,
+         duration: 500,
+         useNativeDriver: false
+      }).start(() => callback())
+      setIsMessageDisplay(false)
    }
 
    function updateVisibleMessageImpressions(messageImpressions: InboxImpressionRowInfo[]) {
@@ -181,7 +188,10 @@ const IterableInbox = ({
             <IterableInboxMessageDisplay
                rowViewModel={selectedRowViewModel}
                inAppContentPromise={getHtmlContentForRow(selectedRowViewModel.inAppMessage.messageId)}
-               returnToInbox={() => returnToInbox()}
+               returnToInbox={(callback: Function) => returnToInbox(callback)}
+               //returnToInboxDelete={(messageId: string) => returnToInboxDelete(messageId)}
+               //returnToInboxExternalLink={(URL: string) => returnToInboxExternalLink(URL)}
+               //returnToInboxInternalLink={(URL: string, context: IterableActionContext) => returnToInboxInternalLink(URL, context)}
                deleteRow={(messageId: string) => deleteRow(messageId)}
                contentWidth={width}
                isPortrait={isPortrait}
@@ -235,12 +245,12 @@ const IterableInbox = ({
       setIsMessageDisplay(true)
    }
 
-   function reset() {
+   function reset(callback: Function) {
       Animated.timing(animatedValue, {
          toValue: 0,
          duration: 500,
          useNativeDriver: false
-      }).start()
+      }).start(() => callback())
       setIsMessageDisplay(false)
    }
 
