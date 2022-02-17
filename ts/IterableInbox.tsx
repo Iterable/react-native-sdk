@@ -187,9 +187,6 @@ const IterableInbox = ({
                rowViewModel={selectedRowViewModel}
                inAppContentPromise={getHtmlContentForRow(selectedRowViewModel.inAppMessage.messageId)}
                returnToInbox={(callback: Function) => returnToInbox(callback)}
-               //returnToInboxDelete={(messageId: string) => returnToInboxDelete(messageId)}
-               //returnToInboxExternalLink={(URL: string) => returnToInboxExternalLink(URL)}
-               //returnToInboxInternalLink={(URL: string, context: IterableActionContext) => returnToInboxInternalLink(URL, context)}
                deleteRow={(messageId: string) => deleteRow(messageId)}
                contentWidth={width}
                isPortrait={isPortrait}
