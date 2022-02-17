@@ -8,8 +8,7 @@ import {
    Animated,
    NativeModules,
    NativeEventEmitter,
-   Platform,
-   Linking
+   Platform
 } from 'react-native'
 
 import {
@@ -19,7 +18,6 @@ import {
    IterableInAppDeleteSource,
    IterableInAppLocation,
    IterableInboxEmptyState,
-   IterableActionContext,
    InboxImpressionRowInfo
 } from '.'
 
