@@ -168,7 +168,7 @@ const IterableInbox = ({
    function returnToInbox(callback: Function) {
       Animated.timing(animatedValue, {
          toValue: 0,
-         duration: 300,
+         duration: 500,
          useNativeDriver: false
       }).start(() => callback())
       setIsMessageDisplay(false)
@@ -234,7 +234,7 @@ const IterableInbox = ({
    function slideLeft() {
       Animated.timing(animatedValue, {
          toValue: 1,
-         duration: 300,
+         duration: 500,
          useNativeDriver: false
       }).start()
       setIsMessageDisplay(true)
