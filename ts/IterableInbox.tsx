@@ -240,15 +240,6 @@ const IterableInbox = ({
       setIsMessageDisplay(true)
    }
 
-   function reset(callback: Function) {
-      Animated.timing(animatedValue, {
-         toValue: 0,
-         duration: 500,
-         useNativeDriver: false
-      }).start(() => callback())
-      setIsMessageDisplay(false)
-   }
-
    return(
       <View style={updatedContainer}>
          <Animated.View
