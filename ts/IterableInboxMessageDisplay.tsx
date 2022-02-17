@@ -114,7 +114,7 @@ const IterableInboxMessageDisplay = ({
          <View style={returnButtonContainer}>
             <TouchableWithoutFeedback 
                onPress={() => {
-                  returnToInbox()
+                  returnToInbox(() => {})
                   Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.back)
                }}>
                <Icon
