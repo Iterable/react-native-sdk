@@ -29,9 +29,6 @@ type MessageDisplayProps = {
    rowViewModel: InboxRowViewModel,
    inAppContentPromise: Promise<IterableHtmlInAppContent>,
    returnToInbox: Function,
-   //returnToInboxDelete: Function,
-   //returnToInboxExternalLink: Function,
-   //returnToInboxInternalLink: Function,
    deleteRow: Function,
    contentWidth: number,
    isPortrait: boolean
@@ -41,9 +38,6 @@ const IterableInboxMessageDisplay = ({
    rowViewModel, 
    inAppContentPromise, 
    returnToInbox,
-   //returnToInboxDelete,
-   //returnToInboxExternalLink,
-   //returnToInboxInternalLink,
    deleteRow, 
    contentWidth,
    isPortrait
