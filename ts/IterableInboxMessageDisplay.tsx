@@ -84,7 +84,7 @@ const IterableInboxMessageDisplay = ({
       return () => {mounted = false}
    })
 
-   function handleHTMLMessage(event: any) {
+   function handleInAppLinkAction(event: any) {
       let URL = event.nativeEvent.data
 
       let action = new IterableAction("openUrl", URL, "")
@@ -130,7 +130,7 @@ const IterableInboxMessageDisplay = ({
                originWhiteList={['*']}
                source={{ html: inAppContent.html }}
                style={{ width: contentWidth }}
-               onMessage={(event) => handleHTMLMessage(event)}
+               onMessage={(event) => handleInAppLinkAction(event)}
                injectedJavaScript={JS}
             />
          </ScrollView>
