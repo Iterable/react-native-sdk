@@ -165,12 +165,12 @@ const IterableInbox = ({
       fetchInboxMessages()
    }
 
-   function returnToInbox(callback: Function) {
+   function returnToInbox(callback?: Function) {
       Animated.timing(animatedValue, {
          toValue: 0,
          duration: 300,
          useNativeDriver: false
-      }).start(() => callback())
+      }).start(() => typeof callback === 'function' && callback())
       setIsMessageDisplay(false)
    }
 

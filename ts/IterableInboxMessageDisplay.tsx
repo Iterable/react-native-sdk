@@ -97,7 +97,7 @@ const IterableInboxMessageDisplay = ({
       if (URL === 'iterable://delete') { 
          returnToInbox(() => deleteRow(rowViewModel.inAppMessage.messageId))
       } else if(URL === 'iterable://dismiss') {
-         returnToInbox(() => {})
+         returnToInbox()
       } else if (URL.slice(0, 4) === 'http') {
          returnToInbox(() => Linking.openURL(URL))
       } else {
@@ -114,7 +114,7 @@ const IterableInboxMessageDisplay = ({
          <View style={returnButtonContainer}>
             <TouchableWithoutFeedback 
                onPress={() => {
-                  returnToInbox(() => {})
+                  returnToInbox()
                   Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.back)
                }}>
                <Icon
