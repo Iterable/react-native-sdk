@@ -122,10 +122,14 @@ const IterableInboxMessageDisplay = ({
 
    let updatedMessageDisplayContainer = { ...messageDisplayContainer, width: contentWidth }
 
+   // orientation dependent styling
    returnButtonIcon = (!isPortrait) ? { ...returnButtonIcon, paddingLeft: 40 } : returnButtonIcon
-   returnButtonContainer = { ...returnButtonContainer, marginTop: Platform.OS === 'android' ? 0 : 40 }
    returnButtonContainer = (!isPortrait) ? { ...returnButtonContainer, marginTop: 10 } : returnButtonContainer
    messageTitleContainer = (!isPortrait) ? { ...messageTitleContainer, marginTop: 10 } : messageTitleContainer
+
+   // platform dependent styling
+   returnButtonContainer = { ...returnButtonContainer, marginTop: Platform.OS === 'android' ? 0 : 40 }
+   messageTitleContainer = { ...messageTitleContainer, marginTop: Platform.OS === 'android' ? 0 : 40 }
 
    let JS = `
       const links = document.querySelectorAll('a')
