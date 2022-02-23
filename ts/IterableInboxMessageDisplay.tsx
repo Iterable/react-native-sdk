@@ -45,19 +45,87 @@ const IterableInboxMessageDisplay = ({
    const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title
    const [inAppContent, setInAppContent] = useState<IterableHtmlInAppContent>(new IterableHtmlInAppContent(new IterableEdgeInsets(0, 0, 0, 0), ""))
 
+   const styles = StyleSheet.create({
+      messageDisplayContainer: {
+         height: '100%',
+         backgroundColor: 'whitesmoke',
+         flexDirection: 'column',
+         justifyContent: 'flex-start'
+      },
+
+      header: {
+         flexDirection: 'row',
+         justifyContent: 'center',
+         width: '100%'
+      },
+
+      returnButtonContainer: {
+         flexDirection: 'row',
+         justifyContent: 'flex-start',
+         alignItems: 'center',
+         width: '25%',
+         marginTop: 40,
+      },
+
+      returnButton: {
+         flexDirection: 'row',
+         alignItems: 'center'
+      },
+
+      returnButtonIcon: {
+         color: 'deepskyblue',
+         fontSize: 40,
+         paddingLeft: 0
+      },
+
+      returnButtonText: {
+         color: 'deepskyblue',
+         fontSize: 20
+      },
+
+      messageTitleContainer: {
+         flexDirection: 'row',
+         justifyContent: 'flex-start',
+         alignItems: 'center',
+         width: '75%',
+         marginTop: 40,
+      },
+
+      messageTitle: {
+         flexDirection: 'row',
+         justifyContent: 'center',
+         alignItems: 'center',
+         width: 0.5 * contentWidth,
+      },
+
+      messageTitleText: {
+         fontWeight: 'bold',
+         fontSize: 20,
+         backgroundColor: 'whitesmoke'
+      },
+   
+      contentContainer: {
+         flex: 1,
+      }
+   })
+
    let {
+      header,
       returnButtonContainer,
       returnButton,
-      messageDisplayContainer,
-      headline
+      returnButtonIcon,
+      returnButtonText,
+      messageTitleContainer,
+      messageTitleText,
+      messageDisplayContainer
    } = styles
 
    let updatedMessageDisplayContainer = { ...messageDisplayContainer, width: contentWidth }
 
-   headline = (!isPortrait) ? { ...headline, paddingLeft: 45 } : headline
-   returnButton = (!isPortrait) ? { ...returnButton, paddingLeft: 40 } : returnButton
+   returnButtonIcon = (!isPortrait) ? { ...returnButtonIcon, paddingLeft: 40 } : returnButtonIcon
    returnButtonContainer = { ...returnButtonContainer, marginTop: Platform.OS === 'android' ? 0 : 40 }
    returnButtonContainer = (!isPortrait) ? { ...returnButtonContainer, marginTop: 10 } : returnButtonContainer
+   messageTitleContainer = (!isPortrait) ? { ...messageTitleContainer, marginTop: 10 } : messageTitleContainer
 
    let JS = `
       const links = document.querySelectorAll('a')
@@ -118,21 +186,27 @@ const IterableInboxMessageDisplay = ({
 
    return (
       <View style={updatedMessageDisplayContainer}>
-         <View style={returnButtonContainer}>
-            <TouchableWithoutFeedback 
-               onPress={() => {
-                  returnToInbox()
-                  Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.back)
-               }}>
-               <Icon
-                  name="ios-arrow-back"
-                  style={returnButton} />
-            </TouchableWithoutFeedback>
+         <View style={header}>
+            <View style={returnButtonContainer}>
+               <TouchableWithoutFeedback 
+                  onPress={() => {
+                     returnToInbox()
+                     Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.back)
+                  }}
+               >
+                  <View style={returnButton}>
+                     <Icon name="ios-chevron-back" style={returnButtonIcon} />
+                     <Text style={returnButtonText}>Inbox</Text>
+                  </View>
+               </TouchableWithoutFeedback>
+            </View>  
+            <View style={messageTitleContainer}>
+               <View style={styles.messageTitle}>
+                  <Text style={messageTitleText}>{messageTitle}</Text>
+               </View>
+            </View>
          </View>
          <ScrollView contentContainerStyle={styles.contentContainer}>
-            <Text style={headline}>
-               {messageTitle}
-            </Text>
             <WebView
                originWhiteList={['*']}
                source={{ html: inAppContent.html }}
@@ -145,40 +219,6 @@ const IterableInboxMessageDisplay = ({
    )
 }
 
-const styles = StyleSheet.create({
-   returnButtonContainer: {
-      marginTop: 40,
-      backgroundColor: 'whitesmoke'
-   },
 
-   contentContainer: {
-      flex: 1,
-      height: '50%'
-   },
-
-   returnButton: {
-      color: 'blue',
-      fontSize: 40,
-      paddingLeft: 10
-   },
-
-   messageDisplayContainer: {
-      height: '100%',
-      backgroundColor: 'whitesmoke',
-      flexDirection: 'column',
-      justifyContent: 'flex-start'
-   },
-
-   headline: {
-      fontWeight: 'bold',
-      fontSize: 30,
-      width: '100%',
-      flexWrap: "wrap",
-      paddingTop: 10,
-      paddingBottom: 10,
-      paddingLeft: 15,
-      backgroundColor: 'whitesmoke'
-   }
-})
 
 export default IterableInboxMessageDisplay
