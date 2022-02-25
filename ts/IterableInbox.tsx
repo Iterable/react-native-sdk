@@ -34,6 +34,7 @@ const RNIterableAPI = NativeModules.RNIterableAPI
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
 
 type inboxProps = {
+   returnToInboxTrigger: boolean,
    messageListItemLayout?: Function,
    customizations?: IterableInboxCustomizations,
    tabBarHeight?: number,
@@ -41,6 +42,7 @@ type inboxProps = {
 }
 
 const IterableInbox = ({
+   returnToInboxTrigger,
    messageListItemLayout = () => { return null },
    customizations = {} as IterableInboxCustomizations,
    tabBarHeight = 80,
@@ -117,6 +119,12 @@ const IterableInbox = ({
    useEffect(() => {
       inboxDataModel.updateVisibleRows(visibleMessageImpressions)
    }, [visibleMessageImpressions])
+
+   useEffect(() => {
+      if(isMessageDisplay) {
+         returnToInbox()
+      }
+   }, [returnToInboxTrigger])
 
    function addInboxChangedListener() {
       RNEventEmitter.addListener(
