@@ -156,7 +156,7 @@ const IterableInboxMessageDisplay = ({
       return () => {mounted = false}
    })
 
-   function handleHTMLMessage(event: any) {
+   function handleInAppLinkAction(event: any) {
       let URL = event.nativeEvent.data
 
       let action = new IterableAction("openUrl", URL, "")
@@ -164,28 +164,21 @@ const IterableInboxMessageDisplay = ({
       let context = new IterableActionContext(action, source)
 
       Iterable.trackInAppClick(rowViewModel.inAppMessage, IterableInAppLocation.inbox, URL)
-
-      if (URL === 'iterable://delete') {
-         deleteRow(rowViewModel.inAppMessage.messageId)
-      }
-      
-      if(URL === 'iterable://dismiss') {
-         Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.link, URL)
-         returnToInbox()
-         return
-      }
-
-      if (URL.slice(0, 4) === 'http') {
-         Linking.openURL(URL)
-      }
-
       Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.link, URL) 
 
-      if(Iterable.savedConfig.urlHandler) {
-         Iterable.savedConfig.urlHandler(URL, context)
+      if (URL === 'iterable://delete') { 
+         returnToInbox(() => deleteRow(rowViewModel.inAppMessage.messageId))
+      } else if(URL === 'iterable://dismiss') {
+         returnToInbox()
+      } else if (URL.slice(0, 4) === 'http') {
+         returnToInbox(() => Linking.openURL(URL))
+      } else {
+         returnToInbox(() => {
+            if(Iterable.savedConfig.urlHandler) {
+               Iterable.savedConfig.urlHandler(URL, context)
+            } 
+         })
       }
-      
-      returnToInbox()
    }
 
    return (
@@ -215,7 +208,7 @@ const IterableInboxMessageDisplay = ({
                originWhiteList={['*']}
                source={{ html: inAppContent.html }}
                style={{ width: contentWidth }}
-               onMessage={(event) => handleHTMLMessage(event)}
+               onMessage={(event) => handleInAppLinkAction(event)}
                injectedJavaScript={JS}
             />
          </ScrollView>

@@ -34,6 +34,7 @@ const RNIterableAPI = NativeModules.RNIterableAPI
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
 
 type inboxProps = {
+   returnToInboxTrigger: boolean,
    messageListItemLayout?: Function,
    customizations?: IterableInboxCustomizations,
    tabBarHeight?: number,
@@ -41,6 +42,7 @@ type inboxProps = {
 }
 
 const IterableInbox = ({
+   returnToInboxTrigger,
    messageListItemLayout = () => { return null },
    customizations = {} as IterableInboxCustomizations,
    tabBarHeight = 80,
@@ -118,6 +120,12 @@ const IterableInbox = ({
       inboxDataModel.updateVisibleRows(visibleMessageImpressions)
    }, [visibleMessageImpressions])
 
+   useEffect(() => {
+      if(isMessageDisplay) {
+         returnToInbox()
+      }
+   }, [returnToInboxTrigger])
+
    function addInboxChangedListener() {
       RNEventEmitter.addListener(
          "receivedIterableInboxChanged",
@@ -165,8 +173,13 @@ const IterableInbox = ({
       fetchInboxMessages()
    }
 
-   function returnToInbox() {
-      reset()
+   function returnToInbox(callback?: Function) {
+      Animated.timing(animatedValue, {
+         toValue: 0,
+         duration: 300,
+         useNativeDriver: false
+      }).start(() => typeof callback === 'function' && callback())
+      setIsMessageDisplay(false)
    }
 
    function updateVisibleMessageImpressions(messageImpressions: InboxImpressionRowInfo[]) {
@@ -181,7 +194,7 @@ const IterableInbox = ({
             <IterableInboxMessageDisplay
                rowViewModel={selectedRowViewModel}
                inAppContentPromise={getHtmlContentForRow(selectedRowViewModel.inAppMessage.messageId)}
-               returnToInbox={() => returnToInbox()}
+               returnToInbox={(callback: Function) => returnToInbox(callback)}
                deleteRow={(messageId: string) => deleteRow(messageId)}
                contentWidth={width}
                isPortrait={isPortrait}
@@ -229,19 +242,10 @@ const IterableInbox = ({
    function slideLeft() {
       Animated.timing(animatedValue, {
          toValue: 1,
-         duration: 500,
+         duration: 300,
          useNativeDriver: false
       }).start()
       setIsMessageDisplay(true)
-   }
-
-   function reset() {
-      Animated.timing(animatedValue, {
-         toValue: 0,
-         duration: 500,
-         useNativeDriver: false
-      }).start()
-      setIsMessageDisplay(false)
    }
 
    return(
