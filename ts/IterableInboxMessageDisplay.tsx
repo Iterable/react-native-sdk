@@ -64,7 +64,8 @@ const IterableInboxMessageDisplay = ({
          justifyContent: 'flex-start',
          alignItems: 'center',
          width: '25%',
-         marginTop: 40,
+         marginLeft: 0,
+         marginTop: 40
       },
 
       returnButton: {
@@ -88,7 +89,7 @@ const IterableInboxMessageDisplay = ({
          justifyContent: 'flex-start',
          alignItems: 'center',
          width: '75%',
-         marginTop: 40,
+         marginTop: 40
       },
 
       messageTitle: {
@@ -128,7 +129,7 @@ const IterableInboxMessageDisplay = ({
 
    // orientation dependent styling
    returnButtonIcon = (!isPortrait) ? { ...returnButtonIcon, paddingLeft: 40 } : returnButtonIcon
-   returnButtonContainer = (!isPortrait) ? { ...returnButtonContainer, marginTop: 0 } : returnButtonContainer
+   returnButtonContainer = (!isPortrait) ? { ...returnButtonContainer, marginLeft: 40 } : returnButtonContainer
    messageTitleContainer = (!isPortrait) ? { ...messageTitleContainer, marginTop: 0 } : messageTitleContainer
 
    let JS = `

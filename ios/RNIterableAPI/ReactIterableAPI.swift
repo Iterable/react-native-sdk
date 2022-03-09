@@ -503,6 +503,7 @@ class ReactIterableAPI: RCTEventEmitter {
         }
         
         // connect new inbox in-app payloads to the RN SDK
+
         NotificationCenter.default.addObserver(self, selector: #selector(receivedIterableInboxChanged), name: Notification.Name.iterableInboxChanged, object: nil)
         
         DispatchQueue.main.async {
@@ -519,6 +520,8 @@ class ReactIterableAPI: RCTEventEmitter {
     
     @objc(receivedIterableInboxChanged)
     private func receivedIterableInboxChanged() {
+        print("Evan - received inbox changed")
+
         guard shouldEmit else {
             return
         }
