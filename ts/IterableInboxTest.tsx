@@ -4,13 +4,11 @@ import React, { useState, useEffect } from 'react'
 import {
    View,
    Text,
-   Alert,
    StyleSheet,
    Animated,
    NativeModules,
    NativeEventEmitter,
    Platform,
-   TouchableOpacity
 } from 'react-native'
 
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -68,18 +66,66 @@ const IterableInboxTest = ({
    
    const [visibleMessageImpressions, setVisibleMessageImpressions] = useState<InboxImpressionRowInfo[]>([])
 
+   const styles = StyleSheet.create({
+      loadingScreen: {
+         height: '100%',
+         backgroundColor: 'whitesmoke'
+      },
+   
+      container: {
+         flex: 1,
+         flexDirection: 'row',
+         alignItems: 'center',
+         justifyContent: 'flex-start',
+         height: '100%',
+         width: 2 * width,
+         paddingBottom: 0,
+         paddingLeft: 0,
+         paddingRight: 0
+      },
+   
+      messageListContainer: {
+         height: "100%",
+         width: width,
+         flexDirection: 'column',
+         justifyContent: "flex-start",
+      },
+   
+      messageDisplayContainer: {
+         height: '100%',
+         width: width,
+         flexDirection: 'column',
+         justifyContent: 'center',
+         alignItems: 'center',
+         backgroundColor: 'lightgreen'
+      },
+   
+      headline: {
+         fontWeight: 'bold',
+         fontSize: 40,
+         width: '100%',
+         height: 60,
+         marginTop: 0,
+         paddingTop: 10,
+         paddingBottom: 10,
+         paddingLeft: 30,
+         backgroundColor: 'whitesmoke'
+      }
+   })
+
    let {
       loadingScreen,
       container,
       headline,
-      messageListContainer
+      messageListContainer,
+      messageDisplayContainer
    } = styles
 
    const navTitleHeight = headline.height + headline.paddingTop + headline.paddingBottom
-   const updatedContainer = { ...container, width: 2 * width } //, height: height - navTitleHeight - 40 }
+   //const updatedContainer = { width: 2 * width, ...container } //, height: height - navTitleHeight - 40 }
    //const messageListContainer = { width: width }
 
-   headline = { ...headline, height: Platform.OS === "android" ? 70 : 60 }
+   // headline = { ...headline, height: Platform.OS === "android" ? 70 : 60 }
 
    // headline = (isPortrait) ?
    //    { ...headline, marginTop: Platform.OS === "android" ? 0 : 40 } :
@@ -159,21 +205,19 @@ const IterableInboxTest = ({
       return inboxDataModel.getHtmlContentForMessageId(id)
    }
 
-   // function handleMessageSelect(id: string, index: number, rowViewModels: InboxRowViewModel[]) {
-   //    let newRowViewModels = rowViewModels.map((rowViewModel) => {
-   //       return (rowViewModel.inAppMessage.messageId === id) ?
-   //          { ...rowViewModel, read: true } : rowViewModel
-   //    })
-   //    setRowViewModels(newRowViewModels)
-   //    inboxDataModel.setMessageAsRead(id)
-   //    setSelectedRowViewModelIdx(index)
+   function handleMessageSelect(id: string, index: number, rowViewModels: InboxRowViewModel[]) {
+      let newRowViewModels = rowViewModels.map((rowViewModel) => {
+         return (rowViewModel.inAppMessage.messageId === id) ?
+            { ...rowViewModel, read: true } : rowViewModel
+      })
+      setRowViewModels(newRowViewModels)
+      inboxDataModel.setMessageAsRead(id)
+      setSelectedRowViewModelIdx(index)
 
-   //    Iterable.trackInAppOpen(rowViewModels[index].inAppMessage, IterableInAppLocation.inbox)
+      Iterable.trackInAppOpen(rowViewModels[index].inAppMessage, IterableInAppLocation.inbox)
 
-   //    Alert.alert(`${rowViewModels[index].inAppMessage.inboxMetadata.title} selected`)
-
-   //    slideLeft()
-   // }
+      slideLeft()
+   }
 
    function deleteRow(messageId: string) {
       inboxDataModel.deleteItemById(messageId, IterableInAppDeleteSource.inboxSwipe)
@@ -193,21 +237,21 @@ const IterableInboxTest = ({
       setVisibleMessageImpressions(messageImpressions)
    }
 
-   // function showMessageDisplay(rowViewModelList: InboxRowViewModel[], index: number) {
-   //    const selectedRowViewModel = rowViewModelList[index]
+   function showMessageDisplay(rowViewModelList: InboxRowViewModel[], index: number) {
+      const selectedRowViewModel = rowViewModelList[index]
 
-   //    return (
-   //       selectedRowViewModel ?
-   //          <IterableInboxMessageDisplay
-   //             rowViewModel={selectedRowViewModel}
-   //             inAppContentPromise={getHtmlContentForRow(selectedRowViewModel.inAppMessage.messageId)}
-   //             returnToInbox={(callback: Function) => returnToInbox(callback)}
-   //             deleteRow={(messageId: string) => deleteRow(messageId)}
-   //             contentWidth={width}
-   //             isPortrait={isPortrait}
-   //          /> : null
-   //    )
-   // }
+      return (
+         selectedRowViewModel ?
+            <IterableInboxMessageDisplay
+               rowViewModel={selectedRowViewModel}
+               inAppContentPromise={getHtmlContentForRow(selectedRowViewModel.inAppMessage.messageId)}
+               returnToInbox={(callback: Function) => returnToInbox(callback)}
+               deleteRow={(messageId: string) => deleteRow(messageId)}
+               contentWidth={width}
+               isPortrait={isPortrait}
+            /> : null
+      )
+   }
 
    function showMessageList(loading: boolean) {
       return (
@@ -215,29 +259,16 @@ const IterableInboxTest = ({
             <Text style={headline}>
                {customizations?.navTitle ? customizations?.navTitle : defaultInboxTitle}
             </Text>
-            <TouchableOpacity
-               style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  backgroundColor: 'yellow',
-                  width: width,
-                  height: height - 60 - tabBarHeight
-               }}
-               activeOpacity={1}
-               onPress={() => {
-                  Alert.alert('Pressed!')
-               }}
-            >
-               <Text>PRESS ME</Text>
-            </TouchableOpacity>
-
-            {/* {rowViewModels.length ?
+            {rowViewModels.length ?
                <IterableInboxMessageList
+                  height={height}
+                  width={width}
+                  tabBarHeight={tabBarHeight}
                   dataModel={inboxDataModel}
                   rowViewModels={rowViewModels}
                   customizations={customizations}
                   messageListItemLayout={messageListItemLayout}
+                  slideLeft={() => slideLeft()}
                   deleteRow={(messageId: string) => deleteRow(messageId)}
                   handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index, rowViewModels)}
                   updateVisibleMessageImpressions={(messageImpressions: InboxImpressionRowInfo[]) => updateVisibleMessageImpressions(messageImpressions)}
@@ -245,7 +276,7 @@ const IterableInboxTest = ({
                   isPortrait={isPortrait}
                /> :
                renderEmptyState()
-            } */}
+            }
          </View>)
    }
 
@@ -273,46 +304,28 @@ const IterableInboxTest = ({
    }
 
    return(
-      <SafeAreaView style={updatedContainer}>
-         {showMessageList(loading)}
+      <SafeAreaView style={container}>
+         <Animated.View
+            style={{
+               transform: [
+                  {
+                     translateX: animatedValue.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [0, -width]
+                     })
+                  }
+               ],
+               height: '100%',
+               flexDirection: 'row',
+               width: 2 * width,
+               justifyContent: 'flex-start'
+            }}
+         >
+            {showMessageList(loading)}
+            {showMessageDisplay(rowViewModels, selectedRowViewModelIdx)}
+         </Animated.View>
       </SafeAreaView>
    )
 }
-
-const styles = StyleSheet.create({
-   loadingScreen: {
-      height: '100%',
-      backgroundColor: 'whitesmoke'
-   },
-
-   container: {
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'flex-start',
-      height: '100%',
-      paddingBottom: 0,
-      paddingLeft: 0,
-      paddingRight: 0
-   },
-
-   messageListContainer: {
-      height: "100%",
-      flexDirection: 'column',
-      justifyContent: "flex-start",
-   },
-
-   headline: {
-      fontWeight: 'bold',
-      fontSize: 40,
-      width: '100%',
-      height: 60,
-      marginTop: 0,
-      paddingTop: 10,
-      paddingBottom: 10,
-      paddingLeft: 30,
-      backgroundColor: 'whitesmoke'
-   }
-})
 
 export default IterableInboxTest

@@ -1,10 +1,12 @@
 'use strict'
 
 import React, { useCallback, useRef, useState } from 'react'
-import { 
+import {
+   Text, 
    ViewabilityConfig, 
    ViewToken, 
-   FlatList 
+   FlatList,
+   TouchableOpacity,
 } from 'react-native'
 
 import {
@@ -18,9 +20,13 @@ import IterableInAppMessage from './IterableInAppMessage'
 import IterableInboxDataModel from './IterableInboxDataModel'
 
 type MessageListProps = {
+   height: number,
+   width: number,
+   tabBarHeight: number,
    dataModel: IterableInboxDataModel,
    rowViewModels: InboxRowViewModel[],
    customizations: IterableInboxCustomizations,
+   slideLeft: Function,
    messageListItemLayout: Function,
    deleteRow: Function,
    handleMessageSelect: Function,
@@ -30,9 +36,13 @@ type MessageListProps = {
 }
 
 const IterableInboxMessageList = ({
+   height,
+   width,
+   tabBarHeight,
    dataModel,
    rowViewModels,
    customizations,
+   slideLeft,
    messageListItemLayout,
    deleteRow,
    handleMessageSelect,
@@ -92,16 +102,34 @@ const IterableInboxMessageList = ({
    ), [])
 
    return (
-      <FlatList
-         ref={flatListRef}
-         scrollEnabled={!swiping}
-         data={rowViewModels}
-         renderItem={({ item, index }: { item: InboxRowViewModel, index: number }) => renderRowViewModel(item, index, index === rowViewModels.length - 1)}
-         keyExtractor={(item: InboxRowViewModel) => item.inAppMessage.messageId}
-         viewabilityConfig={inboxSessionViewabilityConfig}
-         onViewableItemsChanged={inboxSessionItemsChanged}
-         onLayout={() => {flatListRef.current?.recordInteraction()}}
-      />
+      <TouchableOpacity
+         style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'yellow',
+            width: width,
+            height: height - 60 - tabBarHeight
+         }}
+         activeOpacity={1}
+         onPress={() => {
+            // Alert.alert('Pressed!')
+            slideLeft()
+         }}
+      >
+         <Text>PRESS ME</Text>
+      </TouchableOpacity>
+
+      // <FlatList
+      //    ref={flatListRef}
+      //    scrollEnabled={!swiping}
+      //    data={rowViewModels}
+      //    renderItem={({ item, index }: { item: InboxRowViewModel, index: number }) => renderRowViewModel(item, index, index === rowViewModels.length - 1)}
+      //    keyExtractor={(item: InboxRowViewModel) => item.inAppMessage.messageId}
+      //    viewabilityConfig={inboxSessionViewabilityConfig}
+      //    onViewableItemsChanged={inboxSessionItemsChanged}
+      //    onLayout={() => {flatListRef.current?.recordInteraction()}}
+      // />
    )
 }
 
