@@ -2,7 +2,9 @@
 
 import React, { useCallback, useRef, useState } from 'react'
 import {
-   Text, 
+   View,
+   Text,
+   StyleSheet, 
    ViewabilityConfig, 
    ViewToken, 
    FlatList,
@@ -53,8 +55,45 @@ const IterableInboxMessageList = ({
    const [swiping, setSwiping] = useState<boolean>(false)
    const flatListRef = useRef<FlatList>(null)
 
+   let styles = StyleSheet.create({
+      title: {
+         fontSize: 22,
+         paddingBottom: 10
+      },
+
+      messageRow: {
+         flexDirection: 'row',
+         alignItems: 'center',
+         backgroundColor: 'white',
+         paddingTop: 10,
+         paddingBottom: 10,
+         paddingLeft:10,
+         width: '100%',
+         height: 100,
+         borderStyle: 'solid',
+         borderColor: 'lightgray',
+         borderTopWidth: 1
+      }
+   })
+
+   let {
+      title,
+      messageRow
+   } = styles
+
    function renderRowViewModel(rowViewModel: InboxRowViewModel, index: number, last: boolean) {
       return (
+         // <TouchableOpacity
+         //    activeOpacity={1}
+         //    onPress={() => {
+         //       handleMessageSelect(rowViewModel.inAppMessage.messageId, index)
+         //    }}
+         // >
+         //    <View style={messageRow}>
+         //       <Text style={title}>{rowViewModel.inAppMessage.inboxMetadata?.title}</Text>
+         //    </View>
+         // </TouchableOpacity>
+
          <IterableInboxMessageCell
             key={rowViewModel.inAppMessage.messageId}
             index={index}

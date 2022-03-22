@@ -195,10 +195,24 @@ const IterableInboxMessageCell = ({
          fontWeight: 'bold',
          fontSize: 15,
          color: 'white'
+      },
+
+      messageRow: {
+         flexDirection: 'row',
+         alignItems: 'center',
+         backgroundColor: 'white',
+         paddingTop: 10,
+         paddingBottom: 10,
+         paddingLeft: 10,
+         width: '100%',
+         height: 120,
+         borderStyle: 'solid',
+         borderColor: 'lightgray',
+         borderTopWidth: 1
       }
    })
 
-   let { textContainer, deleteSlider, textStyle } = styles
+   let { textContainer, deleteSlider, textStyle, messageRow } = styles
 
    deleteSlider = (isPortrait) ? deleteSlider : { ...deleteSlider, paddingRight: 40 }
 
@@ -262,24 +276,27 @@ const IterableInboxMessageCell = ({
 
    return (
       <View>
-         <View style={deleteSlider}>
+         {/* <View style={deleteSlider}>
             <Text style={textStyle}>DELETE</Text>
          </View>
          <Animated.View
             style={[textContainer, position.getLayout()]}
             {...panResponder.panHandlers}
-         >
+         > */}
             <TouchableOpacity
                activeOpacity={1}
                onPress={() => {
                   handleMessageSelect(rowViewModel.inAppMessage.messageId, index)
                }}
             >
-               {messageListItemLayout(last, rowViewModel) ? 
+               <View style={messageRow}>
+                  <Text>{rowViewModel.inAppMessage.inboxMetadata?.title}</Text>
+               </View>
+               {/* {messageListItemLayout(last, rowViewModel) ? 
                   messageListItemLayout(last, rowViewModel)[0] : 
-                  defaultMessageListLayout(last, dataModel, rowViewModel, customizations, isPortrait)}
+                  defaultMessageListLayout(last, dataModel, rowViewModel, customizations, isPortrait)} */}
             </TouchableOpacity>
-         </Animated.View>
+         {/* </Animated.View> */}
       </View>
    )
 }
