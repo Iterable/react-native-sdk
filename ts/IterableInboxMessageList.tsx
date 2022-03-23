@@ -2,7 +2,6 @@
 
 import React, { useCallback, useRef, useState } from 'react'
 import {
-   StyleSheet, 
    ViewabilityConfig, 
    ViewToken, 
    FlatList
