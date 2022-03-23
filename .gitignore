@@ -48,6 +48,6 @@ Config.d.ts
 Config.sample.d.ts
 
 package-lock.json
-launch.json
+.vscode/launch.json
 
 coverage/
