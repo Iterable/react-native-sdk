@@ -195,20 +195,6 @@ const IterableInboxMessageCell = ({
          fontWeight: 'bold',
          fontSize: 15,
          color: 'white'
-      },
-
-      messageRow: {
-         flexDirection: 'row',
-         alignItems: 'center',
-         backgroundColor: 'white',
-         paddingTop: 10,
-         paddingBottom: 10,
-         paddingLeft: 10,
-         width: '100%',
-         height: 120,
-         borderStyle: 'solid',
-         borderColor: 'lightgray',
-         borderTopWidth: 1
       }
    })
 
