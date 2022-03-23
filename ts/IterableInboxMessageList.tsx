@@ -2,13 +2,10 @@
 
 import React, { useCallback, useRef, useState } from 'react'
 import {
-   View,
-   Text,
    StyleSheet, 
    ViewabilityConfig, 
    ViewToken, 
-   FlatList,
-   TouchableOpacity,
+   FlatList
 } from 'react-native'
 
 import {
@@ -22,13 +19,9 @@ import IterableInAppMessage from './IterableInAppMessage'
 import IterableInboxDataModel from './IterableInboxDataModel'
 
 type MessageListProps = {
-   height: number,
-   width: number,
-   tabBarHeight: number,
    dataModel: IterableInboxDataModel,
    rowViewModels: InboxRowViewModel[],
    customizations: IterableInboxCustomizations,
-   slideLeft: Function,
    messageListItemLayout: Function,
    deleteRow: Function,
    handleMessageSelect: Function,
@@ -38,13 +31,9 @@ type MessageListProps = {
 }
 
 const IterableInboxMessageList = ({
-   height,
-   width,
-   tabBarHeight,
    dataModel,
    rowViewModels,
    customizations,
-   slideLeft,
    messageListItemLayout,
    deleteRow,
    handleMessageSelect,
@@ -83,17 +72,6 @@ const IterableInboxMessageList = ({
 
    function renderRowViewModel(rowViewModel: InboxRowViewModel, index: number, last: boolean) {
       return (
-         // <TouchableOpacity
-         //    activeOpacity={1}
-         //    onPress={() => {
-         //       handleMessageSelect(rowViewModel.inAppMessage.messageId, index)
-         //    }}
-         // >
-         //    <View style={messageRow}>
-         //       <Text style={title}>{rowViewModel.inAppMessage.inboxMetadata?.title}</Text>
-         //    </View>
-         // </TouchableOpacity>
-
          <IterableInboxMessageCell
             key={rowViewModel.inAppMessage.messageId}
             index={index}
@@ -141,24 +119,6 @@ const IterableInboxMessageList = ({
    ), [])
 
    return (
-      // <TouchableOpacity
-      //    style={{
-      //       flexDirection: 'row',
-      //       justifyContent: 'center',
-      //       alignItems: 'center',
-      //       backgroundColor: 'yellow',
-      //       width: width,
-      //       height: height - 60 - tabBarHeight
-      //    }}
-      //    activeOpacity={1}
-      //    onPress={() => {
-      //       // Alert.alert('Pressed!')
-      //       slideLeft()
-      //    }}
-      // >
-      //    <Text>PRESS ME</Text>
-      // </TouchableOpacity>
-
       <FlatList
          ref={flatListRef}
          scrollEnabled={!swiping}

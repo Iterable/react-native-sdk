@@ -212,7 +212,7 @@ const IterableInboxMessageCell = ({
       }
    })
 
-   let { textContainer, deleteSlider, textStyle, messageRow } = styles
+   let { textContainer, deleteSlider, textStyle } = styles
 
    deleteSlider = (isPortrait) ? deleteSlider : { ...deleteSlider, paddingRight: 40 }
 
@@ -249,7 +249,16 @@ const IterableInboxMessageCell = ({
    const panResponder = useRef(
       PanResponder.create({
          onStartShouldSetPanResponder: () => false,
-         onMoveShouldSetPanResponder: () => true,
+         onMoveShouldSetPanResponder: (event, gestureState) => {
+            const { dx, dy } = gestureState
+            // return true if user is swiping, return false if it's a single click
+            return Math.abs(dx) > 1 || Math.abs(dy) > 1
+         },
+         onMoveShouldSetPanResponderCapture: (event, gestureState) => {
+            const { dx, dy } = gestureState
+            // return true if user is swiping, return false if it's a single click
+            return Math.abs(dx) > 1 || Math.abs(dy) > 1
+         },
          onPanResponderTerminationRequest: () => false,
          onPanResponderGrant: () => {
             position.setValue({ x: 0, y: 0 })
@@ -275,32 +284,27 @@ const IterableInboxMessageCell = ({
    ).current
 
    return (
-      <View>
-         {/* <View style={deleteSlider}>
+      <>
+         <View style={deleteSlider}>
             <Text style={textStyle}>DELETE</Text>
          </View>
          <Animated.View
             style={[textContainer, position.getLayout()]}
             {...panResponder.panHandlers}
-         > */}
+         >
             <TouchableOpacity
                activeOpacity={1}
                onPress={() => {
                   handleMessageSelect(rowViewModel.inAppMessage.messageId, index)
                }}
             >
-               <View style={messageRow}>
-                  <Text>{rowViewModel.inAppMessage.inboxMetadata?.title}</Text>
-               </View>
-               {/* {messageListItemLayout(last, rowViewModel) ? 
+               {messageListItemLayout(last, rowViewModel) ? 
                   messageListItemLayout(last, rowViewModel)[0] : 
-                  defaultMessageListLayout(last, dataModel, rowViewModel, customizations, isPortrait)} */}
+                  defaultMessageListLayout(last, dataModel, rowViewModel, customizations, isPortrait)}
             </TouchableOpacity>
-         {/* </Animated.View> */}
-      </View>
+         </Animated.View>
+      </>
    )
 }
-
-
 
 export default IterableInboxMessageCell
