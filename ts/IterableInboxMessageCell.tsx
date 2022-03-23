@@ -238,12 +238,12 @@ const IterableInboxMessageCell = ({
          onMoveShouldSetPanResponder: (event, gestureState) => {
             const { dx, dy } = gestureState
             // return true if user is swiping, return false if it's a single click
-            return Math.abs(dx) > 1 || Math.abs(dy) > 1
+            return Math.abs(dx) !== 0 && Math.abs(dy) !== 0
          },
          onMoveShouldSetPanResponderCapture: (event, gestureState) => {
             const { dx, dy } = gestureState
             // return true if user is swiping, return false if it's a single click
-            return Math.abs(dx) > 1 || Math.abs(dy) > 1
+            return Math.abs(dx) !== 0 && Math.abs(dy) !== 0
          },
          onPanResponderTerminationRequest: () => false,
          onPanResponderGrant: () => {

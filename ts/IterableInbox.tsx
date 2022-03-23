@@ -57,7 +57,7 @@ const IterableInbox = ({
    const appState = useAppStateListener()
    const isFocused = useIsFocused()
 
-   const [screenWidth, setScreenWidth] = useState<number>(width)
+   //const [screenWidth, setScreenWidth] = useState<number>(width)
    const [selectedRowViewModelIdx, setSelectedRowViewModelIdx] = useState<number>(0)
    const [rowViewModels, setRowViewModels] = useState<InboxRowViewModel[]>([])
    const [loading, setLoading] = useState<boolean>(true)
@@ -112,6 +112,7 @@ const IterableInbox = ({
    } = styles
 
    const navTitleHeight = headline.height + headline.paddingTop + headline.paddingBottom
+   headline = { ...headline, height: Platform.OS === "android" ? 70 : 60 }
 
    useEffect(() => {
       fetchInboxMessages()
@@ -133,7 +134,7 @@ const IterableInbox = ({
    }, [appState])
 
    useEffect(() => {
-      setScreenWidth(width)
+      //setScreenWidth(width)
       if (isMessageDisplay) {
          slideLeft()
       }
