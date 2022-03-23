@@ -8,7 +8,7 @@ import {
    Animated,
    NativeModules,
    NativeEventEmitter,
-   Platform,
+   Platform
 } from 'react-native'
 
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -85,19 +85,10 @@ const IterableInbox = ({
       },
    
       messageListContainer: {
-         height: "100%",
-         width: width,
-         flexDirection: 'column',
-         justifyContent: "flex-start",
-      },
-   
-      messageDisplayContainer: {
          height: '100%',
          width: width,
          flexDirection: 'column',
-         justifyContent: 'center',
-         alignItems: 'center',
-         backgroundColor: 'lightgreen'
+         justifyContent: 'flex-start',
       },
    
       headline: {
@@ -117,8 +108,7 @@ const IterableInbox = ({
       loadingScreen,
       container,
       headline,
-      messageListContainer,
-      messageDisplayContainer
+      messageListContainer
    } = styles
 
    const navTitleHeight = headline.height + headline.paddingTop + headline.paddingBottom
