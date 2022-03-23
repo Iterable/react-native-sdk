@@ -70,6 +70,7 @@ function defaultMessageListLayout(
 
       title: {
          fontSize: 22,
+         width: '85%',
          paddingBottom: 10
       },
 
@@ -92,7 +93,7 @@ function defaultMessageListLayout(
          paddingTop: 10,
          paddingBottom: 10,
          width: '100%',
-         height: 120,
+         height: 150,
          borderStyle: 'solid',
          borderColor: 'lightgray',
          borderTopWidth: 1
@@ -130,8 +131,8 @@ function defaultMessageListLayout(
             {iconURL ? <Image style={{ height: 80, width: 80 }} source={{ uri: iconURL }} /> : null}
          </View>
          <View style={messageContainer as ViewStyle}>
-            <Text style={title}>{messageTitle as TextStyle}</Text>
-            <Text numberOfLines={2} ellipsizeMode='tail' style={body as TextStyle}>{messageBody}</Text>
+            <Text numberOfLines={1} ellipsizeMode='tail' style={title}>{messageTitle as TextStyle}</Text>
+            <Text numberOfLines={3} ellipsizeMode='tail' style={body as TextStyle}>{messageBody}</Text>
             <Text style={createdAt}>{messageCreatedAt as TextStyle}</Text>
          </View>
       </View>

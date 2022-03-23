@@ -194,7 +194,7 @@ const IterableInboxMessageDisplay = ({
             </View>  
             <View style={messageTitleContainer}>
                <View style={styles.messageTitle}>
-                  <Text style={messageTitleText}>{messageTitle}</Text>
+                  <Text numberOfLines={1} ellipsizeMode='tail' style={messageTitleText}>{messageTitle}</Text>
                </View>
             </View>
          </View>
