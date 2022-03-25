@@ -122,8 +122,6 @@ const IterableInboxMessageDisplay = ({
       messageDisplayContainer
    } = styles
 
-   //let updatedMessageDisplayContainer = { ...messageDisplayContainer, }
-
    // orientation dependent styling
    returnButtonContainer = (!isPortrait) ? { ...returnButtonContainer, marginLeft: 40 } : returnButtonContainer
 
