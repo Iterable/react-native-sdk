@@ -48,6 +48,7 @@ const IterableInboxMessageDisplay = ({
    const styles = StyleSheet.create({
       messageDisplayContainer: {
          height: '100%',
+         width: contentWidth, 
          backgroundColor: 'whitesmoke',
          flexDirection: 'column',
          justifyContent: 'flex-start'
@@ -121,7 +122,7 @@ const IterableInboxMessageDisplay = ({
       messageDisplayContainer
    } = styles
 
-   let updatedMessageDisplayContainer = { ...messageDisplayContainer, width: contentWidth }
+   //let updatedMessageDisplayContainer = { ...messageDisplayContainer, }
 
    // orientation dependent styling
    returnButtonContainer = (!isPortrait) ? { ...returnButtonContainer, marginLeft: 40 } : returnButtonContainer
@@ -177,7 +178,7 @@ const IterableInboxMessageDisplay = ({
    }
 
    return (
-      <View style={updatedMessageDisplayContainer}>
+      <View style={messageDisplayContainer}>
          <View style={header}>
             <View style={returnButtonContainer}>
                <TouchableWithoutFeedback 
