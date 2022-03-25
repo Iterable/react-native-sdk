@@ -1,10 +1,10 @@
 'use strict'
 
 import React, { useCallback, useRef, useState } from 'react'
-import { 
+import {
    ViewabilityConfig, 
    ViewToken, 
-   FlatList 
+   FlatList
 } from 'react-native'
 
 import {

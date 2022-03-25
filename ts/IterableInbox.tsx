@@ -11,6 +11,8 @@ import {
    Platform
 } from 'react-native'
 
+import { SafeAreaView } from 'react-native-safe-area-context'
+
 import {
    IterableInboxCustomizations,
    useAppStateListener,
@@ -55,7 +57,6 @@ const IterableInbox = ({
    const appState = useAppStateListener()
    const isFocused = useIsFocused()
 
-   const [screenWidth, setScreenWidth] = useState<number>(width)
    const [selectedRowViewModelIdx, setSelectedRowViewModelIdx] = useState<number>(0)
    const [rowViewModels, setRowViewModels] = useState<InboxRowViewModel[]>([])
    const [loading, setLoading] = useState<boolean>(true)
@@ -64,21 +65,53 @@ const IterableInbox = ({
    
    const [visibleMessageImpressions, setVisibleMessageImpressions] = useState<InboxImpressionRowInfo[]>([])
 
+   const styles = StyleSheet.create({
+      loadingScreen: {
+         height: '100%',
+         backgroundColor: 'whitesmoke'
+      },
+   
+      container: {
+         flex: 1,
+         flexDirection: 'row',
+         alignItems: 'center',
+         justifyContent: 'flex-start',
+         height: '100%',
+         width: 2 * width,
+         paddingBottom: 0,
+         paddingLeft: 0,
+         paddingRight: 0
+      },
+   
+      messageListContainer: {
+         height: '100%',
+         width: width,
+         flexDirection: 'column',
+         justifyContent: 'flex-start',
+      },
+   
+      headline: {
+         fontWeight: 'bold',
+         fontSize: 40,
+         width: '100%',
+         height: 60,
+         marginTop: 0,
+         paddingTop: 10,
+         paddingBottom: 10,
+         paddingLeft: 30,
+         backgroundColor: 'whitesmoke'
+      }
+   })
+
    let {
       loadingScreen,
       container,
-      headline
+      headline,
+      messageListContainer
    } = styles
 
    const navTitleHeight = headline.height + headline.paddingTop + headline.paddingBottom
-   const updatedContainer = { ...container, width: 2 * width, height: height - navTitleHeight - 40 }
-   const messageListContainer = { width: width }
-
    headline = { ...headline, height: Platform.OS === "android" ? 70 : 60 }
-
-   headline = (isPortrait) ?
-      { ...headline, marginTop: Platform.OS === "android" ? 0 : 40 } :
-      { ...headline, paddingLeft: 65 }
 
    useEffect(() => {
       fetchInboxMessages()
@@ -100,7 +133,6 @@ const IterableInbox = ({
    }, [appState])
 
    useEffect(() => {
-      setScreenWidth(width)
       if (isMessageDisplay) {
          slideLeft()
       }
@@ -249,54 +281,28 @@ const IterableInbox = ({
    }
 
    return(
-      <View style={updatedContainer}>
+      <SafeAreaView style={container}>
          <Animated.View
             style={{
                transform: [
                   {
                      translateX: animatedValue.interpolate({
                         inputRange: [0, 1],
-                        outputRange: [0, -screenWidth]
+                        outputRange: [0, -width]
                      })
                   }
                ],
-               height: "100%",
+               height: '100%',
                flexDirection: 'row',
-               width: 2 * screenWidth,
-               justifyContent: "flex-start",
+               width: 2 * width,
+               justifyContent: 'flex-start'
             }}
          >
             {showMessageList(loading)}
             {showMessageDisplay(rowViewModels, selectedRowViewModelIdx)}
          </Animated.View>
-      </View>
+      </SafeAreaView>
    )
 }
-
-const styles = StyleSheet.create({
-   loadingScreen: {
-      height: '100%',
-      backgroundColor: 'whitesmoke'
-   },
-
-   container: {
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'flex-start'
-   },
-
-   headline: {
-      fontWeight: 'bold',
-      fontSize: 40,
-      width: '100%',
-      height: 60,
-      marginTop: 0,
-      paddingTop: 10,
-      paddingBottom: 10,
-      paddingLeft: 30,
-      backgroundColor: 'whitesmoke'
-   }
-})
 
 export default IterableInbox

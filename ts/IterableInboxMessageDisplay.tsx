@@ -48,6 +48,7 @@ const IterableInboxMessageDisplay = ({
    const styles = StyleSheet.create({
       messageDisplayContainer: {
          height: '100%',
+         width: contentWidth, 
          backgroundColor: 'whitesmoke',
          flexDirection: 'column',
          justifyContent: 'flex-start'
@@ -64,7 +65,8 @@ const IterableInboxMessageDisplay = ({
          justifyContent: 'flex-start',
          alignItems: 'center',
          width: '25%',
-         marginTop: 40,
+         marginLeft: 0,
+         marginTop: 0
       },
 
       returnButton: {
@@ -88,7 +90,7 @@ const IterableInboxMessageDisplay = ({
          justifyContent: 'flex-start',
          alignItems: 'center',
          width: '75%',
-         marginTop: 40,
+         marginTop: 0
       },
 
       messageTitle: {
@@ -120,16 +122,8 @@ const IterableInboxMessageDisplay = ({
       messageDisplayContainer
    } = styles
 
-   let updatedMessageDisplayContainer = { ...messageDisplayContainer, width: contentWidth }
-
-   // platform dependent styling
-   returnButtonContainer = { ...returnButtonContainer, marginTop: Platform.OS === 'android' ? 0 : 40 }
-   messageTitleContainer = { ...messageTitleContainer, marginTop: Platform.OS === 'android' ? 0 : 40 }
-
    // orientation dependent styling
-   returnButtonIcon = (!isPortrait) ? { ...returnButtonIcon, paddingLeft: 40 } : returnButtonIcon
-   returnButtonContainer = (!isPortrait) ? { ...returnButtonContainer, marginTop: 0 } : returnButtonContainer
-   messageTitleContainer = (!isPortrait) ? { ...messageTitleContainer, marginTop: 0 } : messageTitleContainer
+   returnButtonContainer = (!isPortrait) ? { ...returnButtonContainer, marginLeft: 40 } : returnButtonContainer
 
    let JS = `
       const links = document.querySelectorAll('a')
@@ -182,7 +176,7 @@ const IterableInboxMessageDisplay = ({
    }
 
    return (
-      <View style={updatedMessageDisplayContainer}>
+      <View style={messageDisplayContainer}>
          <View style={header}>
             <View style={returnButtonContainer}>
                <TouchableWithoutFeedback 
@@ -199,7 +193,7 @@ const IterableInboxMessageDisplay = ({
             </View>  
             <View style={messageTitleContainer}>
                <View style={styles.messageTitle}>
-                  <Text style={messageTitleText}>{messageTitle}</Text>
+                  <Text numberOfLines={1} ellipsizeMode='tail' style={messageTitleText}>{messageTitle}</Text>
                </View>
             </View>
          </View>

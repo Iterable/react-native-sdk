@@ -70,6 +70,7 @@ function defaultMessageListLayout(
 
       title: {
          fontSize: 22,
+         width: '85%',
          paddingBottom: 10
       },
 
@@ -92,7 +93,7 @@ function defaultMessageListLayout(
          paddingTop: 10,
          paddingBottom: 10,
          width: '100%',
-         height: 120,
+         height: 150,
          borderStyle: 'solid',
          borderColor: 'lightgray',
          borderTopWidth: 1
@@ -130,8 +131,8 @@ function defaultMessageListLayout(
             {iconURL ? <Image style={{ height: 80, width: 80 }} source={{ uri: iconURL }} /> : null}
          </View>
          <View style={messageContainer as ViewStyle}>
-            <Text style={title}>{messageTitle as TextStyle}</Text>
-            <Text numberOfLines={2} ellipsizeMode='tail' style={body as TextStyle}>{messageBody}</Text>
+            <Text numberOfLines={1} ellipsizeMode='tail' style={title}>{messageTitle as TextStyle}</Text>
+            <Text numberOfLines={3} ellipsizeMode='tail' style={body as TextStyle}>{messageBody}</Text>
             <Text style={createdAt}>{messageCreatedAt as TextStyle}</Text>
          </View>
       </View>
@@ -235,18 +236,27 @@ const IterableInboxMessageCell = ({
    const panResponder = useRef(
       PanResponder.create({
          onStartShouldSetPanResponder: () => false,
-         onMoveShouldSetPanResponder: () => true,
+         onMoveShouldSetPanResponder: (event, gestureState) => {
+            const { dx, dy } = gestureState
+            // return true if user is swiping, return false if it's a single click
+            return Math.abs(dx) !== 0 && Math.abs(dy) !== 0
+         },
+         onMoveShouldSetPanResponderCapture: (event, gestureState) => {
+            const { dx, dy } = gestureState
+            // return true if user is swiping, return false if it's a single click
+            return Math.abs(dx) !== 0 && Math.abs(dy) !== 0
+         },
          onPanResponderTerminationRequest: () => false,
          onPanResponderGrant: () => {
             position.setValue({ x: 0, y: 0 })
          },
          onPanResponderMove: (event, gesture) => {
-            if (gesture.dx <= -scrollThreshold) {
+            if (gesture.dx <= 0) {
                //enables swipeing when threshold is reached
                swipingCheck(true)
 
                //threshold value is deleted from movement
-               const x = gesture.dx + scrollThreshold
+               const x = gesture.dx
                //position is set to the new value
                position.setValue({ x, y: 0 })
             }
@@ -261,7 +271,7 @@ const IterableInboxMessageCell = ({
    ).current
 
    return (
-      <View>
+      <>
          <View style={deleteSlider}>
             <Text style={textStyle}>DELETE</Text>
          </View>
@@ -280,10 +290,8 @@ const IterableInboxMessageCell = ({
                   defaultMessageListLayout(last, dataModel, rowViewModel, customizations, isPortrait)}
             </TouchableOpacity>
          </Animated.View>
-      </View>
+      </>
    )
 }
-
-
 
 export default IterableInboxMessageCell
