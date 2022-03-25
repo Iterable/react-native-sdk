@@ -57,7 +57,6 @@ const IterableInbox = ({
    const appState = useAppStateListener()
    const isFocused = useIsFocused()
 
-   //const [screenWidth, setScreenWidth] = useState<number>(width)
    const [selectedRowViewModelIdx, setSelectedRowViewModelIdx] = useState<number>(0)
    const [rowViewModels, setRowViewModels] = useState<InboxRowViewModel[]>([])
    const [loading, setLoading] = useState<boolean>(true)

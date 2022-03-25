@@ -251,12 +251,12 @@ const IterableInboxMessageCell = ({
             position.setValue({ x: 0, y: 0 })
          },
          onPanResponderMove: (event, gesture) => {
-            if (gesture.dx <= -scrollThreshold) {
+            if (gesture.dx <= 0) {
                //enables swipeing when threshold is reached
                swipingCheck(true)
 
                //threshold value is deleted from movement
-               const x = gesture.dx + scrollThreshold
+               const x = gesture.dx
                //position is set to the new value
                position.setValue({ x, y: 0 })
             }
