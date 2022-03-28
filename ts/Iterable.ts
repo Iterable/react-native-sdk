@@ -414,10 +414,11 @@ class Iterable {
   * 
   * @param email the new email to set
   */
-  static updateEmail(email: string) {
-    console.log("updateEmail")
-    RNIterableAPI.updateEmail(email)
-  }
+   static updateEmail(email: string): Promise<void> {
+    return RNIterableAPI.updateEmail(email).catch((e: string) => {
+        throw new Error(e) 
+    })
+  } 
 
   /**
   * 

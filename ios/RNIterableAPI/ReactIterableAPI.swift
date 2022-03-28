@@ -290,11 +290,18 @@ class ReactIterableAPI: RCTEventEmitter {
         IterableAPI.updateUser(dataFields, mergeNestedObjects: mergeNestedObjects)
     }
 
-    @objc(updateEmail:)
-    func updateEmail(email: String) {
+    @objc(updateEmail:resolver:rejecter:)
+    func updateEmail(email: String, resolver: @escaping RCTPromiseResolveBlock, rejecter: @escaping RCTPromiseRejectBlock) {
+        let resolve = resolver
+        let reject = rejecter
         ITBInfo()
-        
-        IterableAPI.updateEmail(email, onSuccess: nil, onFailure: nil)
+        func onSuccess(_ data: [AnyHashable: Any]?) {
+            resolve(data)
+         }
+        func onFailure(_ reason: String?, _ data: Data?) {
+            reject("", reason, nil)
+        }
+        IterableAPI.updateEmail(email, onSuccess: onSuccess, onFailure: onFailure)
     }
     
     @objc(handleAppLink:resolver:rejecter:)
