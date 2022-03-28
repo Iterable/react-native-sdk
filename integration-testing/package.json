@@ -10,7 +10,7 @@
     "e2e:android-release": "npm run build:android-release && npm run test:android-release"
   },
   "dependencies": {
-    "@iterable/react-native-sdk": "^1.1.1",
+    "@iterable/react-native-sdk": "^1.2.2",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/bottom-tabs": "^5.4.5",
     "@react-navigation/native": "^5.4.0",
