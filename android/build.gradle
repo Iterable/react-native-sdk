@@ -3,11 +3,11 @@ apply plugin: 'com.android.library'
 import groovy.json.JsonSlurper
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 30
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 28
+        targetSdkVersion 30
 
         buildConfigField("String", "MODULE_VERSION", "\"${getModuleVersion()}\"")
     }
@@ -22,6 +22,6 @@ def getModuleVersion() {
 
 dependencies {
     implementation 'com.facebook.react:react-native:+'
-    api 'com.iterable:iterableapi:3.4.4'
+    api 'com.iterable:iterableapi:3.4.5'
     // api project(':iterableapi') // links to local android SDK repo rather than by release
 }
