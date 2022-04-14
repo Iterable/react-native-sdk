@@ -265,6 +265,9 @@ const IterableInboxMessageCell = ({
             position.flattenOffset()
             if (gesture.dx < 0) {
                userSwipedLeft(gesture)
+            } 
+            else {
+               resetPosition();
             }
          }
       })
