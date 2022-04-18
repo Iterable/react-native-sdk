@@ -168,7 +168,7 @@ const IterableInboxMessageCell = ({
 }: MessageCellProps) => {
    const position = useRef(new Animated.ValueXY()).current
 
-   let deleteSliderHeight = customizations.messageRow?.height ? customizations.messageRow.height: 120
+   let deleteSliderHeight = customizations.messageRow?.height ? customizations.messageRow.height: 150
    
    if(messageListItemLayout(last, rowViewModel)) {
       deleteSliderHeight = messageListItemLayout(last, rowViewModel)[1]
