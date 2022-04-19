@@ -36,7 +36,7 @@ const RNIterableAPI = NativeModules.RNIterableAPI
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
 
 type inboxProps = {
-   returnToInboxTrigger: boolean,
+   returnToInboxTrigger?: boolean,
    messageListItemLayout?: Function,
    customizations?: IterableInboxCustomizations,
    tabBarHeight?: number,
@@ -44,7 +44,7 @@ type inboxProps = {
 }
 
 const IterableInbox = ({
-   returnToInboxTrigger,
+   returnToInboxTrigger = true,
    messageListItemLayout = () => { return null },
    customizations = {} as IterableInboxCustomizations,
    tabBarHeight = 80,
