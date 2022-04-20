@@ -40,7 +40,7 @@ struct IterableAPISupport {
     }
     
     
-    static func sendInApp(apiKey: String, to email: String, withCampaignId campaignId: Int) -> Future<SendRequestValue, SendRequestError> {
+    static func sendInApp(apiKey: String, to email: String, withCampaignId campaignId: Int) -> Pending<SendRequestValue, SendRequestError> {
         let body: [String: Any] = [
             Const.Key.recipientEmail: email,
             Const.Key.campaignId: campaignId
@@ -63,7 +63,7 @@ struct IterableAPISupport {
     private static let maxMessages = 100
     
     private static func getInAppMessages(apiKey: String,
-                                         email: String) -> Future<[IterableInAppMessage], SendRequestError> {
+                                         email: String) -> Pending<[IterableInAppMessage], SendRequestError> {
         var args: [String: String] = [
             JsonKey.email: email,
             JsonKey.InApp.count: maxMessages.description,
@@ -108,10 +108,10 @@ struct IterableAPISupport {
         }
     }
 
-    private static func checkMessagesDone(apiKey: String, email: String, messages: [IterableInAppMessage], attemptsRemaining: Int) -> Future<[IterableInAppMessage], SendRequestError> {
+    private static func checkMessagesDone(apiKey: String, email: String, messages: [IterableInAppMessage], attemptsRemaining: Int) -> Pending<[IterableInAppMessage], SendRequestError> {
         ITBInfo("attemptsRemaining: \(attemptsRemaining), waiting or 1 s...")
         guard messages.count > 0 else {
-            return Promise<[IterableInAppMessage], SendRequestError>(value: [])
+            return Fulfill<[IterableInAppMessage], SendRequestError>(value: [])
         }
         guard attemptsRemaining > 0 else {
             return SendRequestError.createErroredFuture(reason: "Number of attempts exceeded")
@@ -124,21 +124,21 @@ struct IterableAPISupport {
     }
     
     // Call consume one after the other
-    private static func chainCallConsume(apiKey: String, email: String, messages: [IterableInAppMessage]) -> Future<SendRequestValue, SendRequestError> {
+    private static func chainCallConsume(apiKey: String, email: String, messages: [IterableInAppMessage]) -> Pending<SendRequestValue, SendRequestError> {
         guard messages.count > 0 else {
-            return Promise<SendRequestValue, SendRequestError>(value: [:])
+            return Fulfill<SendRequestValue, SendRequestError>(value: [:])
         }
         
-        let result = Promise<SendRequestValue, SendRequestError>(value: [:])
+        let result = Fulfill<SendRequestValue, SendRequestError>(value: [:])
         
-        return messages.reduce(result) { (partialResult, message) -> Future<SendRequestValue, SendRequestError> in
+        return messages.reduce(result) { (partialResult, message) -> Pending<SendRequestValue, SendRequestError> in
             partialResult.flatMap { _ in
                 consumeInAppMessage(apiKey: apiKey, email: email, messageId: message.messageId)
             }
         }
     }
     
-    private static func consumeInAppMessage(apiKey: String, email: String, messageId: String) -> Future<SendRequestValue, SendRequestError> {
+    private static func consumeInAppMessage(apiKey: String, email: String, messageId: String) -> Pending<SendRequestValue, SendRequestError> {
         var body = [AnyHashable: Any]()
         
         body.setValue(for: JsonKey.messageId, value: messageId)
