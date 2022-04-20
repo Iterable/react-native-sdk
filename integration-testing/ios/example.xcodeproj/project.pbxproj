@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4220A76D9E01418EA8F8E9BD /* libPods-example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B032AA4480FF30BB594C1A6C /* libPods-example.a */; };
+		552A0AAD280E2E0A00A80963 /* Pending.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552A0AAC280E2E0A00A80963 /* Pending.swift */; };
 		AC1272892499FCC10006A3C5 /* RNE2E.m in Sources */ = {isa = PBXBuildFile; fileRef = AC1272882499FCC10006A3C5 /* RNE2E.m */; };
 		AC12728B2499FCEC0006A3C5 /* ReactE2E.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC12728A2499FCEC0006A3C5 /* ReactE2E.swift */; };
 		AC12728D249A567D0006A3C5 /* IterableAPISupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC12728C249A567D0006A3C5 /* IterableAPISupport.swift */; };
@@ -33,6 +34,7 @@
 
 /* Begin PBXFileReference section */
 		3C757389F2C6D30D9AAFFFFB /* Pods-example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-example.debug.xcconfig"; path = "Target Support Files/Pods-example/Pods-example.debug.xcconfig"; sourceTree = "<group>"; };
+		552A0AAC280E2E0A00A80963 /* Pending.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pending.swift; sourceTree = "<group>"; };
 		AC1272882499FCC10006A3C5 /* RNE2E.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNE2E.m; sourceTree = "<group>"; };
 		AC12728A2499FCEC0006A3C5 /* ReactE2E.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactE2E.swift; sourceTree = "<group>"; };
 		AC12728C249A567D0006A3C5 /* IterableAPISupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IterableAPISupport.swift; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 				AC1272882499FCC10006A3C5 /* RNE2E.m */,
 				AC12728A2499FCEC0006A3C5 /* ReactE2E.swift */,
 				AC12728C249A567D0006A3C5 /* IterableAPISupport.swift */,
+				552A0AAC280E2E0A00A80963 /* Pending.swift */,
 				ACF93CD724A33A6F004B0745 /* main.jsBundle */,
 			);
 			path = example;
@@ -307,6 +310,7 @@
 				AC12728B2499FCEC0006A3C5 /* ReactE2E.swift in Sources */,
 				AC1272892499FCC10006A3C5 /* RNE2E.m in Sources */,
 				AC12728D249A567D0006A3C5 /* IterableAPISupport.swift in Sources */,
+				552A0AAD280E2E0A00A80963 /* Pending.swift in Sources */,
 				AC27B4692495224E0079F714 /* ViewController.swift in Sources */,
 				AC27B4652495224E0079F714 /* AppDelegate.swift in Sources */,
 			);
