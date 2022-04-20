@@ -123,7 +123,7 @@ const IterableInboxMessageDisplay = ({
    } = styles
 
    // orientation dependent styling
-   returnButtonContainer = (!isPortrait) ? { ...returnButtonContainer, marginLeft: 40 } : returnButtonContainer
+   returnButtonContainer = (!isPortrait) ? { ...returnButtonContainer, marginLeft: 80 } : returnButtonContainer
 
    let JS = `
       const links = document.querySelectorAll('a')
