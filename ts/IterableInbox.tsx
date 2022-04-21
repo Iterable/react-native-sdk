@@ -41,7 +41,7 @@ type inboxProps = {
    customizations?: IterableInboxCustomizations,
    tabBarHeight?: number,
    tabBarPadding?: number,
-   inboxMode?: string
+   safeAreaMode?: boolean
 }
 
 const IterableInbox = ({
@@ -50,7 +50,7 @@ const IterableInbox = ({
    customizations = {} as IterableInboxCustomizations,
    tabBarHeight = 80,
    tabBarPadding = 20,
-   inboxMode = "tab"
+   safeAreaMode = true
 }: inboxProps) => {
    const defaultInboxTitle = "Inbox"
    const inboxDataModel = new IterableInboxDataModel()
@@ -308,9 +308,9 @@ const IterableInbox = ({
    }
 
    return(
-      (inboxMode === "button") ? 
-         <View style={container}>{renderMessageDisplaySlider()}</View> :
-         <SafeAreaView style={container}>{renderMessageDisplaySlider()}</SafeAreaView> 
+      (safeAreaMode) ?
+         <SafeAreaView style={container}>{renderMessageDisplaySlider()}</SafeAreaView> : 
+         <View style={container}>{renderMessageDisplaySlider()}</View> 
    )
 }
 
