@@ -283,7 +283,7 @@ const IterableInbox = ({
       setIsMessageDisplay(true)
    }
 
-   const messageDisplaySlider =
+   const inboxAnimatedView =
       <Animated.View
          style={{
                transform: [
@@ -306,8 +306,8 @@ const IterableInbox = ({
 
    return(
       (safeAreaMode) ?
-         <SafeAreaView style={container}>{messageDisplaySlider}</SafeAreaView> : 
-         <View style={container}>{messageDisplaySlider}</View> 
+         <SafeAreaView style={container}>{inboxAnimatedView}</SafeAreaView> : 
+         <View style={container}>{inboxAnimatedView}</View> 
    )
 }
 
