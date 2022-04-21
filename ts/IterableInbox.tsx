@@ -283,10 +283,9 @@ const IterableInbox = ({
       setIsMessageDisplay(true)
    }
 
-   function renderMessageDisplaySlider() {
-      return(
-         <Animated.View
-            style={{
+   const messageDisplaySlider =
+      <Animated.View
+         style={{
                transform: [
                   {
                      translateX: animatedValue.interpolate({
@@ -303,14 +302,12 @@ const IterableInbox = ({
          >
             {showMessageList(loading)}
             {showMessageDisplay(rowViewModels, selectedRowViewModelIdx)}
-         </Animated.View>
-      )
-   }
+      </Animated.View>
 
    return(
       (safeAreaMode) ?
-         <SafeAreaView style={container}>{renderMessageDisplaySlider()}</SafeAreaView> : 
-         <View style={container}>{renderMessageDisplaySlider()}</View> 
+         <SafeAreaView style={container}>{messageDisplaySlider}</SafeAreaView> : 
+         <View style={container}>{messageDisplaySlider}</View> 
    )
 }
 
