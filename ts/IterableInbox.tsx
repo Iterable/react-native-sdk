@@ -40,7 +40,8 @@ type inboxProps = {
    messageListItemLayout?: Function,
    customizations?: IterableInboxCustomizations,
    tabBarHeight?: number,
-   tabBarPadding?: number
+   tabBarPadding?: number,
+   safeAreaMode?: boolean
 }
 
 const IterableInbox = ({
@@ -48,7 +49,8 @@ const IterableInbox = ({
    messageListItemLayout = () => { return null },
    customizations = {} as IterableInboxCustomizations,
    tabBarHeight = 80,
-   tabBarPadding = 20
+   tabBarPadding = 20,
+   safeAreaMode = true
 }: inboxProps) => {
    const defaultInboxTitle = "Inbox"
    const inboxDataModel = new IterableInboxDataModel()
@@ -112,6 +114,7 @@ const IterableInbox = ({
 
    const navTitleHeight = headline.height + headline.paddingTop + headline.paddingBottom
    headline = { ...headline, height: Platform.OS === "android" ? 70 : 60 }
+   headline = (!isPortrait) ? { ...headline, paddingLeft: 70 } : headline
 
    useEffect(() => {
       fetchInboxMessages()
@@ -280,10 +283,9 @@ const IterableInbox = ({
       setIsMessageDisplay(true)
    }
 
-   return(
-      <SafeAreaView style={container}>
-         <Animated.View
-            style={{
+   const inboxAnimatedView =
+      <Animated.View
+         style={{
                transform: [
                   {
                      translateX: animatedValue.interpolate({
@@ -300,8 +302,12 @@ const IterableInbox = ({
          >
             {showMessageList(loading)}
             {showMessageDisplay(rowViewModels, selectedRowViewModelIdx)}
-         </Animated.View>
-      </SafeAreaView>
+      </Animated.View>
+
+   return(
+      (safeAreaMode) ?
+         <SafeAreaView style={container}>{inboxAnimatedView}</SafeAreaView> : 
+         <View style={container}>{inboxAnimatedView}</View> 
    )
 }
 
