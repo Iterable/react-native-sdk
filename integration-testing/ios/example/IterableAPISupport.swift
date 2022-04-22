@@ -39,36 +39,22 @@ struct IterableAPISupport {
         .wait()
     }
     
-    static func sendInApp(to email: String, withCampaignId campaignId: Int) -> Pending<SendRequestValue, SendRequestError> {
+    
+    static func sendInApp(apiKey: String, to email: String, withCampaignId campaignId: Int) -> Pending<SendRequestValue, SendRequestError> {
         let body: [String: Any] = [
             Const.Key.recipientEmail: email,
-            Const.Key.campaignId: campaignId,
+            Const.Key.campaignId: campaignId
         ]
-        let iterablePostRequest = PostRequest(path: Const.Path.sendInApp,
-                                              args: nil,
-                                              body: body)
-        guard let urlRequest = createPostRequest(iterablePostRequest: iterablePostRequest) else {
-            return SendRequestError.createErroredFuture(reason: "could not create post request")
+        
+        guard let request = IterableRequestUtil.createPostRequest(forApiEndPoint: Const.apiEndpoint,
+                                                                  path: Const.Path.sendInApp,
+                                                                  headers: createIterableHeaders(apiKey: apiKey),
+                                                                  body: body) else {
+                                                                    return SendRequestError.createErroredFuture(reason: "Could not create in-app consume request")
         }
         
-        return RequestSender.sendRequest(urlRequest, usingSession: urlSession)
+        return RequestSender.sendRequest(request, usingSession: urlSession)
     }
-    
-//    static func sendInApp(apiKey: String, to email: String, withCampaignId campaignId: Int) -> Pending<SendRequestValue, SendRequestError> {
-//        let body: [String: Any] = [
-//            Const.Key.recipientEmail: email,
-//            Const.Key.campaignId: campaignId
-//        ]
-//
-//        guard let request = IterableRequestUtil.createPostRequest(forApiEndPoint: Const.apiEndpoint,
-//                                                                  path: Const.Path.sendInApp,
-//                                                                  headers: createIterableHeaders(apiKey: apiKey),
-//                                                                  body: body) else {
-//                                                                    return SendRequestError.createErroredFuture(reason: "Could not create in-app consume request")
-//        }
-//
-//        return RequestSender.sendRequest(request, usingSession: urlSession)
-//    }
 
     private static let urlSession: URLSession = {
         return URLSession(configuration: URLSessionConfiguration.default)
