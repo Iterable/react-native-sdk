@@ -122,6 +122,7 @@ const IterableInbox = ({
 
       return () => {
          removeInboxChangedListener()
+         inboxDataModel.endSession(visibleMessageImpressions)
       }
    }, [])
 
