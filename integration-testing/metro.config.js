@@ -1,12 +1,17 @@
-let createBlacklist;
-try {
-  createBlacklist = require('metro-config/src/defaults/blacklist');
-} catch (ex) {
-  createBlacklist = require('metro-bundler').createBlacklist;
-}
+/**
+ * Metro configuration for React Native
+ * https://github.com/facebook/react-native
+ *
+ * @format
+ */
 
 module.exports = {
-  resolver: {
-    blacklistRE: createBlacklist([/test\/.*/, /detox\/node_modules\/.*/]),
+  transformer: {
+    getTransformOptions: async () => ({
+      transform: {
+        experimentalImportSupport: false,
+        inlineRequires: false,
+      },
+    }),
   },
 };
