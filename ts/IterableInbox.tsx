@@ -123,6 +123,7 @@ const IterableInbox = ({
       return () => {
          removeInboxChangedListener()
          inboxDataModel.endSession(visibleMessageImpressions)
+         console.log("end session")
       }
    }, [])
 
@@ -132,6 +133,7 @@ const IterableInbox = ({
             inboxDataModel.startSession(visibleMessageImpressions)
          } else if(appState === 'background' && Platform.OS === 'android' || appState === 'inactive') {
             inboxDataModel.endSession(visibleMessageImpressions)
+            console.log("end session")
          }
       }
    }, [appState])
@@ -148,6 +150,7 @@ const IterableInbox = ({
             inboxDataModel.startSession(visibleMessageImpressions)
          } else {
             inboxDataModel.endSession(visibleMessageImpressions)
+            console.log("end session")
          }
       }
    }, [isFocused])
