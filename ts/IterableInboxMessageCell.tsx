@@ -30,7 +30,7 @@ function defaultMessageListLayout(
    const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title ?? ""
    const messageBody = rowViewModel.inAppMessage.inboxMetadata?.subtitle ?? ""
    const messageCreatedAt = dataModel.getFormattedDate(rowViewModel.inAppMessage) ?? ""
-   const iconURL = rowViewModel.imageUrl
+   const thumbnailURL = rowViewModel.imageUrl
 
    let styles = StyleSheet.create({
       unreadIndicatorContainer: {
@@ -49,13 +49,13 @@ function defaultMessageListLayout(
          marginTop: 10
       },
 
-      unreadMessageIconContainer: {
+      unreadMessageThumbnailContainer: {
          paddingLeft: 10,
          flexDirection: 'column',
          justifyContent: 'center'
       },
 
-      readMessageIconContainer: {
+      readMessageThumbnailContainer: {
          paddingLeft: 30,
          flexDirection: 'column',
          justifyContent: 'center'
@@ -105,8 +105,8 @@ function defaultMessageListLayout(
    let {
       unreadIndicatorContainer,
       unreadIndicator,
-      unreadMessageIconContainer,
-      readMessageIconContainer,
+      unreadMessageThumbnailContainer,
+      readMessageThumbnailContainer,
       messageContainer,
       title,
       body,
@@ -115,7 +115,7 @@ function defaultMessageListLayout(
    } = resolvedStyles
 
    unreadIndicator = (!isPortrait) ? { ...unreadIndicator, marginLeft: 40 } : unreadIndicator
-   readMessageIconContainer = (!isPortrait) ? { ...readMessageIconContainer, paddingLeft: 65 } : readMessageIconContainer
+   readMessageThumbnailContainer = (!isPortrait) ? { ...readMessageThumbnailContainer, paddingLeft: 65 } : readMessageThumbnailContainer
    messageContainer = (!isPortrait) ? { ...messageContainer, width: '90%' } : messageContainer
 
    function messageRowStyle(rowViewModel: InboxRowViewModel) {
@@ -127,8 +127,8 @@ function defaultMessageListLayout(
          <View style={unreadIndicatorContainer as ViewStyle}>
             {rowViewModel.read ? null : <View style={unreadIndicator} />}
          </View>
-         <View style={(rowViewModel.read ? readMessageIconContainer : unreadMessageIconContainer) as ViewStyle}>
-            {iconURL ? <Image style={{ height: 80, width: 80 }} source={{ uri: iconURL }} /> : null}
+         <View style={(rowViewModel.read ? readMessageThumbnailContainer : unreadMessageThumbnailContainer) as ViewStyle}>
+            {thumbnailURL ? <Image style={{ height: 80, width: 80 }} source={{ uri: thumbnailURL }} /> : null}
          </View>
          <View style={messageContainer as ViewStyle}>
             <Text numberOfLines={1} ellipsizeMode='tail' style={title}>{messageTitle as TextStyle}</Text>
