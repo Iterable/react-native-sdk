@@ -9,6 +9,12 @@ import IterableSDK
 
 @objc(ReactIterableAPI)
 class ReactIterableAPI: RCTEventEmitter {
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    // MARK: - React Native Functions
+    
     @objc static override func moduleName() -> String! {
         return "RNIterableAPI"
     }
@@ -26,8 +32,9 @@ class ReactIterableAPI: RCTEventEmitter {
         case handleCustomActionCalled
         case handleInAppCalled
         case handleAuthCalled
+        case receivedIterableInboxChanged
     }
-
+    
     override func supportedEvents() -> [String]! {
         var result = [String]()
         
@@ -50,6 +57,8 @@ class ReactIterableAPI: RCTEventEmitter {
         shouldEmit = false
     }
     
+    // MARK: - Native SDK Functions
+    
     @objc(initializeWithApiKey:config:version:resolver:rejecter:)
     func initialize(apiKey: String,
                     config configDict: [AnyHashable: Any],
@@ -64,7 +73,7 @@ class ReactIterableAPI: RCTEventEmitter {
                    resolver: resolver,
                    rejecter: rejecter)
     }
-
+    
     @objc(initialize2WithApiKey:config:apiEndPointOverride:version:resolver:rejecter:)
     func initialize2(apiKey: String,
                      config configDict: [AnyHashable: Any],
@@ -73,7 +82,7 @@ class ReactIterableAPI: RCTEventEmitter {
                      resolver: @escaping RCTPromiseResolveBlock,
                      rejecter: @escaping RCTPromiseRejectBlock) {
         ITBInfo()
-
+        
         initialize(withApiKey: apiKey,
                    config: configDict,
                    version: version,
@@ -81,7 +90,7 @@ class ReactIterableAPI: RCTEventEmitter {
                    resolver: resolver,
                    rejecter: rejecter)
     }
-
+    
     @objc(setEmail:)
     func set(email: String?) {
         ITBInfo()
@@ -95,7 +104,7 @@ class ReactIterableAPI: RCTEventEmitter {
         
         resolver(IterableAPI.email)
     }
-
+    
     @objc(setUserId:)
     func set(userId: String?) {
         ITBInfo()
@@ -110,6 +119,8 @@ class ReactIterableAPI: RCTEventEmitter {
         resolver(IterableAPI.userId)
     }
     
+    // MARK: - Iterable API Request Functions
+    
     @objc(setInAppShowResponse:)
     func set(inAppShowResponse number: NSNumber) {
         ITBInfo()
@@ -118,7 +129,7 @@ class ReactIterableAPI: RCTEventEmitter {
         
         inAppHandlerSemaphore.signal()
     }
-
+    
     @objc(disableDeviceForCurrentUser)
     func disableDeviceForCurrentUser() {
         ITBInfo()
@@ -132,14 +143,14 @@ class ReactIterableAPI: RCTEventEmitter {
         
         resolver(IterableAPI.lastPushPayload)
     }
-
+    
     @objc(getAttributionInfo:rejecter:)
     func getAttributionInfo(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
         ITBInfo()
         
         resolver(IterableAPI.attributionInfo.map(SerializationUtil.encodableToDictionary))
     }
-
+    
     @objc(setAttributionInfo:)
     func set(attributionInfo dict: [AnyHashable: Any]?) {
         ITBInfo()
@@ -148,7 +159,7 @@ class ReactIterableAPI: RCTEventEmitter {
             IterableAPI.attributionInfo = nil
             return
         }
-
+        
         IterableAPI.attributionInfo = SerializationUtil.dictionaryToDecodable(dict: dict)
     }
     
@@ -197,7 +208,7 @@ class ReactIterableAPI: RCTEventEmitter {
         
         IterableAPI.track(inAppOpen: message, location: InAppLocation.from(number: locationNumber))
     }
-
+    
     @objc(trackInAppClick:location:clickedUrl:)
     func trackInAppClick(messageId: String,
                          location locationNumber: NSNumber,
@@ -211,7 +222,7 @@ class ReactIterableAPI: RCTEventEmitter {
         
         IterableAPI.track(inAppClick: message, location: InAppLocation.from(number: locationNumber), clickedUrl: clickedUrl)
     }
-
+    
     @objc(trackInAppClose:location:source:clickedUrl:)
     func trackInAppClose(messageId: String,
                          location locationNumber: NSNumber,
@@ -235,7 +246,7 @@ class ReactIterableAPI: RCTEventEmitter {
                               clickedUrl: clickedUrl)
         }
     }
-
+    
     @objc(inAppConsume:location:source:)
     func inAppConsume(messageId: String,
                       location locationNumber: NSNumber,
@@ -249,11 +260,11 @@ class ReactIterableAPI: RCTEventEmitter {
         
         if let inAppDeleteSource = InAppDeleteSource.from(number: sourceNumber) {
             IterableAPI.inAppConsume(message: message,
-                              location: InAppLocation.from(number: locationNumber),
-                              source: inAppDeleteSource)
+                                     location: InAppLocation.from(number: locationNumber),
+                                     source: inAppDeleteSource)
         } else {
             IterableAPI.inAppConsume(message: message,
-                              location: InAppLocation.from(number: locationNumber))
+                                     location: InAppLocation.from(number: locationNumber))
         }
     }
     
@@ -275,21 +286,21 @@ class ReactIterableAPI: RCTEventEmitter {
         
         resolver(content.toDict())
     }
-
+    
     @objc(trackEvent:dataFields:)
     func trackEvent(name: String, dataFields: [AnyHashable: Any]?) {
         ITBInfo()
         
         IterableAPI.track(event: name, dataFields: dataFields)
     }
-
+    
     @objc(updateUser:mergeNestedObjects:)
     func updateUser(dataFields: [AnyHashable: Any], mergeNestedObjects: Bool) {
         ITBInfo()
         
         IterableAPI.updateUser(dataFields, mergeNestedObjects: mergeNestedObjects)
     }
-
+    
     @objc(updateEmail:)
     func updateEmail(email: String) {
         ITBInfo()
@@ -300,7 +311,7 @@ class ReactIterableAPI: RCTEventEmitter {
     @objc(handleAppLink:resolver:rejecter:)
     func handle(appLink: String, resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
         ITBInfo()
-
+        
         if let url = URL(string: appLink) {
             resolver(IterableAPI.handle(universalLink: url))
         } else {
@@ -308,28 +319,29 @@ class ReactIterableAPI: RCTEventEmitter {
         }
     }
     
-    // MARK: In-App Manager methods
+    // MARK: - SDK In-App Manager Functions
+    
     @objc(getInAppMessages:rejecter:)
     func getInAppMessages(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
         ITBInfo()
         
         resolver(IterableAPI.inAppManager.getMessages().map{ $0.toDict() })
     }
-
+    
     @objc(getInboxMessages:rejecter:)
     func getInboxMessages(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
         ITBInfo()
         
         resolver(IterableAPI.inAppManager.getInboxMessages().map{ $0.toDict() })
     }
-
+    
     @objc(getUnreadInboxMessagesCount:rejecter:)
     func getUnreadInboxMessagesCount(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
         ITBInfo()
         
         resolver(IterableAPI.inAppManager.getUnreadInboxMessagesCount())
     }
-
+    
     @objc(showMessage:consume:resolver:rejecter:)
     func show(messageId: String, consume: Bool, resolver: @escaping RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
         ITBInfo()
@@ -338,12 +350,12 @@ class ReactIterableAPI: RCTEventEmitter {
             ITBError("Could not find message with id: \(messageId)")
             return
         }
-
+        
         IterableAPI.inAppManager.show(message: message, consume: consume) { (url) in
             resolver(url.map({$0.absoluteString}))
         }
     }
-
+    
     @objc(removeMessage:location:source:)
     func remove(messageId: String, location locationNumber: NSNumber, source sourceNumber: NSNumber) {
         ITBInfo()
@@ -404,6 +416,43 @@ class ReactIterableAPI: RCTEventEmitter {
         }
     }
     
+    // MARK: - SDK Inbox Session Tracking Functions
+    
+    @objc(startSession:)
+    func startSession(visibleRows: [[AnyHashable: Any]]) {
+        let serializedRows = InboxImpressionTracker.RowInfo.rowInfos(from: visibleRows)
+        
+        inboxSessionManager.startSession(visibleRows: serializedRows)
+    }
+    
+    @objc(endSession)
+    func endSession() {
+        guard let sessionInfo = inboxSessionManager.endSession() else {
+            ITBError("Could not find session info")
+            return
+        }
+        
+        let inboxSession = IterableInboxSession(id: sessionInfo.startInfo.id,
+                                                sessionStartTime: sessionInfo.startInfo.startTime,
+                                                sessionEndTime: Date(),
+                                                startTotalMessageCount: sessionInfo.startInfo.totalMessageCount,
+                                                startUnreadMessageCount: sessionInfo.startInfo.unreadMessageCount,
+                                                endTotalMessageCount: IterableAPI.inAppManager.getInboxMessages().count,
+                                                endUnreadMessageCount: IterableAPI.inAppManager.getUnreadInboxMessagesCount(),
+                                                impressions: sessionInfo.impressions.map { $0.toIterableInboxImpression() })
+        
+        IterableAPI.track(inboxSession: inboxSession)
+    }
+    
+    @objc(updateVisibleRows:)
+    func updateVisibleRows(visibleRows: [[AnyHashable: Any]]) {
+        let serializedRows = InboxImpressionTracker.RowInfo.rowInfos(from: visibleRows)
+        
+        inboxSessionManager.updateVisibleRows(visibleRows: serializedRows)
+    }
+    
+    // MARK: - SDK Auth Manager Functions
+    
     @objc(passAlongAuthToken:)
     func passAlong(authToken: String?) {
         ITBInfo()
@@ -412,7 +461,7 @@ class ReactIterableAPI: RCTEventEmitter {
         
         authHandlerSemaphore.signal()
     }
-
+    
     // MARK: Private
     private var shouldEmit = false
     private let _methodQueue = DispatchQueue(label: String(describing: ReactIterableAPI.self))
@@ -424,6 +473,8 @@ class ReactIterableAPI: RCTEventEmitter {
     private var passedAuthToken: String?
     private var authHandlerSemaphore = DispatchSemaphore(value: 0)
     
+    private let inboxSessionManager = InboxSessionManager()
+    
     private func initialize(withApiKey apiKey: String,
                             config configDict: [AnyHashable: Any],
                             version: String,
@@ -434,6 +485,7 @@ class ReactIterableAPI: RCTEventEmitter {
         
         let launchOptions = createLaunchOptions()
         let iterableConfig = IterableConfig.from(dict: configDict)
+        
         if let urlHandlerPresent = configDict["urlHandlerPresent"] as? Bool, urlHandlerPresent == true {
             iterableConfig.urlDelegate = self
         }
@@ -450,6 +502,9 @@ class ReactIterableAPI: RCTEventEmitter {
             iterableConfig.authDelegate = self
         }
         
+        // connect new inbox in-app payloads to the RN SDK
+        NotificationCenter.default.addObserver(self, selector: #selector(receivedIterableInboxChanged), name: Notification.Name.iterableInboxChanged, object: nil)
+        
         DispatchQueue.main.async {
             IterableAPI.initialize2(apiKey: apiKey,
                                     launchOptions: launchOptions,
@@ -457,8 +512,18 @@ class ReactIterableAPI: RCTEventEmitter {
                                     apiEndPointOverride: apiEndPointOverride) { result in
                 resolver(result)
             }
+            
             IterableAPI.setDeviceAttribute(name: "reactNativeSDKVersion", value: version)
         }
+    }
+    
+    @objc(receivedIterableInboxChanged)
+    private func receivedIterableInboxChanged() {
+        guard shouldEmit else {
+            return
+        }
+        
+        sendEvent(withName: EventName.receivedIterableInboxChanged.rawValue, body: nil)
     }
     
     private func createLaunchOptions() -> [UIApplication.LaunchOptionsKey: Any]? {
@@ -471,7 +536,7 @@ class ReactIterableAPI: RCTEventEmitter {
     
     private static func createLaunchOptions(bridgeLaunchOptions: [AnyHashable: Any]?) -> [UIApplication.LaunchOptionsKey: Any]? {
         guard let bridgeLaunchOptions = bridgeLaunchOptions,
-            let remoteNotification = bridgeLaunchOptions[UIApplication.LaunchOptionsKey.remoteNotification.rawValue] else {
+              let remoteNotification = bridgeLaunchOptions[UIApplication.LaunchOptionsKey.remoteNotification.rawValue] else {
             return nil
         }
         
@@ -497,7 +562,7 @@ extension ReactIterableAPI: IterableURLDelegate {
         
         return true
     }
-
+    
     private static func contextToDictionary(context: IterableActionContext) -> [AnyHashable: Any] {
         var result = [AnyHashable: Any]()
         
@@ -532,7 +597,9 @@ extension ReactIterableAPI: IterableCustomActionDelegate {
         let actionDict = ReactIterableAPI.actionToDictionary(action: action)
         let contextDict = ReactIterableAPI.contextToDictionary(context: context)
         
-        sendEvent(withName: EventName.handleCustomActionCalled.rawValue, body: ["action": actionDict, "context": contextDict])
+        sendEvent(withName: EventName.handleCustomActionCalled.rawValue,
+                  body: ["action": actionDict,
+                         "context": contextDict])
         
         return true
     }
@@ -546,8 +613,9 @@ extension ReactIterableAPI: IterableInAppDelegate {
             return .show
         }
         
-        let messageDict = message.toDict()
-        sendEvent(withName: EventName.handleInAppCalled.rawValue, body: messageDict)
+        sendEvent(withName: EventName.handleInAppCalled.rawValue,
+                  body: message.toDict())
+        
         let timeoutResult = inAppHandlerSemaphore.wait(timeout: .now() + 2.0)
         
         if timeoutResult == .success {
@@ -566,7 +634,7 @@ extension ReactIterableAPI: IterableAuthDelegate {
         
         DispatchQueue.global(qos: .userInitiated).async {
             self.sendEvent(withName: EventName.handleAuthCalled.rawValue,
-                      body: nil)
+                           body: nil)
             
             let authTokenRetrievalResult = self.authHandlerSemaphore.wait(timeout: .now() + 30.0)
             

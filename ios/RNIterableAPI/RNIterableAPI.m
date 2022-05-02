@@ -7,7 +7,8 @@
 
 @interface RCT_EXTERN_REMAP_MODULE(RNIterableAPI, ReactIterableAPI, NSObject)
 
-// MARK: - SDK Functions
+// MARK: - Native SDK Functions
+
 RCT_EXTERN_METHOD(initializeWithApiKey: (nonnull NSString *) apiKey
                   config: (nonnull NSDictionary *) config
                   version: (nonnull NSString *) version
@@ -20,7 +21,7 @@ RCT_EXTERN_METHOD(initialize2WithApiKey: (nonnull NSString *) apiKey
                   version: (nonnull NSString *) version
                   resolver: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
-                                
+
 RCT_EXTERN_METHOD(setEmail: (NSString *) email)
 
 RCT_EXTERN_METHOD(getEmail: (RCTPromiseResolveBlock) resolve
@@ -32,6 +33,7 @@ RCT_EXTERN_METHOD(getUserId: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
 
 // MARK: - Iterable API Request Functions
+
 RCT_EXTERN_METHOD(disableDeviceForCurrentUser)
 
 RCT_EXTERN_METHOD(setInAppShowResponse: (nonnull NSNumber *) inAppShowResponse)
@@ -119,6 +121,14 @@ RCT_EXTERN_METHOD(setReadForMessage: (nonnull NSString *) messageId
                   read: (BOOL) read)
 
 RCT_EXTERN_METHOD(setAutoDisplayPaused: (BOOL) paused)
+
+// MARK: - SDK Inbox Session Tracking Functions
+
+RCT_EXTERN_METHOD(startSession: (nonnull NSArray *) visibleRows)
+
+RCT_EXTERN_METHOD(endSession)
+
+RCT_EXTERN_METHOD(updateVisibleRows: (nonnull NSArray *) visibleRows)
 
 // MARK: - SDK Auth Manager Functions
 

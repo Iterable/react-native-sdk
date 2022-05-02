@@ -6,13 +6,14 @@ import { NativeEventEmitter } from 'react-native'
 import {
   Iterable,
   IterableAttributionInfo,
-  IterableConfig,
   IterableCommerceItem,
   IterableActionContext,
   EventName,
   IterableAction,
   IterableActionSource
 } from '../Iterable'
+
+import IterableConfig from '../IterableConfig'
 
 beforeEach(() => {
   jest.clearAllMocks()
