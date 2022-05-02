@@ -116,49 +116,48 @@ const IterableInbox = ({
    headline = { ...headline, height: Platform.OS === "android" ? 70 : 60 }
    headline = (!isPortrait) ? { ...headline, paddingLeft: 70 } : headline
 
+   //fetches inbox messages and adds listener for inbox changes on mount
    useEffect(() => {
       fetchInboxMessages()
       addInboxChangedListener()
 
+      //removes listener for inbox changes on unmount and ends inbox session
       return () => {
          removeInboxChangedListener()
          inboxDataModel.endSession(visibleMessageImpressions)
-         console.log("end session")
       }
    }, [])
 
+   //starts session when user is on inbox and app is active
+   //ends session when app is in background or app is closed
    useEffect(() => {
       if(isFocused) {
          if(appState === 'active') {
             inboxDataModel.startSession(visibleMessageImpressions)
          } else if(appState === 'background' && Platform.OS === 'android' || appState === 'inactive') {
             inboxDataModel.endSession(visibleMessageImpressions)
-            console.log("end session")
          }
       }
    }, [appState])
 
-   useEffect(() => {
-      if (isMessageDisplay) {
-         slideLeft()
-      }
-   }, [width])
-
+   //starts session when user is on inbox
+   //ends session when user navigates away from inbox
    useEffect(() => {
       if(appState === 'active') {
          if(isFocused) {
             inboxDataModel.startSession(visibleMessageImpressions)
          } else {
             inboxDataModel.endSession(visibleMessageImpressions)
-            console.log("end session")
          }
       }
    }, [isFocused])
 
+   //updates the visible rows when visible messages changes
    useEffect(() => {
       inboxDataModel.updateVisibleRows(visibleMessageImpressions)
    }, [visibleMessageImpressions])
 
+   //if return to inbox trigger is provided, runs the return to inbox animation whenever the trigger is toggled
    useEffect(() => {
       if(isMessageDisplay) {
          returnToInbox()
