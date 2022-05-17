@@ -41,7 +41,8 @@ type inboxProps = {
    customizations?: IterableInboxCustomizations,
    tabBarHeight?: number,
    tabBarPadding?: number,
-   safeAreaMode?: boolean
+   safeAreaMode?: boolean,
+   showNavTitle?: boolean
 }
 
 const IterableInbox = ({
@@ -50,7 +51,8 @@ const IterableInbox = ({
    customizations = {} as IterableInboxCustomizations,
    tabBarHeight = 80,
    tabBarPadding = 20,
-   safeAreaMode = true
+   safeAreaMode = true,
+   showNavTitle = true
 }: inboxProps) => {
    const defaultInboxTitle = "Inbox"
    const inboxDataModel = new IterableInboxDataModel()
@@ -243,9 +245,11 @@ const IterableInbox = ({
    function showMessageList(loading: boolean) {
       return (
          <View style={messageListContainer}>
-            <Text style={headline}>
-               {customizations?.navTitle ? customizations?.navTitle : defaultInboxTitle}
-            </Text>
+            {showNavTitle ?
+               <Text style={headline}>
+                  {customizations?.navTitle ? customizations?.navTitle : defaultInboxTitle}
+               </Text> 
+               : null}
             {rowViewModels.length ?
                <IterableInboxMessageList
                   dataModel={inboxDataModel}
@@ -289,22 +293,22 @@ const IterableInbox = ({
    const inboxAnimatedView =
       <Animated.View
          style={{
-               transform: [
-                  {
-                     translateX: animatedValue.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [0, -width]
-                     })
-                  }
-               ],
-               height: '100%',
-               flexDirection: 'row',
-               width: 2 * width,
-               justifyContent: 'flex-start'
-            }}
-         >
-            {showMessageList(loading)}
-            {showMessageDisplay(rowViewModels, selectedRowViewModelIdx)}
+            transform: [
+               {
+                  translateX: animatedValue.interpolate({
+                     inputRange: [0, 1],
+                     outputRange: [0, -width]
+                  })
+               }
+            ],
+            height: '100%',
+            flexDirection: 'row',
+            width: 2 * width,
+            justifyContent: 'flex-start'
+         }}
+      >
+         {showMessageList(loading)}
+         {showMessageDisplay(rowViewModels, selectedRowViewModelIdx)}
       </Animated.View>
 
    return(
