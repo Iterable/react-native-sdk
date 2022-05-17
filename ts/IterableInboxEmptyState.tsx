@@ -39,7 +39,7 @@ const IterableInboxEmptyState = ({
       body
    } = styles
 
-   // container = { ...container, height: height - navTitleHeight - tabBarHeight - tabBarPadding }
+   container = { ...container, height: height - navTitleHeight - tabBarHeight - tabBarPadding }
 
    if (!isPortrait) {
       container = { ...container, height: height - navTitleHeight }
@@ -59,7 +59,7 @@ const IterableInboxEmptyState = ({
 
 const styles = StyleSheet.create({
    container: {
-      height: '100%',
+      height: 0,
       backgroundColor: 'whitesmoke',
       flexDirection: 'column',
       justifyContent: 'center',
