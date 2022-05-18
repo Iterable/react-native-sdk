@@ -122,16 +122,10 @@ enum EventName {
 }
 
 class Iterable {
-  /**
-  * inAppManager instance
-  */
   static inAppManager = new IterableInAppManager()
 
   static logger = new IterableLogger()
   
-  /**
-   * savedConfig instance.
-   */ 
   static savedConfig: IterableConfig
 
   /**
@@ -143,7 +137,7 @@ class Iterable {
     Iterable.logger.log("initialize: " + apiKey)
 
     Iterable.savedConfig = config
-    
+
     this.setupEventHandlers()
     const version = this.getVersionFromPackageJson()
 
@@ -158,6 +152,7 @@ class Iterable {
     Iterable.logger.log("initialize2: " + apiKey);
 
     Iterable.savedConfig = config
+    
     this.setupEventHandlers()
     const version = this.getVersionFromPackageJson()
 
