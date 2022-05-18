@@ -134,9 +134,9 @@ class Iterable {
   * @param {IterableConfig} config
   */
   static initialize(apiKey: string, config: IterableConfig = new IterableConfig()): Promise<boolean> {
-    Iterable.logger.log("initialize: " + apiKey)
-
     Iterable.savedConfig = config
+
+    Iterable.logger.log("initialize: " + apiKey)
 
     this.setupEventHandlers()
     const version = this.getVersionFromPackageJson()

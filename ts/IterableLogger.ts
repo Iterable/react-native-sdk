@@ -1,12 +1,10 @@
-// move IterableLogLevel to here?
-// rename to differentiate native and RN SDK logging levels?
+import { Iterable } from "./Iterable"
 
 class IterableLogger {
-    // RN level logging here
-    // RN logging on/off here
-
     log(message: String) {
-        console.log(message)
+        if (Iterable.savedConfig.logReactNativeSdkCalls) {
+            console.log(message)
+        }
     }
 }
 
