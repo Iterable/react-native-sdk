@@ -3,8 +3,13 @@ import { MockLinking } from '../__mocks__/MockLinking'
 import { TestHelper } from './TestHelper'
 import { NativeEventEmitter } from 'react-native'
 
+// import from the same location that consumers import from
 import {
   Iterable,
+  IterableConfig
+} from '../index'
+
+import {
   IterableAttributionInfo,
   IterableCommerceItem,
   IterableActionContext,
@@ -12,8 +17,6 @@ import {
   IterableAction,
   IterableActionSource
 } from '../Iterable'
-
-import IterableConfig from '../IterableConfig'
 
 beforeEach(() => {
   jest.clearAllMocks()

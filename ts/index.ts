@@ -5,6 +5,8 @@
 * @module react-native-iterable-sdk
 */
 
+import { Iterable } from './Iterable'
+
 import { 
   IterableAction, 
   IterableActionContext, 
@@ -34,7 +36,11 @@ import useAppStateListener from './useAppStateListener'
 import useDeviceOrientation from './useDeviceOrientation'
 import InboxImpressionRowInfo from './InboxImpressionRowInfo'
 
+import IterableConfig from './IterableConfig'
+
 export {
+  Iterable,
+  IterableConfig,
   IterableAction,
   IterableActionContext,
   IterableLogLevel,
