@@ -2,7 +2,9 @@ import { Iterable } from "./Iterable"
 
 class IterableLogger {
     log(message: String) {
-        if (Iterable.savedConfig.logReactNativeSdkCalls) {
+        var loggingEnabled = Iterable.savedConfig?.logReactNativeSdkCalls ?? true
+
+        if (loggingEnabled) {
             console.log(message)
         }
     }
