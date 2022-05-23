@@ -124,7 +124,7 @@ enum EventName {
 class Iterable {
   static inAppManager = new IterableInAppManager()
 
-  static logger = new IterableLogger()
+  static logger: IterableLogger
   
   static savedConfig: IterableConfig
 
@@ -135,6 +135,8 @@ class Iterable {
   */
   static initialize(apiKey: string, config: IterableConfig = new IterableConfig()): Promise<boolean> {
     Iterable.savedConfig = config
+
+    Iterable.logger = new IterableLogger(Iterable.savedConfig)
 
     Iterable.logger.log("initialize: " + apiKey)
 
@@ -149,9 +151,11 @@ class Iterable {
   * This method is used internally to connect to staging environment.
   */
   static initialize2(apiKey: string, config: IterableConfig = new IterableConfig(), apiEndPoint: string): Promise<boolean> {
-    Iterable.logger.log("initialize2: " + apiKey);
-
     Iterable.savedConfig = config
+
+    Iterable.logger = new IterableLogger(Iterable.savedConfig)
+
+    Iterable.logger.log("initialize2: " + apiKey);
     
     this.setupEventHandlers()
     const version = this.getVersionFromPackageJson()

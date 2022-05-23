@@ -70,7 +70,7 @@ class IterableConfig {
    * This is for calls within the React Native layer, and is separate from `logLevel`
    * which affects the Android and iOS native SDKs
    */
-  logReactNativeSdkCalls: boolean = true
+  logReactNativeSdkCalls: boolean = false
 
   /**
    * Set the amount of time (in seconds) before the current auth token expires to make a call to retrieve a new one
