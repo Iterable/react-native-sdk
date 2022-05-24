@@ -394,7 +394,7 @@ class Iterable {
     subscribedMessageTypeIds: Array<number> | undefined,
     campaignId: number,
     templateId: number) {
-    console.log("updateSubscriptions")
+    Iterable.logger.log("updateSubscriptions")
     RNIterableAPI.updateSubscriptions(emailListIds, unsubscribedChannelIds, unsubscribedMessageTypeIds, subscribedMessageTypeIds, campaignId, templateId)
   }
 
