@@ -16,6 +16,7 @@ import {
 import IterableInAppManager from './IterableInAppManager'
 import IterableInAppMessage from './IterableInAppMessage'
 import IterableConfig from './IterableConfig'
+import { IterableLogger } from './IterableLogger'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI)
@@ -121,15 +122,10 @@ enum EventName {
 }
 
 class Iterable {
-  /**
-  * inAppManager instance
-  */
   static inAppManager = new IterableInAppManager()
 
+  static logger: IterableLogger
   
-  /**
-   * savedConfig instance.
-   */ 
   static savedConfig: IterableConfig
 
   /**
@@ -138,9 +134,12 @@ class Iterable {
   * @param {IterableConfig} config
   */
   static initialize(apiKey: string, config: IterableConfig = new IterableConfig()): Promise<boolean> {
-    console.log("initialize: " + apiKey);
-
     Iterable.savedConfig = config
+
+    Iterable.logger = new IterableLogger(Iterable.savedConfig)
+
+    Iterable.logger.log("initialize: " + apiKey)
+
     this.setupEventHandlers()
     const version = this.getVersionFromPackageJson()
 
@@ -152,9 +151,12 @@ class Iterable {
   * This method is used internally to connect to staging environment.
   */
   static initialize2(apiKey: string, config: IterableConfig = new IterableConfig(), apiEndPoint: string): Promise<boolean> {
-    console.log("initialize2: " + apiKey);
-
     Iterable.savedConfig = config
+
+    Iterable.logger = new IterableLogger(Iterable.savedConfig)
+
+    Iterable.logger.log("initialize2: " + apiKey);
+    
     this.setupEventHandlers()
     const version = this.getVersionFromPackageJson()
 
@@ -166,7 +168,8 @@ class Iterable {
   * @param {string | undefined} email the email address of the user
   */
   static setEmail(email: string | undefined) {
-    console.log("setEmail: " + email)
+    Iterable.logger.log("setEmail: " + email)
+
     RNIterableAPI.setEmail(email)
   }
 
@@ -174,7 +177,8 @@ class Iterable {
    * Get the email of the current user
    */
   static getEmail(): Promise<string | undefined> {
-    console.log("getEmail")
+    Iterable.logger.log("getEmail")
+
     return RNIterableAPI.getEmail()
   }
 
@@ -183,7 +187,8 @@ class Iterable {
   * @param {string | undefined} userId the ID of the user
   */
   static setUserId(userId: string | undefined) {
-    console.log("setUserId: " + userId)
+    Iterable.logger.log("setUserId: " + userId)
+
     RNIterableAPI.setUserId(userId)
   }
 
@@ -191,7 +196,8 @@ class Iterable {
    * Get the user ID of the current user
    */
   static getUserId(): Promise<string | undefined> {
-    console.log("getUserId")
+    Iterable.logger.log("getUserId")
+
     return RNIterableAPI.getUserId()
   }
 
@@ -199,7 +205,8 @@ class Iterable {
    * 
    */
   static disableDeviceForCurrentUser() {
-    console.log("disableDeviceForCurrentUser")
+    Iterable.logger.log("disableDeviceForCurrentUser")
+
     RNIterableAPI.disableDeviceForCurrentUser()
   }
 
@@ -207,7 +214,8 @@ class Iterable {
    * 
    */
   static getLastPushPayload(): Promise<any | undefined> {
-    console.log("getLastPushPayload")
+    Iterable.logger.log("getLastPushPayload")
+
     return RNIterableAPI.getLastPushPayload()
   }
 
@@ -215,7 +223,8 @@ class Iterable {
    * 
    */
   static getAttributionInfo(): Promise<IterableAttributionInfo | undefined> {
-    console.log("getAttributionInfo")
+    Iterable.logger.log("getAttributionInfo")
+
     return RNIterableAPI.getAttributionInfo().then((dict: any | undefined) => {
       if (dict) {
         return new IterableAttributionInfo(dict["campaignId"] as number, dict["templateId"] as number, dict["messageId"] as string)
@@ -231,7 +240,8 @@ class Iterable {
   * @param {attributionInfo} IterableAttributionInfo 
   */
   static setAttributionInfo(attributionInfo?: IterableAttributionInfo) {
-    console.log("setAttributionInfo")
+    Iterable.logger.log("setAttributionInfo")
+
     RNIterableAPI.setAttributionInfo(attributionInfo)
   }
 
@@ -244,7 +254,8 @@ class Iterable {
   * @param {any | undefined} dataFields 
   */
   static trackPushOpenWithCampaignId(campaignId: number, templateId: number, messageId: string | undefined, appAlreadyRunning: boolean, dataFields: any | undefined) {
-    console.log("trackPushOpenWithCampaignId")
+    Iterable.logger.log("trackPushOpenWithCampaignId")
+
     RNIterableAPI.trackPushOpenWithCampaignId(campaignId, templateId, messageId, appAlreadyRunning, dataFields)
   }
 
@@ -253,13 +264,15 @@ class Iterable {
    * @param {Array<IterableCommerceItem>} items
    */
   static updateCart(items: Array<IterableCommerceItem>) {
-    console.log("updateCart")
+    Iterable.logger.log("updateCart")
+
     RNIterableAPI.updateCart(items)
   }
 
   static wakeApp() {
     if (Platform.OS === "android") {
-      console.log('Attempting to wake the app')
+      Iterable.logger.log("Attempting to wake the app")
+
       RNIterableAPI.wakeApp();
     }
   }
@@ -271,7 +284,8 @@ class Iterable {
   * @param {any | undefined} dataFields 
   */
   static trackPurchase(total: number, items: Array<IterableCommerceItem>, dataFields: any | undefined) {
-    console.log("trackPurchase")
+    Iterable.logger.log("trackPurchase")
+
     RNIterableAPI.trackPurchase(total, items, dataFields)
   }
 
@@ -281,7 +295,8 @@ class Iterable {
   * @param {IterableInAppLocation} location 
   */
   static trackInAppOpen(message: IterableInAppMessage, location: IterableInAppLocation) {
-    console.log("trackInAppOpen")
+    Iterable.logger.log("trackInAppOpen")
+
     RNIterableAPI.trackInAppOpen(message.messageId, location)
   }
 
@@ -292,7 +307,8 @@ class Iterable {
   * @param {string} clickedUrl 
   */
   static trackInAppClick(message: IterableInAppMessage, location: IterableInAppLocation, clickedUrl: string) {
-    console.log("trackInAppClick")
+    Iterable.logger.log("trackInAppClick")
+
     RNIterableAPI.trackInAppClick(message.messageId, location, clickedUrl)
   }
 
@@ -304,7 +320,8 @@ class Iterable {
   * @param {string} clickedUrl 
   */
   static trackInAppClose(message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppCloseSource, clickedUrl?: string | undefined) {
-    console.log("trackInAppClose")
+    Iterable.logger.log("trackInAppClose")
+
     RNIterableAPI.trackInAppClose(message.messageId, location, source, clickedUrl)
   }
 
@@ -315,7 +332,8 @@ class Iterable {
   * @param {IterableInAppDeleteSource} source
   */
   static inAppConsume(message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppDeleteSource) {
-    console.log("inAppConsume")
+    Iterable.logger.log("inAppConsume")
+
     RNIterableAPI.inAppConsume(message.messageId, location, source)
   }
 
@@ -325,7 +343,8 @@ class Iterable {
   * @param {any | undefined} dataFields 
   */
   static trackEvent(name: string, dataFields: any | undefined) {
-    console.log("trackEvent")
+    Iterable.logger.log("trackEvent")
+
     RNIterableAPI.trackEvent(name, dataFields)
   }
 
@@ -335,7 +354,8 @@ class Iterable {
   * @param {boolean} mergeNestedObjects Whether to merge top level objects instead of overwriting
   */
   static updateUser(dataFields: any, mergeNestedObjects: boolean) {
-    console.log("updateUser")
+    Iterable.logger.log("updateUser")
+
     RNIterableAPI.updateUser(dataFields, mergeNestedObjects)
   }
 
@@ -344,7 +364,8 @@ class Iterable {
   * @param email the new email to set
   */
   static updateEmail(email: string) {
-    console.log("updateEmail")
+    Iterable.logger.log("updateEmail")
+
     RNIterableAPI.updateEmail(email)
   }
 
@@ -353,7 +374,8 @@ class Iterable {
   * @param {string} link URL in string form to be either opened as an app link or as a normal one
   */
   static handleAppLink(link: string): Promise<boolean> {
-    console.log("handleAppLink")
+    Iterable.logger.log("handleAppLink")
+
     return RNIterableAPI.handleAppLink(link)
   }
 
@@ -372,7 +394,8 @@ class Iterable {
     subscribedMessageTypeIds: Array<number> | undefined,
     campaignId: number,
     templateId: number) {
-    console.log("updateSubscriptions")
+    Iterable.logger.log("updateSubscriptions")
+    
     RNIterableAPI.updateSubscriptions(emailListIds, unsubscribedChannelIds, unsubscribedMessageTypeIds, subscribedMessageTypeIds, campaignId, templateId)
   }
 
@@ -391,6 +414,7 @@ class Iterable {
           const url = dict["url"]
           const context = IterableActionContext.fromDict(dict["context"])
           Iterable.wakeApp()
+
           if (Platform.OS === "android") {
             //Give enough time for Activity to wake up.
             setTimeout(() => {
@@ -443,7 +467,7 @@ class Iterable {
           .then(canOpen => {
             if (canOpen) { Linking.openURL(url) }
           })
-          .catch(reason => { console.log("could not open url: " + reason) })
+          .catch(reason => { Iterable.logger.log("could not open url: " + reason) })
       }
     }
   }
