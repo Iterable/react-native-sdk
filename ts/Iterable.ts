@@ -395,6 +395,7 @@ class Iterable {
     campaignId: number,
     templateId: number) {
     Iterable.logger.log("updateSubscriptions")
+    
     RNIterableAPI.updateSubscriptions(emailListIds, unsubscribedChannelIds, unsubscribedMessageTypeIds, subscribedMessageTypeIds, campaignId, templateId)
   }
 

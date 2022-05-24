@@ -17,9 +17,11 @@ import {
   IterableAction,
   IterableActionSource
 } from '../Iterable'
+import { IterableLogger } from '../IterableLogger'
 
 beforeEach(() => {
   jest.clearAllMocks()
+  Iterable.logger = new IterableLogger(new IterableConfig())
 })
 
 test("set/get email", () => {
