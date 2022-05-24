@@ -8,6 +8,7 @@ import {
     IterableHtmlInAppContent,
     InboxImpressionRowInfo
 } from '.'
+import { Iterable } from './Iterable'
 
 import IterableInAppMessage from './IterableInAppMessage'
 
@@ -43,7 +44,7 @@ class IterableInboxDataModel {
     }
 
     getHtmlContentForMessageId(id: string): Promise<IterableHtmlInAppContent> {
-        console.log("IterableInboxDataModel.getHtmlContentForItem messageId: " + id)
+        Iterable.logger.log("IterableInboxDataModel.getHtmlContentForItem messageId: " + id)
 
         return RNIterableAPI.getHtmlInAppContentForMessage(id).then(
             (content: any) => {
@@ -53,13 +54,13 @@ class IterableInboxDataModel {
     }
 
     setMessageAsRead(id: string) {
-        console.log("IterableInboxDataModel.setMessageAsRead")
+        Iterable.logger.log("IterableInboxDataModel.setMessageAsRead")
 
         RNIterableAPI.setReadForMessage(id, true)
     }
 
     deleteItemById(id: string, deleteSource: IterableInAppDeleteSource) {
-        console.log("IterableInboxDataModel.deleteItemById")
+        Iterable.logger.log("IterableInboxDataModel.deleteItemById")
 
         RNIterableAPI.removeMessage(id, IterableInAppLocation.inbox, deleteSource)
     }

@@ -20,9 +20,11 @@ import {
   IterableInAppShowResponse,
   IterableInAppDeleteSource
 } from '../IterableInAppClasses'
+import { IterableLogger } from '../IterableLogger'
 
 beforeEach(() => {
   jest.clearAllMocks()
+  Iterable.logger = new IterableLogger(new IterableConfig())
 })
 
 test("trackInAppOpen", () => {

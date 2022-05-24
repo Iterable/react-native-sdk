@@ -17,13 +17,16 @@ import {
   IterableAction,
   IterableActionSource
 } from '../Iterable'
+import { IterableLogger } from '../IterableLogger'
 
 beforeEach(() => {
   jest.clearAllMocks()
+  Iterable.logger = new IterableLogger(new IterableConfig())
 })
 
 test("set/get email", () => {
   Iterable.setEmail("user@example.com")
+
   return Iterable.getEmail().then(email => {
     expect(email).toBe("user@example.com")
   })
@@ -31,6 +34,7 @@ test("set/get email", () => {
 
 test("set/get userId", () => {
   Iterable.setUserId("user1")
+
   return Iterable.getUserId().then(userId => {
     expect(userId).toBe("user1")
   })
@@ -38,6 +42,7 @@ test("set/get userId", () => {
 
 test("disable device for current user", () => {
   Iterable.disableDeviceForCurrentUser()
+  
   expect(MockRNIterableAPI.disableDeviceForCurrentUser).toBeCalled()
 })
 
