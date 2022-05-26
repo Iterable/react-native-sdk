@@ -113,9 +113,9 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     }
 
     @ReactMethod
-    public void updateEmail(String email) {
+    public void updateEmail(String email, @Nullable String authToken) {
         IterableLogger.d(TAG, "updateEmail: " + email);
-        IterableApi.getInstance().updateEmail(email);
+        IterableApi.getInstance().updateEmail(email, authToken);
     }
 
     @ReactMethod

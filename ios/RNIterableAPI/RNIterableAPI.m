@@ -80,7 +80,8 @@ RCT_EXTERN_METHOD(trackEvent: (nonnull NSString *) name
 RCT_EXTERN_METHOD(updateUser: (nonnull NSDictionary *) dataFields
                   mergeNestedObjects: (BOOL) mergeNestedObjects)
 
-RCT_EXTERN_METHOD(updateEmail: (nonnull NSString *) email)
+RCT_EXTERN_METHOD(updateEmail: (nonnull NSString *) email
+                  withToken: (NSString *) authToken)
 
 RCT_EXTERN_METHOD(handleAppLink: (nonnull NSString *) appLink
                   resolver: (RCTPromiseResolveBlock) resolve

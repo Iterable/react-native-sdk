@@ -301,11 +301,15 @@ class ReactIterableAPI: RCTEventEmitter {
         IterableAPI.updateUser(dataFields, mergeNestedObjects: mergeNestedObjects)
     }
     
-    @objc(updateEmail:)
-    func updateEmail(email: String) {
+    @objc(updateEmail:withToken:)
+    func updateEmail(email: String, withToken: String?) {
         ITBInfo()
         
-        IterableAPI.updateEmail(email, onSuccess: nil, onFailure: nil)
+        if let authToken = authToken {
+            IterableAPI.updateEmail(email, withToken: authToken, onSuccess: nil, onFailure: nil)
+        } else {
+            IterableAPI.updateEmail(email, onSuccess: nil, onFailure: nil)
+        }
     }
     
     @objc(handleAppLink:resolver:rejecter:)

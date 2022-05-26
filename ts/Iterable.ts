@@ -362,11 +362,12 @@ class Iterable {
   /**
   * 
   * @param email the new email to set
+  * @param authToken the new auth token (JWT) to set with the new email, optional - if null/undefined, no JWT related action will be taken
   */
-  static updateEmail(email: string) {
+  static updateEmail(email: string, authToken: string | undefined) {
     Iterable.logger.log("updateEmail")
 
-    RNIterableAPI.updateEmail(email)
+    RNIterableAPI.updateEmail(email, authToken)
   }
 
   /**
