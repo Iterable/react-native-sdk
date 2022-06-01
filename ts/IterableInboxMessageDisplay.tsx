@@ -170,8 +170,8 @@ const IterableInboxMessageDisplay = ({
       } else if (URL.slice(0, 4) === 'http') {
          returnToInbox(() => Linking.openURL(URL))
       //handle custom action
-      } else if (URL.slice(0, 7) === 'itbl://' || URL.slice(0,9) === 'action://') {
-         (URL.slice(0, 7) === 'itbl://') ?  action.type = URL.replace('itbl://', '') : action.type = URL.replace('action://', '')
+      } else if (URL.slice(0,9) === 'action://') {
+         action.type = URL.replace('action://', '')
          returnToInbox(() => {
            if(Iterable.savedConfig.customActionHandler) {
              Iterable.savedConfig.customActionHandler(action, context)
