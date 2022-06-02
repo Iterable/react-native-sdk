@@ -136,12 +136,21 @@ test("update user", () => {
   expect(MockRNIterableAPI.updateUser).toBeCalledWith(dataFields, false)
 })
 
-test("update email", () => {
+test("update email (no token)", () => {
   const newEmail = "woo@newemail.com"
 
   Iterable.updateEmail(newEmail)
 
-  expect(MockRNIterableAPI.updateEmail).toBeCalledWith(newEmail)
+  expect(MockRNIterableAPI.updateEmail).toBeCalledWith(newEmail, undefined)
+})
+
+test("update email (with token)", () => {
+  const newEmail = "woo@newemail.com"
+  const newToken = "token2"
+
+  Iterable.updateEmail(newEmail, newToken)
+
+  expect(MockRNIterableAPI.updateEmail).toBeCalledWith(newEmail, newToken)
 })
 
 test("default config values", () => {
