@@ -301,8 +301,8 @@ class ReactIterableAPI: RCTEventEmitter {
         IterableAPI.updateUser(dataFields, mergeNestedObjects: mergeNestedObjects)
     }
     
-    @objc(updateEmail:withToken:)
-    func updateEmail(email: String, withToken: String?) {
+    @objc(updateEmail:authToken:)
+    func updateEmail(email: String, with authToken: String?) {
         ITBInfo()
         
         if let authToken = authToken {

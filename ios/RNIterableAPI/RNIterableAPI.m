@@ -81,7 +81,7 @@ RCT_EXTERN_METHOD(updateUser: (nonnull NSDictionary *) dataFields
                   mergeNestedObjects: (BOOL) mergeNestedObjects)
 
 RCT_EXTERN_METHOD(updateEmail: (nonnull NSString *) email
-                  withToken: (NSString *) authToken)
+                  authToken: (NSString *) authToken)
 
 RCT_EXTERN_METHOD(handleAppLink: (nonnull NSString *) appLink
                   resolver: (RCTPromiseResolveBlock) resolve
