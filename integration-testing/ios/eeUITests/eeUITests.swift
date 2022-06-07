@@ -8,13 +8,13 @@ import XCTest
 class eeUITests: XCTestCase {
     lazy var app: XCUIApplication! = UITestsGlobal.application
 
-    // override func setUp() {
-    //     app.button(withText: "resetBtn").waitToAppear().tap()
-    // }
+    override func setUp() {
+        app.button(withText: "resetBtn").waitToAppear().tap()
+    }
 
-    // override func tearDown() {
-    //     app.button(withText: "resetBtn").waitToAppear().tap()
-    // }
+    override func tearDown() {
+        app.button(withText: "resetBtn").waitToAppear().tap()
+    }
     
     // this must be called first
     func test_aa_clearAllInAppMessages() throws {
