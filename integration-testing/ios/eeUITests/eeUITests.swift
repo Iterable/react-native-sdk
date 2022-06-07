@@ -12,9 +12,9 @@ class eeUITests: XCTestCase {
     //     app.button(withText: "resetBtn").waitToAppear().tap()
     // }
 
-    override func tearDown() {
-        app.button(withText: "resetBtn").waitToAppear().tap()
-    }
+    // override func tearDown() {
+    //     app.button(withText: "resetBtn").waitToAppear().tap()
+    // }
     
     // this must be called first
     func test_aa_clearAllInAppMessages() throws {
