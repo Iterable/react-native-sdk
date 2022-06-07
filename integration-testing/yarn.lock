@@ -707,6 +707,7 @@
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/@iterable/react-native-sdk/-/react-native-sdk-1.3.2.tgz#03aff1b440b7b4f58b982ebc292d4500830569f6"
   integrity sha512-s+TTXQUOvcjAyp4lB9g42moAOPjiN7Gd4zWCvicO+zNcF170oZ8zSw/CJoUxvZIaFqKYIJXREeECBuDpA/p3Nw==
+
   dependencies:
     "@react-native-community/hooks" "^2.6.0"
     "@react-navigation/native" "^6.0.6"

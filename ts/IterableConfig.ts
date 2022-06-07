@@ -66,6 +66,13 @@ class IterableConfig {
   logLevel: IterableLogLevel = IterableLogLevel.info
 
   /**
+   * Set whether the React Native SDK should print function calls to console
+   * This is for calls within the React Native layer, and is separate from `logLevel`
+   * which affects the Android and iOS native SDKs
+   */
+  logReactNativeSdkCalls: boolean = true
+
+  /**
    * Set the amount of time (in seconds) before the current auth token expires to make a call to retrieve a new one
    */
   expiringAuthTokenRefreshPeriod: number = 60.0

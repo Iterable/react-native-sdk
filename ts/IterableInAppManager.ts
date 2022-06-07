@@ -7,6 +7,7 @@ import {
   IterableInAppLocation,
   IterableInAppDeleteSource,
 } from '.'
+import { Iterable } from './Iterable'
 
 import IterableInAppMessage from './IterableInAppMessage'
 
@@ -17,7 +18,8 @@ class IterableInAppManager {
    * Returns a list of all in-app messages.
    */
   getMessages(): Promise<Array<IterableInAppMessage>> {
-    console.log("InAppManager.getMessages")
+    Iterable.logger.log("InAppManager.getMessages")
+
     return RNIterableAPI.getInAppMessages().then((messages: Array<any>) => messages.map(message => { return IterableInAppMessage.fromDict(message) }))
   }
 
@@ -25,7 +27,8 @@ class IterableInAppManager {
    * Returns a list of all in-app messages that are marked with `saveToInbox`
    */
   getInboxMessages(): Promise<Array<IterableInAppMessage>> {
-    console.log("InAppManager.getInboxMessages")
+    Iterable.logger.log("InAppManager.getInboxMessages")
+
     return RNIterableAPI.getInboxMessages().then((messages: Array<any>) => messages.map(message => { return IterableInAppMessage.fromDict(message) }))
   }
 
@@ -35,7 +38,8 @@ class IterableInAppManager {
    * @param {boolean} consume Set to true to consume the event from the server queue if the message is shown. This should be default.
    */
   showMessage(message: IterableInAppMessage, consume: boolean): Promise<string | undefined> {
-    console.log("InAppManager.show")
+    Iterable.logger.log("InAppManager.show")
+
     return RNIterableAPI.showMessage(message.messageId, consume)
   }
 
@@ -46,7 +50,8 @@ class IterableInAppManager {
    * @param {IterableInAppDeleteSource} source 
    */
   removeMessage(message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppDeleteSource): void {
-    console.log("InAppManager.remove")
+     Iterable.logger.log("InAppManager.remove")
+
     return RNIterableAPI.removeMessage(message.messageId, location, source)
   }
 
@@ -56,7 +61,8 @@ class IterableInAppManager {
    * @param {boolean} read 
    */
   setReadForMessage(message: IterableInAppMessage, read: boolean) {
-    console.log("InAppManager.setRead")
+     Iterable.logger.log("InAppManager.setRead")
+
     RNIterableAPI.setReadForMessage(message.messageId, read)
   }
 
@@ -65,7 +71,8 @@ class IterableInAppManager {
    * @param {IterableInAppMessage} message 
    */
   getHtmlContentForMessage(message: IterableInAppMessage): Promise<IterableHtmlInAppContent> {
-    console.log("InAppManager.getHtmlContentForMessage")
+     Iterable.logger.log("InAppManager.getHtmlContentForMessage")
+
     return RNIterableAPI.getHtmlInAppContentForMessage(message.messageId)
       .then((content: any) => {
         return IterableHtmlInAppContent.fromDict(content)
@@ -77,7 +84,8 @@ class IterableInAppManager {
    * @param {boolean} paused whether the automatic displaying should be paused
    */
   setAutoDisplayPaused(paused: boolean) {
-    console.log("InAppManager.setAutoDisplayPaused")
+     Iterable.logger.log("InAppManager.setAutoDisplayPaused")
+     
     RNIterableAPI.setAutoDisplayPaused(paused)
   }
 }
