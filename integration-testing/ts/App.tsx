@@ -14,11 +14,12 @@ import {
   IterableConfig,
   IterableAction,
   IterableActionContext,
-  IterableInAppMessage,
   IterableInAppShowResponse,
   IterableInAppLocation,
   IterableInAppDeleteSource,
 } from '@iterable/react-native-sdk';
+
+import IterableInAppMessage from '@iterable/react-native-sdk/js/IterableInAppMessage';
 
 import { Login } from './Login'
 
