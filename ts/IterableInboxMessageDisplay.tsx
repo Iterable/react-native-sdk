@@ -160,12 +160,24 @@ const IterableInboxMessageDisplay = ({
       Iterable.trackInAppClick(rowViewModel.inAppMessage, IterableInAppLocation.inbox, URL)
       Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.link, URL) 
 
+      //handle delete action
       if (URL === 'iterable://delete') { 
          returnToInbox(() => deleteRow(rowViewModel.inAppMessage.messageId))
+      //handle dismiss action
       } else if(URL === 'iterable://dismiss') {
          returnToInbox()
+      //handle external link
       } else if (URL.slice(0, 4) === 'http') {
          returnToInbox(() => Linking.openURL(URL))
+      //handle custom action
+      } else if (URL.slice(0,9) === 'action://') {
+         action.type = URL.replace('action://', '')
+         returnToInbox(() => {
+           if(Iterable.savedConfig.customActionHandler) {
+             Iterable.savedConfig.customActionHandler(action, context)
+           } 
+         })
+      //handle deep link or error link
       } else {
          returnToInbox(() => {
             if(Iterable.savedConfig.urlHandler) {
