@@ -10,7 +10,7 @@ import {
   Image,
 } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
-import { Iterable } from '@iterable/react-native-sdk'
+import { Iterable } from '@iterable/react-native-sdk/js/Iterable'
 
 interface Props { }
 interface State {
