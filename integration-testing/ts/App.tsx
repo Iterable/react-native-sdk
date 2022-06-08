@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 
 import {
+  Iterable,
+  IterableConfig,
   IterableAction,
   IterableActionContext,
   IterableInAppShowResponse,
@@ -17,8 +19,6 @@ import {
   IterableInAppDeleteSource,
 } from '@iterable/react-native-sdk';
 
-import { Iterable } from '@iterable/react-native-sdk/js/Iterable';
-import IterableConfig from '@iterable/react-native-sdk/js/IterableConfig';
 import IterableInAppMessage from '@iterable/react-native-sdk/js/IterableInAppMessage';
 
 import { Login } from './Login'
