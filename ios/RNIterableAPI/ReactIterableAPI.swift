@@ -97,6 +97,13 @@ class ReactIterableAPI: RCTEventEmitter {
         
         IterableAPI.email = email
     }
+
+    @objc(setEmail:withAuthToken:)
+    func set(email: String?, authToken: String?) {
+        ITBInfo()
+
+        Iterable.setEmail(email, authToken)
+    }
     
     @objc(getEmail:rejecter:)
     func getEmail(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
@@ -110,6 +117,13 @@ class ReactIterableAPI: RCTEventEmitter {
         ITBInfo()
         
         IterableAPI.userId = userId
+    }
+
+    @objc(setUserId:withAuthToken:)
+    func set(userId: String?, authToken: String?) {
+        ITBInfo()
+        
+        IterableAPI.setUserId(userId, authToken)
     }
     
     @objc(getUserId:rejecter:)
