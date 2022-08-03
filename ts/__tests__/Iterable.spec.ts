@@ -24,7 +24,7 @@ beforeEach(() => {
   Iterable.logger = new IterableLogger(new IterableConfig())
 })
 
-test("set/get email", () => {
+test("set/get email (no token)", () => {
   Iterable.setEmail("user@example.com")
 
   return Iterable.getEmail().then(email => {
@@ -32,7 +32,7 @@ test("set/get email", () => {
   })
 })
 
-test("set/get userId", () => {
+test("set/get userId (no token)", () => {
   Iterable.setUserId("user1")
 
   return Iterable.getUserId().then(userId => {

@@ -167,10 +167,10 @@ class Iterable {
   * Set the user of the SDK by email address
   * @param {string | undefined} email the email address of the user
   */
-  static setEmail(email: string | undefined) {
+  static setEmail(email: string | undefined, authToken?: string | undefined) {
     Iterable.logger.log("setEmail: " + email)
 
-    RNIterableAPI.setEmail(email)
+    RNIterableAPI.setEmail(email, authToken)
   }
 
   /**
@@ -186,10 +186,10 @@ class Iterable {
   * Set the user of the SDK by ID
   * @param {string | undefined} userId the ID of the user
   */
-  static setUserId(userId: string | undefined) {
+  static setUserId(userId: string | undefined, authToken?: string | undefined) {
     Iterable.logger.log("setUserId: " + userId)
 
-    RNIterableAPI.setUserId(userId)
+    RNIterableAPI.setUserId(userId, authToken)
   }
 
   /**

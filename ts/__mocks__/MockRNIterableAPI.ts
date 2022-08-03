@@ -13,8 +13,9 @@ export class MockRNIterableAPI {
     })
   }
 
-  static setEmail(email?: string) {
+  static setEmail(email: string, authToken?: string | undefined) {
     MockRNIterableAPI.email = email
+    MockRNIterableAPI.token = authToken
   }
 
   static getUserId(): Promise<string> {
@@ -23,8 +24,9 @@ export class MockRNIterableAPI {
     })
   }
 
-  static setUserId(userId?: string) {
+  static setUserId(userId: string, authToken?: string | undefined) {
     MockRNIterableAPI.userId = userId
+    MockRNIterableAPI.token = authToken
   }
 
   static disableDeviceForCurrentUser = jest.fn()
