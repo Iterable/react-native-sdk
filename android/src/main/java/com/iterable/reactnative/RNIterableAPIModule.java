@@ -113,9 +113,24 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     }
 
     @ReactMethod
+    public void setEmail(@Nullable String email, @Nullable String authToken) {
+        IterableLogger.d(TAG, "setEmail: " + email + " authToken: " + authToken);
+
+        IterableApi.getInstance().setEmail(email, authToken);
+    }
+
+    @ReactMethod
     public void updateEmail(String email) {
         IterableLogger.d(TAG, "updateEmail: " + email);
+
         IterableApi.getInstance().updateEmail(email);
+    }
+
+    @ReactMethod
+    public void updateEmail(String email, @Nullable String authToken) {
+        IterableLogger.d(TAG, "updateEmail: " + email + " authToken: " + authToken);
+
+        IterableApi.getInstance().updateEmail(email, authToken);
     }
 
     @ReactMethod
@@ -133,6 +148,13 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     public void setUserId(@Nullable String userId) {
         IterableLogger.d(TAG, "setUserId: " + userId);
         IterableApi.getInstance().setUserId(userId);
+    }
+
+    @ReactMethod
+    public void setUserId(@Nullable String userId, @Nullable String authToken) {
+        IterableLogger.d(TAG, "setUserId: " + userId + " authToken: " + authToken);
+        
+        IterableApi.getInstance().setUserId(userId, authToken);
     }
 
     @ReactMethod

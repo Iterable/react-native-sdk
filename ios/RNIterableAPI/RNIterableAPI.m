@@ -22,12 +22,14 @@ RCT_EXTERN_METHOD(initialize2WithApiKey: (nonnull NSString *) apiKey
                   resolver: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
 
-RCT_EXTERN_METHOD(setEmail: (NSString *) email)
+RCT_EXTERN_METHOD(setEmail: (NSString *) email
+                  authToken: (NSString *) authToken)
 
 RCT_EXTERN_METHOD(getEmail: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
 
-RCT_EXTERN_METHOD(setUserId: (NSString *) userId)
+RCT_EXTERN_METHOD(setUserId: (NSString *) userId
+                  authToken: (NSString *) authToken)
 
 RCT_EXTERN_METHOD(getUserId: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
@@ -80,7 +82,8 @@ RCT_EXTERN_METHOD(trackEvent: (nonnull NSString *) name
 RCT_EXTERN_METHOD(updateUser: (nonnull NSDictionary *) dataFields
                   mergeNestedObjects: (BOOL) mergeNestedObjects)
 
-RCT_EXTERN_METHOD(updateEmail: (nonnull NSString *) email)
+RCT_EXTERN_METHOD(updateEmail: (nonnull NSString *) email
+                  authToken: (NSString *) authToken)
 
 RCT_EXTERN_METHOD(handleAppLink: (nonnull NSString *) appLink
                   resolver: (RCTPromiseResolveBlock) resolve

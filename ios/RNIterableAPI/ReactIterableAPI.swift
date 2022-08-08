@@ -97,6 +97,13 @@ class ReactIterableAPI: RCTEventEmitter {
         
         IterableAPI.email = email
     }
+
+    @objc(setEmail:authToken:)
+    func set(email: String?, authToken: String?) {
+        ITBInfo()
+
+        IterableAPI.setEmail(email, authToken)
+    }
     
     @objc(getEmail:rejecter:)
     func getEmail(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
@@ -110,6 +117,13 @@ class ReactIterableAPI: RCTEventEmitter {
         ITBInfo()
         
         IterableAPI.userId = userId
+    }
+
+    @objc(setUserId:authToken:)
+    func set(userId: String?, authToken: String?) {
+        ITBInfo()
+        
+        IterableAPI.setUserId(userId, authToken)
     }
     
     @objc(getUserId:rejecter:)
@@ -301,11 +315,15 @@ class ReactIterableAPI: RCTEventEmitter {
         IterableAPI.updateUser(dataFields, mergeNestedObjects: mergeNestedObjects)
     }
     
-    @objc(updateEmail:)
-    func updateEmail(email: String) {
+    @objc(updateEmail:authToken:)
+    func updateEmail(email: String, with authToken: String?) {
         ITBInfo()
         
-        IterableAPI.updateEmail(email, onSuccess: nil, onFailure: nil)
+        if let authToken = authToken {
+            IterableAPI.updateEmail(email, withToken: authToken, onSuccess: nil, onFailure: nil)
+        } else {
+            IterableAPI.updateEmail(email, onSuccess: nil, onFailure: nil)
+        }
     }
     
     @objc(handleAppLink:resolver:rejecter:)
