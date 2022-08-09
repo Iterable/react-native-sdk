@@ -22,6 +22,6 @@ def getModuleVersion() {
 
 dependencies {
     implementation 'com.facebook.react:react-native:+'
-    api 'com.iterable:iterableapi:3.4.7'
+    api 'com.iterable:iterableapi:3.4.8'
     // api project(':iterableapi') // links to local android SDK repo rather than by release
 }
