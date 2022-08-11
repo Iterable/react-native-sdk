@@ -588,6 +588,18 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         }
     }
 
+    @Override
+    public void onTokenRegistrationSuccessful(String authToken) {
+        IterableLogger.v(TAG, "authToken successfully set");
+        //TODO: Pass successhandler to event listener
+    }
+
+    @Override
+    public void onTokenRegistrationFailed(Throwable object) {
+        IterableLogger.v(TAG, "Failed to set authToken");
+        //TODO: Pass failureObject to event listener
+    }
+
     @ReactMethod
     public void addListener(String eventName) {
         // Keep: Required for RN built in Event Emitter Calls.
