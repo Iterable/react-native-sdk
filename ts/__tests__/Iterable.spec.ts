@@ -263,7 +263,7 @@ test("custom action handler is called", () => {
 
   Iterable.initialize("apiKey", config)
   const actionDict = { "type": actionName, "data": actionData }
-  nativeEmitter.emit(EventName.handleCustomActionCalled, { "action": actionDict, "context": { "action": actionDict, "actionSource": IterableActionSource.inApp } });
+  nativeEmitter.emit(EventName.handleCustomActionCalled, { "action": actionDict, "context": { "action": actionDict, "source": IterableActionSource.inApp } });
 
   return TestHelper.delayed(0, () => {
     const expectedAction = new IterableAction(actionName, actionData)
