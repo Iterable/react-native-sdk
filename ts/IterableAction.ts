@@ -25,7 +25,7 @@ class IterableAction {
   
     static fromDict(dict: any): IterableActionContext {
       const action = IterableAction.fromDict(dict["action"])
-      const source = dict["actionSource"] as IterableActionSource
+      const source = dict["source"] as IterableActionSource
       return new IterableActionContext(action, source)
     }
   }
