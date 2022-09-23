@@ -52,6 +52,13 @@ For sample code, take a look at the following projects:
 - [SampleApp (JavaScript)](https://github.com/Iterable/react-native-sdk/tree/master/SampleApp/javascript)
 - [SampleApp (TypeScript)](https://github.com/Iterable/react-native-sdk/tree/master/SampleApp/typescript)
 
+## Version mapping
+
+| RN SDK Version | Android SDK Version | Swift SDK Version |
+| -------------- | ------------------- | ----------------- |
+| 1.3.6          | 3.49                | 6.4.7             |
+| -------------- | ------------------- | ----------------- |
+
 ## Release notes, support and troubleshooting
 
 Release notes:
