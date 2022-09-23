@@ -52,6 +52,28 @@ For sample code, take a look at the following projects:
 - [SampleApp (JavaScript)](https://github.com/Iterable/react-native-sdk/tree/master/SampleApp/javascript)
 - [SampleApp (TypeScript)](https://github.com/Iterable/react-native-sdk/tree/master/SampleApp/typescript)
 
+## Version mapping
+
+For quick reference, the following table lists the versions of the [Android SDK](https://github.com/Iterable/iterable-android-sdk) and the [iOS SDK](https://github.com/Iterable/swift-sdk) the React Native SDK points to for version 1.2.0 and above. 
+
+| RN SDK Version                                                              | Android SDK Version                                                          | iOS SDK Version |
+| --------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | --------------- |
+| [1.3.6](https://www.npmjs.com/package/@iterable/react-native-sdk/v/1.3.6)   | [3.4.9](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.4.9) | [6.4.7](https://github.com/Iterable/swift-sdk/releases/tag/6.4.7) |
+| [1.3.5](https://www.npmjs.com/package/@iterable/react-native-sdk/v/1.3.5)   | [3.4.9](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.4.9) | [6.4.7](https://github.com/Iterable/swift-sdk/releases/tag/6.4.7) |
+| [1.3.4](https://www.npmjs.com/package/@iterable/react-native-sdk/v/1.3.4)   | [3.4.8](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.4.8) | [6.4.6](https://github.com/Iterable/swift-sdk/releases/tag/6.4.6) |
+| [1.3.3](https://www.npmjs.com/package/@iterable/react-native-sdk/v/1.3.3)   | [3.4.7](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.4.7) | [6.4.5](https://github.com/Iterable/swift-sdk/releases/tag/6.4.5) |
+| [1.3.2](https://www.npmjs.com/package/@iterable/react-native-sdk/v/1.3.2)   | [3.4.5](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.4.5) | [6.4.3](https://github.com/Iterable/swift-sdk/releases/tag/6.4.3) |
+| [1.3.1](https://www.npmjs.com/package/@iterable/react-native-sdk/v/1.3.1)   | [3.4.5](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.4.5) | [6.4.2](https://github.com/Iterable/swift-sdk/releases/tag/6.4.2) |
+| [1.3.0](https://www.npmjs.com/package/@iterable/react-native-sdk/v/1.3.0)   | [3.4.5](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.4.5) | [6.4.2](https://github.com/Iterable/swift-sdk/releases/tag/6.4.2) |
+| [1.2.3](https://www.npmjs.com/package/@iterable/react-native-sdk/v/1.2.3)   | [3.4.5](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.4.5) | [6.4.2](https://github.com/Iterable/swift-sdk/releases/tag/6.4.2) |
+| [1.2.2](https://www.npmjs.com/package/@iterable/react-native-sdk/v/1.2.2)   | [3.4.4](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.4.4) | [6.4.1](https://github.com/Iterable/swift-sdk/releases/tag/6.4.1) |
+| [1.2.1](https://www.npmjs.com/package/@iterable/react-native-sdk/v/1.2.1)   | [3.4.3](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.4.3) | [6.4.1](https://github.com/Iterable/swift-sdk/releases/tag/6.4.1) |
+| [1.2.0](https://www.npmjs.com/package/@iterable/react-native-sdk/v/1.2.0)   | [3.4.3](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.4.3) | [6.4.1](https://github.com/Iterable/swift-sdk/releases/tag/6.4.1) |
+| [1.1.3](https://www.npmjs.com/package/@iterable/react-native-sdk/v/1.1.3)   | [3.3.8](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.3.8) | [6.3.4](https://github.com/Iterable/swift-sdk/releases/tag/6.3.4) |
+| [1.1.2](https://www.npmjs.com/package/@iterable/react-native-sdk/v/1.1.2)   | [3.3.5](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.3.5) | [6.3.3](https://github.com/Iterable/swift-sdk/releases/tag/6.3.3) |
+| [1.1.1](https://www.npmjs.com/package/@iterable/react-native-sdk/v/1.1.1)   | [3.3.4](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.3.4) | [6.3.2](https://github.com/Iterable/swift-sdk/releases/tag/6.3.2) |
+| [1.1.0](https://www.npmjs.com/package/@iterable/react-native-sdk/v/1.1.0)   | [3.3.2](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.3.2) | [6.3.1](https://github.com/Iterable/swift-sdk/releases/tag/6.3.1) |
+
 ## Release notes, support and troubleshooting
 
 Release notes:
