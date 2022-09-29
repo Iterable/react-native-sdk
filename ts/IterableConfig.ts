@@ -83,6 +83,12 @@ class IterableConfig {
   */
   allowedProtocols: Array<string> = []
 
+  /**
+   * This specifies the `useInMemoryStorageForInApps` config option downstream to the Android SDK layer.
+   * Please read the `IterableConfig` file for specific details on this config option.
+   */
+  androidSdkUseInMemoryStorageForInApps: boolean = false
+
   toDict(): any {
     return {
       "pushIntegrationName": this.pushIntegrationName,
@@ -94,7 +100,8 @@ class IterableConfig {
       "authHandlerPresent": this.authHandler != undefined,
       "logLevel": this.logLevel,
       "expiringAuthTokenRefreshPeriod": this.expiringAuthTokenRefreshPeriod,
-      "allowedProtocols": this.allowedProtocols
+      "allowedProtocols": this.allowedProtocols,
+      "androidSdkUseInMemoryStorageForInApps": this.androidSdkUseInMemoryStorageForInApps
     }
   }
 }
