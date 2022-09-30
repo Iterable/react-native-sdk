@@ -592,12 +592,13 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     public void onTokenRegistrationSuccessful(String authToken) {
         IterableLogger.v(TAG, "authToken successfully set");
         //TODO: Pass successhandler to event listener
+        sendEvent(EventName.handleAuthSuccessCalled.name(), null);
     }
 
     @Override
     public void onTokenRegistrationFailed(Throwable object) {
         IterableLogger.v(TAG, "Failed to set authToken");
-        //TODO: Pass failureObject to event listener
+        sendEvent(EventName.handleAuthFailureCalled.name(), null);
     }
 
     @ReactMethod
@@ -643,5 +644,7 @@ enum EventName {
     handleCustomActionCalled,
     handleInAppCalled,
     handleAuthCalled,
-    receivedIterableInboxChanged
+    receivedIterableInboxChanged,
+    handleAuthSuccessCalled,
+    handleAuthFailureCalled
 }
