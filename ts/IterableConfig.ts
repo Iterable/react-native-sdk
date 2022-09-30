@@ -10,6 +10,9 @@ import { IterableInAppShowResponse } from './IterableInAppClasses'
 
 import IterableInAppMessage from './IterableInAppMessage'
 
+
+type AuthCallBack = (() => void)
+
 /**
 Iterable Configuration Object. Use this when initializing the API.
 */
@@ -57,8 +60,8 @@ class IterableConfig {
   /**
    * The handler with which your own calls to your backend containing the auth token happen
    */
-  authHandler?: () => Promise<string | undefined>
-
+  // authHandler?: (success?: AuthCallBack, failure?:  AuthCallBack) => Promise<AuthResponse | undefined>
+  authHandler?:() => Promise<AuthResponse | String | undefined>
   /**
    * Set the verbosity of Android and iOS project's log system. 
    * By default, you will be able to see info level logs printed in IDE when running the app. 
@@ -98,5 +101,11 @@ class IterableConfig {
     }
   }
 }
+
+export class AuthResponse {
+  authToken?: string = ""
+  successCallback?: AuthCallBack
+  failureCallback?: AuthCallBack
+} 
 
 export default IterableConfig
