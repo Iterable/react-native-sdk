@@ -33,6 +33,8 @@ class ReactIterableAPI: RCTEventEmitter {
         case handleInAppCalled
         case handleAuthCalled
         case receivedIterableInboxChanged
+        case handleAuthSuccessCalled
+        case handleAuthFailureCalled
     }
     
     override func supportedEvents() -> [String]! {
@@ -662,12 +664,18 @@ extension ReactIterableAPI: IterableAuthDelegate {
                 DispatchQueue.main.async {
                     completion(self.passedAuthToken)
                 }
+                
+                self.sendEvent(withName: EventName.handleAuthSuccessCalled.rawValue,
+                               body: nil)
             } else {
                 ITBInfo("authTokenRetrieval timed out")
                 
                 DispatchQueue.main.async {
                     completion(nil)
                 }
+                
+                self.sendEvent(withName: EventName.handleAuthFailureCalled.rawValue,
+                               body: nil)
             }
         }
     }

@@ -469,20 +469,21 @@ class Iterable {
 
                 setTimeout(() => {
                   if(authResponseCallback === "success") {
-                    console.log('Gonna invoke success callback on ts');
-                    (promiseResult as AuthResponse).successCallback
+                    if((promiseResult as AuthResponse).successCallback){
+                      console.log('Gonna invoke success callback on ts');
+                      (promiseResult as AuthResponse).successCallback!()
+                    }
                   } else if(authResponseCallback === "failure") {
-                    console.log('Gonna invoke failure callback on ts');
-                    (promiseResult as AuthResponse).failureCallback
+                    if((promiseResult as AuthResponse).failureCallback){
+                      console.log('Gonna invoke failure callback on ts');
+                      (promiseResult as AuthResponse).failureCallback!()
+                    }
                   } else {
                     console.log('No callback received from native layer')
                   }
                 }, 1000)
-
-
-
               } else if (typeof promiseResult === typeof "") {
-                console.log(' In else if')
+                //If promise only returns string
                 RNIterableAPI.passAlongAuthToken((promiseResult as String))
               } else {
                 console.log('Unexpected promise returned. Auth token expects promise of String or AuthResponse type.')
@@ -494,14 +495,12 @@ class Iterable {
       RNEventEmitter.addListener(
         EventName.handleAuthSuccessCalled,
         () => {
-            // (promiseResult as AuthResponse).successCallback
           authResponseCallback = "success"
         }
       )
       RNEventEmitter.addListener(
         EventName.handleAuthFailureCalled,
         () => {
-          // (promiseResult as AuthResponse).failureCallback
           authResponseCallback = "failure"
         }
       )
