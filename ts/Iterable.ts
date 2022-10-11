@@ -129,10 +129,19 @@ class Iterable {
   static savedConfig: IterableConfig
 
   /**
-  * 
-  * @param {string} apiKey 
-  * @param {IterableConfig} config
-  */
+   * This static method is used to initialize the React Native SDK in your app's Javascript or Typescript code.
+   * 
+   * Pass in a mobile API key distributed with the mobile app.
+   * Warning: never user server-side API keys with the React Native SDK, mobile API keys have minimal access for security purposes.
+   * 
+   * Pass in an IterableConfig object with the various customization properties setup.
+   * 
+   * Note: Use Iterable.initialize not Iterable.initialize2, as Iterable.initialize2 is only used internally.
+   * 
+   * @param {string} apiKey mobile API key provided with the application
+   * @param {IterableConfig} config config object with various properties
+   */
+
   static initialize(apiKey: string, config: IterableConfig = new IterableConfig()): Promise<boolean> {
     Iterable.savedConfig = config
 
@@ -164,9 +173,39 @@ class Iterable {
   }
 
   /**
-  * Set the user of the SDK by email address
-  * @param {string | undefined} email the email address of the user
-  */
+   * This static method associates the current user with the passed in email parameter.
+   * 
+   * Iterable's React Native SDK persists the user across app sessions and restarts, until you manually change the user using 
+   * Iterable.setEmail or Iterable.setUserId.
+   *
+   * User profile creation:
+   * 
+   * If your Iterable project does not have a user with the passed in email, setEmail creates one and adds the email address
+   * to the user's Iterable profile. 
+   * 
+   * Registering device token:
+   * 
+   * If IterableConfig.autoPushRegisteration is set to true, calling setUserId automatically registers the device for push 
+   * notifications and sends the deviceId and token to Iterable.
+   * 
+   * Optional JWT token parameter:
+   * 
+   * An optional valid, pre-fetched JWT can be passed in to avoid race conditions.
+   * The SDK uses this JWT to authenticate API requests for this user.
+   * 
+   * Signing out a user from the SDK:
+   * 
+   * To tell the SDK to sign out the current user, pass null into Iterable.setEmail.
+   * If IterableConfig.autoPushRegisteration is set to true, calling Iterable.setEmail(null) prevents Iterable from sending further
+   * push notifications to that user, for that app, on that device.
+   * On the user's Iterable profile, endpointEnabled is set to false for the device.
+   * 
+   * Note: specify a user by calling Iterable.setEmail or Iterable.setUserId, but not both.
+   * 
+   * @param {string | undefined} email email address to associate with the current user
+   * @param {string | undefined} authToken valid, pre-fecthed JWT the SDK can use to authenticate API requests, optional - if null/undefined, no JWT related action will be taken
+   */ 
+
   static setEmail(email: string | undefined, authToken?: string | undefined) {
     Iterable.logger.log("setEmail: " + email)
 
@@ -174,8 +213,12 @@ class Iterable {
   }
 
   /**
-   * Get the email of the current user
+   * This static method returns the email associated with the current user.
+   * Iterable.getEmail returns a promise. Use the keyword `then` to get the result of the promise.
+   * 
+   * parameters: none
    */
+
   static getEmail(): Promise<string | undefined> {
     Iterable.logger.log("getEmail")
 
@@ -183,9 +226,39 @@ class Iterable {
   }
 
   /**
-  * Set the user of the SDK by ID
-  * @param {string | undefined} userId the ID of the user
-  */
+   * This static method associates the current user with the passed in userId parameter.
+   * 
+   * Iterable's React Native SDK persists the user across app sessions and restarts, until you manually change the user using 
+   * Iterable.setEmail or Iterable.setUserId.
+   *  
+   * User profile creation:
+   *
+   * If your Iterable project does not have a user with the passed in UserId, setUserId creates one and adds a placeholder email 
+   * address to the user's Iterable profile. 
+   * 
+   * Registering device token:
+   * 
+   * If IterableConfig.autoPushRegisteration is set to true, calling setUserId automatically registers the device for push 
+   * notifications and sends the deviceId and token to Iterable.
+   * 
+   * Optional JWT token parameter:
+   * 
+   * An optional valid, pre-fetched JWT can be passed in to avoid race conditions.
+   * The SDK uses this JWT to authenticate API requests for this user.
+   * 
+   * Signing out a user from the SDK:
+   * 
+   * To tell the SDK to sign out the current user, pass null into Iterable.setUserId.
+   * If IterableConfig.autoPushRegisteration is set to true, calling Iterable.setUserId(null) prevents Iterable from sending further
+   * push notifications to that user, for that app, on that device.
+   * On the user's Iterable profile, endpointEnabled is set to false for the device.
+   * 
+   * Note: specify a user by calling Iterable.setEmail or Iterable.setUserId, but not both.
+   * 
+   * parameters: @param {string | undefined} userId user ID to associate with the current user 
+   * optional parameter: @param {string | undefined} authToken valid, pre-fecthed JWT the SDK can use to authenticate API requests, optional - if null/undefined, no JWT related action will be taken
+   */ 
+ 
   static setUserId(userId: string | undefined, authToken?: string | undefined) {
     Iterable.logger.log("setUserId: " + userId)
 
@@ -193,8 +266,12 @@ class Iterable {
   }
 
   /**
-   * Get the user ID of the current user
+   * This static method returns the userId associated with the current user.
+   * Iterable.getUserId returns a promise. Use the keyword `then` to get the result of the promise.
+   * 
+   * parameters: none
    */
+
   static getUserId(): Promise<string | undefined> {
     Iterable.logger.log("getUserId")
 
@@ -202,8 +279,11 @@ class Iterable {
   }
 
   /**
+   * This static method disables the device's token for the current user.
    * 
+   * parameters: none
    */
+
   static disableDeviceForCurrentUser() {
     Iterable.logger.log("disableDeviceForCurrentUser")
 
@@ -211,8 +291,14 @@ class Iterable {
   }
 
   /**
+   * This static method returns the payload of the last push notification with which the user
+   * opened the application (by clicking an action button, etc.).
    * 
+   * Iterable.getLastPushPayload returns a promise. Use the keyword `then` to get the result of the promise.
+   * 
+   * Parameters: none
    */
+
   static getLastPushPayload(): Promise<any | undefined> {
     Iterable.logger.log("getLastPushPayload")
 
@@ -220,8 +306,17 @@ class Iterable {
   }
 
   /**
+   * This static method returns the attribution information stored.
+   * The attribution information contains the campaign ID, template ID, and message ID of the message
+   * that prompted the user to recently click a link.
+   * See IterableAttributionInfo class defined above.
    * 
+   * Iterable.getAttributionInfo returns a promise that resolves to an IterableAttributionInfo object. 
+   * Use the keyword `then` to get the result of the promise.
+   * 
+   * parameters: none
    */
+
   static getAttributionInfo(): Promise<IterableAttributionInfo | undefined> {
     Iterable.logger.log("getAttributionInfo")
 
@@ -235,10 +330,17 @@ class Iterable {
   }
 
   /**
-  * 
-  * Attribution info (campaignId, messageId etc.) for last push open or app link click from an email.
-  * @param {attributionInfo} IterableAttributionInfo 
-  */
+   * This static method manually sets the current attribution information stored.
+   * The attribution information contains the campaign ID, template ID, and message ID of the message
+   * that prompted the user to recently click a link.
+   * See IterableAttributionInfo class defined above.
+   * 
+   * For deep link clicks, Iterable sets attribution information automatically.
+   * However, use this method to set it manually if ever necessary.
+   *
+   * @param {attributionInfo} IterableAttributionInfo object storing current attribution info
+   */
+
   static setAttributionInfo(attributionInfo?: IterableAttributionInfo) {
     Iterable.logger.log("setAttributionInfo")
 
@@ -246,28 +348,47 @@ class Iterable {
   }
 
   /**
-  * 
-  * @param {number} campaignId 
-  * @param {number} templateId 
-  * @param {string} messageId 
-  * @param {boolean} appAlreadyRunning 
-  * @param {any | undefined} dataFields 
-  */
-  static trackPushOpenWithCampaignId(campaignId: number, templateId: number, messageId: string | undefined, appAlreadyRunning: boolean, dataFields: any | undefined) {
+   * This static method creates a pushOpen event on the current user's Iterable profile,
+   * populating it with data provided to the method call.
+   * 
+   * @param {number} campaignId the ID of the campaign to associate with the push open
+   * @param {number} templateId the ID of the template to associate with the push open
+   * @param {string} messageId the ID of the message to associate with the push open
+   * @param {boolean} appAlreadyRunning whether or not the app was already running when the push notification arrived
+   * @param {any | undefined} dataFields information to store with the push open event
+   */
+
+  static trackPushOpenWithCampaignId(
+    campaignId: number, 
+    templateId: number, 
+    messageId: string | undefined, 
+    appAlreadyRunning: boolean, 
+    dataFields: any | undefined
+  ) {
     Iterable.logger.log("trackPushOpenWithCampaignId")
 
     RNIterableAPI.trackPushOpenWithCampaignId(campaignId, templateId, messageId, appAlreadyRunning, dataFields)
   }
 
   /**
+   * This static method updates the items saved in the shopping cart (or equivalent).
+   * Represent each item in the updateCart event with an IterableCommerceItem object.
+   * See IterableCommerceItem class defined above.
    * 
-   * @param {Array<IterableCommerceItem>} items
+   * @param {Array<IterableCommerceItem>} items the items added to the shopping cart
    */
+
   static updateCart(items: Array<IterableCommerceItem>) {
     Iterable.logger.log("updateCart")
 
     RNIterableAPI.updateCart(items)
   }
+
+  /**
+   * This static method launches the application from the background for Android devices.
+   * 
+   * parameters: none 
+   */
 
   static wakeApp() {
     if (Platform.OS === "android") {
@@ -278,11 +399,17 @@ class Iterable {
   }
 
   /**
-  * 
-  * @param {number} total 
-  * @param {Array<IterableCommerceItem>} items 
-  * @param {any | undefined} dataFields 
-  */
+   * This static method creates a purchase event on the current user's Iterable profile.
+   * Represent each item in the purchase event with an IterableCommerceItem object.
+   * See IterableCommerceItem class defined above.
+   *   
+   * Note: total is a parameter that is passed in. Iterable does not sum the price fields of the various items in the purchase event.
+   * 
+   * @param {number} total the total cost of the purchase
+   * @param {Array<IterableCommerceItem>} items the items included in the purchase
+   * @param {any | undefined} dataFields descriptive data to store on the purchase event
+   */
+
   static trackPurchase(total: number, items: Array<IterableCommerceItem>, dataFields: any | undefined) {
     Iterable.logger.log("trackPurchase")
 
@@ -290,10 +417,12 @@ class Iterable {
   }
 
   /**
-  * 
-  * @param {IterableInAppMessage} message 
-  * @param {IterableInAppLocation} location 
-  */
+   * This static method creates an inAppOpen event for the specified message on the current user's profile.
+   *
+   * @param {IterableInAppMessage} message the in-app message (an IterableInAppMessage object)
+   * @param {IterableInAppLocation} location the location of the in-app message (an IterableInAppLocation enum)
+   */
+
   static trackInAppOpen(message: IterableInAppMessage, location: IterableInAppLocation) {
     Iterable.logger.log("trackInAppOpen")
 
@@ -301,11 +430,14 @@ class Iterable {
   }
 
   /**
-  * 
-  * @param {IterableInAppMessage} message 
-  * @param {IterableInAppLocation} location 
-  * @param {string} clickedUrl 
-  */
+   * This static method creates an inAppClick event for the specified message on the current user's profile.
+   * Click events refer to click events within the in-app message to distinguish from inAppOpen events.
+   * 
+   * @param {IterableInAppMessage} message the in-app message (an IterableInAppMessage object)
+   * @param {IterableInAppLocation} location the location of the in-app message (an IterableInAppLocation enum)
+   * @param {string} clickedUrl the URL clicked by the user
+   */
+
   static trackInAppClick(message: IterableInAppMessage, location: IterableInAppLocation, clickedUrl: string) {
     Iterable.logger.log("trackInAppClick")
 
@@ -313,12 +445,14 @@ class Iterable {
   }
 
   /**
-  * 
-  * @param {IterableInAppMessage} message 
-  * @param {IterableInAppLocation} location 
-  * @param {IterableInAppCloseSource} source
-  * @param {string} clickedUrl 
-  */
+   * This static method creates an inAppClose event for the specified message on the current user's profile.
+   * 
+   * @param {IterableInAppMessage} message the in-app message (an IterableInAppMessage object)
+   * @param {IterableInAppLocation} location the location of the in-app message (an IterableInAppLocation enum)
+   * @param {IterableInAppCloseSource} source the way the in-app was closed (an IterableInAppCloseSource enum)
+   * @param {string} clickedUrl the URL clicked by the user
+   */
+
   static trackInAppClose(message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppCloseSource, clickedUrl?: string | undefined) {
     Iterable.logger.log("trackInAppClose")
 
@@ -326,11 +460,14 @@ class Iterable {
   }
 
   /**
-  * 
-  * @param {IterableInAppMessage} message 
-  * @param {IterableInAppLocation} location 
-  * @param {IterableInAppDeleteSource} source
-  */
+   * This static method removes the specifed message from the current user's message queue.
+   * Also, creates an in-app delete event for the specified message on the current user's profile.
+   * 
+   * @param {IterableInAppMessage} message the in-app message (an IterableInAppMessage object)
+   * @param {IterableInAppLocation} location the location of the in-app message (an IterableInAppLocation enum)
+   * @param {IterableInAppDeleteSource} source how the in-app message was deleted (an IterableInAppDeleteSource enum)
+   */
+
   static inAppConsume(message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppDeleteSource) {
     Iterable.logger.log("inAppConsume")
 
@@ -338,10 +475,13 @@ class Iterable {
   }
 
   /**
-  * 
-  * @param {string} name 
-  * @param {any | undefined} dataFields 
-  */
+   * This static method creates a custom event to the current user's Iterable profile.
+   * Pass in the name of the event stored in eventName key and the data associated with the event.
+   * The eventType is set to "customEvent".
+   * 
+   * @param {string} name the eventName of the custom event
+   * @param {any | undefined} dataFields descriptive data to store on the custom event
+   */
   static trackEvent(name: string, dataFields: any | undefined) {
     Iterable.logger.log("trackEvent")
 
@@ -349,9 +489,18 @@ class Iterable {
   }
 
   /**
+  * This static method saves data to the current user's Iterable profile.
   * 
-  * @param {any} dataFields Data fields to store in user profile
-  * @param {boolean} mergeNestedObjects Whether to merge top level objects instead of overwriting
+  * If mergeNestedObjects is set to true, top-level objects in the passed in dataFields parameter
+  * are merged with their counterparts that already exist on the user's profile.
+  * Otherwise, they are added.
+  * 
+  * If mergeNestedObjects is set to false, the top-level objects in the passed in dataFields parameter
+  * overwrite their counterparts that already exist on the user's profile.
+  * Otherwise, they are added.
+  * 
+  * @param {any} dataFields data fields to store in user profile
+  * @param {boolean} mergeNestedObjects flag indicating whether to merge top-level objects
   */
   static updateUser(dataFields: any, mergeNestedObjects: boolean) {
     Iterable.logger.log("updateUser")
@@ -360,10 +509,18 @@ class Iterable {
   }
 
   /**
-  * 
-  * @param email the new email to set
-  * @param authToken the new auth token (JWT) to set with the new email, optional - if null/undefined, no JWT related action will be taken
-  */
+   * This static method changes the value of the email field on the current user's Iterable profile.
+   *  
+   * If Iterable.setUserId was used to identify the current user, Iterable.updateEmail can be called to
+   * give the current user a real (non-placeholder) email address. 
+   * 
+   * An optional valid, pre-fetched JWT can be passed in to avoid race conditions.
+   * The SDK uses this JWT to authenticate API requests for this user.
+   * 
+   * @param email the new email to set
+   * @param authToken the new auth token (JWT) to set with the new email, optional - if null/undefined, no JWT-related action will be taken
+   */
+
   static updateEmail(email: string, authToken?: string | undefined) {
     Iterable.logger.log("updateEmail")
 
@@ -371,9 +528,12 @@ class Iterable {
   }
 
   /**
-  * 
-  * @param {string} link URL in string form to be either opened as an app link or as a normal one
-  */
+   * This static method handles a universal link whether it is internal to the application
+   * or an external link.
+   * 
+   * @param {string} link URL link to be handled
+   */
+
   static handleAppLink(link: string): Promise<boolean> {
     Iterable.logger.log("handleAppLink")
 
@@ -381,14 +541,21 @@ class Iterable {
   }
 
   /**
-  * 
-  * @param {Array<number> | undefined} emailListIds the list of lists (by ID) that a user is subscribed to
-  * @param {Array<number> | undefined} unsubscribedChannelIds the list of channels (by ID) to unsubscribe from
-  * @param {Array<number> | undefined} unsubscribedMessageTypeIds the list of message types (by ID) to unsubscribe from
-  * @param {Array<number> | undefined} subscribedMessageTypeIds the list of message types (by ID) to subscribe to
-  * @param {number} campaignId the ID of the campaign to attribute unsubscribes, pass -1 for unknown campaignId
-  * @param {number} templateId the ID of the template to attribute unsubscribes, pass -1 for unknown templateId
-  */
+   * This static method updates the current user's subscribed email lists, unsubscribed channel IDs, 
+   * unsubscribed message type IDs (for opt-out message types), and subscribed message type IDs (for opt-in message types)
+   * on the current user's profile.
+   * 
+   * pass in null for any of emailListIds, unsubscribedChannelIds, unsubscribedMessageTypeIds, or subscribedMessageTypeIds
+   * to indicate that Iterable should not change the current value on the current user's profile.
+   * 
+   * @param {Array<number> | undefined} emailListIds the list of email lists (by ID) to which the user should be subscribed
+   * @param {Array<number> | undefined} unsubscribedChannelIds the list of message channels (by ID) to which the user should be unsubscribed
+   * @param {Array<number> | undefined} unsubscribedMessageTypeIds the list of message types (by ID) to which the user should be unsubscribed (for opt-out message types)
+   * @param {Array<number> | undefined} subscribedMessageTypeIds the list of message types (by ID) to which the user should be subscribed (for opt-in message types)
+   * @param {number} campaignId the campaign ID to associate with events generated by this request, use -1 if unknown or not applicable
+   * @param {number} templateId the template ID to associate with events generated by this request, use -1 if unknown or not applicable
+   */
+
   static updateSubscriptions(emailListIds: Array<number> | undefined,
     unsubscribedChannelIds: Array<number> | undefined,
     unsubscribedMessageTypeIds: Array<number> | undefined,
@@ -397,7 +564,14 @@ class Iterable {
     templateId: number) {
     Iterable.logger.log("updateSubscriptions")
     
-    RNIterableAPI.updateSubscriptions(emailListIds, unsubscribedChannelIds, unsubscribedMessageTypeIds, subscribedMessageTypeIds, campaignId, templateId)
+    RNIterableAPI.updateSubscriptions(
+      emailListIds, 
+      unsubscribedChannelIds, 
+      unsubscribedMessageTypeIds, 
+      subscribedMessageTypeIds, 
+      campaignId, 
+      templateId
+    )
   }
 
   // PRIVATE
