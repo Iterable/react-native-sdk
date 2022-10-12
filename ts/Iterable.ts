@@ -136,7 +136,7 @@ class Iterable {
    * 
    * Pass in an IterableConfig object with the various customization properties setup.
    * 
-   * Note: Use Iterable.initialize not Iterable.initialize2, as Iterable.initialize2 is only used internally.
+   * Note: Use Iterable.initialize and NOT Iterable.initialize2, as Iterable.initialize2 is only used internally.
    * 
    * @param {string} apiKey mobile API key provided with the application
    * @param {IterableConfig} config config object with various properties
