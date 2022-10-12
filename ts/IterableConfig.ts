@@ -60,8 +60,8 @@ class IterableConfig {
   /**
    * The handler with which your own calls to your backend containing the auth token happen
    */
-  // authHandler?: (success?: AuthCallBack, failure?:  AuthCallBack) => Promise<AuthResponse | undefined>
   authHandler?:() => Promise<AuthResponse | String | undefined>
+  
   /**
    * Set the verbosity of Android and iOS project's log system. 
    * By default, you will be able to see info level logs printed in IDE when running the app. 

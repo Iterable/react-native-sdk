@@ -30,6 +30,11 @@ enum IterableActionSource {
   inApp = 2
 }
 
+enum AuthResponseCallback {
+  SUCCESS = 'success',
+  FAILURE = 'failure',
+}
+
 /**
 * Enum representing what level of logs will Android and iOS project be printing on their consoles respectively.
 */
@@ -462,33 +467,30 @@ class Iterable {
             // Promise result can be either just String OR of type AuthResponse. 
             // If type AuthReponse, authToken will be parsed looking for `authToken` within promised object. Two additional listeners will be registered for success and failure callbacks sent by native bridge layer.
             // Else it will be looked for as a String.
-            console.log("Promise Result type is " + typeof promiseResult + "... AuthReponse type is " + typeof (new AuthResponse()))
               if(typeof promiseResult === typeof (new AuthResponse())) {
                
                 RNIterableAPI.passAlongAuthToken((promiseResult as AuthResponse).authToken)
 
                 setTimeout(() => {
-                  if(authResponseCallback === "success") {
+                  if(authResponseCallback === AuthResponseCallback.SUCCESS) {
                     if((promiseResult as AuthResponse).successCallback){
-                      console.log('Gonna invoke success callback on ts');
                       (promiseResult as AuthResponse).successCallback!()
                     }
-                  } else if(authResponseCallback === "failure") {
+                  } else if(authResponseCallback === AuthResponseCallback.FAILURE) {
                     if((promiseResult as AuthResponse).failureCallback){
-                      console.log('Gonna invoke failure callback on ts');
                       (promiseResult as AuthResponse).failureCallback!()
                     }
                   } else {
-                    console.log('No callback received from native layer')
+                    Iterable.logger.log('No callback received from native layer')
                   }
                 }, 1000)
               } else if (typeof promiseResult === typeof "") {
                 //If promise only returns string
                 RNIterableAPI.passAlongAuthToken((promiseResult as String))
               } else {
-                console.log('Unexpected promise returned. Auth token expects promise of String or AuthResponse type.')
+                Iterable.logger.log('Unexpected promise returned. Auth token expects promise of String or AuthResponse type.')
               }
-            }).catch(e => console.log(e))
+            }).catch(e => Iterable.logger.log(e))
         }
       )
 
