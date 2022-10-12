@@ -200,7 +200,7 @@ class Iterable {
    * push notifications to that user, for that app, on that device.
    * On the user's Iterable profile, endpointEnabled is set to false for the device.
    * 
-   * Note: specify a user by calling Iterable.setEmail or Iterable.setUserId, but not both.
+   * Note: specify a user by calling Iterable.setEmail or Iterable.setUserId, but NOT both.
    * 
    * @param {string | undefined} email email address to associate with the current user
    * @param {string | undefined} authToken valid, pre-fecthed JWT the SDK can use to authenticate API requests, optional - if null/undefined, no JWT related action will be taken
@@ -253,7 +253,7 @@ class Iterable {
    * push notifications to that user, for that app, on that device.
    * On the user's Iterable profile, endpointEnabled is set to false for the device.
    * 
-   * Note: specify a user by calling Iterable.setEmail or Iterable.setUserId, but not both.
+   * Note: specify a user by calling Iterable.setEmail or Iterable.setUserId, but NOT both.
    * 
    * parameters: @param {string | undefined} userId user ID to associate with the current user 
    * optional parameter: @param {string | undefined} authToken valid, pre-fecthed JWT the SDK can use to authenticate API requests, optional - if null/undefined, no JWT related action will be taken
