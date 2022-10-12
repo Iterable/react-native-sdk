@@ -185,7 +185,7 @@ class Iterable {
    * 
    * Registering device token:
    * 
-   * If IterableConfig.autoPushRegisteration is set to true, calling setUserId automatically registers the device for push 
+   * If IterableConfig.autoPushRegisteration is set to true, calling setEmail automatically registers the device for push 
    * notifications and sends the deviceId and token to Iterable.
    * 
    * Optional JWT token parameter:
