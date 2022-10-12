@@ -417,7 +417,9 @@ class Iterable {
   }
 
   /**
-   * This static method creates an inAppOpen event for the specified message on the current user's profile.
+   * This static method creates an inAppOpen event for the specified message on the current user's profile 
+   * for manual tracking purposes. Iterable's SDK automatically tracks in-app message opens when you use the
+   * SDK's default rendering.
    *
    * @param {IterableInAppMessage} message the in-app message (an IterableInAppMessage object)
    * @param {IterableInAppLocation} location the location of the in-app message (an IterableInAppLocation enum)
@@ -430,8 +432,10 @@ class Iterable {
   }
 
   /**
-   * This static method creates an inAppClick event for the specified message on the current user's profile.
-   * Click events refer to click events within the in-app message to distinguish from inAppOpen events.
+   * This static method creates an inAppClick event for the specified message on the current user's profile
+   * for manual tracking purposes. Iterable's SDK automatically tracks in-app message clicks when you use the
+   * SDK's default rendering. Click events refer to click events within the in-app message to distinguish 
+   * from inAppOpen events.
    * 
    * @param {IterableInAppMessage} message the in-app message (an IterableInAppMessage object)
    * @param {IterableInAppLocation} location the location of the in-app message (an IterableInAppLocation enum)
@@ -445,7 +449,9 @@ class Iterable {
   }
 
   /**
-   * This static method creates an inAppClose event for the specified message on the current user's profile.
+   * This static method creates an inAppClose event for the specified message on the current user's profile
+   * for manual tracking purposes. Iterable's SDK automatically tracks in-app message close events when you use the
+   * SDK's default rendering.
    * 
    * @param {IterableInAppMessage} message the in-app message (an IterableInAppMessage object)
    * @param {IterableInAppLocation} location the location of the in-app message (an IterableInAppLocation enum)
@@ -461,7 +467,9 @@ class Iterable {
 
   /**
    * This static method removes the specifed message from the current user's message queue.
-   * Also, creates an in-app delete event for the specified message on the current user's profile.
+   * Also, creates an in-app delete event for the specified message on the current user's profile
+   * unless otherwise specifed (specifying a source of IterableInAppDeleteSource.unknown prevents
+   * an inAppDelete event from being created).
    * 
    * @param {IterableInAppMessage} message the in-app message (an IterableInAppMessage object)
    * @param {IterableInAppLocation} location the location of the in-app message (an IterableInAppLocation enum)
@@ -528,8 +536,9 @@ class Iterable {
   }
 
   /**
-   * This static method handles a universal link whether it is internal to the application
-   * or an external link.
+   * This static method handles a universal link whether it is internal to the application or an external link.
+   * HandleAppLink will hand the passed in URL to IterableConfig.urlHandler, where it is determined whether or not 
+   * the app can handle the clicked URL.
    * 
    * @param {string} link URL link to be handled
    */
