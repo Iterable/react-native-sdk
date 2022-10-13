@@ -169,6 +169,12 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     }
 
     @ReactMethod
+    public void registerDeviceToken(@Nullable String token) {
+        IterableLogger.v(TAG, "registerDeviceToken")
+        IterableApi.getInstance().registerDeviceToken(token)
+    }
+
+    @ReactMethod
     public void trackEvent(String name, ReadableMap dataFields) {
         IterableLogger.v(TAG, "trackEvent");
         IterableApi.getInstance().track(name, optSerializedDataFields(dataFields));

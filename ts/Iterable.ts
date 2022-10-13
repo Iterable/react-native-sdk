@@ -279,6 +279,18 @@ class Iterable {
   }
 
   /**
+   * This static methods registers the passed in device token with Iterable.
+   * 
+   * @param token device token 
+   */
+
+  static registerDeviceToken(token: String) {
+    Iterable.logger.log("registerDeviceToken")
+
+    return RNIterableAPI.registerDeviceToken(token)
+  }
+
+  /**
    * This static method disables the device's token for the current user.
    * 
    * parameters: none

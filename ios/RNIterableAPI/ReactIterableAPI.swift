@@ -133,6 +133,13 @@ class ReactIterableAPI: RCTEventEmitter {
         resolver(IterableAPI.userId)
     }
     
+    @objc(registerDeviceToken:)
+    func registerDeviceToken(token: String?) {
+        ITBInfo()
+
+        IterableAPI.registerDeviceToken(token)
+    }
+
     // MARK: - Iterable API Request Functions
     
     @objc(setInAppShowResponse:)

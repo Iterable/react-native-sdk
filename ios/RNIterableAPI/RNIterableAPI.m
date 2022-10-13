@@ -34,6 +34,10 @@ RCT_EXTERN_METHOD(setUserId: (NSString *) userId
 RCT_EXTERN_METHOD(getUserId: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
 
+RCT_EXTERN_METHOD(registerDeviceToken: (NSString *) token
+                  resolver: (RCTPromiseResolveBlock) resolve
+                  rejecter: (RCTPromiseRejectBlock) reject)            
+
 // MARK: - Iterable API Request Functions
 
 RCT_EXTERN_METHOD(disableDeviceForCurrentUser)
