@@ -13,8 +13,6 @@ import IterableInAppMessage from './IterableInAppMessage'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
 
-
-
 class IterableInAppManager {
   /** This method is called on the inAppManager property of the iterable instance.
    *
@@ -80,7 +78,7 @@ class IterableInAppManager {
   }
 
   /**
-   * This method sets the read status of specified in app message.
+   * This method sets the read status of specified in-app message.
    * 
    * @param {IterableInAppMessage} message the in-app message (an IterableInAppMessage object)
    * @param {boolean} read the boolean value indicating whether the in-app message was read
@@ -110,7 +108,7 @@ class IterableInAppManager {
   /**
    * This method turns on or off automatic displaying of incoming in-app messages.
    * If set to false, the SDK will immediately retrieve and process in-app messages from the message queue.
-   * The default value of isAutoDisplayPaused is false.
+   * The default value of isAutoDisplayPaused is false (in the native code).
    * 
    * @param {boolean} paused whether the automatic displaying should be paused
    */
