@@ -80,7 +80,7 @@ class IterableInAppManager {
   }
 
   /**
-   * This method sets the read boolean parameter for the specified message to the passed in read parameter.
+   * This method sets the read status of specified in app message.
    * 
    * @param {IterableInAppMessage} message the in-app message (an IterableInAppMessage object)
    * @param {boolean} read the boolean value indicating whether the in-app message was read
