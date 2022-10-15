@@ -16,7 +16,7 @@ const RNIterableAPI = NativeModules.RNIterableAPI
 
 
 class IterableInAppManager {
-  /** This method is called on the inAppManager property, which is set to an instance of IterableInAppManager, of the iterable class.
+  /** This method is called on the inAppManager property of the iterable instance.
    *
    * This method returns the current user's list of in-app messages stored in the local queue.
    * This method does not cause the application to immediately check for new in-app messages on the server.
