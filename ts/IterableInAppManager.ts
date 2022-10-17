@@ -14,12 +14,15 @@ import IterableInAppMessage from './IterableInAppMessage'
 const RNIterableAPI = NativeModules.RNIterableAPI
 
 class IterableInAppManager {
-  /** This method is called on the inAppManager property of the iterable instance.
-   *
-   * This method returns the current user's list of in-app messages stored in the local queue.
-   * This method does not cause the application to immediately check for new in-app messages on the server.
+  /** 
+   * These methods are called on the inAppManager property of the iterable instance.
+   */
+  
+  /**
+   * This method returns the current user's list of in-app messages stored in the local queue in the form of a promise.
+   * Use `then` keyword to get the array of IterableInAppMessage objects.
    * 
-   * This method returns an array of IterableInAppMessage objects.
+   * This method does not cause the application to immediately check for new in-app messages on the server, since the SDK keeps the message list in sync.
    * 
    * parameters: none
    */
@@ -31,10 +34,10 @@ class IterableInAppManager {
   }
 
    /**
-   * This method returns the current user's list of in-app messages stored in the local queue and marked as `saveToInbox`.
-   * This method does not cause the application to immediately check for new in-app messages on the server.
+   * This method returns the current user's list of in-app messages designated for the mobile inbox stored in the local queue in the form of a promise.
+   * Use `then` keyword to get the array of IterableInAppMessage objects marked as `saveToInbox`.
    * 
-   * This method returns an array of IterableInAppMessage objects. 
+   * This method does not cause the application to immediately check for new in-app messages on the server, since the SDK keeps the message list in sync. 
    * 
    * parameters: none
    */
@@ -91,7 +94,7 @@ class IterableInAppManager {
 
   /**
    * This method returns HTML in-app content for a specified in-app message.
-   * The HTML content is returned as an IterableHtmlInAppContent object.
+   * This method returns a Promise. Use `then` to get the HTML content returned as an IterableHtmlInAppContent object.  
    * 
    * @param {IterableInAppMessage} message the in-app message (an IterableInAppMessage object)
    */
