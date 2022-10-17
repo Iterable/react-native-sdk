@@ -31,8 +31,8 @@ enum IterableActionSource {
 }
 
 enum AuthResponseCallback {
-  SUCCESS = 'success',
-  FAILURE = 'failure',
+  SUCCESS,
+  FAILURE,
 }
 
 /**
@@ -458,7 +458,7 @@ class Iterable {
     }
 
     if (Iterable.savedConfig.authHandler) {
-      var authResponseCallback = ""
+      var authResponseCallback: AuthResponseCallback
       RNEventEmitter.addListener(
         EventName.handleAuthCalled,
         () => {
@@ -497,13 +497,13 @@ class Iterable {
       RNEventEmitter.addListener(
         EventName.handleAuthSuccessCalled,
         () => {
-          authResponseCallback = "success"
+          authResponseCallback = AuthResponseCallback.SUCCESS
         }
       )
       RNEventEmitter.addListener(
         EventName.handleAuthFailureCalled,
         () => {
-          authResponseCallback = "failure"
+          authResponseCallback = AuthResponseCallback.FAILURE
         }
       )
     }
