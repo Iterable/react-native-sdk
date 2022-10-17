@@ -13,11 +13,12 @@ import IterableInAppMessage from './IterableInAppMessage'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
 
-class IterableInAppManager {
   /** 
-   * These methods are called on the inAppManager property of the iterable instance.
+   * IterableInAppManager is set up as the inAppManager property of an Iterable instance.
    */
-  
+
+class IterableInAppManager {
+
   /**
    * This method returns the current user's list of in-app messages stored in the local queue in the form of a promise.
    * Use `then` keyword to get the array of IterableInAppMessage objects.
@@ -66,9 +67,7 @@ class IterableInAppManager {
 
   /**
    * This method removes the specifed message from the current user's message queue.
-   * Also, creates an in-app delete event for the specified message on the current user's profile
-   * unless otherwise specifed (specifying a source of IterableInAppDeleteSource.unknown prevents
-   * an inAppDelete event from being created).
+   * Also, this method calls the inAppConsume method internally. 
    * 
    * @param {IterableInAppMessage} message the in-app message (an IterableInAppMessage object)
    * @param {IterableInAppLocation} location the location of the in-app message (an IterableInAppLocation enum)
