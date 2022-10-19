@@ -6,7 +6,6 @@ import {
    View,
    ScrollView,
    StyleSheet,
-   Platform,
    Linking,
    TouchableWithoutFeedback,
 } from 'react-native'
@@ -14,6 +13,7 @@ import { WebView } from 'react-native-webview'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 import { 
+   Iterable,
    InboxRowViewModel, 
    IterableHtmlInAppContent, 
    IterableEdgeInsets,
@@ -23,7 +23,7 @@ import {
    IterableActionContext
 } from '.'
 
-import { Iterable, IterableActionSource } from './Iterable'
+import { IterableActionSource } from './Iterable'
 
 type MessageDisplayProps = {
    rowViewModel: InboxRowViewModel,

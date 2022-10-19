@@ -14,6 +14,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import {
+   Iterable,
    IterableInboxCustomizations,
    useAppStateListener,
    useDeviceOrientation,
@@ -22,8 +23,6 @@ import {
    IterableInboxEmptyState,
    InboxImpressionRowInfo
 } from '.'
-
-import { Iterable } from './Iterable'
 
 import IterableInboxMessageList from './IterableInboxMessageList'
 import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'

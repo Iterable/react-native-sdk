@@ -3,13 +3,12 @@
 import { 
   IterableAction, 
   IterableActionContext, 
-  IterableLogLevel,
-} from '.'
-
-import { IterableInAppShowResponse } from './IterableInAppClasses'
+  IterableLogLevel
+} from './IterableAction'
 
 import IterableInAppMessage from './IterableInAppMessage'
 
+import { IterableInAppShowResponse } from './IterableInAppClasses'
 
 type AuthCallBack = (() => void)
 
