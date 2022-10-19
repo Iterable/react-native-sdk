@@ -6,9 +6,9 @@ import {
   IterableLogLevel
 } from './IterableAction'
 
-import IterableInAppMessage from './IterableInAppMessage'
-
 import { IterableInAppShowResponse } from './IterableInAppClasses'
+
+import IterableInAppMessage from './IterableInAppMessage'
 
 type AuthCallBack = (() => void)
 

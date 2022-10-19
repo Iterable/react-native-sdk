@@ -8,7 +8,7 @@ import {
   IterableInAppDeleteSource,
 } from './IterableInAppClasses'
 
-import {Iterable} from './Iterable'
+import { Iterable } from './Iterable'
 
 import IterableInAppMessage from './IterableInAppMessage'
 
