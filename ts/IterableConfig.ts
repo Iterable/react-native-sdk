@@ -42,7 +42,7 @@ class IterableConfig {
   checkForDeferredDeeplink = false
 
   /**
-   * When displaying multiple in-app messages in sequence, the number of seconds to wait 
+   * Number of seconds to wait when displaying multiple in-app messages in sequence. 
    * between each. Defaults to 30 seconds.
    */
 
