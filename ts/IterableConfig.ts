@@ -49,7 +49,7 @@ class IterableConfig {
   inAppDisplayInterval: number = 30.0
 
   /**
-   * A function expression used to handle deep link URLs and in-app message button and link URLs.
+   * A callback function used to handle deep link URLs and in-app message button and link URLs.
    */
 
   urlHandler?: (url: string, context: IterableActionContext) => boolean
