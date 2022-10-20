@@ -29,8 +29,8 @@ class IterableConfig {
   pushIntegrationName?: string
 
   /**
-   * When set to true, IterableSDK will automatically register and deregister notification tokens
-   * when you provide email or userId values to the SDK using Iterable.setEmail or Iterable.setUserId.
+   * When set to true (which is the default value), IterableSDK will automatically register and deregister 
+   * notification tokens when you provide email or userId values to the SDK using Iterable.setEmail or Iterable.setUserId.
    */
 
   autoPushRegistration = true
@@ -55,7 +55,7 @@ class IterableConfig {
   urlHandler?: (url: string, context: IterableActionContext) => boolean
 
   /**
-   * A function expression used to handle action:// URLs for in-app buttons and links.
+   * A function expression used to handle `action://` URLs for in-app buttons and links.
    */
 
   customActionHandler?: (action: IterableAction, context: IterableActionContext) => boolean
@@ -64,6 +64,9 @@ class IterableConfig {
   * Implement this protocol to override default in-app behavior.
   * By default, every single in-app will be shown as soon as it is available.
   * If more than 1 in-app is available, we show the first.
+  * 
+  * See "In-App Messages with Iterable's React Native SDK" in support documentation
+  * for more information.
   */
   inAppHandler?: (message: IterableInAppMessage) => IterableInAppShowResponse
 
