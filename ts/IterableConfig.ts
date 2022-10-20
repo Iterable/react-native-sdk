@@ -61,7 +61,7 @@ class IterableConfig {
   customActionHandler?: (action: IterableAction, context: IterableActionContext) => boolean
 
   /**
-  * Implement this protocol to override default in-app behavior.
+  * Implement this callback to override default in-app behavior.
   * By default, every single in-app will be shown as soon as it is available.
   * If more than 1 in-app is available, we show the first.
   * 
