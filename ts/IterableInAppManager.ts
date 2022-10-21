@@ -31,7 +31,7 @@ class IterableInAppManager {
   getMessages(): Promise<Array<IterableInAppMessage>> {
     Iterable.logger.log("InAppManager.getMessages")
 
-    return RNIterableAPI.getInAppMessages().then((messages: Array<any>) => messages.map(message => { return IterableInAppMessage.fromDict(message) }))
+    return RNIterableAPI.getInAppMessages()
   }
 
    /**
@@ -46,7 +46,7 @@ class IterableInAppManager {
   getInboxMessages(): Promise<Array<IterableInAppMessage>> {
     Iterable.logger.log("InAppManager.getInboxMessages")
 
-    return RNIterableAPI.getInboxMessages().then((messages: Array<any>) => messages.map(message => { return IterableInAppMessage.fromDict(message) }))
+    return RNIterableAPI.getInboxMessages()
   }
 
   /**
@@ -102,9 +102,6 @@ class IterableInAppManager {
      Iterable.logger.log("InAppManager.getHtmlContentForMessage")
 
     return RNIterableAPI.getHtmlInAppContentForMessage(message.messageId)
-      .then((content: any) => {
-        return IterableHtmlInAppContent.fromDict(content)
-      })
   }
 
   /**
