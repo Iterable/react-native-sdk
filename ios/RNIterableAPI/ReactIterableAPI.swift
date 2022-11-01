@@ -137,9 +137,7 @@ class ReactIterableAPI: RCTEventEmitter {
     func registerDeviceToken(token: String) {
         ITBInfo()
         
-        if let data = token.data(using:.utf8) {
-            IterableAPI.register(token: data)
-        }
+        IterableAPI.register(hexToken: token)
     }
 
     // MARK: - Iterable API Request Functions
