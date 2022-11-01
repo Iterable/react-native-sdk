@@ -1,3 +1,89 @@
+## 1.3.7
+Starting with this release, as a privacy enhancement, Iterable’s React Native
+SDK encrypts some data stored at rest.
+
+#### iOS updates
+In iOS apps, Iterable's React Native SDK now encrypts the following fields when
+storing them at rest:
+
+- `email` — The user's email address.
+- `userId` — The user's ID.
+- `authToken` — The JWT used to authenticate the user with Iterable's API.
+- `lastPushPayload` — The JSON payload that came along with the last push
+  notification received by the app.
+
+(Note that, in iOS apps, Iterable's React Native SDK does not store in-app
+messages at rest—before or after this update.)
+
+When a user upgrades to a version of your app that uses this version of the SDK
+(or higher), the fields shown above are encrypted. No data that's already stored 
+is lost.
+
+For more information about this encryption in iOS, examine the source code for
+Iterable's iOS SDK (upon which the React Native SDK relies):
+
+- [`IterableKeychain`](https://github.com/Iterable/swift-sdk/blob/master/swift-sdk/Internal/IterableKeychain.swift)
+- [`KeychainWrapper`](https://github.com/Iterable/swift-sdk/blob/master/swift-sdk/Internal/KeychainWrapper.swift)
+
+#### Android updates
+For Android, this release includes support for encrypting some data at rest,
+and an option to store in-app messages in memory.
+
+##### Encrypted data
+In Android apps with `minSdkVersion` 23 or higher ([Android 6.0](https://developer.android.com/studio/releases/platforms#6.0))
+Iterable's React Native SDK now encrypts the following fields when storing
+them at rest:
+
+- `email` — The user's email address.
+- `userId` — The user's ID.
+- `authToken` — The JWT used to authenticate the user with Iterable's API.
+
+(Note that, in Android apps, Iterable's React Native SDK does not store the last
+push payload at rest—before or after this update.)
+
+For more information about this encryption in Android, examine the source code 
+for Iterable's Android SDK (upon which the React Native SDK relies):
+[`IterableKeychain`](https://github.com/Iterable/iterable-android-sdk/blob/master/iterableapi/src/main/java/com/iterable/iterableapi/IterableKeychain.kt).
+
+##### Storing in-app messages in memory
+This release also allows you to have your Android apps (regardless of `minSdkVersion`) 
+store in-app messages in memory, rather than in an unencrypted local file.
+However, an unencrypted local file is still the default option.
+
+To store in-app messages in memory, on `IterableConfig`, set 
+`androidSdkUseInMemoryStorageForInApps` to `true` (defaults to `false`):
+
+```javascript
+const config = new IterableConfig();
+// ... other configuration options ...
+config.androidSdkUseInMemoryStorageForInApps = true;
+Iterable.initialize('<YOUR_API_KEY>', config);
+```
+
+When users upgrade to a version of your Android app that uses this version of
+the SDK (or higher), and you've set this configuration option to `true`, the 
+local file used for in-app message storage (if it already exists) is deleted
+However, no data is lost.
+
+##### Android upgrade instructions
+If your app targets API level 23 or higher, this is a standard SDK upgrade, with
+no special instructions.
+
+If your app targets an API level less than 23, you'll need to make the following
+changes to your project (which allow your app to build, even though it won't
+encrypt data):
+
+1. In `AndroidManifest.xml`, add `<uses-sdk tools:overrideLibrary="androidx.security" />`
+2. In your app's `app/build.gradle`:
+  - Add `multiDexEnabled true` to the `default` object, under `android`.
+  - Add `implementation androidx.multidex:multidex:2.0.1` to the `dependencies`.
+
+### Objective-C compatibility headers for React Native 0.68+
+To help solve build errors that can arise when using Iterable's SDK with React
+Native 0.68+, which uses Objective-C++, we've created some Objective-C
+compatibility headers that you can import into your project. For details, read 
+[Installing Iterable's React Native SDK — Step 3.3: Import the SDK](https://support.iterable.com/hc/articles/360045714132#step-3-3-import-the-sdk).
+
 ## 1.1.0
 #### Added
 - Offline events processing
