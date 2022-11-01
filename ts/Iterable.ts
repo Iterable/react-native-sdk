@@ -15,7 +15,7 @@ import {
 
 import IterableInAppManager from './IterableInAppManager'
 import IterableInAppMessage from './IterableInAppMessage'
-import IterableConfig from './IterableConfig'
+import IterableConfig, { AuthResponse } from './IterableConfig'
 import { IterableLogger } from './IterableLogger'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
@@ -28,6 +28,11 @@ enum IterableActionSource {
   push = 0,
   appLink = 1,
   inApp = 2
+}
+
+enum AuthResponseCallback {
+  SUCCESS,
+  FAILURE,
 }
 
 /**
@@ -118,7 +123,9 @@ enum EventName {
   handleCustomActionCalled = "handleCustomActionCalled",
   handleInAppCalled = "handleInAppCalled",
   handleAuthCalled = "handleAuthCalled",
-  receivedIterableInboxChanged = "receivedIterableInboxChanged"
+  receivedIterableInboxChanged = "receivedIterableInboxChanged",
+  handleAuthSuccessCalled = "handleAuthSuccessCalled",
+  handleAuthFailureCalled = "handleAuthFailureCalled"
 }
 
 class Iterable {
@@ -646,13 +653,52 @@ class Iterable {
     }
 
     if (Iterable.savedConfig.authHandler) {
+      var authResponseCallback: AuthResponseCallback
       RNEventEmitter.addListener(
         EventName.handleAuthCalled,
         () => {
           Iterable.savedConfig.authHandler!()
-            .then(authToken => {
-              RNIterableAPI.passAlongAuthToken(authToken)
-            })
+            .then(promiseResult => {
+            // Promise result can be either just String OR of type AuthResponse. 
+            // If type AuthReponse, authToken will be parsed looking for `authToken` within promised object. Two additional listeners will be registered for success and failure callbacks sent by native bridge layer.
+            // Else it will be looked for as a String.
+              if(typeof promiseResult === typeof (new AuthResponse())) {
+               
+                RNIterableAPI.passAlongAuthToken((promiseResult as AuthResponse).authToken)
+
+                setTimeout(() => {
+                  if(authResponseCallback === AuthResponseCallback.SUCCESS) {
+                    if((promiseResult as AuthResponse).successCallback){
+                      (promiseResult as AuthResponse).successCallback!()
+                    }
+                  } else if(authResponseCallback === AuthResponseCallback.FAILURE) {
+                    if((promiseResult as AuthResponse).failureCallback){
+                      (promiseResult as AuthResponse).failureCallback!()
+                    }
+                  } else {
+                    Iterable.logger.log('No callback received from native layer')
+                  }
+                }, 1000)
+              } else if (typeof promiseResult === typeof "") {
+                //If promise only returns string
+                RNIterableAPI.passAlongAuthToken((promiseResult as String))
+              } else {
+                Iterable.logger.log('Unexpected promise returned. Auth token expects promise of String or AuthResponse type.')
+              }
+            }).catch(e => Iterable.logger.log(e))
+        }
+      )
+
+      RNEventEmitter.addListener(
+        EventName.handleAuthSuccessCalled,
+        () => {
+          authResponseCallback = AuthResponseCallback.SUCCESS
+        }
+      )
+      RNEventEmitter.addListener(
+        EventName.handleAuthFailureCalled,
+        () => {
+          authResponseCallback = AuthResponseCallback.FAILURE
         }
       )
     }

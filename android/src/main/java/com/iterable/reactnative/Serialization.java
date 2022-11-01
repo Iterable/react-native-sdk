@@ -167,6 +167,10 @@ class Serialization {
                 configBuilder.setInAppDisplayInterval(iterableContextJSON.optDouble("inAppDisplayInterval"));
             }
 
+            if (iterableContextJSON.has("androidSdkUseInMemoryStorageForInApps")) {
+                configBuilder.setUseInMemoryStorageForInApps(iterableContextJSON.optBoolean("androidSdkUseInMemoryStorageForInApps"));
+            }
+
             if (iterableContextJSON.has("logLevel")) {
                 int logLevel = iterableContextJSON.getInt("logLevel");
                 switch (logLevel) {
@@ -186,6 +190,7 @@ class Serialization {
                         logLevel = Log.ERROR;
                         break;
                 }
+
                 configBuilder.setLogLevel(logLevel);
             }
 
