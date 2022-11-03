@@ -15,9 +15,7 @@
     "declaration": true,
   },
   "include": [
-    "./**/*",
-    "./*",
-    ".eslintrc.js"
+    "ts"
   ],
   "exclude": [
     "node_modules",
