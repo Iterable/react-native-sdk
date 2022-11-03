@@ -48,6 +48,7 @@
     "react": "16.11.0",
     "react-native": "^0.62.2",
     "ts-jest": "^26.0.0",
+    "typescript": "^3.9.5"
   },
   "peerDependencies": {
     "react": "*",
