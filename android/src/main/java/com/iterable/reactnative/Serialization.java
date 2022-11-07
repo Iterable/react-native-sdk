@@ -167,8 +167,8 @@ class Serialization {
                 configBuilder.setInAppDisplayInterval(iterableContextJSON.optDouble("inAppDisplayInterval"));
             }
 
-            if (iterableContextJSON.has("androidSdkUseInMemoryStorageForInApps")) {
-                configBuilder.setUseInMemoryStorageForInApps(iterableContextJSON.optBoolean("androidSdkUseInMemoryStorageForInApps"));
+            if (iterableContextJSON.has("useInMemoryStorageForInApps") || iterableContextJSON.has("androidSdkUseInMemoryStorageForInApps")) {
+                configBuilder.setUseInMemoryStorageForInApps(iterableContextJSON.optBoolean("useInMemoryStorageForInApps"));
             }
 
             if (iterableContextJSON.has("logLevel")) {
