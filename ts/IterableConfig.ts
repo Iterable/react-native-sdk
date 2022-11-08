@@ -25,14 +25,12 @@ class IterableConfig {
    * Note: Don't specify this value unless you are using an older Iterable push integration that 
    * has a custom name. To view your existing integrations, navigate to Settings > Mobile Apps.
    */
-
   pushIntegrationName?: string
 
   /**
    * When set to true (which is the default value), IterableSDK will automatically register and deregister 
    * notification tokens when you provide email or userId values to the SDK using Iterable.setEmail or Iterable.setUserId.
    */
-
   autoPushRegistration = true
 
   /**
@@ -45,19 +43,16 @@ class IterableConfig {
    * Number of seconds to wait when displaying multiple in-app messages in sequence. 
    * between each. Defaults to 30 seconds.
    */
-
   inAppDisplayInterval: number = 30.0
 
   /**
    * A callback function used to handle deep link URLs and in-app message button and link URLs.
    */
-
   urlHandler?: (url: string, context: IterableActionContext) => boolean
 
   /**
    * A function expression used to handle `action://` URLs for in-app buttons and links.
    */
-
   customActionHandler?: (action: IterableAction, context: IterableActionContext) => boolean
 
   /**
@@ -75,7 +70,6 @@ class IterableConfig {
    * React Native SDK. Provide an implementation for this method only if your app uses a 
    * JWT-enabled API key.
    */
-
   authHandler?:() => Promise<AuthResponse | String | undefined>
   
   /**
@@ -89,14 +83,12 @@ class IterableConfig {
    * This is for calls within the React Native layer, and is separate from `logLevel`
    * which affects the Android and iOS native SDKs
    */
-  
   logReactNativeSdkCalls: boolean = true
 
   /**
    * The number of seconds before the current JWT's expiration that the SDK should call the
    * authHandler to get an updated JWT.
    */
-
   expiringAuthTokenRefreshPeriod: number = 60.0
 
   /**
@@ -104,15 +96,24 @@ class IterableConfig {
    * links from Iterable, so it knows that it can safely handle them as needed. This array helps
    * prevent the SDK from opening links that use unexpected URL protocols.
    */
-
   allowedProtocols: Array<string> = []
 
   /**
+   * DEPRECATED - please use `useInMemoryStorageForInApps` as a replacement for this config option.
+   * 
+   * NOTE: until this option is removed, it will still function with `useInMemoryStorageForInApps` by
+   * doing an OR operation, so if either this or `useInMemoryStorageForInApps` are set to `true`,
+   * the native Android SDK layer will use in memory storage for in-apps.
+   * 
    * This specifies the `useInMemoryStorageForInApps` config option downstream to the Android SDK layer.
-   * Please read the `IterableConfig` file for specific details on this config option.
    */
+   androidSdkUseInMemoryStorageForInApps: boolean = false
 
-  androidSdkUseInMemoryStorageForInApps: boolean = false
+  /**
+   * This specifies the `useInMemoryStorageForInApps` config option downstream to the native SDK layers.
+   * Please read the respective `IterableConfig` files for specific details on this config option.
+   */
+  useInMemoryStorageForInApps: boolean = false
 
   toDict(): any {
     return {
@@ -126,7 +127,8 @@ class IterableConfig {
       "logLevel": this.logLevel,
       "expiringAuthTokenRefreshPeriod": this.expiringAuthTokenRefreshPeriod,
       "allowedProtocols": this.allowedProtocols,
-      "androidSdkUseInMemoryStorageForInApps": this.androidSdkUseInMemoryStorageForInApps
+      "androidSdkUseInMemoryStorageForInApps": this.androidSdkUseInMemoryStorageForInApps,
+      "useInMemoryStorageForInApps": this.useInMemoryStorageForInApps
     }
   }
 }
