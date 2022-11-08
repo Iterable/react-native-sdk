@@ -1,7 +1,7 @@
-### 1.3.8
+## 1.3.9
 ### Added
 
-[Version 1.3.8](https://github.com/Iterable/react-native-sdk/releases/tag/1.3.7) of Iterable's React Native SDK makes it possible for iOS apps to store in- app messages in memory, rather than in an unencrypted local file.  ([Version 1.3.7](https://github.com/Iterable/react-native-sdk/releases/tag/1.3.7) added this same support for Android.)
+[Version 1.3.9](https://github.com/Iterable/react-native-sdk/releases/tag/1.3.9) of Iterable's React Native SDK makes it possible for iOS apps to store in- app messages in memory, rather than in an unencrypted local file.  ([Version 1.3.7](https://github.com/Iterable/react-native-sdk/releases/tag/1.3.7) added this same support for Android.)
 
 To store in-app messages in memory on both iOS and Android, set `useInMemoryStorageForInApps` to `true`:
 
