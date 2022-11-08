@@ -1,3 +1,27 @@
+### 1.3.8
+### Added
+
+[Version 1.3.8](https://github.com/Iterable/react-native-sdk/releases/tag/1.3.7) of Iterable's React Native SDK makes it possible for iOS apps to store in- app messages in memory, rather than in an unencrypted local file.  ([Version 1.3.7](https://github.com/Iterable/react-native-sdk/releases/tag/1.3.7) added this same support for Android.)
+
+To store in-app messages in memory on both iOS and Android, set `useInMemoryStorageForInApps` to `true`:
+
+```javascript
+const config = new IterableConfig();
+// ... other configuration options ...
+config.useInMemoryStorageForInApps = true;
+Iterable.initialize('<YOUR_API_KEY>', config);
+```
+
+This release deprecates `androidSdkUseInMemoryStorageForInApps`, which was introduced in version 1.3.7, and replaces it with `useInMemoryStorageForInApps`.  However, for now:
+
+- Android apps store in-app messages in memory if `useInMemoryStorageForInApps` is `true`, `androidSdkUseInMemoryStorageForInApps` is `true`, or if both are `true`.  
+
+- iOS apps store in-app messages in memory if `useInMemoryStorageForInApps` is `true`. `androidSdkUseInMemoryStorageForInApps` does not affect iOS apps.
+
+When you can, please update your apps to use `useInMemoryStorageForInApps` instead of `androidSdkUseInMemoryStorageForInApps`.
+
+When users upgrade to a version of your iOS or Android app that uses this version of the SDK (or higher), and they've enabled in-app memory storage, the local file used for in-app message storage (if it already exists) is deleted.  However, no data is lost.
+
 ## 1.3.7
 Starting with this release, as a privacy enhancement, Iterable’s React Native
 SDK encrypts some data stored at rest.
