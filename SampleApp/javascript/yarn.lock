@@ -683,10 +683,10 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
-"@iterable/react-native-sdk@^1.3.5":
-  version "1.3.5"
-  resolved "https://registry.yarnpkg.com/@iterable/react-native-sdk/-/react-native-sdk-1.3.5.tgz#a08bae56ed1cbb772a1860c487a9f464b9224423"
-  integrity sha512-usoS4lxlF9R17bAmQWE7XeZ1SGcDfTf+5rSzbXNUlKWZkoCCn+2qBDeM/OvjfVq6LO5f8NDG+FABzWK49LQR1w==
+"@iterable/react-native-sdk@^1.3.6":
+  version "1.3.9"
+  resolved "https://registry.yarnpkg.com/@iterable/react-native-sdk/-/react-native-sdk-1.3.9.tgz#03056cdc7a96986eaef522f0be0a1bb520f199c7"
+  integrity sha512-LcmxzcFDL4D9UUHuHWZ44LOBbhVmQUVw+V3mktzXuZ2BRIY41ndNwzZsREQLNTFaesK20T5lglUridEdTzzyiA==
   dependencies:
     "@react-native-community/hooks" "^2.6.0"
     "@react-navigation/native" "^6.0.6"
