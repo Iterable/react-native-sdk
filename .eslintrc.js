@@ -1,11 +1,13 @@
 module.exports = {
   env: {
     browser: true,
-    es2021: true
+    es2021: true,
+    'react-native/react-native': true
   },
   extends: [
     'plugin:react/recommended',
-    'standard-with-typescript'
+    'standard-with-typescript',
+    'airbnb/hooks'
   ],
   overrides: [
   ],
@@ -14,7 +16,8 @@ module.exports = {
     sourceType: 'module'
   },
   plugins: [
-    'react'
+    'react',
+    'react-native'
   ],
   rules: {
   }
