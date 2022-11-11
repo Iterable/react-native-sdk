@@ -69,6 +69,7 @@ export default class App extends React.Component {
                 React.createElement(Tab.Screen, { name: "Home", options: { title: "Coffees" } }, props => React.createElement(HomeTab, Object.assign({ ref: this.homeTabRef }, props))),
                 React.createElement(Tab.Screen, { name: "Settings", component: SettingsTab }))));
     }
+    
     navigate(coffee) {
         if (this.homeTabRef && this.homeTabRef.current) {
             this.homeTabRef.current.navigate(coffee);
@@ -89,9 +90,9 @@ export default class App extends React.Component {
             }
             return true;
         } else {
-        console.log("opening external url");
-        return false;
+            console.log("opening external url");
+            return false;
+        }
     }
-};
 }
 
