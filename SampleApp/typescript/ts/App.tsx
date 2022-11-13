@@ -12,7 +12,7 @@ import {
   IterableActionContext,
 } from '@iterable/react-native-sdk';
 
-// ITERABLE:	
+// ITERABLE:
 // Make sure you have a file called Config.js and your apiKey is in there.
 import { iterableAPIKey } from './Config'
 
