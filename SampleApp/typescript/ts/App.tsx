@@ -12,6 +12,8 @@ import {
   IterableActionContext,
 } from '@iterable/react-native-sdk';
 
+// ITERABLE:	
+// Make sure you have a file called Config.js and your apiKey is in there.
 import { iterableAPIKey } from './Config'
 
 interface Props { }
@@ -20,7 +22,9 @@ export default class App extends React.Component {
     super(props)
     this.homeTabRef = React.createRef()
 
+    // ITERABLE:
     const config = new IterableConfig()
+    config.inAppDisplayInterval = 1.0 // Min gap between in-apps. No need to set this in production.
     config.urlHandler = this.urlHandler
     Iterable.initialize(iterableAPIKey, config)
   }
