@@ -21,5 +21,10 @@ module.exports = {
     'react-native'
   ],
   rules: {
+  },
+  settings: {
+    react: {
+      version: 'detect'
+    }
   }
 }
