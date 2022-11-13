@@ -22,7 +22,7 @@
     "babel.config.js",
     "metro.config.js",
     "jest.config.js",
-    "ts/__mocks__/*.ts",
-    "ts/__tests__/*.ts"
+    //"ts/__mocks__/*.ts",
+    //"ts/__tests__/*.ts"
   ]
 }
