@@ -6,7 +6,8 @@
   "types": "./js/index.d.ts",
   "scripts": {
     "test": "jest",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "lint": "eslint ."
   },
   "keywords": [
     "react-native",
