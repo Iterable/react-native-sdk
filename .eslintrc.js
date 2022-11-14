@@ -1,21 +1,30 @@
 module.exports = {
   env: {
+    browser: true,
     es2021: true,
-    node: true
+    'react-native/react-native': true
   },
   extends: [
     'plugin:react/recommended',
-    'standard-with-typescript'
+    'standard-with-typescript',
+    'airbnb/hooks'
   ],
   overrides: [
   ],
   parserOptions: {
     ecmaVersion: 'latest',
-    sourceType: 'module'
+    sourceType: 'module',
+    project: ['./tsconfig.json']
   },
   plugins: [
-    'react'
+    'react',
+    'react-native'
   ],
   rules: {
+  },
+  settings: {
+    react: {
+      version: 'detect'
+    }
   }
 }
