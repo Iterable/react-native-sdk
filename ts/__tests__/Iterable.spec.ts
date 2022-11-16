@@ -55,12 +55,12 @@ test("set/get userId (no token)", () => {
 })
 
 test("setUserId/getUserID_userIDAndAuthToken_returnsUserID", () => {
-  // GIVEN a userId and a sample JWT token
-  const email = "user1"
+  // GIVEN a user ID and a sample JWT token
+  const userId = "user1"
   const token = "string" 
 
   // WHEN Iterable.setUserId is called with the given user ID and JWT
-  Iterable.setUserId(email, token) 
+  Iterable.setUserId(userId, token) 
 
   // THEN Iterable.getUserId returns the given userId
   return Iterable.getUserId().then(userId => {
