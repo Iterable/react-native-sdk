@@ -24,103 +24,151 @@ beforeEach(() => {
   Iterable.logger = new IterableLogger(new IterableConfig())
 })
 
-test("set/get email (no token)", () => {
-  Iterable.setEmail("user@example.com")
-
-  return Iterable.getEmail().then(email => {
-    expect(email).toBe("user@example.com")
-  })
-})
-
-test("set/get userId (no token)", () => {
-  Iterable.setUserId("user1")
-
-  return Iterable.getUserId().then(userId => {
-    expect(userId).toBe("user1")
-  })
-})
-
-test("disable device for current user", () => {
-  Iterable.disableDeviceForCurrentUser()
+it("setEmail/getEmail_email_returnsEmail", () => {
+  Iterable.logger.log("setEmail/getEmail_email_returnsEmail")
+  const result = "user@example.com"
   
+  // GIVEN an email
+  const email = "user@example.com"
+  
+  // WHEN Iterable.setEmail is called with the given email
+  Iterable.setEmail(email)
+  
+  // THEN Iterable.getEmail returns the given email
+  return Iterable.getEmail().then(email => {
+    expect(email).toBe(result)
+  })
+})
+  
+test("setUserId/getUserId_userId_returnsUserId", () => {
+  Iterable.logger.log("setUserId/getUserId_userId_returnsUserId")
+  const result = "user1"
+  
+  // GIVEN an userId
+  const userId = "user1"
+  
+  // WHEN Iterable.setUserId is called with the given userId
+  Iterable.setUserId("user1")
+  
+  // THEN Iterable.getUserId returns the given userId
+  return Iterable.getUserId().then(userId => {
+    expect(userId).toBe(result)
+  })
+})
+
+test("disableDeviceForCurrentUser_noParams_methodCalled", () => {
+  Iterable.logger.log("disableDeviceForCurrentUser_noParams_methodCalled")
+
+  // GIVEN no parameters
+
+  // WHEN Iterable.disableDeviceForCurrentUser is called
+  Iterable.disableDeviceForCurrentUser()
+
+  // THEN corresponding method is called on RNITerableAPI
   expect(MockRNIterableAPI.disableDeviceForCurrentUser).toBeCalled()
 })
 
-test("getLastPushPayload", () => {
+test("getLastPushPayload_noParams_returnLastPushPayload", () => {
+  Iterable.logger.log("getLastPushPayload_noParams_returnLastPushPayload")
+  const result = { "var1": "val1", "var2": true }
+
+  // GIVEN no parameters
+
+  // WHEN the lastPushPayload is set
   MockRNIterableAPI.lastPushPayload = { "var1": "val1", "var2": true }
 
+  // THEN the lastPushPayload is returned when getLastPushPayload is called
   return Iterable.getLastPushPayload().then(payload => {
-    expect(payload).toEqual({ "var1": "val1", "var2": true })
+    expect(payload).toEqual(result)
   })
 })
 
-test("trackPushOpenWithCampaignId", () => {
-  Iterable.trackPushOpenWithCampaignId(123, 234, "someMessageId", false, { "dataFieldKey": "dataFieldValue" })
+test("trackPushOpenWithCampaignId_pushParams_methodCalled", () => {
+  Iterable.logger.log("getLastPushPayload_noParams_returnLastPushPayload")
 
-  expect(MockRNIterableAPI.trackPushOpenWithCampaignId).toBeCalledWith(
-    123,
-    234,
-    "someMessageId",
-    false,
-    { "dataFieldKey": "dataFieldValue" }
-  )
+  // GIVEN the following parameters
+  const campaignId = 123
+  const templateId = 234
+  const messageId = "someMessageId"
+  const appAlreadyRunning = false
+  const dataFields = { "dataFieldKey": "dataFieldValue" }
+
+  // WHEN Iterable.trackPushOpenWithCampaignId is called
+  Iterable.trackPushOpenWithCampaignId(campaignId, templateId, messageId, appAlreadyRunning, dataFields)
+
+  // THEN corresponding function is called on RNIterableAPI
+  expect(MockRNIterableAPI.trackPushOpenWithCampaignId).toBeCalledWith(campaignId, templateId, messageId, appAlreadyRunning, dataFields)
 })
 
-test("updateCart", () => {
-  Iterable.updateCart([new IterableCommerceItem("id1", "Boba Tea", 18, 26)])
+test("updateCart_items_methodCalled", () => {
+  Iterable.logger.log("updateCart_items_methodCalled")
 
-  expect(MockRNIterableAPI.updateCart).toBeCalledWith(
-    [new IterableCommerceItem("id1", "Boba Tea", 18, 26)]
-  )
+  // GIVEN list of items
+  const items = [new IterableCommerceItem("id1", "Boba Tea", 18, 26)]
+  
+  // WHEN Iterable.updateCart is called
+  Iterable.updateCart(items)
+
+  // THEN corresponding function is called on RNIterableAPI
+  expect(MockRNIterableAPI.updateCart).toBeCalledWith(items)
 })
 
-test("trackPurchase", () => {
-  Iterable.trackPurchase(
-    10,
-    [new IterableCommerceItem("id1", "Boba Tea", 18, 26)],
-    { "dataFieldKey": "dataFieldValue" }
-  )
+test("trackPurchase_params_methodCalled", () => {
+  Iterable.logger.log("trackPurchase_params_methodCalled")
 
-  expect(MockRNIterableAPI.trackPurchase).toBeCalledWith(
-    10,
-    [new IterableCommerceItem("id1", "Boba Tea", 18, 26)],
-    { "dataFieldKey": "dataFieldValue" }
-  )
+  // GIVEN the following parameters
+  const total = 10
+  const items = [new IterableCommerceItem("id1", "Boba Tea", 18, 26)]
+  const dataFields = { "dataFieldKey": "dataFieldValue" }
+
+  // WHEN Iterable.trackPurchase is called
+  Iterable.trackPurchase(total, items, dataFields)
+
+  // THEN corresponding function is called on RNIterableAPI
+  expect(MockRNIterableAPI.trackPurchase).toBeCalledWith(total, items, dataFields)
 })
 
-test("trackPurchase with optional fields", () => {
-  Iterable.trackPurchase(
-    5,
-    [new IterableCommerceItem("id", "swordfish", 64, 1, "SKU", "description", "url", "imageUrl", ["sword", "shield"])],
-    {"key": "value"}
-  )
+test("trackPurchase_paramsWithOptionalFields_methodCalled", () => {
+  Iterable.logger.log("trackPurchase_paramsWithOptionalFields_methodCalled")
 
-  expect(MockRNIterableAPI.trackPurchase).toBeCalledWith(
-    5,
-    [new IterableCommerceItem("id", "swordfish", 64, 1, "SKU", "description", "url", "imageUrl", ["sword", "shield"])],
-    {"key": "value"}
-  )
+  // GIVEN the following parameters
+  const total = 5
+  const items = [new IterableCommerceItem("id", "swordfish", 64, 1, "SKU", "description", "url", "imageUrl", ["sword", "shield"])]
+  const dataFields = {"key": "value"}
+
+  // WHEN Iterable.trackPurchase is called
+  Iterable.trackPurchase(total, items, dataFields)
+
+  // THEN corresponding function is called on RNIterableAPI
+  expect(MockRNIterableAPI.trackPurchase).toBeCalledWith(total, items, dataFields)
 })
 
-test("trackEvent", () => {
-  Iterable.trackEvent(
-    "EventName",
-    { "DatafieldKey": "DatafieldValue" }
-  )
+test("trackEvent_params_methodCalled", () => {
+  Iterable.logger.log("trackPurchase_paramsWithOptionalFields_methodCalled")
 
-  expect(MockRNIterableAPI.trackEvent).toBeCalledWith(
-    "EventName",
-    { "DatafieldKey": "DatafieldValue" }
-  )
+  // GIVEN the following parameters
+  const name = "EventName"
+  const dataFields = { "DatafieldKey": "DatafieldValue" }
+
+  // WHEN Iterable.trackEvent is called
+  Iterable.trackEvent(name, dataFields)
+
+  // THEN corresponding function is called on RNIterableAPI
+  expect(MockRNIterableAPI.trackEvent).toBeCalledWith(name, dataFields)
 })
 
-test("set/get attribution info", () => {
+test("setAttributionInfo/getAttributionInfo_attributionInfo_returnsAttributionInfo", () => {
+  Iterable.logger.log("setAttributionInfo/getAttributionInfo_attributionInfo_returnsAttributionInfo")
+
+  // GIVEN attribution info
   let campaignId = 1234
   let templateId = 5678
   let messageId = "qwer"
 
+  // WHEN Iterable.setAttributionInfo is called with the given attribution info
   Iterable.setAttributionInfo(new IterableAttributionInfo(campaignId, templateId, messageId))
 
+  // THEN Iterable.getAttrbutionInfo returns the given attribution info
   return Iterable.getAttributionInfo().then(attributionInfo => {
     expect(attributionInfo?.campaignId).toBe(campaignId)
     expect(attributionInfo?.templateId).toBe(templateId)
@@ -128,32 +176,47 @@ test("set/get attribution info", () => {
   })
 })
 
-test("update user", () => {
+test("updateUser_params_methodCalled", () => {
+  Iterable.logger.log("updateUser_params_methodCalled")
+
+  // GIVEN the following parameters
   const dataFields = { "field": "value1" }
 
+  // WHEN Iterable.updateUser is called
   Iterable.updateUser(dataFields, false)
 
+  // THEN corresponding function is called on RNIterableAPI  
   expect(MockRNIterableAPI.updateUser).toBeCalledWith(dataFields, false)
 })
 
-test("update email (no token)", () => {
+test("updateEmail_email_methodCalled", () => {
+  Iterable.logger.log("updateEmail_email_methodCalled")
+
+  // GIVEN the new email
   const newEmail = "woo@newemail.com"
 
+  // WHEN Iterable.updateEmail is called
   Iterable.updateEmail(newEmail)
 
+  // THEN corresponding function is called on RNIterableAPI
   expect(MockRNIterableAPI.updateEmail).toBeCalledWith(newEmail, undefined)
 })
 
-test("update email (with token)", () => {
+test("updateEmail_emailAndToken_methodCalled", () => {
+  Iterable.logger.log("updateEmail_emailAndToken_methodCalled")
+
+  // GIVEN the new email and a token
   const newEmail = "woo@newemail.com"
   const newToken = "token2"
 
+  // WHEN Iterable.updateEmail is called
   Iterable.updateEmail(newEmail, newToken)
 
+  // THEN corresponding function is called on RNITerableAPI
   expect(MockRNIterableAPI.updateEmail).toBeCalledWith(newEmail, newToken)
 })
 
-test("default config values", () => {
+test.skip("default config values", () => {
   var config = new IterableConfig()
 
   expect(config.pushIntegrationName).toBe(undefined)
@@ -164,7 +227,7 @@ test("default config values", () => {
   expect(config.inAppHandler).toBe(undefined)
 })
 
-test("default config dictionary values", () => {
+test.skip("default config dictionary values", () => {
   var configDict = (new IterableConfig()).toDict()
 
   expect(configDict["pushIntegrationName"]).toBe(undefined)
@@ -175,7 +238,7 @@ test("default config dictionary values", () => {
   expect(configDict["inAppHandlerPresent"]).toBe(false)
 })
 
-test("open url when url handler returns false", () => {
+test.skip("open url when url handler returns false", () => {
   MockLinking.canOpenURL = jest.fn(() => {
     return new Promise(res => { res(true) })
   })
@@ -200,7 +263,7 @@ test("open url when url handler returns false", () => {
   })
 })
 
-test("do not open url when url handler returns false and canOpen is false", () => {
+test.skip("do not open url when url handler returns false and canOpen is false", () => {
   MockLinking.canOpenURL = jest.fn(() => {
     return new Promise(res => { res(false) })
   })
@@ -225,7 +288,7 @@ test("do not open url when url handler returns false and canOpen is false", () =
   })
 })
 
-test("do not open url when url handler returns true", () => {
+test.skip("do not open url when url handler returns true", () => {
   MockLinking.canOpenURL = jest.fn(() => {
     return new Promise(res => { res(true) })
   })
@@ -249,7 +312,7 @@ test("do not open url when url handler returns true", () => {
   })
 })
 
-test("custom action handler is called", () => {
+test.skip("custom action handler is called", () => {
   const nativeEmitter = new NativeEventEmitter();
   nativeEmitter.removeAllListeners(EventName.handleCustomActionCalled)
 
@@ -272,13 +335,13 @@ test("custom action handler is called", () => {
   })
 })
 
-test("handle app link is called", () => {
+test.skip("handle app link is called", () => {
   const link = "https://somewhere.com/link/something"
   Iterable.handleAppLink(link)
   expect(MockRNIterableAPI.handleAppLink).toBeCalledWith(link)
 })
 
-test("update subscriptions is called", () => {
+test.skip("update subscriptions is called", () => {
   const emailListIds = [1, 2, 3]
   const unsubscribedChannelIds = [4, 5, 6]
   const unsubscribedMessageTypeIds = [7, 8]

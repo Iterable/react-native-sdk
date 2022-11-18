@@ -27,7 +27,7 @@ beforeEach(() => {
   Iterable.logger = new IterableLogger(new IterableConfig())
 })
 
-test("trackInAppOpen", () => {
+test.skip("trackInAppOpen", () => {
   let msg: IterableInAppMessage = new IterableInAppMessage("someMessageId", 123, new IterableInAppTrigger(IterableInAppTriggerType.event), new Date(1234), new Date(123123), true, new IterableInboxMetadata("title", "subtitle", "iconURL"), { "CustomPayloadKey": "CustomPayloadValue" }, false, 300.5);
   Iterable.trackInAppOpen(
     msg,
@@ -40,7 +40,7 @@ test("trackInAppOpen", () => {
   )
 })
 
-test("trackInAppClick", () => {
+test.skip("trackInAppClick", () => {
   let msg: IterableInAppMessage = new IterableInAppMessage("someMessageId", 123, new IterableInAppTrigger(IterableInAppTriggerType.event), new Date(1234), new Date(123123), true, new IterableInboxMetadata("title", "subtitle", "iconURL"), { "CustomPayloadKey": "CustomPayloadValue" }, false, 300.5);
   Iterable.trackInAppClick(
     msg,
@@ -55,7 +55,7 @@ test("trackInAppClick", () => {
   )
 })
 
-test("trackInAppClose", () => {
+test.skip("trackInAppClose", () => {
   let msg: IterableInAppMessage = new IterableInAppMessage("someMessageId", 123, new IterableInAppTrigger(IterableInAppTriggerType.event), new Date(1234), new Date(123123), true, new IterableInboxMetadata("title", "subtitle", "iconURL"), { "CustomPayloadKey": "CustomPayloadValue" }, false, 300.5);
   Iterable.trackInAppClose(
     msg,
@@ -72,7 +72,7 @@ test("trackInAppClose", () => {
   )
 })
 
-test("in-app consume", () => {
+test.skip("in-app consume", () => {
   let message = new IterableInAppMessage("asdf", 1234, new IterableInAppTrigger(IterableInAppTriggerType.never), undefined, undefined, false, undefined, undefined, false, 300.5)
 
   Iterable.inAppConsume(message, IterableInAppLocation.inApp, IterableInAppDeleteSource.unknown)
@@ -80,7 +80,7 @@ test("in-app consume", () => {
   expect(MockRNIterableAPI.inAppConsume).toBeCalledWith(message.messageId, IterableInAppLocation.inApp, IterableInAppDeleteSource.unknown)
 })
 
-test("in-app handler is called", () => {
+test.skip("in-app handler is called", () => {
   MockRNIterableAPI.setInAppShowResponse.mockReset()
 
   const nativeEmitter = new NativeEventEmitter();
@@ -109,7 +109,7 @@ test("in-app handler is called", () => {
   })
 })
 
-test("get in-app messages", () => {
+test.skip("get in-app messages", () => {
   const messageDicts = [{
     "messageId": "message1",
     "campaignId": 1234,
@@ -130,7 +130,7 @@ test("get in-app messages", () => {
   })
 })
 
-test("in-app show message is called", () => {
+test.skip("in-app show message is called", () => {
   const messageDict = {
     "messageId": "message1",
     "campaignId": 1234,
@@ -148,7 +148,7 @@ test("in-app show message is called", () => {
   })
 })
 
-test("in-app remove message is called", () => {
+test.skip("in-app remove message is called", () => {
   const messageDict = {
     "messageId": "message1",
     "campaignId": 1234,
@@ -160,7 +160,7 @@ test("in-app remove message is called", () => {
   expect(MockRNIterableAPI.removeMessage).toBeCalledWith(message.messageId, IterableInAppLocation.inApp, IterableInAppDeleteSource.deleteButton)
 })
 
-test("in-app set read for message is called", () => {
+test.skip("in-app set read for message is called", () => {
   const messageDict = {
     "messageId": "message1",
     "campaignId": 1234,
@@ -172,7 +172,7 @@ test("in-app set read for message is called", () => {
   expect(MockRNIterableAPI.setReadForMessage).toBeCalledWith(message.messageId, true)
 })
 
-test("in-app auto display paused", () => {
+test.skip("in-app auto display paused", () => {
   Iterable.inAppManager.setAutoDisplayPaused(true)
   expect(MockRNIterableAPI.setAutoDisplayPaused).toBeCalledWith(true)
 })
