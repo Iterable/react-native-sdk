@@ -32,9 +32,37 @@ test("set/get email (no token)", () => {
   })
 })
 
+test("setEmail_getEmail_emailAndAuthToken_returnsEmail", () => {
+  // GIVEN an email and a sample JWT token
+  const email = "user@example.com"
+  const token = "string" 
+
+  // WHEN Iterable.setEmail is called with the given email address and JWT
+  Iterable.setEmail(email, token) 
+
+  // THEN Iterable.getEmail returns the given email
+  return Iterable.getEmail().then(email => {
+    expect(email).toBe("user@example.com")
+  })
+})
+
 test("set/get userId (no token)", () => {
   Iterable.setUserId("user1")
 
+  return Iterable.getUserId().then(userId => {
+    expect(userId).toBe("user1")
+  })
+})
+
+test("setUserId_getUserId_userIdAndAuthToken_returnsUserId", () => {
+  // GIVEN a user ID and a sample JWT token
+  const userId = "user1"
+  const token = "string" 
+
+  // WHEN Iterable.setUserId is called with the given user ID and JWT
+  Iterable.setUserId(userId, token) 
+
+  // THEN Iterable.getUserId returns the given userId
   return Iterable.getUserId().then(userId => {
     expect(userId).toBe("user1")
   })
