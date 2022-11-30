@@ -32,7 +32,7 @@ test("set/get email (no token)", () => {
   })
 })
 
-test("setEmail/getEmail_emailAndAuthToken_returnsEmail", () => {
+test("setEmail_getEmail_emailAndAuthToken_returnsEmail", () => {
   // GIVEN an email and a sample JWT token
   const email = "user@example.com"
   const token = "string" 
@@ -54,7 +54,7 @@ test("set/get userId (no token)", () => {
   })
 })
 
-test("setUserId/getUserID_userIDAndAuthToken_returnsUserID", () => {
+test("setUserId_getUserId_userIdAndAuthToken_returnsUserId", () => {
   // GIVEN a user ID and a sample JWT token
   const userId = "user1"
   const token = "string" 
