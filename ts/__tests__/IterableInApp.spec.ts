@@ -80,7 +80,7 @@ test("in-app consume", () => {
   expect(MockRNIterableAPI.inAppConsume).toBeCalledWith(message.messageId, IterableInAppLocation.inApp, IterableInAppDeleteSource.unknown)
 })
 
-test.skip("in-app handler is called", () => {
+test("in-app handler is called", () => {
   MockRNIterableAPI.setInAppShowResponse.mockReset()
 
   const nativeEmitter = new NativeEventEmitter();
