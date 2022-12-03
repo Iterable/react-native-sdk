@@ -1,5 +1,4 @@
 import { MockRNIterableAPI } from '../__mocks__/MockRNIterableAPI'
-import { TestHelper } from './TestHelper'
 import { NativeEventEmitter } from 'react-native'
 
 import {
@@ -67,49 +66,51 @@ test("trackInAppClose_params_methodCalledWithParams", () => {
 })
 
 test("inAppConsume_params_methodCalledWithParams", () => {
-    // GIVEN an in-app messsage, a location, and a delete source
-    let msg = new IterableInAppMessage("asdf", 1234, new IterableInAppTrigger(IterableInAppTriggerType.never), undefined, undefined, false, undefined, undefined, false, 300.5)
-    let location: IterableInAppLocation = IterableInAppLocation.inApp
-    let source: IterableInAppDeleteSource = IterableInAppDeleteSource.unknown
+  // GIVEN an in-app messsage, a location, and a delete source
+  let msg = new IterableInAppMessage("asdf", 1234, new IterableInAppTrigger(IterableInAppTriggerType.never), undefined, undefined, false, undefined, undefined, false, 300.5)
+  let location: IterableInAppLocation = IterableInAppLocation.inApp
+  let source: IterableInAppDeleteSource = IterableInAppDeleteSource.unknown
 
-    // WHEN Iterable.inAppConsume is called
-    Iterable.inAppConsume(msg,location, source)
+  // WHEN Iterable.inAppConsume is called
+  Iterable.inAppConsume(msg,location, source)
 
-    // THEN corresponding method is called on MockIterableAPI with appropriate parameters
-    expect(MockRNIterableAPI.inAppConsume).toBeCalledWith(msg.messageId, location, source)
+  // THEN corresponding method is called on MockIterableAPI with appropriate parameters
+  expect(MockRNIterableAPI.inAppConsume).toBeCalledWith(msg.messageId, location, source)
 })
 
-test.skip("in-app handler is called", () => {
-  MockRNIterableAPI.setInAppShowResponse.mockReset()
-
+test("inAppHandler_messageAndEventEmitted_methodCalledWithMessage", () => {
+  // sets up event emitter
   const nativeEmitter = new NativeEventEmitter();
   nativeEmitter.removeAllListeners(EventName.handleInAppCalled)
 
+  // sets up config file and inAppHandler function
   const config = new IterableConfig()
-
   config.inAppHandler = jest.fn((message: IterableInAppMessage) => {
     return IterableInAppShowResponse.show
   })
 
+  // initialize Iterable object
   Iterable.initialize("apiKey", config)
+
+  // GIVEN an in-app message
   const messageDict = {
     "messageId": "message1",
     "campaignId": 1234,
     "trigger": { "type": IterableInAppTriggerType.immediate },
     "priorityLevel": 300.5
   }
+  const expectedMessage = new IterableInAppMessage("message1", 1234, new IterableInAppTrigger(IterableInAppTriggerType.immediate), undefined, undefined, false, undefined, undefined, false, 300.5)
+  
+  // WHEN handleInAppCalled event is emitted
   nativeEmitter.emit(EventName.handleInAppCalled, messageDict);
 
-  return TestHelper.delayed(0, () => {
-    expect(config.inAppHandler)
-    const expectedMessage = new IterableInAppMessage("message1", 1234, new IterableInAppTrigger(IterableInAppTriggerType.immediate), undefined, undefined, false, undefined, undefined, false, 300.5)
-    expect(config.inAppHandler).toBeCalledWith(expectedMessage)
-    expect(MockRNIterableAPI.setInAppShowResponse).toBeCalledWith(IterableInAppShowResponse.show)
-  })
+  // THEN inAppHandler and MockRNIterableAPI.setInAppShowResponse is called with message
+  expect(config.inAppHandler)
+  expect(config.inAppHandler).toBeCalledWith(expectedMessage)
+  expect(MockRNIterableAPI.setInAppShowResponse).toBeCalledWith(IterableInAppShowResponse.show)
 })
 
-test("getMessages_noParams_returnsMessages", () => {
-  // GIVEN a list of in-app messages representing the local queue
+test("get in-app messages", () => {
   const messageDicts = [{
     "messageId": "message1",
     "campaignId": 1234,
@@ -121,37 +122,34 @@ test("getMessages_noParams_returnsMessages", () => {
   }]
 
   const messages = messageDicts.map(message => IterableInAppMessage.fromDict(message))
+  MockRNIterableAPI.getInAppMessages = jest.fn(() => {
+    return new Promise(res => res(messages))
+  })
 
-  // WHEN the simulated local queue is set to the in-app messages
-  MockRNIterableAPI.setMessages(messages)
-
-  // THEN Iterable,inAppManager.getMessages returns the list of in-app messages
   return Iterable.inAppManager.getMessages().then(messagesObtained => {
     expect(messagesObtained).toEqual(messages)
   })
 })
 
 test("in-app show message is called", () => {
-  // GIVEN an in-app message and a clicked url
-  let messageDict = {
+  const messageDict = {
     "messageId": "message1",
     "campaignId": 1234,
     "trigger": { "type": IterableInAppTriggerType.immediate },
   }
-  let message: IterableInAppMessage = IterableInAppMessage.fromDict(messageDict)
-  let consume: boolean = true
-  let clickedUrl: string = "testUrl"
+  const message = IterableInAppMessage.fromDict(messageDict)
+  MockRNIterableAPI.showMessage = jest.fn((message, consume) => {
+    return new Promise<void>(res => {
+      res()
+    })
+  })
 
-  // WHEN the simulated clicked url is set to the clicked url
-  MockRNIterableAPI.setClickedUrl(clickedUrl)
-
-  // THEN Iterable,inAppManager.showMessage returns the simulated clicked url
-  return Iterable.inAppManager.showMessage(message, consume).then(url => {
-    expect(url).toEqual(clickedUrl)
+  return Iterable.inAppManager.showMessage(message, true).then(_ => {
+    expect(MockRNIterableAPI.showMessage).toBeCalledWith(message.messageId, true)
   })
 })
 
-test("in-app remove message is called", () => {
+test("removeMessage_params_methodCalledWithParams", () => {
   // GIVEN an in-app message
   let messageDict = {
     "messageId": "message1",
@@ -169,7 +167,7 @@ test("in-app remove message is called", () => {
   expect(MockRNIterableAPI.removeMessage).toBeCalledWith(message.messageId, location, source)
 })
 
-test("in-app set read for message is called", () => {
+test("setReadForMessage_params_methodCalledWithParams", () => {
   // GIVEN an in-app message
   let messageDict = {
     "messageId": "message1",
@@ -186,7 +184,7 @@ test("in-app set read for message is called", () => {
   expect(MockRNIterableAPI.setReadForMessage).toBeCalledWith(message.messageId, read)
 })
 
-test("in-app auto display paused", () => {
+test("setAutoDisplayPaused_params_methodCalledWithParams", () => {
   // GIVEN paused flag
   let paused: boolean = true
 
