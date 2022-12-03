@@ -9,6 +9,7 @@ export class MockRNIterableAPI {
   static lastPushPayload?: any
   static attributionInfo?: IterableAttributionInfo
   static messages?: IterableInAppMessage[]
+  static clickedUrl?: string
 
   static getEmail(): Promise<string> {
     return new Promise((resolve, _) => {
@@ -76,7 +77,11 @@ export class MockRNIterableAPI {
 
   static setAutoDisplayPaused = jest.fn()
 
-  static showMessage = jest.fn()
+  static showMessage(message: IterableInAppMessage, consume: boolean): Promise<string | undefined> {
+    return new Promise((resolve, _) => {
+      resolve(MockRNIterableAPI.clickedUrl)
+    })
+  }
 
   static removeMessage = jest.fn()
 
@@ -96,6 +101,12 @@ export class MockRNIterableAPI {
   // this is for testing purposes only
   static setMessages(messages: IterableInAppMessage[]) {
     MockRNIterableAPI.messages = messages
+  }
+
+  // setClickedUrl function is to set the messages static property
+  // this is for testing purposes only
+  static setClickedUrl(clickedUrl: string) {
+    MockRNIterableAPI.clickedUrl = clickedUrl 
   }
 }
 
