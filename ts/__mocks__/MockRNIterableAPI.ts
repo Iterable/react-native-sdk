@@ -85,3 +85,4 @@ export class MockRNIterableAPI {
 
   static updateSubscriptions = jest.fn()
 }
+
