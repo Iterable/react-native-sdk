@@ -109,7 +109,8 @@ test("in-app handler is called", () => {
   })
 })
 
-test("get in-app messages", () => {
+test("getMessages_noParams_returnsMessages", () => {
+  // GIVEN a list of in-app messages representing the local queue
   const messageDicts = [{
     "messageId": "message1",
     "campaignId": 1234,
@@ -122,8 +123,10 @@ test("get in-app messages", () => {
 
   const messages = messageDicts.map(message => IterableInAppMessage.fromDict(message))
 
+  // WHEN the simulated local queue is set to the in-app messages
   MockRNIterableAPI.setMessages(messages)
 
+  // THEN Iterable,inAppManager.getMessages returns the list of in-app messages
   return Iterable.inAppManager.getMessages().then(messagesObtained => {
     expect(messagesObtained).toEqual(messages)
   })
