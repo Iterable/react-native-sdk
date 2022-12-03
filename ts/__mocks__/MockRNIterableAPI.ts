@@ -1,4 +1,3 @@
-import { resolvePlugin } from '@babel/core'
 import { IterableAttributionInfo } from '../Iterable'
 import IterableInAppMessage from '../IterableInAppMessage'
 
