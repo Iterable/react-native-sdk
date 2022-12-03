@@ -24,7 +24,7 @@ beforeEach(() => {
   Iterable.logger = new IterableLogger(new IterableConfig())
 })
 
-test.skip("set/get email (no token)", () => {
+test("set/get email (no token)", () => {
   Iterable.setEmail("user@example.com")
 
   return Iterable.getEmail().then(email => {
@@ -32,7 +32,7 @@ test.skip("set/get email (no token)", () => {
   })
 })
 
-test.skip("setEmail_getEmail_emailAndAuthToken_returnsEmail", () => {
+test("setEmail_getEmail_emailAndAuthToken_returnsEmail", () => {
   // GIVEN an email and a sample JWT token
   const email = "user@example.com"
   const token = "string" 
@@ -46,7 +46,7 @@ test.skip("setEmail_getEmail_emailAndAuthToken_returnsEmail", () => {
   })
 })
 
-test.skip("set/get userId (no token)", () => {
+test("set/get userId (no token)", () => {
   Iterable.setUserId("user1")
 
   return Iterable.getUserId().then(userId => {
@@ -54,7 +54,7 @@ test.skip("set/get userId (no token)", () => {
   })
 })
 
-test.skip("setUserId_getUserId_userIdAndAuthToken_returnsUserId", () => {
+test("setUserId_getUserId_userIdAndAuthToken_returnsUserId", () => {
   // GIVEN a user ID and a sample JWT token
   const userId = "user1"
   const token = "string" 
@@ -68,13 +68,13 @@ test.skip("setUserId_getUserId_userIdAndAuthToken_returnsUserId", () => {
   })
 })
 
-test.skip("disable device for current user", () => {
+test("disable device for current user", () => {
   Iterable.disableDeviceForCurrentUser()
   
   expect(MockRNIterableAPI.disableDeviceForCurrentUser).toBeCalled()
 })
 
-test.skip("getLastPushPayload", () => {
+test("getLastPushPayload", () => {
   MockRNIterableAPI.lastPushPayload = { "var1": "val1", "var2": true }
 
   return Iterable.getLastPushPayload().then(payload => {
@@ -82,7 +82,7 @@ test.skip("getLastPushPayload", () => {
   })
 })
 
-test.skip("trackPushOpenWithCampaignId", () => {
+test("trackPushOpenWithCampaignId", () => {
   Iterable.trackPushOpenWithCampaignId(123, 234, "someMessageId", false, { "dataFieldKey": "dataFieldValue" })
 
   expect(MockRNIterableAPI.trackPushOpenWithCampaignId).toBeCalledWith(
@@ -94,7 +94,7 @@ test.skip("trackPushOpenWithCampaignId", () => {
   )
 })
 
-test.skip("updateCart", () => {
+test("updateCart", () => {
   Iterable.updateCart([new IterableCommerceItem("id1", "Boba Tea", 18, 26)])
 
   expect(MockRNIterableAPI.updateCart).toBeCalledWith(
@@ -102,7 +102,7 @@ test.skip("updateCart", () => {
   )
 })
 
-test.skip("trackPurchase", () => {
+test("trackPurchase", () => {
   Iterable.trackPurchase(
     10,
     [new IterableCommerceItem("id1", "Boba Tea", 18, 26)],
@@ -116,7 +116,7 @@ test.skip("trackPurchase", () => {
   )
 })
 
-test.skip("trackPurchase with optional fields", () => {
+test("trackPurchase with optional fields", () => {
   Iterable.trackPurchase(
     5,
     [new IterableCommerceItem("id", "swordfish", 64, 1, "SKU", "description", "url", "imageUrl", ["sword", "shield"])],
@@ -130,7 +130,7 @@ test.skip("trackPurchase with optional fields", () => {
   )
 })
 
-test.skip("trackEvent", () => {
+test("trackEvent", () => {
   Iterable.trackEvent(
     "EventName",
     { "DatafieldKey": "DatafieldValue" }
@@ -142,7 +142,7 @@ test.skip("trackEvent", () => {
   )
 })
 
-test.skip("set/get attribution info", () => {
+test("set/get attribution info", () => {
   let campaignId = 1234
   let templateId = 5678
   let messageId = "qwer"
@@ -156,7 +156,7 @@ test.skip("set/get attribution info", () => {
   })
 })
 
-test.skip("update user", () => {
+test("update user", () => {
   const dataFields = { "field": "value1" }
 
   Iterable.updateUser(dataFields, false)
@@ -164,7 +164,7 @@ test.skip("update user", () => {
   expect(MockRNIterableAPI.updateUser).toBeCalledWith(dataFields, false)
 })
 
-test.skip("update email (no token)", () => {
+test("update email (no token)", () => {
   const newEmail = "woo@newemail.com"
 
   Iterable.updateEmail(newEmail)
@@ -172,7 +172,7 @@ test.skip("update email (no token)", () => {
   expect(MockRNIterableAPI.updateEmail).toBeCalledWith(newEmail, undefined)
 })
 
-test.skip("update email (with token)", () => {
+test("update email (with token)", () => {
   const newEmail = "woo@newemail.com"
   const newToken = "token2"
 
@@ -181,7 +181,7 @@ test.skip("update email (with token)", () => {
   expect(MockRNIterableAPI.updateEmail).toBeCalledWith(newEmail, newToken)
 })
 
-test.skip("default config values", () => {
+test("default config values", () => {
   var config = new IterableConfig()
 
   expect(config.pushIntegrationName).toBe(undefined)
@@ -192,7 +192,7 @@ test.skip("default config values", () => {
   expect(config.inAppHandler).toBe(undefined)
 })
 
-test.skip("default config dictionary values", () => {
+test("default config dictionary values", () => {
   var configDict = (new IterableConfig()).toDict()
 
   expect(configDict["pushIntegrationName"]).toBe(undefined)
@@ -203,7 +203,7 @@ test.skip("default config dictionary values", () => {
   expect(configDict["inAppHandlerPresent"]).toBe(false)
 })
 
-test.skip("open url when url handler returns false", () => {
+test("open url when url handler returns false", () => {
   MockLinking.canOpenURL = jest.fn(() => {
     return new Promise(res => { res(true) })
   })
@@ -228,7 +228,7 @@ test.skip("open url when url handler returns false", () => {
   })
 })
 
-test.skip("do not open url when url handler returns false and canOpen is false", () => {
+test("do not open url when url handler returns false and canOpen is false", () => {
   MockLinking.canOpenURL = jest.fn(() => {
     return new Promise(res => { res(false) })
   })
@@ -253,7 +253,7 @@ test.skip("do not open url when url handler returns false and canOpen is false",
   })
 })
 
-test.skip("do not open url when url handler returns true", () => {
+test("do not open url when url handler returns true", () => {
   MockLinking.canOpenURL = jest.fn(() => {
     return new Promise(res => { res(true) })
   })
@@ -277,7 +277,7 @@ test.skip("do not open url when url handler returns true", () => {
   })
 })
 
-test.skip("custom action handler is called", () => {
+test("custom action handler is called", () => {
   const nativeEmitter = new NativeEventEmitter();
   nativeEmitter.removeAllListeners(EventName.handleCustomActionCalled)
 
@@ -300,13 +300,13 @@ test.skip("custom action handler is called", () => {
   })
 })
 
-test.skip("handle app link is called", () => {
+test("handle app link is called", () => {
   const link = "https://somewhere.com/link/something"
   Iterable.handleAppLink(link)
   expect(MockRNIterableAPI.handleAppLink).toBeCalledWith(link)
 })
 
-test.skip("update subscriptions is called", () => {
+test("update subscriptions is called", () => {
   const emailListIds = [1, 2, 3]
   const unsubscribedChannelIds = [4, 5, 6]
   const unsubscribedMessageTypeIds = [7, 8]
