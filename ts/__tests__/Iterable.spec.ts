@@ -216,9 +216,13 @@ test("updateEmail_emailAndToken_methodCalled", () => {
   expect(MockRNIterableAPI.updateEmail).toBeCalledWith(newEmail, newToken)
 })
 
-test.skip("default config values", () => {
+test("iterableConfig_noParams_defaultValues", () => {
+  // GIVEN no parameters
+
+  // WHEN config is initialized 
   var config = new IterableConfig()
 
+  // THEN config has default values
   expect(config.pushIntegrationName).toBe(undefined)
   expect(config.autoPushRegistration).toBe(true)
   expect(config.inAppDisplayInterval).toBe(30.0)
@@ -227,9 +231,13 @@ test.skip("default config values", () => {
   expect(config.inAppHandler).toBe(undefined)
 })
 
-test.skip("default config dictionary values", () => {
+test("iterableConfig_noParams_defaultDictValues", () => {
+  // GIVEN no parameters
+
+  // WHEN config is initialized and converted to a dictionary
   var configDict = (new IterableConfig()).toDict()
 
+  // THEN config has default dictionary values
   expect(configDict["pushIntegrationName"]).toBe(undefined)
   expect(configDict["autoPushRegistration"]).toBe(true)
   expect(configDict["inAppDisplayInterval"]).toBe(30.0)
