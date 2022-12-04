@@ -242,7 +242,6 @@ test("iterableConfig_noParams_defaultValues", () => {
 
 test("iterableConfig_noParams_defaultDictValues", () => {
   // GIVEN no parameters
-
   // WHEN config is initialized and converted to a dictionary
   var configDict = (new IterableConfig()).toDict()
 
