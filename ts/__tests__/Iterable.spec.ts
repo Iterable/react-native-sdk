@@ -3,10 +3,12 @@ import { MockLinking } from '../__mocks__/MockLinking'
 import { TestHelper } from './TestHelper'
 import { NativeEventEmitter } from 'react-native'
 
+
 // import from the same location that consumers import from
 import {
   Iterable,
-  IterableConfig
+  IterableConfig,
+  IterableLogLevel
 } from '../index'
 
 import {
@@ -220,24 +222,30 @@ test("iterableConfig_noParams_defaultValues", () => {
   Iterable.logger.log("iterableConfig_noParams_defaultValues")
 
   // GIVEN no parameters
-
   // WHEN config is initialized 
   var config = new IterableConfig()
 
   // THEN config has default values
   expect(config.pushIntegrationName).toBe(undefined)
   expect(config.autoPushRegistration).toBe(true)
+  expect(config.checkForDeferredDeeplink).toBe(false)
   expect(config.inAppDisplayInterval).toBe(30.0)
   expect(config.urlHandler).toBe(undefined)
   expect(config.customActionHandler).toBe(undefined)
   expect(config.inAppHandler).toBe(undefined)
+  expect(config.authHandler).toBe(undefined)
+  expect(config.logLevel).toBe(IterableLogLevel.info)
+  expect(config.logReactNativeSdkCalls).toBe(true)
+  expect(config.expiringAuthTokenRefreshPeriod).toBe(60.0)
+  expect(config.allowedProtocols).toEqual([])
+  expect(config.androidSdkUseInMemoryStorageForInApps).toBe(false)
+  expect(config.useInMemoryStorageForInApps).toBe(false)
 })
 
 test("iterableConfig_noParams_defaultDictValues", () => {
   Iterable.logger.log("iterableConfig_noParams_defaultDictValues")
 
   // GIVEN no parameters
-
   // WHEN config is initialized and converted to a dictionary
   var configDict = (new IterableConfig()).toDict()
 
@@ -248,6 +256,12 @@ test("iterableConfig_noParams_defaultDictValues", () => {
   expect(configDict["urlHandlerPresent"]).toBe(false)
   expect(configDict["customActionHandlerPresent"]).toBe(false)
   expect(configDict["inAppHandlerPresent"]).toBe(false)
+  expect(configDict["authHandlerPresent"]).toBe(false)
+  expect(configDict["logLevel"]).toBe(IterableLogLevel.info)
+  expect(configDict["expiringAuthTokenRefreshPeriod"]).toBe(60.0)
+  expect(configDict["allowedProtocols"]).toEqual([])
+  expect(configDict["androidSdkUseInMemoryStorageForInApps"]).toBe(false)
+  expect(configDict["useInMemoryStorageForInApps"]).toBe(false)
 })
 
 test("urlHandler_canOpenUrlSetToTrueAndUrlHandlerReturnsFalse_openUrlCalled", () => {
