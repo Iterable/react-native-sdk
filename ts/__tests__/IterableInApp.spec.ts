@@ -130,21 +130,23 @@ test("get in-app messages", () => {
   })
 })
 
-test("in-app show message is called", () => {
-  const messageDict = {
+test("showMessage_messageAndConsume_returnsClickedUrl", () => {
+  // GIVEN an in-app message and a clicked url
+  let messageDict = {
     "messageId": "message1",
     "campaignId": 1234,
     "trigger": { "type": IterableInAppTriggerType.immediate },
   }
-  const message = IterableInAppMessage.fromDict(messageDict)
-  MockRNIterableAPI.showMessage = jest.fn((message, consume) => {
-    return new Promise<void>(res => {
-      res()
-    })
-  })
+  let message: IterableInAppMessage = IterableInAppMessage.fromDict(messageDict)
+  let consume: boolean = true
+  let clickedUrl: string = "testUrl"
 
-  return Iterable.inAppManager.showMessage(message, true).then(_ => {
-    expect(MockRNIterableAPI.showMessage).toBeCalledWith(message.messageId, true)
+  // WHEN the simulated clicked url is set to the clicked url
+  MockRNIterableAPI.setClickedUrl(clickedUrl)
+
+  // THEN Iterable,inAppManager.showMessage returns the simulated clicked url
+  return Iterable.inAppManager.showMessage(message, consume).then(url => {
+    expect(url).toEqual(clickedUrl)
   })
 })
 
