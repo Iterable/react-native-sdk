@@ -7,7 +7,7 @@ export class MockRNIterableAPI {
   static lastPushPayload?: any
   static attributionInfo?: IterableAttributionInfo
 
-  static getEmail(): Promise<string> {
+  static getEmail(): Promise<string | undefined> {
     return new Promise((resolve, _) => {
       resolve(MockRNIterableAPI.email)
     })
@@ -18,7 +18,7 @@ export class MockRNIterableAPI {
     MockRNIterableAPI.token = authToken
   }
 
-  static getUserId(): Promise<string> {
+  static getUserId(): Promise<string | undefined> {
     return new Promise((resolve, _) => {
       resolve(MockRNIterableAPI.userId)
     })
