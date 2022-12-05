@@ -1,4 +1,5 @@
 import { IterableAttributionInfo } from '../Iterable'
+import IterableInAppMessage from '../IterableInAppMessage'
 
 export class MockRNIterableAPI {
   static email?: string
@@ -6,6 +7,7 @@ export class MockRNIterableAPI {
   static token?: string
   static lastPushPayload?: any
   static attributionInfo?: IterableAttributionInfo
+  static messages?: IterableInAppMessage[]
 
   static getEmail(): Promise<string> {
     return new Promise((resolve, _) => {
@@ -65,7 +67,11 @@ export class MockRNIterableAPI {
 
   static setInAppShowResponse = jest.fn()
 
-  static getInAppMessages = jest.fn()
+  static getInAppMessages(): Promise<IterableInAppMessage[] | undefined> {
+    return new Promise((resolve, _) => {
+      resolve(MockRNIterableAPI.messages)
+    })
+  }
 
   static setAutoDisplayPaused = jest.fn()
 
@@ -84,5 +90,11 @@ export class MockRNIterableAPI {
   static handleAppLink = jest.fn()
 
   static updateSubscriptions = jest.fn()
+
+  // set messages function is to set the messages static property
+  // this is for testing purposes only
+  static setMessages(messages: IterableInAppMessage[]) {
+    MockRNIterableAPI.messages = messages
+  }
 }
 
