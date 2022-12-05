@@ -24,8 +24,8 @@ beforeEach(() => {
   Iterable.logger = new IterableLogger(new IterableConfig())
 })
 
-it("setEmail/getEmail_email_returnsEmail", () => {
-  Iterable.logger.log("setEmail/getEmail_email_returnsEmail")
+it("setEmail_getEmail_email_returnsEmail", () => {
+  Iterable.logger.log("setEmail_getEmail_email_returnsEmail")
   const result = "user@example.com"
   
   // GIVEN an email
@@ -40,8 +40,8 @@ it("setEmail/getEmail_email_returnsEmail", () => {
   })
 })
   
-test("setUserId/getUserId_userId_returnsUserId", () => {
-  Iterable.logger.log("setUserId/getUserId_userId_returnsUserId")
+test("setUserId_getUserId_userId_returnsUserId", () => {
+  Iterable.logger.log("setUserId_getUserId_userId_returnsUserId")
   const result = "user1"
   
   // GIVEN an userId
@@ -157,8 +157,8 @@ test("trackEvent_params_methodCalled", () => {
   expect(MockRNIterableAPI.trackEvent).toBeCalledWith(name, dataFields)
 })
 
-test("setAttributionInfo/getAttributionInfo_attributionInfo_returnsAttributionInfo", () => {
-  Iterable.logger.log("setAttributionInfo/getAttributionInfo_attributionInfo_returnsAttributionInfo")
+test("setAttributionInfo_getAttributionInfo_attributionInfo_returnsAttributionInfo", () => {
+  Iterable.logger.log("setAttributionInfo_getAttributionInfo_attributionInfo_returnsAttributionInfo")
 
   // GIVEN attribution info
   let campaignId = 1234
@@ -217,6 +217,8 @@ test("updateEmail_emailAndToken_methodCalled", () => {
 })
 
 test("iterableConfig_noParams_defaultValues", () => {
+  Iterable.logger.log("iterableConfig_noParams_defaultValues")
+
   // GIVEN no parameters
 
   // WHEN config is initialized 
@@ -232,6 +234,8 @@ test("iterableConfig_noParams_defaultValues", () => {
 })
 
 test("iterableConfig_noParams_defaultDictValues", () => {
+  Iterable.logger.log("iterableConfig_noParams_defaultDictValues")
+
   // GIVEN no parameters
 
   // WHEN config is initialized and converted to a dictionary
@@ -246,110 +250,167 @@ test("iterableConfig_noParams_defaultDictValues", () => {
   expect(configDict["inAppHandlerPresent"]).toBe(false)
 })
 
-test.skip("open url when url handler returns false", () => {
-  MockLinking.canOpenURL = jest.fn(() => {
-    return new Promise(res => { res(true) })
-  })
-  MockLinking.openURL.mockReset()
+test("urlHandler_canOpenUrlSetToTrueAndUrlHandlerReturnsFalse_openUrlCalled", () => {
+  Iterable.logger.log("urlHandler_canOpenUrlSetToTrueAndUrlHandlerReturnsFalse_openUrlCalled")
 
+  // sets up event emitter
   const nativeEmitter = new NativeEventEmitter();
   nativeEmitter.removeAllListeners(EventName.handleUrlCalled)
 
-  const expectedUrl = "https://somewhere.com"
+  // sets up config file and urlHandler function
+  // urlHandler set to return false
   const config = new IterableConfig()
   config.urlHandler = jest.fn((url: string, _: IterableActionContext) => {
     return false
   })
 
+  // initialize Iterable object
   Iterable.initialize("apiKey", config)
-  const actionDict = { "type": "openUrl" }
-  nativeEmitter.emit(EventName.handleUrlCalled, { "url": expectedUrl, "context": { "action": actionDict, "source": "inApp" } });
+ 
+  // GIVEN canOpenUrl set to return a promise that resolves to true
+  MockLinking.canOpenURL = jest.fn(() => {
+    return new Promise(res => { res(true) })
+  })
+  MockLinking.openURL.mockReset()
+  const expectedUrl = "https://somewhere.com"
 
+  const actionDict = { "type": "openUrl" }
+  const dict = { "url": expectedUrl, "context": { "action": actionDict, "source": "inApp" } }
+
+  // WHEN handleUrlCalled event is emitted
+  nativeEmitter.emit(EventName.handleUrlCalled, dict);
+
+  // THEN urlHandler and MockLinking is called with expected url
   return TestHelper.delayed(0, () => {
-    expect(config.urlHandler).toBeCalledWith(expectedUrl, expect.any(Object))
+    expect(config.urlHandler).toBeCalledWith(expectedUrl, dict.context)
     expect(MockLinking.openURL).toBeCalledWith(expectedUrl)
   })
 })
 
-test.skip("do not open url when url handler returns false and canOpen is false", () => {
-  MockLinking.canOpenURL = jest.fn(() => {
-    return new Promise(res => { res(false) })
-  })
-  MockLinking.openURL.mockReset()
+test("urlHandler_canOpenUrlSetToFalseAndUrlHandlerReturnsFalse_openUrlNotCalled", () => {
+  Iterable.logger.log("urlHandler_canOpenUrlSetToFalseAndUrlHandlerReturnsFalse_openUrlNotCalled")
 
+  // sets up event emitter
   const nativeEmitter = new NativeEventEmitter();
   nativeEmitter.removeAllListeners(EventName.handleUrlCalled)
 
-  const expectedUrl = "https://somewhere.com"
+  // sets up config file and urlHandler function
+  // urlHandler set to return false
   const config = new IterableConfig()
   config.urlHandler = jest.fn((url: string, _: IterableActionContext) => {
     return false
   })
 
+  // initialize Iterable object
   Iterable.initialize("apiKey", config)
-  const actionDict = { "type": "openUrl" }
-  nativeEmitter.emit(EventName.handleUrlCalled, { "url": expectedUrl, "context": { "action": actionDict, "source": "inApp" } });
 
+  // GIVEN canOpenUrl set to return a promise that resolves to false
+  MockLinking.canOpenURL = jest.fn(() => {
+    return new Promise(res => { res(false) })
+  })
+  MockLinking.openURL.mockReset()
+  const expectedUrl = "https://somewhere.com"
+
+  const actionDict = { "type": "openUrl" }
+  const dict = { "url": expectedUrl, "context": { "action": actionDict, "source": "inApp" } }
+
+  // WHEN handleUrlCalled event is emitted
+  nativeEmitter.emit(EventName.handleUrlCalled, dict);
+
+  // THEN urlHandler is called and MockLinking.openURL is not called
   return TestHelper.delayed(0, () => {
-    expect(config.urlHandler).toBeCalledWith(expectedUrl, expect.any(Object))
+    expect(config.urlHandler).toBeCalledWith(expectedUrl, dict.context)
     expect(MockLinking.openURL).not.toBeCalled()
   })
 })
 
-test.skip("do not open url when url handler returns true", () => {
-  MockLinking.canOpenURL = jest.fn(() => {
-    return new Promise(res => { res(true) })
-  })
-  MockLinking.openURL.mockReset()
+test("urlHandler_canOpenUrlSetToTrueAndUrlHandlerReturnsTrue_openUrlNotCalled", () => {
+  Iterable.logger.log("urlHandler_canOpenUrlSetToTrueAndUrlHandlerReturnsTrue_openUrlNotCalled")
 
+  // sets up event emitter
   const nativeEmitter = new NativeEventEmitter();
   nativeEmitter.removeAllListeners(EventName.handleUrlCalled)
 
-  const expectedUrl = "https://somewhere.com"
+  // sets up config file and urlHandler function
+  // urlHandler set to return true
   const config = new IterableConfig()
   config.urlHandler = jest.fn((url: string, _: IterableActionContext) => {
     return true
   })
 
+  // initialize Iterable object
   Iterable.initialize("apiKey", config)
-  const actionDict = { "type": "openUrl" }
-  nativeEmitter.emit(EventName.handleUrlCalled, { "url": expectedUrl, "context": { "action": actionDict, "source": "inApp" } });
 
+  // GIVEN canOpenUrl set to return a promise that resolves to true
+  MockLinking.canOpenURL = jest.fn(() => {
+    return new Promise(res => { res(true) })
+  })
+  MockLinking.openURL.mockReset()
+  const expectedUrl = "https://somewhere.com"
+  
+  const actionDict = { "type": "openUrl" }
+  const dict = { "url": expectedUrl, "context": { "action": actionDict, "source": "inApp" } }
+
+  // WHEN handleUrlCalled event is emitted
+  nativeEmitter.emit(EventName.handleUrlCalled, dict);
+
+  // THEN urlHandler is called and MockLinking.openURL is not called
   return TestHelper.delayed(0, () => {
+    expect(config.urlHandler).toBeCalledWith(expectedUrl, dict.context)
     expect(MockLinking.openURL).not.toBeCalled()
   })
 })
 
-test.skip("custom action handler is called", () => {
+test("customActionHandler_actionNameAndActionData_customActionHandlerCalled", () => {
+  Iterable.logger.log("customActionHandler_actionNameAndActionData_customActionHandlerCalled")
+
+  // sets up event emitter
   const nativeEmitter = new NativeEventEmitter();
   nativeEmitter.removeAllListeners(EventName.handleCustomActionCalled)
 
-  const actionName = "zeeActionName"
-  const actionData = "zeeActionData"
+  // sets up config file and customActionHandler function
+  // customActionHandler set to return true
   const config = new IterableConfig()
-
   config.customActionHandler = jest.fn((action: IterableAction, context: IterableActionContext) => {
     return true
   })
 
+  // initialize Iterable object
   Iterable.initialize("apiKey", config)
-  const actionDict = { "type": actionName, "data": actionData }
-  nativeEmitter.emit(EventName.handleCustomActionCalled, { "action": actionDict, "context": { "action": actionDict, "source": IterableActionSource.inApp } });
 
-  return TestHelper.delayed(0, () => {
-    const expectedAction = new IterableAction(actionName, actionData)
-    const expectedContext = new IterableActionContext(expectedAction, IterableActionSource.inApp)
-    expect(config.customActionHandler).toBeCalledWith(expectedAction, expectedContext)
-  })
+  // GIVEN custom action name and custom action data
+  const actionName = "zeeActionName"
+  const actionData = "zeeActionData"
+  const actionDict = { "type": actionName, "data": actionData }
+  const actionSource = IterableActionSource.inApp
+  const dict = { "action": actionDict, "context": { "action": actionDict, "source": IterableActionSource.inApp } }
+
+  // WHEN handleCustomActionCalled event is emitted
+  nativeEmitter.emit(EventName.handleCustomActionCalled, dict);
+
+  // THEN customActionHandler is called with expected action and expected context
+  const expectedAction = new IterableAction(actionName, actionData)
+  const expectedContext = new IterableActionContext(expectedAction, actionSource)
+  expect(config.customActionHandler).toBeCalledWith(expectedAction, expectedContext)
 })
 
-test.skip("handle app link is called", () => {
+test("handleAppLink_link_methodCalled", () => {
+  Iterable.logger.log("handleAppLink_link_methodCalled")
+
+  // GIVEN a link
   const link = "https://somewhere.com/link/something"
+
+  // WHEN Iterable.handleAppLink is called
   Iterable.handleAppLink(link)
+
+  // THEN corresponding function is called on RNITerableAPI
   expect(MockRNIterableAPI.handleAppLink).toBeCalledWith(link)
 })
 
-test.skip("update subscriptions is called", () => {
+test("updateSubscriptions_params_methodCalled", () => {
+  Iterable.logger.log("update subscriptions is called")
+
+  // GIVEN the following parameters
   const emailListIds = [1, 2, 3]
   const unsubscribedChannelIds = [4, 5, 6]
   const unsubscribedMessageTypeIds = [7, 8]
@@ -357,7 +418,9 @@ test.skip("update subscriptions is called", () => {
   const campaignId = 10
   const templateId = 11
 
-  Iterable.updateSubscriptions(emailListIds,
+  // WHEN Iterable.updateSubscriptions is called
+  Iterable.updateSubscriptions(
+    emailListIds,
     unsubscribedChannelIds,
     unsubscribedMessageTypeIds,
     subscribedMessageTypeIds,
@@ -365,6 +428,7 @@ test.skip("update subscriptions is called", () => {
     templateId
   )
 
+  // THEN corresponding function is called on RNIterableAPI
   expect(MockRNIterableAPI.updateSubscriptions).toBeCalledWith(emailListIds, unsubscribedChannelIds, unsubscribedMessageTypeIds, subscribedMessageTypeIds, campaignId, templateId)
 })
 
