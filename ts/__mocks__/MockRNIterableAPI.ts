@@ -100,6 +100,7 @@ export class MockRNIterableAPI {
   // this is for testing purposes only
   static setMessages(messages: IterableInAppMessage[]) {
     MockRNIterableAPI.messages = messages
+  }
   
   // setClickedUrl function is to set the messages static property
   // this is for testing purposes only
