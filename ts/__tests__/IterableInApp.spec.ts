@@ -110,7 +110,8 @@ test("inAppHandler_messageAndEventEmitted_methodCalledWithMessage", () => {
   expect(MockRNIterableAPI.setInAppShowResponse).toBeCalledWith(IterableInAppShowResponse.show)
 })
 
-test("get in-app messages", () => {
+test("getMessages_noParams_returnsMessages", () => {
+  // GIVEN a list of in-app messages representing the local queue
   const messageDicts = [{
     "messageId": "message1",
     "campaignId": 1234,
@@ -120,12 +121,12 @@ test("get in-app messages", () => {
     "campaignId": 2345,
     "trigger": { "type": IterableInAppTriggerType.never },
   }]
-
   const messages = messageDicts.map(message => IterableInAppMessage.fromDict(message))
-  MockRNIterableAPI.getInAppMessages = jest.fn(() => {
-    return new Promise(res => res(messages))
-  })
 
+  // WHEN the simulated local queue is set to the in-app messages
+  MockRNIterableAPI.setMessages(messages)
+
+  // THEN Iterable,inAppManager.getMessages returns the list of in-app messages
   return Iterable.inAppManager.getMessages().then(messagesObtained => {
     expect(messagesObtained).toEqual(messages)
   })
