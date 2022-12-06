@@ -887,16 +887,16 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
-"@iterable/react-native-sdk@^1.3.2":
-  version "1.3.2"
-  resolved "https://registry.yarnpkg.com/@iterable/react-native-sdk/-/react-native-sdk-1.3.2.tgz#03aff1b440b7b4f58b982ebc292d4500830569f6"
-  integrity sha512-s+TTXQUOvcjAyp4lB9g42moAOPjiN7Gd4zWCvicO+zNcF170oZ8zSw/CJoUxvZIaFqKYIJXREeECBuDpA/p3Nw==
+"@iterable/react-native-sdk@^1.3.9":
+  version "1.3.9"
+  resolved "https://registry.yarnpkg.com/@iterable/react-native-sdk/-/react-native-sdk-1.3.9.tgz#03056cdc7a96986eaef522f0be0a1bb520f199c7"
+  integrity sha512-LcmxzcFDL4D9UUHuHWZ44LOBbhVmQUVw+V3mktzXuZ2BRIY41ndNwzZsREQLNTFaesK20T5lglUridEdTzzyiA==
   dependencies:
     "@react-native-community/hooks" "^2.6.0"
     "@react-navigation/native" "^6.0.6"
     react-native-safe-area-context "^4.1.2"
     react-native-vector-icons "^9.0.0"
-    react-native-webview "^11.14.1"
+    react-native-webview "^11.0.0"
 
 "@jest/create-cache-key-function@^26.5.0":
   version "26.6.2"
@@ -2173,9 +2173,9 @@ decamelize@^1.2.0:
   integrity sha1-9lNNFRSCabIDUue+4m9QH5oZEpA=
 
 decode-uri-component@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
-  integrity sha1-6zkTMzRYd1y4TNGh+uBiEGu4dUU=
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.2.tgz#e69dbe25d37941171dd540e024c444cd5188e1e9"
+  integrity sha512-FqUYQ+8o158GyGTrMFJms9qh3CqTKvAqgqsTnkLI8sKu0028orqBhxNMFkFen0zGyg6epACD32pjVk58ngIErQ==
 
 deep-is@~0.1.3:
   version "0.1.4"
@@ -4918,10 +4918,10 @@ react-native-vector-icons@^9.0.0:
     prop-types "^15.7.2"
     yargs "^16.1.1"
 
-react-native-webview@^11.14.1:
-  version "11.21.2"
-  resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-11.21.2.tgz#fe4675318b8e487a4347d30f3036bfb89ba5a09b"
-  integrity sha512-BgiRfRfB9J60dEzj6Z4fZQcKhPbqGhinweHdIMFtLm9GCaTZ/cTo3sOeMN9XuLgakqcqHnvHg7Abp5jT2aiOyw==
+react-native-webview@^11.0.0:
+  version "11.25.0"
+  resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-11.25.0.tgz#fd2e0265224192d7381443cec732af56d6ca4d69"
+  integrity sha512-yq3con7vDQUQKAyl9a7pJaR3A1/cI0K2AeRhGugXfWQfdsne18pddJwQuOsc63khecipeCbB8pthCqw0UlsgVw==
   dependencies:
     escape-string-regexp "2.0.0"
     invariant "2.2.4"
