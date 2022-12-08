@@ -19,7 +19,7 @@ import { Iterable, IterableConfig, } from '@iterable/react-native-sdk';
 // to create an API key for your Iterable project.
 // (https://support.iterable.com/hc/en-us/articles/360043464871#creating-api-keys)
 
-import { iterableAPIKey } from './Config';
+import { iterableAPIKey } from './Config.sample';
 
 export default class App extends React.Component {
     constructor(props) {
