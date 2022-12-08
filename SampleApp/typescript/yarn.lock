@@ -685,7 +685,7 @@
 
 "@iterable/react-native-sdk@^1.3.6":	"@iterable/react-native-sdk@^1.3.9":
   version "1.3.6"	  version "1.3.9"
-  resolved "https://registry.yarnpkg.com/@iterable/react-native-sdk/-/react-native-sdk-1.3.6.tgz#c8f0c40afffe9d482f0fa48aa378738ea9e2ce0d"	  resolved "https://registry.yarnpkg.com/@iterable/react-native-sdk/-/react-native-sdk-1.3.9.tgz#03056cdc7a96986eaef522f0be0a1bb520f199c7"
+  resolved "https://registry.yarnpkg.com/@iterable/react-native-sdk/-/react-native-sdk-1.3.6.tgz#c8f0c40afffe9d482f0fa48aa378738ea9e2ce0d"
   integrity sha512-eThQQ5D+F5zoMOfrlPs9yMcgZU3F2cGLVAYm/qZbbFEaZdAxf5Xm0ERUOYqVWOczsrRs2EgnUPKQljB0pfM/bw==
   dependencies:
     "@react-native-community/hooks" "^2.6.0"
