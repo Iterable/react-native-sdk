@@ -1,5 +1,4 @@
 import { MockRNIterableAPI } from '../__mocks__/MockRNIterableAPI'
-import { TestHelper } from './TestHelper'
 import { NativeEventEmitter } from 'react-native'
 
 import {
@@ -27,89 +26,92 @@ beforeEach(() => {
   Iterable.logger = new IterableLogger(new IterableConfig())
 })
 
-test("trackInAppOpen", () => {
-  let msg: IterableInAppMessage = new IterableInAppMessage("someMessageId", 123, new IterableInAppTrigger(IterableInAppTriggerType.event), new Date(1234), new Date(123123), true, new IterableInboxMetadata("title", "subtitle", "iconURL"), { "CustomPayloadKey": "CustomPayloadValue" }, false, 300.5);
-  Iterable.trackInAppOpen(
-    msg,
-    IterableInAppLocation.inApp
-  )
+test("trackInAppOpen_params_methodCalledWithParams", () => {
+  // GIVEN an in-app message and a location
+  let msg: IterableInAppMessage = new IterableInAppMessage("someMessageId", 123, new IterableInAppTrigger(IterableInAppTriggerType.event), new Date(1234), new Date(123123), true, new IterableInboxMetadata("title", "subtitle", "iconURL"), { "CustomPayloadKey": "CustomPayloadValue" }, false, 300.5)
+  let location: IterableInAppLocation = IterableInAppLocation.inApp
 
-  expect(MockRNIterableAPI.trackInAppOpen).toBeCalledWith(
-    "someMessageId",
-    0
-  )
+  // WHEN Iterable.trackInAppOpen is called
+  Iterable.trackInAppOpen(msg, location)
+
+  // THEN corresponding method is called on MockIterableAPI with appropriate parameters
+  expect(MockRNIterableAPI.trackInAppOpen).toBeCalledWith(msg.messageId, location)
 })
 
-test("trackInAppClick", () => {
-  let msg: IterableInAppMessage = new IterableInAppMessage("someMessageId", 123, new IterableInAppTrigger(IterableInAppTriggerType.event), new Date(1234), new Date(123123), true, new IterableInboxMetadata("title", "subtitle", "iconURL"), { "CustomPayloadKey": "CustomPayloadValue" }, false, 300.5);
-  Iterable.trackInAppClick(
-    msg,
-    IterableInAppLocation.inApp,
-    "URLClicked"
-  )
+test("trackInAppClick_params_methodCalledWithParams", () => {
+  // GIVEN an in-app message, a location, and a url
+  let msg: IterableInAppMessage = new IterableInAppMessage("someMessageId", 123, new IterableInAppTrigger(IterableInAppTriggerType.event), new Date(1234), new Date(123123), true, new IterableInboxMetadata("title", "subtitle", "iconURL"), { "CustomPayloadKey": "CustomPayloadValue" }, false, 300.5)
+  let location: IterableInAppLocation = IterableInAppLocation.inApp
+  let url: string = "URLClicked"
 
-  expect(MockRNIterableAPI.trackInAppClick).toBeCalledWith(
-    "someMessageId",
-    0,
-    "URLClicked"
-  )
+  // WHEN Iterable.trackInAppClick is called
+  Iterable.trackInAppClick(msg, location, url)
+
+  // THEN corresponding method is called on MockIterableAPI with appropriate parameters
+  expect(MockRNIterableAPI.trackInAppClick).toBeCalledWith(msg.messageId, location, url)
 })
 
-test("trackInAppClose", () => {
-  let msg: IterableInAppMessage = new IterableInAppMessage("someMessageId", 123, new IterableInAppTrigger(IterableInAppTriggerType.event), new Date(1234), new Date(123123), true, new IterableInboxMetadata("title", "subtitle", "iconURL"), { "CustomPayloadKey": "CustomPayloadValue" }, false, 300.5);
-  Iterable.trackInAppClose(
-    msg,
-    IterableInAppLocation.inbox,
-    IterableInAppCloseSource.link,
-    "ClickedURL"
-  )
+test("trackInAppClose_params_methodCalledWithParams", () => {
+  // GIVEN an in-app messsage, a location, a close source, and a url
+  let msg: IterableInAppMessage = new IterableInAppMessage("someMessageId", 123, new IterableInAppTrigger(IterableInAppTriggerType.event), new Date(1234), new Date(123123), true, new IterableInboxMetadata("title", "subtitle", "iconURL"), { "CustomPayloadKey": "CustomPayloadValue" }, false, 300.5)
+  let location: IterableInAppLocation = IterableInAppLocation.inbox
+  let source: IterableInAppCloseSource = IterableInAppCloseSource.link
+  let url: string = "ClickedURL"
 
-  expect(MockRNIterableAPI.trackInAppClose).toBeCalledWith(
-    "someMessageId",
-    1,
-    1,
-    "ClickedURL"
-  )
+  // WHEN Iterable.trackInAppClose is called
+  Iterable.trackInAppClose(msg, location, source, url)
+
+  // THEN corresponding method is called on MockIterableAPI with appropriate parameters
+  expect(MockRNIterableAPI.trackInAppClose).toBeCalledWith(msg.messageId, location, source, url)
 })
 
-test("in-app consume", () => {
-  let message = new IterableInAppMessage("asdf", 1234, new IterableInAppTrigger(IterableInAppTriggerType.never), undefined, undefined, false, undefined, undefined, false, 300.5)
+test("inAppConsume_params_methodCalledWithParams", () => {
+  // GIVEN an in-app messsage, a location, and a delete source
+  let msg = new IterableInAppMessage("asdf", 1234, new IterableInAppTrigger(IterableInAppTriggerType.never), undefined, undefined, false, undefined, undefined, false, 300.5)
+  let location: IterableInAppLocation = IterableInAppLocation.inApp
+  let source: IterableInAppDeleteSource = IterableInAppDeleteSource.unknown
 
-  Iterable.inAppConsume(message, IterableInAppLocation.inApp, IterableInAppDeleteSource.unknown)
+  // WHEN Iterable.inAppConsume is called
+  Iterable.inAppConsume(msg,location, source)
 
-  expect(MockRNIterableAPI.inAppConsume).toBeCalledWith(message.messageId, IterableInAppLocation.inApp, IterableInAppDeleteSource.unknown)
+  // THEN corresponding method is called on MockIterableAPI with appropriate parameters
+  expect(MockRNIterableAPI.inAppConsume).toBeCalledWith(msg.messageId, location, source)
 })
 
-test("in-app handler is called", () => {
-  MockRNIterableAPI.setInAppShowResponse.mockReset()
-
+test("inAppHandler_messageAndEventEmitted_methodCalledWithMessage", () => {
+  // sets up event emitter
   const nativeEmitter = new NativeEventEmitter();
   nativeEmitter.removeAllListeners(EventName.handleInAppCalled)
 
+  // sets up config file and inAppHandler function
   const config = new IterableConfig()
-
   config.inAppHandler = jest.fn((message: IterableInAppMessage) => {
     return IterableInAppShowResponse.show
   })
 
+  // initialize Iterable object
   Iterable.initialize("apiKey", config)
+
+  // GIVEN an in-app message
   const messageDict = {
     "messageId": "message1",
     "campaignId": 1234,
     "trigger": { "type": IterableInAppTriggerType.immediate },
     "priorityLevel": 300.5
   }
+  const expectedMessage = new IterableInAppMessage("message1", 1234, new IterableInAppTrigger(IterableInAppTriggerType.immediate), undefined, undefined, false, undefined, undefined, false, 300.5)
+  
+  // WHEN handleInAppCalled event is emitted
   nativeEmitter.emit(EventName.handleInAppCalled, messageDict);
 
-  return TestHelper.delayed(0, () => {
-    expect(config.inAppHandler)
-    const expectedMessage = new IterableInAppMessage("message1", 1234, new IterableInAppTrigger(IterableInAppTriggerType.immediate), undefined, undefined, false, undefined, undefined, false, 300.5)
-    expect(config.inAppHandler).toBeCalledWith(expectedMessage)
-    expect(MockRNIterableAPI.setInAppShowResponse).toBeCalledWith(IterableInAppShowResponse.show)
-  })
+  // THEN inAppHandler and MockRNIterableAPI.setInAppShowResponse is called with message
+  expect(config.inAppHandler)
+  expect(config.inAppHandler).toBeCalledWith(expectedMessage)
+  expect(MockRNIterableAPI.setInAppShowResponse).toBeCalledWith(IterableInAppShowResponse.show)
 })
 
-test("get in-app messages", () => {
+test("getMessages_noParams_returnsMessages", () => {
+  // GIVEN a list of in-app messages representing the local queue
   const messageDicts = [{
     "messageId": "message1",
     "campaignId": 1234,
@@ -119,60 +121,79 @@ test("get in-app messages", () => {
     "campaignId": 2345,
     "trigger": { "type": IterableInAppTriggerType.never },
   }]
-
   const messages = messageDicts.map(message => IterableInAppMessage.fromDict(message))
-  MockRNIterableAPI.getInAppMessages = jest.fn(() => {
-    return new Promise(res => res(messages))
-  })
 
+  // WHEN the simulated local queue is set to the in-app messages
+  MockRNIterableAPI.setMessages(messages)
+
+  // THEN Iterable,inAppManager.getMessages returns the list of in-app messages
   return Iterable.inAppManager.getMessages().then(messagesObtained => {
     expect(messagesObtained).toEqual(messages)
   })
 })
 
-test("in-app show message is called", () => {
-  const messageDict = {
+test("showMessage_messageAndConsume_returnsClickedUrl", () => {
+  // GIVEN an in-app message and a clicked url
+  let messageDict = {
     "messageId": "message1",
     "campaignId": 1234,
     "trigger": { "type": IterableInAppTriggerType.immediate },
   }
-  const message = IterableInAppMessage.fromDict(messageDict)
-  MockRNIterableAPI.showMessage = jest.fn((message, consume) => {
-    return new Promise<void>(res => {
-      res()
-    })
+  let message: IterableInAppMessage = IterableInAppMessage.fromDict(messageDict)
+  let consume: boolean = true
+  let clickedUrl: string = "testUrl"
+
+  // WHEN the simulated clicked url is set to the clicked url
+  MockRNIterableAPI.setClickedUrl(clickedUrl)
+
+  // THEN Iterable,inAppManager.showMessage returns the simulated clicked url
+  return Iterable.inAppManager.showMessage(message, consume).then(url => {
+    expect(url).toEqual(clickedUrl)
   })
-
-  return Iterable.inAppManager.showMessage(message, true).then(_ => {
-    expect(MockRNIterableAPI.showMessage).toBeCalledWith(message.messageId, true)
-  })
 })
 
-test("in-app remove message is called", () => {
-  const messageDict = {
+test("removeMessage_params_methodCalledWithParams", () => {
+  // GIVEN an in-app message
+  let messageDict = {
     "messageId": "message1",
     "campaignId": 1234,
     "trigger": { "type": IterableInAppTriggerType.immediate },
   }
-  const message = IterableInAppMessage.fromDict(messageDict)
+  let message = IterableInAppMessage.fromDict(messageDict)
+  let location: IterableInAppLocation = IterableInAppLocation.inApp
+  let source: IterableInAppDeleteSource = IterableInAppDeleteSource.deleteButton
 
-  Iterable.inAppManager.removeMessage(message, IterableInAppLocation.inApp, IterableInAppDeleteSource.deleteButton)
-  expect(MockRNIterableAPI.removeMessage).toBeCalledWith(message.messageId, IterableInAppLocation.inApp, IterableInAppDeleteSource.deleteButton)
+  // WHEN Iterable.inAppManager.removeMessage is called
+  Iterable.inAppManager.removeMessage(message, location, source)
+
+  // THEN corresponding method is called on MockIterableAPI with appropriate parameters
+  expect(MockRNIterableAPI.removeMessage).toBeCalledWith(message.messageId, location, source)
 })
 
-test("in-app set read for message is called", () => {
-  const messageDict = {
+test("setReadForMessage_params_methodCalledWithParams", () => {
+  // GIVEN an in-app message
+  let messageDict = {
     "messageId": "message1",
     "campaignId": 1234,
     "trigger": { "type": IterableInAppTriggerType.immediate },
   }
-  const message = IterableInAppMessage.fromDict(messageDict)
+  let message = IterableInAppMessage.fromDict(messageDict)
+  let read: boolean = true
 
-  Iterable.inAppManager.setReadForMessage(message, true)
-  expect(MockRNIterableAPI.setReadForMessage).toBeCalledWith(message.messageId, true)
+  // WHEN Iterable.inAppManager.setReadForMessage is called
+  Iterable.inAppManager.setReadForMessage(message, read)
+
+  // THEN corresponding method is called on MockRNIterableAPI with appropriate parameters
+  expect(MockRNIterableAPI.setReadForMessage).toBeCalledWith(message.messageId, read)
 })
 
-test("in-app auto display paused", () => {
-  Iterable.inAppManager.setAutoDisplayPaused(true)
-  expect(MockRNIterableAPI.setAutoDisplayPaused).toBeCalledWith(true)
+test("setAutoDisplayPaused_params_methodCalledWithParams", () => {
+  // GIVEN paused flag
+  let paused: boolean = true
+
+  // WHEN Iterable.inAppManager.setAutoDisplayPaused is called
+  Iterable.inAppManager.setAutoDisplayPaused(paused)
+
+  // THEN corresponding method is called on MockRNIterableAPI with appropriate parameters
+  expect(MockRNIterableAPI.setAutoDisplayPaused).toBeCalledWith(paused)
 })
