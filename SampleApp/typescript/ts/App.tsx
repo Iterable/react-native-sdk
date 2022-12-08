@@ -12,6 +12,8 @@ import {
   IterableActionContext,
 } from '@iterable/react-native-sdk';
 
+// ITERABLE:	
+// Make sure you have a file called Config.js and your apiKey is in there.
 import { iterableAPIKey } from './Config'
 
 interface Props { }
@@ -66,7 +68,7 @@ export default class App extends React.Component {
     }
   }
 
-  // ITERABLE"
+  // ITERABLE:
   private urlHandler = (url: String, context: IterableActionContext): boolean => {
     console.log(`urlHandler, url: ${url}`)
     let match = url.match(/coffee\/([^\/]+)/i)
