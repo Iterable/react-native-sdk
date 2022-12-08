@@ -9,8 +9,6 @@ module.exports = {
     'standard-with-typescript',
     'airbnb/hooks'
   ],
-  overrides: [
-  ],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
@@ -20,8 +18,6 @@ module.exports = {
     'react',
     'react-native'
   ],
-  rules: {
-  },
   settings: {
     react: {
       version: 'detect'
