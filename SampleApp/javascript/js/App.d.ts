@@ -1,4 +1,4 @@
-import React from 'react';
+∏import React from 'react';
 interface Props {
 }
 export default class App extends React.Component {
