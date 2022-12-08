@@ -1,4 +1,5 @@
 import { IterableAttributionInfo } from '../Iterable'
+import IterableInAppMessage from '../IterableInAppMessage'
 
 export class MockRNIterableAPI {
   static email?: string
@@ -6,8 +7,10 @@ export class MockRNIterableAPI {
   static token?: string
   static lastPushPayload?: any
   static attributionInfo?: IterableAttributionInfo
+  static messages?: IterableInAppMessage[]
+  static clickedUrl?: string
 
-  static getEmail(): Promise<string> {
+  static getEmail(): Promise<string | undefined> {
     return new Promise((resolve, _) => {
       resolve(MockRNIterableAPI.email)
     })
@@ -18,7 +21,7 @@ export class MockRNIterableAPI {
     MockRNIterableAPI.token = authToken
   }
 
-  static getUserId(): Promise<string> {
+  static getUserId(): Promise<string | undefined> {
     return new Promise((resolve, _) => {
       resolve(MockRNIterableAPI.userId)
     })
@@ -65,11 +68,19 @@ export class MockRNIterableAPI {
 
   static setInAppShowResponse = jest.fn()
 
-  static getInAppMessages = jest.fn()
+  static getInAppMessages(): Promise<IterableInAppMessage[] | undefined> {
+    return new Promise((resolve, _) => {
+      resolve(MockRNIterableAPI.messages)
+    })
+  }
 
   static setAutoDisplayPaused = jest.fn()
 
-  static showMessage = jest.fn()
+  static showMessage(message: IterableInAppMessage, consume: boolean): Promise<string | undefined> {
+    return new Promise((resolve, _) => {
+      resolve(MockRNIterableAPI.clickedUrl)
+    })
+  }
 
   static removeMessage = jest.fn()
 
@@ -84,5 +95,16 @@ export class MockRNIterableAPI {
   static handleAppLink = jest.fn()
 
   static updateSubscriptions = jest.fn()
-}
 
+  // set messages function is to set the messages static property
+  // this is for testing purposes only
+  static setMessages(messages: IterableInAppMessage[]) {
+    MockRNIterableAPI.messages = messages
+  }
+  
+  // setClickedUrl function is to set the messages static property
+  // this is for testing purposes only
+  static setClickedUrl(clickedUrl: string) {
+    MockRNIterableAPI.clickedUrl = clickedUrl
+  }
+}
