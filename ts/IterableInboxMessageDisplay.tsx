@@ -14,14 +14,18 @@ import { WebView } from 'react-native-webview'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 import { 
-   InboxRowViewModel, 
    IterableHtmlInAppContent, 
    IterableEdgeInsets,
    IterableInAppLocation,
    IterableInAppCloseSource,
+} from './IterableInAppClasses'
+
+import { 
    IterableAction, 
    IterableActionContext
-} from '.'
+ } from './IterableAction'
+
+import InboxRowViewModel from './InboxRowViewModel'
 
 import { Iterable, IterableActionSource } from './Iterable'
 
