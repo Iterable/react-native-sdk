@@ -10,7 +10,7 @@ import { Iterable } from './Iterable'
 import { 
   IterableAction, 
   IterableActionContext, 
-  IterableLogLevel
+  IterableLogLevel,
 } from './IterableAction'
 
 import {

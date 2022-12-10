@@ -7,7 +7,7 @@ import {
    StyleSheet,
 } from 'react-native'
 
-import { IterableInboxCustomizations } from './IterableInboxCustomization'
+import { IterableInboxCustomizations } from '.'
 
 type emptyStateProps = {
    customizations: IterableInboxCustomizations,
