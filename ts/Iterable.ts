@@ -10,10 +10,10 @@ import {
 import {
   IterableInAppLocation,
   IterableInAppCloseSource,
-  IterableInAppDeleteSource,
-} from '.'
+  IterableInAppDeleteSource
+} from './IterableInAppClasses'
 
-import IterableInAppManager from './IterableInAppManager'
+//import IterableInAppManager from './IterableInAppManager' 
 import IterableInAppMessage from './IterableInAppMessage'
 import IterableConfig, { AuthResponse } from './IterableConfig'
 import { IterableLogger } from './IterableLogger'

@@ -3,8 +3,8 @@
 import { 
   IterableAction, 
   IterableActionContext, 
-  IterableLogLevel,
-} from '.'
+  IterableLogLevel
+} from './IterableAction'
 
 import { IterableInAppShowResponse } from './IterableInAppClasses'
 

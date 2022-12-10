@@ -13,10 +13,8 @@ import {
    TouchableOpacity
 } from 'react-native'
 
-import {
-   InboxRowViewModel,
-   IterableInboxCustomizations,
-} from '.'
+import InboxRowViewModel from './InboxRowViewModel'
+import IterableInboxCustomizations from './IterableInboxCustomizations'
 
 import IterableInboxDataModel from './IterableInboxDataModel'
 
