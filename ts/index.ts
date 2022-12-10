@@ -24,7 +24,7 @@ import {
   IterableInboxMetadata,
   IterableInAppLocation,
   IterableInAppCloseSource,
-  IterableInAppDeleteSource,
+  IterableInAppDeleteSource
 } from './IterableInAppClasses'
 
 import InboxRowViewModel from './InboxRowViewModel'
