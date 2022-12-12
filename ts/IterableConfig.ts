@@ -13,19 +13,24 @@ import IterableInAppMessage from './IterableInAppMessage'
 type AuthCallBack = (() => void)
 
 /**
-Iterable Configuration Object. Use this when initializing the API.
+ * An IterableConfig object sets various properties of the SDK.
+ * An IterableConfig object is passed into the static initialize method on the Iterable class when initializing the SDK.
 */
+
 class IterableConfig {
   /**
-  * You don't have to set this variable. Set this value only if you are an existing Iterable customer who has already setup mobile integrations in Iterable Web UI.
-  * In that case, set this variable to the push integration name that you have set for 'APNS' in Iterable Web UI.
-  * To view your existing integrations, navigate to Settings > Mobile Apps
-  */
+   * The name of the Iterable push integration that will send push notifications to your app.
+   * Defaults to your app's application ID or bundle ID for iOS.
+   * 
+   * Note: Don't specify this value unless you are using an older Iterable push integration that 
+   * has a custom name. To view your existing integrations, navigate to Settings > Mobile Apps.
+   */
   pushIntegrationName?: string
 
   /**
-  * When set to true, IterableSDK will automatically register and deregister notification tokens.
-  */
+   * When set to true (which is the default value), IterableSDK will automatically register and deregister 
+   * notification tokens when you provide email or userId values to the SDK using Iterable.setEmail or Iterable.setUserId.
+   */
   autoPushRegistration = true
 
   /**
@@ -35,29 +40,35 @@ class IterableConfig {
   checkForDeferredDeeplink = false
 
   /**
-  * How many seconds to wait before showing the next in-app, if there are more than one present
-  */
+   * Number of seconds to wait when displaying multiple in-app messages in sequence. 
+   * between each. Defaults to 30 seconds.
+   */
   inAppDisplayInterval: number = 30.0
 
   /**
-  * How many seconds to wait before showing the next in-app, if there are more than one present
-  */
+   * A callback function used to handle deep link URLs and in-app message button and link URLs.
+   */
   urlHandler?: (url: string, context: IterableActionContext) => boolean
 
   /**
-  * How to handle IterableActions which are other than 'openUrl'
-  */
+   * A function expression used to handle `action://` URLs for in-app buttons and links.
+   */
   customActionHandler?: (action: IterableAction, context: IterableActionContext) => boolean
 
   /**
-  * Implement this protocol to override default in-app behavior.
+  * Implement this callback to override default in-app behavior.
   * By default, every single in-app will be shown as soon as it is available.
   * If more than 1 in-app is available, we show the first.
+  * 
+  * See "In-App Messages with Iterable's React Native SDK" in support documentation
+  * for more information.
   */
   inAppHandler?: (message: IterableInAppMessage) => IterableInAppShowResponse
 
   /**
-   * The handler with which your own calls to your backend containing the auth token happen
+   * A function expression that provides a valid JWT for the app's current user to Iterable's
+   * React Native SDK. Provide an implementation for this method only if your app uses a 
+   * JWT-enabled API key.
    */
   authHandler?:() => Promise<AuthResponse | String | undefined>
   
@@ -75,21 +86,34 @@ class IterableConfig {
   logReactNativeSdkCalls: boolean = true
 
   /**
-   * Set the amount of time (in seconds) before the current auth token expires to make a call to retrieve a new one
+   * The number of seconds before the current JWT's expiration that the SDK should call the
+   * authHandler to get an updated JWT.
    */
   expiringAuthTokenRefreshPeriod: number = 60.0
 
   /**
-   * We allow navigation only to urls with `https` protocol (for deep links within your app or external links).
-   * If you want to allow other protocols, such as,  `http`, `tel` etc., please add them to the list below
-  */
+   * Use this array to declare the specific URL protocols that the SDK can expect to see on incoming
+   * links from Iterable, so it knows that it can safely handle them as needed. This array helps
+   * prevent the SDK from opening links that use unexpected URL protocols.
+   */
   allowedProtocols: Array<string> = []
 
   /**
+   * DEPRECATED - please use `useInMemoryStorageForInApps` as a replacement for this config option.
+   * 
+   * NOTE: until this option is removed, it will still function with `useInMemoryStorageForInApps` by
+   * doing an OR operation, so if either this or `useInMemoryStorageForInApps` are set to `true`,
+   * the native Android SDK layer will use in memory storage for in-apps.
+   * 
    * This specifies the `useInMemoryStorageForInApps` config option downstream to the Android SDK layer.
-   * Please read the `IterableConfig` file for specific details on this config option.
    */
-  androidSdkUseInMemoryStorageForInApps: boolean = false
+   androidSdkUseInMemoryStorageForInApps: boolean = false
+
+  /**
+   * This specifies the `useInMemoryStorageForInApps` config option downstream to the native SDK layers.
+   * Please read the respective `IterableConfig` files for specific details on this config option.
+   */
+  useInMemoryStorageForInApps: boolean = false
 
   toDict(): any {
     return {
@@ -103,7 +127,8 @@ class IterableConfig {
       "logLevel": this.logLevel,
       "expiringAuthTokenRefreshPeriod": this.expiringAuthTokenRefreshPeriod,
       "allowedProtocols": this.allowedProtocols,
-      "androidSdkUseInMemoryStorageForInApps": this.androidSdkUseInMemoryStorageForInApps
+      "androidSdkUseInMemoryStorageForInApps": this.androidSdkUseInMemoryStorageForInApps,
+      "useInMemoryStorageForInApps": this.useInMemoryStorageForInApps
     }
   }
 }

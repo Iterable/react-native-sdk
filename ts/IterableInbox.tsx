@@ -14,16 +14,17 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import {
-   Iterable,
-   IterableInboxCustomizations,
-   useAppStateListener,
-   useDeviceOrientation,
    IterableInAppDeleteSource,
-   IterableInAppLocation,
-   IterableInboxEmptyState,
-   InboxImpressionRowInfo
-} from '.'
+   IterableInAppLocation
+} from './IterableInAppClasses'
 
+import { Iterable } from './Iterable'
+
+import IterableInboxEmptyState from './IterableInboxEmptyState'
+import InboxImpressionRowInfo from './InboxImpressionRowInfo'
+import useDeviceOrientation from './useDeviceOrientation'
+import useAppStateListener from './useAppStateListener'
+import IterableInboxCustomizations from './IterableInboxCustomizations'
 import IterableInboxMessageList from './IterableInboxMessageList'
 import IterableInboxMessageDisplay from './IterableInboxMessageDisplay'
 import IterableInboxDataModel from './IterableInboxDataModel'

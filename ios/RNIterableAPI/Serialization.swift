@@ -63,6 +63,10 @@ extension IterableConfig {
             config.logDelegate = createLogDelegate(logLevelNumber: logLevelNumber)
         }
         
+        if let useInMemoryStorageForInApp = dict["useInMemoryStorageForInApps"] as? Bool {
+            config.useInMemoryStorageForInApps = useInMemoryStorageForInApp
+        }
+        
         return config
     }
     

@@ -10,7 +10,7 @@ import {
 import {
   IterableInAppLocation,
   IterableInAppCloseSource,
-  IterableInAppDeleteSource,
+  IterableInAppDeleteSource
 } from './IterableInAppClasses'
 
 import IterableInAppManager from './IterableInAppManager'

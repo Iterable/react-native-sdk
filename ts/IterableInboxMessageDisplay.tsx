@@ -18,10 +18,15 @@ import {
    IterableHtmlInAppContent, 
    IterableEdgeInsets,
    IterableInAppLocation,
-   IterableInAppCloseSource,
+   IterableInAppCloseSource
+} from './IterableInAppClasses'
+
+import { 
    IterableAction, 
    IterableActionContext
-} from '.'
+ } from './IterableAction'
+
+import InboxRowViewModel from './InboxRowViewModel'
 
 import { IterableActionSource } from './Iterable'
 
