@@ -1,8 +1,6 @@
-export class TestHelper {
-  static delayed(delay: number, fn: () => void): Promise<any> {
-    return new Promise(res => setTimeout(() => {
-      fn()
-      res()
-    }, delay))
-  }
+export async function delayed (delay: number, fn: () => void): Promise<void> {
+  return await new Promise(resolve => setTimeout(() => {
+    fn()
+    resolve()
+  }, delay))
 }

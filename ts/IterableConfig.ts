@@ -1,9 +1,9 @@
 'use strict'
 
-import { 
-  IterableAction, 
-  IterableActionContext, 
-  IterableLogLevel,
+import {
+  IterableAction,
+  IterableActionContext,
+  IterableLogLevel
 } from '.'
 
 import { IterableInAppShowResponse } from './IterableInAppClasses'
@@ -21,14 +21,14 @@ class IterableConfig {
   /**
    * The name of the Iterable push integration that will send push notifications to your app.
    * Defaults to your app's application ID or bundle ID for iOS.
-   * 
-   * Note: Don't specify this value unless you are using an older Iterable push integration that 
+   *
+   * Note: Don't specify this value unless you are using an older Iterable push integration that
    * has a custom name. To view your existing integrations, navigate to Settings > Mobile Apps.
    */
   pushIntegrationName?: string
 
   /**
-   * When set to true (which is the default value), IterableSDK will automatically register and deregister 
+   * When set to true (which is the default value), IterableSDK will automatically register and deregister
    * notification tokens when you provide email or userId values to the SDK using Iterable.setEmail or Iterable.setUserId.
    */
   autoPushRegistration = true
@@ -40,7 +40,7 @@ class IterableConfig {
   checkForDeferredDeeplink = false
 
   /**
-   * Number of seconds to wait when displaying multiple in-app messages in sequence. 
+   * Number of seconds to wait when displaying multiple in-app messages in sequence.
    * between each. Defaults to 30 seconds.
    */
   inAppDisplayInterval: number = 30.0
@@ -59,7 +59,7 @@ class IterableConfig {
   * Implement this callback to override default in-app behavior.
   * By default, every single in-app will be shown as soon as it is available.
   * If more than 1 in-app is available, we show the first.
-  * 
+  *
   * See "In-App Messages with Iterable's React Native SDK" in support documentation
   * for more information.
   */
@@ -67,14 +67,14 @@ class IterableConfig {
 
   /**
    * A function expression that provides a valid JWT for the app's current user to Iterable's
-   * React Native SDK. Provide an implementation for this method only if your app uses a 
+   * React Native SDK. Provide an implementation for this method only if your app uses a
    * JWT-enabled API key.
    */
-  authHandler?:() => Promise<AuthResponse | String | undefined>
-  
+  authHandler?: () => Promise<AuthResponse | String | undefined>
+
   /**
-   * Set the verbosity of Android and iOS project's log system. 
-   * By default, you will be able to see info level logs printed in IDE when running the app. 
+   * Set the verbosity of Android and iOS project's log system.
+   * By default, you will be able to see info level logs printed in IDE when running the app.
   */
   logLevel: IterableLogLevel = IterableLogLevel.info
 
@@ -96,18 +96,18 @@ class IterableConfig {
    * links from Iterable, so it knows that it can safely handle them as needed. This array helps
    * prevent the SDK from opening links that use unexpected URL protocols.
    */
-  allowedProtocols: Array<string> = []
+  allowedProtocols: string[] = []
 
   /**
    * DEPRECATED - please use `useInMemoryStorageForInApps` as a replacement for this config option.
-   * 
+   *
    * NOTE: until this option is removed, it will still function with `useInMemoryStorageForInApps` by
    * doing an OR operation, so if either this or `useInMemoryStorageForInApps` are set to `true`,
    * the native Android SDK layer will use in memory storage for in-apps.
-   * 
+   *
    * This specifies the `useInMemoryStorageForInApps` config option downstream to the Android SDK layer.
    */
-   androidSdkUseInMemoryStorageForInApps: boolean = false
+  androidSdkUseInMemoryStorageForInApps: boolean = false
 
   /**
    * This specifies the `useInMemoryStorageForInApps` config option downstream to the native SDK layers.
@@ -115,28 +115,28 @@ class IterableConfig {
    */
   useInMemoryStorageForInApps: boolean = false
 
-  toDict(): any {
+  toDict (): any {
     return {
-      "pushIntegrationName": this.pushIntegrationName,
-      "autoPushRegistration": this.autoPushRegistration,
-      "inAppDisplayInterval": this.inAppDisplayInterval,
-      "urlHandlerPresent": this.urlHandler != undefined,
-      "customActionHandlerPresent": this.customActionHandler != undefined,
-      "inAppHandlerPresent": this.inAppHandler != undefined,
-      "authHandlerPresent": this.authHandler != undefined,
-      "logLevel": this.logLevel,
-      "expiringAuthTokenRefreshPeriod": this.expiringAuthTokenRefreshPeriod,
-      "allowedProtocols": this.allowedProtocols,
-      "androidSdkUseInMemoryStorageForInApps": this.androidSdkUseInMemoryStorageForInApps,
-      "useInMemoryStorageForInApps": this.useInMemoryStorageForInApps
+      pushIntegrationName: this.pushIntegrationName,
+      autoPushRegistration: this.autoPushRegistration,
+      inAppDisplayInterval: this.inAppDisplayInterval,
+      urlHandlerPresent: this.urlHandler !== undefined,
+      customActionHandlerPresent: this.customActionHandler !== undefined,
+      inAppHandlerPresent: this.inAppHandler !== undefined,
+      authHandlerPresent: this.authHandler !== undefined,
+      logLevel: this.logLevel,
+      expiringAuthTokenRefreshPeriod: this.expiringAuthTokenRefreshPeriod,
+      allowedProtocols: this.allowedProtocols,
+      androidSdkUseInMemoryStorageForInApps: this.androidSdkUseInMemoryStorageForInApps,
+      useInMemoryStorageForInApps: this.useInMemoryStorageForInApps
     }
   }
 }
 
 export class AuthResponse {
-  authToken?: string = ""
+  authToken?: string = ''
   successCallback?: AuthCallBack
   failureCallback?: AuthCallBack
-} 
+}
 
 export default IterableConfig

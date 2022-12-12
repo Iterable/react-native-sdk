@@ -7,10 +7,10 @@
 
 import { Iterable } from './Iterable'
 
-import { 
-  IterableAction, 
-  IterableActionContext, 
-  IterableLogLevel,
+import {
+  IterableAction,
+  IterableActionContext,
+  IterableLogLevel
 } from './IterableAction'
 
 import {
@@ -24,7 +24,7 @@ import {
   IterableInboxMetadata,
   IterableInAppLocation,
   IterableInAppCloseSource,
-  IterableInAppDeleteSource,
+  IterableInAppDeleteSource
 } from './IterableInAppClasses'
 
 import InboxRowViewModel from './InboxRowViewModel'
