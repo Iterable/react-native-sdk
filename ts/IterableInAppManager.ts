@@ -6,7 +6,7 @@ import {
   IterableHtmlInAppContent,
   IterableInAppLocation,
   IterableInAppDeleteSource,
-} from '.'
+} from './IterableInAppClasses'
 import { Iterable } from './Iterable'
 
 import IterableInAppMessage from './IterableInAppMessage'
