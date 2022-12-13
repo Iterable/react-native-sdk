@@ -1,8 +1,8 @@
 'use strict'
 
-type InboxImpressionRowInfo = {
-    messageId: string
-    silentInbox: boolean
+interface InboxImpressionRowInfo {
+  messageId: string
+  silentInbox: boolean
 }
 
 export default InboxImpressionRowInfo

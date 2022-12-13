@@ -5,7 +5,7 @@ import IterableUtil from './IterableUtil'
 import {
   IterableInAppTrigger,
   IterableInAppTriggerType,
-  IterableInboxMetadata,
+  IterableInboxMetadata
 } from './IterableInAppClasses'
 
 import { ViewToken } from 'react-native'
@@ -64,7 +64,7 @@ class IterableInAppMessage {
    */
   readonly priorityLevel: number
 
-  constructor(messageId: string,
+  constructor (messageId: string,
     campaignId: number,
     trigger: IterableInAppTrigger,
     createdAt: Date | undefined,
@@ -86,8 +86,8 @@ class IterableInAppMessage {
     this.priorityLevel = priorityLevel
   }
 
-  static fromViewToken(viewToken: ViewToken) {
-    var inAppMessage = viewToken.item["inAppMessage"] as IterableInAppMessage
+  static fromViewToken (viewToken: ViewToken) {
+    const inAppMessage = viewToken.item.inAppMessage as IterableInAppMessage
 
     return new IterableInAppMessage(
       inAppMessage.messageId,
@@ -103,36 +103,36 @@ class IterableInAppMessage {
     )
   }
 
-  isSilentInbox(): boolean {
+  isSilentInbox (): boolean {
     return this.saveToInbox && this.trigger.type == IterableInAppTriggerType.never
   }
 
-  static fromDict(dict: any): IterableInAppMessage {
-    const messageId = dict["messageId"] as string
-    const campaignId = dict["campaignId"] as number
-    const trigger = IterableInAppTrigger.fromDict(dict["trigger"])
-    let createdAt = dict["createdAt"]
+  static fromDict (dict: any): IterableInAppMessage {
+    const messageId = dict.messageId as string
+    const campaignId = dict.campaignId as number
+    const trigger = IterableInAppTrigger.fromDict(dict.trigger)
+    let createdAt = dict.createdAt
     if (createdAt) {
       var dateObject = new Date(0)
       createdAt = dateObject.setUTCMilliseconds(createdAt)
     }
-    let expiresAt = dict["expiresAt"]
+    let expiresAt = dict.expiresAt
     if (expiresAt) {
       var dateObject = new Date(0)
       expiresAt = dateObject.setUTCMilliseconds(expiresAt)
     }
-    let saveToInbox = IterableUtil.readBoolean(dict, "saveToInbox")
-    let inboxMetadataDict = dict["inboxMetadata"]
+    const saveToInbox = IterableUtil.readBoolean(dict, 'saveToInbox')
+    const inboxMetadataDict = dict.inboxMetadata
     let inboxMetadata: IterableInboxMetadata | undefined
     if (inboxMetadataDict) {
       inboxMetadata = IterableInboxMetadata.fromDict(inboxMetadataDict)
     } else {
       inboxMetadata = undefined
     }
-    let customPayload = dict["customPayload"]
-    let read = IterableUtil.readBoolean(dict, "read")
+    const customPayload = dict.customPayload
+    const read = IterableUtil.readBoolean(dict, 'read')
 
-    let priorityLevel = dict["priorityLevel"] as number
+    const priorityLevel = dict.priorityLevel as number
 
     return new IterableInAppMessage(
       messageId,
