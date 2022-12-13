@@ -1,6 +1,6 @@
 'use strict'
 
-import IterableInAppMessage from './IterableInAppMessage'
+import { IterableInAppMessage } from '.'
 
 interface InboxRowViewModel {
   title: string

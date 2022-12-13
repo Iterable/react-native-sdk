@@ -2,14 +2,15 @@
 
 import { NativeModules } from 'react-native'
 import {
-  InboxRowViewModel,
-  IterableInAppLocation,
-  IterableInAppDeleteSource,
-  IterableHtmlInAppContent,
-  InboxImpressionRowInfo
-} from '.'
+    IterableInAppLocation,
+    IterableInAppDeleteSource,
+    IterableHtmlInAppContent
+} from './IterableInAppClasses'
+
 import { Iterable } from './Iterable'
 
+import InboxImpressionRowInfo from './InboxImpressionRowInfo'
+import InboxRowViewModel from './InboxRowViewModel'
 import IterableInAppMessage from './IterableInAppMessage'
 
 const RNIterableAPI = NativeModules.RNIterableAPI

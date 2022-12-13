@@ -7,12 +7,10 @@ import {
   FlatList
 } from 'react-native'
 
-import {
-  InboxRowViewModel,
-  IterableInboxCustomizations,
-  InboxImpressionRowInfo,
-  IterableInboxMessageCell
-} from '.'
+import InboxImpressionRowInfo from './InboxImpressionRowInfo'
+import IterableInboxMessageCell from './IterableInboxMessageCell'
+import InboxRowViewModel from './InboxRowViewModel'
+import IterableInboxCustomizations from './IterableInboxCustomizations'
 
 import IterableInAppMessage from './IterableInAppMessage'
 import IterableInboxDataModel from './IterableInboxDataModel'

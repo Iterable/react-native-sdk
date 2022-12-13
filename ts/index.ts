@@ -6,6 +6,7 @@
 */
 
 import { Iterable } from './Iterable'
+import IterableInAppManager from './IterableInAppManager'
 
 import {
   IterableAction,
@@ -32,6 +33,8 @@ import IterableInboxCustomizations from './IterableInboxCustomizations'
 import IterableInboxEmptyState from './IterableInboxEmptyState'
 import IterableInboxMessageCell from './IterableInboxMessageCell'
 
+import IterableInAppMessage from './IterableInAppMessage'
+
 import useAppStateListener from './useAppStateListener'
 import useDeviceOrientation from './useDeviceOrientation'
 import InboxImpressionRowInfo from './InboxImpressionRowInfo'
@@ -41,6 +44,7 @@ import IterableConfig from './IterableConfig'
 export {
   Iterable,
   IterableConfig,
+  IterableInAppManager,
   IterableAction,
   IterableActionContext,
   IterableLogLevel,
@@ -52,6 +56,7 @@ export {
   IterableHtmlInAppContent,
   IterableInboxMetadata,
   IterableInAppLocation,
+  IterableInAppMessage,
   IterableInAppCloseSource,
   IterableInAppDeleteSource,
   IterableInboxEmptyState,
