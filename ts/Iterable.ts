@@ -709,8 +709,10 @@ class Iterable {
             if (canOpen) { void Linking.openURL(url) }
           })
 
-          // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-          .catch(reason => { Iterable.logger.log('could not open url: ' + reason) })
+          .catch(reason => {
+            const reasonStr: string = reason
+            Iterable.logger.log('could not open url: ' + reasonStr)
+          })
       }
     }
   }

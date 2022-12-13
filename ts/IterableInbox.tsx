@@ -20,6 +20,7 @@ import {
   IterableInAppDeleteSource,
   IterableInAppLocation,
   IterableInboxEmptyState,
+  IterableHtmlInAppContent,
   InboxImpressionRowInfo
 } from '.'
 
@@ -48,12 +49,12 @@ interface inboxProps {
 const IterableInbox = ({
   returnToInboxTrigger = true,
   messageListItemLayout = () => { return null },
-  customizations = {} as IterableInboxCustomizations,
+  customizations: IterableInboxCustomizations = {},
   tabBarHeight = 80,
   tabBarPadding = 20,
   safeAreaMode = true,
   showNavTitle = true
-}: inboxProps) => {
+}: inboxProps): any => {
   const defaultInboxTitle = 'Inbox'
   const inboxDataModel = new IterableInboxDataModel()
 
@@ -116,17 +117,17 @@ const IterableInbox = ({
 
   const navTitleHeight = headline.height + headline.paddingTop + headline.paddingBottom
   headline = { ...headline, height: Platform.OS === 'android' ? 70 : 60 }
-  headline = (!isPortrait) ? { ...headline, paddingLeft: 70 } : headline
+  headline = (isPortrait != null) ? { ...headline, paddingLeft: 70 } : headline
 
   // fetches inbox messages and adds listener for inbox changes on mount
   useEffect(() => {
-    fetchInboxMessages()
+    void fetchInboxMessages()
     addInboxChangedListener()
 
     // removes listener for inbox changes on unmount and ends inbox session
     return () => {
       removeInboxChangedListener()
-      inboxDataModel.endSession(visibleMessageImpressions)
+      void inboxDataModel.endSession(visibleMessageImpressions)
     }
   }, [])
 
@@ -136,8 +137,8 @@ const IterableInbox = ({
     if (isFocused) {
       if (appState === 'active') {
         inboxDataModel.startSession(visibleMessageImpressions)
-      } else if (appState === 'background' && Platform.OS === 'android' || appState === 'inactive') {
-        inboxDataModel.endSession(visibleMessageImpressions)
+      } else if ((appState === 'background' && Platform.OS === 'android') || appState === 'inactive') {
+        void inboxDataModel.endSession(visibleMessageImpressions)
       }
     }
   }, [appState])
@@ -149,7 +150,7 @@ const IterableInbox = ({
       if (isFocused) {
         inboxDataModel.startSession(visibleMessageImpressions)
       } else {
-        inboxDataModel.endSession(visibleMessageImpressions)
+        void inboxDataModel.endSession(visibleMessageImpressions)
       }
     }
   }, [isFocused])
@@ -166,20 +167,20 @@ const IterableInbox = ({
     }
   }, [returnToInboxTrigger])
 
-  function addInboxChangedListener () {
+  function addInboxChangedListener (): void {
     RNEventEmitter.addListener(
       'receivedIterableInboxChanged',
       () => {
-        fetchInboxMessages()
+        void fetchInboxMessages()
       }
     )
   }
 
-  function removeInboxChangedListener () {
+  function removeInboxChangedListener (): void {
     RNEventEmitter.removeAllListeners('receivedIterableInboxChanged')
   }
 
-  async function fetchInboxMessages () {
+  async function fetchInboxMessages (): Promise<void> {
     let newMessages = await inboxDataModel.refresh()
 
     newMessages = newMessages.map((message, index) => {
@@ -190,11 +191,11 @@ const IterableInbox = ({
     setLoading(false)
   }
 
-  async function getHtmlContentForRow (id: string) {
+  async function getHtmlContentForRow (id: string): Promise<IterableHtmlInAppContent> {
     return await inboxDataModel.getHtmlContentForMessageId(id)
   }
 
-  function handleMessageSelect (id: string, index: number, rowViewModels: InboxRowViewModel[]) {
+  function handleMessageSelect (id: string, index: number, rowViewModels: InboxRowViewModel[]): void {
     const newRowViewModels = rowViewModels.map((rowViewModel) => {
       return (rowViewModel.inAppMessage.messageId === id)
         ? { ...rowViewModel, read: true }
@@ -209,12 +210,12 @@ const IterableInbox = ({
     slideLeft()
   }
 
-  function deleteRow (messageId: string) {
+  function deleteRow (messageId: string): void {
     inboxDataModel.deleteItemById(messageId, IterableInAppDeleteSource.inboxSwipe)
-    fetchInboxMessages()
+    void fetchInboxMessages()
   }
 
-  function returnToInbox (callback?: Function) {
+  function returnToInbox (callback?: Function): void {
     Animated.timing(animatedValue, {
       toValue: 0,
       duration: 300,
@@ -223,15 +224,15 @@ const IterableInbox = ({
     setIsMessageDisplay(false)
   }
 
-  function updateVisibleMessageImpressions (messageImpressions: InboxImpressionRowInfo[]) {
+  function updateVisibleMessageImpressions (messageImpressions: InboxImpressionRowInfo[]): void {
     setVisibleMessageImpressions(messageImpressions)
   }
 
-  function showMessageDisplay (rowViewModelList: InboxRowViewModel[], index: number) {
+  function showMessageDisplay (rowViewModelList: InboxRowViewModel[], index: number): any {
     const selectedRowViewModel = rowViewModelList[index]
 
     return (
-      selectedRowViewModel
+      (selectedRowViewModel != null)
         ? <IterableInboxMessageDisplay
                rowViewModel={selectedRowViewModel}
                inAppContentPromise={getHtmlContentForRow(selectedRowViewModel.inAppMessage.messageId)}
@@ -244,12 +245,12 @@ const IterableInbox = ({
     )
   }
 
-  function showMessageList (loading: boolean) {
+  function showMessageList (loading: boolean): any {
     return (
          <View style={messageListContainer}>
             {showNavTitle
               ? <Text style={headline}>
-                  {customizations?.navTitle ? customizations?.navTitle : defaultInboxTitle}
+                  {(customizations?.navTitle != null) ? customizations?.navTitle : defaultInboxTitle}
                </Text>
               : null}
             {(rowViewModels.length > 0)
@@ -264,12 +265,12 @@ const IterableInbox = ({
                   contentWidth={width}
                   isPortrait={isPortrait}
                />
-              : renderEmptyState()
+              : renderEmptyState(customizations)
             }
          </View>)
   }
 
-  function renderEmptyState () {
+  function renderEmptyState (customizations: IterableInboxCustomizations): any {
     return loading
       ? <View style={loadingScreen} />
       : <IterableInboxEmptyState
@@ -283,7 +284,7 @@ const IterableInbox = ({
          />
   }
 
-  function slideLeft () {
+  function slideLeft (): void {
     Animated.timing(animatedValue, {
       toValue: 1,
       duration: 300,

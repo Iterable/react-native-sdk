@@ -18,6 +18,9 @@ module.exports = {
     'react',
     'react-native'
   ],
+  rules: {
+    'react-hooks/exhaustive-deps': 'off'
+  },
   settings: {
     react: {
       version: 'detect'
