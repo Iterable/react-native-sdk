@@ -5,7 +5,7 @@ import { readBoolean } from './IterableUtil'
 import {
   IterableInAppTrigger,
   IterableInAppTriggerType,
-  IterableInboxMetadata,
+  IterableInboxMetadata
 } from './IterableInAppClasses'
 
 import { ViewToken } from 'react-native'

@@ -12,23 +12,21 @@ import {
 import { WebView } from 'react-native-webview'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-import { 
-   Iterable,
-   InboxRowViewModel, 
-   IterableHtmlInAppContent, 
-   IterableEdgeInsets,
-   IterableInAppLocation,
-   IterableInAppCloseSource
+import {
+  IterableHtmlInAppContent,
+  IterableEdgeInsets,
+  IterableInAppLocation,
+  IterableInAppCloseSource
 } from './IterableInAppClasses'
 
-import { 
-   IterableAction, 
-   IterableActionContext
- } from './IterableAction'
+import {
+  IterableAction,
+  IterableActionContext
+} from './IterableAction'
 
 import InboxRowViewModel from './InboxRowViewModel'
 
-import { IterableActionSource } from './Iterable'
+import { Iterable, IterableActionSource } from './Iterable'
 
 interface MessageDisplayProps {
   rowViewModel: InboxRowViewModel

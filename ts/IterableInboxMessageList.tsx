@@ -87,20 +87,19 @@ const IterableInboxMessageList = ({
 
       updateVisibleMessageImpressions(rowInfos)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     , [])
 
   return (
-      <FlatList
-         ref={flatListRef}
-         scrollEnabled={!swiping}
-         data={rowViewModels}
-         renderItem={({ item, index }: { item: InboxRowViewModel, index: number }) => renderRowViewModel(item, index, index === rowViewModels.length - 1)}
-         keyExtractor={(item: InboxRowViewModel) => item.inAppMessage.messageId}
-         viewabilityConfig={inboxSessionViewabilityConfig}
-         onViewableItemsChanged={inboxSessionItemsChanged}
-         onLayout={() => { flatListRef.current?.recordInteraction() }}
-      />
+    <FlatList
+      ref={flatListRef}
+      scrollEnabled={!swiping}
+      data={rowViewModels}
+      renderItem={({ item, index }: { item: InboxRowViewModel, index: number }) => renderRowViewModel(item, index, index === rowViewModels.length - 1)}
+      keyExtractor={(item: InboxRowViewModel) => item.inAppMessage.messageId}
+      viewabilityConfig={inboxSessionViewabilityConfig}
+      onViewableItemsChanged={inboxSessionItemsChanged}
+      onLayout={() => { flatListRef.current?.recordInteraction() }}
+    />
   )
 }
 

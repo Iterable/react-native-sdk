@@ -1,8 +1,8 @@
 'use strict'
 
-import { 
-  IterableAction, 
-  IterableActionContext, 
+import {
+  IterableAction,
+  IterableActionContext,
   IterableLogLevel
 } from './IterableAction'
 

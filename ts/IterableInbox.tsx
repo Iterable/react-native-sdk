@@ -14,8 +14,8 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import {
-   IterableInAppDeleteSource,
-   IterableInAppLocation
+  IterableInAppDeleteSource,
+  IterableInAppLocation
 } from './IterableInAppClasses'
 
 import { Iterable } from './Iterable'
