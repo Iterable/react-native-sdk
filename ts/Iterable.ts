@@ -705,10 +705,7 @@ class Iterable {
           .then(canOpen => {
             if (canOpen) { Linking.openURL(url) }
           })
-          .catch(reason => {
-            const string: string = reason.toString()
-            Iterable.logger.log(`could not open url: ${string}`)
-          })
+          .catch(reason => { Iterable.logger.log('could not open url: ' + reason) })
       }
     }
   }
