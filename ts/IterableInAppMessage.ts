@@ -1,6 +1,6 @@
 'use strict'
 
-import IterableUtil from './IterableUtil'
+import readBoolean from './IterableUtil'
 
 import {
   IterableInAppTrigger,
@@ -112,25 +112,25 @@ class IterableInAppMessage {
     const campaignId = dict.campaignId as number
     const trigger = IterableInAppTrigger.fromDict(dict.trigger)
     let createdAt = dict.createdAt
-    if (createdAt) {
+    if (createdAt != null) {
       var dateObject = new Date(0)
       createdAt = dateObject.setUTCMilliseconds(createdAt)
     }
     let expiresAt = dict.expiresAt
-    if (expiresAt) {
+    if (expiresAt != null) {
       var dateObject = new Date(0)
       expiresAt = dateObject.setUTCMilliseconds(expiresAt)
     }
-    const saveToInbox = IterableUtil.readBoolean(dict, 'saveToInbox')
+    const saveToInbox = readBoolean(dict, 'saveToInbox')
     const inboxMetadataDict = dict.inboxMetadata
     let inboxMetadata: IterableInboxMetadata | undefined
-    if (inboxMetadataDict) {
+    if (inboxMetadataDict != null) {
       inboxMetadata = IterableInboxMetadata.fromDict(inboxMetadataDict)
     } else {
       inboxMetadata = undefined
     }
     const customPayload = dict.customPayload
-    const read = IterableUtil.readBoolean(dict, 'read')
+    const read = readBoolean(dict, 'read')
 
     const priorityLevel = dict.priorityLevel as number
 

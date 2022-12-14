@@ -48,10 +48,10 @@ const IterableInboxEmptyState = ({
   return (
       <View style={container}>
          <Text style={title}>
-            {emptyStateTitle || defaultTitle}
+            {(emptyStateTitle != null) || defaultTitle}
          </Text>
          <Text style={body}>
-            {emptyStateBody || defaultBody}
+            {(emptyStateBody != null) || defaultBody}
          </Text>
       </View>
   )

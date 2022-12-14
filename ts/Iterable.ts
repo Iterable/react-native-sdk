@@ -128,6 +128,7 @@ enum EventName {
   handleAuthFailureCalled = 'handleAuthFailureCalled'
 }
 
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 class Iterable {
   static inAppManager = new IterableInAppManager()
 

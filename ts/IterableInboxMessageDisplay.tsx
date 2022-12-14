@@ -191,37 +191,36 @@ const IterableInboxMessageDisplay = ({
   }
 
   return (
-      <View style={messageDisplayContainer}>
-         <View style={header}>
-            <View style={returnButtonContainer}>
-               <TouchableWithoutFeedback
-                  onPress={() => {
-                    returnToInbox()
-                    Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.back)
-                  }}
-               >
-                  <View style={returnButton}>
-                     <Icon name="ios-chevron-back" style={returnButtonIcon} />
-                     <Text style={returnButtonText}>Inbox</Text>
-                  </View>
-               </TouchableWithoutFeedback>
+    <View style={messageDisplayContainer}>
+      <View style={header}>
+        <View style={returnButtonContainer}>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              returnToInbox()
+              Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.back)
+            }}>
+            <View style={returnButton}>
+              <Icon name="ios-chevron-back" style={returnButtonIcon} />
+              <Text style={returnButtonText}>Inbox</Text>
             </View>
-            <View style={messageTitleContainer}>
-               <View style={styles.messageTitle}>
-                  <Text numberOfLines={1} ellipsizeMode='tail' style={messageTitleText}>{messageTitle}</Text>
-               </View>
-            </View>
-         </View>
-         <ScrollView contentContainerStyle={styles.contentContainer}>
-            <WebView
-               originWhiteList={['*']}
-               source={{ html: inAppContent.html }}
-               style={{ width: contentWidth }}
-               onMessage={(event) => handleInAppLinkAction(event)}
-               injectedJavaScript={JS}
-            />
-         </ScrollView>
+          </TouchableWithoutFeedback>
+        </View>
+        <View style={messageTitleContainer}>
+          <View style={styles.messageTitle}>
+            <Text numberOfLines={1} ellipsizeMode='tail' style={messageTitleText}>{messageTitle}</Text>
+          </View>
+        </View>
       </View>
+      <ScrollView contentContainerStyle={styles.contentContainer}>
+        <WebView
+          originWhiteList={['*']}
+          source={{ html: inAppContent.html }}
+          style={{ width: contentWidth }}
+          onMessage={(event) => handleInAppLinkAction(event)}
+          injectedJavaScript={JS}
+        />
+      </ScrollView>
+    </View>
   )
 }
 

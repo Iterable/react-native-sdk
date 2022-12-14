@@ -20,10 +20,6 @@ class IterableInboxDataModel {
   comparatorFn?: (message1: IterableInAppMessage, message2: IterableInAppMessage) => number
   dateMapperFn?: (message: IterableInAppMessage) => string | undefined
 
-  constructor () {
-
-  }
-
   set (filter?: (message: IterableInAppMessage) => boolean,
     comparator?: (message1: IterableInAppMessage, message2: IterableInAppMessage) => number,
     dateMapper?: (message: IterableInAppMessage) => string | undefined): void {
@@ -129,11 +125,11 @@ class IterableInboxDataModel {
   private sortAndFilter (messages: IterableInAppMessage[]): IterableInAppMessage[] {
     let sortedFilteredMessages = messages.slice()
 
-    if (this.filterFn != undefined) {
+    if (this.filterFn !== undefined) {
       sortedFilteredMessages = sortedFilteredMessages.filter(this.filterFn)
     }
 
-    if (this.comparatorFn != undefined) {
+    if (this.comparatorFn !== undefined) {
       sortedFilteredMessages.sort(this.comparatorFn)
     } else {
       sortedFilteredMessages.sort(IterableInboxDataModel.sortByMostRecent)

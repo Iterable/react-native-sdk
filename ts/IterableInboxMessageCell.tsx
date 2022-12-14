@@ -126,7 +126,7 @@ function defaultMessageListLayout (
             {rowViewModel.read ? null : <View style={unreadIndicator} />}
          </View>
          <View style={(rowViewModel.read ? readMessageThumbnailContainer : unreadMessageThumbnailContainer) as ViewStyle}>
-            {thumbnailURL ? <Image style={{ height: 80, width: 80 }} source={{ uri: thumbnailURL }} /> : null}
+            {(thumbnailURL != null) ? <Image style={{ height: 80, width: 80 }} source={{ uri: thumbnailURL }} /> : null}
          </View>
          <View style={messageContainer as ViewStyle}>
             <Text numberOfLines={1} ellipsizeMode='tail' style={title}>{messageTitle as TextStyle}</Text>
@@ -166,9 +166,9 @@ const IterableInboxMessageCell = ({
 }: MessageCellProps): any => {
   const position = useRef(new Animated.ValueXY()).current
 
-  let deleteSliderHeight = customizations.messageRow?.height ? customizations.messageRow.height : 150
+  let deleteSliderHeight = (customizations.messageRow?.height != null) ? customizations.messageRow.height : 150
 
-  if (messageListItemLayout(last, rowViewModel)) {
+  if (messageListItemLayout(last, rowViewModel) != null) {
     deleteSliderHeight = messageListItemLayout(last, rowViewModel)[1]
   }
 
@@ -284,7 +284,7 @@ const IterableInboxMessageCell = ({
                  handleMessageSelect(rowViewModel.inAppMessage.messageId, index)
                }}
             >
-               {messageListItemLayout(last, rowViewModel)
+               {(messageListItemLayout(last, rowViewModel) != null)
                  ? messageListItemLayout(last, rowViewModel)[0]
                  : defaultMessageListLayout(last, dataModel, rowViewModel, customizations, isPortrait)}
             </TouchableOpacity>

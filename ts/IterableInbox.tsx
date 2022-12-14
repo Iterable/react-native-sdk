@@ -117,7 +117,7 @@ const IterableInbox = ({
 
   const navTitleHeight = headline.height + headline.paddingTop + headline.paddingBottom
   headline = { ...headline, height: Platform.OS === 'android' ? 70 : 60 }
-  headline = (!isPortrait) ? { ...headline, paddingLeft: 70 } : headline
+  headline = (isPortrait != null) ? { ...headline, paddingLeft: 70 } : headline
 
   // fetches inbox messages and adds listener for inbox changes on mount
   useEffect(() => {
@@ -232,7 +232,7 @@ const IterableInbox = ({
     const selectedRowViewModel = rowViewModelList[index]
 
     return (
-      selectedRowViewModel
+      (selectedRowViewModel != null)
         ? <IterableInboxMessageDisplay
                rowViewModel={selectedRowViewModel}
                inAppContentPromise={getHtmlContentForRow(selectedRowViewModel.inAppMessage.messageId)}
@@ -250,7 +250,7 @@ const IterableInbox = ({
          <View style={messageListContainer}>
             {showNavTitle
               ? <Text style={headline}>
-                  {customizations?.navTitle ? customizations?.navTitle : defaultInboxTitle}
+                  {(customizations?.navTitle != null) ? customizations?.navTitle : defaultInboxTitle}
                </Text>
               : null}
             {(rowViewModels.length > 0)
