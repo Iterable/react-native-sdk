@@ -1,6 +1,6 @@
 'use strict'
 
-import readBoolean from './IterableUtil'
+import { readBoolean } from './IterableUtil'
 
 import {
   IterableInAppTrigger,
@@ -104,7 +104,7 @@ class IterableInAppMessage {
   }
 
   isSilentInbox (): boolean {
-    return this.saveToInbox && this.trigger.type == IterableInAppTriggerType.never
+    return this.saveToInbox && this.trigger.type === IterableInAppTriggerType.never
   }
 
   static fromDict (dict: any): IterableInAppMessage {
@@ -113,12 +113,12 @@ class IterableInAppMessage {
     const trigger = IterableInAppTrigger.fromDict(dict.trigger)
     let createdAt = dict.createdAt
     if (createdAt != null) {
-      var dateObject = new Date(0)
+      const dateObject = new Date(0)
       createdAt = dateObject.setUTCMilliseconds(createdAt)
     }
     let expiresAt = dict.expiresAt
     if (expiresAt != null) {
-      var dateObject = new Date(0)
+      const dateObject = new Date(0)
       expiresAt = dateObject.setUTCMilliseconds(expiresAt)
     }
     const saveToInbox = readBoolean(dict, 'saveToInbox')
