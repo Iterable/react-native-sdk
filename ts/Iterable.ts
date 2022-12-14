@@ -337,7 +337,7 @@ class Iterable {
     Iterable.logger.log('getAttributionInfo')
 
     return RNIterableAPI.getAttributionInfo().then((dict: any | undefined) => {
-      if (dict) {
+      if (dict != null) {
         return new IterableAttributionInfo(dict.campaignId as number, dict.templateId as number, dict.messageId as string)
       } else {
         return undefined
@@ -703,7 +703,7 @@ class Iterable {
       if (Iterable.savedConfig.urlHandler?.(url, context) != null) {
         Linking.canOpenURL(url)
           .then(canOpen => {
-            if (canOpen) { Linking.openURL(url) }
+            if (canOpen) { void Linking.openURL(url) }
           })
           .catch(reason => { Iterable.logger.log('could not open url: ' + reason) })
       }
