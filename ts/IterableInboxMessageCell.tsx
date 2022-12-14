@@ -24,7 +24,7 @@ function defaultMessageListLayout (
   rowViewModel: InboxRowViewModel,
   customizations: IterableInboxCustomizations,
   isPortrait: boolean
-) {
+): any {
   const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title ?? ''
   const messageBody = rowViewModel.inAppMessage.inboxMetadata?.subtitle ?? ''
   const messageCreatedAt = dataModel.getFormattedDate(rowViewModel.inAppMessage) ?? ''
@@ -116,7 +116,7 @@ function defaultMessageListLayout (
   readMessageThumbnailContainer = (!isPortrait) ? { ...readMessageThumbnailContainer, paddingLeft: 65 } : readMessageThumbnailContainer
   messageContainer = (!isPortrait) ? { ...messageContainer, width: '90%' } : messageContainer
 
-  function messageRowStyle (rowViewModel: InboxRowViewModel) {
+  function messageRowStyle (rowViewModel: InboxRowViewModel): any {
     return last ? { ...messageRow, borderBottomWidth: 1 } : messageRow
   }
 
@@ -163,7 +163,7 @@ const IterableInboxMessageCell = ({
   handleMessageSelect,
   contentWidth,
   isPortrait
-}: MessageCellProps) => {
+}: MessageCellProps): any => {
   const position = useRef(new Animated.ValueXY()).current
 
   let deleteSliderHeight = customizations.messageRow?.height ? customizations.messageRow.height : 150
@@ -205,7 +205,7 @@ const IterableInboxMessageCell = ({
   const FORCING_DURATION = 350
 
   // If user swipes, either complete swipe or reset
-  function userSwipedLeft (gesture: any) {
+  function userSwipedLeft (gesture: any): void {
     if (gesture.dx < -0.6 * contentWidth) {
       completeSwipe()
     } else {
@@ -213,7 +213,7 @@ const IterableInboxMessageCell = ({
     }
   }
 
-  function completeSwipe () {
+  function completeSwipe (): void {
     const x = -2000
     Animated.timing(position, {
       toValue: { x, y: 0 },
@@ -222,7 +222,7 @@ const IterableInboxMessageCell = ({
     }).start(() => deleteRow(rowViewModel.inAppMessage.messageId))
   }
 
-  function resetPosition () {
+  function resetPosition (): void {
     Animated.timing(position, {
       toValue: { x: 0, y: 0 },
       duration: 200,

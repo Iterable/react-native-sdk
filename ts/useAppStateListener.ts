@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { AppState } from 'react-native'
 
-function useAppStateListener () {
+function useAppStateListener (): string {
   const appStateEventName = 'change'
   const appState = useRef(AppState.currentState)
   const [appStateVisibility, setAppStateVisibility] = useState(appState.current)

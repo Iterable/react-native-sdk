@@ -37,26 +37,26 @@ const IterableInboxMessageList = ({
   updateVisibleMessageImpressions,
   contentWidth,
   isPortrait
-}: MessageListProps) => {
+}: MessageListProps): any => {
   const [swiping, setSwiping] = useState<boolean>(false)
   const flatListRef = useRef<FlatList>(null)
 
-  function renderRowViewModel (rowViewModel: InboxRowViewModel, index: number, last: boolean) {
+  function renderRowViewModel (rowViewModel: InboxRowViewModel, index: number, last: boolean): any {
     return (
-         <IterableInboxMessageCell
-            key={rowViewModel.inAppMessage.messageId}
-            index={index}
-            last={last}
-            dataModel={dataModel}
-            rowViewModel={rowViewModel}
-            customizations={customizations}
-            swipingCheck={(swiping: boolean) => setSwiping(swiping)}
-            messageListItemLayout={messageListItemLayout}
-            deleteRow={(messageId: string) => deleteRow(messageId)}
-            handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index)}
-            contentWidth={contentWidth}
-            isPortrait={isPortrait}
-         />
+      <IterableInboxMessageCell
+        key={rowViewModel.inAppMessage.messageId}
+        index={index}
+        last={last}
+        dataModel={dataModel}
+        rowViewModel={rowViewModel}
+        customizations={customizations}
+        swipingCheck={(swiping: boolean) => setSwiping(swiping)}
+        messageListItemLayout={messageListItemLayout}
+        deleteRow={(messageId: string) => deleteRow(messageId)}
+        handleMessageSelect={(messageId: string, index: number) => handleMessageSelect(messageId, index)}
+        contentWidth={contentWidth}
+        isPortrait={isPortrait}
+      />
     )
   }
 

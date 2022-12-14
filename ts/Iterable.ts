@@ -213,7 +213,7 @@ class Iterable {
    * @param {string | undefined} authToken valid, pre-fecthed JWT the SDK can use to authenticate API requests, optional - if null/undefined, no JWT related action will be taken
    */
 
-  static setEmail (email: string | undefined, authToken?: string | undefined) {
+  static setEmail (email: string | undefined, authToken?: string | undefined): void {
     Iterable.logger.log('setEmail: ' + email)
 
     RNIterableAPI.setEmail(email, authToken)
@@ -266,7 +266,7 @@ class Iterable {
    * optional parameter: @param {string | undefined} authToken valid, pre-fecthed JWT the SDK can use to authenticate API requests, optional - if null/undefined, no JWT related action will be taken
    */
 
-  static setUserId (userId: string | undefined, authToken?: string | undefined) {
+  static setUserId (userId: string | undefined, authToken?: string | undefined): void {
     Iterable.logger.log('setUserId: ' + userId)
 
     RNIterableAPI.setUserId(userId, authToken)
@@ -291,7 +291,7 @@ class Iterable {
    * parameters: none
    */
 
-  static disableDeviceForCurrentUser () {
+  static disableDeviceForCurrentUser (): void {
     Iterable.logger.log('disableDeviceForCurrentUser')
 
     RNIterableAPI.disableDeviceForCurrentUser()
@@ -348,7 +348,7 @@ class Iterable {
    * @param {attributionInfo} IterableAttributionInfo object storing current attribution info
    */
 
-  static setAttributionInfo (attributionInfo?: IterableAttributionInfo) {
+  static setAttributionInfo (attributionInfo?: IterableAttributionInfo): void {
     Iterable.logger.log('setAttributionInfo')
 
     RNIterableAPI.setAttributionInfo(attributionInfo)
@@ -371,7 +371,7 @@ class Iterable {
     messageId: string | undefined,
     appAlreadyRunning: boolean,
     dataFields: any | undefined
-  ) {
+  ): void {
     Iterable.logger.log('trackPushOpenWithCampaignId')
 
     RNIterableAPI.trackPushOpenWithCampaignId(campaignId, templateId, messageId, appAlreadyRunning, dataFields)
@@ -385,7 +385,7 @@ class Iterable {
    * @param {Array<IterableCommerceItem>} items the items added to the shopping cart
    */
 
-  static updateCart (items: IterableCommerceItem[]) {
+  static updateCart (items: IterableCommerceItem[]): void {
     Iterable.logger.log('updateCart')
 
     RNIterableAPI.updateCart(items)
@@ -397,7 +397,7 @@ class Iterable {
    * parameters: none
    */
 
-  static wakeApp () {
+  static wakeApp (): void {
     if (Platform.OS === 'android') {
       Iterable.logger.log('Attempting to wake the app')
 
@@ -417,7 +417,7 @@ class Iterable {
    * @param {any | undefined} dataFields descriptive data to store on the purchase event
    */
 
-  static trackPurchase (total: number, items: IterableCommerceItem[], dataFields: any | undefined) {
+  static trackPurchase (total: number, items: IterableCommerceItem[], dataFields: any | undefined): void {
     Iterable.logger.log('trackPurchase')
 
     RNIterableAPI.trackPurchase(total, items, dataFields)
@@ -432,7 +432,7 @@ class Iterable {
    * @param {IterableInAppLocation} location the location of the in-app message (an IterableInAppLocation enum)
    */
 
-  static trackInAppOpen (message: IterableInAppMessage, location: IterableInAppLocation) {
+  static trackInAppOpen (message: IterableInAppMessage, location: IterableInAppLocation): void {
     Iterable.logger.log('trackInAppOpen')
 
     RNIterableAPI.trackInAppOpen(message.messageId, location)
@@ -449,7 +449,7 @@ class Iterable {
    * @param {string} clickedUrl the URL clicked by the user
    */
 
-  static trackInAppClick (message: IterableInAppMessage, location: IterableInAppLocation, clickedUrl: string) {
+  static trackInAppClick (message: IterableInAppMessage, location: IterableInAppLocation, clickedUrl: string): void {
     Iterable.logger.log('trackInAppClick')
 
     RNIterableAPI.trackInAppClick(message.messageId, location, clickedUrl)
@@ -466,7 +466,7 @@ class Iterable {
    * @param {string} clickedUrl the URL clicked by the user
    */
 
-  static trackInAppClose (message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppCloseSource, clickedUrl?: string | undefined) {
+  static trackInAppClose (message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppCloseSource, clickedUrl?: string | undefined): void {
     Iterable.logger.log('trackInAppClose')
 
     RNIterableAPI.trackInAppClose(message.messageId, location, source, clickedUrl)
@@ -483,7 +483,7 @@ class Iterable {
    * @param {IterableInAppDeleteSource} source how the in-app message was deleted (an IterableInAppDeleteSource enum)
    */
 
-  static inAppConsume (message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppDeleteSource) {
+  static inAppConsume (message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppDeleteSource): void {
     Iterable.logger.log('inAppConsume')
 
     RNIterableAPI.inAppConsume(message.messageId, location, source)
@@ -497,7 +497,7 @@ class Iterable {
    * @param {string} name the eventName of the custom event
    * @param {any | undefined} dataFields descriptive data to store on the custom event
    */
-  static trackEvent (name: string, dataFields: any | undefined) {
+  static trackEvent (name: string, dataFields: any | undefined): void {
     Iterable.logger.log('trackEvent')
 
     RNIterableAPI.trackEvent(name, dataFields)
@@ -517,7 +517,7 @@ class Iterable {
   * @param {any} dataFields data fields to store in user profile
   * @param {boolean} mergeNestedObjects flag indicating whether to merge top-level objects
   */
-  static updateUser (dataFields: any, mergeNestedObjects: boolean) {
+  static updateUser (dataFields: any, mergeNestedObjects: boolean): void {
     Iterable.logger.log('updateUser')
 
     RNIterableAPI.updateUser(dataFields, mergeNestedObjects)
@@ -536,7 +536,7 @@ class Iterable {
    * @param authToken the new auth token (JWT) to set with the new email, optional - if null/undefined, no JWT-related action will be taken
    */
 
-  static updateEmail (email: string, authToken?: string | undefined) {
+  static updateEmail (email: string, authToken?: string | undefined): void {
     Iterable.logger.log('updateEmail')
 
     RNIterableAPI.updateEmail(email, authToken)
@@ -577,7 +577,7 @@ class Iterable {
     unsubscribedMessageTypeIds: number[] | undefined,
     subscribedMessageTypeIds: number[] | undefined,
     campaignId: number,
-    templateId: number) {
+    templateId: number): void {
     Iterable.logger.log('updateSubscriptions')
 
     RNIterableAPI.updateSubscriptions(
@@ -591,7 +591,7 @@ class Iterable {
   }
 
   // PRIVATE
-  private static setupEventHandlers () {
+  private static setupEventHandlers (): void {
     // Remove all listeners to avoid duplicate listeners
     RNEventEmitter.removeAllListeners(EventName.handleUrlCalled)
     RNEventEmitter.removeAllListeners(EventName.handleInAppCalled)
@@ -690,7 +690,7 @@ class Iterable {
       )
     }
 
-    function callUrlHandler (url: any, context: IterableActionContext) {
+    function callUrlHandler (url: any, context: IterableActionContext): void {
       if (!Iterable.savedConfig.urlHandler!(url, context)) {
         Linking.canOpenURL(url)
           .then(canOpen => {

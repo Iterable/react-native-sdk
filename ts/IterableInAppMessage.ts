@@ -86,7 +86,7 @@ class IterableInAppMessage {
     this.priorityLevel = priorityLevel
   }
 
-  static fromViewToken (viewToken: ViewToken) {
+  static fromViewToken (viewToken: ViewToken): IterableInAppMessage {
     const inAppMessage = viewToken.item.inAppMessage as IterableInAppMessage
 
     return new IterableInAppMessage(

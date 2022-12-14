@@ -84,7 +84,7 @@ class IterableInAppManager {
    * @param {IterableInAppMessage} message the in-app message (an IterableInAppMessage object)
    * @param {boolean} read the boolean value indicating whether the in-app message was read
    */
-  setReadForMessage (message: IterableInAppMessage, read: boolean) {
+  setReadForMessage (message: IterableInAppMessage, read: boolean): void {
     Iterable.logger.log('InAppManager.setRead')
 
     RNIterableAPI.setReadForMessage(message.messageId, read)
@@ -110,7 +110,7 @@ class IterableInAppManager {
    *
    * @param {boolean} paused whether the automatic displaying should be paused
    */
-  setAutoDisplayPaused (paused: boolean) {
+  setAutoDisplayPaused (paused: boolean): void {
     Iterable.logger.log('InAppManager.setAutoDisplayPaused')
 
     RNIterableAPI.setAutoDisplayPaused(paused)

@@ -26,7 +26,7 @@ const IterableInboxEmptyState = ({
   navTitleHeight,
   height,
   isPortrait
-}: emptyStateProps) => {
+}: emptyStateProps): any => {
   const defaultTitle = 'No saved messages'
   const defaultBody = 'Check again later!'
 

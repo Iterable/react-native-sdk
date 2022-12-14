@@ -13,8 +13,6 @@ import { WebView } from 'react-native-webview'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 import {
-  Iterable,
-  InboxRowViewModel,
   IterableHtmlInAppContent,
   IterableEdgeInsets,
   IterableInAppLocation,
@@ -28,7 +26,7 @@ import {
 
 import InboxRowViewModel from './InboxRowViewModel'
 
-import { IterableActionSource } from './Iterable'
+import { Iterable, IterableActionSource } from './Iterable'
 
 interface MessageDisplayProps {
   rowViewModel: InboxRowViewModel
@@ -46,7 +44,7 @@ const IterableInboxMessageDisplay = ({
   deleteRow,
   contentWidth,
   isPortrait
-}: MessageDisplayProps) => {
+}: MessageDisplayProps): any => {
   const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title
   const [inAppContent, setInAppContent] = useState<IterableHtmlInAppContent>(new IterableHtmlInAppContent(new IterableEdgeInsets(0, 0, 0, 0), ''))
 
@@ -155,7 +153,7 @@ const IterableInboxMessageDisplay = ({
     return () => { mounted = false }
   })
 
-  function handleInAppLinkAction (event: any) {
+  function handleInAppLinkAction (event: any): void {
     const URL = event.nativeEvent.data
 
     const action = new IterableAction('openUrl', URL, '')
@@ -178,14 +176,14 @@ const IterableInboxMessageDisplay = ({
     } else if (URL.slice(0, 9) === 'action://') {
       action.type = URL.replace('action://', '')
       returnToInbox(() => {
-        if (Iterable.savedConfig.customActionHandler) {
+        if (Iterable.savedConfig.customActionHandler != null) {
           Iterable.savedConfig.customActionHandler(action, context)
         }
       })
       // handle deep link or error link
     } else {
       returnToInbox(() => {
-        if (Iterable.savedConfig.urlHandler) {
+        if (Iterable.savedConfig.urlHandler != null) {
           Iterable.savedConfig.urlHandler(URL, context)
         }
       })

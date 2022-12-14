@@ -26,13 +26,13 @@ class IterableInboxDataModel {
 
   set (filter?: (message: IterableInAppMessage) => boolean,
     comparator?: (message1: IterableInAppMessage, message2: IterableInAppMessage) => number,
-    dateMapper?: (message: IterableInAppMessage) => string | undefined) {
+    dateMapper?: (message: IterableInAppMessage) => string | undefined): void {
     this.filterFn = filter
     this.comparatorFn = comparator
     this.dateMapperFn = dateMapper
   }
 
-  getFormattedDate (message: IterableInAppMessage) {
+  getFormattedDate (message: IterableInAppMessage): string | undefined {
     if (message.createdAt === undefined) {
       return ''
     }
@@ -54,13 +54,13 @@ class IterableInboxDataModel {
     )
   }
 
-  setMessageAsRead (id: string) {
+  setMessageAsRead (id: string): void {
     Iterable.logger.log('IterableInboxDataModel.setMessageAsRead')
 
     RNIterableAPI.setReadForMessage(id, true)
   }
 
-  deleteItemById (id: string, deleteSource: IterableInAppDeleteSource) {
+  deleteItemById (id: string, deleteSource: IterableInAppDeleteSource): void {
     Iterable.logger.log('IterableInboxDataModel.deleteItemById')
 
     RNIterableAPI.removeMessage(id, IterableInAppLocation.inbox, deleteSource)
@@ -79,22 +79,22 @@ class IterableInboxDataModel {
 
   // inbox session tracking functions
 
-  startSession (visibleRows: InboxImpressionRowInfo[] = []) {
+  startSession (visibleRows: InboxImpressionRowInfo[] = []): void {
     RNIterableAPI.startSession(visibleRows)
   }
 
-  async endSession (visibleRows: InboxImpressionRowInfo[] = []) {
+  async endSession (visibleRows: InboxImpressionRowInfo[] = []): Promise<void> {
     await this.updateVisibleRows(visibleRows)
     RNIterableAPI.endSession()
   }
 
-  updateVisibleRows (visibleRows: InboxImpressionRowInfo[] = []) {
+  updateVisibleRows (visibleRows: InboxImpressionRowInfo[] = []): void {
     RNIterableAPI.updateVisibleRows(visibleRows)
   }
 
   // private/internal
 
-  private static readonly sortByMostRecent = (message1: IterableInAppMessage, message2: IterableInAppMessage) => {
+  private static readonly sortByMostRecent = (message1: IterableInAppMessage, message2: IterableInAppMessage): number => {
     const createdAt1 = message1.createdAt ?? new Date(0)
     const createdAt2 = message2.createdAt ?? new Date(0)
 

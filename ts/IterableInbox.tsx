@@ -14,6 +14,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import {
+  IterableHtmlInAppContent,
   IterableInAppDeleteSource,
   IterableInAppLocation
 } from './IterableInAppClasses'
@@ -53,7 +54,7 @@ const IterableInbox = ({
   tabBarPadding = 20,
   safeAreaMode = true,
   showNavTitle = true
-}: inboxProps) => {
+}: inboxProps): any => {
   const defaultInboxTitle = 'Inbox'
   const inboxDataModel = new IterableInboxDataModel()
 
@@ -166,7 +167,7 @@ const IterableInbox = ({
     }
   }, [returnToInboxTrigger])
 
-  function addInboxChangedListener () {
+  function addInboxChangedListener (): void {
     RNEventEmitter.addListener(
       'receivedIterableInboxChanged',
       () => {
@@ -175,11 +176,11 @@ const IterableInbox = ({
     )
   }
 
-  function removeInboxChangedListener () {
+  function removeInboxChangedListener (): void {
     RNEventEmitter.removeAllListeners('receivedIterableInboxChanged')
   }
 
-  async function fetchInboxMessages () {
+  async function fetchInboxMessages (): Promise<void> {
     let newMessages = await inboxDataModel.refresh()
 
     newMessages = newMessages.map((message, index) => {
@@ -190,11 +191,11 @@ const IterableInbox = ({
     setLoading(false)
   }
 
-  async function getHtmlContentForRow (id: string) {
+  async function getHtmlContentForRow (id: string): Promise<IterableHtmlInAppContent> {
     return await inboxDataModel.getHtmlContentForMessageId(id)
   }
 
-  function handleMessageSelect (id: string, index: number, rowViewModels: InboxRowViewModel[]) {
+  function handleMessageSelect (id: string, index: number, rowViewModels: InboxRowViewModel[]): void {
     const newRowViewModels = rowViewModels.map((rowViewModel) => {
       return (rowViewModel.inAppMessage.messageId === id)
         ? { ...rowViewModel, read: true }
@@ -209,12 +210,12 @@ const IterableInbox = ({
     slideLeft()
   }
 
-  function deleteRow (messageId: string) {
+  function deleteRow (messageId: string): void {
     inboxDataModel.deleteItemById(messageId, IterableInAppDeleteSource.inboxSwipe)
     fetchInboxMessages()
   }
 
-  function returnToInbox (callback?: Function) {
+  function returnToInbox (callback?: Function): void {
     Animated.timing(animatedValue, {
       toValue: 0,
       duration: 300,
@@ -223,11 +224,11 @@ const IterableInbox = ({
     setIsMessageDisplay(false)
   }
 
-  function updateVisibleMessageImpressions (messageImpressions: InboxImpressionRowInfo[]) {
+  function updateVisibleMessageImpressions (messageImpressions: InboxImpressionRowInfo[]): void {
     setVisibleMessageImpressions(messageImpressions)
   }
 
-  function showMessageDisplay (rowViewModelList: InboxRowViewModel[], index: number) {
+  function showMessageDisplay (rowViewModelList: InboxRowViewModel[], index: number): any {
     const selectedRowViewModel = rowViewModelList[index]
 
     return (
@@ -244,7 +245,7 @@ const IterableInbox = ({
     )
   }
 
-  function showMessageList (loading: boolean) {
+  function showMessageList (loading: boolean): any {
     return (
          <View style={messageListContainer}>
             {showNavTitle
@@ -269,7 +270,7 @@ const IterableInbox = ({
          </View>)
   }
 
-  function renderEmptyState () {
+  function renderEmptyState (): any {
     return loading
       ? <View style={loadingScreen} />
       : <IterableInboxEmptyState
@@ -283,7 +284,7 @@ const IterableInbox = ({
          />
   }
 
-  function slideLeft () {
+  function slideLeft (): void {
     Animated.timing(animatedValue, {
       toValue: 1,
       duration: 300,
