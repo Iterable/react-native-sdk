@@ -1,6 +1,6 @@
 'use strict'
 
-import readBoolean from './IterableUtil'
+import IterableUtil from './IterableUtil'
 
 import {
   IterableInAppTrigger,
@@ -104,7 +104,7 @@ class IterableInAppMessage {
   }
 
   isSilentInbox (): boolean {
-    return this.saveToInbox && this.trigger.type == IterableInAppTriggerType.never
+    return this.saveToInbox && this.trigger.type === IterableInAppTriggerType.never
   }
 
   static fromDict (dict: any): IterableInAppMessage {
@@ -113,15 +113,15 @@ class IterableInAppMessage {
     const trigger = IterableInAppTrigger.fromDict(dict.trigger)
     let createdAt = dict.createdAt
     if (createdAt != null) {
-      var dateObject = new Date(0)
+      const dateObject = new Date(0)
       createdAt = dateObject.setUTCMilliseconds(createdAt)
     }
     let expiresAt = dict.expiresAt
     if (expiresAt != null) {
-      var dateObject = new Date(0)
+      const dateObject = new Date(0)
       expiresAt = dateObject.setUTCMilliseconds(expiresAt)
     }
-    const saveToInbox = readBoolean(dict, 'saveToInbox')
+    const saveToInbox = IterableUtil.readBoolean(dict, 'saveToInbox')
     const inboxMetadataDict = dict.inboxMetadata
     let inboxMetadata: IterableInboxMetadata | undefined
     if (inboxMetadataDict != null) {
@@ -130,7 +130,7 @@ class IterableInAppMessage {
       inboxMetadata = undefined
     }
     const customPayload = dict.customPayload
-    const read = readBoolean(dict, 'read')
+    const read = IterableUtil.readBoolean(dict, 'read')
 
     const priorityLevel = dict.priorityLevel as number
 
