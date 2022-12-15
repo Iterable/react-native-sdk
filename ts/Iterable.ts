@@ -712,6 +712,7 @@ class Iterable {
   }
 
   private static getVersionFromPackageJson (): string {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const json = require('../package.json')
     const version = json.version as string
     return version

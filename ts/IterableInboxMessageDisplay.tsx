@@ -144,7 +144,8 @@ const IterableInboxMessageDisplay = ({
 
   useEffect(() => {
     let mounted = true
-    void inAppContentPromise.then(
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    inAppContentPromise.then(
       (value) => {
         if (mounted) {
           setInAppContent(value)

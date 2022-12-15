@@ -121,13 +121,15 @@ const IterableInbox = ({
 
   // fetches inbox messages and adds listener for inbox changes on mount
   useEffect(() => {
-    void fetchInboxMessages()
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    fetchInboxMessages()
     addInboxChangedListener()
 
     // removes listener for inbox changes on unmount and ends inbox session
     return () => {
       removeInboxChangedListener()
-      void inboxDataModel.endSession(visibleMessageImpressions)
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      inboxDataModel.endSession(visibleMessageImpressions)
     }
   }, [])
 
@@ -138,7 +140,8 @@ const IterableInbox = ({
       if (appState === 'active') {
         inboxDataModel.startSession(visibleMessageImpressions)
       } else if ((appState === 'background' && Platform.OS === 'android') || appState === 'inactive') {
-        void inboxDataModel.endSession(visibleMessageImpressions)
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        inboxDataModel.endSession(visibleMessageImpressions)
       }
     }
   }, [appState])
@@ -150,7 +153,8 @@ const IterableInbox = ({
       if (isFocused) {
         inboxDataModel.startSession(visibleMessageImpressions)
       } else {
-        void inboxDataModel.endSession(visibleMessageImpressions)
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        inboxDataModel.endSession(visibleMessageImpressions)
       }
     }
   }, [isFocused])
@@ -171,7 +175,8 @@ const IterableInbox = ({
     RNEventEmitter.addListener(
       'receivedIterableInboxChanged',
       () => {
-        void fetchInboxMessages()
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        fetchInboxMessages()
       }
     )
   }
@@ -212,7 +217,8 @@ const IterableInbox = ({
 
   function deleteRow (messageId: string): void {
     inboxDataModel.deleteItemById(messageId, IterableInAppDeleteSource.inboxSwipe)
-    void fetchInboxMessages()
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    fetchInboxMessages()
   }
 
   function returnToInbox (callback?: Function): void {
