@@ -49,7 +49,7 @@ interface inboxProps {
 const IterableInbox = ({
   returnToInboxTrigger = true,
   messageListItemLayout = () => { return null },
-  customizations = {} as IterableInboxCustomizations,
+  customizations = {},
   tabBarHeight = 80,
   tabBarPadding = 20,
   safeAreaMode = true,

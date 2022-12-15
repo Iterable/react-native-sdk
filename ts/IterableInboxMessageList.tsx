@@ -65,10 +65,10 @@ const IterableInboxMessageList = ({
       function (viewToken) {
         const inAppMessage = IterableInAppMessage.fromViewToken(viewToken)
 
-        const impression = {
+        const impression: InboxImpressionRowInfo = {
           messageId: inAppMessage.messageId,
           silentInbox: inAppMessage.isSilentInbox()
-        } as InboxImpressionRowInfo
+        }
 
         return impression
       }
