@@ -144,7 +144,7 @@ const IterableInboxMessageDisplay = ({
 
   useEffect(() => {
     let mounted = true
-    inAppContentPromise.then(
+    void inAppContentPromise.then(
       (value) => {
         if (mounted) {
           setInAppContent(value)

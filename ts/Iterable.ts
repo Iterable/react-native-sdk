@@ -215,6 +215,7 @@ class Iterable {
    */
 
   static setEmail (email: string | undefined, authToken?: string | undefined): void {
+    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
     Iterable.logger.log('setEmail: ' + email)
 
     RNIterableAPI.setEmail(email, authToken)
@@ -268,6 +269,7 @@ class Iterable {
    */
 
   static setUserId (userId: string | undefined, authToken?: string | undefined): void {
+    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
     Iterable.logger.log('setUserId: ' + userId)
 
     RNIterableAPI.setUserId(userId, authToken)
@@ -329,7 +331,7 @@ class Iterable {
     Iterable.logger.log('getAttributionInfo')
 
     return RNIterableAPI.getAttributionInfo().then((dict: any | undefined) => {
-      if (dict) {
+      if (dict != null) {
         return new IterableAttributionInfo(dict.campaignId as number, dict.templateId as number, dict.messageId as string)
       } else {
         return undefined
@@ -625,6 +627,7 @@ class Iterable {
         (dict) => {
           const action = IterableAction.fromDict(dict.action)
           const context = IterableActionContext.fromDict(dict.context)
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           Iterable.savedConfig.customActionHandler!(action, context)
         }
       )
@@ -635,6 +638,7 @@ class Iterable {
         EventName.handleInAppCalled,
         (messageDict) => {
           const message = IterableInAppMessage.fromDict(messageDict)
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           const result = Iterable.savedConfig.inAppHandler!(message)
           RNIterableAPI.setInAppShowResponse(result)
         }
@@ -646,6 +650,7 @@ class Iterable {
       RNEventEmitter.addListener(
         EventName.handleAuthCalled,
         () => {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           Iterable.savedConfig.authHandler!()
             .then(promiseResult => {
             // Promise result can be either just String OR of type AuthResponse.
@@ -657,10 +662,12 @@ class Iterable {
                 setTimeout(() => {
                   if (authResponseCallback === AuthResponseCallback.SUCCESS) {
                     if ((promiseResult as AuthResponse).successCallback != null) {
+                      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                       (promiseResult as AuthResponse).successCallback!()
                     }
                   } else if (authResponseCallback === AuthResponseCallback.FAILURE) {
                     if ((promiseResult as AuthResponse).failureCallback != null) {
+                      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                       (promiseResult as AuthResponse).failureCallback!()
                     }
                   } else {
@@ -692,11 +699,13 @@ class Iterable {
     }
 
     function callUrlHandler (url: any, context: IterableActionContext): void {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       if (!Iterable.savedConfig.urlHandler!(url, context)) {
         Linking.canOpenURL(url)
           .then(canOpen => {
-            if (canOpen) { Linking.openURL(url) }
+            if (canOpen) { void Linking.openURL(url) }
           })
+          // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
           .catch(reason => { Iterable.logger.log('could not open url: ' + reason) })
       }
     }

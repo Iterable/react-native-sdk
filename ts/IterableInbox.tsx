@@ -121,13 +121,13 @@ const IterableInbox = ({
 
   // fetches inbox messages and adds listener for inbox changes on mount
   useEffect(() => {
-    fetchInboxMessages()
+    void fetchInboxMessages()
     addInboxChangedListener()
 
     // removes listener for inbox changes on unmount and ends inbox session
     return () => {
       removeInboxChangedListener()
-      inboxDataModel.endSession(visibleMessageImpressions)
+      void inboxDataModel.endSession(visibleMessageImpressions)
     }
   }, [])
 
@@ -137,8 +137,8 @@ const IterableInbox = ({
     if (isFocused) {
       if (appState === 'active') {
         inboxDataModel.startSession(visibleMessageImpressions)
-      } else if (appState === 'background' && Platform.OS === 'android' || appState === 'inactive') {
-        inboxDataModel.endSession(visibleMessageImpressions)
+      } else if ((appState === 'background' && Platform.OS === 'android') || appState === 'inactive') {
+        void inboxDataModel.endSession(visibleMessageImpressions)
       }
     }
   }, [appState])
@@ -150,7 +150,7 @@ const IterableInbox = ({
       if (isFocused) {
         inboxDataModel.startSession(visibleMessageImpressions)
       } else {
-        inboxDataModel.endSession(visibleMessageImpressions)
+        void inboxDataModel.endSession(visibleMessageImpressions)
       }
     }
   }, [isFocused])
@@ -171,7 +171,7 @@ const IterableInbox = ({
     RNEventEmitter.addListener(
       'receivedIterableInboxChanged',
       () => {
-        fetchInboxMessages()
+        void fetchInboxMessages()
       }
     )
   }
@@ -212,7 +212,7 @@ const IterableInbox = ({
 
   function deleteRow (messageId: string): void {
     inboxDataModel.deleteItemById(messageId, IterableInAppDeleteSource.inboxSwipe)
-    fetchInboxMessages()
+    void fetchInboxMessages()
   }
 
   function returnToInbox (callback?: Function): void {
