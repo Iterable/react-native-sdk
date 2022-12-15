@@ -215,11 +215,7 @@ class Iterable {
    */
 
   static setEmail (email: string | undefined, authToken?: string | undefined): void {
-    if (email != null) {
-      Iterable.logger.log(`setEmail: ${email}`)
-    } else {
-      Iterable.logger.log('current user logged out')
-    }
+    Iterable.logger.log('setEmail: ' + email)
 
     RNIterableAPI.setEmail(email, authToken)
   }
@@ -272,11 +268,7 @@ class Iterable {
    */
 
   static setUserId (userId: string | undefined, authToken?: string | undefined): void {
-    if (userId != null) {
-      Iterable.logger.log(`setUserId: ${userId}`)
-    } else {
-      Iterable.logger.log('current user logged out')
-    }
+    Iterable.logger.log('setUserId: ' + userId)
 
     RNIterableAPI.setUserId(userId, authToken)
   }
