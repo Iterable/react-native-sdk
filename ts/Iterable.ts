@@ -215,11 +215,7 @@ class Iterable {
    */
 
   static setEmail (email: string | undefined, authToken?: string | undefined): void {
-    if (email != null) {
-      Iterable.logger.log(`setEmail: ${email}`)
-    } else {
-      Iterable.logger.log('current user logged out')
-    }
+    Iterable.logger.log('setEmail: ' + email)
 
     RNIterableAPI.setEmail(email, authToken)
   }
@@ -272,11 +268,7 @@ class Iterable {
    */
 
   static setUserId (userId: string | undefined, authToken?: string | undefined): void {
-    if (userId != null) {
-      Iterable.logger.log(`setEmail: ${userId}`)
-    } else {
-      Iterable.logger.log('current user logged out')
-    }
+    Iterable.logger.log('setUserId: ' + userId)
 
     RNIterableAPI.setUserId(userId, authToken)
   }
@@ -633,7 +625,7 @@ class Iterable {
         (dict) => {
           const action = IterableAction.fromDict(dict.action)
           const context = IterableActionContext.fromDict(dict.context)
-          Iterable.savedConfig.customActionHandler?.(action, context)
+          Iterable.savedConfig.customActionHandler!(action, context)
         }
       )
     }
@@ -643,7 +635,7 @@ class Iterable {
         EventName.handleInAppCalled,
         (messageDict) => {
           const message = IterableInAppMessage.fromDict(messageDict)
-          const result = Iterable.savedConfig.inAppHandler?.(message)
+          const result = Iterable.savedConfig.inAppHandler!(message)
           RNIterableAPI.setInAppShowResponse(result)
         }
       )
@@ -654,7 +646,7 @@ class Iterable {
       RNEventEmitter.addListener(
         EventName.handleAuthCalled,
         () => {
-          Iterable.savedConfig.authHandler?.()
+          Iterable.savedConfig.authHandler!()
             .then(promiseResult => {
             // Promise result can be either just String OR of type AuthResponse.
             // If type AuthReponse, authToken will be parsed looking for `authToken` within promised object. Two additional listeners will be registered for success and failure callbacks sent by native bridge layer.
@@ -665,11 +657,11 @@ class Iterable {
                 setTimeout(() => {
                   if (authResponseCallback === AuthResponseCallback.SUCCESS) {
                     if ((promiseResult as AuthResponse).successCallback != null) {
-                      (promiseResult as AuthResponse).successCallback?.()
+                      (promiseResult as AuthResponse).successCallback!()
                     }
                   } else if (authResponseCallback === AuthResponseCallback.FAILURE) {
                     if ((promiseResult as AuthResponse).failureCallback != null) {
-                      (promiseResult as AuthResponse).failureCallback?.()
+                      (promiseResult as AuthResponse).failureCallback!()
                     }
                   } else {
                     Iterable.logger.log('No callback received from native layer')
@@ -700,15 +692,12 @@ class Iterable {
     }
 
     function callUrlHandler (url: any, context: IterableActionContext): void {
-      if (Iterable.savedConfig.urlHandler?.(url, context) != null) {
+      if (!Iterable.savedConfig.urlHandler!(url, context)) {
         Linking.canOpenURL(url)
           .then(canOpen => {
             if (canOpen) { Linking.openURL(url) }
           })
-          .catch(reason => {
-            const string: string = reason.toString()
-            Iterable.logger.log(`could not open url: ${string}`)
-          })
+          .catch(reason => { Iterable.logger.log('could not open url: ' + reason) })
       }
     }
   }
