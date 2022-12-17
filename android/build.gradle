@@ -7,12 +7,12 @@ def safeExtGet(prop, fallback) {
 }
 
 android {
-    compileSdkVersion safeExtGet('compileSdkVersion', 28)
+    compileSdkVersion rootProject.ext.get('compileSdkVersion')
 
     defaultConfig {
-        minSdkVersion safeExtGet('minSdkVersion', 16)
-        targetSdkVersion safeExtGet('compileSdkVersion', 28)
-
+        minSdkVersion rootProject.ext.get('minSdkVersion')
+        targetSdkVersion rootProject.ext.get('compileSdkVersion')
+        
         buildConfigField("String", "MODULE_VERSION", "\"${getModuleVersion()}\"")
     }
 }
