@@ -3,7 +3,6 @@ apply plugin: 'com.android.library'
 import groovy.json.JsonSlurper
 
 def safeExtGet(prop, fallback) {
-    
     return fallback
 }
 
