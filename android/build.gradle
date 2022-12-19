@@ -2,10 +2,6 @@ apply plugin: 'com.android.library'
 
 import groovy.json.JsonSlurper
 
-def safeExtGet(prop, fallback) {
-    fallback
-}
-
 android {
     compileSdkVersion safeExtGet('compileSdkVersion', 28)
 
@@ -15,6 +11,10 @@ android {
 
         buildConfigField("String", "MODULE_VERSION", "\"${getModuleVersion()}\"")
     }
+}
+
+def safeExtGet(prop, fallback) {
+    fallback
 }
 
 def getModuleVersion() {
