@@ -12,7 +12,7 @@ export class MockRNIterableAPI {
   static clickedUrl?: string
 
   static async getEmail (): Promise<string | undefined> {
-    return await new Promise((resolve, _) => {
+    return await new Promise((resolve, reject) => {
       resolve(MockRNIterableAPI.email)
     })
   }
@@ -23,7 +23,7 @@ export class MockRNIterableAPI {
   }
 
   static async getUserId (): Promise<string | undefined> {
-    return await new Promise((resolve, _) => {
+    return await new Promise((resolve, reject) => {
       resolve(MockRNIterableAPI.userId)
     })
   }
@@ -50,13 +50,13 @@ export class MockRNIterableAPI {
   static trackEvent = jest.fn()
 
   static async getLastPushPayload (): Promise<any | undefined> {
-    return await new Promise((resolve, _) => {
+    return await new Promise((resolve, reject) => {
       resolve(MockRNIterableAPI.lastPushPayload)
     })
   }
 
   static async getAttributionInfo (): Promise<IterableAttributionInfo | undefined> {
-    return await new Promise((resolve, _) => {
+    return await new Promise((resolve, reject) => {
       resolve(MockRNIterableAPI.attributionInfo)
     })
   }
@@ -70,7 +70,7 @@ export class MockRNIterableAPI {
   static setInAppShowResponse = jest.fn()
 
   static async getInAppMessages (): Promise<IterableInAppMessage[] | undefined> {
-    return await new Promise((resolve, _) => {
+    return await new Promise((resolve, reject) => {
       resolve(MockRNIterableAPI.messages)
     })
   }
@@ -78,7 +78,7 @@ export class MockRNIterableAPI {
   static setAutoDisplayPaused = jest.fn()
 
   static async showMessage (message: IterableInAppMessage, consume: boolean): Promise<string | undefined> {
-    return await new Promise((resolve, _) => {
+    return await new Promise((resolve, reject) => {
       resolve(MockRNIterableAPI.clickedUrl)
     })
   }

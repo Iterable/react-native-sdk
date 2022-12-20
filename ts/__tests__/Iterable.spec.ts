@@ -49,7 +49,7 @@ test('setUserId_getUserId_userId_returnsUserId', async () => {
   const userId = 'user1'
 
   // WHEN Iterable.setUserId is called with the given userId
-  Iterable.setUserId('user1')
+  Iterable.setUserId(userId)
 
   // THEN Iterable.getUserId returns the given userId
   return await Iterable.getUserId().then(userId => {
@@ -278,11 +278,12 @@ test('urlHandler_canOpenUrlSetToTrueAndUrlHandlerReturnsFalse_openUrlCalled', as
   })
 
   // initialize Iterable object
+  // eslint-disable-next-line @typescript-eslint/no-floating-promises
   Iterable.initialize('apiKey', config)
 
   // GIVEN canOpenUrl set to return a promise that resolves to true
   MockLinking.canOpenURL = jest.fn(async () => {
-    return await new Promise(res => { res(true) })
+    return await new Promise(resolve => { resolve(true) })
   })
   MockLinking.openURL.mockReset()
   const expectedUrl = 'https://somewhere.com'
@@ -315,11 +316,12 @@ test('urlHandler_canOpenUrlSetToFalseAndUrlHandlerReturnsFalse_openUrlNotCalled'
   })
 
   // initialize Iterable object
+  // eslint-disable-next-line @typescript-eslint/no-floating-promises
   Iterable.initialize('apiKey', config)
 
   // GIVEN canOpenUrl set to return a promise that resolves to false
   MockLinking.canOpenURL = jest.fn(async () => {
-    return await new Promise(res => { res(false) })
+    return await new Promise(resolve => { resolve(false) })
   })
   MockLinking.openURL.mockReset()
   const expectedUrl = 'https://somewhere.com'
@@ -352,11 +354,12 @@ test('urlHandler_canOpenUrlSetToTrueAndUrlHandlerReturnsTrue_openUrlNotCalled', 
   })
 
   // initialize Iterable object
+  // eslint-disable-next-line @typescript-eslint/no-floating-promises
   Iterable.initialize('apiKey', config)
 
   // GIVEN canOpenUrl set to return a promise that resolves to true
   MockLinking.canOpenURL = jest.fn(async () => {
-    return await new Promise(res => { res(true) })
+    return await new Promise(resolve => { resolve(true) })
   })
   MockLinking.openURL.mockReset()
   const expectedUrl = 'https://somewhere.com'
@@ -389,6 +392,7 @@ test('customActionHandler_actionNameAndActionData_customActionHandlerCalled', ()
   })
 
   // initialize Iterable object
+  // eslint-disable-next-line @typescript-eslint/no-floating-promises
   Iterable.initialize('apiKey', config)
 
   // GIVEN custom action name and custom action data
@@ -414,6 +418,7 @@ test('handleAppLink_link_methodCalled', () => {
   const link = 'https://somewhere.com/link/something'
 
   // WHEN Iterable.handleAppLink is called
+  // eslint-disable-next-line @typescript-eslint/no-floating-promises
   Iterable.handleAppLink(link)
 
   // THEN corresponding function is called on RNITerableAPI

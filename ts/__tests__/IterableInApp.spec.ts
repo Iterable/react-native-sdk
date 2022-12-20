@@ -90,6 +90,7 @@ test('inAppHandler_messageAndEventEmitted_methodCalledWithMessage', () => {
   })
 
   // initialize Iterable object
+  // eslint-disable-next-line @typescript-eslint/no-floating-promises
   Iterable.initialize('apiKey', config)
 
   // GIVEN an in-app message
