@@ -1,6 +1,7 @@
 import { IterableAttributionInfo } from '../Iterable'
 import IterableInAppMessage from '../IterableInAppMessage'
 
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class MockRNIterableAPI {
   static email?: string
   static userId?: string
@@ -16,7 +17,7 @@ export class MockRNIterableAPI {
     })
   }
 
-  static setEmail (email: string, authToken?: string | undefined) {
+  static setEmail (email: string, authToken?: string | undefined): void {
     MockRNIterableAPI.email = email
     MockRNIterableAPI.token = authToken
   }
@@ -27,7 +28,7 @@ export class MockRNIterableAPI {
     })
   }
 
-  static setUserId (userId: string, authToken?: string | undefined) {
+  static setUserId (userId: string, authToken?: string | undefined): void {
     MockRNIterableAPI.userId = userId
     MockRNIterableAPI.token = authToken
   }
@@ -60,7 +61,7 @@ export class MockRNIterableAPI {
     })
   }
 
-  static setAttributionInfo (attributionInfo?: IterableAttributionInfo) {
+  static setAttributionInfo (attributionInfo?: IterableAttributionInfo): void {
     MockRNIterableAPI.attributionInfo = attributionInfo
   }
 
@@ -98,13 +99,13 @@ export class MockRNIterableAPI {
 
   // set messages function is to set the messages static property
   // this is for testing purposes only
-  static setMessages (messages: IterableInAppMessage[]) {
+  static setMessages (messages: IterableInAppMessage[]): void {
     MockRNIterableAPI.messages = messages
   }
 
   // setClickedUrl function is to set the messages static property
   // this is for testing purposes only
-  static setClickedUrl (clickedUrl: string) {
+  static setClickedUrl (clickedUrl: string): void {
     MockRNIterableAPI.clickedUrl = clickedUrl
   }
 }
