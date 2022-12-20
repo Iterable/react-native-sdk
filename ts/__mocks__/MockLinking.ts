@@ -5,4 +5,3 @@ export class MockLinking {
   static addEventListener = jest.fn()
   static removeEventListener = jest.fn()
 }
-
