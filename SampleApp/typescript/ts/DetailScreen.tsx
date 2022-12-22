@@ -6,7 +6,7 @@ import {
   Text,
   View,
   StyleSheet,
-  Image,
+  Image
 } from 'react-native'
 import { Button } from 'react-native-elements'
 import { RouteProp } from '@react-navigation/native'
@@ -18,17 +18,17 @@ import {
   IterableCommerceItem
 } from '@iterable/react-native-sdk'
 
-type DetailScreenProps = {
-  route: RouteProp<Screens, 'Detail'>,
-  navigation: StackNavigationProp<Screens>,
+interface DetailScreenProps {
+  route: RouteProp<Screens, 'Detail'>
+  navigation: StackNavigationProp<Screens>
 }
 
 export default class DetailScreen extends Component<DetailScreenProps> {
-  constructor(props: DetailScreenProps) {
+  constructor (props: DetailScreenProps) {
     super(props)
   }
 
-  render() {
+  render () {
     const coffee = this.props.route.params.coffee
     return (
       <View style={styles.container}>
@@ -39,8 +39,8 @@ export default class DetailScreen extends Component<DetailScreenProps> {
     )
   }
 
-  private buyTapped = () => {
-    console.log("bought coffee")
+  private readonly buyTapped = () => {
+    console.log('bought coffee')
     const coffee = this.props.route.params.coffee
     const purchasedItem = new IterableCommerceItem(coffee.id, coffee.name, 3.50, 1)
     Iterable.trackPurchase(3.50, [purchasedItem], null)
@@ -56,16 +56,16 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 300,
-    height: 300,
+    height: 300
   },
   text: {
     paddingTop: 10,
-    fontSize: 15,
+    fontSize: 15
   },
   button: {
-    marginTop: 20,
+    marginTop: 20
   },
   buttonText: {
-    fontSize: 20,
+    fontSize: 20
   }
 })
