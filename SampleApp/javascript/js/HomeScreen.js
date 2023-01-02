@@ -22,6 +22,6 @@ export default class HomeScreen extends Component {
   }
 }
 
-HomeScreen.propTypes = {
-  navigation: any
-}
+// HomeScreen.propTypes = {
+//   navigation: any
+// }
