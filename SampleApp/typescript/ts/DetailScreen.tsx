@@ -39,7 +39,7 @@ export default class DetailScreen extends Component<DetailScreenProps> {
     )
   }
 
-  private readonly buyTapped = () => {
+  private readonly buyTapped = (): void => {
     console.log('bought coffee')
     const coffee = this.props.route.params.coffee
     const purchasedItem = new IterableCommerceItem(coffee.id, coffee.name, 3.50, 1)

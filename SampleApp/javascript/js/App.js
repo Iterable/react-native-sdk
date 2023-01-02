@@ -56,7 +56,7 @@ export default class App extends React.Component {
       React.createElement(Tab.Navigator, {
         screenOptions: ({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
-            if (route.name == 'Home') {
+            if (route.name === 'Home') {
               return React.createElement(Icon, { name: 'ios-home', size, color })
             } else {
               return React.createElement(Icon, { name: 'ios-settings', size, color })
@@ -82,10 +82,10 @@ export default class App extends React.Component {
   // urlHandler is defined here
   urlHandler = (url, context) => {
     console.log(`urlHandler, url: ${url}`)
-    const match = url.match(/coffee\/([^\/]+)/i)
+    const match = url.match(/coffee\/([^]+)/i)
     if (match && match.length > 1) {
       const id = match[1]
-      const foundCoffee = coffees.find(coffee => coffee.id == id)
+      const foundCoffee = coffees.find(coffee => coffee.id === id)
       if (foundCoffee) {
         this.navigate(foundCoffee)
       } else {

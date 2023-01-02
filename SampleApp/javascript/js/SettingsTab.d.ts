@@ -1,6 +1,4 @@
 import { Component } from 'react'
-interface Props {
-}
 interface State {
   email?: string
   isLoggedIn: boolean

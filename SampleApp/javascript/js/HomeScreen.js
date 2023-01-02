@@ -3,10 +3,6 @@ import { View } from 'react-native'
 import { ListItem } from 'react-native-elements'
 import { coffees } from './Data'
 export default class HomeScreen extends Component {
-  constructor (props) {
-    super(props)
-  }
-
   navigate (coffee) {
     this.props.navigation.navigate('Detail', { coffee })
   }
@@ -24,4 +20,8 @@ export default class HomeScreen extends Component {
       chevron: true
     })))))
   }
+}
+
+HomeScreen.propTypes = {
+  navigation: any
 }
