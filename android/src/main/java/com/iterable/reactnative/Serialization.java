@@ -167,6 +167,10 @@ class Serialization {
                 configBuilder.setInAppDisplayInterval(iterableContextJSON.optDouble("inAppDisplayInterval"));
             }
 
+            if (iterableContextJSON.has("expiringAuthTokenRefreshPeriod")) {
+                configBuilder.setExpiringAuthTokenRefreshPeriod(iterableContextJSON.optLong("expiringAuthTokenRefreshPeriod"));
+            }
+
             if (iterableContextJSON.has("useInMemoryStorageForInApps") || iterableContextJSON.has("androidSdkUseInMemoryStorageForInApps")) {
                 configBuilder.setUseInMemoryStorageForInApps(iterableContextJSON.optBoolean("useInMemoryStorageForInApps"));
             }
