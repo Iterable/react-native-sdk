@@ -59,6 +59,10 @@ extension IterableConfig {
             config.inAppDisplayInterval = inAppDisplayInterval
         }
         
+        if let expiringAuthTokenRefreshPeriod = dict["expiringAuthTokenRefreshPeriod"] as? TimeInterval {
+            config.expiringAuthTokenRefreshPeriod = expiringAuthTokenRefreshPeriod
+        }
+
         if let logLevelNumber = dict["logLevel"] as? NSNumber {
             config.logDelegate = createLogDelegate(logLevelNumber: logLevelNumber)
         }
