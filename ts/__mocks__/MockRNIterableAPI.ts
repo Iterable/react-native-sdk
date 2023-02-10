@@ -1,6 +1,7 @@
 import { IterableAttributionInfo } from '../Iterable'
 import IterableInAppMessage from '../IterableInAppMessage'
 
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class MockRNIterableAPI {
   static email?: string
   static userId?: string
@@ -10,24 +11,24 @@ export class MockRNIterableAPI {
   static messages?: IterableInAppMessage[]
   static clickedUrl?: string
 
-  static getEmail(): Promise<string | undefined> {
-    return new Promise((resolve, _) => {
+  static async getEmail (): Promise<string | undefined> {
+    return await new Promise((resolve, reject) => {
       resolve(MockRNIterableAPI.email)
     })
   }
 
-  static setEmail(email: string, authToken?: string | undefined) {
+  static setEmail (email: string, authToken?: string | undefined): void {
     MockRNIterableAPI.email = email
     MockRNIterableAPI.token = authToken
   }
 
-  static getUserId(): Promise<string | undefined> {
-    return new Promise((resolve, _) => {
+  static async getUserId (): Promise<string | undefined> {
+    return await new Promise((resolve, reject) => {
       resolve(MockRNIterableAPI.userId)
     })
   }
 
-  static setUserId(userId: string, authToken?: string | undefined) {
+  static setUserId (userId: string, authToken?: string | undefined): void {
     MockRNIterableAPI.userId = userId
     MockRNIterableAPI.token = authToken
   }
@@ -48,19 +49,19 @@ export class MockRNIterableAPI {
 
   static trackEvent = jest.fn()
 
-  static getLastPushPayload(): Promise<any | undefined> {
-    return new Promise((resolve, _) => {
+  static async getLastPushPayload (): Promise<any | undefined> {
+    return await new Promise((resolve, reject) => {
       resolve(MockRNIterableAPI.lastPushPayload)
     })
   }
 
-  static getAttributionInfo(): Promise<IterableAttributionInfo | undefined> {
-    return new Promise((resolve, _) => {
+  static async getAttributionInfo (): Promise<IterableAttributionInfo | undefined> {
+    return await new Promise((resolve, reject) => {
       resolve(MockRNIterableAPI.attributionInfo)
     })
   }
 
-  static setAttributionInfo(attributionInfo?: IterableAttributionInfo) {
+  static setAttributionInfo (attributionInfo?: IterableAttributionInfo): void {
     MockRNIterableAPI.attributionInfo = attributionInfo
   }
 
@@ -68,16 +69,16 @@ export class MockRNIterableAPI {
 
   static setInAppShowResponse = jest.fn()
 
-  static getInAppMessages(): Promise<IterableInAppMessage[] | undefined> {
-    return new Promise((resolve, _) => {
+  static async getInAppMessages (): Promise<IterableInAppMessage[] | undefined> {
+    return await new Promise((resolve, reject) => {
       resolve(MockRNIterableAPI.messages)
     })
   }
 
   static setAutoDisplayPaused = jest.fn()
 
-  static showMessage(message: IterableInAppMessage, consume: boolean): Promise<string | undefined> {
-    return new Promise((resolve, _) => {
+  static async showMessage (message: IterableInAppMessage, consume: boolean): Promise<string | undefined> {
+    return await new Promise((resolve, reject) => {
       resolve(MockRNIterableAPI.clickedUrl)
     })
   }
@@ -98,13 +99,13 @@ export class MockRNIterableAPI {
 
   // set messages function is to set the messages static property
   // this is for testing purposes only
-  static setMessages(messages: IterableInAppMessage[]) {
+  static setMessages (messages: IterableInAppMessage[]): void {
     MockRNIterableAPI.messages = messages
   }
-  
+
   // setClickedUrl function is to set the messages static property
   // this is for testing purposes only
-  static setClickedUrl(clickedUrl: string) {
+  static setClickedUrl (clickedUrl: string): void {
     MockRNIterableAPI.clickedUrl = clickedUrl
   }
 }
