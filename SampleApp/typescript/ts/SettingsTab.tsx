@@ -7,9 +7,9 @@ import {
   View,
   Button,
   StyleSheet,
-  Image
+  Image,
 } from 'react-native'
-import { TextInput } from 'react-native-gesture-handler'
+import { TextInput } from 'react-native-gesture-handler';
 import { Iterable } from '@iterable/react-native-sdk'
 
 interface Props { }
@@ -18,14 +18,14 @@ interface State {
   isLoggedIn: boolean
 }
 class SettingsTab extends Component<Props, State> {
-  constructor (props: Props) {
+  constructor(props: Props) {
     super(props)
     this.state = { isLoggedIn: false }
     this.updateState()
   }
 
-  render () {
-    let userInfo
+  render() {
+    var userInfo
     if (this.state.isLoggedIn) {
       userInfo = this.renderLoggedIn(this.state.email!)
     } else {
@@ -41,7 +41,7 @@ class SettingsTab extends Component<Props, State> {
     )
   }
 
-  private renderLoggedIn (email: String) {
+  private renderLoggedIn(email: String) {
     console.log(`renderLoggedIn, email: ${email}`)
     return (
       <View style={styles.emailContainer}>
@@ -54,8 +54,8 @@ class SettingsTab extends Component<Props, State> {
     )
   }
 
-  private renderLoggedOut () {
-    console.log('renderLoggedOut')
+  private renderLoggedOut() {
+    console.log("renderLoggedOut")
     return (
       <View style={styles.emailContainer}>
         <TextInput
@@ -73,23 +73,23 @@ class SettingsTab extends Component<Props, State> {
     )
   }
 
-  private readonly onLoginTapped = () => {
-    console.log('onLoginTapped')
+  private onLoginTapped = () => {
+    console.log("onLoginTapped")
     Iterable.setEmail(this.state.email)
     this.updateState()
   }
 
-  private readonly onLogoutTapped = () => {
-    console.log('onLogoutTapped')
+  private onLogoutTapped = () => {
+    console.log("onLogoutTapped")
     Iterable.setEmail(undefined)
     this.updateState()
   }
 
-  private updateState () {
+  private updateState() {
     Iterable.getEmail().then(email => {
-      console.log('gotEmail: ' + email)
+      console.log("gotEmail: " + email)
       if (email) {
-        this.setState({ isLoggedIn: true, email })
+        this.setState({ isLoggedIn: true, email: email })
       } else {
         this.setState({ isLoggedIn: false, email: undefined })
       }
@@ -101,33 +101,33 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   upperContainer: {
     marginTop: 25,
     height: 300,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   image: {
     width: 275,
-    height: 150
+    height: 150,
   },
   emailContainer: {
-    flexDirection: 'row',
-    marginTop: 25
+    flexDirection: "row",
+    marginTop: 25,
   },
   emailTextInput: {
     marginLeft: 10,
     padding: 10,
     borderBottomColor: 'gray',
     borderBottomWidth: 1,
-    width: 250
+    width: 250,
   },
   emailText: {
     marginLeft: 10,
     padding: 10,
-    fontSize: 18
-  }
+    fontSize: 18,
+  },
 })
 
 export default SettingsTab

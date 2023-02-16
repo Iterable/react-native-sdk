@@ -1,10 +1,11 @@
-import React from 'react'
-
-export default class App extends React.Component {
-  constructor (props: Props)
-  render (): JSX.Element
-  private readonly homeTabRef
-  private readonly navigate
-  private readonly urlHandler
+import React from 'react';
+interface Props {
 }
-export {}
+export default class App extends React.Component {
+    constructor(props: Props);
+    render(): JSX.Element;
+    private homeTabRef;
+    private navigate;
+    private urlHandler;
+}
+export {};

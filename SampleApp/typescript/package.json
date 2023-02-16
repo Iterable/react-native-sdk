@@ -35,16 +35,8 @@
     "@types/react": "^16.9.35",
     "@types/react-native": "^0.62.10",
     "@types/react-native-vector-icons": "^6.4.5",
-    "@typescript-eslint/eslint-plugin": "^5.47.0",
-    "eslint": "^8.30.0",
-    "eslint-config-standard-with-typescript": "^24.0.0",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-n": "^15.6.0",
-    "eslint-plugin-promise": "^6.1.1",
-    "eslint-plugin-react": "^7.31.11",
-    "eslint-plugin-react-native": "^4.0.0",
+    "eslint": "^6.8.0",
     "metro-react-native-babel-preset": "^0.58.0",
-    "react-test-renderer": "16.9.0",
-    "typescript": "^4.9.4"
+    "react-test-renderer": "16.9.0"
   }
 }
