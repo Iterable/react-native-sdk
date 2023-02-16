@@ -3,14 +3,6 @@ import React, { Component } from 'react'
 import { Text, View, StyleSheet, Image } from 'react-native'
 import { Button } from 'react-native-elements'
 import { Iterable, IterableCommerceItem } from '@iterable/react-native-sdk'
-import { RouteProp, ParamListBase } from '@react-navigation/native'
-import { StackNavigationProp } from '@react-navigation/stack'
-import PropTypes from 'prop-types';
-
-DetailScreen.propTypes = {
-  route: RouteProp<Screens>,
-  navigation: PropTypes.NavigationScreenProp<ParamListBase>
-}
 
 export default class DetailScreen extends Component {
   constructor (props) {
