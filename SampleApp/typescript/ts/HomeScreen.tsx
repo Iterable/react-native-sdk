@@ -2,36 +2,36 @@ import React, {
   Component
 } from 'react'
 import {
-  View
+  View,
 } from 'react-native'
 import { ListItem } from 'react-native-elements'
-import { RouteProp } from '@react-navigation/native'
-import { StackNavigationProp } from '@react-navigation/stack'
+import { RouteProp } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { Screens } from './HomeTab'
 import { Coffee, coffees } from './Data'
 
-interface HomeScreenProps {
-  route: RouteProp<Screens, 'Home'>
-  navigation: StackNavigationProp<Screens>
+type HomeScreenProps = {
+  route: RouteProp<Screens, 'Home'>,
+  navigation: StackNavigationProp<Screens>,
 }
 
 export default class HomeScreen extends Component<HomeScreenProps> {
-  constructor (props: HomeScreenProps) {
+  constructor(props: HomeScreenProps) {
     super(props)
   }
 
-  navigate (coffee: Coffee) {
-    this.props.navigation.navigate('Detail', { coffee })
+  navigate(coffee: Coffee) {
+    this.props.navigation.navigate('Detail', { coffee: coffee })
   }
 
-  render () {
+  render() {
     return (
       <View>
         {
           coffees.map((coffee, i) => (
             <ListItem
               onPress={() => {
-                this.props.navigation.navigate('Detail', { coffee })
+                this.props.navigation.navigate('Detail', { coffee: coffee })
               }}
               key={i}
               leftAvatar={{ source: coffee.icon }}

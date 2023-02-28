@@ -12,7 +12,7 @@
       "outDir": "js",
       "declaration": true
     },
-    "include": ["ts", "**/*.ts"],
+    "include": ["ts"],
     "exclude": [
       "node_modules",
       "babel.config.js",

@@ -1,1 +1,1 @@
-export const iterableAPIKey = 'INSERT_YOUR_API_KEY_HERE'
+export const iterableAPIKey = "INSERT_YOUR_API_KEY_HERE"
