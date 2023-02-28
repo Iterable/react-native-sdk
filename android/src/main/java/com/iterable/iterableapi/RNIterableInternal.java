@@ -19,16 +19,15 @@ public class RNIterableInternal {
     public static JSONObject getInAppMessageJson(IterableInAppMessage message) {
         JSONObject messageJson = message.toJSONObject();
 
-        @Nullable JSONObject customPayload = message.customPayload;
-
-        if (customPayload != null) {
-            messageJson.put(IterableConstants.ITERABLE_IN_APP_CUSTOM_PAYLOAD, convertCustomPayloadToReadableMap(customPayload))
+        if (message.customPayload != null) {
+            messageJson.put(IterableConstants.ITERABLE_IN_APP_CUSTOM_PAYLOAD, convertCustomPayloadToReadableMap(message.customPayload))
         }
 
         return messageJson;
     }
 
     private static ReadableMap convertCustomPayloadToReadableMap(JSONObject customPayload) throws JSONException {
+        // modified from https://gist.github.com/viperwarp/2beb6bbefcc268dee7ad
         ReadableMap customPayloadMap = new ReadableMap();
 
         Iterator<String> iterator = customPayload.keys();
