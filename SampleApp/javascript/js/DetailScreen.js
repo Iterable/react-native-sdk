@@ -1,8 +1,10 @@
-'use strict';
-import React, { Component } from 'react';
-import { Text, View, StyleSheet, Image, } from 'react-native';
-import { Button } from 'react-native-elements';
-import { Iterable, IterableCommerceItem } from '@iterable/react-native-sdk';
+
+'use strict'
+import React, { Component } from 'react'
+import { Text, View, StyleSheet, Image } from 'react-native'
+import { Button } from 'react-native-elements'
+import { Iterable, IterableCommerceItem } from '@iterable/react-native-sdk'
+
 export default class DetailScreen extends Component {
     constructor(props) {
         super(props);
