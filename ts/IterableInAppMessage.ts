@@ -52,7 +52,7 @@ class IterableInAppMessage {
   /**
    * Custom Payload for this message.
    */
-  readonly customPayload?: any
+  readonly customPayload?: [any: any]
 
   /**
    * Whether this inbox message has been read
@@ -71,7 +71,7 @@ class IterableInAppMessage {
     expiresAt: Date | undefined,
     saveToInbox: boolean,
     inboxMetadata: IterableInboxMetadata | undefined,
-    customPayload: any | undefined,
+    customPayload: [any: any] | undefined,
     read: boolean,
     priorityLevel: number) {
     this.campaignId = campaignId
