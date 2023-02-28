@@ -17,7 +17,43 @@ public class RNIterableInternal {
     }
 
     public static JSONObject getInAppMessageJson(IterableInAppMessage message) {
-        return message.toJSONObject();
+        JSONObject messageJson = message.toJSONObject();
+
+        @Nullable JSONObject customPayload = message.customPayload;
+
+        if (customPayload != null) {
+            messageJson.put(IterableConstants.ITERABLE_IN_APP_CUSTOM_PAYLOAD, convertCustomPayloadToReadableMap(customPayload))
+        }
+
+        return messageJson;
+    }
+
+    private static ReadableMap convertCustomPayloadToReadableMap(JSONObject customPayload) throws JSONException {
+        ReadableMap customPayloadMap = new ReadableMap();
+
+        Iterator<String> iterator = customPayload.keys();
+
+        while (iterator.hasNext()) {
+            String key = iterator.next();
+            Object value = jsonObject.get(key);
+            if (value instanceof JSONObject) {
+                customPayloadMap.putMap(key, convertJsonToMap((JSONObject) value));
+            } else if (value instanceof JSONArray) {
+                customPayloadMap.putArray(key, convertJsonToArray((JSONArray) value));
+            } else if (value instanceof Boolean) {
+                customPayloadMap.putBoolean(key, (Boolean) value);
+            } else if (value instanceof Integer) {
+                customPayloadMap.putInt(key, (Integer) value);
+            } else if (value instanceof Double) {
+                customPayloadMap.putDouble(key, (Double) value);
+            } else if (value instanceof String) {
+                customPayloadMap.putString(key, (String) value);
+            } else {
+                customPayloadMap.putString(key, value.toString());
+            }
+        }
+
+        return customPayloadMap;
     }
 
     public static IterableInAppMessage getMessageById(String messageId) {
