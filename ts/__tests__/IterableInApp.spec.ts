@@ -28,7 +28,7 @@ beforeEach(() => {
 
 test('trackInAppOpen_params_methodCalledWithParams', () => {
   // GIVEN an in-app message and a location
-  const msg: IterableInAppMessage = new IterableInAppMessage('someMessageId', 123, new IterableInAppTrigger(IterableInAppTriggerType.event), new Date(1234), new Date(123123), true, new IterableInboxMetadata('title', 'subtitle', 'iconURL'), { CustomPayloadKey: 'CustomPayloadValue' }, false, 300.5)
+  const msg: IterableInAppMessage = new IterableInAppMessage('someMessageId', 123, new IterableInAppTrigger(IterableInAppTriggerType.event), new Date(1234), new Date(123123), true, new IterableInboxMetadata('title', 'subtitle', 'iconURL'), { 'CustomPayloadKey': 'CustomPayloadValue' }, false, 300.5)
   const location: IterableInAppLocation = IterableInAppLocation.inApp
 
   // WHEN Iterable.trackInAppOpen is called
@@ -40,7 +40,7 @@ test('trackInAppOpen_params_methodCalledWithParams', () => {
 
 test('trackInAppClick_params_methodCalledWithParams', () => {
   // GIVEN an in-app message, a location, and a url
-  const msg: IterableInAppMessage = new IterableInAppMessage('someMessageId', 123, new IterableInAppTrigger(IterableInAppTriggerType.event), new Date(1234), new Date(123123), true, new IterableInboxMetadata('title', 'subtitle', 'iconURL'), { CustomPayloadKey: 'CustomPayloadValue' }, false, 300.5)
+  const msg: IterableInAppMessage = new IterableInAppMessage('someMessageId', 123, new IterableInAppTrigger(IterableInAppTriggerType.event), new Date(1234), new Date(123123), true, new IterableInboxMetadata('title', 'subtitle', 'iconURL'), { 'CustomPayloadKey': 'CustomPayloadValue' }, false, 300.5)
   const location: IterableInAppLocation = IterableInAppLocation.inApp
   const url: string = 'URLClicked'
 
@@ -53,7 +53,7 @@ test('trackInAppClick_params_methodCalledWithParams', () => {
 
 test('trackInAppClose_params_methodCalledWithParams', () => {
   // GIVEN an in-app messsage, a location, a close source, and a url
-  const msg: IterableInAppMessage = new IterableInAppMessage('someMessageId', 123, new IterableInAppTrigger(IterableInAppTriggerType.event), new Date(1234), new Date(123123), true, new IterableInboxMetadata('title', 'subtitle', 'iconURL'), { CustomPayloadKey: 'CustomPayloadValue' }, false, 300.5)
+  const msg: IterableInAppMessage = new IterableInAppMessage('someMessageId', 123, new IterableInAppTrigger(IterableInAppTriggerType.event), new Date(1234), new Date(123123), true, new IterableInboxMetadata('title', 'subtitle', 'iconURL'), { 'CustomPayloadKey': 'CustomPayloadValue' }, false, 300.5)
   const location: IterableInAppLocation = IterableInAppLocation.inbox
   const source: IterableInAppCloseSource = IterableInAppCloseSource.link
   const url: string = 'ClickedURL'
