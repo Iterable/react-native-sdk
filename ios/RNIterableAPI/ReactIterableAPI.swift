@@ -679,4 +679,8 @@ extension ReactIterableAPI: IterableAuthDelegate {
             }
         }
     }
+    
+    func onTokenRegistrationFailed(_ reason: String?) {
+        
+    }
 }
