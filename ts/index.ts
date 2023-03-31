@@ -5,7 +5,7 @@
 * @module react-native-iterable-sdk
 */
 
-import { Iterable } from './Iterable'
+import { Iterable, IterableCommerceItem } from './Iterable'
 import IterableInAppManager from './IterableInAppManager'
 
 import { 
@@ -43,6 +43,7 @@ import IterableConfig from './IterableConfig'
 
 export {
   Iterable,
+  IterableCommerceItem,
   IterableConfig,
   IterableInAppManager,
   IterableAction,
