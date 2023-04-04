@@ -1,6 +1,6 @@
 enum IterableDataRegion {
-    US = "https://api.iterable.com/api/",
-    EU = "https://api.eu.iterable.com/api/"
+    US = 0,
+    EU = 1
   }
 
 export {
