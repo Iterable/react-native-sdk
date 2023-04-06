@@ -198,6 +198,10 @@ class Serialization {
                 configBuilder.setLogLevel(logLevel);
             }
 
+            if (iterableContextJSON.has("encryptionEnforced")) {
+                configBuilder.setEncryptionEnforced(iterableContextJSON.optBoolean("encryptionEnforced"));
+            }
+
             return configBuilder;
         } catch (JSONException e) {
             e.printStackTrace();

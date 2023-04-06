@@ -239,6 +239,7 @@ test('iterableConfig_noParams_defaultValues', () => {
   expect(config.allowedProtocols).toEqual([])
   expect(config.androidSdkUseInMemoryStorageForInApps).toBe(false)
   expect(config.useInMemoryStorageForInApps).toBe(false)
+  expect(config.encryptionEnforced).toBe(false)
 })
 
 test('iterableConfig_noParams_defaultDictValues', () => {
@@ -261,6 +262,7 @@ test('iterableConfig_noParams_defaultDictValues', () => {
   expect(configDict.allowedProtocols).toEqual([])
   expect(configDict.androidSdkUseInMemoryStorageForInApps).toBe(false)
   expect(configDict.useInMemoryStorageForInApps).toBe(false)
+  expect(configDict.encryptionEnforced).toBe(false)
 })
 
 test('urlHandler_canOpenUrlSetToTrueAndUrlHandlerReturnsFalse_openUrlCalled', async () => {
