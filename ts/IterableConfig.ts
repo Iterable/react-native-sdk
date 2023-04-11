@@ -115,6 +115,12 @@ class IterableConfig {
    */
   useInMemoryStorageForInApps: boolean = false
 
+  /**
+   * Android only feature: This controls whether the SDK should enforce encryption for all PII stored on disk.
+   * By default, the SDK will not enforce encryption and may fallback to unencrypted storage in case the encryption fails.
+   */
+  encryptionEnforced: boolean = false
+
   toDict(): any {
     return {
       "pushIntegrationName": this.pushIntegrationName,
@@ -128,7 +134,8 @@ class IterableConfig {
       "expiringAuthTokenRefreshPeriod": this.expiringAuthTokenRefreshPeriod,
       "allowedProtocols": this.allowedProtocols,
       "androidSdkUseInMemoryStorageForInApps": this.androidSdkUseInMemoryStorageForInApps,
-      "useInMemoryStorageForInApps": this.useInMemoryStorageForInApps
+      "useInMemoryStorageForInApps": this.useInMemoryStorageForInApps,
+      "encryptionEnforced": this.encryptionEnforced
     }
   }
 }
