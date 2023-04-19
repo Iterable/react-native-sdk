@@ -96,8 +96,6 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
             configBuilder.setAuthHandler(this);
         }
 
-        IterableLogger.d(TAG, "Data Region: " + configBuilder.build().dataRegion)
-
         IterableApi.initialize(reactContext, apiKey, configBuilder.build());
         IterableApi.getInstance().setDeviceAttribute("reactNativeSDKVersion", version);
 
