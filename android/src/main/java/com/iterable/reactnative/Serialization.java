@@ -15,6 +15,7 @@ import com.iterable.iterableapi.CommerceItem;
 import com.iterable.iterableapi.IterableAction;
 import com.iterable.iterableapi.IterableActionContext;
 import com.iterable.iterableapi.IterableConfig;
+import com.iterable.iterableapi.IterableDataRegion;
 import com.iterable.iterableapi.IterableInAppCloseAction;
 import com.iterable.iterableapi.IterableInAppDeleteActionType;
 import com.iterable.iterableapi.IterableInAppHandler;
@@ -196,6 +197,20 @@ class Serialization {
                 }
 
                 configBuilder.setLogLevel(logLevel);
+            }
+
+            if(iterableContextJSON.has("dataRegion")) {
+                int dataRegion = iterableContextJSON.getInt("dataRegion");
+                switch (dataRegion) {
+                    case 1:
+                        dataRegion = IterableDataRegion.EU;
+                        break;
+                    default:
+                        dataRegion = IterableDataRegion.US;
+                        break;
+                }
+
+                configBuilder.setDataRegion(dataRegion);
             }
 
             return configBuilder;

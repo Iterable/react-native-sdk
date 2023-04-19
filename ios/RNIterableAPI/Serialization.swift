@@ -70,6 +70,11 @@ extension IterableConfig {
         if let useInMemoryStorageForInApp = dict["useInMemoryStorageForInApps"] as? Bool {
             config.useInMemoryStorageForInApps = useInMemoryStorageForInApp
         }
+
+        if let dataRegion = dict["dataRegion"] as? String {
+            config.dataRegion = dataRegion
+        }
+        
         
         return config
     }
