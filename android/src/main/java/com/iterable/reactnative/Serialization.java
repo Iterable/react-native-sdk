@@ -201,16 +201,20 @@ class Serialization {
 
             if(iterableContextJSON.has("dataRegion")) {
                 int dataRegion = iterableContextJSON.getInt("dataRegion");
+                IterableDataRegion iterableDataRegion = IterableDataRegion.US;
                 switch (dataRegion) {
+                    case 0:
+                        iterableDataRegion = IterableDataRegion.US;
+                        break;
                     case 1:
-                        dataRegion = IterableDataRegion.EU;
+                        iterableDataRegion = IterableDataRegion.EU;
                         break;
                     default:
-                        dataRegion = IterableDataRegion.US;
+                        iterableDataRegion = IterableDataRegion.US;
                         break;
                 }
 
-                configBuilder.setDataRegion(dataRegion);
+                configBuilder.setDataRegion(iterableDataRegion);
             }
 
             return configBuilder;
