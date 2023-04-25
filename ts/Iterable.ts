@@ -200,6 +200,8 @@ class Iterable {
    * An optional valid, pre-fetched JWT can be passed in to avoid race conditions.
    * The SDK uses this JWT to authenticate API requests for this user.
    * 
+   * An Optional callback to know the result of setEmail (registertoken result)
+   * 
    * Signing out a user from the SDK:
    * 
    * To tell the SDK to sign out the current user, pass null into Iterable.setEmail.
@@ -265,6 +267,8 @@ class Iterable {
    * 
    * An optional valid, pre-fetched JWT can be passed in to avoid race conditions.
    * The SDK uses this JWT to authenticate API requests for this user.
+   * 
+   * An Optional callback to know the result of setUserId (registertoken result)
    * 
    * Signing out a user from the SDK:
    * 
