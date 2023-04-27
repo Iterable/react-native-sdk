@@ -398,7 +398,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         if (messageId == null) {
             return;
         }
-        IterableApi.getInstance().inAppConsume(RNIterableInternal.getMessageById(messageId), Serialization.getIterableDeleteActionTypeFromInteger(source), Serialization.getIterableInAppLocationFromInteger(location));
+        IterableApi.getInstance().inAppConsume(RNIterableInternal.getMessageById(messageId), Serialization.getIterableDeleteActionTypeFromInteger(source), Serialization.getIterableInAppLocationFromInteger(location), null);
     }
 
     @ReactMethod
