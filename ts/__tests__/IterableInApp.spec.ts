@@ -163,12 +163,20 @@ test('removeMessage_params_methodCalledWithParams', () => {
   const message = IterableInAppMessage.fromDict(messageDict)
   const location: IterableInAppLocation = IterableInAppLocation.inApp
   const source: IterableInAppDeleteSource = IterableInAppDeleteSource.deleteButton
+  const deleted: boolean = true
 
-  // WHEN Iterable.inAppManager.removeMessage is called
-  Iterable.inAppManager.removeMessage(message, location, source)
+  // Create a mock callback function
+  const mockCallback = jest.fn()
+
+  // WHEN Iterable.inAppManager.removeMessage is called with the message, location, source, and mock callback function
+  Iterable.inAppManager.removeMessage(message, location, source, mockCallback)
 
   // THEN corresponding method is called on MockIterableAPI with appropriate parameters
   expect(MockRNIterableAPI.removeMessage).toBeCalledWith(message.messageId, location, source)
+
+  // AND the mock callback function is called with a boolean value
+  expect(mockCallback).toHaveBeenCalled()
+  expect(mockCallback).toHaveBeenCalledWith(deleted)
 })
 
 test('setReadForMessage_params_methodCalledWithParams', () => {
@@ -181,11 +189,18 @@ test('setReadForMessage_params_methodCalledWithParams', () => {
   const message = IterableInAppMessage.fromDict(messageDict)
   const read: boolean = true
 
-  // WHEN Iterable.inAppManager.setReadForMessage is called
-  Iterable.inAppManager.setReadForMessage(message, read)
+  // Create a mock callback function
+  const mockCallback = jest.fn()
+
+  // WHEN Iterable.inAppManager.setReadForMessage is called with the message, read, and mock callback function
+  Iterable.inAppManager.setReadForMessage(message, read, mockCallback)
 
   // THEN corresponding method is called on MockRNIterableAPI with appropriate parameters
   expect(MockRNIterableAPI.setReadForMessage).toBeCalledWith(message.messageId, read)
+
+  // AND the mock callback function is called with a boolean value
+  expect(mockCallback).toHaveBeenCalled()
+  expect(mockCallback).toHaveBeenCalledWith(read)
 })
 
 test('setAutoDisplayPaused_params_methodCalledWithParams', () => {
