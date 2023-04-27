@@ -39,6 +39,7 @@ import com.iterable.iterableapi.IterableInboxSession;
 import com.iterable.iterableapi.IterableLogger;
 import com.iterable.iterableapi.IterableUrlHandler;
 import com.iterable.iterableapi.RNIterableInternal;
+import com.iterable.iterableapi.ResultCallbackHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -226,15 +227,25 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     }
 
     @ReactMethod
-    public void setReadForMessage(String messageId, boolean read) {
+    public void setReadForMessage(String messageId, boolean read, final Callback callback) {
         IterableLogger.v(TAG, "setReadForMessage");
-        IterableApi.getInstance().getInAppManager().setRead(RNIterableInternal.getMessageById(messageId), read);
+        IterableApi.getInstance().getInAppManager().setRead(RNIterableInternal.getMessageById(messageId), read, new ResultCallbackHandler() {
+            @Override
+            public void sendResult(boolean success) {
+                callback.invoke(success);
+            }
+        });
     }
 
     @ReactMethod
-    public void removeMessage(String messageId, Integer location, Integer deleteSource) {
+    public void removeMessage(String messageId, Integer location, Integer deleteSource, final Callback callback) {
         IterableLogger.v(TAG, "removeMessage");
-        IterableApi.getInstance().getInAppManager().removeMessage(RNIterableInternal.getMessageById(messageId), Serialization.getIterableDeleteActionTypeFromInteger(deleteSource), Serialization.getIterableInAppLocationFromInteger(location));
+        IterableApi.getInstance().getInAppManager().removeMessage(RNIterableInternal.getMessageById(messageId), Serialization.getIterableDeleteActionTypeFromInteger(deleteSource), Serialization.getIterableInAppLocationFromInteger(location), new ResultCallbackHandler() {
+            @Override
+            public void sendResult(boolean success) {
+                callback.invoke(success);
+            }
+        });
     }
 
     @ReactMethod
