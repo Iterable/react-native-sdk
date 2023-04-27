@@ -41,6 +41,23 @@ it('setEmail_getEmail_email_returnsEmail', async () => {
   })
 })
 
+it('setEmail_withValidEmail_returnsTrue', async () => {
+  Iterable.logger.log('setEmail_withValidEmail_returnsTrue')
+
+  // GIVEN a valid email
+  const email = 'user@example.com'
+
+  // WHEN Iterable.setEmail is called with the given email and a callback function
+  const result = await new Promise(resolve => {
+    Iterable.setEmail(email, (success) => {
+      resolve(success)
+    })
+  })
+
+  // THEN the callback returns true
+  expect(result).toBe(true)
+})
+
 test('setUserId_getUserId_userId_returnsUserId', async () => {
   Iterable.logger.log('setUserId_getUserId_userId_returnsUserId')
   const result = 'user1'
