@@ -1,0 +1,1 @@
+export type OnCompletionCallback = (success: boolean) => void;

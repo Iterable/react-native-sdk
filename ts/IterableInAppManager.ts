@@ -10,6 +10,7 @@ import {
 import { Iterable } from './Iterable'
 
 import IterableInAppMessage from './IterableInAppMessage'
+import { OnCompletionCallback } from './types'
 
 const RNIterableAPI = NativeModules.RNIterableAPI
 
@@ -72,11 +73,12 @@ class IterableInAppManager {
    * @param {IterableInAppMessage} message the in-app message (an IterableInAppMessage object)
    * @param {IterableInAppLocation} location the location of the in-app message (an IterableInAppLocation enum)
    * @param {IterableInAppDeleteSource} source how the in-app message was deleted (an IterableInAppDeleteSource enum)
+   * @param {OnCompletionCallback} onCompletion callback which returns whether message deletion was done successfully or not
    */
-  removeMessage(message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppDeleteSource): void {
+  removeMessage(message: IterableInAppMessage, location: IterableInAppLocation, source: IterableInAppDeleteSource, onCompletion?: OnCompletionCallback): void {
      Iterable.logger.log("InAppManager.remove")
-
-    return RNIterableAPI.removeMessage(message.messageId, location, source)
+     const callback = onCompletion ? onCompletion : (success: boolean) => { Iterable.logger.log("InAppManager.remove:"+success); }
+     return RNIterableAPI.removeMessage(message.messageId, location, source, callback)
   }
 
   /**
@@ -84,11 +86,12 @@ class IterableInAppManager {
    * 
    * @param {IterableInAppMessage} message the in-app message (an IterableInAppMessage object)
    * @param {boolean} read the boolean value indicating whether the in-app message was read
+   * @param {OnCompletionCallback} onCompletion callback which returns whether message read was done successfully or not
    */
-  setReadForMessage(message: IterableInAppMessage, read: boolean) {
+  setReadForMessage(message: IterableInAppMessage, read: boolean, onCompletion?: OnCompletionCallback) {
      Iterable.logger.log("InAppManager.setRead")
-
-    RNIterableAPI.setReadForMessage(message.messageId, read)
+     const callback = onCompletion ? onCompletion : (success: boolean) => { Iterable.logger.log("InAppManager.remove:"+success); }
+     RNIterableAPI.setReadForMessage(message.messageId, read, callback)
   }
 
   /**
