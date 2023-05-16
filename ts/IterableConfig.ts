@@ -10,6 +10,8 @@ import { IterableInAppShowResponse } from './IterableInAppClasses'
 
 import IterableInAppMessage from './IterableInAppMessage'
 
+import { IterableDataRegion } from './IterableDataRegion'
+
 type AuthCallBack = (() => void)
 
 /**
@@ -115,6 +117,11 @@ class IterableConfig {
    */
   useInMemoryStorageForInApps: boolean = false
 
+  /**
+   * This specifies the data region which determines the data center and associated endpoints used by the SDK
+   */
+  dataRegion: IterableDataRegion = IterableDataRegion.US
+
   toDict(): any {
     return {
       "pushIntegrationName": this.pushIntegrationName,
@@ -128,7 +135,8 @@ class IterableConfig {
       "expiringAuthTokenRefreshPeriod": this.expiringAuthTokenRefreshPeriod,
       "allowedProtocols": this.allowedProtocols,
       "androidSdkUseInMemoryStorageForInApps": this.androidSdkUseInMemoryStorageForInApps,
-      "useInMemoryStorageForInApps": this.useInMemoryStorageForInApps
+      "useInMemoryStorageForInApps": this.useInMemoryStorageForInApps,
+      "dataRegion": this.dataRegion
     }
   }
 }
