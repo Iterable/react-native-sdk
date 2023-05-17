@@ -39,7 +39,8 @@ import com.iterable.iterableapi.IterableInboxSession;
 import com.iterable.iterableapi.IterableLogger;
 import com.iterable.iterableapi.IterableUrlHandler;
 import com.iterable.iterableapi.RNIterableInternal;
-import com.iterable.iterableapi.ResultCallbackHandler;
+import com.iterable.iterableapi.IterableHelper.SuccessHandler;
+import com.iterable.iterableapi.IterableHelper.FailureHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -118,10 +119,15 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     public void setEmail(@Nullable String email, @Nullable String authToken, final Callback callback) {
         IterableLogger.d(TAG, "setEmail: " + email + " authToken: " + authToken);
 
-        IterableApi.getInstance().setEmail(email, authToken, new ResultCallbackHandler() {
+        IterableApi.getInstance().setEmail(email, authToken, new SuccessHandler() {
             @Override
-            public void sendResult(boolean success) {
-                callback.invoke(success);
+            public void onSuccess(@NonNull JSONObject data) {
+                callback.invoke(data);
+            }
+        }, new FailureHandler() {
+            @Override
+            public void onFailure(@NonNull String reason, @Nullable JSONObject data) {
+                callback.invoke(false);
             }
         });
     }
@@ -161,10 +167,15 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     public void setUserId(@Nullable String userId, @Nullable String authToken, final Callback callback) {
         IterableLogger.d(TAG, "setUserId: " + userId + " authToken: " + authToken);
         
-        IterableApi.getInstance().setUserId(userId, authToken, new ResultCallbackHandler() {
+        IterableApi.getInstance().setUserId(userId, authToken, new SuccessHandler() {
             @Override
-            public void sendResult(boolean success) {
-                callback.invoke(success);
+            public void onSuccess(@NonNull JSONObject data) {
+                callback.invoke(data);
+            }
+        }, new FailureHandler() {
+            @Override
+            public void onFailure(@NonNull String reason, @Nullable JSONObject data) {
+                callback.invoke(false);
             }
         });
     }
