@@ -209,11 +209,11 @@ class Iterable {
    * 
    * Note: specify a user by calling Iterable.setEmail or Iterable.setUserId, but NOT both.
    * 
-   * @param {string | null} email email address to associate with the current user
+   * @param {string | null | undefined} email email address to associate with the current user
    * @param {string | undefined} authToken valid, pre-fecthed JWT the SDK can use to authenticate API requests, optional - if null/undefined, no JWT related action will be taken
    */ 
 
-  static setEmail(email: string | null, authToken?: string | null) {
+  static setEmail(email?: string | null, authToken?: string | null) {
     Iterable.logger.log("setEmail: " + email)
 
     RNIterableAPI.setEmail(email, authToken)
@@ -262,11 +262,11 @@ class Iterable {
    * 
    * Note: specify a user by calling Iterable.setEmail or Iterable.setUserId, but NOT both.
    * 
-   * parameters: @param {string | null} userId user ID to associate with the current user 
+   * parameters: @param {string | null | undefined} userId user ID to associate with the current user 
    * optional parameter: @param {string | undefined} authToken valid, pre-fecthed JWT the SDK can use to authenticate API requests, optional - if null/undefined, no JWT related action will be taken
    */ 
  
-  static setUserId(userId: string | null, authToken?: string | undefined) {
+  static setUserId(userId?: string | null, authToken?: string | undefined) {
     Iterable.logger.log("setUserId: " + userId)
 
     RNIterableAPI.setUserId(userId, authToken)
