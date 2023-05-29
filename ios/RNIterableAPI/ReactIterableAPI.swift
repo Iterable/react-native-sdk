@@ -110,8 +110,11 @@ class ReactIterableAPI: RCTEventEmitter {
     func set(email: String?, authToken: String?, callback: @escaping RCTResponseSenderBlock) {
         ITBInfo()
 
-        IterableAPI.setEmail(email, authToken) { success in
-            callback([success])
+        IterableAPI.setEmail(email, authToken, successHandler: { data in
+            callback([true])
+        }) { error, data  in
+            // Handle error during removal
+            callback([false])
         }
     }
     
@@ -133,8 +136,11 @@ class ReactIterableAPI: RCTEventEmitter {
     func set(userId: String?, authToken: String?, callback: @escaping RCTResponseSenderBlock) {
         ITBInfo()
         
-        IterableAPI.setUserId(userId, authToken) { success in
-            callback([success])
+        IterableAPI.setUserId(userId, authToken, successHandler: { data in
+            callback([true])
+        }) { error, data  in
+            // Handle error during removal
+            callback([false])
         }
     }
     
