@@ -388,13 +388,19 @@ class ReactIterableAPI: RCTEventEmitter {
         if let inAppDeleteSource = InAppDeleteSource.from(number: sourceNumber) {
             IterableAPI.inAppManager.remove(message: message,
                                             location: InAppLocation.from(number: locationNumber),
-                                            source: inAppDeleteSource) { success in
-                onCompletion([success])
+                                            source: inAppDeleteSource, successHandler: { data in
+                onCompletion([true])
+            }) { error, data  in
+                // Handle error during removal
+                onCompletion([false])
             }
         } else {
             IterableAPI.inAppManager.remove(message: message,
-                                            location: InAppLocation.from(number: locationNumber)) { success in
-                onCompletion([success])
+                                            location: InAppLocation.from(number: locationNumber), successHandler: { data in
+                onCompletion([true])
+            }) { error, data  in
+                // Handle error during removal
+                onCompletion([false])
             }
         }
     }
@@ -428,8 +434,11 @@ class ReactIterableAPI: RCTEventEmitter {
             return
         }
         
-        IterableAPI.inAppManager.set(read: read, forMessage: message) { success in
-            onCompletion([success])
+        IterableAPI.inAppManager.set(read: read, forMessage: message, successHandler: { data in
+            onCompletion([true])
+        }) { error, data  in
+            // Handle error during removal
+            onCompletion([false])
         }
     }
     
