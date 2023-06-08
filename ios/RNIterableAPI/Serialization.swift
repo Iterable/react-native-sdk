@@ -71,8 +71,15 @@ extension IterableConfig {
             config.useInMemoryStorageForInApps = useInMemoryStorageForInApp
         }
 
-        if let dataRegion = dict["dataRegion"] as? String {
-            config.dataRegion = dataRegion
+        if let dataRegion = dict["dataRegion"] as? NSNumber {
+            switch dataRegion {
+            case 0:
+                config.dataRegion = IterableDataRegion.US
+            case 1:
+                config.dataRegion = IterableDataRegion.EU
+            default:
+                config.dataRegion = IterableDataRegion.US
+            }
         }
         
         
