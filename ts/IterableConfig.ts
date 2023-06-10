@@ -121,6 +121,12 @@ class IterableConfig {
    * This specifies the data region which determines the data center and associated endpoints used by the SDK
    */
   dataRegion: IterableDataRegion = IterableDataRegion.US
+  
+  /**
+   * Android only feature: This controls whether the SDK should enforce encryption for all PII stored on disk.
+   * By default, the SDK will not enforce encryption and may fallback to unencrypted storage in case the encryption fails.
+   */
+  encryptionEnforced: boolean = false
 
   toDict(): any {
     return {
@@ -137,6 +143,7 @@ class IterableConfig {
       "androidSdkUseInMemoryStorageForInApps": this.androidSdkUseInMemoryStorageForInApps,
       "useInMemoryStorageForInApps": this.useInMemoryStorageForInApps,
       "dataRegion": this.dataRegion
+      "encryptionEnforced": this.encryptionEnforced
     }
   }
 }

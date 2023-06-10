@@ -216,6 +216,10 @@ class Serialization {
 
                 configBuilder.setDataRegion(iterableDataRegion);
             }
+          
+            if (iterableContextJSON.has("encryptionEnforced")) {
+                configBuilder.setEncryptionEnforced(iterableContextJSON.optBoolean("encryptionEnforced"));
+            }
 
             return configBuilder;
         } catch (JSONException e) {
