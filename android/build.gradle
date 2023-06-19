@@ -3,6 +3,7 @@ apply plugin: 'com.android.library'
 import groovy.json.JsonSlurper
 
 android {
+    namespace = "com.iterable.reactnative"
     compileSdkVersion safeExtGet('compileSdkVersion', 28)
 
     defaultConfig {
