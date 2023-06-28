@@ -233,7 +233,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         IterableApi.getInstance().getInAppManager().setRead(RNIterableInternal.getMessageById(messageId), read, new SuccessHandler() {
             @Override
             public void onSuccess(@NonNull JSONObject data) {
-                callback.invoke(data);
+                callback.invoke(true);
             }
         });
     }
@@ -244,7 +244,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         IterableApi.getInstance().getInAppManager().removeMessage(RNIterableInternal.getMessageById(messageId), Serialization.getIterableDeleteActionTypeFromInteger(deleteSource), Serialization.getIterableInAppLocationFromInteger(location), new SuccessHandler() {
             @Override
             public void onSuccess(@NonNull JSONObject data) {
-                callback.invoke(data);
+                callback.invoke(true);
             }
         }, new FailureHandler() {
             @Override
