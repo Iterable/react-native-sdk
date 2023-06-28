@@ -122,7 +122,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         IterableApi.getInstance().setEmail(email, authToken, new SuccessHandler() {
             @Override
             public void onSuccess(@NonNull JSONObject data) {
-                callback.invoke(data);
+                callback.invoke(true);
             }
         }, new FailureHandler() {
             @Override
@@ -170,7 +170,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         IterableApi.getInstance().setUserId(userId, authToken, new SuccessHandler() {
             @Override
             public void onSuccess(@NonNull JSONObject data) {
-                callback.invoke(data);
+                callback.invoke(true);
             }
         }, new FailureHandler() {
             @Override
