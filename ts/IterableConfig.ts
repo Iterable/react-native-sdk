@@ -142,7 +142,7 @@ class IterableConfig {
       "allowedProtocols": this.allowedProtocols,
       "androidSdkUseInMemoryStorageForInApps": this.androidSdkUseInMemoryStorageForInApps,
       "useInMemoryStorageForInApps": this.useInMemoryStorageForInApps,
-      "dataRegion": this.dataRegion
+      "dataRegion": this.dataRegion,
       "encryptionEnforced": this.encryptionEnforced
     }
   }
