@@ -1,3 +1,8 @@
+## 1.3.14
+## updates
+- updates `Iterable.setEmail` and `Iterable.setUserId` to take in null parameter type
+- fixes `Iterable.updateUser` on the Android side to merge nested objects in the user profile when `mergeNestedObjects` is set to true
+
 ## 1.3.9
 ### Added
 
