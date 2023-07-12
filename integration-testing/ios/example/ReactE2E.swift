@@ -85,7 +85,7 @@ class ReactE2E: RCTEventEmitter {
             let campaignId = params["campaignId"] as! Int
             _ = IterableAPISupport.sendInApp(apiKey: apiKey, to: email, withCampaignId: campaignId)
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                _ = IterableAPI.internalImplementation?.inAppManager.scheduleSync()
+                _ = IterableAPI.implementation?.inAppManager.scheduleSync()
             }
             break
         default:
