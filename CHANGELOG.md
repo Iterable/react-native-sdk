@@ -1,3 +1,15 @@
+## 1.3.15
+## Updates
+- Resolves Android build issues caused in 1.3.14
+- Fixes a specific Android issue where custom action handlers were not invoked when tapping on push notification when the app is in background.
+
+## 1.3.14
+> **Warning**
+> This version causes build failure on Android. Please use 1.3.15 which fixes this issue.
+## updates
+- updates `Iterable.setEmail` and `Iterable.setUserId` to take in null parameter type
+- fixes `Iterable.updateUser` on the Android side to merge nested objects in the user profile when `mergeNestedObjects` is set to true
+
 ## 1.3.9
 ### Added
 
