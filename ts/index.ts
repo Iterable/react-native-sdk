@@ -41,6 +41,8 @@ import InboxImpressionRowInfo from './InboxImpressionRowInfo'
 
 import IterableConfig from './IterableConfig'
 
+import IterableNotificationView from './components/IterableNotificationView';
+
 export {
   Iterable,
   IterableCommerceItem,
@@ -60,6 +62,7 @@ export {
   IterableInAppMessage,
   IterableInAppCloseSource,
   IterableInAppDeleteSource,
+  IterableNotificationView,
   IterableInboxEmptyState,
   IterableInboxMessageCell,
   useAppStateListener,
