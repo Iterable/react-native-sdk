@@ -55,8 +55,6 @@ export default class App extends React.Component {
             <Stack.Navigator>
                 <Stack.Screen name="Home" component={HomeScreen} />
                 <Stack.Screen name="CardView" component={CardViewScreen} />
-                <Stack.Screen name="Profile" component={CardViewScreen} />
-                <Stack.Screen name="Settings" component={CardViewScreen} />
             </Stack.Navigator>
         </NavigationContainer>)
     }

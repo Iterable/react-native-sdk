@@ -11,11 +11,11 @@ export default class HomeScreen extends Component {
     }
 
     navigateToNotificationView() {
-        this.props.navigation.navigate('NotificationView');
+        console.log("Notification View");
     }
 
     navigateToBannerView() {
-        this.props.navigation.navigate('BannerView');
+        console.log("Banner View");
     }
 
     render() {
