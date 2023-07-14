@@ -1,17 +1,36 @@
 import React, { Component } from 'react';
-import { View, } from 'react-native';
-import { ListItem } from 'react-native-elements';
-import { coffees } from './Data';
+import { TouchableOpacity, View, Text } from 'react-native';
+
 export default class HomeScreen extends Component {
     constructor(props) {
         super(props);
     }
-    navigate(coffee) {
-        this.props.navigation.navigate('Detail', { coffee: coffee });
+    
+    navigateToCardView() {
+        console.log("Card View");
     }
+
+    navigateToNotificationView() {
+        console.log("Notification View");
+    }
+
+    navigateToBannerView() {
+        this.props.navigation.navigate('BannerView');
+    }
+
     render() {
-        return (React.createElement(View, null, coffees.map((coffee, i) => (React.createElement(ListItem, { onPress: () => {
-                this.props.navigation.navigate('Detail', { coffee: coffee });
-            }, key: i, leftAvatar: { source: coffee.icon }, title: coffee.name, subtitle: coffee.subtitle, bottomDivider: true, chevron: true })))));
+        return <View style={{ flex: 1, padding: 10 }}>
+            <TouchableOpacity style={{ padding: 10, width: '100%', justifyContent: 'center' }} onPress={() => this.navigateToCardView()}>
+                <Text style={{ textAlign: 'center', color: 'blue', fontSize: 16 }}>{"Card View Demo"}</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={{ padding: 10, width: '100%', justifyContent: 'center' }} onPress={() => this.navigateToNotificationView()}>
+                <Text style={{ textAlign: 'center', color: 'blue', fontSize: 16 }}>{"Notification View Demo"}</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={{ padding: 10, width: '100%', justifyContent: 'center' }} onPress={() => this.navigateToBannerView()}>
+                <Text style={{ textAlign: 'center', color: 'blue', fontSize: 16 }}>{"Banner View Demo"}</Text>
+            </TouchableOpacity>
+        </View>
     }
 }
