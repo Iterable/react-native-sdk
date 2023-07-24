@@ -183,7 +183,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     @ReactMethod
     public void updateUser(ReadableMap dataFields, Boolean mergeNestedObjects) {
         IterableLogger.v(TAG, "updateUser");
-        IterableApi.getInstance().updateUser(optSerializedDataFields(dataFields));
+        IterableApi.getInstance().updateUser(optSerializedDataFields(dataFields), mergeNestedObjects);
     }
 
     @ReactMethod
