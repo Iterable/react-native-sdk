@@ -39,6 +39,8 @@ import com.iterable.iterableapi.IterableInboxSession;
 import com.iterable.iterableapi.IterableLogger;
 import com.iterable.iterableapi.IterableUrlHandler;
 import com.iterable.iterableapi.RNIterableInternal;
+import com.iterable.iterableapi.IterableHelper.SuccessHandler;
+import com.iterable.iterableapi.IterableHelper.FailureHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -114,10 +116,20 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     }
 
     @ReactMethod
-    public void setEmail(@Nullable String email, @Nullable String authToken) {
+    public void setEmail(@Nullable String email, @Nullable String authToken, final Callback callback) {
         IterableLogger.d(TAG, "setEmail: " + email + " authToken: " + authToken);
 
-        IterableApi.getInstance().setEmail(email, authToken);
+        IterableApi.getInstance().setEmail(email, authToken, new SuccessHandler() {
+            @Override
+            public void onSuccess(@NonNull JSONObject data) {
+                callback.invoke(true);
+            }
+        }, new FailureHandler() {
+            @Override
+            public void onFailure(@NonNull String reason, @Nullable JSONObject data) {
+                callback.invoke(false);
+            }
+        });
     }
 
     @ReactMethod
@@ -152,10 +164,20 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     }
 
     @ReactMethod
-    public void setUserId(@Nullable String userId, @Nullable String authToken) {
+    public void setUserId(@Nullable String userId, @Nullable String authToken, final Callback callback) {
         IterableLogger.d(TAG, "setUserId: " + userId + " authToken: " + authToken);
         
-        IterableApi.getInstance().setUserId(userId, authToken);
+        IterableApi.getInstance().setUserId(userId, authToken, new SuccessHandler() {
+            @Override
+            public void onSuccess(@NonNull JSONObject data) {
+                callback.invoke(true);
+            }
+        }, new FailureHandler() {
+            @Override
+            public void onFailure(@NonNull String reason, @Nullable JSONObject data) {
+                callback.invoke(false);
+            }
+        });
     }
 
     @ReactMethod
