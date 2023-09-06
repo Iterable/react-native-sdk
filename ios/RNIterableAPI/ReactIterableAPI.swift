@@ -376,8 +376,8 @@ class ReactIterableAPI: RCTEventEmitter {
         }
     }
     
-    @objc(removeMessage:location:source:)
-    func remove(messageId: String, location locationNumber: NSNumber, source sourceNumber: NSNumber) {
+    @objc(removeMessage:location:source:onCompletion:)
+    func remove(messageId: String, location locationNumber: NSNumber, source sourceNumber: NSNumber, onCompletion: @escaping RCTResponseSenderBlock) {
         ITBInfo()
         
         guard let message = IterableAPI.inAppManager.getMessage(withId: messageId) else {
@@ -388,10 +388,20 @@ class ReactIterableAPI: RCTEventEmitter {
         if let inAppDeleteSource = InAppDeleteSource.from(number: sourceNumber) {
             IterableAPI.inAppManager.remove(message: message,
                                             location: InAppLocation.from(number: locationNumber),
-                                            source: inAppDeleteSource)
+                                            source: inAppDeleteSource, successHandler: { data in
+                onCompletion([true])
+            }) { error, data  in
+                // Handle error during removal
+                onCompletion([false])
+            }
         } else {
             IterableAPI.inAppManager.remove(message: message,
-                                            location: InAppLocation.from(number: locationNumber))
+                                            location: InAppLocation.from(number: locationNumber), successHandler: { data in
+                onCompletion([true])
+            }) { error, data  in
+                // Handle error during removal
+                onCompletion([false])
+            }
         }
     }
     
@@ -415,8 +425,8 @@ class ReactIterableAPI: RCTEventEmitter {
                                         templateId: finalTemplateId)
     }
     
-    @objc(setReadForMessage:read:)
-    func setRead(for messageId: String, read: Bool) {
+    @objc(setReadForMessage:read:onCompletion:)
+    func setRead(for messageId: String, read: Bool, onCompletion: @escaping RCTResponseSenderBlock) {
         ITBInfo()
         
         guard let message = IterableAPI.inAppManager.getMessage(withId: messageId) else {
@@ -424,7 +434,12 @@ class ReactIterableAPI: RCTEventEmitter {
             return
         }
         
-        IterableAPI.inAppManager.set(read: read, forMessage: message)
+        IterableAPI.inAppManager.set(read: read, forMessage: message, successHandler: { data in
+            onCompletion([true])
+        }) { error, data  in
+            // Handle error during removal
+            onCompletion([false])
+        }
     }
     
     @objc(setAutoDisplayPaused:)
