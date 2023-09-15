@@ -8,9 +8,9 @@ import {
    StyleSheet,
    Linking,
    TouchableWithoutFeedback,
+   Image
 } from 'react-native'
 import { WebView } from 'react-native-webview'
-import Icon from 'react-native-vector-icons/Ionicons'
 
 import { 
    IterableHtmlInAppContent, 
@@ -78,9 +78,17 @@ const IterableInboxMessageDisplay = ({
       },
 
       returnButtonIcon: {
-         color: 'deepskyblue',
-         fontSize: 40,
+         tintColor: 'deepskyblue',
+         height: 24,
+         width: 24,
          paddingLeft: 0
+      },
+
+      returnButtonIconContainer: {
+         height: 40,
+         width: 40,
+         alignItems: 'center',
+         justifyContent: 'center'
       },
 
       returnButtonText: {
@@ -119,6 +127,7 @@ const IterableInboxMessageDisplay = ({
       returnButtonContainer,
       returnButton,
       returnButtonIcon,
+      returnButtonIconContainer,
       returnButtonText,
       messageTitleContainer,
       messageTitleText,
@@ -201,7 +210,12 @@ const IterableInboxMessageDisplay = ({
                   }}
                >
                   <View style={returnButton}>
-                     <Icon name="ios-chevron-back" style={returnButtonIcon} />
+                     <View style={returnButtonIconContainer}>
+                        <Image
+                           source={require('../images/back.png')}
+                           style={returnButtonIcon}
+                        />
+                     </View>
                      <Text style={returnButtonText}>Inbox</Text>
                   </View>
                </TouchableWithoutFeedback>
