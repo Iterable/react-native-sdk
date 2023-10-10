@@ -1,3 +1,7 @@
+## 1.3.17
+## Fixed
+- Fixes a specific Android issue where apps could crash due to EncryptedSharedPreference being null.
+
 ## 1.3.16
 ## Updates
 
