@@ -77,13 +77,17 @@ export class Login extends Component<Props, State> {
 
   private onLoginTapped = () => {
     console.log("onLoginTapped")
-    Iterable.setEmail(this.state.email)
+    Iterable.setEmail(this.state.email, (result) => {
+      console.log("setEmail result:", result)
+    })
     this.updateState()
   }
 
   private onLogoutTapped = () => {
     console.log("onLogoutTapped")
-    Iterable.setEmail(undefined)
+    Iterable.setEmail(undefined, (result) => {
+      console.log("setEmail result:", result)
+    })
     this.updateState()
   }
 

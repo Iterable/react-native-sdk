@@ -23,13 +23,15 @@ RCT_EXTERN_METHOD(initialize2WithApiKey: (nonnull NSString *) apiKey
                   rejecter: (RCTPromiseRejectBlock) reject)
 
 RCT_EXTERN_METHOD(setEmail: (NSString *) email
-                  authToken: (NSString *) authToken)
+                  authToken: (NSString *) authToken
+                  callback: (RCTResponseSenderBlock) callback)
 
 RCT_EXTERN_METHOD(getEmail: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
 
 RCT_EXTERN_METHOD(setUserId: (NSString *) userId
-                  authToken: (NSString *) authToken)
+                  authToken: (NSString *) authToken
+                  callback: (RCTResponseSenderBlock) callback)
 
 RCT_EXTERN_METHOD(getUserId: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)

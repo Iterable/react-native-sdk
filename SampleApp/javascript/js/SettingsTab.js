@@ -8,7 +8,9 @@ class SettingsTab extends Component {
         super(props);
         this.onLoginTapped = () => {
             console.log("onLoginTapped");
-            Iterable.setEmail(this.state.email);
+            Iterable.setEmail(this.state.email, (result) => {
+                console.log('setEmail result:'+result)
+            });
             this.updateState();
         };
         this.onLogoutTapped = () => {

@@ -12,9 +12,8 @@ class ReactIterableAPI: RCTEventEmitter {
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
-    
     // MARK: - React Native Functions
-    
+
     @objc static override func moduleName() -> String! {
         return "RNIterableAPI"
     }
@@ -106,6 +105,18 @@ class ReactIterableAPI: RCTEventEmitter {
 
         IterableAPI.setEmail(email, authToken)
     }
+
+    @objc(setEmail:authToken:callback:)
+    func set(email: String?, authToken: String?, callback: @escaping RCTResponseSenderBlock) {
+        ITBInfo()
+
+        IterableAPI.setEmail(email, authToken, successHandler: { data in
+            callback([true])
+        }) { error, data  in
+            // Handle error during removal
+            callback([false])
+        }
+    }
     
     @objc(getEmail:rejecter:)
     func getEmail(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
@@ -121,11 +132,16 @@ class ReactIterableAPI: RCTEventEmitter {
         IterableAPI.userId = userId
     }
 
-    @objc(setUserId:authToken:)
-    func set(userId: String?, authToken: String?) {
+    @objc(setUserId:authToken:callback:)
+    func set(userId: String?, authToken: String?, callback: @escaping RCTResponseSenderBlock) {
         ITBInfo()
         
-        IterableAPI.setUserId(userId, authToken)
+        IterableAPI.setUserId(userId, authToken, successHandler: { data in
+            callback([true])
+        }) { error, data  in
+            // Handle error during removal
+            callback([false])
+        }
     }
     
     @objc(getUserId:rejecter:)
