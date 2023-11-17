@@ -52,7 +52,7 @@ class SettingsTab extends Component {
     renderLoggedOut() {
         console.log("renderLoggedOut");
         return (React.createElement(View, { style: styles.emailContainer },
-            React.createElement(TextInput, { value: this.state.email, style: styles.emailTextInput, autoCapitalize: "none", autoCompleteType: "email", onChangeText: (text) => this.setState({ isLoggedIn: false, email: text }), placeholder: "user@example.com/userId" }),
+            React.createElement(TextInput, { value: this.state.email, style: styles.emailTextInput, autoCapitalize: "none", autoCompleteType: emailRegex.test(this.state.email) ? "email" : "none", onChangeText: (text) => this.setState({ isLoggedIn: false, email: text }), placeholder: "user@example.com/userId" }),
             React.createElement(Button, { title: "Login", onPress: this.onLoginTapped })));
     }
     updateState() {
@@ -60,6 +60,16 @@ class SettingsTab extends Component {
             console.log("gotEmail: " + email);
             if (email) {
                 this.setState({ isLoggedIn: true, email: email });
+            }
+            else {
+                this.setState({ isLoggedIn: false, email: undefined });
+            }
+        });
+
+        Iterable.getUserId().then(userId => {
+            console.log("gotUserId: " + userId);
+            if (userId) {
+                this.setState({ isLoggedIn: true, email: userId });
             }
             else {
                 this.setState({ isLoggedIn: false, email: undefined });
