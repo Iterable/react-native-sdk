@@ -90,7 +90,7 @@ class SettingsTab extends Component<Props, State> {
     
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (emailRegex.test(this.state.email)) {
-    Iterable.setEmail(undefined)
+      Iterable.setEmail(undefined)
     } else {
       Iterable.setUserId(undefined)
     }
@@ -103,16 +103,14 @@ class SettingsTab extends Component<Props, State> {
       if (email) {
         this.setState({ isLoggedIn: true, email: email })
       } else {
-        this.setState({ isLoggedIn: false, email: undefined })
-      }
-    })
-
-    Iterable.getUserId().then(userId => {
-      console.log("gotUserId: " + userId)
-      if (userId) {
-        this.setState({ isLoggedIn: true, email: userId })
-      } else {
-        this.setState({ isLoggedIn: false, email: undefined })
+        Iterable.getUserId().then(userId => {
+          console.log("gotUserId: " + userId)
+          if (userId) {
+            this.setState({ isLoggedIn: true, email: userId })
+          } else {
+            this.setState({ isLoggedIn: false, email: undefined })
+          }
+        })
       }
     })
   }

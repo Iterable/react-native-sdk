@@ -5,13 +5,14 @@ import { TextInput } from 'react-native-gesture-handler';
 import { Iterable } from '@iterable/react-native-sdk';
 class SettingsTab extends Component {
     constructor(props) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         super(props);
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         this.onLoginTapped = () => {
             console.log("onLoginTapped");
             if (emailRegex.test(this.state.email)) {
                 Iterable.setEmail(this.state.email);
-            } else{
+                this.updateState();
+            } else {
                 Iterable.setUserId(this.state.email);
             }
             this.updateState();
@@ -62,17 +63,14 @@ class SettingsTab extends Component {
                 this.setState({ isLoggedIn: true, email: email });
             }
             else {
-                this.setState({ isLoggedIn: false, email: undefined });
-            }
-        });
-
-        Iterable.getUserId().then(userId => {
-            console.log("gotUserId: " + userId);
-            if (userId) {
-                this.setState({ isLoggedIn: true, email: userId });
-            }
-            else {
-                this.setState({ isLoggedIn: false, email: undefined });
+                Iterable.getUserId().then(userId => {
+                    console.log("gotUserId: " + userId);
+                    if(userId) {
+                        this.setState({ isLoggedIn: true, email: userId });
+                    } else {
+                        this.setState({ isLoggedIn: false, email: undefined });
+                    }
+                })
             }
         });
     }
