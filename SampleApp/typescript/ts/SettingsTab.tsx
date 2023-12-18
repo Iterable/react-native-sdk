@@ -56,15 +56,16 @@ class SettingsTab extends Component<Props, State> {
 
   private renderLoggedOut() {
     console.log("renderLoggedOut")
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     return (
       <View style={styles.emailContainer}>
         <TextInput
           value={this.state.email}
           style={styles.emailTextInput}
           autoCapitalize="none"
-          autoCompleteType="email"
+          autoCompleteType= {emailRegex.test(this.state.email) ? "email" : "none"}
           onChangeText={(text) => this.setState({ isLoggedIn: false, email: text })}
-          placeholder="user@example.com" />
+          placeholder="user@example.com/userId" />
         <Button
           title="Login"
           onPress={this.onLoginTapped}
@@ -75,13 +76,24 @@ class SettingsTab extends Component<Props, State> {
 
   private onLoginTapped = () => {
     console.log("onLoginTapped")
-    Iterable.setEmail(this.state.email)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (emailRegex.test(this.state.email)) {
+      Iterable.setEmail(this.state.email)
+    } else{
+      Iterable.setUserId(this.state.email)
+    }
     this.updateState()
   }
 
   private onLogoutTapped = () => {
     console.log("onLogoutTapped")
-    Iterable.setEmail(undefined)
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (emailRegex.test(this.state.email)) {
+      Iterable.setEmail(undefined)
+    } else {
+      Iterable.setUserId(undefined)
+    }
     this.updateState()
   }
 
@@ -91,7 +103,14 @@ class SettingsTab extends Component<Props, State> {
       if (email) {
         this.setState({ isLoggedIn: true, email: email })
       } else {
-        this.setState({ isLoggedIn: false, email: undefined })
+        Iterable.getUserId().then(userId => {
+          console.log("gotUserId: " + userId)
+          if (userId) {
+            this.setState({ isLoggedIn: true, email: userId })
+          } else {
+            this.setState({ isLoggedIn: false, email: undefined })
+          }
+        })
       }
     })
   }
