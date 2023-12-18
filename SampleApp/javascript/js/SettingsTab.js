@@ -6,14 +6,24 @@ import { Iterable } from '@iterable/react-native-sdk';
 class SettingsTab extends Component {
     constructor(props) {
         super(props);
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         this.onLoginTapped = () => {
             console.log("onLoginTapped");
-            Iterable.setEmail(this.state.email);
+            if (emailRegex.test(this.state.email)) {
+                Iterable.setEmail(this.state.email);
+                this.updateState();
+            } else {
+                Iterable.setUserId(this.state.email);
+            }
             this.updateState();
         };
         this.onLogoutTapped = () => {
             console.log("onLogoutTapped");
-            Iterable.setEmail(undefined);
+            if (emailRegex.test(this.state.email)) {
+                Iterable.setEmail(undefined);
+            } else{
+                Iterable.setUserId(undefined);
+            }
             this.updateState();
         };
         this.state = { isLoggedIn: false };
@@ -43,7 +53,7 @@ class SettingsTab extends Component {
     renderLoggedOut() {
         console.log("renderLoggedOut");
         return (React.createElement(View, { style: styles.emailContainer },
-            React.createElement(TextInput, { value: this.state.email, style: styles.emailTextInput, autoCapitalize: "none", autoCompleteType: "email", onChangeText: (text) => this.setState({ isLoggedIn: false, email: text }), placeholder: "user@example.com" }),
+            React.createElement(TextInput, { value: this.state.email, style: styles.emailTextInput, autoCapitalize: "none", autoCompleteType: emailRegex.test(this.state.email) ? "email" : "none", onChangeText: (text) => this.setState({ isLoggedIn: false, email: text }), placeholder: "user@example.com/userId" }),
             React.createElement(Button, { title: "Login", onPress: this.onLoginTapped })));
     }
     updateState() {
@@ -53,7 +63,14 @@ class SettingsTab extends Component {
                 this.setState({ isLoggedIn: true, email: email });
             }
             else {
-                this.setState({ isLoggedIn: false, email: undefined });
+                Iterable.getUserId().then(userId => {
+                    console.log("gotUserId: " + userId);
+                    if(userId) {
+                        this.setState({ isLoggedIn: true, email: userId });
+                    } else {
+                        this.setState({ isLoggedIn: false, email: undefined });
+                    }
+                })
             }
         });
     }
