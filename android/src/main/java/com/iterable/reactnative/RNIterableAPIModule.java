@@ -290,6 +290,13 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     }
 
     @ReactMethod
+    public void setLastPushPayload(payload) {
+        IterableLogger.d(TAG, "setLastPushPayload: " + payload);
+
+        IterableApi.getInstance().setLastPushPayload(payload)
+    }
+
+    @ReactMethod
     public void getLastPushPayload(Promise promise) {
         Bundle payloadData = IterableApi.getInstance().getPayloadData();
         if (payloadData != null) {

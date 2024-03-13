@@ -298,6 +298,17 @@ class Iterable {
   }
 
   /**
+   * 
+   * 
+   */
+
+  static setLastPushPayload(payload: any) {
+    Iterable.logger.log("setLastPushPayload")
+
+    return RNIterableAPI.setLastPushPayload()
+  }
+
+  /**
    * This static method returns the payload of the last push notification with which the user
    * opened the application (by clicking an action button, etc.).
    * 
