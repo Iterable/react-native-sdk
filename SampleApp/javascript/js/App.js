@@ -1,10 +1,11 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/Ionicons';
-import HomeTab from './HomeTab';
-import SettingsTab from './SettingsTab';
 import { coffees } from './Data';
+import { createStackNavigator } from '@react-navigation/stack';
+import HomeScreen from './HomeScreen';
+import NotificationViewScreen from './NotificationViewScreen';
+
+const Stack = createStackNavigator();
 
 // Step 1: 
 // Import the Iterable and IterableConfig class. 
@@ -26,7 +27,7 @@ export default class App extends React.Component {
         super(props);
 
         this.homeTabRef = React.createRef();
-        
+
         // Step 3: Initialize the React Native SDK here.
         // Create an IterableConfig object with various properties set.
         // The config object is used to customize various features of the SDK such as the URL handler and custom action handler.
@@ -37,37 +38,25 @@ export default class App extends React.Component {
         // (https://support.iterable.com/hc/en-us/articles/360045714132-Installing-Iterable-s-React-Native-SDK-#step-6-initialize-iterable-s-react-native-sdk)
 
         // Below is a sample implementation of the config object where we set the urlHAndler and inAppDisplayInterval
-        
+
         const config = new IterableConfig();
-        
+
         // inAppDisplayInterval sets the number of seconds to wait between displaying multiple in-app messages in sequence
         config.inAppDisplayInterval = 1.0;
-        
+
         // urlHandler is set up here to handle deep link URLs and in-app message buttons and link URLs
         config.urlHandler = this.urlHandler;
-        
+
         // Initialize by calling the Iterable.initialize method passing in your API key and the optional config object.
         Iterable.initialize(iterableAPIKey, config);
     }
     render() {
-        const Tab = createBottomTabNavigator();
-        return (React.createElement(NavigationContainer, null,
-            React.createElement(Tab.Navigator, { screenOptions: ({ route }) => ({
-                    tabBarIcon: ({ focused, color, size }) => {
-                        if (route.name == 'Home') {
-                            return React.createElement(Icon, { name: "ios-home", size: size, color: color });
-                        }
-                        else {
-                            return React.createElement(Icon, { name: "ios-settings", size: size, color: color });
-                        }
-                    },
-                }), tabBarOptions: {
-                    activeTintColor: 'tomato',
-                    inactiveTintColor: 'gray',
-                    showIcon: true,
-                } },
-                React.createElement(Tab.Screen, { name: "Home", options: { title: "Coffees" } }, props => React.createElement(HomeTab, Object.assign({ ref: this.homeTabRef }, props))),
-                React.createElement(Tab.Screen, { name: "Settings", component: SettingsTab }))));
+        return (<NavigationContainer>
+            <Stack.Navigator>
+                <Stack.Screen name="Home" component={HomeScreen} />
+                <Stack.Screen name="NotificationView" component={NotificationViewScreen} />
+            </Stack.Navigator>
+        </NavigationContainer>)
     }
 
     navigate(coffee) {
