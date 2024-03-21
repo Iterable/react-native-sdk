@@ -41,6 +41,8 @@ import InboxImpressionRowInfo from './InboxImpressionRowInfo'
 
 import IterableConfig from './IterableConfig'
 import IterableBannerView from './components/IterableBannerView'
+import { IterableDataRegion } from './IterableDataRegion'
+import IterableNotificationView from './components/IterableNotificationView';
 
 export {
   Iterable,
@@ -62,10 +64,12 @@ export {
   IterableInAppCloseSource,
   IterableInAppDeleteSource,
   IterableBannerView,
+  IterableNotificationView,
   IterableInboxEmptyState,
   IterableInboxMessageCell,
   useAppStateListener,
-  useDeviceOrientation
+  useDeviceOrientation,
+  IterableDataRegion
 }
 export type {
   IterableInAppContent,

@@ -5,17 +5,18 @@ export default class HomeScreen extends Component {
     constructor(props) {
         super(props);
     }
-    
     navigateToCardView() {
         console.log("Card View");
     }
-
+  
+    navigateToBannerView() {
+      console.log("Banner View");
+      this.props.navigation.navigate('BannerView');
+    }
+  
     navigateToNotificationView() {
         console.log("Notification View");
-    }
-
-    navigateToBannerView() {
-        this.props.navigation.navigate('BannerView');
+        this.props.navigation.navigate('NotificationView');
     }
 
     render() {
