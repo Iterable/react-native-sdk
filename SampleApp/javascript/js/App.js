@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { coffees } from './Data';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './HomeScreen';
+import BannerViewScreen from './BannerViewScreen';
 import NotificationViewScreen from './NotificationViewScreen';
 
 const Stack = createStackNavigator();
@@ -54,6 +55,7 @@ export default class App extends React.Component {
         return (<NavigationContainer>
             <Stack.Navigator>
                 <Stack.Screen name="Home" component={HomeScreen} />
+                <Stack.Screen name="BannerView" component={BannerViewScreen} />
                 <Stack.Screen name="NotificationView" component={NotificationViewScreen} />
             </Stack.Navigator>
         </NavigationContainer>)
