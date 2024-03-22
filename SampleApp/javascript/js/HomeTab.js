@@ -14,7 +14,7 @@ export default class HomeTab extends Component {
     render() {
         const HomeStack = createStackNavigator();
         return (React.createElement(HomeStack.Navigator, null,
-            React.createElement(HomeStack.Screen, { name: "Home", options: { headerTitle: "Coffees" } }, props => React.createElement(HomeScreen, Object.assign({}, props, { ref: this.homeScreenRef }))),
+            React.createElement(HomeStack.Screen, { name: "Home", options: { headerTitle: "Home" } }, props => React.createElement(HomeScreen, Object.assign({}, props, { ref: this.homeScreenRef }))),
             React.createElement(HomeStack.Screen, { name: "Detail", options: { headerTitle: "Coffee" }, component: DetailScreen })));
     }
 }
