@@ -200,6 +200,8 @@ class Iterable {
    * An optional valid, pre-fetched JWT can be passed in to avoid race conditions.
    * The SDK uses this JWT to authenticate API requests for this user.
    * 
+   * An Optional callback to know the result of setEmail (registertoken result)
+   * 
    * Signing out a user from the SDK:
    * 
    * To tell the SDK to sign out the current user, pass null into Iterable.setEmail.
@@ -209,15 +211,28 @@ class Iterable {
    * 
    * Note: specify a user by calling Iterable.setEmail or Iterable.setUserId, but NOT both.
    * 
-   * @param {string | null | undefined} email email address to associate with the current user
-   * @param {string | null | undefined} authToken valid, pre-fetched JWT the SDK can use to authenticate API requests, optional - if null/undefined, no JWT related action will be taken
+   * @param {string | undefined} email email address to associate with the current user
+   * @param {string | undefined} authToken valid, pre-fecthed JWT the SDK can use to authenticate API requests, optional - if null/undefined, no JWT related action will be taken
+   * @param {(result: boolean) => void | undefined} resultCallback callback function which will return true/false to denote email was added successfully or not. This will automtically returns true if autopushregistration is false
    */ 
 
-  static setEmail(email?: string | null, authToken?: string | null) {
-    Iterable.logger.log("setEmail: " + email)
-
-    RNIterableAPI.setEmail(email, authToken)
-  }
+   static setEmail(email: string | undefined, authToken?: string | undefined, resultCallback?: (result: boolean) => void): void;
+   static setEmail(email: string | undefined, authToken?: string | undefined): void;
+   static setEmail(email: string | undefined, resultCallback?: (result: boolean) => void): void;
+ 
+   static setEmail(x: any, y?: any, z?: any) {
+     Iterable.logger.log("setEmail: " + x)
+ 
+     if (y !== undefined && typeof y === 'function') {
+       RNIterableAPI.setEmail(x, undefined, y)
+     } else if(z === undefined) {
+         RNIterableAPI.setEmail(x, y, (result: boolean) => {
+             Iterable.logger.log("setEmail callback result: " + result)
+         })
+     } else {
+         RNIterableAPI.setEmail(x, y, z)
+     }
+   }
 
   /**
    * This static method returns the email associated with the current user.
@@ -253,6 +268,8 @@ class Iterable {
    * An optional valid, pre-fetched JWT can be passed in to avoid race conditions.
    * The SDK uses this JWT to authenticate API requests for this user.
    * 
+   * An Optional callback to know the result of setUserId (registertoken result)
+   * 
    * Signing out a user from the SDK:
    * 
    * To tell the SDK to sign out the current user, pass null into Iterable.setUserId.
@@ -262,15 +279,28 @@ class Iterable {
    * 
    * Note: specify a user by calling Iterable.setEmail or Iterable.setUserId, but NOT both.
    * 
-   * parameters: @param {string | null | undefined} userId user ID to associate with the current user 
-   * optional parameter: @param {string | null | undefined} authToken valid, pre-fetched JWT the SDK can use to authenticate API requests, optional - if null/undefined, no JWT related action will be taken
-   */ 
- 
-  static setUserId(userId?: string | null, authToken?: string | null) {
-    Iterable.logger.log("setUserId: " + userId)
+   * parameters: @param {string | undefined} userId user ID to associate with the current user 
+   * optional parameter: @param {string | undefined} authToken valid, pre-fecthed JWT the SDK can use to authenticate API requests, optional - if null/undefined, no JWT related action will be taken
+   * optional parameter: @param {(result: boolean) => void | undefined} resultCallback callback function which will return true/false to denote userId was added successfully or not. This will automtically returns true if autopushregistration is false
+  */ 
 
-    RNIterableAPI.setUserId(userId, authToken)
-  }
+   static setUserId(userId: string | undefined, authToken?: string | undefined, resultCallback?: (result: boolean) => void): void;
+   static setUserId(userId: string | undefined, authToken?: string | undefined): void;
+   static setUserId(userId: string | undefined, resultCallback?: (result: boolean) => void): void;
+ 
+   static setUserId(x: any, y?: any, z?: any) {
+     Iterable.logger.log("setUserId: " + x)
+ 
+     if (y !== undefined && typeof y === 'function') {
+       RNIterableAPI.setUserId(x, undefined, y)
+     } else if(z === undefined) {
+         RNIterableAPI.setUserId(x, y, (result: boolean) => {
+             Iterable.logger.log("setUserId callback result: " + result)
+         })
+     } else {
+         RNIterableAPI.setUserId(x, y, z)
+     }
+   }
 
   /**
    * This static method returns the userId associated with the current user.
