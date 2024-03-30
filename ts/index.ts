@@ -38,6 +38,7 @@ import IterableInAppMessage from './IterableInAppMessage'
 import useAppStateListener from './useAppStateListener'
 import useDeviceOrientation from './useDeviceOrientation'
 import InboxImpressionRowInfo from './InboxImpressionRowInfo'
+import IterableCardView from '../ts/components/IterableCardView';
 
 import IterableConfig from './IterableConfig'
 import IterableBannerView from './components/IterableBannerView'
@@ -65,6 +66,7 @@ export {
   IterableInAppDeleteSource,
   IterableBannerView,
   IterableNotificationView,
+  IterableCardView,
   IterableInboxEmptyState,
   IterableInboxMessageCell,
   useAppStateListener,

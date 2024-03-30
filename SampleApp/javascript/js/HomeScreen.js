@@ -7,6 +7,7 @@ export default class HomeScreen extends Component {
     }
     navigateToCardView() {
         console.log("Card View");
+        this.props.navigation.navigate('CardView');
     }
   
     navigateToBannerView() {
