@@ -52,6 +52,7 @@ class SettingsTab extends Component {
     }
     renderLoggedOut() {
         console.log("renderLoggedOut");
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
         return (React.createElement(View, { style: styles.emailContainer },
             React.createElement(TextInput, { value: this.state.email, style: styles.emailTextInput, autoCapitalize: "none", autoCompleteType: emailRegex.test(this.state.email) ? "email" : "none", onChangeText: (text) => this.setState({ isLoggedIn: false, email: text }), placeholder: "user@example.com/userId" }),
             React.createElement(Button, { title: "Login", onPress: this.onLoginTapped })));
