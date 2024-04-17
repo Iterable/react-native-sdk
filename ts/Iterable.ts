@@ -417,10 +417,10 @@ class Iterable {
    * @param {any | undefined} dataFields descriptive data to store on the purchase event
    */
 
-  static trackPurchase(total: number, items: Array<IterableCommerceItem>, dataFields: any | undefined) {
+  static trackPurchase(total: number, items: Array<IterableCommerceItem>, dataFields: any | undefined, attributionInfo: IterableAttributionInfo | undefined) {
     Iterable.logger.log("trackPurchase")
 
-    RNIterableAPI.trackPurchase(total, items, dataFields)
+    RNIterableAPI.trackPurchase(total, items, dataFields, attributionInfo)
   }
 
   /**

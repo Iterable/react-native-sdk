@@ -204,12 +204,22 @@ class ReactIterableAPI: RCTEventEmitter {
     @objc(trackPurchase:items:dataFields:)
     func trackPurchase(total: NSNumber,
                        items: [[AnyHashable: Any]],
-                       dataFields: [AnyHashable: Any]?) {
+                       dataFields: [AnyHashable: Any]?,
+                       attributionInfo dict: [AnyHashable: Any]?) {
         ITBInfo()
-        
-        IterableAPI.track(purchase: total,
-                          items: items.compactMap(CommerceItem.from(dict:)),
-                          dataFields: dataFields)
+
+        if let attributionInfo = SerializationUtil.dictionaryToDecodable(dict: dict) {
+            IterableAPI.track(purchase: total,
+                items: items.compactMap(CommerceItem.from(dict:)),
+                dataFields: dataFields,
+                campaignId: attributionInfo.campaignId,
+                templateId: attributionInfo.templateId)
+
+        } else {
+             IterableAPI.track(purchase: total,
+                items: items.compactMap(CommerceItem.from(dict:)),
+                dataFields: dataFields)
+        }
     }
     
     @objc(trackInAppOpen:location:)

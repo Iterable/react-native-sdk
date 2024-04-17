@@ -58,7 +58,8 @@ RCT_EXTERN_METHOD(updateCart: (NSArray *) items)
 
 RCT_EXTERN_METHOD(trackPurchase: (nonnull NSNumber *) total
                   items: (NSArray *) items
-                  dataFields: (NSDictionary *) dataFields)
+                  dataFields: (NSDictionary *) dataFields
+                  attributionInfo: (NSDictionary *) attributionInfo)
 
 RCT_EXTERN_METHOD(trackInAppOpen: (NSString *) messageId
                   location: (nonnull NSNumber *) location)
