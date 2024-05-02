@@ -13,11 +13,11 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - uses: actions/checkout@v2
-      
-      - uses: maxim-lobanov/setup-xcode@v1.3.0
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      - uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
         with:
-          xcode-version: 13.0
+          xcode-version: 15
 
       - name: Install dependencies
         run: cd integration-testing/  && yarn install
@@ -27,7 +27,7 @@ jobs:
 
       - name: Build and Test
         shell: bash
-        env: 
+        env:
           ITERABLE_API_KEY: ${{secrets.ITERABLE_API_KEY}}
           SEND_IN_APP_CAMPAIGN_ID: ${{secrets.SEND_IN_APP_CAMPAIGN_ID}}
           SKIP_IN_APP_CAMPAIGN_ID: ${{secrets.SKIP_IN_APP_CAMPAIGN_ID}}
