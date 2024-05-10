@@ -146,11 +146,11 @@ class ReactIterableAPI: RCTEventEmitter {
         inAppHandlerSemaphore.signal()
     }
     
-    @objc(registerDeviceToken)
+    @objc(registerToken)
     func registerDeviceToken(deviceToken: String) {
         ITBInfo()
         
-        IterableAPI.registerDeviceToken(deviceToken)
+        IterableAPI.registerToken(deviceToken)
     }
 
     @objc(disableDeviceForCurrentUser)
