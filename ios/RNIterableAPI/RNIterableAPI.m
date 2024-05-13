@@ -38,7 +38,7 @@ RCT_EXTERN_METHOD(getUserId: (RCTPromiseResolveBlock) resolve
 
 RCT_EXTERN_METHOD(disableDeviceForCurrentUser)
 
-RCT_EXTERN_METHOD(registerToken: (nonnull NSString *) deviceToken)
+RCT_EXTERN_METHOD(registerDeviceToken: (nonnull NSString *) token)
 
 RCT_EXTERN_METHOD(setInAppShowResponse: (nonnull NSNumber *) inAppShowResponse)
 
