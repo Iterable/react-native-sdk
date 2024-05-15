@@ -129,7 +129,7 @@ class IterableConfig {
   encryptionEnforced: boolean = false
 
   /**
-   * If set to true, it will enable anonymous tracking.
+   * This specifies whether or not anonymous tracking is enabled.
    */
   enableAnonTracking: boolean = false
 
