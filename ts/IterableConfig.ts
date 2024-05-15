@@ -128,6 +128,11 @@ class IterableConfig {
    */
   encryptionEnforced: boolean = false
 
+  /**
+   * This specifies whether or not anonymous tracking is enabled.
+   */
+  enableAnonTracking: boolean = false
+
   toDict(): any {
     return {
       "pushIntegrationName": this.pushIntegrationName,
@@ -143,7 +148,8 @@ class IterableConfig {
       "androidSdkUseInMemoryStorageForInApps": this.androidSdkUseInMemoryStorageForInApps,
       "useInMemoryStorageForInApps": this.useInMemoryStorageForInApps,
       "dataRegion": this.dataRegion,
-      "encryptionEnforced": this.encryptionEnforced
+      "encryptionEnforced": this.encryptionEnforced,
+      "enableAnonTracking": this.enableAnonTracking
     }
   }
 }
