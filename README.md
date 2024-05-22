@@ -58,7 +58,8 @@ For quick reference, the following table lists the versions of the [Android SDK]
 
 | RN SDK Version                                                              | Android SDK Version                                                          | iOS SDK Version |
 | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | --------------- |
-| [1.3.17](https://www.npmjs.com/package/@iterable/react-native-sdk/v/1.3.16) | [3.4.16](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.4.16) | [6.4.15](https://github.com/Iterable/swift-sdk/releases/tag/6.4.15)
+| [1.3.18](https://www.npmjs.com/package/@iterable/react-native-sdk/v/1.3.18) | [3.5.2](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.5.2) | [6.5.3](https://github.com/Iterable/swift-sdk/releases/tag/6.5.3)
+| [1.3.17](https://www.npmjs.com/package/@iterable/react-native-sdk/v/1.3.17) | [3.4.16](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.4.16) | [6.4.15](https://github.com/Iterable/swift-sdk/releases/tag/6.4.15)
 | [1.3.16](https://www.npmjs.com/package/@iterable/react-native-sdk/v/1.3.16) | [3.4.15](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.4.15) | [6.4.15](https://github.com/Iterable/swift-sdk/releases/tag/6.4.15)
 | [1.3.15](https://www.npmjs.com/package/@iterable/react-native-sdk/v/1.3.15) | [3.4.14](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.4.14) | [6.4.14](https://github.com/Iterable/swift-sdk/releases/tag/6.4.14)
 | [1.3.14](https://www.npmjs.com/package/@iterable/react-native-sdk/v/1.3.14) | [3.4.13](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.4.13) | [6.4.14](https://github.com/Iterable/swift-sdk/releases/tag/6.4.14)

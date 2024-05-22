@@ -1,3 +1,9 @@
+## 1.3.18
+## Updates
+- adds user id login for sample apps
+- version mapping to newest native SDK versions
+- updates versions of various package dependencies
+
 ## 1.3.17
 ## Fixed
 - Fixes a specific Android issue where apps could crash due to EncryptedSharedPreference being null.
