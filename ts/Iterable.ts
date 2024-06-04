@@ -298,6 +298,18 @@ class Iterable {
   }
 
   /**
+   * Registers a device token with Iterable.
+   * Make sure IterableConfig.pushIntegrationName is set before calling this.
+   * @param {string} deviceToken Push token obtained from GCM or FCM.
+   */
+
+  static registerDeviceToken(deviceToken: string) {
+    Iterable.logger.log("registerDeviceToken")
+
+    RNIterableAPI.registerDeviceToken(deviceToken)
+  }
+
+  /**
    * This static method returns the payload of the last push notification with which the user
    * opened the application (by clicking an action button, etc.).
    * 
