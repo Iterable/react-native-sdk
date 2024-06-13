@@ -1,3 +1,7 @@
+## 1.3.19
+## Updates
+- updates to RN version 0.68.0 to address various security vulnerabilities
+
 ## 1.3.18
 ## Updates
 - adds user id login for sample apps
