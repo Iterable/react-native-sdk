@@ -841,10 +841,10 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@iterable/react-native-sdk@^1.3.16":
-  version "1.3.17"
-  resolved "https://registry.yarnpkg.com/@iterable/react-native-sdk/-/react-native-sdk-1.3.17.tgz#3cf666241faa729c78abab6cc7ca33c5c054e76d"
-  integrity sha512-LHdTPDGTxuKxwlaC9tBLWtuZ0zY03GKEjv7tBcHOjTBRbS2+6j9qGQxuSBTUvlILucOEEph3gd97O78U6nqWvw==
+"@iterable/react-native-sdk@^1.3.19":
+  version "1.3.19"
+  resolved "https://registry.yarnpkg.com/@iterable/react-native-sdk/-/react-native-sdk-1.3.19.tgz#1dbf4754f9a4281ba29a655d7e857ff0786c092a"
+  integrity sha512-jnxSnGNrW9qMZ6JZ2GGx5KSc7pvQno66OvZF9O6uUDXtp9H3QgtCwoR+G9oTwEH/PoLA7P5/7lwNK3fQsJQ8wg==
   dependencies:
     "@react-native-community/hooks" "^2.6.0"
     "@react-navigation/native" "^6.0.6"
