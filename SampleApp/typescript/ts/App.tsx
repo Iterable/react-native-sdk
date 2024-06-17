@@ -14,7 +14,7 @@ import {
 
 // ITERABLE:
 // Make sure you have a file called Config.js and your apiKey is in there.
-import { iterableAPIKey } from './Config.Sample'
+import { iterableAPIKey } from './Config'
 
 interface Props { }
 export default class App extends React.Component {
