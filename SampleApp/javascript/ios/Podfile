@@ -1,13 +1,32 @@
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 
-platform :ios, '10.0'
+platform :ios, '13.4'
 
 target 'SampleApp' do
   config = use_native_modules!
-  use_react_native!(:path => config["reactNativePath"])
+  use_react_native!(:path => config[:reactNativePath])
 end
 
 target 'Rich Notification Extension' do
   pod 'Iterable-iOS-AppExtensions'
 end
+
+# post_install do |installer|
+#   installer.pods_project.targets.each do |target|
+#    target.build_configurations.each do |config|
+#     # config.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET'
+#     config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.4'
+#    end
+#   end
+#   installer.generated_projects.each do |project|
+#     project.targets.each do |target|
+#       target.build_configurations.each do |config|
+#         config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.4'
+#       end
+#     end
+#     project.build_configurations.each do |config|
+#       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.4'
+#     end
+#   end
+#  end

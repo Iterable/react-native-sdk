@@ -1,13 +1,130 @@
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 require_relative '../node_modules/react-native/scripts/react_native_pods'
+# source 'https://github.com/CocoaPods/Specs'
 
-platform :ios, '10.0'
+deployment_target = '13.4'
+
+platform :ios, '13.4'
 
 target 'SampleApp' do
   config = use_native_modules!
-  use_react_native!(:path => config["reactNativePath"])
+  use_react_native!(
+    :path => config[:reactNativePath]
+  )
+
+  post_install do |installer|
+    react_native_post_install(installer)
+
+    # __apply_Xcode_12_5_M1_post_install_workaround(installer)
+
+    # Apple Silicon builds require a library path tweak for Swift library discovery or "symbol not found" for swift things
+    installer.aggregate_targets.each do |aggregate_target|
+      aggregate_target.user_project.native_targets.each do |target|
+        target.build_configurations.each do |config|
+          config.build_settings['LIBRARY_SEARCH_PATHS'] = ['$(SDKROOT)/usr/lib/swift', '$(inherited)']
+        end
+      end
+      aggregate_target.user_project.save
+    end
+
+     # Flipper requires a crude patch to bump up iOS deployment target, or "error: thread-local storage is not supported for the current target"
+    # I'm not aware of any other way to fix this one other than bumping iOS deployment target to match react-native (iOS 11 now)
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = deployment_target
+       end
+    end
+
+    # ...but if you bump iOS deployment target, Flipper barfs again "Time.h:52:17: error: typedef redefinition with different types"
+    # We need to make one crude patch to RCT-Folly - set `__IPHONE_10_0` to our iOS target + 1
+    # https://github.com/facebook/flipper/issues/834 - 84 comments and still going...
+    `sed -i -e  $'s/__IPHONE_10_0/__IPHONE_14_4/' Pods/RCT-Folly/folly/portability/Time.h`
+  end
 end
 
 target 'Rich Notification Extension' do
   pod 'Iterable-iOS-AppExtensions'
 end
+
+
+
+# post_install do |installer|
+#   react_native_post_install(installer)
+
+#   installer.pods_project.targets.each do |target|
+#     target.build_configurations.each do |config|
+#       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = deployment_target
+#       config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+#       config.build_settings["ONLY_ACTIVE_ARCH"] = "YES"
+#     end
+
+#     case target.name
+#     when 'RCT-Folly'
+#       target.build_configurations.each do |config|
+#         config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '9.0'
+#       end
+#     end
+#   end
+# end
+
+# post_install do |installer|
+#   installer.pods_project.targets.each do |target|
+#    target.build_configurations.each do |config|
+#     # config.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET'
+#     config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.4'
+#    end
+#   end
+#  end
+
+# post_install do |installer|
+#   installer.pods_project.targets.each do |target|
+#    target.build_configurations.each do |config|
+#     # config.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET'
+#     config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.4'
+#    end
+#   end
+#   installer.generated_projects.each do |project|
+#     project.targets.each do |target|
+#       target.build_configurations.each do |config|
+#         config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.4'
+#       end
+#     end
+#     project.build_configurations.each do |config|
+#       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.4'
+#     end
+#   end
+#  end
+
+# post_install do |installer|
+#   react_native_post_install(installer)
+#   installer.pods_project.targets.each do |target|
+#     target.build_configurations.each do |config|
+#       # config.build_settings.delete "IPHONEOS_DEPLOYMENT_TARGET"
+#       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.4'
+#     end
+#     case target.name
+#     when 'RCT-Folly'
+#       target.build_configurations.each do |config|
+#         config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '9.0'
+#       end
+#     end
+#   end
+# end
+
+# def handle_targets_config(installer)
+#   installer.pods_project.targets.each do |target|
+#     target.build_configurations.each do |config|
+#         config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.4'
+#     end
+#   end
+# end
+
+# post_install do |installer|
+#   react_native_post_install(installer)
+#   handle_targets_config(installer)
+#   # We need to make one crude patch to RCT-Folly - set `__IPHONE_10_0` to our iOS target + 1
+#   # ==> hack to modify the header file
+#   `sed -e $'s/__IPHONE_10_0/__IPHONE_13_0/' \
+#       Pods/Headers/Private/RCT-Folly/folly/portability/Time.h > temp_file \
+#       && mv temp_file Pods/Headers/Private/RCT-Folly/folly/portability/Time.h`
+# end

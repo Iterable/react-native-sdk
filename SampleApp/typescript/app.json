@@ -1,4 +1,7 @@
 {
   "name": "SampleApp",
-  "displayName": "SampleApp"
+  "displayName": "SampleApp",
+  "packagerOpts": {
+    "config": "metro.config.js"
+  }
 }
