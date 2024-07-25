@@ -22,12 +22,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         rootViewController.view = rootView
         self.window?.rootViewController = rootViewController
         self.window?.makeKeyAndVisible()
-        
+
         setupUserNotificationCenter()
-        
+
         return true
     }
-    
+
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         ITBInfo()
         IterableAPI.register(token: deviceToken)
@@ -37,7 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ITBInfo()
         IterableAppIntegration.application(application, didReceiveRemoteNotification: userInfo, fetchCompletionHandler: completionHandler)
     }
-    
+
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
         ITBInfo()
         guard let url = userActivity.webpageURL else {
@@ -46,7 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         return IterableAPI.handle(universalLink: url)
     }
-    
+
     private func setupUserNotificationCenter() {
         UNUserNotificationCenter.current().delegate = self
         UNUserNotificationCenter.current().getNotificationSettings { (settings) in
@@ -62,13 +62,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-    
+
 }
 
 extension AppDelegate: RCTBridgeDelegate {
     func sourceURL(for bridge: RCTBridge!) -> URL! {
         #if DEBUG
-        return RCTBundleURLProvider.sharedSettings()?.jsBundleURL(forBundleRoot: "index", fallbackResource: nil)
+        return RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index")
         #else
         return Bundle.main.url(forResource: "main", withExtension: "jsBundle")
         #endif
@@ -80,7 +80,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     public func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler([.alert, .badge, .sound])
     }
-    
+
     // The method will be called on the delegate when the user responded to the notification by opening the application, dismissing the notification or choosing a UNNotificationAction. The delegate must be set before the application returns from applicationDidFinishLaunching:.
     public func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         IterableAppIntegration.userNotificationCenter(center, didReceive: response, withCompletionHandler: completionHandler)
