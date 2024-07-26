@@ -39,7 +39,8 @@ To run this sample:
 - patched yoga per instructions here:
   https://stackoverflow.com/questions/75897834/use-of-bitwise-with-boolean-operands-xcode-14-3-fails-builds-using-react-n
 - changed target > build phases > bundle react native code and images shell to:
-  ```
+
+  ````
   set -e
 
       	export NODE_BINARY=node
@@ -47,7 +48,10 @@ To run this sample:
       	../node_modules/react-native/scripts/react-native-xcode.sh
       	```
 
--
+  ````
+
+- updated react-native
+- updated metro config: https://github.com/facebook/metro/issues/1028
 
 ## Errors
 
