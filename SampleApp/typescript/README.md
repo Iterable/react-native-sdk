@@ -36,7 +36,18 @@ To run this sample:
 - added script to update targets, fix M1/Silicone issues, fix flipper in ts
   podfile
 - updated `Iterable-iOS-SDK` to `6.5.4`
-- patched yoga per instructions here: https://stackoverflow.com/questions/75897834/use-of-bitwise-with-boolean-operands-xcode-14-3-fails-builds-using-react-n
+- patched yoga per instructions here:
+  https://stackoverflow.com/questions/75897834/use-of-bitwise-with-boolean-operands-xcode-14-3-fails-builds-using-react-n
+- changed target > build phases > bundle react native code and images shell to:
+  ```
+  set -e
+
+      	export NODE_BINARY=node
+      	export NODE_OPTIONS=--openssl-legacy-provider
+      	../node_modules/react-native/scripts/react-native-xcode.sh
+      	```
+
+-
 
 ## Errors
 
@@ -51,4 +62,5 @@ error: TypeError: Cannot read properties of undefined (reading 'transformFile')
     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
 ```
 
+- https://github.com/facebook/metro/issues/1205
 - https://github.com/facebook/metro/issues/1051
