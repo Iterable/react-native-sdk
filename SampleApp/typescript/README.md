@@ -52,6 +52,10 @@ To run this sample:
 
 - updated react-native
 - updated metro config: https://github.com/facebook/metro/issues/1028
+- fixed `"dependency.assets" is not allowed` warning for
+  `react-native-vector-icons`
+- added babel libs
+- updated metro babel config: https://github.com/ethers-io/ethers.js/discussions/4309
 
 ## Errors
 
