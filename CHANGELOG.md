@@ -1,3 +1,7 @@
+## 1.3.20
+## Fixes
+- Fixes an issue where the iOS SDK incorrectly targeted the latest minor version instead of a fixed version, potentially causing breaking changes.
+
 ## 1.3.19
 ## Updates
 - updates to RN version 0.68.0 to address various security vulnerabilities
