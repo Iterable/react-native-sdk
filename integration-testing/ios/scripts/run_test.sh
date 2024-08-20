@@ -15,6 +15,6 @@ rm -rf build/
 xcodebuild -workspace example.xcworkspace \
            -scheme example \
            -sdk iphonesimulator \
-           -destination 'platform=iOS Simulator,name=iPhone 13' \
+           -destination 'platform=iOS Simulator,OS=latest,name=iPhone 13' \
            -derivedDataPath ios/build \
            clean test | xcpretty
