@@ -649,6 +649,10 @@ extension ReactIterableAPI: IterableInAppDelegate {
 }
 
 extension ReactIterableAPI: IterableAuthDelegate {
+    func onAuthFailure(_ authFailure: IterableSDK.AuthFailure) {
+
+    }
+    
     func onAuthTokenRequested(completion: @escaping AuthTokenRetrievalHandler) {
         ITBInfo()
         
