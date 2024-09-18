@@ -48,4 +48,13 @@ Config.sample.d.ts
 
 .vscode/launch.json
 
-coverage/
+# testing
+/coverage
+
+# Yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
