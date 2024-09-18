@@ -597,7 +597,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     }
 
     @Override
-    public void onTokenRegistrationFailed(Throwable object) {
+    public void onAuthFailure(AuthFailure authFailure) {
         IterableLogger.v(TAG, "Failed to set authToken");
         sendEvent(EventName.handleAuthFailureCalled.name(), null);
     }
