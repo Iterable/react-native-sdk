@@ -47,7 +47,10 @@ export default class App extends React.Component<Object, State> {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.scrollView}>
+        <ScrollView
+          contentInsetAdjustmentBehavior="automatic"
+          style={styles.scrollView}
+        >
           <View style={styles.buttonContainer}>
             <Login />
           </View>
@@ -130,7 +133,7 @@ export default class App extends React.Component<Object, State> {
                     Iterable.inAppManager.removeMessage(
                       messages[messages.length - 1],
                       IterableInAppLocation.inbox,
-                      IterableInAppDeleteSource.deleteButton,
+                      IterableInAppDeleteSource.deleteButton
                     );
                   }
                 });
@@ -184,7 +187,10 @@ export default class App extends React.Component<Object, State> {
         return true;
       }
     };
-    config.customActionHandler = (action: IterableAction, context: IterableActionContext) => {
+    config.customActionHandler = (
+      action: IterableAction,
+      context: IterableActionContext
+    ) => {
       this.setState({ statusText: `Custom Action: '${action.type}'` });
       return true;
     };

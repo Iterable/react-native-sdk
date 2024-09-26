@@ -6,7 +6,6 @@ import { colors } from '../../constants';
 import { Route } from '../../constants/routes';
 import useIterableApp from '../../hooks/useIterableApp';
 import type { RootStackParamList } from '../../types/navigation';
-import ApiListScreen from '../ApiListScreen';
 import { Commerce } from '../Commerce';
 import CustomizedInbox from '../CustomizedInbox';
 import Home from '../Home';
@@ -77,13 +76,6 @@ export default function App() {
             tabPress: () => setIsInboxTab(false),
           })}
         />
-        {/* <Tab.Screen
-          name={Route.ApiList}
-          component={ApiListScreen}
-          listeners={() => ({
-            tabPress: () => setIsInboxTab(false),
-          })}
-        /> */}
       </Tab.Navigator>
     </>
   );

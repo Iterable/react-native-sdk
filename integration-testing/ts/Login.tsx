@@ -41,7 +41,11 @@ export class Login extends Component<Props, State> {
     return (
       <View style={styles.emailContainer}>
         <Text style={styles.emailText}>User: {email}</Text>
-        <Button testID="logoutBtn" title="Logout" onPress={this.onLogoutTapped} />
+        <Button
+          testID="logoutBtn"
+          title="Logout"
+          onPress={this.onLogoutTapped}
+        />
       </View>
     );
   }
@@ -56,7 +60,9 @@ export class Login extends Component<Props, State> {
           style={styles.emailTextInput}
           autoCapitalize="none"
           autoCompleteType="email"
-          onChangeText={(text) => this.setState({ isLoggedIn: false, email: text })}
+          onChangeText={(text) =>
+            this.setState({ isLoggedIn: false, email: text })
+          }
           placeholder="user@example.com"
         />
         <Button testID="loginBtn" title="Login" onPress={this.onLoginTapped} />
