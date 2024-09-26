@@ -1,6 +1,6 @@
 {
   "name": "@iterable/react-native-sdk",
-  "version": "0.1.0",
+  "version": "2.0.0-alpha",
   "description": "Iterable SDK for React Native.",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
@@ -51,14 +51,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Iterable/react-native-sdk.git.git"
+    "url": "git+https://github.com/Iterable/react-native-sdk.git"
   },
-  "author": "Iterable <loren.posen@iterable.com> (https://github.com/Iterable/react-native-sdk.git)",
+  "author": "Iterable <loren.posen@iterable.com> (https://github.com/Iterable/react-native-sdk)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Iterable/react-native-sdk.git/issues"
+    "url": "https://github.com/Iterable/react-native-sdk/issues"
   },
-  "homepage": "https://github.com/Iterable/react-native-sdk.git#readme",
+  "homepage": "https://github.com/Iterable/react-native-sdk#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
