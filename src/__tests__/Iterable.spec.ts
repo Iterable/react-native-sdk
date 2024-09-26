@@ -33,8 +33,8 @@ it('setEmail_getEmail_email_returnsEmail', async () => {
   Iterable.setEmail(email);
 
   // THEN Iterable.getEmail returns the given email
-  return await Iterable.getEmail().then((email) => {
-    expect(email).toBe(result);
+  return await Iterable.getEmail().then((_email) => {
+    expect(_email).toBe(result);
   });
 });
 
@@ -49,8 +49,8 @@ test('setUserId_getUserId_userId_returnsUserId', async () => {
   Iterable.setUserId(userId);
 
   // THEN Iterable.getUserId returns the given userId
-  return await Iterable.getUserId().then((userId) => {
-    expect(userId).toBe(result);
+  return await Iterable.getUserId().then((_userId) => {
+    expect(_userId).toBe(result);
   });
 });
 

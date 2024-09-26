@@ -739,6 +739,7 @@ class Iterable {
 
     function callUrlHandler(url: any, context: IterableActionContext) {
       // TODO: Check if this is purposeful
+      // eslint-disable-next-line eqeqeq
       if (Iterable.savedConfig.urlHandler!(url, context) == false) {
         Linking.canOpenURL(url)
           .then((canOpen) => {

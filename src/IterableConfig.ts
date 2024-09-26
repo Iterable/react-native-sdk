@@ -135,12 +135,16 @@ export class IterableConfig {
       autoPushRegistration: this.autoPushRegistration,
       inAppDisplayInterval: this.inAppDisplayInterval,
       // TODO: Check if this is purposeful
+      // eslint-disable-next-line eqeqeq
       urlHandlerPresent: this.urlHandler != undefined,
       // TODO: Check if this is purposeful
+      // eslint-disable-next-line eqeqeq
       customActionHandlerPresent: this.customActionHandler != undefined,
       // TODO: Check if this is purposeful
+      // eslint-disable-next-line eqeqeq
       inAppHandlerPresent: this.inAppHandler != undefined,
       // TODO: Check if this is purposeful
+      // eslint-disable-next-line eqeqeq
       authHandlerPresent: this.authHandler != undefined,
       logLevel: this.logLevel,
       expiringAuthTokenRefreshPeriod: this.expiringAuthTokenRefreshPeriod,

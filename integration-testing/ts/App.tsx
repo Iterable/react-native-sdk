@@ -38,7 +38,7 @@ interface State {
   statusText?: string;
 }
 export default class App extends React.Component<Object, State> {
-  constructor(props) {
+  constructor(props: Object) {
     super(props);
     this.state = { statusText: '' };
     this.initializeIterable();
@@ -176,12 +176,14 @@ export default class App extends React.Component<Object, State> {
   initializeIterable() {
     const config = new IterableConfig();
     config.inAppDisplayInterval = 1.0;
-    config.urlHandler = (url: string, context: IterableActionContext) => {
+    config.urlHandler = (url: string, _context: IterableActionContext) => {
       console.log('urlHandler: url: ' + url);
+      // eslint-disable-next-line eqeqeq
       if (url.search(/coffee/i) == -1) {
         this.setState({ statusText: `Opening url: '${url}'` });
         return false;
       } else {
+        // @ts-ignore
         const coffee = url.match(/coffee\/(.+)/)[1];
         this.setState({ statusText: `Opening coffee page: '${coffee}'` });
         return true;
@@ -189,7 +191,7 @@ export default class App extends React.Component<Object, State> {
     };
     config.customActionHandler = (
       action: IterableAction,
-      context: IterableActionContext
+      _context: IterableActionContext
     ) => {
       this.setState({ statusText: `Custom Action: '${action.type}'` });
       return true;
