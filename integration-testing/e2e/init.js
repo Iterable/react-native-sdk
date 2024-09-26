@@ -1,3 +1,4 @@
+/* eslint-env detox/detox, mocha */
 const detox = require('detox');
 const adapter = require('detox/runners/mocha/adapter');
 

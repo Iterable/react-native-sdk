@@ -1,3 +1,4 @@
+/* eslint-env detox/detox, mocha */
 describe('Iterable', () => {
   beforeEach(async () => {
     // await device.reloadReactNative();
