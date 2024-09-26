@@ -1,14 +1,15 @@
 module.exports = {
   'test-runner': 'mocha',
   'runner-config': 'e2e/.mocharc.json',
-  behavior: {
+  'behavior': {
     init: {
       exposeGlobals: process.env.DETOX_EXPOSE_GLOBALS === '0' ? false : true,
     },
   },
-  configurations: {
+  'configurations': {
     'ios.sim.release': {
-      binaryPath: 'ios/build/Build/Products/Release-iphonesimulator/example.app',
+      binaryPath:
+        'ios/build/Build/Products/Release-iphonesimulator/example.app',
       build:
         'export RCT_NO_LAUNCH_PACKAGER=true && xcodebuild -workspace ios/example.xcworkspace -UseNewBuildSystem=NO -scheme example -configuration Release -sdk iphonesimulator -derivedDataPath ios/build',
       type: 'ios.simulator',
