@@ -109,7 +109,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     @ReactMethod
     public void setEmail(@Nullable String email) {
         IterableLogger.d(TAG, "setEmail: " + email);
-        
+
         IterableApi.getInstance().setEmail(email);
     }
 
@@ -154,7 +154,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     @ReactMethod
     public void setUserId(@Nullable String userId, @Nullable String authToken) {
         IterableLogger.d(TAG, "setUserId: " + userId + " authToken: " + authToken);
-        
+
         IterableApi.getInstance().setUserId(userId, authToken);
     }
 

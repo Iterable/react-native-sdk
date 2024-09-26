@@ -1,3 +1,7 @@
+import Foundation
+
+import IterableSDK
+
 @objc(ReactNativeSdk)
 class ReactNativeSdk: NSObject {
 
