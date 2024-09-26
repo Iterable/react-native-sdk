@@ -1,10 +1,10 @@
-import React, { useCallback, useRef, useState } from 'react';
-import { ViewabilityConfig, ViewToken, FlatList } from 'react-native';
+import { useCallback, useRef, useState } from 'react';
+import { type ViewabilityConfig, type ViewToken, FlatList } from 'react-native';
 
-import InboxImpressionRowInfo from './InboxImpressionRowInfo';
+import { type InboxImpressionRowInfo } from './InboxImpressionRowInfo';
 import IterableInboxMessageCell from './IterableInboxMessageCell';
-import InboxRowViewModel from './InboxRowViewModel';
-import IterableInboxCustomizations from './IterableInboxCustomizations';
+import { type InboxRowViewModel } from './InboxRowViewModel';
+import { type IterableInboxCustomizations } from './IterableInboxCustomizations';
 
 import IterableInAppMessage from './IterableInAppMessage';
 import IterableInboxDataModel from './IterableInboxDataModel';
@@ -35,7 +35,11 @@ const IterableInboxMessageList = ({
   const [swiping, setSwiping] = useState<boolean>(false);
   const flatListRef = useRef<FlatList>(null);
 
-  function renderRowViewModel(rowViewModel: InboxRowViewModel, index: number, last: boolean) {
+  function renderRowViewModel(
+    rowViewModel: InboxRowViewModel,
+    index: number,
+    last: boolean
+  ) {
     return (
       <IterableInboxMessageCell
         key={rowViewModel.inAppMessage.messageId}
@@ -44,11 +48,11 @@ const IterableInboxMessageList = ({
         dataModel={dataModel}
         rowViewModel={rowViewModel}
         customizations={customizations}
-        swipingCheck={(swiping: boolean) => setSwiping(swiping)}
+        swipingCheck={(isSwiping: boolean) => setSwiping(isSwiping)}
         messageListItemLayout={messageListItemLayout}
         deleteRow={(messageId: string) => deleteRow(messageId)}
-        handleMessageSelect={(messageId: string, index: number) =>
-          handleMessageSelect(messageId, index)
+        handleMessageSelect={(messageId: string, i: number) =>
+          handleMessageSelect(messageId, i)
         }
         contentWidth={contentWidth}
         isPortrait={isPortrait}
@@ -56,7 +60,9 @@ const IterableInboxMessageList = ({
     );
   }
 
-  function getRowInfosFromViewTokens(viewTokens: Array<ViewToken>): Array<InboxImpressionRowInfo> {
+  function getRowInfosFromViewTokens(
+    viewTokens: Array<ViewToken>
+  ): Array<InboxImpressionRowInfo> {
     return viewTokens.map(function (viewToken) {
       var inAppMessage = IterableInAppMessage.fromViewToken(viewToken);
 
@@ -81,7 +87,9 @@ const IterableInboxMessageList = ({
 
       updateVisibleMessageImpressions(rowInfos);
     },
-    [],
+    //  TODO: Fix this
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
   );
 
   return (
@@ -89,9 +97,13 @@ const IterableInboxMessageList = ({
       ref={flatListRef}
       scrollEnabled={!swiping}
       data={rowViewModels}
-      renderItem={({ item, index }: { item: InboxRowViewModel; index: number }) =>
-        renderRowViewModel(item, index, index === rowViewModels.length - 1)
-      }
+      renderItem={({
+        item,
+        index,
+      }: {
+        item: InboxRowViewModel;
+        index: number;
+      }) => renderRowViewModel(item, index, index === rowViewModels.length - 1)}
       keyExtractor={(item: InboxRowViewModel) => item.inAppMessage.messageId}
       viewabilityConfig={inboxSessionViewabilityConfig}
       onViewableItemsChanged={inboxSessionItemsChanged}

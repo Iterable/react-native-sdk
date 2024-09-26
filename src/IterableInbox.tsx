@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -16,21 +16,22 @@ import { IterableInAppDeleteSource, IterableInAppLocation } from './IterableInAp
 import { Iterable } from './Iterable';
 
 import IterableInboxEmptyState from './IterableInboxEmptyState';
-import InboxImpressionRowInfo from './InboxImpressionRowInfo';
+import { type InboxImpressionRowInfo } from './InboxImpressionRowInfo';
 import useDeviceOrientation from './useDeviceOrientation';
 import useAppStateListener from './useAppStateListener';
-import IterableInboxCustomizations from './IterableInboxCustomizations';
+import { type IterableInboxCustomizations } from './IterableInboxCustomizations';
 import IterableInboxMessageList from './IterableInboxMessageList';
 import IterableInboxMessageDisplay from './IterableInboxMessageDisplay';
 import IterableInboxDataModel from './IterableInboxDataModel';
-import InboxRowViewModel from './InboxRowViewModel';
+import { type InboxRowViewModel } from './InboxRowViewModel';
 
 import { useIsFocused } from '@react-navigation/native';
+import type IterableInAppMessage from './IterableInAppMessage';
 
 const RNIterableAPI = NativeModules.RNIterableAPI;
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
-type inboxProps = {
+export interface IterableInboxProps {
   returnToInboxTrigger?: boolean;
   messageListItemLayout?: Function;
   customizations?: IterableInboxCustomizations;
@@ -38,19 +39,17 @@ type inboxProps = {
   tabBarPadding?: number;
   safeAreaMode?: boolean;
   showNavTitle?: boolean;
-};
+}
 
-const IterableInbox = ({
+export const IterableInbox = ({
   returnToInboxTrigger = true,
-  messageListItemLayout = () => {
-    return null;
-  },
+  messageListItemLayout = () => null,
   customizations = {} as IterableInboxCustomizations,
   tabBarHeight = 80,
   tabBarPadding = 20,
   safeAreaMode = true,
   showNavTitle = true,
-}: inboxProps) => {
+}: IterableInboxProps) => {
   const defaultInboxTitle = 'Inbox';
   const inboxDataModel = new IterableInboxDataModel();
 
@@ -122,6 +121,8 @@ const IterableInbox = ({
       removeInboxChangedListener();
       inboxDataModel.endSession(visibleMessageImpressions);
     };
+    //  TODO: Fix the exhaustive-deps rule
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //starts session when user is on inbox and app is active
@@ -137,6 +138,8 @@ const IterableInbox = ({
         inboxDataModel.endSession(visibleMessageImpressions);
       }
     }
+    //  TODO: Fix the exhaustive-deps rule
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appState]);
 
   //starts session when user is on inbox
@@ -149,11 +152,15 @@ const IterableInbox = ({
         inboxDataModel.endSession(visibleMessageImpressions);
       }
     }
+    //  TODO: Fix the exhaustive-deps rule
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocused]);
 
   //updates the visible rows when visible messages changes
   useEffect(() => {
     inboxDataModel.updateVisibleRows(visibleMessageImpressions);
+    //  TODO: Fix the exhaustive-deps rule
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visibleMessageImpressions]);
 
   //if return to inbox trigger is provided, runs the return to inbox animation whenever the trigger is toggled
@@ -161,6 +168,8 @@ const IterableInbox = ({
     if (isMessageDisplay) {
       returnToInbox();
     }
+    //  TODO: Fix the exhaustive-deps rule
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [returnToInboxTrigger]);
 
   function addInboxChangedListener() {
@@ -188,8 +197,8 @@ const IterableInbox = ({
     return inboxDataModel.getHtmlContentForMessageId(id);
   }
 
-  function handleMessageSelect(id: string, index: number, rowViewModels: InboxRowViewModel[]) {
-    let newRowViewModels = rowViewModels.map((rowViewModel) => {
+  function handleMessageSelect(id: string, index: number, rows: InboxRowViewModel[]) {
+    const newRowViewModels = rows.map((rowViewModel) => {
       return rowViewModel.inAppMessage.messageId === id
         ? { ...rowViewModel, read: true }
         : rowViewModel;
@@ -198,7 +207,11 @@ const IterableInbox = ({
     inboxDataModel.setMessageAsRead(id);
     setSelectedRowViewModelIdx(index);
 
-    Iterable.trackInAppOpen(rowViewModels[index].inAppMessage, IterableInAppLocation.inbox);
+    Iterable.trackInAppOpen(
+      // TODO: this could be undefined.  Find out what to do if it is.
+      rows[index]?.inAppMessage as IterableInAppMessage,
+      IterableInAppLocation.inbox,
+    );
 
     slideLeft();
   }
@@ -236,7 +249,8 @@ const IterableInbox = ({
     ) : null;
   }
 
-  function showMessageList(loading: boolean) {
+  //   TODO: figure out if i can remove the loading parameter
+  function showMessageList(_loading: boolean) {
     return (
       <View style={messageListContainer}>
         {showNavTitle ? (
@@ -294,6 +308,8 @@ const IterableInbox = ({
 
   const inboxAnimatedView = (
     <Animated.View
+      //  TODO: figure out why this is a best practice
+      // eslint-disable-next-line react-native/no-inline-styles
       style={{
         transform: [
           {

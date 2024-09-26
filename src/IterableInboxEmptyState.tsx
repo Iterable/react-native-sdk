@@ -1,7 +1,6 @@
-import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-import IterableInboxCustomizations from './IterableInboxCustomizations';
+import { type IterableInboxCustomizations } from './IterableInboxCustomizations';
 
 type emptyStateProps = {
   customizations: IterableInboxCustomizations;
@@ -13,7 +12,7 @@ type emptyStateProps = {
   isPortrait: boolean;
 };
 
-const IterableInboxEmptyState = ({
+export const IterableInboxEmptyState = ({
   customizations,
   tabBarHeight,
   tabBarPadding,

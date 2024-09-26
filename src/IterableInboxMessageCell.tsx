@@ -1,18 +1,18 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import {
-  View,
-  Text,
-  Image,
   Animated,
+  Image,
   PanResponder,
-  ViewStyle,
-  TextStyle,
   StyleSheet,
+  Text,
   TouchableOpacity,
+  View,
+  type TextStyle,
+  type ViewStyle,
 } from 'react-native';
 
-import InboxRowViewModel from './InboxRowViewModel';
-import IterableInboxCustomizations from './IterableInboxCustomizations';
+import { type InboxRowViewModel } from './InboxRowViewModel';
+import { type IterableInboxCustomizations } from './IterableInboxCustomizations';
 
 import IterableInboxDataModel from './IterableInboxDataModel';
 
@@ -116,7 +116,8 @@ function defaultMessageListLayout(
     : readMessageThumbnailContainer;
   messageContainer = !isPortrait ? { ...messageContainer, width: '90%' } : messageContainer;
 
-  function messageRowStyle(rowViewModel: InboxRowViewModel) {
+  //  TODO: Check if I can remove this
+  function messageRowStyle(_rowViewModel: InboxRowViewModel) {
     return last ? { ...messageRow, borderBottomWidth: 1 } : messageRow;
   }
 
@@ -133,17 +134,22 @@ function defaultMessageListLayout(
         }
       >
         {thumbnailURL ? (
-          <Image style={{ height: 80, width: 80 }} source={{ uri: thumbnailURL }} />
+          <Image
+            //  TODO: Why is this best practice?
+            // eslint-disable-next-line react-native/no-inline-styles
+            style={{ height: 80, width: 80 }}
+            source={{ uri: thumbnailURL }}
+          />
         ) : null}
       </View>
       <View style={messageContainer as ViewStyle}>
         <Text numberOfLines={1} ellipsizeMode="tail" style={title}>
-          {messageTitle as TextStyle}
+          {messageTitle}
         </Text>
         <Text numberOfLines={3} ellipsizeMode="tail" style={body as TextStyle}>
           {messageBody}
         </Text>
-        <Text style={createdAt}>{messageCreatedAt as TextStyle}</Text>
+        <Text style={createdAt}>{messageCreatedAt}</Text>
       </View>
     </View>
   );
@@ -163,7 +169,7 @@ type MessageCellProps = {
   isPortrait: boolean;
 };
 
-const IterableInboxMessageCell = ({
+export const IterableInboxMessageCell = ({
   index,
   last,
   dataModel,
@@ -247,12 +253,12 @@ const IterableInboxMessageCell = ({
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => false,
-      onMoveShouldSetPanResponder: (event, gestureState) => {
+      onMoveShouldSetPanResponder: (_event, gestureState) => {
         const { dx, dy } = gestureState;
         // return true if user is swiping, return false if it's a single click
         return Math.abs(dx) !== 0 && Math.abs(dy) !== 0;
       },
-      onMoveShouldSetPanResponderCapture: (event, gestureState) => {
+      onMoveShouldSetPanResponderCapture: (_event, gestureState) => {
         const { dx, dy } = gestureState;
         // return true if user is swiping, return false if it's a single click
         return Math.abs(dx) !== 0 && Math.abs(dy) !== 0;
@@ -261,7 +267,7 @@ const IterableInboxMessageCell = ({
       onPanResponderGrant: () => {
         position.setValue({ x: 0, y: 0 });
       },
-      onPanResponderMove: (event, gesture) => {
+      onPanResponderMove: (_event, gesture) => {
         if (gesture.dx <= -scrollThreshold) {
           //enables swipeing when threshold is reached
           swipingCheck(true);
@@ -271,7 +277,7 @@ const IterableInboxMessageCell = ({
           position.setValue({ x, y: 0 });
         }
       },
-      onPanResponderRelease: (event, gesture) => {
+      onPanResponderRelease: (_event, gesture) => {
         position.flattenOffset();
         if (gesture.dx < 0) {
           userSwipedLeft(gesture);

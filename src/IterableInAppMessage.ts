@@ -1,3 +1,5 @@
+import type { ViewToken } from 'react-native';
+
 import IterableUtil from './IterableUtil';
 
 import {
@@ -6,12 +8,10 @@ import {
   IterableInboxMetadata,
 } from './IterableInAppClasses';
 
-import { ViewToken } from 'react-native';
-
 /**
  * Iterable in-app message
  */
-class IterableInAppMessage {
+export class IterableInAppMessage {
   /**
    * the ID for the in-app message
    */
@@ -104,7 +104,11 @@ class IterableInAppMessage {
   }
 
   isSilentInbox(): boolean {
-    return this.saveToInbox && this.trigger.type == IterableInAppTriggerType.never;
+    return (
+      // TODO: Check if this is purposeful
+      // eslint-disable-next-line eqeqeq
+      this.saveToInbox && this.trigger.type == IterableInAppTriggerType.never
+    );
   }
 
   static fromDict(dict: any): IterableInAppMessage {
@@ -113,26 +117,26 @@ class IterableInAppMessage {
     const trigger = IterableInAppTrigger.fromDict(dict.trigger);
     let createdAt = dict.createdAt;
     if (createdAt) {
-      var dateObject = new Date(0);
+      const dateObject = new Date(0);
       createdAt = dateObject.setUTCMilliseconds(createdAt);
     }
     let expiresAt = dict.expiresAt;
     if (expiresAt) {
-      var dateObject = new Date(0);
+      const dateObject = new Date(0);
       expiresAt = dateObject.setUTCMilliseconds(expiresAt);
     }
-    let saveToInbox = IterableUtil.readBoolean(dict, 'saveToInbox');
-    let inboxMetadataDict = dict.inboxMetadata;
+    const saveToInbox = IterableUtil.readBoolean(dict, 'saveToInbox');
+    const inboxMetadataDict = dict.inboxMetadata;
     let inboxMetadata: IterableInboxMetadata | undefined;
     if (inboxMetadataDict) {
       inboxMetadata = IterableInboxMetadata.fromDict(inboxMetadataDict);
     } else {
       inboxMetadata = undefined;
     }
-    let customPayload = dict.customPayload;
-    let read = IterableUtil.readBoolean(dict, 'read');
+    const customPayload = dict.customPayload;
+    const read = IterableUtil.readBoolean(dict, 'read');
 
-    let priorityLevel = dict.priorityLevel as number;
+    const priorityLevel = dict.priorityLevel as number;
 
     return new IterableInAppMessage(
       messageId,

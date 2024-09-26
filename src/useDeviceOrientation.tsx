@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react'
-import { useWindowDimensions } from 'react-native'
+import { useEffect, useState } from 'react';
+import { useWindowDimensions } from 'react-native';
 
-function useDeviceOrientation() {
-   const { height, width } = useWindowDimensions()
+export function useDeviceOrientation() {
+  const { height, width } = useWindowDimensions();
 
-   const [isPortrait, setIsPortrait] = useState<boolean>(height >= width)
+  const [isPortrait, setIsPortrait] = useState<boolean>(height >= width);
 
-   useEffect(() => {
-      setIsPortrait(height >= width)
-   }, [width])
+  useEffect(() => {
+    setIsPortrait(height >= width);
+  }, [width, height]);
 
-   return { height, width, isPortrait }
+  return { height, width, isPortrait };
 }
 
-export default useDeviceOrientation
+export default useDeviceOrientation;

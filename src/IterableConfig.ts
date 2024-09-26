@@ -1,4 +1,8 @@
-import { IterableAction, IterableActionContext, IterableLogLevel } from './IterableAction';
+import {
+  IterableAction,
+  IterableActionContext,
+  IterableLogLevel,
+} from './IterableAction';
 
 import { IterableInAppShowResponse } from './IterableInAppClasses';
 
@@ -13,7 +17,7 @@ type AuthCallBack = () => void;
  * An IterableConfig object is passed into the static initialize method on the Iterable class when initializing the SDK.
  */
 
-class IterableConfig {
+export class IterableConfig {
   /**
    * The name of the Iterable push integration that will send push notifications to your app.
    * Defaults to your app's application ID or bundle ID for iOS.
@@ -49,7 +53,10 @@ class IterableConfig {
   /**
    * A function expression used to handle `action://` URLs for in-app buttons and links.
    */
-  customActionHandler?: (action: IterableAction, context: IterableActionContext) => boolean;
+  customActionHandler?: (
+    action: IterableAction,
+    context: IterableActionContext
+  ) => boolean;
 
   /**
    * Implement this callback to override default in-app behavior.
@@ -127,14 +134,19 @@ class IterableConfig {
       pushIntegrationName: this.pushIntegrationName,
       autoPushRegistration: this.autoPushRegistration,
       inAppDisplayInterval: this.inAppDisplayInterval,
+      // TODO: Check if this is purposeful
       urlHandlerPresent: this.urlHandler != undefined,
+      // TODO: Check if this is purposeful
       customActionHandlerPresent: this.customActionHandler != undefined,
+      // TODO: Check if this is purposeful
       inAppHandlerPresent: this.inAppHandler != undefined,
+      // TODO: Check if this is purposeful
       authHandlerPresent: this.authHandler != undefined,
       logLevel: this.logLevel,
       expiringAuthTokenRefreshPeriod: this.expiringAuthTokenRefreshPeriod,
       allowedProtocols: this.allowedProtocols,
-      androidSdkUseInMemoryStorageForInApps: this.androidSdkUseInMemoryStorageForInApps,
+      androidSdkUseInMemoryStorageForInApps:
+        this.androidSdkUseInMemoryStorageForInApps,
       useInMemoryStorageForInApps: this.useInMemoryStorageForInApps,
       dataRegion: this.dataRegion,
       encryptionEnforced: this.encryptionEnforced,

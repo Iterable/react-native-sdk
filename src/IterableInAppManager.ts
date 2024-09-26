@@ -15,7 +15,7 @@ const RNIterableAPI = NativeModules.RNIterableAPI;
  * IterableInAppManager is set up as the inAppManager property of an Iterable instance.
  */
 
-class IterableInAppManager {
+export class IterableInAppManager {
   /**
    * This method returns the current user's list of in-app messages stored in the local queue in the form of a promise.
    * Use `then` keyword to get the array of IterableInAppMessage objects.
@@ -39,7 +39,6 @@ class IterableInAppManager {
    *
    * parameters: none
    */
-
   getInboxMessages(): Promise<Array<IterableInAppMessage>> {
     Iterable.logger.log('InAppManager.getInboxMessages');
 

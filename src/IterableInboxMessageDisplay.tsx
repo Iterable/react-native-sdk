@@ -1,25 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
-  Text,
-  View,
+  Linking,
   ScrollView,
   StyleSheet,
-  Linking,
+  Text,
   TouchableWithoutFeedback,
+  View,
 } from 'react-native';
-import { WebView } from 'react-native-webview';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { WebView } from 'react-native-webview';
 
 import {
-  IterableHtmlInAppContent,
   IterableEdgeInsets,
-  IterableInAppLocation,
+  IterableHtmlInAppContent,
   IterableInAppCloseSource,
+  IterableInAppLocation,
 } from './IterableInAppClasses';
 
 import { IterableAction, IterableActionContext } from './IterableAction';
 
-import InboxRowViewModel from './InboxRowViewModel';
+import { type InboxRowViewModel } from './InboxRowViewModel';
 
 import { Iterable, IterableActionSource } from './Iterable';
 
@@ -127,6 +127,7 @@ const IterableInboxMessageDisplay = ({
     ? { ...returnButtonContainer, marginLeft: 80 }
     : returnButtonContainer;
 
+  //  TODO: this does not feel safe!
   let JS = `
       const links = document.querySelectorAll('a')
 
@@ -210,7 +211,7 @@ const IterableInboxMessageDisplay = ({
             }}
           >
             <View style={returnButton}>
-              <Icon name="ios-chevron-back" style={returnButtonIcon} />
+              <Icon name="chevron-back-outline" style={returnButtonIcon} />
               <Text style={returnButtonText}>Inbox</Text>
             </View>
           </TouchableWithoutFeedback>

@@ -1,6 +1,6 @@
 import { IterableInAppMessage } from '.';
 
-export type InboxRowViewModel = {
+type InboxRowViewModel = {
   title: string;
   subtitle?: string;
   imageUrl?: string;
@@ -8,3 +8,5 @@ export type InboxRowViewModel = {
   read: boolean;
   inAppMessage: IterableInAppMessage;
 };
+
+export type { InboxRowViewModel };

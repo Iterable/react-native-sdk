@@ -25,7 +25,9 @@ class IterableInAppTrigger {
   }
 
   static fromDict(dict: any): IterableInAppTrigger {
-    const type = dict.type as IterableInAppTriggerType | IterableInAppTriggerType.immediate;
+    const type = dict.type as
+      | IterableInAppTriggerType
+      | IterableInAppTriggerType.immediate;
     return new IterableInAppTrigger(type);
   }
 }
@@ -71,7 +73,7 @@ class IterableEdgeInsets {
       dict.top as number,
       dict.left as number,
       dict.bottom as number,
-      dict.right as number,
+      dict.right as number
     );
   }
 }
@@ -93,7 +95,7 @@ class IterableHtmlInAppContent implements IterableInAppContent {
   static fromDict(dict: any): IterableHtmlInAppContent {
     return new IterableHtmlInAppContent(
       IterableEdgeInsets.fromDict(dict.edgeInsets),
-      dict.html as string,
+      dict.html as string
     );
   }
 }
@@ -103,7 +105,11 @@ class IterableInboxMetadata {
   subtitle?: string;
   icon?: string;
 
-  constructor(title: string | undefined, subtitle: string | undefined, icon: string | undefined) {
+  constructor(
+    title: string | undefined,
+    subtitle: string | undefined,
+    icon: string | undefined
+  ) {
     this.title = title;
     this.subtitle = subtitle;
     this.icon = icon;

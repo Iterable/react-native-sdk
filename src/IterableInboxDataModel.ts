@@ -7,8 +7,8 @@ import {
 
 import { Iterable } from './Iterable';
 
-import InboxImpressionRowInfo from './InboxImpressionRowInfo';
-import InboxRowViewModel from './InboxRowViewModel';
+import { type InboxImpressionRowInfo } from './InboxImpressionRowInfo';
+import { type InboxRowViewModel } from './InboxRowViewModel';
 import IterableInAppMessage from './IterableInAppMessage';
 
 const RNIterableAPI = NativeModules.RNIterableAPI;
@@ -111,7 +111,7 @@ class IterableInboxDataModel {
     let createdAt;
 
     if (typeof message.createdAt === 'string') {
-      createdAt = new Date(parseInt(message.createdAt));
+      createdAt = new Date(parseInt(message.createdAt, 10));
     } else {
       createdAt = new Date(message.createdAt);
     }
@@ -128,10 +128,14 @@ class IterableInboxDataModel {
   private sortAndFilter(messages: Array<IterableInAppMessage>): Array<IterableInAppMessage> {
     var sortedFilteredMessages = messages.slice();
 
+    // TODO: Check if this is purposeful
+    // eslint-disable-next-line eqeqeq
     if (this.filterFn != undefined) {
       sortedFilteredMessages = sortedFilteredMessages.filter(this.filterFn);
     }
 
+    // TODO: Check if this is purposeful
+    // eslint-disable-next-line eqeqeq
     if (this.comparatorFn != undefined) {
       sortedFilteredMessages.sort(this.comparatorFn);
     } else {
