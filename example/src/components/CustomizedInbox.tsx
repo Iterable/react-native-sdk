@@ -1,5 +1,7 @@
-import { IterableInbox, type IterableInboxProps } from '@iterable/react-native-sdk';
-import { WebView } from 'react-native-webview';
+import {
+  IterableInbox,
+  type IterableInboxProps,
+} from '@iterable/react-native-sdk';
 import useIterableApp from '../hooks/useIterableApp';
 
 const iterableInboxCustomization = {
@@ -71,7 +73,7 @@ const iterableInboxCustomization = {
   },
 };
 
-export default function CustomizedInbox(props: IterableInboxProps) {
+export const CustomizedInbox = (props: IterableInboxProps) => {
   const { returnToInboxTrigger } = useIterableApp();
   return (
     <IterableInbox
@@ -80,4 +82,6 @@ export default function CustomizedInbox(props: IterableInboxProps) {
       {...props}
     />
   );
-}
+};
+
+export default CustomizedInbox;

@@ -1,19 +1,14 @@
 import { Pressable, Text, TextInput, View } from 'react-native';
 
 import { useMemo } from 'react';
+import type { Route } from '../../constants';
 import useIterableApp from '../../hooks/useIterableApp';
+import type { RootStackScreenProps } from '../../types/navigation';
 import { styles } from './Login.styles';
 
-export const Login = () => {
-  const {
-    apiKey,
-    setApiKey,
-    userId,
-    setUserId,
-    email,
-    setEmail,
-    setLoginInProgress,
-  } = useIterableApp();
+export const Login = ({ navigation }: RootStackScreenProps<Route.Home>) => {
+  const { apiKey, setApiKey, userId, setUserId, email, setEmail, initialize } =
+    useIterableApp();
   const loginIsEnabled = useMemo(
     () => apiKey && (email || userId),
     [apiKey, email, userId]
@@ -45,7 +40,7 @@ export const Login = () => {
           autoCapitalize="none"
           autoCorrect={false}
         />
-        <Text style={styles.label}>Email address or User ID</Text>
+        <Text style={styles.label}>User ID</Text>
         <TextInput
           style={styles.input}
           onChangeText={setUserId}
@@ -57,7 +52,7 @@ export const Login = () => {
         <Pressable
           style={loginIsEnabled ? styles.button : styles.buttonDisabled}
           disabled={!loginIsEnabled}
-          onPressOut={() => setLoginInProgress(true)}
+          onPressOut={() => initialize(navigation)}
         >
           <Text
             style={

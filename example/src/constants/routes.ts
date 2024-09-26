@@ -5,6 +5,6 @@ export enum Route {
   ApiList = 'ApiList',
   Server = 'Server',
   Inbox = 'Inbox',
-  Inbox1 = 'Inbox1',
-  Inbox2 = 'Inbox2',
+  Commerce = 'Commerce',
+  CommerceDetails = 'CommerceDetails',
 }

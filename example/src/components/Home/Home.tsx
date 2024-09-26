@@ -8,27 +8,20 @@ import type { RootStackScreenProps } from '../../types/navigation';
 import { Login } from '../Login';
 import styles from './Home.styles';
 
-export const Home = ({ navigation }: RootStackScreenProps<Route.Home>) => {
-  const { initialize, logout, isLoggedIn } = useIterableApp();
+export const Home = (props: RootStackScreenProps<Route.Home>) => {
+  const { logout, isLoggedIn } = useIterableApp();
   const [loggedInAs, setLoggedInAs] = useState<string>('');
 
   useEffect(() => {
-    initialize(navigation);
-  }, []);
-
-  useEffect(() => {
     if (isLoggedIn) {
-      Iterable.getEmail().then((email) => {
-        console.log(`🚀 > Home > email:`, email);
-        setLoggedInAs(email || '');
-      });
+      Iterable.getEmail().then((email) => setLoggedInAs(email || ''));
     } else {
       setLoggedInAs('');
     }
   }, [isLoggedIn]);
 
   if (!isLoggedIn) {
-    return <Login />;
+    return <Login {...props} />;
   }
 
   return (

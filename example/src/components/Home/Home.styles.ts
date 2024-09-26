@@ -1,22 +1,5 @@
-import { StyleSheet, type TextStyle, type ViewStyle } from 'react-native';
-import {
-  appName,
-  buttonText,
-  subtitle,
-  title,
-  input,
-  button,
-  container,
-  appNameSmall,
-} from '../../constants';
-
-const label: TextStyle = {
-  paddingLeft: 20,
-  paddingRight: 20,
-  paddingTop: 10,
-  paddingBottom: 10,
-  color: 'gray',
-};
+import { StyleSheet, type TextStyle } from 'react-native';
+import { appNameSmall, button, buttonText, container } from '../../constants';
 
 const text: TextStyle = {
   textAlign: 'center',

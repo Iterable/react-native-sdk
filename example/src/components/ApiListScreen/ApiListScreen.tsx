@@ -62,14 +62,15 @@ export default function ApiListScreen() {
               }}
             />
           </View>
-          <View style={styles.body}>
+          {/* TODO: This does not currently exist on the class.  Find out if it should. */}
+          {/* <View style={styles.body}>
             <Button
               title="Register Device Token"
               onPress={() => {
                 Iterable.registerDeviceToken();
               }}
             />
-          </View>
+          </View> */}
           <View style={styles.body}>
             <Button
               title="Disable Device For Current User"
@@ -147,7 +148,7 @@ export default function ApiListScreen() {
               onPress={() => {
                 Iterable.inAppManager.getMessages().then((messages) => {
                   console.log('total messages: ' + messages.length);
-                  if (messages.length > 0) {
+                  if (messages && messages.length > 0) {
                     Iterable.trackInAppOpen(
                       messages[messages.length - 1],
                       IterableInAppLocation.inbox

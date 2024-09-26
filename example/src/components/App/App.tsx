@@ -1,17 +1,17 @@
+import { Iterable } from '@iterable/react-native-sdk';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useEffect, useState } from 'react';
 
+import { colors } from '../../constants';
 import { Route } from '../../constants/routes';
 import useIterableApp from '../../hooks/useIterableApp';
 import type { RootStackParamList } from '../../types/navigation';
 import ApiListScreen from '../ApiListScreen';
+import { Commerce } from '../Commerce';
 import CustomizedInbox from '../CustomizedInbox';
 import Home from '../Home';
 import { routeIcon } from './App.contants';
 import { getIcon } from './App.utils';
-import { Login, LoginInProgress } from '../Login';
-import { colors } from '../../constants';
-import { useEffect, useState } from 'react';
-import { Iterable } from '@iterable/react-native-sdk';
 
 const Tab = createBottomTabNavigator<RootStackParamList>();
 
@@ -28,20 +28,15 @@ export default function App() {
   const [unreadMessageCount, setUnreadMessageCount] = useState<number>(0);
 
   useEffect(() => {
-    if (config && isLoggedIn) {
+    if (config && isLoggedIn && !loginInProgress) {
       Iterable.inAppManager.getMessages().then((messages) => {
         setUnreadMessageCount(messages.length);
       });
     }
   }, [config, isLoggedIn, loginInProgress]);
 
-  // if (!isLoggedIn && !loginInProgress) {
-  //   return <Login />;
-  // }
-
   return (
     <>
-      {/* {loginInProgress && <LoginInProgress />} */}
       <Tab.Navigator
         screenOptions={({ route }) => {
           const iconName = routeIcon[route.name as keyof typeof routeIcon];
@@ -63,7 +58,9 @@ export default function App() {
         <Tab.Screen
           name={Route.Inbox}
           component={CustomizedInbox}
-          options={{ tabBarBadge: unreadMessageCount }}
+          options={
+            unreadMessageCount ? { tabBarBadge: unreadMessageCount } : {}
+          }
           listeners={() => ({
             tabPress: () => {
               if (isInboxTab) {
@@ -74,12 +71,19 @@ export default function App() {
           })}
         />
         <Tab.Screen
+          name={Route.Commerce}
+          component={Commerce}
+          listeners={() => ({
+            tabPress: () => setIsInboxTab(false),
+          })}
+        />
+        {/* <Tab.Screen
           name={Route.ApiList}
           component={ApiListScreen}
           listeners={() => ({
             tabPress: () => setIsInboxTab(false),
           })}
-        />
+        /> */}
       </Tab.Navigator>
     </>
   );

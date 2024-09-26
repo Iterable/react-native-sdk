@@ -111,7 +111,7 @@ export const IterableAppProvider: FunctionComponent<
       promises.push(Iterable.setEmail(mail));
     }
 
-    return Promise.all(promises).then((resp) => {
+    return Promise.all(promises).then(() => {
       setIsLoggedIn(true);
       setLoginInProgress(false);
       return true;
@@ -179,13 +179,17 @@ export const IterableAppProvider: FunctionComponent<
           return Promise.reject(err);
         })
         .finally(() => {
-          console.log('DONE!');
+          // For some reason, ios is throwing an error on initialize.
+          // To temporarily fix this, we're using the finally block to login.
+          // TODO: Find out why initialize is throwing an error on ios
+          setIsInitialized(true);
+          if (getUserId() || getEmail()) {
+            return login();
+          }
+          return Promise.resolve(true);
         });
-
-      // Initialize app
-      // initializeIterable({ config });
     },
-    []
+    [apiKey, getEmail, getUserId, login]
   );
 
   const logout = useCallback(() => {
