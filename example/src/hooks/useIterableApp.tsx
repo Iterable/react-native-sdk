@@ -4,16 +4,13 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useState,
 } from 'react';
 
 import {
   Iterable,
   IterableAction,
-  IterableActionContext,
   IterableConfig,
-  IterableInAppMessage,
   IterableInAppShowResponse,
   IterableLogLevel,
 } from '@iterable/react-native-sdk';
@@ -142,7 +139,7 @@ export const IterableAppProvider: FunctionComponent<
 
       config.allowedProtocols = ['app', 'iterable'];
 
-      config.logLevel = IterableLogLevel.info;
+      config.logLevel = IterableLogLevel.debug;
 
       config.inAppHandler = () => IterableInAppShowResponse.show;
 

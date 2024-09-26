@@ -1,9 +1,17 @@
 import { StyleSheet } from 'react-native';
-import { button, buttonText, colors, container, title } from '../../constants';
+import {
+  button,
+  buttonText,
+  colors,
+  container,
+  title,
+  subtitle,
+} from '../../constants';
 
 const styles = StyleSheet.create({
   container,
   title: { ...title, textAlign: 'center' },
+  subtitle: { ...subtitle, textAlign: 'center' },
   cardContainer: {
     backgroundColor: colors?.white,
     borderWidth: 1,

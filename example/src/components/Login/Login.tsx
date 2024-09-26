@@ -39,6 +39,7 @@ export const Login = ({ navigation }: RootStackScreenProps<Route.Home>) => {
           placeholder="eg: my.name@gmail.com"
           autoCapitalize="none"
           autoCorrect={false}
+          autoComplete="email"
         />
         <Text style={styles.label}>User ID</Text>
         <TextInput
