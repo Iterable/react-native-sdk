@@ -15,15 +15,21 @@ const RNIterableAPI = NativeModules.RNIterableAPI;
 
 class IterableInboxDataModel {
   filterFn?: (message: IterableInAppMessage) => boolean;
-  comparatorFn?: (message1: IterableInAppMessage, message2: IterableInAppMessage) => number;
+  comparatorFn?: (
+    message1: IterableInAppMessage,
+    message2: IterableInAppMessage
+  ) => number;
   dateMapperFn?: (message: IterableInAppMessage) => string | undefined;
 
   constructor() {}
 
   set(
     filter?: (message: IterableInAppMessage) => boolean,
-    comparator?: (message1: IterableInAppMessage, message2: IterableInAppMessage) => number,
-    dateMapper?: (message: IterableInAppMessage) => string | undefined,
+    comparator?: (
+      message1: IterableInAppMessage,
+      message2: IterableInAppMessage
+    ) => number,
+    dateMapper?: (message: IterableInAppMessage) => string | undefined
   ) {
     this.filterFn = filter;
     this.comparatorFn = comparator;
@@ -43,11 +49,15 @@ class IterableInboxDataModel {
   }
 
   getHtmlContentForMessageId(id: string): Promise<IterableHtmlInAppContent> {
-    Iterable.logger.log('IterableInboxDataModel.getHtmlContentForItem messageId: ' + id);
+    Iterable.logger.log(
+      'IterableInboxDataModel.getHtmlContentForItem messageId: ' + id
+    );
 
-    return RNIterableAPI.getHtmlInAppContentForMessage(id).then((content: any) => {
-      return IterableHtmlInAppContent.fromDict(content);
-    });
+    return RNIterableAPI.getHtmlInAppContentForMessage(id).then(
+      (content: any) => {
+        return IterableHtmlInAppContent.fromDict(content);
+      }
+    );
   }
 
   setMessageAsRead(id: string) {
@@ -69,7 +79,7 @@ class IterableInboxDataModel {
       },
       () => {
         return [];
-      },
+      }
     );
   }
 
@@ -92,7 +102,7 @@ class IterableInboxDataModel {
 
   private static sortByMostRecent = (
     message1: IterableInAppMessage,
-    message2: IterableInAppMessage,
+    message2: IterableInAppMessage
   ) => {
     let createdAt1 = message1.createdAt ?? new Date(0);
     let createdAt2 = message2.createdAt ?? new Date(0);
@@ -121,11 +131,17 @@ class IterableInboxDataModel {
     return defaultDateString;
   }
 
-  private processMessages(messages: Array<IterableInAppMessage>): Array<InboxRowViewModel> {
-    return this.sortAndFilter(messages).map(IterableInboxDataModel.getInboxRowViewModelForMessage);
+  private processMessages(
+    messages: Array<IterableInAppMessage>
+  ): Array<InboxRowViewModel> {
+    return this.sortAndFilter(messages).map(
+      IterableInboxDataModel.getInboxRowViewModelForMessage
+    );
   }
 
-  private sortAndFilter(messages: Array<IterableInAppMessage>): Array<IterableInAppMessage> {
+  private sortAndFilter(
+    messages: Array<IterableInAppMessage>
+  ): Array<IterableInAppMessage> {
     var sortedFilteredMessages = messages.slice();
 
     // TODO: Check if this is purposeful
@@ -145,7 +161,9 @@ class IterableInboxDataModel {
     return sortedFilteredMessages;
   }
 
-  private static getInboxRowViewModelForMessage(message: IterableInAppMessage): InboxRowViewModel {
+  private static getInboxRowViewModelForMessage(
+    message: IterableInAppMessage
+  ): InboxRowViewModel {
     return {
       title: message.inboxMetadata?.title ?? '',
       subtitle: message.inboxMetadata?.subtitle,

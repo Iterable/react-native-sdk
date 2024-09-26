@@ -72,7 +72,7 @@ export class IterableInAppMessage {
     inboxMetadata: IterableInboxMetadata | undefined,
     customPayload: any | undefined,
     read: boolean,
-    priorityLevel: number,
+    priorityLevel: number
   ) {
     this.campaignId = campaignId;
     this.messageId = messageId;
@@ -99,7 +99,7 @@ export class IterableInAppMessage {
       inAppMessage.inboxMetadata,
       inAppMessage.customPayload,
       inAppMessage.read,
-      inAppMessage.priorityLevel,
+      inAppMessage.priorityLevel
     );
   }
 
@@ -148,7 +148,7 @@ export class IterableInAppMessage {
       inboxMetadata,
       customPayload,
       read,
-      priorityLevel,
+      priorityLevel
     );
   }
 }

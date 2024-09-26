@@ -11,7 +11,10 @@ import {
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { IterableInAppDeleteSource, IterableInAppLocation } from './IterableInAppClasses';
+import {
+  IterableInAppDeleteSource,
+  IterableInAppLocation,
+} from './IterableInAppClasses';
 
 import { Iterable } from './Iterable';
 
@@ -57,7 +60,8 @@ export const IterableInbox = ({
   const appState = useAppStateListener();
   const isFocused = useIsFocused();
 
-  const [selectedRowViewModelIdx, setSelectedRowViewModelIdx] = useState<number>(0);
+  const [selectedRowViewModelIdx, setSelectedRowViewModelIdx] =
+    useState<number>(0);
   const [rowViewModels, setRowViewModels] = useState<InboxRowViewModel[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [animatedValue] = useState<any>(new Animated.Value(0));
@@ -107,7 +111,8 @@ export const IterableInbox = ({
 
   let { loadingScreen, container, headline, messageListContainer } = styles;
 
-  const navTitleHeight = headline.height + headline.paddingTop + headline.paddingBottom;
+  const navTitleHeight =
+    headline.height + headline.paddingTop + headline.paddingBottom;
   headline = { ...headline, height: Platform.OS === 'android' ? 70 : 60 };
   headline = !isPortrait ? { ...headline, paddingLeft: 70 } : headline;
 
@@ -197,7 +202,11 @@ export const IterableInbox = ({
     return inboxDataModel.getHtmlContentForMessageId(id);
   }
 
-  function handleMessageSelect(id: string, index: number, rows: InboxRowViewModel[]) {
+  function handleMessageSelect(
+    id: string,
+    index: number,
+    rows: InboxRowViewModel[]
+  ) {
     const newRowViewModels = rows.map((rowViewModel) => {
       return rowViewModel.inAppMessage.messageId === id
         ? { ...rowViewModel, read: true }
@@ -210,14 +219,17 @@ export const IterableInbox = ({
     Iterable.trackInAppOpen(
       // TODO: this could be undefined.  Find out what to do if it is.
       rows[index]?.inAppMessage as IterableInAppMessage,
-      IterableInAppLocation.inbox,
+      IterableInAppLocation.inbox
     );
 
     slideLeft();
   }
 
   function deleteRow(messageId: string) {
-    inboxDataModel.deleteItemById(messageId, IterableInAppDeleteSource.inboxSwipe);
+    inboxDataModel.deleteItemById(
+      messageId,
+      IterableInAppDeleteSource.inboxSwipe
+    );
     fetchInboxMessages();
   }
 
@@ -230,17 +242,24 @@ export const IterableInbox = ({
     setIsMessageDisplay(false);
   }
 
-  function updateVisibleMessageImpressions(messageImpressions: InboxImpressionRowInfo[]) {
+  function updateVisibleMessageImpressions(
+    messageImpressions: InboxImpressionRowInfo[]
+  ) {
     setVisibleMessageImpressions(messageImpressions);
   }
 
-  function showMessageDisplay(rowViewModelList: InboxRowViewModel[], index: number) {
+  function showMessageDisplay(
+    rowViewModelList: InboxRowViewModel[],
+    index: number
+  ) {
     const selectedRowViewModel = rowViewModelList[index];
 
     return selectedRowViewModel ? (
       <IterableInboxMessageDisplay
         rowViewModel={selectedRowViewModel}
-        inAppContentPromise={getHtmlContentForRow(selectedRowViewModel.inAppMessage.messageId)}
+        inAppContentPromise={getHtmlContentForRow(
+          selectedRowViewModel.inAppMessage.messageId
+        )}
         returnToInbox={(callback: Function) => returnToInbox(callback)}
         deleteRow={(messageId: string) => deleteRow(messageId)}
         contentWidth={width}
@@ -255,7 +274,9 @@ export const IterableInbox = ({
       <View style={messageListContainer}>
         {showNavTitle ? (
           <Text style={headline}>
-            {customizations?.navTitle ? customizations?.navTitle : defaultInboxTitle}
+            {customizations?.navTitle
+              ? customizations?.navTitle
+              : defaultInboxTitle}
           </Text>
         ) : null}
         {rowViewModels.length ? (
@@ -268,9 +289,9 @@ export const IterableInbox = ({
             handleMessageSelect={(messageId: string, index: number) =>
               handleMessageSelect(messageId, index, rowViewModels)
             }
-            updateVisibleMessageImpressions={(messageImpressions: InboxImpressionRowInfo[]) =>
-              updateVisibleMessageImpressions(messageImpressions)
-            }
+            updateVisibleMessageImpressions={(
+              messageImpressions: InboxImpressionRowInfo[]
+            ) => updateVisibleMessageImpressions(messageImpressions)}
             contentWidth={width}
             isPortrait={isPortrait}
           />

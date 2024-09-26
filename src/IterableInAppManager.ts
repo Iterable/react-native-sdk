@@ -55,7 +55,10 @@ export class IterableInAppManager {
    * @param {boolean} consume Whether or not the message should be consumed from the user's message queue after being shown. This should be defaulted to true.
    */
 
-  showMessage(message: IterableInAppMessage, consume: boolean): Promise<string | undefined> {
+  showMessage(
+    message: IterableInAppMessage,
+    consume: boolean
+  ): Promise<string | undefined> {
     Iterable.logger.log('InAppManager.show');
 
     return RNIterableAPI.showMessage(message.messageId, consume);
@@ -72,7 +75,7 @@ export class IterableInAppManager {
   removeMessage(
     message: IterableInAppMessage,
     location: IterableInAppLocation,
-    source: IterableInAppDeleteSource,
+    source: IterableInAppDeleteSource
   ): void {
     Iterable.logger.log('InAppManager.remove');
 
@@ -98,7 +101,9 @@ export class IterableInAppManager {
    * @param {IterableInAppMessage} message the in-app message (an IterableInAppMessage object)
    */
 
-  getHtmlContentForMessage(message: IterableInAppMessage): Promise<IterableHtmlInAppContent> {
+  getHtmlContentForMessage(
+    message: IterableInAppMessage
+  ): Promise<IterableHtmlInAppContent> {
     Iterable.logger.log('InAppManager.getHtmlContentForMessage');
 
     return RNIterableAPI.getHtmlInAppContentForMessage(message.messageId);

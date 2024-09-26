@@ -42,7 +42,7 @@ const IterableInboxMessageDisplay = ({
 }: MessageDisplayProps) => {
   const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title;
   const [inAppContent, setInAppContent] = useState<IterableHtmlInAppContent>(
-    new IterableHtmlInAppContent(new IterableEdgeInsets(0, 0, 0, 0), ''),
+    new IterableHtmlInAppContent(new IterableEdgeInsets(0, 0, 0, 0), '')
   );
 
   const styles = StyleSheet.create({
@@ -161,12 +161,16 @@ const IterableInboxMessageDisplay = ({
     let source = IterableActionSource.inApp;
     let context = new IterableActionContext(action, source);
 
-    Iterable.trackInAppClick(rowViewModel.inAppMessage, IterableInAppLocation.inbox, URL);
+    Iterable.trackInAppClick(
+      rowViewModel.inAppMessage,
+      IterableInAppLocation.inbox,
+      URL
+    );
     Iterable.trackInAppClose(
       rowViewModel.inAppMessage,
       IterableInAppLocation.inbox,
       IterableInAppCloseSource.link,
-      URL,
+      URL
     );
 
     //handle delete action
@@ -206,7 +210,7 @@ const IterableInboxMessageDisplay = ({
               Iterable.trackInAppClose(
                 rowViewModel.inAppMessage,
                 IterableInAppLocation.inbox,
-                IterableInAppCloseSource.back,
+                IterableInAppCloseSource.back
               );
             }}
           >
@@ -218,7 +222,11 @@ const IterableInboxMessageDisplay = ({
         </View>
         <View style={messageTitleContainer}>
           <View style={styles.messageTitle}>
-            <Text numberOfLines={1} ellipsizeMode="tail" style={messageTitleText}>
+            <Text
+              numberOfLines={1}
+              ellipsizeMode="tail"
+              style={messageTitleText}
+            >
               {messageTitle}
             </Text>
           </View>

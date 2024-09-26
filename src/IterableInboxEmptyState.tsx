@@ -39,7 +39,9 @@ export const IterableInboxEmptyState = ({
 
   return (
     <View style={container}>
-      <Text style={title}>{emptyStateTitle ? emptyStateTitle : defaultTitle}</Text>
+      <Text style={title}>
+        {emptyStateTitle ? emptyStateTitle : defaultTitle}
+      </Text>
       <Text style={body}>{emptyStateBody ? emptyStateBody : defaultBody}</Text>
     </View>
   );

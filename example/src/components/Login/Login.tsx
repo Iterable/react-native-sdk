@@ -5,15 +5,27 @@ import useIterableApp from '../../hooks/useIterableApp';
 import { styles } from './Login.styles';
 
 export const Login = () => {
-  const { apiKey, setApiKey, userId, setUserId, email, setEmail, setLoginInProgress } =
-    useIterableApp();
-  const loginIsEnabled = useMemo(() => apiKey && (email || userId), [apiKey, email, userId]);
+  const {
+    apiKey,
+    setApiKey,
+    userId,
+    setUserId,
+    email,
+    setEmail,
+    setLoginInProgress,
+  } = useIterableApp();
+  const loginIsEnabled = useMemo(
+    () => apiKey && (email || userId),
+    [apiKey, email, userId]
+  );
 
   return (
     <View style={styles.loginScreenContainer}>
       <Text style={styles.appName}>Iterable</Text>
       <Text style={styles.title}>Sign in to continue</Text>
-      <Text style={styles.subtitle}>Example app for React Native developers</Text>
+      <Text style={styles.subtitle}>
+        Example app for React Native developers
+      </Text>
       <View style={styles.formContainer}>
         <Text style={styles.label}>API key</Text>
         <TextInput
@@ -47,7 +59,13 @@ export const Login = () => {
           disabled={!loginIsEnabled}
           onPressOut={() => setLoginInProgress(true)}
         >
-          <Text style={loginIsEnabled ? styles.buttonText : styles.buttonTextDisabled}>Login</Text>
+          <Text
+            style={
+              loginIsEnabled ? styles.buttonText : styles.buttonTextDisabled
+            }
+          >
+            Login
+          </Text>
         </Pressable>
       </View>
     </View>

@@ -21,11 +21,12 @@ function defaultMessageListLayout(
   dataModel: IterableInboxDataModel,
   rowViewModel: InboxRowViewModel,
   customizations: IterableInboxCustomizations,
-  isPortrait: boolean,
+  isPortrait: boolean
 ) {
   const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title ?? '';
   const messageBody = rowViewModel.inAppMessage.inboxMetadata?.subtitle ?? '';
-  const messageCreatedAt = dataModel.getFormattedDate(rowViewModel.inAppMessage) ?? '';
+  const messageCreatedAt =
+    dataModel.getFormattedDate(rowViewModel.inAppMessage) ?? '';
   const thumbnailURL = rowViewModel.imageUrl;
 
   let styles = StyleSheet.create({
@@ -110,11 +111,15 @@ function defaultMessageListLayout(
     messageRow,
   } = resolvedStyles;
 
-  unreadIndicator = !isPortrait ? { ...unreadIndicator, marginLeft: 40 } : unreadIndicator;
+  unreadIndicator = !isPortrait
+    ? { ...unreadIndicator, marginLeft: 40 }
+    : unreadIndicator;
   readMessageThumbnailContainer = !isPortrait
     ? { ...readMessageThumbnailContainer, paddingLeft: 65 }
     : readMessageThumbnailContainer;
-  messageContainer = !isPortrait ? { ...messageContainer, width: '90%' } : messageContainer;
+  messageContainer = !isPortrait
+    ? { ...messageContainer, width: '90%' }
+    : messageContainer;
 
   //  TODO: Check if I can remove this
   function messageRowStyle(_rowViewModel: InboxRowViewModel) {
@@ -219,7 +224,9 @@ export const IterableInboxMessageCell = ({
 
   let { textContainer, deleteSlider, textStyle } = styles;
 
-  deleteSlider = isPortrait ? deleteSlider : { ...deleteSlider, paddingRight: 40 };
+  deleteSlider = isPortrait
+    ? deleteSlider
+    : { ...deleteSlider, paddingRight: 40 };
 
   const scrollThreshold = contentWidth / 15;
   const FORCING_DURATION = 350;
@@ -286,7 +293,7 @@ export const IterableInboxMessageCell = ({
         }
         swipingCheck(false);
       },
-    }),
+    })
   ).current;
 
   return (
@@ -294,7 +301,10 @@ export const IterableInboxMessageCell = ({
       <View style={deleteSlider}>
         <Text style={textStyle}>DELETE</Text>
       </View>
-      <Animated.View style={[textContainer, position.getLayout()]} {...panResponder.panHandlers}>
+      <Animated.View
+        style={[textContainer, position.getLayout()]}
+        {...panResponder.panHandlers}
+      >
         <TouchableOpacity
           activeOpacity={1}
           onPress={() => {
@@ -303,7 +313,13 @@ export const IterableInboxMessageCell = ({
         >
           {messageListItemLayout(last, rowViewModel)
             ? messageListItemLayout(last, rowViewModel)[0]
-            : defaultMessageListLayout(last, dataModel, rowViewModel, customizations, isPortrait)}
+            : defaultMessageListLayout(
+                last,
+                dataModel,
+                rowViewModel,
+                customizations,
+                isPortrait
+              )}
         </TouchableOpacity>
       </Animated.View>
     </>

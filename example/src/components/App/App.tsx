@@ -35,13 +35,13 @@ export default function App() {
     }
   }, [config, isLoggedIn, loginInProgress]);
 
-  if (!isLoggedIn && !loginInProgress) {
-    return <Login />;
-  }
+  // if (!isLoggedIn && !loginInProgress) {
+  //   return <Login />;
+  // }
 
   return (
     <>
-      {loginInProgress && <LoginInProgress />}
+      {/* {loginInProgress && <LoginInProgress />} */}
       <Tab.Navigator
         screenOptions={({ route }) => {
           const iconName = routeIcon[route.name as keyof typeof routeIcon];
@@ -49,6 +49,7 @@ export default function App() {
             tabBarIcon: (props) => getIcon(iconName as string, props),
             tabBarActiveTintColor: colors.brandPurple,
             tabBarInactiveTintColor: colors.textSecondary,
+            headerShown: false,
           };
         }}
       >

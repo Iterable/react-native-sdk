@@ -68,22 +68,32 @@ const IterableAppContext = createContext<IterableAppProps>({
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export const IterableAppProvider: FunctionComponent<React.PropsWithChildren<unknown>> = ({
-  children,
-}) => {
+export const IterableAppProvider: FunctionComponent<
+  React.PropsWithChildren<unknown>
+> = ({ children }) => {
   const { isPortrait } = useDeviceOrientation();
-  const [returnToInboxTrigger, setReturnToInboxTrigger] = useState<boolean>(false);
+  const [returnToInboxTrigger, setReturnToInboxTrigger] =
+    useState<boolean>(false);
   const [isInboxTab, setIsInboxTab] = useState<boolean>(false);
   const [itblConfig, setItblConfig] = useState<IterableConfig | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isInitialized, setIsInitialized] = useState<boolean>(false);
-  const [apiKey, setApiKey] = useState<string | undefined>(process.env.ITBL_API_KEY);
-  const [userId, setUserId] = useState<string | undefined>(process.env.ITBL_USER_ID);
-  const [email, setEmail] = useState<string | undefined>(process.env.ITBL_EMAIL);
+  const [apiKey, setApiKey] = useState<string | undefined>(
+    process.env.ITBL_API_KEY
+  );
+  const [userId, setUserId] = useState<string | undefined>(
+    process.env.ITBL_USER_ID
+  );
+  const [email, setEmail] = useState<string | undefined>(
+    process.env.ITBL_EMAIL
+  );
   const [loginInProgress, setLoginInProgress] = useState<boolean>(false);
 
-  const getUserId = useCallback(() => userId ?? process.env.ITBL_USER_ID, [userId]);
-  const getEmail = useCallback(() => email ?? process.env.ITBL_EMAIL, [userId]);
+  const getUserId = useCallback(
+    () => userId ?? process.env.ITBL_USER_ID,
+    [userId]
+  );
+  const getEmail = useCallback(() => email ?? process.env.ITBL_EMAIL, [email]);
 
   const login = useCallback(() => {
     const promises = [];
@@ -108,65 +118,75 @@ export const IterableAppProvider: FunctionComponent<React.PropsWithChildren<unkn
     });
   }, [email, userId]);
 
-  const initialize = useCallback((navigation: BottomTabNavigationProp<RootStackParamList>) => {
-    const config = new IterableConfig();
+  const initialize = useCallback(
+    (navigation: BottomTabNavigationProp<RootStackParamList>) => {
+      const config = new IterableConfig();
 
-    config.inAppDisplayInterval = 1.0; // Min gap between in-apps. No need to set this in production.
+      config.inAppDisplayInterval = 1.0; // Min gap between in-apps. No need to set this in production.
 
-    config.urlHandler = (url: string) => {
-      const routeNames = [Route.Home, Route.ApiList];
-      for (const route of routeNames) {
-        if (url.includes(route.toLowerCase())) {
-          navigation.navigate(route);
-          return true;
+      config.urlHandler = (url: string) => {
+        const routeNames = [Route.Home, Route.ApiList];
+        for (const route of routeNames) {
+          if (url.includes(route.toLowerCase())) {
+            navigation.navigate(route);
+            return true;
+          }
         }
+        return false;
+      };
+
+      config.customActionHandler = (action: IterableAction) => {
+        Alert.alert('Custom Action Handler', 'actionType: ' + action.type);
+        return true;
+      };
+
+      config.allowedProtocols = ['app', 'iterable'];
+
+      config.logLevel = IterableLogLevel.info;
+
+      config.inAppHandler = () => IterableInAppShowResponse.show;
+
+      setItblConfig(config);
+
+      const key = apiKey ?? process.env.ITBL_API_KEY;
+
+      if (!key) {
+        console.error('No API key found.');
+        return Promise.resolve(false);
       }
-      return false;
-    };
 
-    config.customActionHandler = (action: IterableAction) => {
-      Alert.alert('Custom Action Handler', 'actionType: ' + action.type);
-      return true;
-    };
+      // Initialize app
+      return Iterable.initialize(key as string, config)
+        .then((isSuccessful) => {
+          setIsInitialized(isSuccessful);
 
-    config.allowedProtocols = ['app', 'iterable'];
+          if (!isSuccessful)
+            return Promise.reject('`Iterable.initialize` failed');
 
-    config.logLevel = IterableLogLevel.info;
+          if (getUserId() || getEmail()) {
+            return login().then(() => isSuccessful);
+          }
 
-    config.inAppHandler = () => IterableInAppShowResponse.show;
+          return isSuccessful;
+        })
+        .catch((err) => {
+          console.error(
+            '`Iterable.initialize` failed with the following error',
+            err
+          );
+          setIsInitialized(false);
+          setLoginInProgress(false);
+          return Promise.reject(err);
+        })
+        .finally(() => {
+          console.log('DONE!');
+        });
 
-    setItblConfig(config);
-
-    const key = apiKey ?? process.env.ITBL_API_KEY;
-
-    if (!key) {
-      console.error('No API key found.');
-      return Promise.resolve(false);
-    }
-
-    // Initialize app
-    return Iterable.initialize(key as string, config)
-      .then((isSuccessful) => {
-        setIsInitialized(isSuccessful);
-
-        if (!isSuccessful) return Promise.reject('`Iterable.initialize` failed');
-
-        if (getUserId() || getEmail()) {
-          return login().then(() => isSuccessful);
-        }
-
-        return isSuccessful;
-      })
-      .catch((err) => {
-        console.error('`Iterable.initialize` failed with the following error', err);
-        setIsInitialized(false);
-        setLoginInProgress(false);
-        return Promise.reject(err);
-      });
-
-    // Initialize app
-    // initializeIterable({ config });
-  }, []);
+      // Initialize app
+      // initializeIterable({ config });
+    },
+    []
+  );
 
   const logout = useCallback(() => {
     Iterable.setEmail(undefined);
