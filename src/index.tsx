@@ -1,22 +1,69 @@
-import { NativeModules, Platform } from 'react-native';
+/**
+ * React Native module for Iterable.
+ * @module react-native-iterable-sdk
+ */
 
-const LINKING_ERROR =
-  `The package '@iterable/react-native-sdk' doesn't seem to be linked. Make sure: \n\n` +
-  Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
-  '- You rebuilt the app after installing the package\n' +
-  '- You are not using Expo Go\n';
+import { Iterable, IterableCommerceItem } from './Iterable';
+import IterableInAppManager from './IterableInAppManager';
 
-const ReactNativeSdk = NativeModules.ReactNativeSdk
-  ? NativeModules.ReactNativeSdk
-  : new Proxy(
-      {},
-      {
-        get() {
-          throw new Error(LINKING_ERROR);
-        },
-      }
-    );
+import { IterableAction, IterableActionContext, IterableLogLevel } from './IterableAction';
 
-export function multiply(a: number, b: number): Promise<number> {
-  return ReactNativeSdk.multiply(a, b);
-}
+import {
+  IterableInAppShowResponse,
+  type IterableInAppContent,
+  IterableInAppTriggerType,
+  IterableInAppTrigger,
+  IterableInAppContentType,
+  IterableEdgeInsets,
+  IterableHtmlInAppContent,
+  IterableInboxMetadata,
+  IterableInAppLocation,
+  IterableInAppCloseSource,
+  IterableInAppDeleteSource,
+} from './IterableInAppClasses';
+
+import InboxRowViewModel from './InboxRowViewModel';
+import IterableInboxCustomizations from './IterableInboxCustomizations';
+import IterableInboxEmptyState from './IterableInboxEmptyState';
+import IterableInboxMessageCell from './IterableInboxMessageCell';
+
+import IterableInAppMessage from './IterableInAppMessage';
+
+import useAppStateListener from './useAppStateListener';
+import useDeviceOrientation from './useDeviceOrientation';
+import InboxImpressionRowInfo from './InboxImpressionRowInfo';
+
+import IterableConfig from './IterableConfig';
+import { IterableDataRegion } from './IterableDataRegion';
+
+export {
+  Iterable,
+  IterableCommerceItem,
+  IterableConfig,
+  IterableInAppManager,
+  IterableAction,
+  IterableActionContext,
+  IterableLogLevel,
+  IterableInAppShowResponse,
+  IterableInAppTriggerType,
+  IterableInAppTrigger,
+  IterableInAppContentType,
+  IterableEdgeInsets,
+  IterableHtmlInAppContent,
+  IterableInboxMetadata,
+  IterableInAppLocation,
+  IterableInAppMessage,
+  IterableInAppCloseSource,
+  IterableInAppDeleteSource,
+  IterableInboxEmptyState,
+  IterableInboxMessageCell,
+  useAppStateListener,
+  useDeviceOrientation,
+  IterableDataRegion,
+};
+export type {
+  IterableInAppContent,
+  IterableInboxCustomizations,
+  InboxRowViewModel,
+  InboxImpressionRowInfo,
+};

@@ -1,101 +1,90 @@
-'use strict'
-import React, {
-  Component
-} from 'react'
-import {
-  Text,
-  View,
-  Button,
-  StyleSheet,
-  Image,
-} from 'react-native'
-import { TextInput } from 'react-native-gesture-handler'
-import { Iterable } from '@iterable/react-native-sdk'
+import React, { Component } from 'react';
+import { Text, View, Button, StyleSheet, Image } from 'react-native';
+import { TextInput } from 'react-native-gesture-handler';
+import { Iterable } from '@iterable/react-native-sdk';
 
-interface Props { }
+interface Props {}
 interface State {
-  email?: string
-  isLoggedIn: boolean
+  email?: string;
+  isLoggedIn: boolean;
 }
 export class Login extends Component<Props, State> {
   constructor(props: Props) {
-    super(props)
-    this.state = { isLoggedIn: false }
-    this.updateState()
+    super(props);
+    this.state = { isLoggedIn: false };
+    this.updateState();
   }
 
   render() {
-    var userInfo
+    var userInfo;
     if (this.state.isLoggedIn) {
-      userInfo = this.renderLoggedIn(this.state.email!)
+      userInfo = this.renderLoggedIn(this.state.email!);
     } else {
-      userInfo = this.renderLoggedOut()
+      userInfo = this.renderLoggedOut();
     }
     return (
       <View style={styles.container}>
         <View style={styles.upperContainer}>
-          <Image resizeMode="contain" style={styles.image} source={require('../img/iterable-logo.png')} />
+          <Image
+            resizeMode="contain"
+            style={styles.image}
+            source={require('../img/iterable-logo.png')}
+          />
           {userInfo}
         </View>
       </View>
-    )
+    );
   }
 
   private renderLoggedIn(email: String) {
-    console.log(`renderLoggedIn, email: ${email}`)
+    console.log(`renderLoggedIn, email: ${email}`);
     return (
       <View style={styles.emailContainer}>
         <Text style={styles.emailText}>User: {email}</Text>
-        <Button
-          testID="logoutBtn"
-          title="Logout"
-          onPress={this.onLogoutTapped}
-        />
+        <Button testID="logoutBtn" title="Logout" onPress={this.onLogoutTapped} />
       </View>
-    )
+    );
   }
 
   private renderLoggedOut() {
-    console.log("renderLoggedOut")
+    console.log('renderLoggedOut');
     return (
       <View style={styles.emailContainer}>
-        <TextInput testID='loginText'
+        <TextInput
+          testID="loginText"
           value={this.state.email}
           style={styles.emailTextInput}
           autoCapitalize="none"
           autoCompleteType="email"
           onChangeText={(text) => this.setState({ isLoggedIn: false, email: text })}
-          placeholder="user@example.com" />
-        <Button
-          testID="loginBtn"
-          title="Login"
-          onPress={this.onLoginTapped}
+          placeholder="user@example.com"
         />
+        <Button testID="loginBtn" title="Login" onPress={this.onLoginTapped} />
       </View>
-    )
+    );
   }
 
   private onLoginTapped = () => {
-    console.log("onLoginTapped")
-    Iterable.setEmail(this.state.email)
-    this.updateState()
-  }
+    console.log('onLoginTapped');
+    Iterable.setEmail(this.state.email);
+    this.updateState();
+  };
 
   private onLogoutTapped = () => {
-    console.log("onLogoutTapped")
-    Iterable.setEmail(undefined)
-    this.updateState()
-  }
+    console.log('onLogoutTapped');
+    Iterable.setEmail(undefined);
+    this.updateState();
+  };
 
   private updateState() {
-    Iterable.getEmail().then(email => {
-      console.log("gotEmail: " + email)
+    Iterable.getEmail().then((email) => {
+      console.log('gotEmail: ' + email);
       if (email) {
-        this.setState({ isLoggedIn: true, email: email })
+        this.setState({ isLoggedIn: true, email: email });
       } else {
-        this.setState({ isLoggedIn: false, email: undefined })
+        this.setState({ isLoggedIn: false, email: undefined });
       }
-    })
+    });
   }
 }
 
@@ -115,7 +104,7 @@ const styles = StyleSheet.create({
     height: 150,
   },
   emailContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginTop: 25,
   },
   emailTextInput: {
@@ -130,4 +119,4 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 18,
   },
-})
+});
