@@ -1,23 +1,24 @@
-version: "2"
+# TODO: Figure out what makes sense for this
+version: '2'
 exclude_patterns:
-  - ".*/"
-  - "docs/"
-  - "integration-testing/"
-  - "**/node_modules/"
-  - "SampleApp/"
-  - "scripts/"
-  - "**/__mocks__/"
-  - "**/__tests__/"
-  - "**/.*"
-  - "**/*.config.js"
-  - "**/*.h"
-  - "**/*.json"
-  - "**/*.lock"
-  - "**/*.md"
-  - "**/*.plist"
-  - "**/*.podspec"
-  - "**/*.xcodeproj"
-  - "**/*.xcworkspace"
-  - "**/*.yml"
-  - "**/build.gradle"
-  - "**/AndroidManifest.xml"
+  - '.*/'
+  - 'docs/'
+  - 'integration-testing/'
+  - '**/node_modules/'
+  - 'SampleApp/'
+  - 'scripts/'
+  - '**/__mocks__/'
+  - '**/__tests__/'
+  - '**/.*'
+  - '**/*.config.js'
+  - '**/*.h'
+  - '**/*.json'
+  - '**/*.lock'
+  - '**/*.md'
+  - '**/*.plist'
+  - '**/*.podspec'
+  - '**/*.xcodeproj'
+  - '**/*.xcworkspace'
+  - '**/*.yml'
+  - '**/build.gradle'
+  - '**/AndroidManifest.xml'

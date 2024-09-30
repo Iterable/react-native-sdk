@@ -1,0 +1,117 @@
+import { useCallback, useRef, useState } from 'react';
+import { type ViewabilityConfig, type ViewToken, FlatList } from 'react-native';
+
+import { type InboxImpressionRowInfo } from './InboxImpressionRowInfo';
+import IterableInboxMessageCell from './IterableInboxMessageCell';
+import { type InboxRowViewModel } from './InboxRowViewModel';
+import { type IterableInboxCustomizations } from './IterableInboxCustomizations';
+
+import IterableInAppMessage from './IterableInAppMessage';
+import IterableInboxDataModel from './IterableInboxDataModel';
+
+type MessageListProps = {
+  dataModel: IterableInboxDataModel;
+  rowViewModels: InboxRowViewModel[];
+  customizations: IterableInboxCustomizations;
+  messageListItemLayout: Function;
+  deleteRow: Function;
+  handleMessageSelect: Function;
+  updateVisibleMessageImpressions: Function;
+  contentWidth: number;
+  isPortrait: boolean;
+};
+
+const IterableInboxMessageList = ({
+  dataModel,
+  rowViewModels,
+  customizations,
+  messageListItemLayout,
+  deleteRow,
+  handleMessageSelect,
+  updateVisibleMessageImpressions,
+  contentWidth,
+  isPortrait,
+}: MessageListProps) => {
+  const [swiping, setSwiping] = useState<boolean>(false);
+  const flatListRef = useRef<FlatList>(null);
+
+  function renderRowViewModel(
+    rowViewModel: InboxRowViewModel,
+    index: number,
+    last: boolean
+  ) {
+    return (
+      <IterableInboxMessageCell
+        key={rowViewModel.inAppMessage.messageId}
+        index={index}
+        last={last}
+        dataModel={dataModel}
+        rowViewModel={rowViewModel}
+        customizations={customizations}
+        swipingCheck={(isSwiping: boolean) => setSwiping(isSwiping)}
+        messageListItemLayout={messageListItemLayout}
+        deleteRow={(messageId: string) => deleteRow(messageId)}
+        handleMessageSelect={(messageId: string, i: number) =>
+          handleMessageSelect(messageId, i)
+        }
+        contentWidth={contentWidth}
+        isPortrait={isPortrait}
+      />
+    );
+  }
+
+  function getRowInfosFromViewTokens(
+    viewTokens: Array<ViewToken>
+  ): Array<InboxImpressionRowInfo> {
+    return viewTokens.map(function (viewToken) {
+      var inAppMessage = IterableInAppMessage.fromViewToken(viewToken);
+
+      const impression = {
+        messageId: inAppMessage.messageId,
+        silentInbox: inAppMessage.isSilentInbox(),
+      } as InboxImpressionRowInfo;
+
+      return impression;
+    });
+  }
+
+  const inboxSessionViewabilityConfig: ViewabilityConfig = {
+    minimumViewTime: 500,
+    itemVisiblePercentThreshold: 100,
+    waitForInteraction: false,
+  };
+
+  const inboxSessionItemsChanged = useCallback(
+    (info: { viewableItems: Array<ViewToken>; changed: Array<ViewToken> }) => {
+      const rowInfos = getRowInfosFromViewTokens(info.viewableItems);
+
+      updateVisibleMessageImpressions(rowInfos);
+    },
+    //  TODO: Fix this
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
+  return (
+    <FlatList
+      ref={flatListRef}
+      scrollEnabled={!swiping}
+      data={rowViewModels}
+      renderItem={({
+        item,
+        index,
+      }: {
+        item: InboxRowViewModel;
+        index: number;
+      }) => renderRowViewModel(item, index, index === rowViewModels.length - 1)}
+      keyExtractor={(item: InboxRowViewModel) => item.inAppMessage.messageId}
+      viewabilityConfig={inboxSessionViewabilityConfig}
+      onViewableItemsChanged={inboxSessionItemsChanged}
+      onLayout={() => {
+        flatListRef.current?.recordInteraction();
+      }}
+    />
+  );
+};
+
+export default IterableInboxMessageList;
