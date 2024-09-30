@@ -1,3 +1,5 @@
+import { type ViewToken } from 'react-native';
+
 import IterableUtil from './IterableUtil';
 
 import {
@@ -6,12 +8,10 @@ import {
   IterableInboxMetadata,
 } from './IterableInAppClasses';
 
-import { ViewToken } from 'react-native';
-
 /**
  * Iterable in-app message
  */
-class IterableInAppMessage {
+export class IterableInAppMessage {
   /**
    * the ID for the in-app message
    */
@@ -72,7 +72,7 @@ class IterableInAppMessage {
     inboxMetadata: IterableInboxMetadata | undefined,
     customPayload: any | undefined,
     read: boolean,
-    priorityLevel: number,
+    priorityLevel: number
   ) {
     this.campaignId = campaignId;
     this.messageId = messageId;
@@ -99,12 +99,14 @@ class IterableInAppMessage {
       inAppMessage.inboxMetadata,
       inAppMessage.customPayload,
       inAppMessage.read,
-      inAppMessage.priorityLevel,
+      inAppMessage.priorityLevel
     );
   }
 
   isSilentInbox(): boolean {
-    return this.saveToInbox && this.trigger.type == IterableInAppTriggerType.never;
+    return (
+      this.saveToInbox && this.trigger.type == IterableInAppTriggerType.never
+    );
   }
 
   static fromDict(dict: any): IterableInAppMessage {
@@ -144,7 +146,7 @@ class IterableInAppMessage {
       inboxMetadata,
       customPayload,
       read,
-      priorityLevel,
+      priorityLevel
     );
   }
 }

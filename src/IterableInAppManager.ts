@@ -1,21 +1,21 @@
 import { NativeModules } from 'react-native';
 
+import { Iterable } from './Iterable';
 import {
   IterableHtmlInAppContent,
-  IterableInAppLocation,
   IterableInAppDeleteSource,
+  IterableInAppLocation,
 } from './IterableInAppClasses';
-import { Iterable } from './Iterable';
-
 import IterableInAppMessage from './IterableInAppMessage';
 
+// TODO: Create a loader for this
 const RNIterableAPI = NativeModules.RNIterableAPI;
 
 /**
  * IterableInAppManager is set up as the inAppManager property of an Iterable instance.
  */
 
-class IterableInAppManager {
+export class IterableInAppManager {
   /**
    * This method returns the current user's list of in-app messages stored in the local queue in the form of a promise.
    * Use `then` keyword to get the array of IterableInAppMessage objects.
@@ -56,7 +56,10 @@ class IterableInAppManager {
    * @param {boolean} consume Whether or not the message should be consumed from the user's message queue after being shown. This should be defaulted to true.
    */
 
-  showMessage(message: IterableInAppMessage, consume: boolean): Promise<string | undefined> {
+  showMessage(
+    message: IterableInAppMessage,
+    consume: boolean
+  ): Promise<string | undefined> {
     Iterable.logger.log('InAppManager.show');
 
     return RNIterableAPI.showMessage(message.messageId, consume);
@@ -73,7 +76,7 @@ class IterableInAppManager {
   removeMessage(
     message: IterableInAppMessage,
     location: IterableInAppLocation,
-    source: IterableInAppDeleteSource,
+    source: IterableInAppDeleteSource
   ): void {
     Iterable.logger.log('InAppManager.remove');
 
@@ -99,7 +102,9 @@ class IterableInAppManager {
    * @param {IterableInAppMessage} message the in-app message (an IterableInAppMessage object)
    */
 
-  getHtmlContentForMessage(message: IterableInAppMessage): Promise<IterableHtmlInAppContent> {
+  getHtmlContentForMessage(
+    message: IterableInAppMessage
+  ): Promise<IterableHtmlInAppContent> {
     Iterable.logger.log('InAppManager.getHtmlContentForMessage');
 
     return RNIterableAPI.getHtmlInAppContentForMessage(message.messageId);
