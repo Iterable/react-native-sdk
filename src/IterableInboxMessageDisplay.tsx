@@ -1,28 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
-  Text,
-  View,
+  Linking,
   ScrollView,
   StyleSheet,
-  Linking,
+  Text,
   TouchableWithoutFeedback,
+  View,
 } from 'react-native';
-import { WebView } from 'react-native-webview';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { WebView } from 'react-native-webview';
 
+import { type InboxRowViewModel } from './InboxRowViewModel';
+import { Iterable, IterableActionSource } from './Iterable';
+import { IterableAction, IterableActionContext } from './IterableAction';
 import {
-  IterableHtmlInAppContent,
   IterableEdgeInsets,
-  IterableInAppLocation,
+  IterableHtmlInAppContent,
   IterableInAppCloseSource,
+  IterableInAppLocation,
 } from './IterableInAppClasses';
 
-import { IterableAction, IterableActionContext } from './IterableAction';
-
-import InboxRowViewModel from './InboxRowViewModel';
-
-import { Iterable, IterableActionSource } from './Iterable';
-
+// TODO: Comment
 type MessageDisplayProps = {
   rowViewModel: InboxRowViewModel;
   inAppContentPromise: Promise<IterableHtmlInAppContent>;
@@ -32,7 +30,7 @@ type MessageDisplayProps = {
   isPortrait: boolean;
 };
 
-const IterableInboxMessageDisplay = ({
+export const IterableInboxMessageDisplay = ({
   rowViewModel,
   inAppContentPromise,
   returnToInbox,
@@ -42,7 +40,7 @@ const IterableInboxMessageDisplay = ({
 }: MessageDisplayProps) => {
   const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title;
   const [inAppContent, setInAppContent] = useState<IterableHtmlInAppContent>(
-    new IterableHtmlInAppContent(new IterableEdgeInsets(0, 0, 0, 0), ''),
+    new IterableHtmlInAppContent(new IterableEdgeInsets(0, 0, 0, 0), '')
   );
 
   const styles = StyleSheet.create({
@@ -160,12 +158,16 @@ const IterableInboxMessageDisplay = ({
     let source = IterableActionSource.inApp;
     let context = new IterableActionContext(action, source);
 
-    Iterable.trackInAppClick(rowViewModel.inAppMessage, IterableInAppLocation.inbox, URL);
+    Iterable.trackInAppClick(
+      rowViewModel.inAppMessage,
+      IterableInAppLocation.inbox,
+      URL
+    );
     Iterable.trackInAppClose(
       rowViewModel.inAppMessage,
       IterableInAppLocation.inbox,
       IterableInAppCloseSource.link,
-      URL,
+      URL
     );
 
     //handle delete action
@@ -205,7 +207,7 @@ const IterableInboxMessageDisplay = ({
               Iterable.trackInAppClose(
                 rowViewModel.inAppMessage,
                 IterableInAppLocation.inbox,
-                IterableInAppCloseSource.back,
+                IterableInAppCloseSource.back
               );
             }}
           >
@@ -217,7 +219,11 @@ const IterableInboxMessageDisplay = ({
         </View>
         <View style={messageTitleContainer}>
           <View style={styles.messageTitle}>
-            <Text numberOfLines={1} ellipsizeMode="tail" style={messageTitleText}>
+            <Text
+              numberOfLines={1}
+              ellipsizeMode="tail"
+              style={messageTitleText}
+            >
               {messageTitle}
             </Text>
           </View>

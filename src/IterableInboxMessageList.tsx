@@ -2,12 +2,11 @@ import { useCallback, useRef, useState } from 'react';
 import { type ViewabilityConfig, type ViewToken, FlatList } from 'react-native';
 
 import type { InboxImpressionRowInfo } from './InboxImpressionRowInfo';
-import IterableInboxMessageCell from './IterableInboxMessageCell';
-import InboxRowViewModel from './InboxRowViewModel';
-import IterableInboxCustomizations from './IterableInboxCustomizations';
-
+import type { InboxRowViewModel } from './InboxRowViewModel';
 import IterableInAppMessage from './IterableInAppMessage';
+import type { IterableInboxCustomizations } from './IterableInboxCustomizations';
 import IterableInboxDataModel from './IterableInboxDataModel';
+import IterableInboxMessageCell from './IterableInboxMessageCell';
 
 // TODO: Comment
 type MessageListProps = {
@@ -22,7 +21,8 @@ type MessageListProps = {
   isPortrait: boolean;
 };
 
-const IterableInboxMessageList = ({
+// TODO: Comment
+export const IterableInboxMessageList = ({
   dataModel,
   rowViewModels,
   customizations,
@@ -49,11 +49,11 @@ const IterableInboxMessageList = ({
         dataModel={dataModel}
         rowViewModel={rowViewModel}
         customizations={customizations}
-        swipingCheck={(swiping: boolean) => setSwiping(swiping)}
+        swipingCheck={setSwiping}
         messageListItemLayout={messageListItemLayout}
         deleteRow={(messageId: string) => deleteRow(messageId)}
-        handleMessageSelect={(messageId: string, index: number) =>
-          handleMessageSelect(messageId, index)
+        handleMessageSelect={(messageId: string, i: number) =>
+          handleMessageSelect(messageId, i)
         }
         contentWidth={contentWidth}
         isPortrait={isPortrait}
@@ -88,6 +88,8 @@ const IterableInboxMessageList = ({
 
       updateVisibleMessageImpressions(rowInfos);
     },
+    // TODO: Figure out if we need the missing dependencies
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
