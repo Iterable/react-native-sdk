@@ -49,7 +49,7 @@ def supportsNamespace() {
 
 android {
   if (supportsNamespace()) {
-    namespace "com.iterable.reactnativesdk"
+    namespace "com.iterable.reactnative"
 
     sourceSets {
       main {
@@ -95,5 +95,7 @@ dependencies {
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+  api "com.iterable:iterableapi:3.5.2"
+    // api project(":iterableapi") // links to local android SDK repo rather than by release
 }
 
