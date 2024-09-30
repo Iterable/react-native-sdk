@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useWindowDimensions } from 'react-native';
 
+// TODO: Comment
 export function useDeviceOrientation() {
   const { height, width } = useWindowDimensions();
 

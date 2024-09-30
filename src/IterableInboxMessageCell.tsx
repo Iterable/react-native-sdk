@@ -175,6 +175,7 @@ type MessageCellProps = {
   isPortrait: boolean;
 };
 
+// TODO: Comment
 export const IterableInboxMessageCell = ({
   index,
   last,

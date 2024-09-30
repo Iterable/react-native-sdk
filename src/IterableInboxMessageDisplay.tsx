@@ -30,6 +30,7 @@ type MessageDisplayProps = {
   isPortrait: boolean;
 };
 
+// TODO: Comment
 export const IterableInboxMessageDisplay = ({
   rowViewModel,
   inAppContentPromise,

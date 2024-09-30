@@ -3,12 +3,9 @@ import {
   IterableActionContext,
   IterableLogLevel,
 } from './IterableAction';
-
-import { IterableInAppShowResponse } from './IterableInAppClasses';
-
-import IterableInAppMessage from './IterableInAppMessage';
-
 import { IterableDataRegion } from './IterableDataRegion';
+import { IterableInAppShowResponse } from './IterableInAppClasses';
+import IterableInAppMessage from './IterableInAppMessage';
 
 // TODO: Add description
 type AuthCallBack = () => void;
