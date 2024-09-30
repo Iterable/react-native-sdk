@@ -1,134 +1,133 @@
-'use strict'
-
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import {
-   Text,
-   View,
-   ScrollView,
-   StyleSheet,
-   Linking,
-   TouchableWithoutFeedback,
-} from 'react-native'
-import { WebView } from 'react-native-webview'
-import Icon from 'react-native-vector-icons/Ionicons'
+  Text,
+  View,
+  ScrollView,
+  StyleSheet,
+  Linking,
+  TouchableWithoutFeedback,
+} from 'react-native';
+import { WebView } from 'react-native-webview';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-import { 
-   IterableHtmlInAppContent, 
-   IterableEdgeInsets,
-   IterableInAppLocation,
-   IterableInAppCloseSource
-} from './IterableInAppClasses'
+import {
+  IterableHtmlInAppContent,
+  IterableEdgeInsets,
+  IterableInAppLocation,
+  IterableInAppCloseSource,
+} from './IterableInAppClasses';
 
-import { 
-   IterableAction, 
-   IterableActionContext
- } from './IterableAction'
+import { IterableAction, IterableActionContext } from './IterableAction';
 
-import InboxRowViewModel from './InboxRowViewModel'
+import InboxRowViewModel from './InboxRowViewModel';
 
-import { Iterable, IterableActionSource } from './Iterable'
+import { Iterable, IterableActionSource } from './Iterable';
 
 type MessageDisplayProps = {
-   rowViewModel: InboxRowViewModel,
-   inAppContentPromise: Promise<IterableHtmlInAppContent>,
-   returnToInbox: Function,
-   deleteRow: Function,
-   contentWidth: number,
-   isPortrait: boolean
-}
+  rowViewModel: InboxRowViewModel;
+  inAppContentPromise: Promise<IterableHtmlInAppContent>;
+  returnToInbox: Function;
+  deleteRow: Function;
+  contentWidth: number;
+  isPortrait: boolean;
+};
 
-const IterableInboxMessageDisplay = ({ 
-   rowViewModel, 
-   inAppContentPromise, 
-   returnToInbox,
-   deleteRow, 
-   contentWidth,
-   isPortrait
+const IterableInboxMessageDisplay = ({
+  rowViewModel,
+  inAppContentPromise,
+  returnToInbox,
+  deleteRow,
+  contentWidth,
+  isPortrait,
 }: MessageDisplayProps) => {
-   const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title
-   const [inAppContent, setInAppContent] = useState<IterableHtmlInAppContent>(new IterableHtmlInAppContent(new IterableEdgeInsets(0, 0, 0, 0), ""))
+  const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title;
+  const [inAppContent, setInAppContent] = useState<IterableHtmlInAppContent>(
+    new IterableHtmlInAppContent(new IterableEdgeInsets(0, 0, 0, 0), ''),
+  );
 
-   const styles = StyleSheet.create({
-      messageDisplayContainer: {
-         height: '100%',
-         width: contentWidth, 
-         backgroundColor: 'whitesmoke',
-         flexDirection: 'column',
-         justifyContent: 'flex-start'
-      },
+  const styles = StyleSheet.create({
+    messageDisplayContainer: {
+      height: '100%',
+      width: contentWidth,
+      backgroundColor: 'whitesmoke',
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+    },
 
-      header: {
-         flexDirection: 'row',
-         justifyContent: 'center',
-         width: '100%'
-      },
+    header: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      width: '100%',
+    },
 
-      returnButtonContainer: {
-         flexDirection: 'row',
-         justifyContent: 'flex-start',
-         alignItems: 'center',
-         width: '25%',
-         marginLeft: 0,
-         marginTop: 0
-      },
+    returnButtonContainer: {
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      width: '25%',
+      marginLeft: 0,
+      marginTop: 0,
+    },
 
-      returnButton: {
-         flexDirection: 'row',
-         alignItems: 'center'
-      },
+    returnButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
 
-      returnButtonIcon: {
-         color: 'deepskyblue',
-         fontSize: 40,
-         paddingLeft: 0
-      },
+    returnButtonIcon: {
+      color: 'deepskyblue',
+      fontSize: 40,
+      paddingLeft: 0,
+    },
 
-      returnButtonText: {
-         color: 'deepskyblue',
-         fontSize: 20
-      },
+    returnButtonText: {
+      color: 'deepskyblue',
+      fontSize: 20,
+    },
 
-      messageTitleContainer: {
-         flexDirection: 'row',
-         justifyContent: 'flex-start',
-         alignItems: 'center',
-         width: '75%',
-         marginTop: 0
-      },
+    messageTitleContainer: {
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      width: '75%',
+      marginTop: 0,
+    },
 
-      messageTitle: {
-         flexDirection: 'row',
-         justifyContent: 'center',
-         alignItems: 'center',
-         width: 0.5 * contentWidth,
-      },
+    messageTitle: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: 0.5 * contentWidth,
+    },
 
-      messageTitleText: {
-         fontWeight: 'bold',
-         fontSize: 20,
-         backgroundColor: 'whitesmoke'
-      },
-   
-      contentContainer: {
-         flex: 1,
-      }
-   })
+    messageTitleText: {
+      fontWeight: 'bold',
+      fontSize: 20,
+      backgroundColor: 'whitesmoke',
+    },
 
-   let {
-      header,
-      returnButtonContainer,
-      returnButton,
-      returnButtonIcon,
-      returnButtonText,
-      messageTitleContainer,
-      messageTitleText,
-      messageDisplayContainer
-   } = styles
+    contentContainer: {
+      flex: 1,
+    },
+  });
 
-   // orientation dependent styling
-   returnButtonContainer = (!isPortrait) ? { ...returnButtonContainer, marginLeft: 80 } : returnButtonContainer
+  let {
+    header,
+    returnButtonContainer,
+    returnButton,
+    returnButtonIcon,
+    returnButtonText,
+    messageTitleContainer,
+    messageTitleText,
+    messageDisplayContainer,
+  } = styles;
 
-   let JS = `
+  // orientation dependent styling
+  returnButtonContainer = !isPortrait
+    ? { ...returnButtonContainer, marginLeft: 80 }
+    : returnButtonContainer;
+
+  let JS = `
       const links = document.querySelectorAll('a')
 
       links.forEach(link => {
@@ -137,94 +136,104 @@ const IterableInboxMessageDisplay = ({
          link.href = "javascript:void(0)"
 
          link.addEventListener("click", () => {
-            window.ReactNativeWebView.postMessage(link.class)   
+            window.ReactNativeWebView.postMessage(link.class)
          })
       })
-   `
+   `;
 
-   useEffect(() => {
-      let mounted = true
-      inAppContentPromise.then(
-         (value) => {
-            if(mounted) {
-               setInAppContent(value)
-            }
-         })
-      return () => {mounted = false}
-   })
-
-   function handleInAppLinkAction(event: any) {
-      let URL = event.nativeEvent.data
-
-      let action = new IterableAction("openUrl", URL, "")
-      let source = IterableActionSource.inApp
-      let context = new IterableActionContext(action, source)
-
-      Iterable.trackInAppClick(rowViewModel.inAppMessage, IterableInAppLocation.inbox, URL)
-      Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.link, URL) 
-
-      //handle delete action
-      if (URL === 'iterable://delete') { 
-         returnToInbox(() => deleteRow(rowViewModel.inAppMessage.messageId))
-      //handle dismiss action
-      } else if(URL === 'iterable://dismiss') {
-         returnToInbox()
-      //handle external link
-      } else if (URL.slice(0, 4) === 'http') {
-         returnToInbox(() => Linking.openURL(URL))
-      //handle custom action
-      } else if (URL.slice(0,9) === 'action://') {
-         action.type = URL.replace('action://', '')
-         returnToInbox(() => {
-           if(Iterable.savedConfig.customActionHandler) {
-             Iterable.savedConfig.customActionHandler(action, context)
-           } 
-         })
-      //handle deep link or error link
-      } else {
-         returnToInbox(() => {
-            if(Iterable.savedConfig.urlHandler) {
-               Iterable.savedConfig.urlHandler(URL, context)
-            } 
-         })
+  useEffect(() => {
+    let mounted = true;
+    inAppContentPromise.then((value) => {
+      if (mounted) {
+        setInAppContent(value);
       }
-   }
+    });
+    return () => {
+      mounted = false;
+    };
+  });
 
-   return (
-      <View style={messageDisplayContainer}>
-         <View style={header}>
-            <View style={returnButtonContainer}>
-               <TouchableWithoutFeedback 
-                  onPress={() => {
-                     returnToInbox()
-                     Iterable.trackInAppClose(rowViewModel.inAppMessage, IterableInAppLocation.inbox, IterableInAppCloseSource.back)
-                  }}
-               >
-                  <View style={returnButton}>
-                     <Icon name="ios-chevron-back" style={returnButtonIcon} />
-                     <Text style={returnButtonText}>Inbox</Text>
-                  </View>
-               </TouchableWithoutFeedback>
-            </View>  
-            <View style={messageTitleContainer}>
-               <View style={styles.messageTitle}>
-                  <Text numberOfLines={1} ellipsizeMode='tail' style={messageTitleText}>{messageTitle}</Text>
-               </View>
+  function handleInAppLinkAction(event: any) {
+    let URL = event.nativeEvent.data;
+
+    let action = new IterableAction('openUrl', URL, '');
+    let source = IterableActionSource.inApp;
+    let context = new IterableActionContext(action, source);
+
+    Iterable.trackInAppClick(rowViewModel.inAppMessage, IterableInAppLocation.inbox, URL);
+    Iterable.trackInAppClose(
+      rowViewModel.inAppMessage,
+      IterableInAppLocation.inbox,
+      IterableInAppCloseSource.link,
+      URL,
+    );
+
+    //handle delete action
+    if (URL === 'iterable://delete') {
+      returnToInbox(() => deleteRow(rowViewModel.inAppMessage.messageId));
+      //handle dismiss action
+    } else if (URL === 'iterable://dismiss') {
+      returnToInbox();
+      //handle external link
+    } else if (URL.slice(0, 4) === 'http') {
+      returnToInbox(() => Linking.openURL(URL));
+      //handle custom action
+    } else if (URL.slice(0, 9) === 'action://') {
+      action.type = URL.replace('action://', '');
+      returnToInbox(() => {
+        if (Iterable.savedConfig.customActionHandler) {
+          Iterable.savedConfig.customActionHandler(action, context);
+        }
+      });
+      //handle deep link or error link
+    } else {
+      returnToInbox(() => {
+        if (Iterable.savedConfig.urlHandler) {
+          Iterable.savedConfig.urlHandler(URL, context);
+        }
+      });
+    }
+  }
+
+  return (
+    <View style={messageDisplayContainer}>
+      <View style={header}>
+        <View style={returnButtonContainer}>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              returnToInbox();
+              Iterable.trackInAppClose(
+                rowViewModel.inAppMessage,
+                IterableInAppLocation.inbox,
+                IterableInAppCloseSource.back,
+              );
+            }}
+          >
+            <View style={returnButton}>
+              <Icon name="ios-chevron-back" style={returnButtonIcon} />
+              <Text style={returnButtonText}>Inbox</Text>
             </View>
-         </View>
-         <ScrollView contentContainerStyle={styles.contentContainer}>
-            <WebView
-               originWhiteList={['*']}
-               source={{ html: inAppContent.html }}
-               style={{ width: contentWidth }}
-               onMessage={(event) => handleInAppLinkAction(event)}
-               injectedJavaScript={JS}
-            />
-         </ScrollView>
+          </TouchableWithoutFeedback>
+        </View>
+        <View style={messageTitleContainer}>
+          <View style={styles.messageTitle}>
+            <Text numberOfLines={1} ellipsizeMode="tail" style={messageTitleText}>
+              {messageTitle}
+            </Text>
+          </View>
+        </View>
       </View>
-   )
-}
+      <ScrollView contentContainerStyle={styles.contentContainer}>
+        <WebView
+          originWhiteList={['*']}
+          source={{ html: inAppContent.html }}
+          style={{ width: contentWidth }}
+          onMessage={(event) => handleInAppLinkAction(event)}
+          injectedJavaScript={JS}
+        />
+      </ScrollView>
+    </View>
+  );
+};
 
-
-
-export default IterableInboxMessageDisplay
+export default IterableInboxMessageDisplay;
