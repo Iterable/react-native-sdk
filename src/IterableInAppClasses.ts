@@ -1,23 +1,27 @@
 /**
- * `show` to show the in-app otherwise `skip` to skip.
+ * TODO: Break this file into multiple files
  */
-enum IterableInAppShowResponse {
+
+// TODO: Add description
+export enum IterableInAppShowResponse {
+  /** Show in-app */
   show = 0,
+  /** Skip showing in-app */
   skip = 1,
 }
 
-/**
- * `immediate` will try to display the in-app automatically immediately
- * `event` is used for Push to in-app
- * `never` will not display the in-app automatically via the SDK
- */
-enum IterableInAppTriggerType {
+// TODO: Add description
+export enum IterableInAppTriggerType {
+  /** Tries to display the in-app automatically immediately  */
   immediate = 0,
+  /** Used for Push to in-app */
   event = 1,
+  /** Do not display the in-app automatically via the SDK */
   never = 2,
 }
 
-class IterableInAppTrigger {
+// TODO: Add description
+export class IterableInAppTrigger {
   type: IterableInAppTriggerType;
 
   constructor(type: IterableInAppTriggerType) {
@@ -25,35 +29,42 @@ class IterableInAppTrigger {
   }
 
   static fromDict(dict: any): IterableInAppTrigger {
-    const type = dict.type as IterableInAppTriggerType | IterableInAppTriggerType.immediate;
+    const type = dict.type as
+      | IterableInAppTriggerType
+      | IterableInAppTriggerType.immediate;
     return new IterableInAppTrigger(type);
   }
 }
 
-enum IterableInAppContentType {
+// TODO: Add description
+export enum IterableInAppContentType {
   html = 0,
   alert = 1,
   banner = 2,
 }
 
-enum IterableInAppLocation {
+// TODO: Add description
+export enum IterableInAppLocation {
   inApp = 0,
   inbox = 1,
 }
 
-enum IterableInAppCloseSource {
+// TODO: Add description
+export enum IterableInAppCloseSource {
   back = 0,
   link = 1,
   unknown = 100,
 }
 
-enum IterableInAppDeleteSource {
+// TODO: Add description
+export enum IterableInAppDeleteSource {
   inboxSwipe = 0,
   deleteButton = 1,
   unknown = 100,
 }
 
-class IterableEdgeInsets {
+// TODO: Add description
+export class IterableEdgeInsets {
   top: number;
   left: number;
   bottom: number;
@@ -71,16 +82,18 @@ class IterableEdgeInsets {
       dict.top as number,
       dict.left as number,
       dict.bottom as number,
-      dict.right as number,
+      dict.right as number
     );
   }
 }
 
+// TODO: Add description
 export interface IterableInAppContent {
   type: IterableInAppContentType;
 }
 
-class IterableHtmlInAppContent implements IterableInAppContent {
+// TODO: Add description
+export class IterableHtmlInAppContent implements IterableInAppContent {
   type: IterableInAppContentType = IterableInAppContentType.html;
   edgeInsets: IterableEdgeInsets;
   html: string;
@@ -93,17 +106,21 @@ class IterableHtmlInAppContent implements IterableInAppContent {
   static fromDict(dict: any): IterableHtmlInAppContent {
     return new IterableHtmlInAppContent(
       IterableEdgeInsets.fromDict(dict.edgeInsets),
-      dict.html as string,
+      dict.html as string
     );
   }
 }
 
-class IterableInboxMetadata {
+export class IterableInboxMetadata {
   title?: string;
   subtitle?: string;
   icon?: string;
 
-  constructor(title: string | undefined, subtitle: string | undefined, icon: string | undefined) {
+  constructor(
+    title: string | undefined,
+    subtitle: string | undefined,
+    icon: string | undefined
+  ) {
     this.title = title;
     this.subtitle = subtitle;
     this.icon = icon;
@@ -113,16 +130,3 @@ class IterableInboxMetadata {
     return new IterableInboxMetadata(dict.title, dict.subtitle, dict.icon);
   }
 }
-
-export {
-  IterableInAppShowResponse,
-  IterableInAppTriggerType,
-  IterableInAppTrigger,
-  IterableInAppContentType,
-  IterableEdgeInsets,
-  IterableHtmlInAppContent,
-  IterableInboxMetadata,
-  IterableInAppLocation,
-  IterableInAppCloseSource,
-  IterableInAppDeleteSource,
-};
