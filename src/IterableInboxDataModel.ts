@@ -13,6 +13,7 @@ import IterableInAppMessage from './IterableInAppMessage';
 
 const RNIterableAPI = NativeModules.RNIterableAPI;
 
+// TODO: Comment
 export class IterableInboxDataModel {
   filterFn?: (message: IterableInAppMessage) => boolean;
   comparatorFn?: (
