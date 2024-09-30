@@ -16,10 +16,9 @@ import {
   IterableInAppLocation,
 } from './IterableInAppClasses';
 
+import type { InboxImpressionRowInfo } from './InboxImpressionRowInfo';
+import type { InboxRowViewModel } from './InboxRowViewModel';
 import { Iterable } from './Iterable';
-
-import InboxImpressionRowInfo from './InboxImpressionRowInfo';
-import InboxRowViewModel from './InboxRowViewModel';
 import IterableInboxCustomizations from './IterableInboxCustomizations';
 import IterableInboxDataModel from './IterableInboxDataModel';
 import IterableInboxEmptyState from './IterableInboxEmptyState';
