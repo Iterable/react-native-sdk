@@ -1,4 +1,4 @@
-export default class IterableUtil {
+export class IterableUtil {
   static readBoolean(dict: any, key: string): boolean {
     if (dict[key]) {
       return dict[key] as boolean;
@@ -7,3 +7,5 @@ export default class IterableUtil {
     }
   }
 }
+
+export default IterableUtil;

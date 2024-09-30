@@ -1,31 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import { useIsFocused } from '@react-navigation/native';
+import { useEffect, useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
   Animated,
-  NativeModules,
   NativeEventEmitter,
+  NativeModules,
   Platform,
+  StyleSheet,
+  Text,
+  View,
 } from 'react-native';
-
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { IterableInAppDeleteSource, IterableInAppLocation } from './IterableInAppClasses';
+import {
+  IterableInAppDeleteSource,
+  IterableInAppLocation,
+} from './IterableInAppClasses';
 
 import { Iterable } from './Iterable';
 
-import IterableInboxEmptyState from './IterableInboxEmptyState';
 import InboxImpressionRowInfo from './InboxImpressionRowInfo';
-import useDeviceOrientation from './useDeviceOrientation';
-import useAppStateListener from './useAppStateListener';
-import IterableInboxCustomizations from './IterableInboxCustomizations';
-import IterableInboxMessageList from './IterableInboxMessageList';
-import IterableInboxMessageDisplay from './IterableInboxMessageDisplay';
-import IterableInboxDataModel from './IterableInboxDataModel';
 import InboxRowViewModel from './InboxRowViewModel';
-
-import { useIsFocused } from '@react-navigation/native';
+import IterableInboxCustomizations from './IterableInboxCustomizations';
+import IterableInboxDataModel from './IterableInboxDataModel';
+import IterableInboxEmptyState from './IterableInboxEmptyState';
+import IterableInboxMessageDisplay from './IterableInboxMessageDisplay';
+import IterableInboxMessageList from './IterableInboxMessageList';
+import useAppStateListener from './useAppStateListener';
+import useDeviceOrientation from './useDeviceOrientation';
 
 const RNIterableAPI = NativeModules.RNIterableAPI;
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
@@ -58,7 +59,8 @@ const IterableInbox = ({
   const appState = useAppStateListener();
   const isFocused = useIsFocused();
 
-  const [selectedRowViewModelIdx, setSelectedRowViewModelIdx] = useState<number>(0);
+  const [selectedRowViewModelIdx, setSelectedRowViewModelIdx] =
+    useState<number>(0);
   const [rowViewModels, setRowViewModels] = useState<InboxRowViewModel[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [animatedValue] = useState<any>(new Animated.Value(0));
@@ -108,7 +110,8 @@ const IterableInbox = ({
 
   let { loadingScreen, container, headline, messageListContainer } = styles;
 
-  const navTitleHeight = headline.height + headline.paddingTop + headline.paddingBottom;
+  const navTitleHeight =
+    headline.height + headline.paddingTop + headline.paddingBottom;
   headline = { ...headline, height: Platform.OS === 'android' ? 70 : 60 };
   headline = !isPortrait ? { ...headline, paddingLeft: 70 } : headline;
 
@@ -188,7 +191,11 @@ const IterableInbox = ({
     return inboxDataModel.getHtmlContentForMessageId(id);
   }
 
-  function handleMessageSelect(id: string, index: number, rowViewModels: InboxRowViewModel[]) {
+  function handleMessageSelect(
+    id: string,
+    index: number,
+    rowViewModels: InboxRowViewModel[]
+  ) {
     let newRowViewModels = rowViewModels.map((rowViewModel) => {
       return rowViewModel.inAppMessage.messageId === id
         ? { ...rowViewModel, read: true }
@@ -198,13 +205,19 @@ const IterableInbox = ({
     inboxDataModel.setMessageAsRead(id);
     setSelectedRowViewModelIdx(index);
 
-    Iterable.trackInAppOpen(rowViewModels[index].inAppMessage, IterableInAppLocation.inbox);
+    Iterable.trackInAppOpen(
+      rowViewModels[index].inAppMessage,
+      IterableInAppLocation.inbox
+    );
 
     slideLeft();
   }
 
   function deleteRow(messageId: string) {
-    inboxDataModel.deleteItemById(messageId, IterableInAppDeleteSource.inboxSwipe);
+    inboxDataModel.deleteItemById(
+      messageId,
+      IterableInAppDeleteSource.inboxSwipe
+    );
     fetchInboxMessages();
   }
 
@@ -217,17 +230,24 @@ const IterableInbox = ({
     setIsMessageDisplay(false);
   }
 
-  function updateVisibleMessageImpressions(messageImpressions: InboxImpressionRowInfo[]) {
+  function updateVisibleMessageImpressions(
+    messageImpressions: InboxImpressionRowInfo[]
+  ) {
     setVisibleMessageImpressions(messageImpressions);
   }
 
-  function showMessageDisplay(rowViewModelList: InboxRowViewModel[], index: number) {
+  function showMessageDisplay(
+    rowViewModelList: InboxRowViewModel[],
+    index: number
+  ) {
     const selectedRowViewModel = rowViewModelList[index];
 
     return selectedRowViewModel ? (
       <IterableInboxMessageDisplay
         rowViewModel={selectedRowViewModel}
-        inAppContentPromise={getHtmlContentForRow(selectedRowViewModel.inAppMessage.messageId)}
+        inAppContentPromise={getHtmlContentForRow(
+          selectedRowViewModel.inAppMessage.messageId
+        )}
         returnToInbox={(callback: Function) => returnToInbox(callback)}
         deleteRow={(messageId: string) => deleteRow(messageId)}
         contentWidth={width}
@@ -241,7 +261,9 @@ const IterableInbox = ({
       <View style={messageListContainer}>
         {showNavTitle ? (
           <Text style={headline}>
-            {customizations?.navTitle ? customizations?.navTitle : defaultInboxTitle}
+            {customizations?.navTitle
+              ? customizations?.navTitle
+              : defaultInboxTitle}
           </Text>
         ) : null}
         {rowViewModels.length ? (
@@ -254,9 +276,9 @@ const IterableInbox = ({
             handleMessageSelect={(messageId: string, index: number) =>
               handleMessageSelect(messageId, index, rowViewModels)
             }
-            updateVisibleMessageImpressions={(messageImpressions: InboxImpressionRowInfo[]) =>
-              updateVisibleMessageImpressions(messageImpressions)
-            }
+            updateVisibleMessageImpressions={(
+              messageImpressions: InboxImpressionRowInfo[]
+            ) => updateVisibleMessageImpressions(messageImpressions)}
             contentWidth={width}
             isPortrait={isPortrait}
           />

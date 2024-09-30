@@ -1,4 +1,9 @@
-import { NativeModules, NativeEventEmitter, Linking, Platform } from 'react-native';
+import {
+  NativeModules,
+  NativeEventEmitter,
+  Linking,
+  Platform,
+} from 'react-native';
 
 import {
   IterableInAppLocation,
@@ -17,7 +22,7 @@ const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 /**
  * Enum representing the source of IterableAction.
  */
-enum IterableActionSource {
+export enum IterableActionSource {
   push = 0,
   appLink = 1,
   inApp = 2,
@@ -31,7 +36,7 @@ enum AuthResponseCallback {
 /**
  * Enum representing what level of logs will Android and iOS project be printing on their consoles respectively.
  */
-enum IterableLogLevel {
+export enum IterableLogLevel {
   debug = 1,
   info = 2,
   error = 3,
@@ -41,7 +46,7 @@ enum IterableLogLevel {
  * IterableAction represents an action defined as a response to user events.
  * It is currently used in push notification actions (open push & action buttons).
  */
-class IterableAction {
+export class IterableAction {
   type: string;
   data?: string;
   userInput?: string;
@@ -57,7 +62,7 @@ class IterableAction {
   }
 }
 
-class IterableActionContext {
+export class IterableActionContext {
   action: IterableAction;
   source: IterableActionSource;
 
@@ -73,7 +78,7 @@ class IterableActionContext {
   }
 }
 
-class IterableAttributionInfo {
+export class IterableAttributionInfo {
   campaignId: number;
   templateId: number;
   messageId: string;
@@ -85,7 +90,7 @@ class IterableAttributionInfo {
   }
 }
 
-class IterableCommerceItem {
+export class IterableCommerceItem {
   id: string;
   name: string;
   price: number;
@@ -107,7 +112,7 @@ class IterableCommerceItem {
     url?: string,
     imageUrl?: string,
     categories?: Array<string>,
-    dataFields?: any | undefined,
+    dataFields?: any | undefined
   ) {
     this.id = id;
     this.name = name;
@@ -122,7 +127,7 @@ class IterableCommerceItem {
   }
 }
 
-enum EventName {
+export enum EventName {
   handleUrlCalled = 'handleUrlCalled',
   handleCustomActionCalled = 'handleCustomActionCalled',
   handleInAppCalled = 'handleInAppCalled',
@@ -132,7 +137,7 @@ enum EventName {
   handleAuthFailureCalled = 'handleAuthFailureCalled',
 }
 
-class Iterable {
+export class Iterable {
   static inAppManager = new IterableInAppManager();
 
   static logger: IterableLogger;
@@ -155,7 +160,7 @@ class Iterable {
 
   static initialize(
     apiKey: string,
-    config: IterableConfig = new IterableConfig(),
+    config: IterableConfig = new IterableConfig()
   ): Promise<boolean> {
     Iterable.savedConfig = config;
 
@@ -176,7 +181,7 @@ class Iterable {
   static initialize2(
     apiKey: string,
     config: IterableConfig = new IterableConfig(),
-    apiEndPoint: string,
+    apiEndPoint: string
   ): Promise<boolean> {
     Iterable.savedConfig = config;
 
@@ -187,7 +192,12 @@ class Iterable {
     this.setupEventHandlers();
     const version = this.getVersionFromPackageJson();
 
-    return RNIterableAPI.initialize2WithApiKey(apiKey, config.toDict(), version, apiEndPoint);
+    return RNIterableAPI.initialize2WithApiKey(
+      apiKey,
+      config.toDict(),
+      version,
+      apiEndPoint
+    );
   }
 
   /**
@@ -343,7 +353,7 @@ class Iterable {
         return new IterableAttributionInfo(
           dict.campaignId as number,
           dict.templateId as number,
-          dict.messageId as string,
+          dict.messageId as string
         );
       } else {
         return undefined;
@@ -385,7 +395,7 @@ class Iterable {
     templateId: number,
     messageId: string | undefined,
     appAlreadyRunning: boolean,
-    dataFields: any | undefined,
+    dataFields: any | undefined
   ) {
     Iterable.logger.log('trackPushOpenWithCampaignId');
 
@@ -394,7 +404,7 @@ class Iterable {
       templateId,
       messageId,
       appAlreadyRunning,
-      dataFields,
+      dataFields
     );
   }
 
@@ -441,7 +451,7 @@ class Iterable {
   static trackPurchase(
     total: number,
     items: Array<IterableCommerceItem>,
-    dataFields: any | undefined,
+    dataFields: any | undefined
   ) {
     Iterable.logger.log('trackPurchase');
 
@@ -457,7 +467,10 @@ class Iterable {
    * @param {IterableInAppLocation} location the location of the in-app message (an IterableInAppLocation enum)
    */
 
-  static trackInAppOpen(message: IterableInAppMessage, location: IterableInAppLocation) {
+  static trackInAppOpen(
+    message: IterableInAppMessage,
+    location: IterableInAppLocation
+  ) {
     Iterable.logger.log('trackInAppOpen');
 
     RNIterableAPI.trackInAppOpen(message.messageId, location);
@@ -477,7 +490,7 @@ class Iterable {
   static trackInAppClick(
     message: IterableInAppMessage,
     location: IterableInAppLocation,
-    clickedUrl: string,
+    clickedUrl: string
   ) {
     Iterable.logger.log('trackInAppClick');
 
@@ -499,11 +512,16 @@ class Iterable {
     message: IterableInAppMessage,
     location: IterableInAppLocation,
     source: IterableInAppCloseSource,
-    clickedUrl?: string | undefined,
+    clickedUrl?: string | undefined
   ) {
     Iterable.logger.log('trackInAppClose');
 
-    RNIterableAPI.trackInAppClose(message.messageId, location, source, clickedUrl);
+    RNIterableAPI.trackInAppClose(
+      message.messageId,
+      location,
+      source,
+      clickedUrl
+    );
   }
 
   /**
@@ -520,7 +538,7 @@ class Iterable {
   static inAppConsume(
     message: IterableInAppMessage,
     location: IterableInAppLocation,
-    source: IterableInAppDeleteSource,
+    source: IterableInAppDeleteSource
   ) {
     Iterable.logger.log('inAppConsume');
 
@@ -616,7 +634,7 @@ class Iterable {
     unsubscribedMessageTypeIds: Array<number> | undefined,
     subscribedMessageTypeIds: Array<number> | undefined,
     campaignId: number,
-    templateId: number,
+    templateId: number
   ) {
     Iterable.logger.log('updateSubscriptions');
 
@@ -626,7 +644,7 @@ class Iterable {
       unsubscribedMessageTypeIds,
       subscribedMessageTypeIds,
       campaignId,
-      templateId,
+      templateId
     );
   }
 
@@ -680,14 +698,18 @@ class Iterable {
             // If type AuthReponse, authToken will be parsed looking for `authToken` within promised object. Two additional listeners will be registered for success and failure callbacks sent by native bridge layer.
             // Else it will be looked for as a String.
             if (typeof promiseResult === typeof new AuthResponse()) {
-              RNIterableAPI.passAlongAuthToken((promiseResult as AuthResponse).authToken);
+              RNIterableAPI.passAlongAuthToken(
+                (promiseResult as AuthResponse).authToken
+              );
 
               setTimeout(() => {
                 if (authResponseCallback === AuthResponseCallback.SUCCESS) {
                   if ((promiseResult as AuthResponse).successCallback) {
                     (promiseResult as AuthResponse).successCallback!();
                   }
-                } else if (authResponseCallback === AuthResponseCallback.FAILURE) {
+                } else if (
+                  authResponseCallback === AuthResponseCallback.FAILURE
+                ) {
                   if ((promiseResult as AuthResponse).failureCallback) {
                     (promiseResult as AuthResponse).failureCallback!();
                   }
@@ -700,7 +722,7 @@ class Iterable {
               RNIterableAPI.passAlongAuthToken(promiseResult as String);
             } else {
               Iterable.logger.log(
-                'Unexpected promise returned. Auth token expects promise of String or AuthResponse type.',
+                'Unexpected promise returned. Auth token expects promise of String or AuthResponse type.'
               );
             }
           })
@@ -737,13 +759,4 @@ class Iterable {
   }
 }
 
-export {
-  Iterable,
-  IterableAction,
-  IterableActionContext,
-  IterableAttributionInfo,
-  IterableCommerceItem,
-  EventName,
-  IterableActionSource,
-  IterableLogLevel,
-};
+export default Iterable;

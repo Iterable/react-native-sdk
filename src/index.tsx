@@ -6,7 +6,11 @@
 import { Iterable, IterableCommerceItem } from './Iterable';
 import IterableInAppManager from './IterableInAppManager';
 
-import { IterableAction, IterableActionContext, IterableLogLevel } from './IterableAction';
+import {
+  IterableAction,
+  IterableActionContext,
+  IterableLogLevel,
+} from './IterableAction';
 
 import {
   IterableInAppShowResponse,
