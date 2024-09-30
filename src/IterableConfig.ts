@@ -1,4 +1,8 @@
-import { IterableAction, IterableActionContext, IterableLogLevel } from './IterableAction';
+import {
+  IterableAction,
+  IterableActionContext,
+  IterableLogLevel,
+} from './IterableAction';
 
 import { IterableInAppShowResponse } from './IterableInAppClasses';
 
@@ -6,6 +10,7 @@ import IterableInAppMessage from './IterableInAppMessage';
 
 import { IterableDataRegion } from './IterableDataRegion';
 
+// TODO: Add description
 type AuthCallBack = () => void;
 
 /**
@@ -13,7 +18,7 @@ type AuthCallBack = () => void;
  * An IterableConfig object is passed into the static initialize method on the Iterable class when initializing the SDK.
  */
 
-class IterableConfig {
+export class IterableConfig {
   /**
    * The name of the Iterable push integration that will send push notifications to your app.
    * Defaults to your app's application ID or bundle ID for iOS.
@@ -49,7 +54,10 @@ class IterableConfig {
   /**
    * A function expression used to handle `action://` URLs for in-app buttons and links.
    */
-  customActionHandler?: (action: IterableAction, context: IterableActionContext) => boolean;
+  customActionHandler?: (
+    action: IterableAction,
+    context: IterableActionContext
+  ) => boolean;
 
   /**
    * Implement this callback to override default in-app behavior.
@@ -134,7 +142,8 @@ class IterableConfig {
       logLevel: this.logLevel,
       expiringAuthTokenRefreshPeriod: this.expiringAuthTokenRefreshPeriod,
       allowedProtocols: this.allowedProtocols,
-      androidSdkUseInMemoryStorageForInApps: this.androidSdkUseInMemoryStorageForInApps,
+      androidSdkUseInMemoryStorageForInApps:
+        this.androidSdkUseInMemoryStorageForInApps,
       useInMemoryStorageForInApps: this.useInMemoryStorageForInApps,
       dataRegion: this.dataRegion,
       encryptionEnforced: this.encryptionEnforced,
@@ -142,6 +151,7 @@ class IterableConfig {
   }
 }
 
+// TODO: Add comments and descriptions
 export class AuthResponse {
   authToken?: string = '';
   successCallback?: AuthCallBack;
