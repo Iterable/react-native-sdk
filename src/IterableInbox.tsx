@@ -18,7 +18,7 @@ import {
   IterableInAppDeleteSource,
   IterableInAppLocation,
 } from './IterableInAppClasses';
-import type IterableInboxCustomizations from './IterableInboxCustomizations';
+import type { IterableInboxCustomizations } from './IterableInboxCustomizations';
 import IterableInboxDataModel from './IterableInboxDataModel';
 import IterableInboxEmptyState from './IterableInboxEmptyState';
 import IterableInboxMessageDisplay from './IterableInboxMessageDisplay';
@@ -29,7 +29,8 @@ import useDeviceOrientation from './useDeviceOrientation';
 const RNIterableAPI = NativeModules.RNIterableAPI;
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
-type inboxProps = {
+// TODO: Comment
+type InboxProps = {
   returnToInboxTrigger?: boolean;
   messageListItemLayout?: Function;
   customizations?: IterableInboxCustomizations;
@@ -39,17 +40,16 @@ type inboxProps = {
   showNavTitle?: boolean;
 };
 
-const IterableInbox = ({
+// TODO: Comment
+export const IterableInbox = ({
   returnToInboxTrigger = true,
-  messageListItemLayout = () => {
-    return null;
-  },
+  messageListItemLayout = () => null,
   customizations = {} as IterableInboxCustomizations,
   tabBarHeight = 80,
   tabBarPadding = 20,
   safeAreaMode = true,
   showNavTitle = true,
-}: inboxProps) => {
+}: InboxProps) => {
   const defaultInboxTitle = 'Inbox';
   const inboxDataModel = new IterableInboxDataModel();
 
@@ -123,6 +123,8 @@ const IterableInbox = ({
       removeInboxChangedListener();
       inboxDataModel.endSession(visibleMessageImpressions);
     };
+    //  TODO: figure out if missing dependency is a bug
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //starts session when user is on inbox and app is active
@@ -138,6 +140,8 @@ const IterableInbox = ({
         inboxDataModel.endSession(visibleMessageImpressions);
       }
     }
+    //  TODO: figure out if missing dependency is a bug
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appState]);
 
   //starts session when user is on inbox
@@ -150,11 +154,15 @@ const IterableInbox = ({
         inboxDataModel.endSession(visibleMessageImpressions);
       }
     }
+    //  TODO: figure out if missing dependency is a bug
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocused]);
 
   //updates the visible rows when visible messages changes
   useEffect(() => {
     inboxDataModel.updateVisibleRows(visibleMessageImpressions);
+    //  TODO: figure out if missing dependency is a bug
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visibleMessageImpressions]);
 
   //if return to inbox trigger is provided, runs the return to inbox animation whenever the trigger is toggled
@@ -162,6 +170,8 @@ const IterableInbox = ({
     if (isMessageDisplay) {
       returnToInbox();
     }
+    //  TODO: figure out if missing dependency is a bug
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [returnToInboxTrigger]);
 
   function addInboxChangedListener() {
@@ -192,9 +202,9 @@ const IterableInbox = ({
   function handleMessageSelect(
     id: string,
     index: number,
-    rowViewModels: InboxRowViewModel[]
+    models: InboxRowViewModel[]
   ) {
-    let newRowViewModels = rowViewModels.map((rowViewModel) => {
+    let newRowViewModels = models.map((rowViewModel) => {
       return rowViewModel.inAppMessage.messageId === id
         ? { ...rowViewModel, read: true }
         : rowViewModel;
@@ -204,7 +214,9 @@ const IterableInbox = ({
     setSelectedRowViewModelIdx(index);
 
     Iterable.trackInAppOpen(
-      rowViewModels[index].inAppMessage,
+      // TODO: Have a safety check for models[index].inAppMessage
+      // @ts-ignore
+      models[index].inAppMessage,
       IterableInAppLocation.inbox
     );
 
@@ -254,7 +266,7 @@ const IterableInbox = ({
     ) : null;
   }
 
-  function showMessageList(loading: boolean) {
+  function showMessageList(_loading: boolean) {
     return (
       <View style={messageListContainer}>
         {showNavTitle ? (
@@ -314,6 +326,8 @@ const IterableInbox = ({
 
   const inboxAnimatedView = (
     <Animated.View
+      //  TODO: Change to use `StyleSheet.create` for styles, per best practices
+      // eslint-disable-next-line react-native/no-inline-styles
       style={{
         transform: [
           {
