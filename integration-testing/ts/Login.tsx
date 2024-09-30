@@ -60,6 +60,7 @@ export class Login extends Component<Props, State> {
           style={styles.emailTextInput}
           autoCapitalize="none"
           autoCompleteType="email"
+          // @ts-ignore
           onChangeText={(text) =>
             this.setState({ isLoggedIn: false, email: text })
           }

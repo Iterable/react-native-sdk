@@ -237,6 +237,8 @@ const IterableInboxMessageDisplay = ({
           originWhiteList={['*']}
           source={{ html: inAppContent.html }}
           style={{ width: contentWidth }}
+          // TODO: fix
+          // @ts-ignore
           onMessage={(event) => handleInAppLinkAction(event)}
           injectedJavaScript={JS}
         />

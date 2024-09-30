@@ -131,6 +131,7 @@ export default class App extends React.Component<Object, State> {
                   console.log('total messages: ' + messages.length);
                   if (messages.length > 0) {
                     Iterable.inAppManager.removeMessage(
+                      // @ts-ignore
                       messages[messages.length - 1],
                       IterableInAppLocation.inbox,
                       IterableInAppDeleteSource.deleteButton
@@ -146,6 +147,7 @@ export default class App extends React.Component<Object, State> {
               title="Clear All In-App Messages"
               onPress={() => {
                 console.log('clearAllInApps');
+                // @ts-ignore
                 RNE2E.clearAllInAppMessages().then((success) => {
                   console.log('cleared all in-app messages: ' + success);
                   this.setState({ statusText: 'Cleared all in-apps' });
