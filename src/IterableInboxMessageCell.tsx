@@ -1,31 +1,33 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import {
-  View,
-  Text,
-  Image,
   Animated,
+  Image,
   PanResponder,
-  ViewStyle,
-  TextStyle,
   StyleSheet,
+  Text,
   TouchableOpacity,
+  View,
+  type TextStyle,
+  type ViewStyle,
 } from 'react-native';
 
-import InboxRowViewModel from './InboxRowViewModel';
-import IterableInboxCustomizations from './IterableInboxCustomizations';
+import type { InboxRowViewModel } from './InboxRowViewModel';
+import type { IterableInboxCustomizations } from './IterableInboxCustomizations';
 
 import IterableInboxDataModel from './IterableInboxDataModel';
 
+// TODO: Change to component
 function defaultMessageListLayout(
   last: boolean,
   dataModel: IterableInboxDataModel,
   rowViewModel: InboxRowViewModel,
   customizations: IterableInboxCustomizations,
-  isPortrait: boolean,
+  isPortrait: boolean
 ) {
   const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title ?? '';
   const messageBody = rowViewModel.inAppMessage.inboxMetadata?.subtitle ?? '';
-  const messageCreatedAt = dataModel.getFormattedDate(rowViewModel.inAppMessage) ?? '';
+  const messageCreatedAt =
+    dataModel.getFormattedDate(rowViewModel.inAppMessage) ?? '';
   const thumbnailURL = rowViewModel.imageUrl;
 
   let styles = StyleSheet.create({
@@ -110,13 +112,17 @@ function defaultMessageListLayout(
     messageRow,
   } = resolvedStyles;
 
-  unreadIndicator = !isPortrait ? { ...unreadIndicator, marginLeft: 40 } : unreadIndicator;
+  unreadIndicator = !isPortrait
+    ? { ...unreadIndicator, marginLeft: 40 }
+    : unreadIndicator;
   readMessageThumbnailContainer = !isPortrait
     ? { ...readMessageThumbnailContainer, paddingLeft: 65 }
     : readMessageThumbnailContainer;
-  messageContainer = !isPortrait ? { ...messageContainer, width: '90%' } : messageContainer;
+  messageContainer = !isPortrait
+    ? { ...messageContainer, width: '90%' }
+    : messageContainer;
 
-  function messageRowStyle(rowViewModel: InboxRowViewModel) {
+  function messageRowStyle(_rowViewModel: InboxRowViewModel) {
     return last ? { ...messageRow, borderBottomWidth: 1 } : messageRow;
   }
 
@@ -133,22 +139,28 @@ function defaultMessageListLayout(
         }
       >
         {thumbnailURL ? (
-          <Image style={{ height: 80, width: 80 }} source={{ uri: thumbnailURL }} />
+          <Image
+            // TODO: Use stylesheet according to best practices
+            // eslint-disable-next-line react-native/no-inline-styles
+            style={{ height: 80, width: 80 }}
+            source={{ uri: thumbnailURL }}
+          />
         ) : null}
       </View>
       <View style={messageContainer as ViewStyle}>
         <Text numberOfLines={1} ellipsizeMode="tail" style={title}>
-          {messageTitle as TextStyle}
+          {messageTitle}
         </Text>
         <Text numberOfLines={3} ellipsizeMode="tail" style={body as TextStyle}>
           {messageBody}
         </Text>
-        <Text style={createdAt}>{messageCreatedAt as TextStyle}</Text>
+        <Text style={createdAt}>{messageCreatedAt}</Text>
       </View>
     </View>
   );
 }
 
+// TODO: Comment
 type MessageCellProps = {
   index: number;
   last: boolean;
@@ -163,7 +175,7 @@ type MessageCellProps = {
   isPortrait: boolean;
 };
 
-const IterableInboxMessageCell = ({
+export const IterableInboxMessageCell = ({
   index,
   last,
   dataModel,
@@ -213,7 +225,9 @@ const IterableInboxMessageCell = ({
 
   let { textContainer, deleteSlider, textStyle } = styles;
 
-  deleteSlider = isPortrait ? deleteSlider : { ...deleteSlider, paddingRight: 40 };
+  deleteSlider = isPortrait
+    ? deleteSlider
+    : { ...deleteSlider, paddingRight: 40 };
 
   const scrollThreshold = contentWidth / 15;
   const FORCING_DURATION = 350;
@@ -247,12 +261,12 @@ const IterableInboxMessageCell = ({
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => false,
-      onMoveShouldSetPanResponder: (event, gestureState) => {
+      onMoveShouldSetPanResponder: (_event, gestureState) => {
         const { dx, dy } = gestureState;
         // return true if user is swiping, return false if it's a single click
         return Math.abs(dx) !== 0 && Math.abs(dy) !== 0;
       },
-      onMoveShouldSetPanResponderCapture: (event, gestureState) => {
+      onMoveShouldSetPanResponderCapture: (_event, gestureState) => {
         const { dx, dy } = gestureState;
         // return true if user is swiping, return false if it's a single click
         return Math.abs(dx) !== 0 && Math.abs(dy) !== 0;
@@ -261,7 +275,7 @@ const IterableInboxMessageCell = ({
       onPanResponderGrant: () => {
         position.setValue({ x: 0, y: 0 });
       },
-      onPanResponderMove: (event, gesture) => {
+      onPanResponderMove: (_event, gesture) => {
         if (gesture.dx <= -scrollThreshold) {
           //enables swipeing when threshold is reached
           swipingCheck(true);
@@ -271,7 +285,7 @@ const IterableInboxMessageCell = ({
           position.setValue({ x, y: 0 });
         }
       },
-      onPanResponderRelease: (event, gesture) => {
+      onPanResponderRelease: (_event, gesture) => {
         position.flattenOffset();
         if (gesture.dx < 0) {
           userSwipedLeft(gesture);
@@ -280,7 +294,7 @@ const IterableInboxMessageCell = ({
         }
         swipingCheck(false);
       },
-    }),
+    })
   ).current;
 
   return (
@@ -288,7 +302,10 @@ const IterableInboxMessageCell = ({
       <View style={deleteSlider}>
         <Text style={textStyle}>DELETE</Text>
       </View>
-      <Animated.View style={[textContainer, position.getLayout()]} {...panResponder.panHandlers}>
+      <Animated.View
+        style={[textContainer, position.getLayout()]}
+        {...panResponder.panHandlers}
+      >
         <TouchableOpacity
           activeOpacity={1}
           onPress={() => {
@@ -297,7 +314,13 @@ const IterableInboxMessageCell = ({
         >
           {messageListItemLayout(last, rowViewModel)
             ? messageListItemLayout(last, rowViewModel)[0]
-            : defaultMessageListLayout(last, dataModel, rowViewModel, customizations, isPortrait)}
+            : defaultMessageListLayout(
+                last,
+                dataModel,
+                rowViewModel,
+                customizations,
+                isPortrait
+              )}
         </TouchableOpacity>
       </Animated.View>
     </>
