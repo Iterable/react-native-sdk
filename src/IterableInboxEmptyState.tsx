@@ -1,9 +1,9 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
-import IterableInboxCustomizations from './IterableInboxCustomizations';
+import { type IterableInboxCustomizations } from './IterableInboxCustomizations';
 
-type emptyStateProps = {
+// TODO: Comment
+type EmptyStateProps = {
   customizations: IterableInboxCustomizations;
   tabBarHeight: number;
   tabBarPadding: number;
@@ -13,14 +13,14 @@ type emptyStateProps = {
   isPortrait: boolean;
 };
 
-const IterableInboxEmptyState = ({
+export const IterableInboxEmptyState = ({
   customizations,
   tabBarHeight,
   tabBarPadding,
   navTitleHeight,
   height,
   isPortrait,
-}: emptyStateProps) => {
+}: EmptyStateProps) => {
   const defaultTitle = 'No saved messages';
   const defaultBody = 'Check again later!';
 
@@ -40,7 +40,9 @@ const IterableInboxEmptyState = ({
 
   return (
     <View style={container}>
-      <Text style={title}>{emptyStateTitle ? emptyStateTitle : defaultTitle}</Text>
+      <Text style={title}>
+        {emptyStateTitle ? emptyStateTitle : defaultTitle}
+      </Text>
       <Text style={body}>{emptyStateBody ? emptyStateBody : defaultBody}</Text>
     </View>
   );
