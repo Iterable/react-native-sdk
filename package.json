@@ -2,7 +2,7 @@
   "name": "@iterable/react-native-sdk",
   "version": "2.0.0-alpha",
   "description": "Iterable SDK for React Native.",
-  "source": "./src/index.tsx",
+  "source": "./src/index.ts",
   "main": "./lib/commonjs/index.js",
   "module": "./lib/module/index.js",
   "exports": {

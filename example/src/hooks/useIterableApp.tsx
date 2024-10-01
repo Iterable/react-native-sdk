@@ -1,4 +1,12 @@
-import { useDeviceOrientation } from '@iterable/react-native-sdk';
+import {
+  Iterable,
+  IterableAction,
+  IterableConfig,
+  IterableInAppShowResponse,
+  IterableLogLevel,
+  useDeviceOrientation,
+} from '@iterable/react-native-sdk';
+import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import {
   type FunctionComponent,
   createContext,
@@ -6,15 +14,6 @@ import {
   useContext,
   useState,
 } from 'react';
-
-import {
-  Iterable,
-  IterableAction,
-  IterableConfig,
-  IterableInAppShowResponse,
-  IterableLogLevel,
-} from '@iterable/react-native-sdk';
-import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { Alert } from 'react-native';
 import { Route } from '../constants/routes';
 import type { RootStackParamList } from '../types/navigation';
