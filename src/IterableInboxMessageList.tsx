@@ -65,7 +65,7 @@ export const IterableInboxMessageList = ({
     viewTokens: Array<ViewToken>
   ): Array<InboxImpressionRowInfo> {
     return viewTokens.map(function (viewToken) {
-      var inAppMessage = IterableInAppMessage.fromViewToken(viewToken);
+      const inAppMessage = IterableInAppMessage.fromViewToken(viewToken);
 
       const impression = {
         messageId: inAppMessage.messageId,

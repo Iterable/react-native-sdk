@@ -694,7 +694,7 @@ export class Iterable {
     }
 
     if (Iterable.savedConfig.authHandler) {
-      var authResponseCallback: AuthResponseCallback;
+      let authResponseCallback: AuthResponseCallback;
       RNEventEmitter.addListener(EventName.handleAuthCalled, () => {
         Iterable.savedConfig.authHandler!()
           .then((promiseResult) => {

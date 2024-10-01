@@ -127,7 +127,7 @@ export class IterableInboxDataModel {
       createdAt = new Date(message.createdAt);
     }
 
-    var defaultDateString = `${createdAt.toLocaleDateString()} at ${createdAt.toLocaleTimeString()}`;
+    const defaultDateString = `${createdAt.toLocaleDateString()} at ${createdAt.toLocaleTimeString()}`;
 
     return defaultDateString;
   }
@@ -143,7 +143,7 @@ export class IterableInboxDataModel {
   private sortAndFilter(
     messages: Array<IterableInAppMessage>
   ): Array<IterableInAppMessage> {
-    var sortedFilteredMessages = messages.slice();
+    let sortedFilteredMessages = messages.slice();
 
     // TODO: Figure out if this is purposeful
     // eslint-disable-next-line eqeqeq
