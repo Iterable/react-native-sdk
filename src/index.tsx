@@ -27,6 +27,7 @@ export {
 } from './IterableInAppClasses';
 export { IterableInAppManager } from './IterableInAppManager';
 export { IterableInAppMessage } from './IterableInAppMessage';
+export { IterableInbox, type IterableInboxProps } from './IterableInbox';
 export type { IterableInboxCustomizations } from './IterableInboxCustomizations';
 export { IterableInboxEmptyState } from './IterableInboxEmptyState';
 export { IterableInboxMessageCell } from './IterableInboxMessageCell';
