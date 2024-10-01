@@ -122,7 +122,7 @@ export class IterableInboxDataModel {
     let createdAt;
 
     if (typeof message.createdAt === 'string') {
-      createdAt = new Date(parseInt(message.createdAt));
+      createdAt = new Date(parseInt(message.createdAt, 10));
     } else {
       createdAt = new Date(message.createdAt);
     }
@@ -145,10 +145,14 @@ export class IterableInboxDataModel {
   ): Array<IterableInAppMessage> {
     var sortedFilteredMessages = messages.slice();
 
+    // TODO: Figure out if this is purposeful
+    // eslint-disable-next-line eqeqeq
     if (this.filterFn != undefined) {
       sortedFilteredMessages = sortedFilteredMessages.filter(this.filterFn);
     }
 
+    // TODO: Figure out if this is purposeful
+    // eslint-disable-next-line eqeqeq
     if (this.comparatorFn != undefined) {
       sortedFilteredMessages.sort(this.comparatorFn);
     } else {

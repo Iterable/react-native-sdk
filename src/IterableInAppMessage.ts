@@ -105,6 +105,8 @@ export class IterableInAppMessage {
 
   isSilentInbox(): boolean {
     return (
+      // TODO: Figure out if this is purposeful
+      // eslint-disable-next-line eqeqeq
       this.saveToInbox && this.trigger.type == IterableInAppTriggerType.never
     );
   }

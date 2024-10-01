@@ -1,3 +1,7 @@
+/**
+ * TODO: Split into seperate files
+ */
+
 import {
   NativeModules,
   NativeEventEmitter,
@@ -738,6 +742,8 @@ export class Iterable {
     }
 
     function callUrlHandler(url: any, context: IterableActionContext) {
+      // TODO: Figure out if this is purposeful
+      // eslint-disable-next-line eqeqeq
       if (Iterable.savedConfig.urlHandler!(url, context) == false) {
         Linking.canOpenURL(url)
           .then((canOpen) => {
