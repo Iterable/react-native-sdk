@@ -12,6 +12,8 @@ import IterableInAppMessage from './IterableInAppMessage'
 
 import { IterableDataRegion } from './IterableDataRegion'
 
+import { IterablePushPlatform } from './IterablePushPlatform'
+
 type AuthCallBack = (() => void)
 
 /**
@@ -121,6 +123,13 @@ class IterableConfig {
    * This specifies the data region which determines the data center and associated endpoints used by the SDK
    */
   dataRegion: IterableDataRegion = IterableDataRegion.US
+
+  /**
+   * This specifies the push platform to use for push notifications. Either `sandbox`, `production`, or `auto`.
+   * The default value is `auto`, which means the SDK will automatically determine the push platform to use.
+   * However, you can also set this to `sandbox` or `production` to force the SDK to use a specific platform.
+   */
+  pushPlatform: IterablePushPlatform = IterablePushPlatform.auto
   
   /**
    * Android only feature: This controls whether the SDK should enforce encryption for all PII stored on disk.
@@ -143,6 +152,7 @@ class IterableConfig {
       "androidSdkUseInMemoryStorageForInApps": this.androidSdkUseInMemoryStorageForInApps,
       "useInMemoryStorageForInApps": this.useInMemoryStorageForInApps,
       "dataRegion": this.dataRegion,
+      "pushPlatform": this.pushPlatform,
       "encryptionEnforced": this.encryptionEnforced
     }
   }
