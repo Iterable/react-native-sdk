@@ -4,11 +4,12 @@ import { useEffect, useState } from 'react';
 
 import { colors } from '../../constants';
 import { Route } from '../../constants/routes';
-import useIterableApp from '../../hooks/useIterableApp';
+import { useIterableApp } from '../../hooks/useIterableApp';
 import type { RootStackParamList } from '../../types/navigation';
 import { Commerce } from '../Commerce';
-import CustomizedInbox from '../CustomizedInbox';
-import Home from '../Home';
+import { CustomizedInbox } from '../CustomizedInbox';
+import { Home } from '../Home';
+import { LoginToView } from '../Login';
 import { routeIcon } from './App.contants';
 import { getIcon } from './App.utils';
 
@@ -16,13 +17,13 @@ const Tab = createBottomTabNavigator<RootStackParamList>();
 
 export default function App() {
   const {
-    returnToInboxTrigger,
-    setReturnToInboxTrigger,
+    config,
     isInboxTab,
-    setIsInboxTab,
     isLoggedIn,
     loginInProgress,
-    config,
+    returnToInboxTrigger,
+    setIsInboxTab,
+    setReturnToInboxTrigger,
   } = useIterableApp();
   const [unreadMessageCount, setUnreadMessageCount] = useState<number>(0);
 
@@ -31,6 +32,9 @@ export default function App() {
       Iterable.inAppManager.getMessages().then((messages) => {
         setUnreadMessageCount(messages.length);
       });
+    } else if (!isLoggedIn && !loginInProgress) {
+      // Reset unread message count when user logs out
+      setUnreadMessageCount(0);
     }
   }, [config, isLoggedIn, loginInProgress]);
 
@@ -56,7 +60,7 @@ export default function App() {
         />
         <Tab.Screen
           name={Route.Inbox}
-          component={CustomizedInbox}
+          component={isLoggedIn ? CustomizedInbox : LoginToView}
           options={
             unreadMessageCount ? { tabBarBadge: unreadMessageCount } : {}
           }
@@ -71,7 +75,7 @@ export default function App() {
         />
         <Tab.Screen
           name={Route.Commerce}
-          component={Commerce}
+          component={isLoggedIn ? Commerce : LoginToView}
           listeners={() => ({
             tabPress: () => setIsInboxTab(false),
           })}

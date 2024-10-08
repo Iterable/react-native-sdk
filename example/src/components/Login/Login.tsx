@@ -1,6 +1,6 @@
 import { Pressable, Text, TextInput, View } from 'react-native';
-
 import { useMemo } from 'react';
+
 import type { Route } from '../../constants';
 import useIterableApp from '../../hooks/useIterableApp';
 import type { RootStackScreenProps } from '../../types/navigation';
