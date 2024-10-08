@@ -1,4 +1,4 @@
-import { Image, Pressable, ScrollView, Text, View } from 'react-native';
+import { Alert, Image, Pressable, ScrollView, Text, View } from 'react-native';
 
 import { Iterable, IterableCommerceItem } from '@iterable/react-native-sdk';
 
@@ -24,6 +24,11 @@ export const Commerce = () => {
     console.log('Purchase items:', purchaseItems);
     console.log('Data fields:', dataFields);
     console.groupEnd();
+
+    Alert.alert(
+      `Tracked purchase: ${item.name}, $${item.price}`,
+      'Check logs for output'
+    );
   };
 
   return (
