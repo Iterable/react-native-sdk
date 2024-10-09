@@ -2323,18 +2323,14 @@ __metadata:
     react-native-builder-bob: ^0.30.2
     react-native-safe-area-context: ^4.11.0
     react-native-vector-icons: ^10.2.0
-    react-native-webview: ^13.12.2
+    react-native-webview: ^13.12.3
     react-test-renderer: ^18.3.1
     release-it: ^15.0.0
     turbo: ^1.10.7
     typescript: ^5.2.2
   peerDependencies:
-    "@react-navigation/native": ^6.0.0
     react: "*"
     react-native: "*"
-    react-native-safe-area-context: ^4.0.0
-    react-native-vector-icons: ^10.0.0
-    react-native-webview: ^13.0.0
   languageName: unknown
   linkType: soft
 
@@ -11418,6 +11414,19 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: d84b2e2e75dc484eb40f8e285607b9686693f2d31e95802e2b358dc0820bcc294b438a77174eba157c31d95675c962c61c94885629af999416ad1355e9618fe0
+  languageName: node
+  linkType: hard
+
+"react-native-webview@npm:^13.12.3":
+  version: 13.12.3
+  resolution: "react-native-webview@npm:13.12.3"
+  dependencies:
+    escape-string-regexp: ^4.0.0
+    invariant: 2.2.4
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 94d824fedc6b5c0402926b99a96f71f4752416e4f038be827552015c0bf6d595d71ba656079618402662aec5e2c539018b0bff2906b6f95261f70893e5dd5d80
   languageName: node
   linkType: hard
 
