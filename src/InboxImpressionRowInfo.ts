@@ -1,5 +1,5 @@
 // TODO: Add description
-export type InboxImpressionRowInfo = {
+export interface InboxImpressionRowInfo {
   messageId: string;
   silentInbox: boolean;
-};
+}

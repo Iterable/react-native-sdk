@@ -13,11 +13,11 @@ import {
 
 import IterableInAppManager from './IterableInAppManager';
 import IterableInAppMessage from './IterableInAppMessage';
-import IterableConfig, { AuthResponse } from './IterableConfig';
+import IterableConfig from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
 import IterableAction from './IterableAction';
 import { IterableActionContext } from './IterableAction';
-import { EventName } from './types';
+import { IterableEventName, IterableAuthResponse } from './types';
 import { IterableAttributionInfo } from './IterableAttributionInfo';
 import type { IterableCommerceItem } from './IterableCommerceItem';
 
@@ -31,6 +31,7 @@ enum AuthResponseCallback {
   FAILURE,
 }
 
+/** @hideconstructor */
 export class Iterable {
   /**
    * Manager for in app messages
@@ -196,22 +197,22 @@ export class Iterable {
    * Iterable's React Native SDK persists the user across app sessions and restarts, until you manually change the user using
    * `Iterable.setEmail` or `Iterable.setUserId`.
    *
-   * User profile creation:
+   * ### User profile creation:
    *
    * If your Iterable project does not have a user with the passed in UserId, setUserId creates one and adds a placeholder email
    * address to the user's Iterable profile.
    *
-   * Registering device token:
+   * ### Registering device token:
    *
    * If IterableConfig.autoPushRegisteration is set to true, calling setUserId automatically registers the device for push
    * notifications and sends the deviceId and token to Iterable.
    *
-   * Optional JWT token parameter:
+   * ### Optional JWT token parameter:
    *
    * An optional valid, pre-fetched JWT can be passed in to avoid race conditions.
    * The SDK uses this JWT to authenticate API requests for this user.
    *
-   * Signing out a user from the SDK:
+   * ### Signing out a user from the SDK:
    *
    * To tell the SDK to sign out the current user, pass null into Iterable.setUserId.
    * If `IterableConfig.autoPushRegisteration` is set to true, calling `Iterable.setUserId(null)` prevents Iterable from sending further
@@ -220,8 +221,8 @@ export class Iterable {
    *
    * Note: specify a user by calling `Iterable.setEmail` or `Iterable.setUserId`, but **NOT** both.
    *
-   * parameters: @param {string | null | undefined} userId user ID to associate with the current user
-   * optional parameter: @param {string | null | undefined} authToken valid, pre-fetched JWT the SDK can use to authenticate API requests, optional - if null/undefined, no JWT related action will be taken
+   * @param {string | null | undefined} userId user ID to associate with the current user
+   * @param {string | null | undefined} authToken valid, pre-fetched JWT the SDK can use to authenticate API requests, optional - if null/undefined, no JWT related action will be taken
    *
    * @example
    * ```typescript
@@ -332,7 +333,7 @@ export class Iterable {
    * For deep link clicks, Iterable sets attribution information automatically.
    * However, use this method to set it manually if ever necessary.
    *
-   * @param {attributionInfo} IterableAttributionInfo object storing current attribution info
+   * @param {IterableAttributionInfo} attributionInfo - object storing current attribution info
    *
    * @example
    * ```typescript
@@ -403,12 +404,19 @@ export class Iterable {
    *
    * @example
    * ```typescript
-   * const items = [
-   *  new IterableCommerceItem('item1', 'Item 1', 10.0, 1),
-   *  new IterableCommerceItem('item2', 'Item 2', 20.0, 2),
-   * ];
+   * const item = new IterableCommerceItem(
+   *    "TOY1",
+   *    "Red Racecar",
+   *    4.99,
+   *    1,
+   *    "RR123",
+   *    "A small, red racecar.",
+   *    "https://www.example.com/toys/racecar",
+   *    "https://www.example.com/toys/racecar/images/car.png",
+   *    ["Toy", "Inexpensive"],
+   * );
    *
-   * Iterable.updateCart(items);
+   * Iterable.updateCart([item]);
    * ```
    */
   static updateCart(items: Array<IterableCommerceItem>) {
@@ -420,7 +428,7 @@ export class Iterable {
   /**
    * Launch the application from the background for Android devices.
    *
-   * @category Android
+   * @group Android Only
    *
    * @example
    * ```typescript
@@ -458,7 +466,6 @@ export class Iterable {
    * Iterable.trackPurchase(30.0, items, dataFields);
    * ```
    */
-
   static trackPurchase(
     total: number,
     items: Array<IterableCommerceItem>,
@@ -519,9 +526,11 @@ export class Iterable {
   }
 
   /**
-   * Create an inAppClose event for the specified message on the current user's profile
-   * for manual tracking purposes. Iterable's SDK automatically tracks in-app message close events when you use the
-   * SDK's default rendering.
+   * Create an inAppClose event for the specified message on the current user's
+   * profile for manual tracking purposes.
+   *
+   * Iterable's SDK automatically tracks in-app message close events when you
+   * use the SDK's default rendering.
    *
    * @param {IterableInAppMessage} message the in-app message (an IterableInAppMessage object)
    * @param {IterableInAppLocation} location the location of the in-app message (an IterableInAppLocation enum)
@@ -588,12 +597,13 @@ export class Iterable {
    *
    * @example
    * ```typescript
-   * const dataFields = {
-   * 'key1': 'value1',
-   * 'key2': 'value2',
-   * };
-   *
-   * Iterable.trackEvent('customEvent', dataFields);
+   * Iterable.trackEvent("completedOnboarding",
+   *  {
+   *    "includedProfilePhoto": true,
+   *    "favoriteColor": "red",
+   *    "favoriteFlavor": "cinnamon",
+   *  }
+   * );
    * ```
    */
   static trackEvent(name: string, dataFields: any | undefined) {
@@ -605,25 +615,36 @@ export class Iterable {
   /**
    * Save data to the current user's Iterable profile.
    *
-   * If `mergeNestedObjects` is set to true, top-level objects in the passed in dataFields parameter
-   * are merged with their counterparts that already exist on the user's profile.
-   * Otherwise, they are added.
+   * If `mergeNestedObjects` is set to true, top-level objects in the passed in
+   * dataFields parameter are merged with their counterparts that already exist
+   * on the user's profile.  Otherwise, they are added.
    *
-   * If `mergeNestedObjects` is set to false, the top-level objects in the passed in dataFields parameter
-   * overwrite their counterparts that already exist on the user's profile.
-   * Otherwise, they are added.
+   * If `mergeNestedObjects` is set to false, the top-level objects in the
+   * passed in dataFields parameter overwrite their counterparts that already
+   * exist on the user's profile.  Otherwise, they are added.
    *
    * @param {any} dataFields data fields to store in user profile
-   * @param {boolean} mergeNestedObjects flag indicating whether to merge top-level objects
+   * @param {boolean} mergeNestedObjects flag indicating whether to merge
+   * top-level objects
    *
    * @example
-   * ```typescript
-   * const dataFields = {
-   * 'key1': 'value1',
-   * 'key2': 'value2',
-   * };
+   * This call adds the `firstName` field and `favorites` object to the current
+   * user's Iterable profile. Since `mergeNestedObjects` is `false`, this call will
+   * overwrite the existing favorites object (if there is one), replacing it
+   * with the value in the call (otherwise, it would have merged the two
+   * `favorites` objects).
    *
-   * Iterable.updateUser(dataFields, true);
+   * ```typescript
+   * Iterable.updateUser(
+   *   {
+   *     "firstName": "Joe",
+   *     "favorites": {
+   *       "color": "red",
+   *       "flavor": "cinnamon"
+   *     }
+   *   },
+   *   false
+   * );
    * ```
    */
   static updateUser(dataFields: any, mergeNestedObjects: boolean) {
@@ -649,7 +670,6 @@ export class Iterable {
    * Iterable.updateEmail('my.new.email@gmail.com', 'myAuthToken');
    * ```
    */
-
   static updateEmail(email: string, authToken?: string | undefined) {
     Iterable.logger.log('updateEmail');
 
@@ -730,13 +750,15 @@ export class Iterable {
   // PRIVATE
   private static setupEventHandlers() {
     //Remove all listeners to avoid duplicate listeners
-    RNEventEmitter.removeAllListeners(EventName.handleUrlCalled);
-    RNEventEmitter.removeAllListeners(EventName.handleInAppCalled);
-    RNEventEmitter.removeAllListeners(EventName.handleCustomActionCalled);
-    RNEventEmitter.removeAllListeners(EventName.handleAuthCalled);
+    RNEventEmitter.removeAllListeners(IterableEventName.handleUrlCalled);
+    RNEventEmitter.removeAllListeners(IterableEventName.handleInAppCalled);
+    RNEventEmitter.removeAllListeners(
+      IterableEventName.handleCustomActionCalled
+    );
+    RNEventEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
 
     if (Iterable.savedConfig.urlHandler) {
-      RNEventEmitter.addListener(EventName.handleUrlCalled, (dict) => {
+      RNEventEmitter.addListener(IterableEventName.handleUrlCalled, (dict) => {
         const url = dict.url;
         const context = IterableActionContext.fromDict(dict.context);
         Iterable.wakeApp();
@@ -753,44 +775,50 @@ export class Iterable {
     }
 
     if (Iterable.savedConfig.customActionHandler) {
-      RNEventEmitter.addListener(EventName.handleCustomActionCalled, (dict) => {
-        const action = IterableAction.fromDict(dict.action);
-        const context = IterableActionContext.fromDict(dict.context);
-        Iterable.savedConfig.customActionHandler!(action, context);
-      });
+      RNEventEmitter.addListener(
+        IterableEventName.handleCustomActionCalled,
+        (dict) => {
+          const action = IterableAction.fromDict(dict.action);
+          const context = IterableActionContext.fromDict(dict.context);
+          Iterable.savedConfig.customActionHandler!(action, context);
+        }
+      );
     }
 
     if (Iterable.savedConfig.inAppHandler) {
-      RNEventEmitter.addListener(EventName.handleInAppCalled, (messageDict) => {
-        const message = IterableInAppMessage.fromDict(messageDict);
-        const result = Iterable.savedConfig.inAppHandler!(message);
-        RNIterableAPI.setInAppShowResponse(result);
-      });
+      RNEventEmitter.addListener(
+        IterableEventName.handleInAppCalled,
+        (messageDict) => {
+          const message = IterableInAppMessage.fromDict(messageDict);
+          const result = Iterable.savedConfig.inAppHandler!(message);
+          RNIterableAPI.setInAppShowResponse(result);
+        }
+      );
     }
 
     if (Iterable.savedConfig.authHandler) {
       let authResponseCallback: AuthResponseCallback;
-      RNEventEmitter.addListener(EventName.handleAuthCalled, () => {
+      RNEventEmitter.addListener(IterableEventName.handleAuthCalled, () => {
         Iterable.savedConfig.authHandler!()
           .then((promiseResult) => {
             // Promise result can be either just String OR of type AuthResponse.
             // If type AuthReponse, authToken will be parsed looking for `authToken` within promised object. Two additional listeners will be registered for success and failure callbacks sent by native bridge layer.
             // Else it will be looked for as a String.
-            if (typeof promiseResult === typeof new AuthResponse()) {
+            if (typeof promiseResult === typeof new IterableAuthResponse()) {
               RNIterableAPI.passAlongAuthToken(
-                (promiseResult as AuthResponse).authToken
+                (promiseResult as IterableAuthResponse).authToken
               );
 
               setTimeout(() => {
                 if (authResponseCallback === AuthResponseCallback.SUCCESS) {
-                  if ((promiseResult as AuthResponse).successCallback) {
-                    (promiseResult as AuthResponse).successCallback!();
+                  if ((promiseResult as IterableAuthResponse).successCallback) {
+                    (promiseResult as IterableAuthResponse).successCallback!();
                   }
                 } else if (
                   authResponseCallback === AuthResponseCallback.FAILURE
                 ) {
-                  if ((promiseResult as AuthResponse).failureCallback) {
-                    (promiseResult as AuthResponse).failureCallback!();
+                  if ((promiseResult as IterableAuthResponse).failureCallback) {
+                    (promiseResult as IterableAuthResponse).failureCallback!();
                   }
                 } else {
                   Iterable.logger.log('No callback received from native layer');
@@ -808,12 +836,18 @@ export class Iterable {
           .catch((e) => Iterable.logger.log(e));
       });
 
-      RNEventEmitter.addListener(EventName.handleAuthSuccessCalled, () => {
-        authResponseCallback = AuthResponseCallback.SUCCESS;
-      });
-      RNEventEmitter.addListener(EventName.handleAuthFailureCalled, () => {
-        authResponseCallback = AuthResponseCallback.FAILURE;
-      });
+      RNEventEmitter.addListener(
+        IterableEventName.handleAuthSuccessCalled,
+        () => {
+          authResponseCallback = AuthResponseCallback.SUCCESS;
+        }
+      );
+      RNEventEmitter.addListener(
+        IterableEventName.handleAuthFailureCalled,
+        () => {
+          authResponseCallback = AuthResponseCallback.FAILURE;
+        }
+      );
     }
 
     function callUrlHandler(url: any, context: IterableActionContext) {

@@ -160,8 +160,7 @@ function defaultMessageListLayout(
   );
 }
 
-// TODO: Comment
-type MessageCellProps = {
+export interface IterableInboxMessageCellProps {
   index: number;
   last: boolean;
   dataModel: IterableInboxDataModel;
@@ -173,9 +172,13 @@ type MessageCellProps = {
   handleMessageSelect: Function;
   contentWidth: number;
   isPortrait: boolean;
-};
+}
 
-// TODO: Comment
+/**
+ * TODO: Comment
+ *
+ * @category Component
+ */
 export const IterableInboxMessageCell = ({
   index,
   last,
@@ -188,7 +191,7 @@ export const IterableInboxMessageCell = ({
   handleMessageSelect,
   contentWidth,
   isPortrait,
-}: MessageCellProps) => {
+}: IterableInboxMessageCellProps) => {
   const position = useRef(new Animated.ValueXY()).current;
 
   let deleteSliderHeight = customizations.messageRow?.height

@@ -1,4 +1,4 @@
-export enum EventName {
+export enum IterableEventName {
   handleUrlCalled = 'handleUrlCalled',
   handleCustomActionCalled = 'handleCustomActionCalled',
   handleInAppCalled = 'handleInAppCalled',

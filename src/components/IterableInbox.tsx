@@ -29,18 +29,159 @@ import useDeviceOrientation from '../hooks/useDeviceOrientation';
 const RNIterableAPI = NativeModules.RNIterableAPI;
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
-// TODO: Comment
+/**
+ * The props type for {@link IterableInbox}.
+ */
 export interface IterableInboxProps {
   returnToInboxTrigger?: boolean;
-  messageListItemLayout?: Function;
+  /**
+   * To specify a custom layout for your inbox rows, when you instantate your
+   * IterableInbox, assign a function to its messageListItemLayout prop. The
+   * inbox will call this function for each of its rows, and it should return:
+   *
+   * 1. JSX that represents the custom layout for the row.
+   * 2. The height of the row (must be the same for all rows).
+   *
+   * A row layout can reference the fields stored in the passed-in rowViewModel,
+   * which is an instance of {@link InboxRowViewModel}.
+   *
+   * @example
+   * ```tsx
+   * const messageListItemLayout = (last: boolean, rowViewModel: InboxRowViewModel) => (
+   *    <View style={rowViewModel.read ? readMessageContainer : unreadMessageContainer}>
+   *      <Text>{messageTitle}</Text>
+   *      <Text>{messageBody}</Text>
+   *      <Text>{messageCreatedAt}</Text>
+   *    </View>
+   * )
+   *
+   * const Inbox = () => (
+   *    <IterableInbox
+   *      messageListItemLayout={(last: boolean, rowViewModel: InboxRowViewModel) => MessageListItemLayout(last, rowViewModel)}
+   *    />
+   * )
+   *```
+   */
+  messageListItemLayout?: (
+    last: boolean,
+    rowViewModel: InboxRowViewModel
+  ) => JSX.Element | null;
+  /**
+   * Customizations for the look/feel of the inbox.
+   *
+   * @example
+   * ```tsx
+   * const iterableInboxCustomization = {
+   *    navTitle: 'Iterable',
+   *    noMessagesTitle: 'No messages today',
+   *    noMessagesBody: 'Come back later',
+   * }
+   *
+   * <IterableInbox customizations={iterableInboxCustomization} />
+   * ```
+   */
   customizations?: IterableInboxCustomizations;
+  /** Height of the tab bar */
   tabBarHeight?: number;
+  /** Padding around the tab bar */
   tabBarPadding?: number;
   safeAreaMode?: boolean;
+  /** Should the nav title be shown? */
   showNavTitle?: boolean;
 }
 
-// TODO: Comment
+/**
+ * Renders an inbox for in app messages
+ *
+ * @param {IterableInboxProps} props - The props for the component
+ *
+ * @example
+ * ```tsx
+ * const iterableInboxCustomization = {
+  navTitle: 'Iterable',
+  noMessagesTitle: 'No messages today',
+  noMessagesBody: 'Come back later',
+
+  unreadIndicatorContainer: {
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+  },
+
+  unreadIndicator: {
+    width: 15,
+    height: 15,
+    borderRadius: 15 / 2,
+    backgroundColor: 'orange',
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 10,
+  },
+
+  unreadMessageIconContainer: {
+    paddingLeft: 0,
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+
+  readMessageIconContainer: {
+    paddingLeft: 35,
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+
+  messageContainer: {
+    paddingLeft: 10,
+    width: '65%',
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+
+  title: {
+    fontSize: 22,
+    paddingBottom: 10,
+  },
+
+  body: {
+    fontSize: 15,
+    color: 'lightgray',
+    width: '65%',
+    flexWrap: 'wrap',
+    paddingBottom: 10,
+  },
+
+  createdAt: {
+    fontSize: 12,
+    color: 'lightgray',
+  },
+
+  messageRow: {
+    flexDirection: 'row',
+    backgroundColor: 'white',
+    paddingTop: 10,
+    paddingBottom: 10,
+    height: 200,
+    borderStyle: 'solid',
+    borderColor: 'red',
+    borderTopWidth: 1,
+  },
+};
+
+export const CustomizedInbox = (props: IterableInboxProps) => {
+  return (
+    <IterableInbox
+      customizations={iterableInboxCustomization}
+      {...props}
+    />
+  );
+};
+  * ```
+* @remarks
+* A mobile inbox displays a list of saved in-app messages that users can revisit at their convenience. This way, they can access messages right when they're relevant—for example, maybe pulling up a coupon while shopping.
+
+Iterable's React Native SDK provides a default mobile inbox implementation. It includes a customizable user interface, and it saves events to Iterable as users view and interact with your in-app messages.
+ *
+ * @category Component
+ */
 export const IterableInbox = ({
   returnToInboxTrigger = true,
   messageListItemLayout = () => null,

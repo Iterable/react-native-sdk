@@ -22,16 +22,20 @@ import {
 import { IterableActionSource } from '../types';
 
 // TODO: Comment
-type MessageDisplayProps = {
+export interface IterableInboxMessageDisplayProps {
   rowViewModel: InboxRowViewModel;
   inAppContentPromise: Promise<IterableHtmlInAppContent>;
   returnToInbox: Function;
   deleteRow: Function;
   contentWidth: number;
   isPortrait: boolean;
-};
+}
 
-// TODO: Comment
+/**
+ * TODO: Comment
+ *
+ * @category Component
+ */
 export const IterableInboxMessageDisplay = ({
   rowViewModel,
   inAppContentPromise,
@@ -39,7 +43,7 @@ export const IterableInboxMessageDisplay = ({
   deleteRow,
   contentWidth,
   isPortrait,
-}: MessageDisplayProps) => {
+}: IterableInboxMessageDisplayProps) => {
   const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title;
   const [inAppContent, setInAppContent] = useState<IterableHtmlInAppContent>(
     new IterableHtmlInAppContent(new IterableEdgeInsets(0, 0, 0, 0), '')

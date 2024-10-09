@@ -2,16 +2,34 @@ import { IterableAction, IterableActionContext } from './IterableAction';
 import { IterableDataRegion } from './IterableDataRegion';
 import { IterableInAppShowResponse } from './IterableInAppClasses';
 import IterableInAppMessage from './IterableInAppMessage';
-import { IterableLogLevel } from './types';
-
-// TODO: Add description
-type AuthCallBack = () => void;
+import { IterableAuthResponse, IterableLogLevel } from './types';
 
 /**
- * An IterableConfig object sets various properties of the SDK.
- * An IterableConfig object is passed into the static initialize method on the Iterable class when initializing the SDK.
+ * A set of configuration options passed to the SDK's initialize method. Includes properties such as `pushIntegrationName`, `autoPushRegistration` and `inAppDisplayInterval`
+ *
+ * The object is passed into the static initialize method on the Iterable class when initializing the SDK.
+ *
+ * @example
+ * ```typescript
+ * const config = new IterableConfig();
+ * config.autoPushRegistration = false;
+ * config.inAppDisplayInterval = 30.0;
+ * config.urlHandler = (url, context) => {
+ *    console.log('URL:', url);
+ *    return true;
+ * };
+ * config.authHandler = () => {
+ *    // ... Fetch a JWT from your server, or locate one you've already retrieved
+ *    return new Promise(function (resolve, reject) {
+ *        // Resolve the promise with a valid auth token for the current user
+ *        resolve("<AUTH_TOKEN>")
+ *    });
+ * };
+ * Iterable.initialize('apiKey', config);
+ * ```
+ *
+ * @hideconstructor
  */
-
 export class IterableConfig {
   /**
    * The name of the Iterable push integration that will send push notifications to your app.
@@ -23,14 +41,20 @@ export class IterableConfig {
   pushIntegrationName?: string;
 
   /**
-   * When set to true (which is the default value), IterableSDK will automatically register and deregister
-   * notification tokens when you provide email or userId values to the SDK using Iterable.setEmail or Iterable.setUserId.
+   * When set to `true` (which is the default value), IterableSDK will
+   * automatically register and deregister  notification tokens when you provide
+   * email or userId values to the SDK using Iterable.setEmail or
+   * `Iterable.setUserId`.
    */
   autoPushRegistration = true;
 
   /**
-   * When set to true, it will check for deferred deep links on first time app launch after installation from the App Store.
+   * When set to true, it will check for deferred deep links on first time app
+   * launch after installation from the App Store.
+   *
    * This is currently deprecated and will be removed in the future.
+   *
+   * @deprecated
    */
   checkForDeferredDeeplink = false;
 
@@ -41,12 +65,14 @@ export class IterableConfig {
   inAppDisplayInterval: number = 30.0;
 
   /**
-   * A callback function used to handle deep link URLs and in-app message button and link URLs.
+   * A callback function used to handle deep link URLs and in-app message button
+   * and link URLs.
    */
   urlHandler?: (url: string, context: IterableActionContext) => boolean;
 
   /**
-   * A function expression used to handle `action://` URLs for in-app buttons and links.
+   * A function expression used to handle `action://` URLs for in-app buttons
+   * and links.
    */
   customActionHandler?: (
     action: IterableAction,
@@ -55,11 +81,13 @@ export class IterableConfig {
 
   /**
    * Implement this callback to override default in-app behavior.
+   *
    * By default, every single in-app will be shown as soon as it is available.
    * If more than 1 in-app is available, we show the first.
    *
-   * See "In-App Messages with Iterable's React Native SDK" in support documentation
-   * for more information.
+   * See [In-App Messages with Iterable's React Native
+   * SDK](https://support.iterable.com/hc/en-us/articles/360045714172-In-App-Messages-with-Iterable-s-React-Native-SDK#:~:text=By%20default%2C%20Iterable's%20React%20Native,in%20whatever%20order%20you%20wish)
+   * in support documentation for more information.
    */
   inAppHandler?: (message: IterableInAppMessage) => IterableInAppShowResponse;
 
@@ -68,16 +96,18 @@ export class IterableConfig {
    * React Native SDK. Provide an implementation for this method only if your app uses a
    * JWT-enabled API key.
    */
-  authHandler?: () => Promise<AuthResponse | String | undefined>;
+  authHandler?: () => Promise<IterableAuthResponse | String | undefined>;
 
   /**
    * Set the verbosity of Android and iOS project's log system.
+   *
    * By default, you will be able to see info level logs printed in IDE when running the app.
    */
   logLevel: IterableLogLevel = IterableLogLevel.info;
 
   /**
-   * Set whether the React Native SDK should print function calls to console
+   * Set whether the React Native SDK should print function calls to console.
+   *
    * This is for calls within the React Native layer, and is separate from `logLevel`
    * which affects the Android and iOS native SDKs
    */
@@ -104,23 +134,40 @@ export class IterableConfig {
    * the native Android SDK layer will use in memory storage for in-apps.
    *
    * This specifies the `useInMemoryStorageForInApps` config option downstream to the Android SDK layer.
+   *
+   * @group Android Only
+   *
+   * @deprecated
    */
   androidSdkUseInMemoryStorageForInApps: boolean = false;
 
   /**
-   * This specifies the `useInMemoryStorageForInApps` config option downstream to the native SDK layers.
-   * Please read the respective `IterableConfig` files for specific details on this config option.
+   * This specifies the `useInMemoryStorageForInApps` config option downstream
+   * to the native SDK layers.
+   *
+   * Please read the respective `IterableConfig` files for specific details on
+   * this config option.
    */
   useInMemoryStorageForInApps: boolean = false;
 
   /**
-   * This specifies the data region which determines the data center and associated endpoints used by the SDK
+   * This specifies the data region which determines the data center and
+   * associated endpoints used by the SDK.
+   *
+   * If your Iterable project is hosted on Iterable's European data center
+   * (EDC), set this value to `IterableDataRegion.EU`.  This configures the SDK
+   * to interact with Iterable's EDC-based endpoints.   d
    */
   dataRegion: IterableDataRegion = IterableDataRegion.US;
 
   /**
-   * Android only feature: This controls whether the SDK should enforce encryption for all PII stored on disk.
-   * By default, the SDK will not enforce encryption and may fallback to unencrypted storage in case the encryption fails.
+   * Android only feature: This controls whether the SDK should enforce
+   * encryption for all PII stored on disk.
+   *
+   * By default, the SDK will not enforce encryption and may fallback to
+   * unencrypted storage in case the encryption fails.
+   *
+   * @group Android Only
    */
   encryptionEnforced: boolean = false;
 
@@ -151,13 +198,6 @@ export class IterableConfig {
       encryptionEnforced: this.encryptionEnforced,
     };
   }
-}
-
-// TODO: Add comments and descriptions
-export class AuthResponse {
-  authToken?: string = '';
-  successCallback?: AuthCallBack;
-  failureCallback?: AuthCallBack;
 }
 
 export default IterableConfig;

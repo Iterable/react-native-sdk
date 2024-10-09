@@ -1,7 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
 import { AppState } from 'react-native';
 
-// TODO: Comment
+/**
+ * Hook that returns the current state of the app.
+ *
+ * @returns {AppState} The current state of the app.
+ *
+ * @example
+ * ```tsx
+ * const appState = useAppStateListener(); // 'active', 'background' etc.
+ * ```
+ *
+ * @category Hooks
+ */
 export function useAppStateListener() {
   const appStateEventName = 'change';
   const appState = useRef(AppState.currentState);

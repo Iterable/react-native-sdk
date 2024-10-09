@@ -9,7 +9,7 @@ import IterableInboxDataModel from '../IterableInboxDataModel';
 import IterableInboxMessageCell from './IterableInboxMessageCell';
 
 // TODO: Comment
-type MessageListProps = {
+export interface IterableInboxMessageListProps {
   dataModel: IterableInboxDataModel;
   rowViewModels: InboxRowViewModel[];
   customizations: IterableInboxCustomizations;
@@ -19,9 +19,13 @@ type MessageListProps = {
   updateVisibleMessageImpressions: Function;
   contentWidth: number;
   isPortrait: boolean;
-};
+}
 
-// TODO: Comment
+/**
+ * TODO: Comment
+ *
+ * @category Component
+ */
 export const IterableInboxMessageList = ({
   dataModel,
   rowViewModels,
@@ -32,7 +36,7 @@ export const IterableInboxMessageList = ({
   updateVisibleMessageImpressions,
   contentWidth,
   isPortrait,
-}: MessageListProps) => {
+}: IterableInboxMessageListProps) => {
   const [swiping, setSwiping] = useState<boolean>(false);
   const flatListRef = useRef<FlatList>(null);
 

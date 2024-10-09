@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { type IterableInboxCustomizations } from '../IterableInboxCustomizations';
 
 // TODO: Comment
-type EmptyStateProps = {
+export interface IterableInboxEmptyStateProps {
   customizations: IterableInboxCustomizations;
   tabBarHeight: number;
   tabBarPadding: number;
@@ -11,8 +11,13 @@ type EmptyStateProps = {
   contentWidth: number;
   height: number;
   isPortrait: boolean;
-};
+}
 
+/**
+ * TODO: Comment
+ *
+ * @category Component
+ */
 export const IterableInboxEmptyState = ({
   customizations,
   tabBarHeight,
@@ -20,7 +25,7 @@ export const IterableInboxEmptyState = ({
   navTitleHeight,
   height,
   isPortrait,
-}: EmptyStateProps) => {
+}: IterableInboxEmptyStateProps) => {
   const defaultTitle = 'No saved messages';
   const defaultBody = 'Check again later!';
 

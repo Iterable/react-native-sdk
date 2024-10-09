@@ -1,7 +1,11 @@
 /**
  * @packageDocumentation
- * @categoryDescription Android
- * These methods will only have an effect on the Android platform.
+ * @categoryDescription Component
+ * Iterable React Native Components
+ * @categoryDescription Hooks
+ * Useful hooks for Iterable React Native Components
+ *
+ * @document ../CHANGELOG.md
  */
 
 export type { InboxImpressionRowInfo } from './InboxImpressionRowInfo';
@@ -28,6 +32,8 @@ export { IterableInAppMessage } from './IterableInAppMessage';
 export type { IterableInboxCustomizations } from './IterableInboxCustomizations';
 export * from './IterableCommerceItem';
 export * from './IterableLogger';
+export * from './IterableInboxDataModel';
+export * from './IterableAttributionInfo';
 
 export * from './hooks';
 export * from './types';
