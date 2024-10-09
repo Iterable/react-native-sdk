@@ -5,17 +5,18 @@ import { MockLinking } from '../__mocks__/MockLinking';
 import { TestHelper } from './TestHelper';
 
 // import from the same location that consumers import from
-import { Iterable, IterableConfig, IterableLogLevel } from '../index';
 import {
-  IterableAttributionInfo,
-  IterableCommerceItem,
-  IterableActionContext,
-  EventName,
+  Iterable,
   IterableAction,
-  IterableActionSource,
-} from '../Iterable';
+  IterableActionContext,
+  IterableConfig,
+  IterableLogLevel,
+} from '../index';
 import { IterableLogger } from '../IterableLogger';
 import { IterableDataRegion } from '../IterableDataRegion';
+import { IterableEventName, IterableActionSource } from '../types';
+import { IterableAttributionInfo } from '../IterableAttributionInfo';
+import { IterableCommerceItem } from '../IterableCommerceItem';
 
 describe('Iterable', () => {
   beforeEach(() => {
@@ -249,7 +250,7 @@ describe('Iterable', () => {
     );
     // sets up event emitter
     const nativeEmitter = new NativeEventEmitter();
-    nativeEmitter.removeAllListeners(EventName.handleUrlCalled);
+    nativeEmitter.removeAllListeners(IterableEventName.handleUrlCalled);
     // sets up config file and urlHandler function
     // urlHandler set to return false
     const config = new IterableConfig();
@@ -272,7 +273,7 @@ describe('Iterable', () => {
       context: { action: actionDict, source: 'inApp' },
     };
     // WHEN handleUrlCalled event is emitted
-    nativeEmitter.emit(EventName.handleUrlCalled, dict);
+    nativeEmitter.emit(IterableEventName.handleUrlCalled, dict);
     // THEN urlHandler and MockLinking is called with expected url
     return await TestHelper.delayed(0, () => {
       expect(config.urlHandler).toBeCalledWith(expectedUrl, dict.context);
@@ -285,7 +286,7 @@ describe('Iterable', () => {
     );
     // sets up event emitter
     const nativeEmitter = new NativeEventEmitter();
-    nativeEmitter.removeAllListeners(EventName.handleUrlCalled);
+    nativeEmitter.removeAllListeners(IterableEventName.handleUrlCalled);
     // sets up config file and urlHandler function
     // urlHandler set to return false
     const config = new IterableConfig();
@@ -308,7 +309,7 @@ describe('Iterable', () => {
       context: { action: actionDict, source: 'inApp' },
     };
     // WHEN handleUrlCalled event is emitted
-    nativeEmitter.emit(EventName.handleUrlCalled, dict);
+    nativeEmitter.emit(IterableEventName.handleUrlCalled, dict);
     // THEN urlHandler is called and MockLinking.openURL is not called
     return await TestHelper.delayed(0, () => {
       expect(config.urlHandler).toBeCalledWith(expectedUrl, dict.context);
@@ -321,7 +322,7 @@ describe('Iterable', () => {
     );
     // sets up event emitter
     const nativeEmitter = new NativeEventEmitter();
-    nativeEmitter.removeAllListeners(EventName.handleUrlCalled);
+    nativeEmitter.removeAllListeners(IterableEventName.handleUrlCalled);
     // sets up config file and urlHandler function
     // urlHandler set to return true
     const config = new IterableConfig();
@@ -344,7 +345,7 @@ describe('Iterable', () => {
       context: { action: actionDict, source: 'inApp' },
     };
     // WHEN handleUrlCalled event is emitted
-    nativeEmitter.emit(EventName.handleUrlCalled, dict);
+    nativeEmitter.emit(IterableEventName.handleUrlCalled, dict);
     // THEN urlHandler is called and MockLinking.openURL is not called
     return await TestHelper.delayed(0, () => {
       expect(config.urlHandler).toBeCalledWith(expectedUrl, dict.context);
@@ -357,7 +358,9 @@ describe('Iterable', () => {
     );
     // sets up event emitter
     const nativeEmitter = new NativeEventEmitter();
-    nativeEmitter.removeAllListeners(EventName.handleCustomActionCalled);
+    nativeEmitter.removeAllListeners(
+      IterableEventName.handleCustomActionCalled
+    );
     // sets up config file and customActionHandler function
     // customActionHandler set to return true
     const config = new IterableConfig();
@@ -378,7 +381,7 @@ describe('Iterable', () => {
       context: { action: actionDict, source: IterableActionSource.inApp },
     };
     // WHEN handleCustomActionCalled event is emitted
-    nativeEmitter.emit(EventName.handleCustomActionCalled, dict);
+    nativeEmitter.emit(IterableEventName.handleCustomActionCalled, dict);
     // THEN customActionHandler is called with expected action and expected context
     const expectedAction = new IterableAction(actionName, actionData);
     const expectedContext = new IterableActionContext(

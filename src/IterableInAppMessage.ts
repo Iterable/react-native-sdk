@@ -9,7 +9,26 @@ import {
 } from './IterableInAppClasses';
 
 /**
- * Iterable in-app message
+ * In-app message object.
+ *
+ * @see [Iterables In-App Messages Documentation](https://support.iterable.com/hc/en-us/articles/360045714172-In-App-Messages-with-Iterable-s-React-Native-SDK)
+ *
+ * @example
+ * ```typescript
+ * const inAppMessage = new IterableInAppMessage(
+ *    messageId,
+ *    campaignId,
+ *    trigger,
+ *    createdAt,
+ *    expiresAt,
+ *    saveToInbox,
+ *    inboxMetadata,
+ *    customPayload,
+ *    read,
+ *    priorityLevel
+ * );
+ * ```
+ *
  */
 export class IterableInAppMessage {
   /**

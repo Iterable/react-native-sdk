@@ -1,0 +1,146 @@
+<!DOCTYPE html><html class="default" lang="en"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>CHANGELOG | @iterable/react-native-sdk - v2.0.0-alpha</title><meta name="description" content="Documentation for @iterable/react-native-sdk"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><script defer src="../assets/main.js"></script><script async src="../assets/icons.js" id="tsd-icons-script"></script><script async src="../assets/search.js" id="tsd-search-script"></script><script async src="../assets/navigation.js" id="tsd-nav-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar"><div class="tsd-toolbar-contents container"><div class="table-cell" id="tsd-search" data-base=".."><div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="../assets/icons.svg#icon-search"></use></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div><div class="field"><div id="tsd-toolbar-links"></div></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="../index.html" class="title">@iterable/react-native-sdk - v2.0.0-alpha</a></div><div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="../assets/icons.svg#icon-menu"></use></svg></a></div></div></header><div class="container container-main"><div class="col-content"><div class="tsd-page-title"><ul class="tsd-breadcrumb"><li><a href="../modules.html">@iterable/react-native-sdk</a></li><li><a href="CHANGELOG.html">CHANGELOG</a></li></ul></div><div class="tsd-panel tsd-typography"><a id="md:1320" class="tsd-anchor"></a><h2 class="tsd-anchor-link">1.3.20<a href="#md:1320" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2><a id="md:fixes" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Fixes<a href="#md:fixes" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2><ul>
+<li>Fixes an issue where the iOS SDK incorrectly targeted the latest minor version instead of a fixed version, potentially causing breaking changes.</li>
+</ul>
+<a id="md:1319" class="tsd-anchor"></a><h2 class="tsd-anchor-link">1.3.19<a href="#md:1319" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2><a id="md:updates" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Updates<a href="#md:updates" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2><ul>
+<li>updates to RN version 0.68.0 to address various security vulnerabilities</li>
+</ul>
+<a id="md:1318" class="tsd-anchor"></a><h2 class="tsd-anchor-link">1.3.18<a href="#md:1318" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2><a id="md:updates-1" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Updates<a href="#md:updates-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2><ul>
+<li>adds user id login for sample apps</li>
+<li>version mapping to newest native SDK versions</li>
+<li>updates versions of various package dependencies</li>
+</ul>
+<a id="md:1317" class="tsd-anchor"></a><h2 class="tsd-anchor-link">1.3.17<a href="#md:1317" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2><a id="md:fixed" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Fixed<a href="#md:fixed" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2><ul>
+<li>Fixes a specific Android issue where apps could crash due to EncryptedSharedPreference being null.</li>
+</ul>
+<a id="md:1316" class="tsd-anchor"></a><h2 class="tsd-anchor-link">1.3.16<a href="#md:1316" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2><a id="md:updates-2" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Updates<a href="#md:updates-2" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2><p>This release allows you to use projects hosted on Iterable's EU data center. If your project is hosted on Iterable's <a href="https://support.iterable.com/hc/articles/17572750887444" target="_blank" class="external">European data center (EUDC)</a>, configure the SDK to use Iterable's EU-based API endpoints:</p>
+<pre><code class="javascript"><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">config</span><span class="hl-1"> = </span><span class="hl-0">new</span><span class="hl-1"> </span><span class="hl-3">IterableConfig</span><span class="hl-1">();</span><br/><span class="hl-4">// ... other configuration options ...</span><br/><span class="hl-5">config</span><span class="hl-1">.</span><span class="hl-5">dataRegion</span><span class="hl-1"> = </span><span class="hl-5">IterableDataRegion</span><span class="hl-1">.</span><span class="hl-2">EU</span><span class="hl-1">;</span><br/><span class="hl-5">Iterable</span><span class="hl-1">.</span><span class="hl-3">initialize</span><span class="hl-1">(</span><span class="hl-6">&#39;&lt;YOUR_API_KEY&gt;&#39;</span><span class="hl-1">, </span><span class="hl-5">config</span><span class="hl-1">);</span>
+</code><button type="button">Copy</button></pre>
+
+<a id="md:fixed-1" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Fixed<a href="#md:fixed-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2><ul>
+<li>Addressed push notification deep linking issues on Android where the app would restart instead of resuming the last activity upon being backgrounded.</li>
+<li>Resolves an additional push notification problem on Android wherein the customActionHandler and urlHandler were not being invoked in specific scenarios, as documented in issue #470. (Credit to @tnortman-jabra for the report and the fix)</li>
+</ul>
+<a id="md:1315" class="tsd-anchor"></a><h2 class="tsd-anchor-link">1.3.15<a href="#md:1315" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2><a id="md:updates-3" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Updates<a href="#md:updates-3" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2><ul>
+<li>Resolves Android build issues caused in 1.3.14</li>
+<li>Fixes a specific Android issue where custom action handlers were not invoked when tapping on push notification when the app is in background.</li>
+</ul>
+<a id="md:1314" class="tsd-anchor"></a><h2 class="tsd-anchor-link">1.3.14<a href="#md:1314" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2><blockquote>
+<p><strong>Warning</strong>
+This version causes build failure on Android. Please use 1.3.15 which fixes this issue.</p>
+</blockquote>
+<a id="md:updates-4" class="tsd-anchor"></a><h2 class="tsd-anchor-link">updates<a href="#md:updates-4" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2><ul>
+<li>updates <code>Iterable.setEmail</code> and <code>Iterable.setUserId</code> to take in null parameter type</li>
+<li>fixes <code>Iterable.updateUser</code> on the Android side to merge nested objects in the user profile when <code>mergeNestedObjects</code> is set to true</li>
+</ul>
+<a id="md:139" class="tsd-anchor"></a><h2 class="tsd-anchor-link">1.3.9<a href="#md:139" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2><a id="md:added" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Added<a href="#md:added" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3><p><a href="https://github.com/Iterable/react-native-sdk/releases/tag/1.3.9" target="_blank" class="external">Version 1.3.9</a> of Iterable's React Native SDK makes it possible for iOS apps to store in- app messages in memory, rather than in an unencrypted local file.  (<a href="https://github.com/Iterable/react-native-sdk/releases/tag/1.3.7" target="_blank" class="external">Version 1.3.7</a> added this same support for Android.)</p>
+<p>To store in-app messages in memory on both iOS and Android, set <code>useInMemoryStorageForInApps</code> to <code>true</code>:</p>
+<pre><code class="javascript"><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">config</span><span class="hl-1"> = </span><span class="hl-0">new</span><span class="hl-1"> </span><span class="hl-3">IterableConfig</span><span class="hl-1">();</span><br/><span class="hl-4">// ... other configuration options ...</span><br/><span class="hl-5">config</span><span class="hl-1">.</span><span class="hl-5">useInMemoryStorageForInApps</span><span class="hl-1"> = </span><span class="hl-0">true</span><span class="hl-1">;</span><br/><span class="hl-5">Iterable</span><span class="hl-1">.</span><span class="hl-3">initialize</span><span class="hl-1">(</span><span class="hl-6">&#39;&lt;YOUR_API_KEY&gt;&#39;</span><span class="hl-1">, </span><span class="hl-5">config</span><span class="hl-1">);</span>
+</code><button type="button">Copy</button></pre>
+
+<p>This release deprecates <code>androidSdkUseInMemoryStorageForInApps</code>, which was introduced in version 1.3.7, and replaces it with <code>useInMemoryStorageForInApps</code>.  However, for now:</p>
+<ul>
+<li>
+<p>Android apps store in-app messages in memory if <code>useInMemoryStorageForInApps</code> is <code>true</code>, <code>androidSdkUseInMemoryStorageForInApps</code> is <code>true</code>, or if both are <code>true</code>.</p>
+</li>
+<li>
+<p>iOS apps store in-app messages in memory if <code>useInMemoryStorageForInApps</code> is <code>true</code>. <code>androidSdkUseInMemoryStorageForInApps</code> does not affect iOS apps.</p>
+</li>
+</ul>
+<p>When you can, please update your apps to use <code>useInMemoryStorageForInApps</code> instead of <code>androidSdkUseInMemoryStorageForInApps</code>.</p>
+<p>When users upgrade to a version of your iOS or Android app that uses this version of the SDK (or higher), and they've enabled in-app memory storage, the local file used for in-app message storage (if it already exists) is deleted.  However, no data is lost.</p>
+<a id="md:137" class="tsd-anchor"></a><h2 class="tsd-anchor-link">1.3.7<a href="#md:137" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2><p>Starting with this release, as a privacy enhancement, Iterable’s React Native
+SDK encrypts some data stored at rest.</p>
+<a id="md:ios-updates" class="tsd-anchor"></a><h4 class="tsd-anchor-link">iOS updates<a href="#md:ios-updates" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h4><p>In iOS apps, Iterable's React Native SDK now encrypts the following fields when
+storing them at rest:</p>
+<ul>
+<li><code>email</code> — The user's email address.</li>
+<li><code>userId</code> — The user's ID.</li>
+<li><code>authToken</code> — The JWT used to authenticate the user with Iterable's API.</li>
+<li><code>lastPushPayload</code> — The JSON payload that came along with the last push
+notification received by the app.</li>
+</ul>
+<p>(Note that, in iOS apps, Iterable's React Native SDK does not store in-app
+messages at rest—before or after this update.)</p>
+<p>When a user upgrades to a version of your app that uses this version of the SDK
+(or higher), the fields shown above are encrypted. No data that's already stored
+is lost.</p>
+<p>For more information about this encryption in iOS, examine the source code for
+Iterable's iOS SDK (upon which the React Native SDK relies):</p>
+<ul>
+<li><a href="https://github.com/Iterable/swift-sdk/blob/master/swift-sdk/Internal/IterableKeychain.swift" target="_blank" class="external"><code>IterableKeychain</code></a></li>
+<li><a href="https://github.com/Iterable/swift-sdk/blob/master/swift-sdk/Internal/KeychainWrapper.swift" target="_blank" class="external"><code>KeychainWrapper</code></a></li>
+</ul>
+<a id="md:android-updates" class="tsd-anchor"></a><h4 class="tsd-anchor-link">Android updates<a href="#md:android-updates" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h4><p>For Android, this release includes support for encrypting some data at rest,
+and an option to store in-app messages in memory.</p>
+<a id="md:encrypted-data" class="tsd-anchor"></a><h5 class="tsd-anchor-link">Encrypted data<a href="#md:encrypted-data" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h5><p>In Android apps with <code>minSdkVersion</code> 23 or higher (<a href="https://developer.android.com/studio/releases/platforms#6.0" target="_blank" class="external">Android 6.0</a>)
+Iterable's React Native SDK now encrypts the following fields when storing
+them at rest:</p>
+<ul>
+<li><code>email</code> — The user's email address.</li>
+<li><code>userId</code> — The user's ID.</li>
+<li><code>authToken</code> — The JWT used to authenticate the user with Iterable's API.</li>
+</ul>
+<p>(Note that, in Android apps, Iterable's React Native SDK does not store the last
+push payload at rest—before or after this update.)</p>
+<p>For more information about this encryption in Android, examine the source code
+for Iterable's Android SDK (upon which the React Native SDK relies):
+<a href="https://github.com/Iterable/iterable-android-sdk/blob/master/iterableapi/src/main/java/com/iterable/iterableapi/IterableKeychain.kt" target="_blank" class="external"><code>IterableKeychain</code></a>.</p>
+<a id="md:storing-in-app-messages-in-memory" class="tsd-anchor"></a><h5 class="tsd-anchor-link">Storing in-app messages in memory<a href="#md:storing-in-app-messages-in-memory" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h5><p>This release also allows you to have your Android apps (regardless of <code>minSdkVersion</code>)
+store in-app messages in memory, rather than in an unencrypted local file.
+However, an unencrypted local file is still the default option.</p>
+<p>To store in-app messages in memory, on <code>IterableConfig</code>, set
+<code>androidSdkUseInMemoryStorageForInApps</code> to <code>true</code> (defaults to <code>false</code>):</p>
+<pre><code class="javascript"><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">config</span><span class="hl-1"> = </span><span class="hl-0">new</span><span class="hl-1"> </span><span class="hl-3">IterableConfig</span><span class="hl-1">();</span><br/><span class="hl-4">// ... other configuration options ...</span><br/><span class="hl-5">config</span><span class="hl-1">.</span><span class="hl-5">androidSdkUseInMemoryStorageForInApps</span><span class="hl-1"> = </span><span class="hl-0">true</span><span class="hl-1">;</span><br/><span class="hl-5">Iterable</span><span class="hl-1">.</span><span class="hl-3">initialize</span><span class="hl-1">(</span><span class="hl-6">&#39;&lt;YOUR_API_KEY&gt;&#39;</span><span class="hl-1">, </span><span class="hl-5">config</span><span class="hl-1">);</span>
+</code><button type="button">Copy</button></pre>
+
+<p>When users upgrade to a version of your Android app that uses this version of
+the SDK (or higher), and you've set this configuration option to <code>true</code>, the
+local file used for in-app message storage (if it already exists) is deleted
+However, no data is lost.</p>
+<a id="md:android-upgrade-instructions" class="tsd-anchor"></a><h5 class="tsd-anchor-link">Android upgrade instructions<a href="#md:android-upgrade-instructions" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h5><p>If your app targets API level 23 or higher, this is a standard SDK upgrade, with
+no special instructions.</p>
+<p>If your app targets an API level less than 23, you'll need to make the following
+changes to your project (which allow your app to build, even though it won't
+encrypt data):</p>
+<ol>
+<li>In <code>AndroidManifest.xml</code>, add <code>&lt;uses-sdk tools:overrideLibrary=&quot;androidx.security&quot; /&gt;</code></li>
+<li>In your app's <code>app/build.gradle</code>:</li>
+</ol>
+<ul>
+<li>Add <code>multiDexEnabled true</code> to the <code>default</code> object, under <code>android</code>.</li>
+<li>Add <code>implementation androidx.multidex:multidex:2.0.1</code> to the <code>dependencies</code>.</li>
+</ul>
+<a id="md:objective-c-compatibility-headers-for-react-native-068" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Objective-C compatibility headers for React Native 0.68+<a href="#md:objective-c-compatibility-headers-for-react-native-068" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3><p>To help solve build errors that can arise when using Iterable's SDK with React
+Native 0.68+, which uses Objective-C++, we've created some Objective-C
+compatibility headers that you can import into your project. For details, read
+<a href="https://support.iterable.com/hc/articles/360045714132#step-3-3-import-the-sdk" target="_blank" class="external">Installing Iterable's React Native SDK — Step 3.3: Import the SDK</a>.</p>
+<a id="md:110" class="tsd-anchor"></a><h2 class="tsd-anchor-link">1.1.0<a href="#md:110" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2><a id="md:added-1" class="tsd-anchor"></a><h4 class="tsd-anchor-link">Added<a href="#md:added-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h4><ul>
+<li>Offline events processing
+This feature saves a local copy of events triggered in your app while the device is offline (up to 1000 events). When a connection is re-established and your app is in the foreground, the events will be sent to Iterable.
+Offline events processing is off by default, and we're rolling it out on a customer-by-customer basis. After you start using this version of the SDK, we'll send you a message before we enable the feature on your account (unfortunately, we can't give you an exact timeline for when this will happen). If you have any questions, talk to your Iterable customer success manager.
+To use this feature, you must follow the SDK <a href="#md:upgrade-instructions-for-version-1-1-0">upgrade instructions</a>.</li>
+</ul>
+<a id="md:updated" class="tsd-anchor"></a><h4 class="tsd-anchor-link">Updated<a href="#md:updated" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h4><ul>
+<li>New properties on the <code>IterableCommerceItem</code> class
+The <code>IterableCommerceItem</code> class (which you can pass to the <code>trackPurchase</code> method on the <code>Iterable</code> class) now includes additional properties (all optional):
+<ul>
+<li><code>sku</code> (string) - The item's SKU</li>
+<li><code>description</code> (string) - A description of the item</li>
+<li><code>url</code> (string) - A URL associated with the item</li>
+<li><code>imageUrl</code> (string) - A URL that points to an image of the item</li>
+<li><code>categories</code> (string) - Categories to associate with the item</li>
+</ul>
+</li>
+</ul>
+<a id="md:upgrade-instructions-for-version-110" class="tsd-anchor"></a><h4 class="tsd-anchor-link">Upgrade instructions for version 1.1.0<a href="#md:upgrade-instructions-for-version-110" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h4><p>To use this version of Iterable's React Native SDK, you'll need to update your native Android application's <code>Application</code> class:</p>
+<ul>
+<li>Add this import:<pre><code class="java">import com.iterable.iterableapi.IterableApi;
+</code><button type="button">Copy</button></pre>
+
+</li>
+<li>At the end of the <code>onCreate</code> method, add this line of code:<pre><code class="java">IterableApi.setContext(this);
+</code><button type="button">Copy</button></pre>
+
+</li>
+</ul>
+</div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-accordion"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></div><div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>On This Page</h3></summary><div class="tsd-accordion-details"><a href="#md:1320"><span>1.3.20</span></a><a href="#md:fixes"><span>Fixes</span></a><a href="#md:1319"><span>1.3.19</span></a><a href="#md:updates"><span>Updates</span></a><a href="#md:1318"><span>1.3.18</span></a><a href="#md:updates-1"><span>Updates</span></a><a href="#md:1317"><span>1.3.17</span></a><a href="#md:fixed"><span>Fixed</span></a><a href="#md:1316"><span>1.3.16</span></a><a href="#md:updates-2"><span>Updates</span></a><a href="#md:fixed-1"><span>Fixed</span></a><a href="#md:1315"><span>1.3.15</span></a><a href="#md:updates-3"><span>Updates</span></a><a href="#md:1314"><span>1.3.14</span></a><a href="#md:updates-4"><span>updates</span></a><a href="#md:139"><span>1.3.9</span></a><ul><li><a href="#md:added"><span>Added</span></a></li></ul><a href="#md:137"><span>1.3.7</span></a><ul><li><ul><li><a href="#md:ios-updates"><span>iOS updates</span></a></li><li><a href="#md:android-updates"><span>Android updates</span></a></li><li><ul><li><a href="#md:encrypted-data"><span>Encrypted data</span></a></li><li><a href="#md:storing-in-app-messages-in-memory"><span>Storing in-<wbr/>app messages in memory</span></a></li><li><a href="#md:android-upgrade-instructions"><span>Android upgrade instructions</span></a></li></ul></li></ul></li><li><a href="#md:objective-c-compatibility-headers-for-react-native-068"><span>Objective-<wbr/>C compatibility headers for <wbr/>React <wbr/>Native 0.68+</span></a></li></ul><a href="#md:110"><span>1.1.0</span></a><ul><li><a href="#md:added-1"><span>Added</span></a></li><li><a href="#md:updated"><span>Updated</span></a></li><li><a href="#md:upgrade-instructions-for-version-110"><span>Upgrade instructions for version 1.1.0</span></a></li></ul></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="../modules.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-1"></use></svg><span>@iterable/react-native-sdk - v2.0.0-alpha</span></a><ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base=".."><li>Loading...</li></ul></nav></div></div></div><footer><p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer><div class="overlay"></div></body></html>

@@ -1,15 +1,17 @@
 /**
- * React Native module for Iterable.
- * @module react-native-iterable-sdk
+ * @packageDocumentation
+ * @categoryDescription Component
+ * Iterable React Native Components
+ * @categoryDescription Hooks
+ * Useful hooks for Iterable React Native Components
+ *
+ * @document ../CHANGELOG.md
  */
+
 export type { InboxImpressionRowInfo } from './InboxImpressionRowInfo';
 export type { InboxRowViewModel } from './InboxRowViewModel';
-export { Iterable, IterableCommerceItem } from './Iterable';
-export {
-  IterableAction,
-  IterableActionContext,
-  IterableLogLevel,
-} from './IterableAction';
+export { Iterable } from './Iterable';
+export { IterableAction, IterableActionContext } from './IterableAction';
 export { IterableConfig } from './IterableConfig';
 export { IterableDataRegion } from './IterableDataRegion';
 export {
@@ -27,9 +29,12 @@ export {
 } from './IterableInAppClasses';
 export { IterableInAppManager } from './IterableInAppManager';
 export { IterableInAppMessage } from './IterableInAppMessage';
-export { IterableInbox, type IterableInboxProps } from './IterableInbox';
 export type { IterableInboxCustomizations } from './IterableInboxCustomizations';
-export { IterableInboxEmptyState } from './IterableInboxEmptyState';
-export { IterableInboxMessageCell } from './IterableInboxMessageCell';
-export { useAppStateListener } from './useAppStateListener';
-export { useDeviceOrientation } from './useDeviceOrientation';
+export * from './IterableCommerceItem';
+export * from './IterableLogger';
+export * from './IterableInboxDataModel';
+export * from './IterableAttributionInfo';
+
+export * from './hooks';
+export * from './types';
+export * from './components';
