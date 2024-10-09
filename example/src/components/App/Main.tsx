@@ -16,26 +16,27 @@ const Tab = createBottomTabNavigator<RootStackParamList>();
 
 export function Main() {
   const {
-    config,
     isInboxTab,
     isLoggedIn,
     loginInProgress,
     returnToInboxTrigger,
     setIsInboxTab,
     setReturnToInboxTrigger,
+    userId,
   } = useIterableApp();
   const [unreadMessageCount, setUnreadMessageCount] = useState<number>(0);
 
   useEffect(() => {
-    if (config && isLoggedIn && !loginInProgress) {
+    if (loginInProgress) return;
+    if (isLoggedIn) {
       Iterable.inAppManager.getMessages().then((messages) => {
         setUnreadMessageCount(messages.length);
       });
-    } else if (!isLoggedIn && !loginInProgress) {
+    } else {
       // Reset unread message count when user logs out
       setUnreadMessageCount(0);
     }
-  }, [config, isLoggedIn, loginInProgress]);
+  }, [isLoggedIn, loginInProgress, userId]);
 
   return (
     <>

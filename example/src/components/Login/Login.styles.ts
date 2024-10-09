@@ -19,7 +19,14 @@ const setButton = (buttonToSet: ViewStyle = {}) => ({
 });
 
 export const styles = StyleSheet.create({
-  loginScreenContainer: { ...container, backgroundColor: 'white' },
+  loginScreenContainer: {
+    ...container,
+    backgroundColor: 'white',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
   formContainer: { marginTop: 24 },
   appName,
   title,
