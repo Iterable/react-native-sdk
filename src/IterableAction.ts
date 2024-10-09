@@ -1,3 +1,9 @@
+import type { IterableActionSource } from './types';
+
+/**
+ * IterableAction represents an action defined as a response to user events.
+ * It is currently used in push notification actions (open push & action buttons).
+ */
 export class IterableAction {
   type: string;
   data?: string;
@@ -28,18 +34,6 @@ export class IterableActionContext {
     const source = dict.source as IterableActionSource;
     return new IterableActionContext(action, source);
   }
-}
-
-export enum IterableActionSource {
-  push = 0,
-  appLink = 1,
-  inApp = 2,
-}
-
-export enum IterableLogLevel {
-  debug = 1,
-  info = 2,
-  error = 3,
 }
 
 export default IterableAction;

@@ -5,17 +5,18 @@ import { MockLinking } from '../__mocks__/MockLinking';
 import { TestHelper } from './TestHelper';
 
 // import from the same location that consumers import from
-import { Iterable, IterableConfig, IterableLogLevel } from '../index';
 import {
-  IterableAttributionInfo,
-  IterableCommerceItem,
-  IterableActionContext,
-  EventName,
+  Iterable,
   IterableAction,
-  IterableActionSource,
-} from '../Iterable';
+  IterableActionContext,
+  IterableConfig,
+  IterableLogLevel,
+} from '../index';
 import { IterableLogger } from '../IterableLogger';
 import { IterableDataRegion } from '../IterableDataRegion';
+import { EventName, IterableActionSource } from '../types';
+import { IterableAttributionInfo } from '../IterableAttributionInfo';
+import { IterableCommerceItem } from '../IterableCommerceItem';
 
 describe('Iterable', () => {
   beforeEach(() => {

@@ -2,7 +2,7 @@ import { NativeEventEmitter } from 'react-native';
 
 import { MockRNIterableAPI } from '../__mocks__/MockRNIterableAPI';
 
-import { Iterable, EventName } from '../Iterable';
+import { Iterable } from '../Iterable';
 import IterableConfig from '../IterableConfig';
 import IterableInAppMessage from '../IterableInAppMessage';
 import {
@@ -15,6 +15,7 @@ import {
   IterableInAppDeleteSource,
 } from '../IterableInAppClasses';
 import { IterableLogger } from '../IterableLogger';
+import { EventName } from '../types';
 
 describe('Iterable In App', () => {
   beforeEach(() => {

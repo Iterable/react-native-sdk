@@ -44,7 +44,7 @@
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prepare": "bob build",
     "release": "release-it",
-    "docs": "yarn typedoc ./src/index.ts --out ./docs/api-reference --tsconfig ./tsconfig.json --readme none --sort source-order"
+    "docs": "yarn typedoc"
   },
   "keywords": [
     "react-native",
