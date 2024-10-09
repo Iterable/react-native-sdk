@@ -8,7 +8,7 @@ import { useIterableApp } from '../../hooks/useIterableApp';
 import type { RootStackParamList } from '../../types/navigation';
 import { Commerce } from '../Commerce';
 import { CustomizedInbox } from '../CustomizedInbox';
-import { Home } from '../Home';
+import { User } from '../User';
 import { routeIcon } from './App.contants';
 import { getIcon } from './App.utils';
 
@@ -52,13 +52,6 @@ export function Main() {
         }}
       >
         <Tab.Screen
-          name={Route.User}
-          component={Home}
-          listeners={() => ({
-            tabPress: () => setIsInboxTab(false),
-          })}
-        />
-        <Tab.Screen
           name={Route.Inbox}
           component={CustomizedInbox}
           options={
@@ -76,6 +69,13 @@ export function Main() {
         <Tab.Screen
           name={Route.Commerce}
           component={Commerce}
+          listeners={() => ({
+            tabPress: () => setIsInboxTab(false),
+          })}
+        />
+        <Tab.Screen
+          name={Route.User}
+          component={User}
           listeners={() => ({
             tabPress: () => setIsInboxTab(false),
           })}

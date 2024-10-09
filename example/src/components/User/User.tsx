@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
 import useIterableApp from '../../hooks/useIterableApp';
-import styles from './Home.styles';
+import styles from './User.styles';
 
-export const Home = () => {
+export const User = () => {
   const { logout, isLoggedIn } = useIterableApp();
   const [loggedInAs, setLoggedInAs] = useState<string>('');
 
@@ -28,4 +28,4 @@ export const Home = () => {
   );
 };
 
-export default Home;
+export default User;
