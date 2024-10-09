@@ -30,7 +30,7 @@ const RNIterableAPI = NativeModules.RNIterableAPI;
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
 // TODO: Comment
-type InboxProps = {
+export interface IterableInboxProps {
   returnToInboxTrigger?: boolean;
   messageListItemLayout?: Function;
   customizations?: IterableInboxCustomizations;
@@ -38,7 +38,7 @@ type InboxProps = {
   tabBarPadding?: number;
   safeAreaMode?: boolean;
   showNavTitle?: boolean;
-};
+}
 
 // TODO: Comment
 export const IterableInbox = ({
@@ -49,7 +49,7 @@ export const IterableInbox = ({
   tabBarPadding = 20,
   safeAreaMode = true,
   showNavTitle = true,
-}: InboxProps) => {
+}: IterableInboxProps) => {
   const defaultInboxTitle = 'Inbox';
   const inboxDataModel = new IterableInboxDataModel();
 
