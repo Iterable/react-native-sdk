@@ -1,7 +1,8 @@
+import * as ReactNative from 'react-native';
+
 import { MockRNIterableAPI } from './MockRNIterableAPI';
 import { MockLinking } from './MockLinking';
 
-import * as ReactNative from 'react-native';
 jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter.js');
 
 jest.doMock('react-native', () => {
