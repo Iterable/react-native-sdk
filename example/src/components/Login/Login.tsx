@@ -7,12 +7,8 @@ import type { RootStackScreenProps } from '../../types/navigation';
 import { styles } from './Login.styles';
 
 export const Login = ({ navigation }: RootStackScreenProps<Route.Home>) => {
-  const { apiKey, setApiKey, userId, setUserId, email, setEmail, initialize } =
-    useIterableApp();
-  const loginIsEnabled = useMemo(
-    () => apiKey && (email || userId),
-    [apiKey, email, userId]
-  );
+  const { apiKey, setApiKey, userId, setUserId, initialize } = useIterableApp();
+  const loginIsEnabled = useMemo(() => apiKey && userId, [apiKey, userId]);
 
   return (
     <View style={styles.loginScreenContainer}>
@@ -31,24 +27,15 @@ export const Login = ({ navigation }: RootStackScreenProps<Route.Home>) => {
           autoCapitalize="none"
           autoCorrect={false}
         />
-        <Text style={styles.label}>Email address</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={setEmail}
-          value={email}
-          placeholder="eg: my.name@gmail.com"
-          autoCapitalize="none"
-          autoCorrect={false}
-          autoComplete="email"
-        />
-        <Text style={styles.label}>User ID</Text>
+        <Text style={styles.label}>Email address or User Id</Text>
         <TextInput
           style={styles.input}
           onChangeText={setUserId}
           value={userId}
-          placeholder="eg: 1234567890"
+          placeholder="eg: my.name@gmail.com or 1234567890"
           autoCapitalize="none"
           autoCorrect={false}
+          autoComplete="email"
         />
         <Pressable
           style={loginIsEnabled ? styles.button : styles.buttonDisabled}

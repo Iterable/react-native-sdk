@@ -2,13 +2,10 @@ import { Iterable } from '@iterable/react-native-sdk';
 import { useEffect, useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
-import { Route } from '../../constants/routes';
 import useIterableApp from '../../hooks/useIterableApp';
-import type { RootStackScreenProps } from '../../types/navigation';
-import { Login } from '../Login';
 import styles from './Home.styles';
 
-export const Home = (props: RootStackScreenProps<Route.Home>) => {
+export const Home = () => {
   const { logout, isLoggedIn } = useIterableApp();
   const [loggedInAs, setLoggedInAs] = useState<string>('');
 
@@ -19,10 +16,6 @@ export const Home = (props: RootStackScreenProps<Route.Home>) => {
       setLoggedInAs('');
     }
   }, [isLoggedIn]);
-
-  if (!isLoggedIn) {
-    return <Login {...props} />;
-  }
 
   return (
     <View style={styles.container}>

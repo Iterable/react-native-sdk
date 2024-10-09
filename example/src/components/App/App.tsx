@@ -1,86 +1,30 @@
-import { Iterable } from '@iterable/react-native-sdk';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useEffect, useState } from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { colors } from '../../constants';
 import { Route } from '../../constants/routes';
 import { useIterableApp } from '../../hooks/useIterableApp';
-import type { RootStackParamList } from '../../types/navigation';
-import { Commerce } from '../Commerce';
-import { CustomizedInbox } from '../CustomizedInbox';
-import { Home } from '../Home';
-import { LoginToView } from '../Login';
-import { routeIcon } from './App.contants';
-import { getIcon } from './App.utils';
+import { Login } from '../Login';
+import { Main } from './Main';
 
-const Tab = createBottomTabNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const {
-    config,
-    isInboxTab,
-    isLoggedIn,
-    loginInProgress,
-    returnToInboxTrigger,
-    setIsInboxTab,
-    setReturnToInboxTrigger,
-  } = useIterableApp();
-  const [unreadMessageCount, setUnreadMessageCount] = useState<number>(0);
-
-  useEffect(() => {
-    if (config && isLoggedIn && !loginInProgress) {
-      Iterable.inAppManager.getMessages().then((messages) => {
-        setUnreadMessageCount(messages.length);
-      });
-    } else if (!isLoggedIn && !loginInProgress) {
-      // Reset unread message count when user logs out
-      setUnreadMessageCount(0);
-    }
-  }, [config, isLoggedIn, loginInProgress]);
+  const { isLoggedIn } = useIterableApp();
 
   return (
-    <>
-      <Tab.Navigator
-        screenOptions={({ route }) => {
-          const iconName = routeIcon[route.name as keyof typeof routeIcon];
-          return {
-            tabBarIcon: (props) => getIcon(iconName as string, props),
-            tabBarActiveTintColor: colors.brandPurple,
-            tabBarInactiveTintColor: colors.textSecondary,
-            headerShown: false,
-          };
-        }}
-      >
-        <Tab.Screen
-          name={Route.Home}
-          component={Home}
-          listeners={() => ({
-            tabPress: () => setIsInboxTab(false),
-          })}
+    <Stack.Navigator initialRouteName={isLoggedIn ? Route.Home : Route.Login}>
+      {isLoggedIn ? (
+        <Stack.Screen
+          name={Route.Main}
+          component={Main}
+          options={{ headerShown: false }}
         />
-        <Tab.Screen
-          name={Route.Inbox}
-          component={isLoggedIn ? CustomizedInbox : LoginToView}
-          options={
-            unreadMessageCount ? { tabBarBadge: unreadMessageCount } : {}
-          }
-          listeners={() => ({
-            tabPress: () => {
-              if (isInboxTab) {
-                setReturnToInboxTrigger(!returnToInboxTrigger);
-              }
-              setIsInboxTab(true);
-            },
-          })}
+      ) : (
+        <Stack.Screen
+          name={Route.Login}
+          component={Login}
+          options={{ headerShown: false }}
         />
-        <Tab.Screen
-          name={Route.Commerce}
-          component={isLoggedIn ? Commerce : LoginToView}
-          listeners={() => ({
-            tabPress: () => setIsInboxTab(false),
-          })}
-        />
-      </Tab.Navigator>
-    </>
+      )}
+    </Stack.Navigator>
   );
 }

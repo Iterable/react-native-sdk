@@ -34,8 +34,6 @@ interface IterableAppProps {
   setApiKey: (value: string) => void;
   userId?: string;
   setUserId: (value: string) => void;
-  email?: string;
-  setEmail: (value: string) => void;
   loginInProgress?: boolean;
   setLoginInProgress: (value: boolean) => void;
 }
@@ -56,8 +54,6 @@ const IterableAppContext = createContext<IterableAppProps>({
   setApiKey: () => undefined,
   userId: undefined,
   setUserId: () => undefined,
-  email: undefined,
-  setEmail: () => undefined,
   loginInProgress: false,
   setLoginInProgress: () => undefined,
 });
@@ -77,42 +73,27 @@ export const IterableAppProvider: FunctionComponent<
   const [apiKey, setApiKey] = useState<string | undefined>(
     process.env.ITBL_API_KEY
   );
-  const [userId, setUserId] = useState<string | undefined>(
-    process.env.ITBL_USER_ID
-  );
-  const [email, setEmail] = useState<string | undefined>(
-    process.env.ITBL_EMAIL
-  );
+  const [userId, setUserId] = useState<string | undefined>(process.env.ITBL_ID);
   const [loginInProgress, setLoginInProgress] = useState<boolean>(false);
 
-  const getUserId = useCallback(
-    () => userId ?? process.env.ITBL_USER_ID,
-    [userId]
-  );
-  const getEmail = useCallback(() => email ?? process.env.ITBL_EMAIL, [email]);
+  const getUserId = useCallback(() => userId ?? process.env.ITBL_ID, [userId]);
 
   const login = useCallback(() => {
-    const promises = [];
-    const id = userId ?? process.env.ITBL_USER_ID;
-    const mail = email ?? process.env.ITBL_EMAIL;
+    const id = userId ?? process.env.ITBL_ID;
 
-    if (!id && !mail) return Promise.reject('No User ID or Email set');
+    if (!id) return Promise.reject('No User ID or Email set');
 
     setLoginInProgress(true);
 
-    if (id) {
-      promises.push(Iterable.setUserId(id));
-    }
-    if (mail && EMAIL_REGEX.test(mail)) {
-      promises.push(Iterable.setEmail(mail));
-    }
+    const isEmail = EMAIL_REGEX.test(id);
+    const fn = isEmail ? Iterable.setEmail : Iterable.setUserId;
 
-    return Promise.all(promises).then(() => {
-      setIsLoggedIn(true);
-      setLoginInProgress(false);
-      return true;
-    });
-  }, [email, userId]);
+    fn(id);
+    setIsLoggedIn(true);
+    setLoginInProgress(false);
+
+    return Promise.resolve(true);
+  }, [userId]);
 
   const initialize = useCallback(
     (navigation: BottomTabNavigationProp<RootStackParamList>) => {
@@ -159,8 +140,8 @@ export const IterableAppProvider: FunctionComponent<
           if (!isSuccessful)
             return Promise.reject('`Iterable.initialize` failed');
 
-          if (getUserId() || getEmail()) {
-            return login().then(() => isSuccessful);
+          if (getUserId()) {
+            login();
           }
 
           return isSuccessful;
@@ -179,13 +160,13 @@ export const IterableAppProvider: FunctionComponent<
           // To temporarily fix this, we're using the finally block to login.
           // TODO: Find out why initialize is throwing an error on ios
           setIsInitialized(true);
-          if (getUserId() || getEmail()) {
-            return login();
+          if (getUserId()) {
+            login();
           }
           return Promise.resolve(true);
         });
     },
-    [apiKey, getEmail, getUserId, login]
+    [apiKey, getUserId, login]
   );
 
   const logout = useCallback(() => {
@@ -212,8 +193,6 @@ export const IterableAppProvider: FunctionComponent<
         setApiKey,
         userId,
         setUserId,
-        email,
-        setEmail,
         loginInProgress,
         setLoginInProgress,
       }}
