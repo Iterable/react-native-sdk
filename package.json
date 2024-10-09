@@ -38,6 +38,7 @@
   "scripts": {
     "example": "yarn workspace @iterable/react-native-sdk-example",
     "test": "jest",
+    "test-coverage": "jest --coverage",
     "typecheck": "tsc",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
@@ -118,6 +119,11 @@
     ],
     "transformIgnorePatterns": [
       "node_modules/(?!((jest-)?react-native(-.*)?|@react-native(-community)?)/)"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{cjs,js,jsx,mjs,ts,tsx}",
+      "!src/**/*.test.{cjs,js,jsx,mjs,mdx,ts,tsx}",
+      "!src/(__tests__|__mocks__)/*"
     ]
   },
   "commitlint": {
