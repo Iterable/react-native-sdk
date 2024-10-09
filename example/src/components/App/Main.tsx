@@ -52,7 +52,7 @@ export function Main() {
         }}
       >
         <Tab.Screen
-          name={Route.Home}
+          name={Route.User}
           component={Home}
           listeners={() => ({
             tabPress: () => setIsInboxTab(false),

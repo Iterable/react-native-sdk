@@ -102,7 +102,7 @@ export const IterableAppProvider: FunctionComponent<
       config.inAppDisplayInterval = 1.0; // Min gap between in-apps. No need to set this in production.
 
       config.urlHandler = (url: string) => {
-        const routeNames = [Route.Home, Route.Inbox, Route.Commerce];
+        const routeNames = [Route.User, Route.Inbox, Route.Commerce];
         for (const route of routeNames) {
           if (url.includes(route.toLowerCase())) {
             navigation.navigate(route);

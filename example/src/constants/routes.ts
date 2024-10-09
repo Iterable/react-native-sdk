@@ -1,7 +1,8 @@
 export enum Route {
   Login = 'Login',
   Main = 'Main',
-  Home = 'Home',
+  User = 'User',
   Inbox = 'Inbox',
   Commerce = 'Commerce',
+  ApiList = 'ApiList',
 }

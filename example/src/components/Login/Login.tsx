@@ -12,7 +12,7 @@ import useIterableApp from '../../hooks/useIterableApp';
 import type { RootStackScreenProps } from '../../types/navigation';
 import { styles } from './Login.styles';
 
-export const Login = ({ navigation }: RootStackScreenProps<Route.Home>) => {
+export const Login = ({ navigation }: RootStackScreenProps<Route.User>) => {
   const { apiKey, setApiKey, userId, setUserId, initialize, loginInProgress } =
     useIterableApp();
   const loginIsEnabled = useMemo(() => apiKey && userId, [apiKey, userId]);
