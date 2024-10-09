@@ -43,7 +43,8 @@
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prepare": "bob build",
-    "release": "release-it"
+    "release": "release-it",
+    "docs": "yarn typedoc ./src/index.ts --out ./docs/api-reference --tsconfig ./tsconfig.json --readme none --sort source-order"
   },
   "keywords": [
     "react-native",
@@ -93,6 +94,7 @@
     "react-test-renderer": "^18.3.1",
     "release-it": "^15.0.0",
     "turbo": "^1.10.7",
+    "typedoc": "^0.26.8",
     "typescript": "^5.2.2"
   },
   "resolutions": {
