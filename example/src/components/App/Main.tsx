@@ -11,6 +11,7 @@ import { CustomizedInbox } from '../CustomizedInbox';
 import { User } from '../User';
 import { routeIcon } from './App.contants';
 import { getIcon } from './App.utils';
+import { ApiList } from '../ApiList';
 
 const Tab = createBottomTabNavigator<RootStackParamList>();
 
@@ -69,6 +70,13 @@ export function Main() {
         <Tab.Screen
           name={Route.Commerce}
           component={Commerce}
+          listeners={() => ({
+            tabPress: () => setIsInboxTab(false),
+          })}
+        />
+        <Tab.Screen
+          name={Route.ApiList}
+          component={ApiList}
           listeners={() => ({
             tabPress: () => setIsInboxTab(false),
           })}
