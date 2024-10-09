@@ -1,1 +1,3 @@
-it.todo('write a test');
+describe('index', () => {
+  it.todo('write a test');
+});

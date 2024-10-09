@@ -38,6 +38,7 @@
   "scripts": {
     "example": "yarn workspace @iterable/react-native-sdk-example",
     "test": "jest",
+    "test-coverage": "jest --coverage",
     "typecheck": "tsc",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
@@ -64,10 +65,15 @@
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
+    "@babel/plugin-transform-strict-mode": "^7.25.7",
+    "@babel/preset-typescript": "^7.25.7",
     "@commitlint/config-conventional": "^17.0.2",
     "@evilmartians/lefthook": "^1.5.0",
     "@react-native/eslint-config": "^0.73.1",
+    "@react-navigation/native": "^6.1.18",
     "@release-it/conventional-changelog": "^5.0.0",
+    "@testing-library/jest-native": "^5.4.3",
+    "@testing-library/react-native": "^12.7.2",
     "@types/jest": "^29.5.5",
     "@types/react": "^18.2.44",
     "@types/react-native-vector-icons": "^6.4.18",
@@ -81,6 +87,10 @@
     "react": "18.3.1",
     "react-native": "0.75.3",
     "react-native-builder-bob": "^0.30.2",
+    "react-native-safe-area-context": "^4.11.0",
+    "react-native-vector-icons": "^10.2.0",
+    "react-native-webview": "^13.12.3",
+    "react-test-renderer": "^18.3.1",
     "release-it": "^15.0.0",
     "turbo": "^1.10.7",
     "typescript": "^5.2.2"
@@ -89,12 +99,8 @@
     "@types/react": "^18.2.44"
   },
   "peerDependencies": {
-    "@react-navigation/native": "^6.0.0",
     "react": "*",
-    "react-native": "*",
-    "react-native-safe-area-context": "^4.0.0",
-    "react-native-vector-icons": "^10.0.0",
-    "react-native-webview": "^13.0.0"
+    "react-native": "*"
   },
   "workspaces": [
     "example"
@@ -102,9 +108,22 @@
   "packageManager": "yarn@3.6.1",
   "jest": {
     "preset": "react-native",
-    "modulePathIgnorePatterns": [
-      "<rootDir>/example/node_modules",
-      "<rootDir>/lib/"
+    "setupFiles": [
+      "<rootDir>/src/__mocks__/jest.setup.ts"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/node_modules/@testing-library/jest-native/extend-expect"
+    ],
+    "testMatch": [
+      "<rootDir>/src/__tests__/**/*.(test|spec).[jt]s?(x)"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!((jest-)?react-native(-.*)?|@react-native(-community)?)/)"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{cjs,js,jsx,mjs,ts,tsx}",
+      "!src/**/*.test.{cjs,js,jsx,mjs,mdx,ts,tsx}",
+      "!src/(__tests__|__mocks__)/*"
     ]
   },
   "commitlint": {
@@ -189,11 +208,5 @@
     "type": "module-legacy",
     "languages": "kotlin-swift",
     "version": "0.41.2"
-  },
-  "dependencies": {
-    "@react-navigation/native": "^6.1.18",
-    "react-native-safe-area-context": "^4.11.0",
-    "react-native-vector-icons": "^10.2.0",
-    "react-native-webview": "^13.12.2"
   }
 }
