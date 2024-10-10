@@ -11,7 +11,7 @@ export default function App() {
   const { isLoggedIn } = useIterableApp();
 
   return (
-    <Stack.Navigator initialRouteName={isLoggedIn ? Route.User : Route.Login}>
+    <Stack.Navigator>
       {isLoggedIn ? (
         <Stack.Screen
           name={Route.Main}
