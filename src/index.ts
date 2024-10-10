@@ -4,7 +4,11 @@
  */
 export type { InboxImpressionRowInfo } from './InboxImpressionRowInfo';
 export type { InboxRowViewModel } from './InboxRowViewModel';
-export { Iterable, IterableCommerceItem } from './Iterable';
+export {
+  Iterable,
+  IterableAttributionInfo,
+  IterableCommerceItem,
+} from './Iterable';
 export {
   IterableAction,
   IterableActionContext,

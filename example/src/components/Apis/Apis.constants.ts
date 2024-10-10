@@ -3,7 +3,6 @@ export enum ApiListDetail {
   GetEmail = 'Iterable.getEmail',
   SetUserId = 'Iterable.setUserId',
   GetUserId = 'Iterable.getUserId',
-  RegisterDeviceToken = 'Iterable.registerDeviceToken',
   DisableDeviceForCurrentUser = 'Iterable.disableDeviceForCurrentUser',
   GetLastPushPayload = 'Iterable.getLastPushPayload',
   SetAttributionInfo = 'Iterable.setAttributionInfo',

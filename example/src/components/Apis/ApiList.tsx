@@ -4,7 +4,7 @@ import { FlatList, SafeAreaView, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { colors, Route } from '../../constants';
 import { LIST_DATA } from './Apis.constants';
-import { styles } from './Apis.styles';
+import { listStyles } from './Apis.styles';
 import type { ListItemData } from './Apis.types';
 
 interface ListItemProps {
@@ -22,9 +22,9 @@ const ListItem = ({
 }: ListItemProps) => (
   <TouchableOpacity
     onPress={onPress}
-    style={[styles.listItem, { backgroundColor }]}
+    style={[listStyles.listItem, { backgroundColor }]}
   >
-    <Text style={[styles.listItemTitle, { color: textColor }]}>
+    <Text style={[listStyles.listItemTitle, { color: textColor }]}>
       {item.value}
     </Text>
   </TouchableOpacity>
@@ -55,9 +55,10 @@ export const ApiList = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.subtitle}>
-        Below are a list of available APIs. Click for options to run the api.
+    <SafeAreaView style={listStyles.container}>
+      <Text style={listStyles.subtitle}>
+        Below is a list of some of the most commonly used APIs. Click API to see
+        details and run the code.
       </Text>
       <FlatList
         data={LIST_DATA}
