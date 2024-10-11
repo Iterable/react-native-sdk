@@ -5,13 +5,12 @@ import { Alert, Pressable, Text, TextInput } from 'react-native';
 import Banner, { BannerVariant } from '../../Banner';
 import { CodeBlock } from '../../CodeBlock';
 import { formStyles } from '../Apis.styles';
+import { useIterableApp } from '../../../hooks';
 
 export const SetUserId = () => {
-  const [userId, setUserId] = useState('');
-  const codeString = useMemo(
-    () => `Iterable.setUserId("${userId}");`,
-    [userId]
-  );
+  const [id, setId] = useState('');
+  const { setUserId } = useIterableApp();
+  const codeString = useMemo(() => `Iterable.setUserId("${id}");`, [id]);
 
   return (
     <>
@@ -22,8 +21,8 @@ export const SetUserId = () => {
       <Text style={formStyles.label}>User Id</Text>
       <TextInput
         style={formStyles.input}
-        onChangeText={setUserId}
-        value={userId}
+        onChangeText={setId}
+        value={id}
         placeholder="eg: 12345678"
         autoCapitalize="none"
         autoCorrect={false}
@@ -33,9 +32,10 @@ export const SetUserId = () => {
       <Pressable
         style={formStyles.button}
         onPress={() => {
-          Iterable.setUserId(userId);
-          Alert.alert('User ID set:', userId);
-          console.log('User ID set:', userId);
+          Iterable.setUserId(id);
+          setUserId(id);
+          Alert.alert('User ID set:', id);
+          console.log('User ID set:', id);
         }}
       >
         <Text style={formStyles.buttonText}>Run</Text>

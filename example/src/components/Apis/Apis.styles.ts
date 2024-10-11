@@ -42,8 +42,5 @@ export const formStyles = StyleSheet.create({
   label,
   button: { ...buttonBlock, marginBottom: 20 },
   buttonText,
-  codeContainer: {
-    height: 200,
-    marginBottom: 10,
-  },
+  switch: { marginBottom: input.marginBottom },
 });

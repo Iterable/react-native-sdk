@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import { Alert, Pressable, Text, TextInput } from 'react-native';
 
 import { CodeBlock } from '../../CodeBlock';
+import { NumberInput } from '../../NumberInput';
 import { formStyles } from '../Apis.styles';
 
 export const SetAttributionInfo = () => {
@@ -22,31 +23,19 @@ Iterable.setAttributionInfo(info);
     `;
   }, [campaignId, templateId, messageId]);
 
-  const getNumberFromString = (str: string) => {
-    return parseInt(str.replace(/\D/g, ''), 10);
-  };
-
   return (
     <>
       <Text style={formStyles.label}>Campaign Id</Text>
-      <TextInput
-        style={formStyles.input}
-        onChangeText={(x) => setCampaignId(getNumberFromString(x))}
-        value={campaignId ? String(campaignId) : undefined}
+      <NumberInput
+        value={campaignId}
+        onChangeNumber={setCampaignId}
         placeholder="eg: 123456"
-        autoCapitalize="none"
-        autoCorrect={false}
-        keyboardType="numeric"
       />
       <Text style={formStyles.label}>Template Id</Text>
-      <TextInput
-        style={formStyles.input}
-        onChangeText={(x) => setTemplateId(getNumberFromString(x))}
-        value={templateId ? String(templateId) : undefined}
+      <NumberInput
+        value={templateId}
+        onChangeNumber={setTemplateId}
         placeholder="eg: 123456"
-        autoCapitalize="none"
-        autoCorrect={false}
-        keyboardType="numeric"
       />
       <Text style={formStyles.label}>Message Id</Text>
       <TextInput

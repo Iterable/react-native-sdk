@@ -1,6 +1,6 @@
 import { useRoute } from '@react-navigation/native';
 import { useMemo } from 'react';
-import { SafeAreaView, ScrollView, Text, View } from 'react-native';
+import { SafeAreaView, ScrollView, Text } from 'react-native';
 
 import { ApiListDetail } from './Apis.constants';
 import { formStyles } from './Apis.styles';
@@ -10,9 +10,18 @@ import {
   GetEmail,
   GetLastPushPayload,
   GetUserId,
+  InAppConsume,
   SetAttributionInfo,
   SetEmail,
   SetUserId,
+  TrackEvent,
+  TrackInAppClick,
+  TrackInAppClose,
+  TrackInAppOpen,
+  TrackPurchase,
+  TrackPushOpenWithCampaignId,
+  UpdateEmail,
+  UpdateUser,
 } from './detailScreens';
 
 const getComponent = (apiName: string) => {
@@ -33,6 +42,24 @@ const getComponent = (apiName: string) => {
       return <SetAttributionInfo />;
     case ApiListDetail.GetAttributionInfo:
       return <GetAttributionInfo />;
+    case ApiListDetail.TrackPushOpenWithCampaignId:
+      return <TrackPushOpenWithCampaignId />;
+    case ApiListDetail.TrackPurchase:
+      return <TrackPurchase />;
+    case ApiListDetail.TrackInAppOpen:
+      return <TrackInAppOpen />;
+    case ApiListDetail.TrackInAppClick:
+      return <TrackInAppClick />;
+    case ApiListDetail.TrackInAppClose:
+      return <TrackInAppClose />;
+    case ApiListDetail.InAppConsume:
+      return <InAppConsume />;
+    case ApiListDetail.TrackEvent:
+      return <TrackEvent />;
+    case ApiListDetail.UpdateUser:
+      return <UpdateUser />;
+    case ApiListDetail.UpdateEmail:
+      return <UpdateEmail />;
     default:
       return <Text>Invalid API</Text>;
   }
