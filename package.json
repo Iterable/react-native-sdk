@@ -100,7 +100,11 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "react-native-vector-icons": "*",
+    "react-native-webview": "*",
+    "react-native-safe-area-context": "*",
+    "@react-navigation/native": "*"
   },
   "workspaces": [
     "example"
