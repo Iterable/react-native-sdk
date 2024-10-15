@@ -2,6 +2,8 @@ import { useRoute } from '@react-navigation/native';
 import { useMemo } from 'react';
 import { SafeAreaView, ScrollView, Text } from 'react-native';
 
+import type { Route } from '../../constants';
+import { Api, type ApiTabProps } from '../../types';
 import { formStyles } from './Apis.styles';
 import {
   DisableDeviceForCurrentUser,
@@ -29,7 +31,6 @@ import {
   UpdateSubscriptions,
   UpdateUser,
 } from './detailScreens';
-import { Api } from '../../types';
 
 const getComponent = (apiName: string) => {
   switch (apiName) {
@@ -87,9 +88,9 @@ const getComponent = (apiName: string) => {
 };
 
 export const ApiDetail = () => {
-  const route = useRoute();
-  const apiId = route.params?.item?.id;
-  const apiName = route.params?.item?.value;
+  const route = useRoute<ApiTabProps<Route.ApiDetail>['route']>();
+  const apiId = route.params?.id;
+  const apiName = route.params?.value;
 
   const component = useMemo(() => getComponent(apiName), [apiName]);
 

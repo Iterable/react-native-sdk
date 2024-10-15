@@ -3,8 +3,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Route } from '../../constants';
 import ApiDetail from './ApiDetails';
 import ApiList from './ApiList';
+import type { ApiTabParamList } from '../../types';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<ApiTabParamList>();
 
 export const Apis = () => {
   return (
@@ -13,7 +14,7 @@ export const Apis = () => {
       <Stack.Screen
         name={Route.ApiDetail}
         component={ApiDetail}
-        options={({ route }) => ({ title: route.params.item?.value })}
+        options={({ route }) => ({ title: route.params.value })}
       />
     </Stack.Navigator>
   );

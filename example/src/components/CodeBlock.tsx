@@ -1,5 +1,7 @@
 import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
+// @ts-ignore
 import SyntaxHighlighter from 'react-native-syntax-highlighter';
+// @ts-ignore
 import { atomOneDark } from 'react-syntax-highlighter/styles/hljs';
 
 const styles = StyleSheet.create({

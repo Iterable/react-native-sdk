@@ -4,8 +4,9 @@ import { Route } from '../../constants/routes';
 import { useIterableApp } from '../../hooks/useIterableApp';
 import { Login } from '../Login';
 import { Main } from './Main';
+import type { RootStackParamList } from '../../types';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
   const { isLoggedIn } = useIterableApp();

@@ -6,7 +6,7 @@ import {
   IterableLogLevel,
   useDeviceOrientation,
 } from '@iterable/react-native-sdk';
-import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+
 import {
   type FunctionComponent,
   createContext,
@@ -15,8 +15,12 @@ import {
   useState,
 } from 'react';
 import { Alert } from 'react-native';
+
+import type { StackNavigationProp } from '@react-navigation/stack';
 import { Route } from '../constants/routes';
 import type { RootStackParamList } from '../types/navigation';
+
+type Navigation = StackNavigationProp<RootStackParamList>;
 
 interface IterableAppProps {
   isPortrait: boolean;
@@ -25,7 +29,7 @@ interface IterableAppProps {
   isInboxTab: boolean;
   setIsInboxTab: (value: boolean) => void;
   config: IterableConfig | null;
-  initialize: (navigation: BottomTabNavigationProp<RootStackParamList>) => void;
+  initialize: (navigation: Navigation) => void;
   login: () => void;
   logout: () => void;
   isLoggedIn?: boolean;
@@ -96,15 +100,22 @@ export const IterableAppProvider: FunctionComponent<
   }, [userId]);
 
   const initialize = useCallback(
-    (navigation: BottomTabNavigationProp<RootStackParamList>) => {
+    (navigation: Navigation) => {
       const config = new IterableConfig();
 
       config.inAppDisplayInterval = 1.0; // Min gap between in-apps. No need to set this in production.
 
       config.urlHandler = (url: string) => {
-        const routeNames = [Route.User, Route.Inbox, Route.Commerce];
+        const routeNames = [
+          Route.User,
+          Route.Inbox,
+          Route.Commerce,
+          Route.Apis,
+        ];
         for (const route of routeNames) {
           if (url.includes(route.toLowerCase())) {
+            // TODO: Figure out typing for this
+            // @ts-ignore
             navigation.navigate(route);
             return true;
           }

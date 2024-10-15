@@ -5,15 +5,15 @@ import { useEffect, useState } from 'react';
 import { colors } from '../../constants';
 import { Route } from '../../constants/routes';
 import { useIterableApp } from '../../hooks/useIterableApp';
-import type { RootStackParamList } from '../../types/navigation';
+import type { MainScreenParamList } from '../../types/navigation';
+import { Apis } from '../Apis';
 import { Commerce } from '../Commerce';
 import { CustomizedInbox } from '../CustomizedInbox';
 import { User } from '../User';
 import { routeIcon } from './App.contants';
 import { getIcon } from './App.utils';
-import { Apis } from '../Apis';
 
-const Tab = createBottomTabNavigator<RootStackParamList>();
+const Tab = createBottomTabNavigator<MainScreenParamList>();
 
 export function Main() {
   const {
