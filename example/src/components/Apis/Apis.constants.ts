@@ -22,7 +22,7 @@ export enum ApiListDetail {
   SetReadInAppMessages = 'Iterable.inAppManager.setReadForMessage',
   HandleAppLink = 'Iterable.handleAppLink',
   UpdateSubscriptions = 'Iterable.updateSubscriptions',
-  GetInAppContent = 'Iterable.getInAppContent',
+  GetHtmlContentForMessage = 'Iterable.inAppManager.getHtmlContentForMessage',
 }
 
 export const LIST_DATA = Object.entries(ApiListDetail).map(([key, value]) => {

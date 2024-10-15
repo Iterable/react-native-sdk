@@ -8,6 +8,7 @@ import {
   DisableDeviceForCurrentUser,
   GetAttributionInfo,
   GetEmail,
+  GetHtmlContentForMessage,
   GetInAppMessages,
   GetLastPushPayload,
   GetUserId,
@@ -78,6 +79,8 @@ const getComponent = (apiName: string) => {
       return <HandleAppLink />;
     case ApiListDetail.UpdateSubscriptions:
       return <UpdateSubscriptions />;
+    case ApiListDetail.GetHtmlContentForMessage:
+      return <GetHtmlContentForMessage />;
     default:
       return <Text>Invalid API</Text>;
   }

@@ -1,6 +1,7 @@
 export * from './DisableDeviceForCurrentUser';
 export * from './GetAttributionInfo';
 export * from './GetEmail';
+export * from './GetHtmlContentForMessage';
 export * from './GetInAppMessages';
 export * from './GetLastPushPayload';
 export * from './GetUserId';
