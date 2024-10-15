@@ -52,3 +52,8 @@ export const label: TextStyle = {
   color: colors.textPrimary,
   marginBottom: 4,
 };
+
+export const requiredStar: TextStyle = {
+  ...label,
+  color: colors.textDestructive,
+};

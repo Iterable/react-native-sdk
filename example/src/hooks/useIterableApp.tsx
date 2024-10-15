@@ -6,7 +6,7 @@ import {
   IterableLogLevel,
   useDeviceOrientation,
 } from '@iterable/react-native-sdk';
-import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+
 import {
   type FunctionComponent,
   createContext,
@@ -15,8 +15,12 @@ import {
   useState,
 } from 'react';
 import { Alert } from 'react-native';
+
+import type { StackNavigationProp } from '@react-navigation/stack';
 import { Route } from '../constants/routes';
 import type { RootStackParamList } from '../types/navigation';
+
+type Navigation = StackNavigationProp<RootStackParamList>;
 
 interface IterableAppProps {
   isPortrait: boolean;
@@ -25,7 +29,7 @@ interface IterableAppProps {
   isInboxTab: boolean;
   setIsInboxTab: (value: boolean) => void;
   config: IterableConfig | null;
-  initialize: (navigation: BottomTabNavigationProp<RootStackParamList>) => void;
+  initialize: (navigation: Navigation) => void;
   login: () => void;
   logout: () => void;
   isLoggedIn?: boolean;
@@ -34,8 +38,6 @@ interface IterableAppProps {
   setApiKey: (value: string) => void;
   userId?: string;
   setUserId: (value: string) => void;
-  email?: string;
-  setEmail: (value: string) => void;
   loginInProgress?: boolean;
   setLoginInProgress: (value: boolean) => void;
 }
@@ -56,8 +58,6 @@ const IterableAppContext = createContext<IterableAppProps>({
   setApiKey: () => undefined,
   userId: undefined,
   setUserId: () => undefined,
-  email: undefined,
-  setEmail: () => undefined,
   loginInProgress: false,
   setLoginInProgress: () => undefined,
 });
@@ -77,53 +77,45 @@ export const IterableAppProvider: FunctionComponent<
   const [apiKey, setApiKey] = useState<string | undefined>(
     process.env.ITBL_API_KEY
   );
-  const [userId, setUserId] = useState<string | undefined>(
-    process.env.ITBL_USER_ID
-  );
-  const [email, setEmail] = useState<string | undefined>(
-    process.env.ITBL_EMAIL
-  );
+  const [userId, setUserId] = useState<string | undefined>(process.env.ITBL_ID);
   const [loginInProgress, setLoginInProgress] = useState<boolean>(false);
 
-  const getUserId = useCallback(
-    () => userId ?? process.env.ITBL_USER_ID,
-    [userId]
-  );
-  const getEmail = useCallback(() => email ?? process.env.ITBL_EMAIL, [email]);
+  const getUserId = useCallback(() => userId ?? process.env.ITBL_ID, [userId]);
 
   const login = useCallback(() => {
-    const promises = [];
-    const id = userId ?? process.env.ITBL_USER_ID;
-    const mail = email ?? process.env.ITBL_EMAIL;
+    const id = userId ?? process.env.ITBL_ID;
 
-    if (!id && !mail) return Promise.reject('No User ID or Email set');
+    if (!id) return Promise.reject('No User ID or Email set');
 
     setLoginInProgress(true);
 
-    if (id) {
-      promises.push(Iterable.setUserId(id));
-    }
-    if (mail && EMAIL_REGEX.test(mail)) {
-      promises.push(Iterable.setEmail(mail));
-    }
+    const isEmail = EMAIL_REGEX.test(id);
+    const fn = isEmail ? Iterable.setEmail : Iterable.setUserId;
 
-    return Promise.all(promises).then(() => {
-      setIsLoggedIn(true);
-      setLoginInProgress(false);
-      return true;
-    });
-  }, [email, userId]);
+    fn(id);
+    setIsLoggedIn(true);
+    setLoginInProgress(false);
+
+    return Promise.resolve(true);
+  }, [userId]);
 
   const initialize = useCallback(
-    (navigation: BottomTabNavigationProp<RootStackParamList>) => {
+    (navigation: Navigation) => {
       const config = new IterableConfig();
 
       config.inAppDisplayInterval = 1.0; // Min gap between in-apps. No need to set this in production.
 
       config.urlHandler = (url: string) => {
-        const routeNames = [Route.Home, Route.Inbox, Route.Commerce];
+        const routeNames = [
+          Route.User,
+          Route.Inbox,
+          Route.Commerce,
+          Route.Apis,
+        ];
         for (const route of routeNames) {
           if (url.includes(route.toLowerCase())) {
+            // TODO: Figure out typing for this
+            // @ts-ignore
             navigation.navigate(route);
             return true;
           }
@@ -159,8 +151,8 @@ export const IterableAppProvider: FunctionComponent<
           if (!isSuccessful)
             return Promise.reject('`Iterable.initialize` failed');
 
-          if (getUserId() || getEmail()) {
-            return login().then(() => isSuccessful);
+          if (getUserId()) {
+            login();
           }
 
           return isSuccessful;
@@ -179,13 +171,13 @@ export const IterableAppProvider: FunctionComponent<
           // To temporarily fix this, we're using the finally block to login.
           // TODO: Find out why initialize is throwing an error on ios
           setIsInitialized(true);
-          if (getUserId() || getEmail()) {
-            return login();
+          if (getUserId()) {
+            login();
           }
           return Promise.resolve(true);
         });
     },
-    [apiKey, getEmail, getUserId, login]
+    [apiKey, getUserId, login]
   );
 
   const logout = useCallback(() => {
@@ -212,8 +204,6 @@ export const IterableAppProvider: FunctionComponent<
         setApiKey,
         userId,
         setUserId,
-        email,
-        setEmail,
         loginInProgress,
         setLoginInProgress,
       }}
