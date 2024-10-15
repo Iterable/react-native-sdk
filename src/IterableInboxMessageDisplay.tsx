@@ -213,7 +213,7 @@ export const IterableInboxMessageDisplay = ({
             }}
           >
             <View style={returnButton}>
-              <Icon name="ios-chevron-back" style={returnButtonIcon} />
+              <Icon name="chevron-back-outline" style={returnButtonIcon} />
               <Text style={returnButtonText}>Inbox</Text>
             </View>
           </TouchableWithoutFeedback>
