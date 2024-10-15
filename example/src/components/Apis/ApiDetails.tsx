@@ -8,12 +8,17 @@ import {
   DisableDeviceForCurrentUser,
   GetAttributionInfo,
   GetEmail,
+  GetInAppMessages,
   GetLastPushPayload,
   GetUserId,
+  HandleAppLink,
   InAppConsume,
+  RemoveInAppMessages,
   SetAttributionInfo,
   SetEmail,
+  SetReadInAppMessages,
   SetUserId,
+  ShowInAppMessages,
   TrackEvent,
   TrackInAppClick,
   TrackInAppClose,
@@ -21,6 +26,7 @@ import {
   TrackPurchase,
   TrackPushOpenWithCampaignId,
   UpdateEmail,
+  UpdateSubscriptions,
   UpdateUser,
 } from './detailScreens';
 
@@ -60,6 +66,18 @@ const getComponent = (apiName: string) => {
       return <UpdateUser />;
     case ApiListDetail.UpdateEmail:
       return <UpdateEmail />;
+    case ApiListDetail.GetInAppMessages:
+      return <GetInAppMessages />;
+    case ApiListDetail.ShowInAppMessages:
+      return <ShowInAppMessages />;
+    case ApiListDetail.RemoveInAppMessages:
+      return <RemoveInAppMessages />;
+    case ApiListDetail.SetReadInAppMessages:
+      return <SetReadInAppMessages />;
+    case ApiListDetail.HandleAppLink:
+      return <HandleAppLink />;
+    case ApiListDetail.UpdateSubscriptions:
+      return <UpdateSubscriptions />;
     default:
       return <Text>Invalid API</Text>;
   }

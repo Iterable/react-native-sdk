@@ -1,13 +1,14 @@
 import { StatusBar, StyleSheet } from 'react-native';
 import {
+  buttonBlock,
+  buttonText,
   colors,
-  subtitle,
-  title,
+  container,
   input,
   label,
-  buttonBlock,
-  container,
-  buttonText,
+  requiredStar,
+  subtitle,
+  title,
 } from '../../constants';
 
 export const listStyles = StyleSheet.create({
@@ -40,6 +41,7 @@ export const formStyles = StyleSheet.create({
   },
   input: { ...input, width: '100%' },
   label,
+  requiredStar,
   button: { ...buttonBlock, marginBottom: 20 },
   buttonText,
   switch: { marginBottom: input.marginBottom },
