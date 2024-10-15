@@ -2,7 +2,6 @@ import { useRoute } from '@react-navigation/native';
 import { useMemo } from 'react';
 import { SafeAreaView, ScrollView, Text } from 'react-native';
 
-import { ApiListDetail } from './Apis.constants';
 import { formStyles } from './Apis.styles';
 import {
   DisableDeviceForCurrentUser,
@@ -30,56 +29,57 @@ import {
   UpdateSubscriptions,
   UpdateUser,
 } from './detailScreens';
+import { Api } from '../../types';
 
 const getComponent = (apiName: string) => {
   switch (apiName) {
-    case ApiListDetail.SetEmail:
+    case Api.SetEmail:
       return <SetEmail />;
-    case ApiListDetail.GetEmail:
+    case Api.GetEmail:
       return <GetEmail />;
-    case ApiListDetail.SetUserId:
+    case Api.SetUserId:
       return <SetUserId />;
-    case ApiListDetail.GetUserId:
+    case Api.GetUserId:
       return <GetUserId />;
-    case ApiListDetail.DisableDeviceForCurrentUser:
+    case Api.DisableDeviceForCurrentUser:
       return <DisableDeviceForCurrentUser />;
-    case ApiListDetail.GetLastPushPayload:
+    case Api.GetLastPushPayload:
       return <GetLastPushPayload />;
-    case ApiListDetail.SetAttributionInfo:
+    case Api.SetAttributionInfo:
       return <SetAttributionInfo />;
-    case ApiListDetail.GetAttributionInfo:
+    case Api.GetAttributionInfo:
       return <GetAttributionInfo />;
-    case ApiListDetail.TrackPushOpenWithCampaignId:
+    case Api.TrackPushOpenWithCampaignId:
       return <TrackPushOpenWithCampaignId />;
-    case ApiListDetail.TrackPurchase:
+    case Api.TrackPurchase:
       return <TrackPurchase />;
-    case ApiListDetail.TrackInAppOpen:
+    case Api.TrackInAppOpen:
       return <TrackInAppOpen />;
-    case ApiListDetail.TrackInAppClick:
+    case Api.TrackInAppClick:
       return <TrackInAppClick />;
-    case ApiListDetail.TrackInAppClose:
+    case Api.TrackInAppClose:
       return <TrackInAppClose />;
-    case ApiListDetail.InAppConsume:
+    case Api.InAppConsume:
       return <InAppConsume />;
-    case ApiListDetail.TrackEvent:
+    case Api.TrackEvent:
       return <TrackEvent />;
-    case ApiListDetail.UpdateUser:
+    case Api.UpdateUser:
       return <UpdateUser />;
-    case ApiListDetail.UpdateEmail:
+    case Api.UpdateEmail:
       return <UpdateEmail />;
-    case ApiListDetail.GetInAppMessages:
+    case Api.GetInAppMessages:
       return <GetInAppMessages />;
-    case ApiListDetail.ShowInAppMessages:
+    case Api.ShowInAppMessages:
       return <ShowInAppMessages />;
-    case ApiListDetail.RemoveInAppMessages:
+    case Api.RemoveInAppMessages:
       return <RemoveInAppMessages />;
-    case ApiListDetail.SetReadInAppMessages:
+    case Api.SetReadInAppMessages:
       return <SetReadInAppMessages />;
-    case ApiListDetail.HandleAppLink:
+    case Api.HandleAppLink:
       return <HandleAppLink />;
-    case ApiListDetail.UpdateSubscriptions:
+    case Api.UpdateSubscriptions:
       return <UpdateSubscriptions />;
-    case ApiListDetail.GetHtmlContentForMessage:
+    case Api.GetHtmlContentForMessage:
       return <GetHtmlContentForMessage />;
     default:
       return <Text>Invalid API</Text>;

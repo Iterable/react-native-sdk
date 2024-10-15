@@ -5,10 +5,10 @@ import { useNavigation } from '@react-navigation/native';
 import { colors, Route } from '../../constants';
 import { LIST_DATA } from './Apis.constants';
 import { listStyles } from './Apis.styles';
-import type { ListItemData } from './Apis.types';
+import type { ApiData } from '../../types';
 
 interface ListItemProps {
-  item: ListItemData;
+  item: ApiData;
   onPress: () => void;
   backgroundColor: string;
   textColor: string;
@@ -34,12 +34,12 @@ export const ApiList = () => {
   const [selectedId, setSelectedId] = useState<string>();
   const navigation = useNavigation();
 
-  const handlePress = (item: ListItemData) => {
+  const handlePress = (item: ApiData) => {
     setSelectedId(item.id);
     navigation.navigate(Route.ApiDetail, { item });
   };
 
-  const renderItem = ({ item }: { item: ListItemData }) => {
+  const renderItem = ({ item }: { item: ApiData }) => {
     const backgroundColor =
       item.id === selectedId ? colors.brandPurple : colors.white;
     const color = item.id === selectedId ? 'white' : 'black';
