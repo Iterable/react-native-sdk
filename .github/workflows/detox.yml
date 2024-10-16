@@ -18,7 +18,7 @@ jobs:
           echo "test-files=$TEST_FILES" >> $GITHUB_OUTPUT
   build-ios:
     name: iOS - Build app for Detox tests
-    runs-on: macos-13-xlarge
+    runs-on: macos-14
 
     steps:
       - name: Checkout Code
@@ -53,10 +53,22 @@ jobs:
             ${{ runner.os }}-pods-
 
       - name: Pod install
-        run: cd example/ios; pod install; cd ../..
+        run: |
+          cd example/ios
+          pod install
+          cd ../..
 
       - name: Doctor
-        run: cd example; npx react-native doctor; cd -
+        run: |
+          cd example
+          npx react-native doctor
+          cd -
+
+      - name: Generate from xcode
+        run: |
+          cd example/ios
+          xcodebuild -workspace ReactNativeSdkExample.xcworkspace -configuration Debug -scheme ReactNativeSdkExample -destination 'generic/platform=iOS Simulator' -sdk iphonesimulator CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ GCC_OPTIMIZATION_LEVEL=0 GCC_PRECOMPILE_PREFIX_HEADER=YES ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO CODE_SIGNING_REQUIRED=NO
+          cd -
 
       - name: Generate main.jsbundle
         uses: yukiarrr/ios-build-action@v1.12.0
@@ -128,7 +140,7 @@ jobs:
   run-ios-detox-tests:
     needs: [build-ios, find-test-files]
     name: iOS - Run Detox tests
-    runs-on: macos-13-xlarge
+    runs-on: macos-14
 
     strategy:
       fail-fast: false
