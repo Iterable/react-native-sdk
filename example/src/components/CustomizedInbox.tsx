@@ -2,10 +2,11 @@ import {
   IterableInbox,
   type IterableInboxProps,
 } from '@iterable/react-native-sdk';
+import { View } from 'react-native';
 import useIterableApp from '../hooks/useIterableApp';
 
 const iterableInboxCustomization = {
-  navTitle: 'Iterable',
+  navTitle: 'Iterable Inbox',
   noMessagesTitle: 'No messages today',
   noMessagesBody: 'Come back later',
 
@@ -76,11 +77,13 @@ const iterableInboxCustomization = {
 export const CustomizedInbox = (props: IterableInboxProps) => {
   const { returnToInboxTrigger } = useIterableApp();
   return (
-    <IterableInbox
-      returnToInboxTrigger={returnToInboxTrigger}
-      customizations={iterableInboxCustomization}
-      {...props}
-    />
+    <View testID="inbox">
+      <IterableInbox
+        returnToInboxTrigger={returnToInboxTrigger}
+        customizations={iterableInboxCustomization}
+        {...props}
+      />
+    </View>
   );
 };
 
