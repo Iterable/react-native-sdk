@@ -35,6 +35,9 @@ jobs:
       - name: List devices
         run: applesimutils --list
 
+      - name: Start Metro Server
+        run: yarn example detox:start &
+
       - name: Run doctor
         run: cd example; npx react-native doctor; cd -
 
@@ -43,9 +46,6 @@ jobs:
 
       - name: Build Detox
         run: cd example; yarn detox build -c ios.sim.debug; cd -
-
-      - name: Start Metro Server
-        run: yarn example detox:start &
 
       - name: Build and Test
         shell: bash
