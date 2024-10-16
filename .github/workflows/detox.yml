@@ -35,8 +35,8 @@ jobs:
             - uses: actions/cache@v4
               id: cache
               with:
-                  path: ios/Pods
-                  key: ${{ runner.os }}-pods-${{ hashFiles('ios/Podfile.lock') }}
+                  path: example/ios/Pods
+                  key: ${{ runner.os }}-pods-${{ hashFiles('example/ios/Podfile.lock') }}
 
             - name: Pod install
               run: cd example/ios && pod install
@@ -47,31 +47,12 @@ jobs:
             - name: Build Detox
               run: yarn example detox:ios:build
 
-            # - name: Start Metro Server
-            #   run: yarn example detox:start &
-
-            # - name: Install Applesimutils
-            #   run: |
-            #       brew tap wix/brew
-            #       brew install applesimutils
-
-            # - name: Run Detox tests
-            #   run: yarn detox:ios:test:ci
-
             - name: Upload iOS app
               uses: actions/upload-artifact@v4
               with:
                   name: ios-app-artifact
                   path: example/ios/build/Build/Products/Debug-iphonesimulator/ReactNativeSdkExample.app
                   retention-days: 1
-
-            # - name: Upload Test Artifact
-            #   if: failure()
-            #   uses: actions/upload-artifact@v4
-            #   with:
-            #       name: detox-ios-artifacts
-            #       path: artifacts
-            #       retention-days: 5
 
     build-android:
         name: Android - Build app for Detox tests
