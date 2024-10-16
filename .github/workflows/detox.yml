@@ -170,7 +170,7 @@ jobs:
         env:
           ITBL_API_KEY: ${{secrets.ITERABLE_API_KEY}}
           ITBL_ID: ${{secrets.ITBL_ID}}
-        run: yarn example detox:ios:test:ci -- ${{ matrix.test-file }}
+        run: yarn detox:ios:test:ci -- ${{ matrix.test-file }}
 
       - name: Upload Test Artifact - GitHub Action
         if: failure()
