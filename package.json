@@ -133,7 +133,15 @@
       "src/**/*.{cjs,js,jsx,mjs,ts,tsx}",
       "!src/**/*.test.{cjs,js,jsx,mjs,mdx,ts,tsx}",
       "!src/(__tests__|__mocks__)/*"
-    ]
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
+    }
   },
   "commitlint": {
     "extends": [
