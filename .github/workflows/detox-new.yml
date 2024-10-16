@@ -13,7 +13,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Example App Yarn install
-        run: cd example && yarn install && cd ..
+        run: cd example ; yarn install ; cd -
 
       - name: Install macOS dependencies
         run: |
@@ -39,25 +39,25 @@ jobs:
 
       - name: Install CocoaPods
         if: steps.cache-cocoapods.outputs.cache-hit != 'true'
-        run: cd ios ; pod install ; cd -
+        run: cd example/ios ; pod install ; cd -
 
       - name: Detox rebuild framework cache
-        run: yarn detox rebuild-framework-cache
+        run: yarn example detox rebuild-framework-cache
 
       - name: Cache Detox build
         id: cache-detox-build
         uses: actions/cache@v3
         with:
-          path: ios/build
+          path: example/ios/build
           key: ${{ runner.os }}-detox-build
           restore-keys: |
             ${{ runner.os }}-detox-build
 
       - name: Detox build
-        run: yarn detox build --configuration ios.sim.release
+        run: yarn example detox build --configuration ios.sim.release
 
       - name: Detox test
-        run: yarn detox test --configuration ios.sim.release --cleanup --headless --record-logs all
+        run: yarn example detox test --configuration ios.sim.release --cleanup --headless --record-logs all
 
       - name: Upload artifacts
         if: failure()
