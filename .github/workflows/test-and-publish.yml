@@ -19,12 +19,21 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
-      - name: Test & publish code coverage
-        uses: MartinNuc/codeclimate-action@2
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+      - name: Run tests
+        run: |
+          yarn test --coverage --coverageReporters json-summary
+
+      - name: Test coverage comment
+        id: coverageComment
+        uses: MishaKav/jest-coverage-comment@main
         with:
-          coverageLocations: ${{github.workspace}}/coverage/lcov.info:lcov
+          hide-comment: false
+          coverage-summary-path: ./coverage/coverage-summary.json
+        # uses: MartinNuc/codeclimate-action@2
+        # env:
+        #   CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        # with:
+        #   coverageLocations: ${{github.workspace}}/coverage/lcov.info:lcov
         # uses: paambaati/codeclimate-action@v9.0.0
         # env:
         #   CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
