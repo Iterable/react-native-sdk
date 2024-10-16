@@ -67,21 +67,8 @@ jobs:
       - name: Generate from xcode
         run: |
           cd example/ios
-          xcodebuild -workspace ReactNativeSdkExample.xcworkspace -configuration Debug -scheme ReactNativeSdkExample -destination 'generic/platform=iOS Simulator' -sdk iphonesimulator CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ GCC_OPTIMIZATION_LEVEL=0 GCC_PRECOMPILE_PREFIX_HEADER=YES ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO CODE_SIGNING_REQUIRED=NO -verbose
+          xcodebuild -workspace ReactNativeSdkExample.xcworkspace -configuration Debug -scheme ReactNativeSdkExample -destination 'generic/platform=iOS Simulator' -sdk iphonesimulator CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ GCC_OPTIMIZATION_LEVEL=0 GCC_PRECOMPILE_PREFIX_HEADER=YES ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO CODE_SIGNING_REQUIRED=NO
           cd -
-
-      - name: Generate main.jsbundle
-        uses: yukiarrr/ios-build-action@v1.12.0
-        with:
-          project-path: example/ios/ReactNativeSdkExample.xcodeproj
-          scheme: ReactNativeSdkExample
-          configuration: Debug
-          output-path: example/ios/build/Build/Products/Debug-iphonesimulator/main.jsbundle
-          code-signing-identity: "Apple Distribution"
-          workspace-path: example/ios/ReactNativeSdkExample.xcworkspace
-          team-id: ${{ secrets.APPLE_TEAM_ID }}
-
-        # run: cd example; yarn build:ios; cd ..
 
       - name: Build Detox
         run: yarn example detox:ios:build
@@ -213,6 +200,9 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Start Metro Server
+        env:
+          ITBL_API_KEY: ${{secrets.ITERABLE_API_KEY}}
+          ITBL_ID: ${{secrets.ITBL_ID}}
         run: yarn detox:start &
 
       - name: Enable KVM
@@ -223,6 +213,9 @@ jobs:
 
       - name: Run Detox tests
         uses: reactivecircus/android-emulator-runner@v2
+        env:
+          ITBL_API_KEY: ${{secrets.ITERABLE_API_KEY}}
+          ITBL_ID: ${{secrets.ITBL_ID}}
         with:
           api-level: 31
           arch: x86_64
