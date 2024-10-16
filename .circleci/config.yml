@@ -17,12 +17,27 @@ orbs:
   rn: react-native-community/react-native@8.0.0
   ruby: circleci/ruby@2.2.1
 
-
 jobs:
   install:
     <<: *defaults
     steps:
       - checkout
+      - node/install:
+          install-yarn: true
+          yarn-version: 3.6.1
+          node-version: '20.10.0'
+      - restore_cache:
+          # bump the version number to invalidate cache
+          # and see below for another usage of this
+          keys:
+            - v3-yarn-packages-{{ checksum "yarn.lock" }}
+            - v3-yarn-packages-
+      - run: yarn install --network-concurrency 1 --frozen-lockfile
+      - save_cache:
+          paths:
+            - node_modules
+          # bump the version number to invalidate cache
+          key: v3-yarn-packages-{{ checksum "yarn.lock" }}
       # Download and cache dependencies
       - run:
           name: Install example app dependencies
@@ -44,8 +59,4 @@ jobs:
 workflows:
   build:
     jobs:
-      - node/install:
-          install-yarn: true
-          yarn-version: 3.6.1
-          node-version: '20.10.0'
       - install
