@@ -36,7 +36,7 @@ jobs:
         run: applesimutils --list
 
       - name: Build Detox
-        run: cd example; yarn build -c ios.sim.debug; cd -
+        run: cd example; yarn detox build -c ios.sim.debug; cd -
 
       - name: Start Metro Server
         run: yarn example detox:start &
