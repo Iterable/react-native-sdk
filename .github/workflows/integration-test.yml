@@ -36,7 +36,7 @@ jobs:
         run: applesimutils --list
 
       - name: Run doctor
-        run: npx react-native doctor
+        run: cd example; npx react-native doctor; cd -
 
       - name: Build App
         run: cd example; yarn build:ios; cd -
