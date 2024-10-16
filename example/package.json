@@ -9,7 +9,11 @@
     "build:android": "react-native build-android --extra-params \"--no-daemon --console=plain -PreactNativeArchitectures=arm64-v8a\"",
     "build:ios": "react-native build-ios --scheme ReactNativeSdkExample --mode Debug --extra-params \"-sdk iphonesimulator CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ GCC_OPTIMIZATION_LEVEL=0 GCC_PRECOMPILE_PREFIX_HEADER=YES ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO\"",
     "detox": "detox",
-    "detox:start": "E2E_TESTS='true' react-native start"
+    "detox:start": "E2E_TESTS='true' react-native start",
+    "detox:android:build": "yarn example detox build --configuration android.emu.debug",
+    "detox:ios:build": "yarn example detox build --configuration ios.sim.debug",
+    "detox:android:test:ci": "yarn example detox test --configuration android.emu.debug --headless --record-logs failing --record-videos failing --take-screenshots failing",
+    "detox:ios:test:ci": "yarn example detox test --configuration ios.sim.debug --headless --record-logs failing --record-videos failing --take-screenshots failing"
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^6.6.1",

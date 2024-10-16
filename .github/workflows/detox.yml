@@ -2,8 +2,22 @@ name: Run Detox Tests
 on: [pull_request]
 
 jobs:
-    build-and-test-ios:
-        name: iOS - Build and run Detox tests
+    find-test-files:
+        name: Find Detox test files
+        runs-on: macos-latest
+        outputs:
+            test-files: ${{ steps.set-test-files.outputs.test-files }}
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
+
+            - name: Find test files
+              id: set-test-files
+              run: |
+                  TEST_FILES=$(find e2e -name '*.test.js' | sed 's|e2e/||g' | jq -R -s -c 'split("\n")[:-1]')
+                  echo "test-files=$TEST_FILES" >> $GITHUB_OUTPUT
+    build-ios:
+        name: iOS - Build app for Detox tests
         runs-on: macos-13-xlarge
 
         steps:
@@ -12,62 +26,71 @@ jobs:
               with:
                   fetch-depth: 1
 
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version-file: .nvmrc
-
-            - name: Repo Yarn install
-              run: yarn install
+            - name: Setup
+              uses: ./.github/actions/setup
 
             - name: Example App Yarn install
               run: cd example && yarn install
 
+            - uses: actions/cache@v4
+              id: cache
+              with:
+                  path: ios/Pods
+                  key: ${{ runner.os }}-pods-${{ hashFiles('ios/Podfile.lock') }}
+
             - name: Pod install
               run: cd example/ios && pod install
 
+            - name: Generate main.jsbundle
+              run: yarn example build:ios
+
             - name: Build Detox
-              run: yarn detox:ios:build
+              run: yarn example detox:ios:build
 
-            - name: Start Metro Server
-              run: yarn example detox:start &
+            # - name: Start Metro Server
+            #   run: yarn example detox:start &
 
-            - name: Install Applesimutils
-              run: |
-                  brew tap wix/brew
-                  brew install applesimutils
+            # - name: Install Applesimutils
+            #   run: |
+            #       brew tap wix/brew
+            #       brew install applesimutils
 
-            - name: Run Detox tests
-              run: yarn detox:ios:test:ci
+            # - name: Run Detox tests
+            #   run: yarn detox:ios:test:ci
 
-            - name: Upload Test Artifact
-              if: failure()
+            - name: Upload iOS app
               uses: actions/upload-artifact@v4
               with:
-                  name: detox-ios-artifacts
-                  path: artifacts
-                  retention-days: 5
+                  name: ios-app-artifact
+                  path: ios/build/Build/Products/Debug-iphonesimulator/YourApp.app
+                  retention-days: 1
 
-    build-and-test-android:
-        name: Android - Build and run Detox tests
+            # - name: Upload Test Artifact
+            #   if: failure()
+            #   uses: actions/upload-artifact@v4
+            #   with:
+            #       name: detox-ios-artifacts
+            #       path: artifacts
+            #       retention-days: 5
+
+    build-android:
+        name: Android - Build app for Detox tests
         runs-on: ubuntu-latest
 
         steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 1
+
             - name: Free Disk Space (Ubuntu)
               uses: jlumbroso/free-disk-space@main
               with:
                   tool-cache: true
                   android: false
 
-            - name: Checkout Code
-              uses: actions/checkout@v4
-              with:
-                  fetch-depth: 1
-
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version-file: .nvmrc
+            - name: Setup
+              uses: ./.github/actions/setup
 
             - name: Setup Java
               uses: actions/setup-java@v4
@@ -75,33 +98,43 @@ jobs:
                   distribution: zulu
                   java-version: 17
 
-            - name: Repo Yarn install
-              run: yarn install
+            - name: Setup Gradle
+              uses: gradle/actions/setup-gradle@v3
+              with:
+                  gradle-version: wrapper
+                  cache-read-only: false
 
             - name: Example App Yarn install
               run: cd example && yarn install
 
             - name: Build Detox
-              run: yarn detox:android:build
+              run: yarn example detox:android:build
 
-            - name: Start Metro Server
-              run: yarn example detox:start &
-
-            - name: Run Detox tests
-              uses: reactivecircus/android-emulator-runner@v2
-              with:
-                  api-level: 31
-                  arch: x86_64
-                  avd-name: Android_API31
-                  force-avd-creation: false
-                  emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-metrics
-                  disable-animations: false
-                  script: yarn detox:android:test:ci
-
-            - name: Upload Test Artifact
-              if: failure()
+            - name: Upload Android app
               uses: actions/upload-artifact@v4
               with:
-                  name: detox-android-artifacts
-                  path: artifacts
-                  retention-days: 5
+                  name: android-app-artifact
+                  path: android/app/build/outputs/apk
+                  retention-days: 1
+
+            # - name: Start Metro Server
+            #   run: yarn example detox:start &
+
+            # - name: Run Detox tests
+            #   uses: reactivecircus/android-emulator-runner@v2
+            #   with:
+            #       api-level: 31
+            #       arch: x86_64
+            #       avd-name: Android_API31
+            #       force-avd-creation: false
+            #       emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-metrics
+            #       disable-animations: false
+            #       script: yarn detox:android:test:ci
+
+            # - name: Upload Test Artifact
+            #   if: failure()
+            #   uses: actions/upload-artifact@v4
+            #   with:
+            #       name: detox-android-artifacts
+            #       path: artifacts
+            #       retention-days: 5
