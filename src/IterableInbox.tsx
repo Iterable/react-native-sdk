@@ -270,7 +270,7 @@ export const IterableInbox = ({
     return (
       <View style={messageListContainer}>
         {showNavTitle ? (
-          <Text testID='inbox-header' style={headline}>
+          <Text testID="inbox-header" style={headline}>
             {customizations?.navTitle
               ? customizations?.navTitle
               : defaultInboxTitle}

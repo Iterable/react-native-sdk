@@ -198,7 +198,9 @@
   },
   "eslintIgnore": [
     "node_modules/",
-    "lib/"
+    "lib/",
+    "coverage/",
+    "integration-testing/"
   ],
   "prettier": {
     "quoteProps": "consistent",

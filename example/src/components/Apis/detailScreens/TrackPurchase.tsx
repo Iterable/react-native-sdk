@@ -52,7 +52,7 @@ Iterable.trackPurchase(
       <Text style={formStyles.label}>Data Fields</Text>
       <JSONInput value={dataFields} onChangeJSON={setDataFields} />
       <Text style={formStyles.label}>Code:</Text>
-      <CodeBlock codeString={codeString} style={{ height: 410 }} />
+      <CodeBlock codeString={codeString} height={410} />
       <Pressable
         style={formStyles.button}
         onPress={() => {

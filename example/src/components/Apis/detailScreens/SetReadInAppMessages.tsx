@@ -31,7 +31,7 @@ Iterable.inAppManager.getMessages().then((messages) => {
       <Text style={formStyles.label}>Read?</Text>
       <Switch style={formStyles.switch} value={read} onValueChange={setRead} />
       <Text style={formStyles.label}>Code:</Text>
-      <CodeBlock codeString={codeString} style={{ height: 250 }} />
+      <CodeBlock codeString={codeString} height={250} />
       <Pressable
         style={formStyles.button}
         onPress={() => {

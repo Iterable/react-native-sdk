@@ -30,7 +30,7 @@ export const RemoveInAppMessages = () => {
   return (
     <>
       <Text style={formStyles.label}>Code:</Text>
-      <CodeBlock codeString={codeString} style={{ height: 270 }} />
+      <CodeBlock codeString={codeString} height={270} />
       <Pressable
         style={formStyles.button}
         onPress={() => {
