@@ -35,8 +35,13 @@ jobs:
           ruby-version: 2.6.10
           bundler-cache: true
 
-      - name: Install ios-deploy
-        run: npm install -g ios-deploy
+      - name: Install ios-deploy, detox, react-native-cli
+        run: npm install -g ios-deploy detox-cli react-native-cli
+
+      - name: Install Applesimutils
+        run: |
+            brew tap wix/brew
+            brew install applesimutils
 
       - name: Example App Yarn install
         run: |
@@ -60,18 +65,6 @@ jobs:
           cd example/ios
           pod install
           cd ../..
-
-      - name: Doctor
-        run: |
-          cd example
-          npx react-native doctor
-          cd -
-
-      - name: Generate from xcode
-        run: |
-          cd example/ios
-          xcodebuild -workspace ReactNativeSdkExample.xcworkspace -configuration Debug -scheme ReactNativeSdkExample -destination 'generic/platform=iOS Simulator' -sdk iphonesimulator CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ GCC_OPTIMIZATION_LEVEL=0 GCC_PRECOMPILE_PREFIX_HEADER=YES ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO CODE_SIGNING_REQUIRED=NO
-          cd -
 
       - name: Build Detox
         run: yarn example detox:ios:build
@@ -164,6 +157,9 @@ jobs:
         run: yarn example detox:start &
 
       - name: Run Detox tests
+        env:
+          ITBL_API_KEY: ${{secrets.ITERABLE_API_KEY}}
+          ITBL_ID: ${{secrets.ITBL_ID}}
         run: yarn example detox:ios:test:ci -- ${{ matrix.test-file }}
 
       - name: Upload Test Artifact - GitHub Action
@@ -171,7 +167,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: detox-ios-artifacts-${{ matrix.test-file }}
-          path: artifacts
+          path: example/artifacts
           retention-days: 1
 
   run-android-detox-tests:
