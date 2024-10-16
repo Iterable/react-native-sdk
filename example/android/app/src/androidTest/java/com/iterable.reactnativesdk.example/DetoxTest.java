@@ -1,4 +1,4 @@
-package com.iterable.reactnativesdk.example; // (1)
+package iterable.reactnativesdk.example;
 
 import com.wix.detox.Detox;
 import com.wix.detox.config.DetoxConfig;
