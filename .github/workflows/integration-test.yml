@@ -53,3 +53,9 @@ jobs:
           CUSTOM_ACTION_CAMPAIGN_ID: ${{secrets.CUSTOM_ACTION_CAMPAIGN_ID}}
         run: cd example; yarn detox test --configuration ios.sim.debug; cd -
 
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: detox-artifacts
+          path: example/artifacts
+
