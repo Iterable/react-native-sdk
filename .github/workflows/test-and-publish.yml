@@ -10,6 +10,7 @@ on:
 
 jobs:
   test-comment:
+    name: Test and show coverage on github
     runs-on: ubuntu-latest
 
     steps:
@@ -29,6 +30,7 @@ jobs:
           hide-comment: false
           coverage-summary-path: ./coverage/coverage-summary.json
   test-code-climate:
+    name: Test and publish results to Code Climate
     runs-on: ubuntu-latest
 
     steps:
