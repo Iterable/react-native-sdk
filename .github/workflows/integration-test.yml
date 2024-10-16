@@ -22,6 +22,12 @@ jobs:
       - name: Install app dependencies
         uses: ./.github/actions/setup
 
+      - name: Install detox CLI
+        run: yarn global add detox-cli
+
+      - name: Install react native CLI
+        run: yarn global add react-native-cli
+
       - name: Install Applesimutils
         run: |
             brew tap wix/brew
@@ -32,6 +38,9 @@ jobs:
 
       - name: pod install
         run: cd example/ios; pod install; cd -
+
+      - name: List devices
+        run: applesimutils --list
 
       - name: Build and Test
         shell: bash
