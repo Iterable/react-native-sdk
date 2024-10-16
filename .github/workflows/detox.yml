@@ -41,6 +41,9 @@ jobs:
             - name: Pod install
               run: cd example/ios; pod install; cd ../..
 
+            - name: Install ios-deploy
+              run: npm install -g ios-deploy
+
             - name: Doctor
               run: cd example; npx react-native doctor; cd -
 
