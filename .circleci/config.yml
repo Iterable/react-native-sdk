@@ -1,0 +1,106 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@4.7.0
+  android: circleci/android@1.0.3
+  rn: react-native-community/react-native@5.6.0
+  ruby: circleci/ruby@1.2.0
+
+commands:
+  detox_build_ios:
+    steps:
+      - restore_cache:
+          keys:
+            - ios-build-cache-{{ arch }}-{{ checksum "~/.tmp/checksumfiles/package.json" }}
+      - run: |
+          npm install -g detox-cli react-native-cli
+          cd example
+          detox build --configuration ios
+      - save_cache:
+          key: ios-build-cache-{{ arch }}-{{ checksum "~/.tmp/checksumfiles/package.json" }}
+          paths:
+            - example/ios/build/Build
+
+  detox_build_android:
+    steps:
+      - android/restore-gradle-cache
+      - run: |
+          npm install -g detox-cli react-native-cli
+          cd example
+          detox build --configuration android
+      - android/save-gradle-cache
+
+jobs:
+  detox_ios:
+    executor:
+      name: rn/macos
+      xcode_version: 12.5.1
+    steps:
+      - checkout
+      - rn/setup_macos_executor
+      - rn/yarn_install:
+          cache_folder: ~/.cache/yarn
+      - run: |
+          cd example
+          yarn install
+      - rn/pod_install
+      - rn/ios_simulator_start:
+          device: iPhone 12
+      - detox_build_ios
+      - run: detox test --configuration ios --take-screenshots all
+      - store_artifacts:
+          path: artifacts
+
+  detox_android:
+    executor:
+      name: android/android-machine
+      resource-class: large
+    steps:
+      - checkout
+      - node/install-yarn
+      - rn/yarn_install
+      - run: |
+          cd example
+          yarn install
+      - rn/android_emulator_start:
+          device_name: Pixel_3a_API_30_x86
+      - detox_build_android
+      - run: detox test --configuration android --take-screenshots all
+      - store_artifacts:
+          path: artifacts
+
+  beta_android:
+    executor:
+      name: android/android-machine
+      resource-class: large
+    steps:
+      - checkout
+      - node/install-yarn
+      - rn/yarn_install
+      - ruby/install-deps:
+          app-dir: android
+      - ruby/install-deps:
+          app-dir: android
+      - android/restore-gradle-cache
+      - run:
+          command: bundle exec fastlane beta
+          working_directory: android
+      - android/save-gradle-cache
+
+workflows:
+  test_and_distribute:
+    jobs:
+      - node/test:
+          name: unit-test
+          pkg-manager: yarn
+          version: 12.22.5
+      - node/run:
+          name: eslint
+          yarn-run: lint
+          pkg-manager: yarn
+          version: 12.22.5
+      - detox_ios
+      - detox_android
+      - beta_android
+      - rn/android_build:
+          checkout: true
