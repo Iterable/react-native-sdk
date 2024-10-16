@@ -2,207 +2,228 @@ name: Run Detox Tests
 on: [pull_request]
 
 jobs:
-    find-test-files:
-        name: Find Detox test files
-        runs-on: macos-latest
-        outputs:
-            test-files: ${{ steps.set-test-files.outputs.test-files }}
-        steps:
-            - name: Checkout Code
-              uses: actions/checkout@v4
+  find-test-files:
+    name: Find Detox test files
+    runs-on: macos-latest
+    outputs:
+      test-files: ${{ steps.set-test-files.outputs.test-files }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-            - name: Find test files
-              id: set-test-files
-              run: |
-                  TEST_FILES=$(find example/e2e -name '*.test.js' | sed 's|example/e2e/||g' | jq -R -s -c 'split("\n")[:-1]')
-                  echo "test-files=$TEST_FILES" >> $GITHUB_OUTPUT
-    build-ios:
-        name: iOS - Build app for Detox tests
-        runs-on: macos-13-xlarge
+      - name: Find test files
+        id: set-test-files
+        run: |
+          TEST_FILES=$(find example/e2e -name '*.test.js' | sed 's|example/e2e/||g' | jq -R -s -c 'split("\n")[:-1]')
+          echo "test-files=$TEST_FILES" >> $GITHUB_OUTPUT
+  build-ios:
+    name: iOS - Build app for Detox tests
+    runs-on: macos-13-xlarge
 
-        steps:
-            - name: Checkout Code
-              uses: actions/checkout@v4
-              with:
-                  fetch-depth: 1
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
-            - name: Setup
-              uses: ./.github/actions/setup
+      - name: Setup
+        uses: ./.github/actions/setup
 
-            - name: Example App Yarn install
-              run: cd example; yarn install; cd ..
+      - name: Setup Ruby (bundle)
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.6.10
+          bundler-cache: true
 
-            - uses: actions/cache@v4
-              id: cache
-              with:
-                  path: example/ios/Pods
-                  key: ${{ runner.os }}-pods-${{ hashFiles('example/ios/Podfile.lock') }}
+      - name: Install ios-deploy
+        run: npm install -g ios-deploy
 
-            - name: Pod install
-              run: cd example/ios; pod install; cd ../..
+      - name: Example App Yarn install
+        run: cd example; yarn install; cd ..
 
-            - name: Install ios-deploy
-              run: npm install -g ios-deploy
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: |
+            example/ios/Pods
+            ~/Library/Caches/CocoaPods
+            ~/.cocoapods
+          key: ${{ runner.os }}-pods-${{ hashFiles('example/ios/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
 
-            - name: Doctor
-              run: cd example; npx react-native doctor; cd -
+      - name: Pod install
+        run: cd example/ios; pod install; cd ../..
 
-            - name: Generate main.jsbundle
-              run: yarn example build:ios
+      - name: Doctor
+        run: cd example; npx react-native doctor; cd -
 
-            - name: Build Detox
-              run: yarn example detox:ios:build
+      - name: Generate main.jsbundle
+        uses: yukiarrr/ios-build-action@v1.12.0
+        with:
+          project-path: example/ios/ReactNativeSdkExample.xcodeproj
+          scheme: ReactNativeSdkExample
+          configuration: Debug
+          output-path: example/ios/build/Build/Products/Debug-iphonesimulator/main.jsbundle
+          code-signing-identity: "Apple Distribution"
+          workspace-path: example/ios/ReactNativeSdkExample.xcworkspace
+          team-id: ${{ secrets.APPLE_TEAM_ID }}
 
-            - name: Upload iOS app
-              uses: actions/upload-artifact@v4
-              with:
-                  name: ios-app-artifact
-                  path: example/ios/build/Build/Products/Debug-iphonesimulator/ReactNativeSdkExample.app
-                  retention-days: 1
+        # run: cd example; yarn build:ios; cd ..
 
-    build-android:
-        name: Android - Build app for Detox tests
-        runs-on: ubuntu-latest
+      - name: Build Detox
+        run: yarn example detox:ios:build
 
-        steps:
-            - name: Checkout Code
-              uses: actions/checkout@v4
-              with:
-                  fetch-depth: 1
+      - name: Upload iOS app
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-app-artifact
+          path: example/ios/build/Build/Products/Debug-iphonesimulator/ReactNativeSdkExample.app
+          retention-days: 1
 
-            - name: Free Disk Space (Ubuntu)
-              uses: jlumbroso/free-disk-space@main
-              with:
-                  tool-cache: true
-                  android: false
+  build-android:
+    name: Android - Build app for Detox tests
+    runs-on: ubuntu-latest
 
-            - name: Setup
-              uses: ./.github/actions/setup
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
-            - name: Setup Java
-              uses: actions/setup-java@v4
-              with:
-                  distribution: zulu
-                  java-version: 17
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: true
+          android: false
 
-            - name: Setup Gradle
-              uses: gradle/actions/setup-gradle@v3
-              with:
-                  gradle-version: wrapper
-                  cache-read-only: false
+      - name: Setup
+        uses: ./.github/actions/setup
 
-            - name: Example App Yarn install
-              run: cd example; yarn install; cd ..
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: 17
 
-            - name: Build Detox
-              run: yarn example detox:android:build
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: wrapper
+          cache-read-only: false
 
-            - name: Upload Android app
-              uses: actions/upload-artifact@v4
-              with:
-                  name: android-app-artifact
-                  path: example/android/app/build/outputs/apk
-                  retention-days: 1
+      - name: Example App Yarn install
+        run: cd example; yarn install; cd ..
 
-    run-ios-detox-tests:
-        needs: [build-ios, find-test-files]
-        name: iOS - Run Detox tests
-        runs-on: macos-13-xlarge
+      - name: Build Detox
+        run: yarn example detox:android:build
 
-        strategy:
-            fail-fast: false
-            matrix:
-                test-file: ${{ fromJson(needs.find-test-files.outputs.test-files) }}
+      - name: Upload Android app
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-app-artifact
+          path: example/android/app/build/outputs/apk
+          retention-days: 1
 
-        steps:
-            - name: Checkout Code
-              uses: actions/checkout@v4
-              with:
-                  fetch-depth: 1
+  run-ios-detox-tests:
+    needs: [build-ios, find-test-files]
+    name: iOS - Run Detox tests
+    runs-on: macos-13-xlarge
 
-            - name: Download iOS app
-              uses: actions/download-artifact@v4
-              with:
-                  name: ios-app-artifact
-                  path: example/ios/build/Build/Products/Debug-iphonesimulator/ReactNativeSdkExample.app
+    strategy:
+      fail-fast: false
+      matrix:
+        test-file: ${{ fromJson(needs.find-test-files.outputs.test-files) }}
 
-            - name: Setup
-              uses: ./.github/actions/setup
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
-            - name: Install Applesimutils
-              run: |
-                  brew tap wix/brew
-                  brew install applesimutils
+      - name: Download iOS app
+        uses: actions/download-artifact@v4
+        with:
+          name: ios-app-artifact
+          path: example/ios/build/Build/Products/Debug-iphonesimulator/ReactNativeSdkExample.app
 
-            - name: Start Metro Server
-              run: yarn example detox:start &
+      - name: Setup
+        uses: ./.github/actions/setup
 
-            - name: Run Detox tests
-              run: yarn example detox:ios:test:ci -- ${{ matrix.test-file }}
+      - name: Install Applesimutils
+        run: |
+          brew tap wix/brew
+          brew install applesimutils
 
-            - name: Upload Test Artifact - GitHub Action
-              if: failure()
-              uses: actions/upload-artifact@v4
-              with:
-                  name: detox-ios-artifacts-${{ matrix.test-file }}
-                  path: artifacts
-                  retention-days: 1
+      - name: Start Metro Server
+        run: yarn example detox:start &
 
-    run-android-detox-tests:
-        needs: [build-android, find-test-files]
-        name: Android - Run Detox tests
-        runs-on: ubuntu-latest
+      - name: Run Detox tests
+        run: yarn example detox:ios:test:ci -- ${{ matrix.test-file }}
 
-        strategy:
-            fail-fast: false
-            matrix:
-                test-file: ${{ fromJson(needs.find-test-files.outputs.test-files) }}
+      - name: Upload Test Artifact - GitHub Action
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: detox-ios-artifacts-${{ matrix.test-file }}
+          path: artifacts
+          retention-days: 1
 
-        steps:
-            - name: Free Disk Space (Ubuntu)
-              uses: jlumbroso/free-disk-space@main
-              with:
-                  tool-cache: true
-                  android: false
+  run-android-detox-tests:
+    needs: [build-android, find-test-files]
+    name: Android - Run Detox tests
+    runs-on: ubuntu-latest
 
-            - name: Checkout Code
-              uses: actions/checkout@v4
-              with:
-                  fetch-depth: 1
+    strategy:
+      fail-fast: false
+      matrix:
+          test-file: ${{ fromJson(needs.find-test-files.outputs.test-files) }}
 
-            - name: Download Android app
-              uses: actions/download-artifact@v4
-              with:
-                  name: android-app-artifact
-                  path: example/android/app/build/outputs/apk
+    steps:
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: true
+          android: false
 
-            - name: Setup
-              uses: ./.github/actions/setup
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
-            - name: Start Metro Server
-              run: yarn detox:start &
+      - name: Download Android app
+        uses: actions/download-artifact@v4
+        with:
+          name: android-app-artifact
+          path: example/android/app/build/outputs/apk
 
-            - name: Enable KVM
-              run: |
-                  echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-                  sudo udevadm control --reload-rules
-                  sudo udevadm trigger --name-match=kvm
+      - name: Setup
+        uses: ./.github/actions/setup
 
-            - name: Run Detox tests
-              uses: reactivecircus/android-emulator-runner@v2
-              with:
-                  api-level: 31
-                  arch: x86_64
-                  avd-name: Pixel_3a_API_34
-                  force-avd-creation: false
-                  emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-metrics
-                  disable-animations: false
-                  script: yarn detox:android:test:ci -- ${{ matrix.test-file }}
+      - name: Start Metro Server
+        run: yarn detox:start &
 
-            - name: Upload Test Artifact - GitHub Action
-              if: failure()
-              uses: actions/upload-artifact@v4
-              with:
-                  name: detox-android-artifacts-${{ matrix.test-file }}
-                  path: example/artifacts
-                  retention-days: 1
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Run Detox tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 31
+          arch: x86_64
+          avd-name: Pixel_3a_API_34
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-metrics
+          disable-animations: false
+          script: yarn detox:android:test:ci -- ${{ matrix.test-file }}
+
+      - name: Upload Test Artifact - GitHub Action
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: detox-android-artifacts-${{ matrix.test-file }}
+          path: example/artifacts
+          retention-days: 1
