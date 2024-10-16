@@ -19,20 +19,24 @@ jobs:
         with:
           xcode-version: 15
 
-      - name: Install dependencies
-        run: cd integration-testing/  && yarn install
+      - name: Install app dependencies
+        run: yarn install
+
+      - name: Install example app dependencies
+        run: cd example && yarn install
 
       - name: pod install
-        run: cd integration-testing/ios/ && pod install
+        run: cd example/ios && pod install
 
       - name: Build and Test
         shell: bash
         env:
-          ITERABLE_API_KEY: ${{secrets.ITERABLE_API_KEY}}
+          ITBL_API_KEY: ${{secrets.ITERABLE_API_KEY}}
+          ITBL_ID: ${{secrets.ITBL_ID}}
           SEND_IN_APP_CAMPAIGN_ID: ${{secrets.SEND_IN_APP_CAMPAIGN_ID}}
           SKIP_IN_APP_CAMPAIGN_ID: ${{secrets.SKIP_IN_APP_CAMPAIGN_ID}}
           OPEN_DEEP_LINK_CAMPAIGN_ID: ${{secrets.OPEN_DEEP_LINK_CAMPAIGN_ID}}
           OPEN_SAFARI_CAMPAIGN_ID: ${{secrets.OPEN_SAFARI_CAMPAIGN_ID}}
           CUSTOM_ACTION_CAMPAIGN_ID: ${{secrets.CUSTOM_ACTION_CAMPAIGN_ID}}
-        run: |
-          ./integration-testing/ios/scripts/run_test.sh
+        run: yarn example detox test --configuration ios.sim.debug
+
