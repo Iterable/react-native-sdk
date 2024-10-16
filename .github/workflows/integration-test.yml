@@ -23,10 +23,10 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Install detox CLI
-        run: yarn global add detox-cli
+        run: npm install -g detox-cli
 
       - name: Install react native CLI
-        run: yarn global add react-native-cli
+        run: npm install -g react-native-cli
 
       - name: Install Applesimutils
         run: |
