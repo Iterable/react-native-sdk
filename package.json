@@ -169,8 +169,18 @@
     "root": true,
     "extends": [
       "@react-native",
-      "prettier",
-      "detox"
+      "prettier"
+    ],
+    "plugins": ["detox"],
+    "overrides":[
+      {
+        "files": ["example/e2e/**/*.test.js"],
+        "env": {
+          "jest": true,
+          "detox/detox": true,
+          "jest/globals": true
+        }
+      }
     ],
     "rules": {
       "react/react-in-jsx-scope": "off",
