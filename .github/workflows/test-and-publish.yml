@@ -10,7 +10,7 @@ on: [pull_request]
 #       - "**"
 
 jobs:
-  build:
+  test-comment:
     runs-on: ubuntu-latest
 
     steps:
@@ -42,3 +42,24 @@ jobs:
         #   debug: true
         #   coverageLocations: |
         #     ${{github.workspace}}/coverage/*.lcov:lcov
+  test-code-climate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Run tests
+        run: |
+          yarn test --coverage --coverageReporters lcov
+
+      - name: Upload coverage to Code Climate
+        uses: paambaati/codeclimate-action@v9.0.0
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        with:
+          coverageCommand: yarn test --coverage --coverageReporters lcov
+          coverageLocations: |
+            ${{github.workspace}}/coverage/lcov.info:lcov
