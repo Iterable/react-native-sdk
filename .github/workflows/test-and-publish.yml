@@ -29,19 +29,6 @@ jobs:
         with:
           hide-comment: false
           coverage-summary-path: ./coverage/coverage-summary.json
-        # uses: MartinNuc/codeclimate-action@2
-        # env:
-        #   CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-        # with:
-        #   coverageLocations: ${{github.workspace}}/coverage/lcov.info:lcov
-        # uses: paambaati/codeclimate-action@v9.0.0
-        # env:
-        #   CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-        # with:
-        #   coverageCommand: yarn test:coverage
-        #   debug: true
-        #   coverageLocations: |
-        #     ${{github.workspace}}/coverage/*.lcov:lcov
   test-code-climate:
     runs-on: ubuntu-latest
 
