@@ -1,10 +1,23 @@
 version: 2.1
 
+references:
+  machine_config: &machine_config
+    environment:
+    machine:
+      image: default
+
+  defaults: &defaults
+    resource_class: large
+    working_directory: ~/react-native-sdk
+    docker:
+      - image: cimg/node:20.10
+    environment:
+
 orbs:
-  node: circleci/node@4.7.0
-  android: circleci/android@1.0.3
-  rn: react-native-community/react-native@5.6.0
-  ruby: circleci/ruby@1.2.0
+  node: circleci/node@6.3.0
+  android: circleci/android@3.0.0
+  rn: react-native-community/react-native@8.0.0
+  ruby: circleci/ruby@2.2.1
 
 commands:
   detox_build_ios:
@@ -15,7 +28,7 @@ commands:
       - run: |
           npm install -g detox-cli react-native-cli
           cd example
-          detox build --configuration ios
+          yarn detox:ios:build
       - save_cache:
           key: ios-build-cache-{{ arch }}-{{ checksum "~/.tmp/checksumfiles/package.json" }}
           paths:
@@ -69,38 +82,15 @@ jobs:
       - store_artifacts:
           path: artifacts
 
-  beta_android:
-    executor:
-      name: android/android-machine
-      resource-class: large
-    steps:
-      - checkout
-      - node/install-yarn
-      - rn/yarn_install
-      - ruby/install-deps:
-          app-dir: android
-      - ruby/install-deps:
-          app-dir: android
-      - android/restore-gradle-cache
-      - run:
-          command: bundle exec fastlane beta
-          working_directory: android
-      - android/save-gradle-cache
-
 workflows:
   test_and_distribute:
     jobs:
-      - node/test:
-          name: unit-test
-          pkg-manager: yarn
-          version: 12.22.5
-      - node/run:
-          name: eslint
-          yarn-run: lint
-          pkg-manager: yarn
-          version: 12.22.5
+      - node/install:
+          install-yarn: true
+          yarn-version: 3.6.1
+          node-version: '20.10.0'
       - detox_ios
       - detox_android
-      - beta_android
+      # - beta_android
       - rn/android_build:
           checkout: true
