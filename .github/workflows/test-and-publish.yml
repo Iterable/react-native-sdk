@@ -13,15 +13,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - uses: actions/checkout@v4
 
       - name: Install dependencies
         run: yarn install
 
       - name: Test & publish code coverage
-        uses: paambaati/codeclimate-action@60d1b18d039c7b06c721984a5c3d98b724baf991 # v2.6.0
+        uses: paambaati/codeclimate-action@v9.0.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
-          coverageCommand: yarn coverage
+          coverageCommand: yarn test:coverage
           debug: true

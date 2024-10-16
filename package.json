@@ -38,7 +38,7 @@
   "scripts": {
     "example": "yarn workspace @iterable/react-native-sdk-example",
     "test": "jest",
-    "test-coverage": "jest --coverage",
+    "test:coverage": "jest --coverage",
     "typecheck": "tsc",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
