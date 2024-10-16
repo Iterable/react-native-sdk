@@ -22,6 +22,11 @@ jobs:
       - name: Install app dependencies
         uses: ./.github/actions/setup
 
+      - name: Install Applesimutils
+        run: |
+            brew tap wix/brew
+            brew install applesimutils
+
       - name: Install example app dependencies
         run: cd example; yarn install; cd -
 
