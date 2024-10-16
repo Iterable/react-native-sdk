@@ -39,7 +39,10 @@ jobs:
         run: npm install -g ios-deploy
 
       - name: Example App Yarn install
-        run: cd example; yarn install; cd ..
+        run: |
+          cd example
+          yarn install --frozen-lockfile
+          cd ..
 
       - uses: actions/cache@v4
         id: cache
@@ -112,7 +115,10 @@ jobs:
           cache-read-only: false
 
       - name: Example App Yarn install
-        run: cd example; yarn install; cd ..
+        run: |
+          cd example
+          yarn install
+          cd ..
 
       - name: Build Detox
         run: yarn example detox:android:build
