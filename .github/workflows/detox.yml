@@ -76,6 +76,18 @@ jobs:
           path: example/ios/build/Build/Products/Debug-iphonesimulator/ReactNativeSdkExample.app
           retention-days: 1
 
+      - name: Start Metro Server
+        env:
+          ITBL_API_KEY: ${{secrets.ITERABLE_API_KEY}}
+          ITBL_ID: ${{secrets.ITBL_ID}}
+        run: yarn example detox:start &
+
+      - name: Run Detox tests
+        env:
+          ITBL_API_KEY: ${{secrets.ITERABLE_API_KEY}}
+          ITBL_ID: ${{secrets.ITBL_ID}}
+        run: yarn example detox:ios:test:ci
+
   build-android:
     name: Android - Build app for Detox tests
     runs-on: ubuntu-latest
@@ -148,13 +160,11 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
-      - name: Install Applesimutils
-        run: |
-          brew tap wix/brew
-          brew install applesimutils
-
       - name: Start Metro Server
-        run: yarn example detox:start &
+        env:
+          ITBL_API_KEY: ${{secrets.ITERABLE_API_KEY}}
+          ITBL_ID: ${{secrets.ITBL_ID}}
+        run: yarn detox:start &
 
       - name: Run Detox tests
         env:
