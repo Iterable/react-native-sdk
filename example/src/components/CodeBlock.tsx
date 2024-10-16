@@ -8,13 +8,13 @@ import { atomOneDark } from 'react-syntax-highlighter/styles/hljs';
 export interface CodeBlockProps {
   codeString: string;
   style?: StyleProp<ViewStyle>;
-  height?: number;
+  blockHeight?: number;
 }
 
 export const CodeBlock = ({
   codeString,
   style = {},
-  height = 200,
+  blockHeight: height = 200,
 }: CodeBlockProps) => {
   const styles = useMemo(
     () =>

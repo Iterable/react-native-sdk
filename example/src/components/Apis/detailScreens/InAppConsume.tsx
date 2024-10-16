@@ -30,7 +30,7 @@ export const InAppConsume = () => {
   return (
     <>
       <Text style={formStyles.label}>Code:</Text>
-      <CodeBlock codeString={codeString} height={280} />
+      <CodeBlock codeString={codeString} blockHeight={280} />
       <Pressable
         style={formStyles.button}
         onPress={() => {

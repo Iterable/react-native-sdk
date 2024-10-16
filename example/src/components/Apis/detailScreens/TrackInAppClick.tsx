@@ -29,7 +29,7 @@ export const TrackInAppClick = () => {
   return (
     <>
       <Text style={formStyles.label}>Code:</Text>
-      <CodeBlock codeString={codeString} height={260} />
+      <CodeBlock codeString={codeString} blockHeight={260} />
       <Pressable
         style={formStyles.button}
         onPress={() => {

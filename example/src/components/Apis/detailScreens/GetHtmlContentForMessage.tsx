@@ -38,7 +38,7 @@ export const GetHtmlContentForMessage = () => {
   return (
     <>
       <Text style={formStyles.label}>Code:</Text>
-      <CodeBlock codeString={codeString} height={250} />
+      <CodeBlock codeString={codeString} blockHeight={250} />
       <Pressable
         style={formStyles.button}
         onPress={() => {
