@@ -30,7 +30,7 @@ jobs:
               uses: ./.github/actions/setup
 
             - name: Example App Yarn install
-              run: cd example && yarn install
+              run: cd example; yarn install; cd ..
 
             - uses: actions/cache@v4
               id: cache
@@ -39,7 +39,10 @@ jobs:
                   key: ${{ runner.os }}-pods-${{ hashFiles('example/ios/Podfile.lock') }}
 
             - name: Pod install
-              run: cd example/ios && pod install
+              run: cd example/ios; pod install; cd ../..
+
+            - name: Doctor
+              run: cd example; npx react-native doctor; cd -
 
             - name: Generate main.jsbundle
               run: yarn example build:ios
@@ -86,7 +89,7 @@ jobs:
                   cache-read-only: false
 
             - name: Example App Yarn install
-              run: cd example && yarn install
+              run: cd example; yarn install; cd ..
 
             - name: Build Detox
               run: yarn example detox:android:build
