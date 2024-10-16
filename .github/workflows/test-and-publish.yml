@@ -20,11 +20,16 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Test & publish code coverage
-        uses: paambaati/codeclimate-action@v9.0.0
+        uses: MartinNuc/codeclimate-action@2
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
-          coverageCommand: yarn test:coverage
-          debug: true
-          coverageLocations: |
-            ${{github.workspace}}/coverage/*.lcov:lcov
+          coverageLocations: ${{github.workspace}}/coverage/lcov.info:lcov
+        # uses: paambaati/codeclimate-action@v9.0.0
+        # env:
+        #   CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        # with:
+        #   coverageCommand: yarn test:coverage
+        #   debug: true
+        #   coverageLocations: |
+        #     ${{github.workspace}}/coverage/*.lcov:lcov
