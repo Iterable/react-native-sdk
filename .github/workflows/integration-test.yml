@@ -35,6 +35,9 @@ jobs:
       - name: List devices
         run: applesimutils --list
 
+      - name: Build App
+        run: cd example; yarn build:ios; cd -
+
       - name: Build Detox
         run: cd example; yarn detox build -c ios.sim.debug; cd -
 
