@@ -15,7 +15,7 @@ jobs:
             - name: Setup Node.js
               uses: actions/setup-node@v4
               with:
-                  node-version: 22.2.0
+                  node-version-file: .nvmrc
 
             - name: Repo Yarn install
               run: yarn install
@@ -67,7 +67,7 @@ jobs:
             - name: Setup Node.js
               uses: actions/setup-node@v4
               with:
-                  node-version: 22.2.0
+                  node-version-file: .nvmrc
 
             - name: Setup Java
               uses: actions/setup-java@v4
