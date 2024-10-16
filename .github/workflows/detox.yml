@@ -24,7 +24,7 @@ jobs:
               run: cd example && yarn install
 
             - name: Pod install
-              run: cd ios && pod install
+              run: cd example/ios && pod install
 
             - name: Build Detox
               run: yarn detox:ios:build
