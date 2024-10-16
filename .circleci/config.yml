@@ -44,16 +44,27 @@ jobs:
           command: |
             cd example
             yarn install --frozen-lockfile
-            cd ios
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: example-yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - example/node_modules
+      - run:
+          name: Install ios-deploy, detox, react-native-cli
+          command: npm install -g ios-deploy detox-cli react-native-cli
+      - run:
+          name: Install Applesimutils
+          command: |
+            brew tap wix/brew
+            brew install applesimutils
+      - run:
+          name: Install pods
+          command: |
+            cd example/ios
             pod install
             cd ../..
-      - save_cache:
-          name: Save pnpm Package Cache
-          key: yarn-packages-{{ checksum "yarn-lock.yaml" }}
-          paths:
-            - .yarn-store
       - persist_to_workspace:
-          root: ~/react-native-sdk/example
+          root: ~/react-native-sdk
           paths:
             - .
 workflows:
