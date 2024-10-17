@@ -18,6 +18,9 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
+      - name: Install detox, detox-cli react-native-cli
+        run: npm install -g detox detox-cli react-native-cli
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
@@ -74,10 +77,10 @@ jobs:
           api-level: 31
           arch: x86_64
           avd-name: ${{ steps.device.outputs.AVD_NAME }}
-          force-avd-creation: false
+          force-avd-creation: true
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-metrics
           disable-animations: false
-          script: yarn detox test --configuration android.emu.release --headless --record-logs all
+          script: yarn detox test --configuration android.emu.release --headless --record-logs all --debug-synchronization 500
 
       - name: Upload artifacts
         if: failure()
