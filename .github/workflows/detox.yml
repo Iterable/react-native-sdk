@@ -149,7 +149,11 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Rebuild Detox
-        run: detox clean-framework-cache && detox build-framework-cache
+        run: |
+          cd example
+          yarn detox clean-framework-cache
+          yarn detox build-framework-cache
+          cd ..
 
       - name: Start Metro Server
         env:
