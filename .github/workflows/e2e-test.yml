@@ -167,7 +167,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ios-app-artifact
-          path: example/ios/build/Build/Products/Debug-iphonesimulator/ReactNativeSdkExample.app
+          path: example/ios/build/Build/Products/Release-iphonesimulator/ReactNativeSdkExample.app
 
       - name: Setup
         uses: ./.github/actions/setup
