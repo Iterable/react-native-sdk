@@ -22,6 +22,7 @@ describe('Example', () => {
 
   afterAll(async () => {
     await device.terminateApp();
+    await detox.cleanup();
   });
 
   it('should be able to login', async () => {
