@@ -53,6 +53,7 @@ jobs:
         env:
           ITBL_API_KEY: ${{secrets.ITERABLE_API_KEY}}
           ITBL_ID: ${{secrets.ITBL_ID}}
+          CI: true
         run: |
           cd example
           yarn detox build --configuration android.emu.release
@@ -73,14 +74,15 @@ jobs:
         env:
           ITBL_API_KEY: ${{secrets.ITERABLE_API_KEY}}
           ITBL_ID: ${{secrets.ITBL_ID}}
+          CI: true
         with:
           api-level: 31
           arch: x86_64
           avd-name: ${{ steps.device.outputs.AVD_NAME }}
-          force-avd-creation: true
+          force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-metrics
-          disable-animations: false
-          script: yarn detox test --configuration android.emu.release --headless --record-logs all --debug-synchronization 500
+          disable-animations: true
+          script: yarn detox test --configuration android.emu.release --headless --record-logs all --record-videos failing --take-screenshots failing --record-timeline all --capture-view-hierarchy enabled --cleanup --maxWorkers=2 --workers 1 --debug-synchronization 500 -l trace --cleanup --reuse
 
       - name: Upload artifacts
         if: failure()
