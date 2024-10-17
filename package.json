@@ -38,7 +38,7 @@
   "scripts": {
     "example": "yarn workspace @iterable/react-native-sdk-example",
     "test": "jest",
-    "test-coverage": "jest --coverage",
+    "test:coverage": "jest --coverage",
     "typecheck": "tsc",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
@@ -128,7 +128,15 @@
       "src/**/*.{cjs,js,jsx,mjs,ts,tsx}",
       "!src/**/*.test.{cjs,js,jsx,mjs,mdx,ts,tsx}",
       "!src/(__tests__|__mocks__)/*"
-    ]
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 10,
+        "functions": 30,
+        "lines": 30,
+        "statements": 30
+      }
+    }
   },
   "commitlint": {
     "extends": [
@@ -174,7 +182,8 @@
   },
   "eslintIgnore": [
     "node_modules/",
-    "lib/"
+    "lib/",
+    "coverage/"
   ],
   "prettier": {
     "quoteProps": "consistent",
