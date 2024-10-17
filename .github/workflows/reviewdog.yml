@@ -12,6 +12,15 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           locale: "US"
+          reporter: github-pr-review
+          level: warning
+          exclude: |
+            ./.git/*
+            ./.cache/*
+            vendor/
+            node_modules/
+            yarn.lock
+            .yarn/*
   eslint:
     name: runner / eslint
     runs-on: ubuntu-latest
@@ -28,7 +37,7 @@ jobs:
     name: runner / prettier
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: EPMatt/reviewdog-action-prettier@v1
         with:
           github_token: ${{ secrets.github_token }}
@@ -42,6 +51,7 @@ jobs:
           # More about reviewdog reporter level at
           # https://github.com/reviewdog/reviewdog#reporters
           level: warning
+
   linter_name:
     name: runner / <linter-name>
     runs-on: ubuntu-latest
@@ -72,62 +82,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           submodules: true
       - name: Setup node/npm
-        uses: actions/setup-node@v1
-        with:
-          node-version: '15'
+        uses: ./.github/actions/setup
       - name: textlint-github-pr-check
         uses: tsuyoshicho/action-textlint@v3
         with:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-check
-          textlint_flags: "doc/**"
+          textlint_flags: "src/**"
       - name: textlint-github-check
         uses: tsuyoshicho/action-textlint@v3
         with:
           github_token: ${{ secrets.github_token }}
           reporter: github-check
-          textlint_flags: "doc/**"
+          textlint_flags: "src/**"
       - name: textlint-github-pr-review
         uses: tsuyoshicho/action-textlint@v3
         with:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-review
-          textlint_flags: "doc/**"
-  redpen:
-    name: runner / redpen
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          submodules: true
-      - name: redpen-github-pr-check
-        uses: tsuyoshicho/action-redpen@v1
-        with:
-          github_token: ${{ secrets.github_token }}
-          reporter: github-pr-check
-          basedir: "doc"
-          targets: "*.md"
-          config: "config/redpen-conf-ja.xml"
-      - name: redpen-github-check
-        uses: tsuyoshicho/action-redpen@v1
-        with:
-          github_token: ${{ secrets.github_token }}
-          reporter: github-check
-          basedir: "doc"
-          targets: "*.md"
-          config: "config/redpen-conf-ja.xml"
-      - name: redpen-github-pr-review
-        uses: tsuyoshicho/action-redpen@v1
-        with:
-          github_token: ${{ secrets.github_token }}
-          reporter: github-pr-review
-          basedir: "doc"
-          targets: "*.md"
-          config: "config/redpen-conf-ja.xml"
+          textlint_flags: "src/**"
   shellcheck:
     name: runner / shellcheck
     runs-on: ubuntu-latest
@@ -142,24 +119,11 @@ jobs:
           pattern: "*.sh" # Optional.
           exclude: "./.git/*" # Optional.
           check_all_files_with_shebangs: "false" # Optional.
-  biome:
-      name: runner / Biome
-      runs-on: ubuntu-latest
-      permissions:
-        contents: read
-        pull-requests: write
-      steps:
-        - uses: actions/checkout@v4
-        - uses: mongolyy/reviewdog-action-biome@v1
-          with:
-            github_token: ${{ secrets.github_token }}
-            reporter: github-pr-review
-            fail_on_error: true
   tsc:
     name: runner / tsc
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: EPMatt/reviewdog-action-tsc@v1
         with:
           github_token: ${{ secrets.github_token }}
@@ -187,7 +151,6 @@ jobs:
   ktlint:
     name: Check Code Quality
     runs-on: ubuntu-latest
-
     steps:
       - name: Clone repo
         uses: actions/checkout@master
@@ -203,6 +166,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: reviewdog/action-actionlint@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          reporter: github-pr-review
+          level: warning
   lang:
     name: runner /lang
     runs-on: ubuntu-latest
