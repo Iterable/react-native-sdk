@@ -8,12 +8,6 @@ jobs:
     outputs:
       test-files: ${{ steps.set-test-files.outputs.test-files }}
     steps:
-      - name: Cancel runs from previous PRs
-        uses: fkirc/skip-duplicate-actions@master
-        with:
-          cancel_others: 'true'
-          concurrent_skipping: 'outdated_runs'
-
       - name: Checkout Code
         uses: actions/checkout@v4
 
@@ -24,15 +18,9 @@ jobs:
           echo "test-files=$TEST_FILES" >> $GITHUB_OUTPUT
   build-ios:
     name: iOS - Build app for Detox tests
-    runs-on: macos-14-xlarge
+    runs-on: macos-14
 
     steps:
-      - name: Cancel runs from previous PRs
-        uses: fkirc/skip-duplicate-actions@master
-        with:
-          cancel_others: 'true'
-          concurrent_skipping: 'outdated_runs'
-
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
@@ -54,13 +42,11 @@ jobs:
         run: |
             brew tap wix/brew
             brew install applesimutils
-
       - name: Example App Yarn install
         run: |
           cd example
           yarn install --frozen-lockfile
           cd ..
-
       - uses: actions/cache@v4
         id: cache
         with:
@@ -71,15 +57,13 @@ jobs:
           key: ${{ runner.os }}-pods-${{ hashFiles('example/ios/Podfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-pods-
-
       - name: Pod install
         run: |
           cd example/ios
           pod install
           cd ../..
-
       - name: Build Detox
-        run: yarn example detox:ios:build:ci
+        run: yarn example detox:ios:build
 
       - name: Upload iOS app
         uses: actions/upload-artifact@v4
@@ -93,12 +77,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Cancel runs from previous PRs
-        uses: fkirc/skip-duplicate-actions@master
-        with:
-          cancel_others: 'true'
-          concurrent_skipping: 'outdated_runs'
-
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
@@ -130,9 +108,8 @@ jobs:
           cd example
           yarn install
           cd ..
-
       - name: Build Detox
-        run: yarn example detox:android:build:ci
+        run: yarn example detox:android:build
 
       - name: Upload Android app
         uses: actions/upload-artifact@v4
@@ -144,7 +121,7 @@ jobs:
   run-ios-detox-tests:
     needs: [build-ios, find-test-files]
     name: iOS - Run Detox tests
-    runs-on: macos-14-xlarge
+    runs-on: macos-14
 
     strategy:
       fail-fast: false
@@ -152,12 +129,6 @@ jobs:
         test-file: ${{ fromJson(needs.find-test-files.outputs.test-files) }}
 
     steps:
-      - name: Cancel runs from previous PRs
-        uses: fkirc/skip-duplicate-actions@master
-        with:
-          cancel_others: 'true'
-          concurrent_skipping: 'outdated_runs'
-
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
@@ -167,7 +138,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ios-app-artifact
-          path: example/ios/build/Build/Products/Release-iphonesimulator/ReactNativeSdkExample.app
+          path: example/ios/build/Build/Products/Debug-iphonesimulator/ReactNativeSdkExample.app
 
       - name: Setup
         uses: ./.github/actions/setup
@@ -179,21 +150,22 @@ jobs:
         run: |
             brew tap wix/brew
             brew install applesimutils
-
       - name: Rebuild Detox
         run: |
           cd example
           yarn detox rebuild-framework-cache
           cd ..
+      - name: Start Metro Server
+        env:
+          ITBL_API_KEY: ${{secrets.ITERABLE_API_KEY}}
+          ITBL_ID: ${{secrets.ITBL_ID}}
+        run: cd example && yarn detox:start &
 
       - name: Run Detox tests
         env:
           ITBL_API_KEY: ${{secrets.ITERABLE_API_KEY}}
           ITBL_ID: ${{secrets.ITBL_ID}}
-        run: |
-          cd example
-          yarn detox:ios:test:ci -- ${{ matrix.test-file }}
-          cd ..
+        run: yarn detox:ios:test:ci -- ${{ matrix.test-file }}
 
       - name: Upload Test Artifact - GitHub Action
         if: failure()
@@ -214,12 +186,6 @@ jobs:
           test-file: ${{ fromJson(needs.find-test-files.outputs.test-files) }}
 
     steps:
-      - name: Cancel runs from previous PRs
-        uses: fkirc/skip-duplicate-actions@master
-        with:
-          cancel_others: 'true'
-          concurrent_skipping: 'outdated_runs'
-
       - name: Free Disk Space (Ubuntu)
         uses: jlumbroso/free-disk-space@main
         with:
@@ -240,12 +206,17 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
+      - name: Start Metro Server
+        env:
+          ITBL_API_KEY: ${{secrets.ITERABLE_API_KEY}}
+          ITBL_ID: ${{secrets.ITBL_ID}}
+        run: yarn detox:start &
+
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
-
       - name: Run Detox tests
         uses: reactivecircus/android-emulator-runner@v2
         env:
@@ -258,7 +229,7 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-metrics
           disable-animations: false
-          script: cd example ; yarn detox:android:test:ci -- ${{ matrix.test-file }} cd ..
+          script: yarn detox:android:test:ci -- ${{ matrix.test-file }}
 
       - name: Upload Test Artifact - GitHub Action
         if: failure()
