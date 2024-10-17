@@ -8,6 +8,9 @@ jobs:
     outputs:
       test-files: ${{ steps.set-test-files.outputs.test-files }}
     steps:
+      - name: Cancel runs from previous PRs
+        uses: fkirc/skip-duplicate-actions@master
+
       - name: Checkout Code
         uses: actions/checkout@v4
 
@@ -21,6 +24,9 @@ jobs:
     runs-on: macos-14
 
     steps:
+      - name: Cancel runs from previous PRs
+        uses: fkirc/skip-duplicate-actions@master
+
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
@@ -81,6 +87,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Cancel runs from previous PRs
+        uses: fkirc/skip-duplicate-actions@master
+
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
@@ -129,11 +138,14 @@ jobs:
     runs-on: macos-14
 
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         test-file: ${{ fromJson(needs.find-test-files.outputs.test-files) }}
 
     steps:
+      - name: Cancel runs from previous PRs
+        uses: fkirc/skip-duplicate-actions@master
+
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
@@ -188,11 +200,14 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
           test-file: ${{ fromJson(needs.find-test-files.outputs.test-files) }}
 
     steps:
+      - name: Cancel runs from previous PRs
+        uses: fkirc/skip-duplicate-actions@master
+
       - name: Free Disk Space (Ubuntu)
         uses: jlumbroso/free-disk-space@main
         with:
