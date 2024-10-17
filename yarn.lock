@@ -2333,8 +2333,12 @@ __metadata:
     turbo: ^1.10.7
     typescript: ^5.2.2
   peerDependencies:
+    "@react-navigation/native": "*"
     react: "*"
     react-native: "*"
+    react-native-safe-area-context: "*"
+    react-native-vector-icons: "*"
+    react-native-webview: "*"
   languageName: unknown
   linkType: soft
 
