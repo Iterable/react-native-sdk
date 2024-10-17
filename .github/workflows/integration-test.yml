@@ -32,8 +32,14 @@ jobs:
       - name: pod install
         run: cd example/ios; pod install; cd -
 
+      - name: List devices
+        run: applesimutils --list
+
       - name: Start Metro Server
         run: yarn example detox:start &
+
+      - name: Run doctor
+        run: cd example; npx react-native doctor; cd -
 
       - name: Build App
         run: cd example; yarn build:ios; cd -
