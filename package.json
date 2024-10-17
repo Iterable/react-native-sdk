@@ -167,10 +167,14 @@
       "@react-native",
       "prettier"
     ],
-    "plugins": ["detox"],
-    "overrides":[
+    "plugins": [
+      "detox"
+    ],
+    "overrides": [
       {
-        "files": ["example/e2e/**/*.test.js"],
+        "files": [
+          "example/e2e/**/*.test.js"
+        ],
         "env": {
           "jest": true,
           "detox/detox": true,

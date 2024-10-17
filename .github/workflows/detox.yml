@@ -148,6 +148,9 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
+      - name: Rebuild Detox
+        run: detox clean-framework-cache && detox build-framework-cache
+
       - name: Start Metro Server
         env:
           ITBL_API_KEY: ${{secrets.ITERABLE_API_KEY}}
