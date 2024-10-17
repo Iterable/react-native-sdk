@@ -159,8 +159,7 @@ jobs:
       - name: Rebuild Detox
         run: |
           cd example
-          yarn detox clean-framework-cache
-          yarn detox build-framework-cache
+          yarn detox rebuild-framework-cache
           cd ..
 
       - name: Start Metro Server

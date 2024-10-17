@@ -3,7 +3,10 @@ import { ITBL_API_KEY, ITBL_ID } from '@env';
 
 describe('Example', () => {
   beforeAll(async () => {
-    await device.launchApp();
+    await device.launchApp({
+      launchArgs: { detoxEnableSynchronization: 0 },
+      newInstance: true,
+    });
   });
 
   beforeEach(async () => {});
