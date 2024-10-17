@@ -1,4 +1,4 @@
-import { device, element, by, expect, waitFor } from 'detox';
+import detox, { device, element, by, expect, waitFor } from 'detox';
 import { ITBL_API_KEY, ITBL_ID } from '@env';
 
 describe('Example', () => {
@@ -17,8 +17,8 @@ describe('Example', () => {
   beforeEach(async () => {});
 
   afterAll(async () => {
-    await detox.cleanup();
     await device.terminateApp();
+    await detox.cleanup();
   });
 
   it('should be able to login', async () => {
