@@ -1,4 +1,4 @@
-name: E2E Tests
+name: Run Detox Tests
 on: [pull_request]
 
 jobs:
@@ -148,25 +148,18 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
-      - name: Install ios-deploy, detox, react-native-cli
-        run: npm install -g ios-deploy detox-cli react-native-cli
-
-      - name: Install Applesimutils
-        run: |
-            brew tap wix/brew
-            brew install applesimutils
-
       - name: Rebuild Detox
         run: |
           cd example
-          yarn detox rebuild-framework-cache
+          yarn detox clean-framework-cache
+          yarn detox build-framework-cache
           cd ..
 
       - name: Start Metro Server
         env:
           ITBL_API_KEY: ${{secrets.ITERABLE_API_KEY}}
           ITBL_ID: ${{secrets.ITBL_ID}}
-        run: cd example && yarn detox:start &
+        run: yarn detox:start &
 
       - name: Run Detox tests
         env:
