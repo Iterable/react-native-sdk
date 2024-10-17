@@ -84,3 +84,4 @@ android/generated
 # Iterable
 .env
 .xcode.env.local
+coverage/

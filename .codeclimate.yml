@@ -4,7 +4,6 @@ exclude_patterns:
   - "docs/"
   - "integration-testing/"
   - "**/node_modules/"
-  - "SampleApp/"
   - "scripts/"
   - "**/__mocks__/"
   - "**/__tests__/"
@@ -21,3 +20,20 @@ exclude_patterns:
   - "**/*.yml"
   - "**/build.gradle"
   - "**/AndroidManifest.xml"
+plugins:
+  eslint:
+    enabled: true
+  editorconfig:
+    enabled: true
+  fixme:
+    enabled: true
+  git-legal:
+    enabled: true
+  shellcheck:
+    enabled: true
+  swiftlint:
+    enabled: true
+  tailor:
+    enabled: true
+  tslint:
+    enabled: true
