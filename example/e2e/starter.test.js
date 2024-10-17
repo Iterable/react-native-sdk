@@ -1,15 +1,19 @@
-import detox, { device, element, by, expect, waitFor } from 'detox';
+import { device, element, by, expect, waitFor } from 'detox';
 import { ITBL_API_KEY, ITBL_ID } from '@env';
 
 describe('Example', () => {
   beforeAll(async () => {
     await device.terminateApp();
     await device.launchApp({
-      launchArgs: {
-        DTXEnableVerboseSyncSystem: 'YES',
-        DTXEnableVerboseSyncResources: 'YES',
-      },
-      // launchArgs: { detoxEnableSynchronization: 0 },
+      /**
+       * Uncomment the following lines to enable verbose logging of
+       * synchronization issues.
+       * See: https://wix.github.io/Detox/docs/next/troubleshooting/synchronization
+       */
+      // launchArgs: {
+      //   DTXEnableVerboseSyncSystem: 'YES',
+      //   DTXEnableVerboseSyncResources: 'YES',
+      // },
       newInstance: true,
     });
   });
@@ -18,7 +22,6 @@ describe('Example', () => {
 
   afterAll(async () => {
     await device.terminateApp();
-    // await detox.cleanup();
   });
 
   it('should be able to login', async () => {
