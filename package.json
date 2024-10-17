@@ -38,7 +38,7 @@
   "scripts": {
     "example": "yarn workspace @iterable/react-native-sdk-example",
     "test": "jest",
-    "test-coverage": "jest --coverage",
+    "test:coverage": "jest --coverage",
     "typecheck": "tsc",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
@@ -74,6 +74,7 @@
     "@release-it/conventional-changelog": "^5.0.0",
     "@testing-library/jest-native": "^5.4.3",
     "@testing-library/react-native": "^12.7.2",
+    "@textlint/textlint-plugin-markdown": "^14.2.1",
     "@types/jest": "^29.5.5",
     "@types/react": "^18.2.44",
     "@types/react-native-vector-icons": "^6.4.18",
@@ -81,6 +82,7 @@
     "del-cli": "^5.1.0",
     "eslint": "^8.51.0",
     "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-detox": "^1.0.0",
     "eslint-plugin-prettier": "^5.0.1",
     "jest": "^29.7.0",
     "prettier": "^3.0.3",
@@ -92,6 +94,8 @@
     "react-native-webview": "^13.12.3",
     "react-test-renderer": "^18.3.1",
     "release-it": "^15.0.0",
+    "textlint": "^14.2.1",
+    "textlint-rule-no-todo": "^2.0.1",
     "turbo": "^1.10.7",
     "typescript": "^5.2.2"
   },
@@ -99,12 +103,12 @@
     "@types/react": "^18.2.44"
   },
   "peerDependencies": {
+    "@react-navigation/native": "*",
     "react": "*",
     "react-native": "*",
-    "react-native-vector-icons": "*",
-    "react-native-webview": "*",
     "react-native-safe-area-context": "*",
-    "@react-navigation/native": "*"
+    "react-native-vector-icons": "*",
+    "react-native-webview": "*"
   },
   "workspaces": [
     "example"
@@ -128,7 +132,15 @@
       "src/**/*.{cjs,js,jsx,mjs,ts,tsx}",
       "!src/**/*.test.{cjs,js,jsx,mjs,mdx,ts,tsx}",
       "!src/(__tests__|__mocks__)/*"
-    ]
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 10,
+        "functions": 30,
+        "lines": 30,
+        "statements": 30
+      }
+    }
   },
   "commitlint": {
     "extends": [
@@ -158,6 +170,21 @@
       "@react-native",
       "prettier"
     ],
+    "plugins": [
+      "detox"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "example/e2e/**/*.test.js"
+        ],
+        "env": {
+          "jest": true,
+          "detox/detox": true,
+          "jest/globals": true
+        }
+      }
+    ],
     "rules": {
       "react/react-in-jsx-scope": "off",
       "prettier/prettier": [
@@ -174,7 +201,8 @@
   },
   "eslintIgnore": [
     "node_modules/",
-    "lib/"
+    "lib/",
+    "coverage/"
   ],
   "prettier": {
     "quoteProps": "consistent",

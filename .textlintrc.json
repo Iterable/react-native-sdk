@@ -1,0 +1,8 @@
+{
+  "plugins": {
+    "@textlint/markdown": true
+  },
+  "rules": {
+      "no-todo": true
+  }
+}

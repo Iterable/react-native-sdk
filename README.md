@@ -2,6 +2,11 @@
 
 # Iterable's React Native SDK
 
+[![Maintainability](https://api.codeclimate.com/v1/badges/65c0848df0b79f994139/maintainability)](https://codeclimate.com/repos/5ed53e32f0d7ef01a201bb8d/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/65c0848df0b79f994139/test_coverage)](https://codeclimate.com/repos/5ed53e32f0d7ef01a201bb8d/test_coverage)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+
 [Iterable](https://www.iterable.com) is a growth marketing platform that helps
 you to create better experiences for—and deeper relationships with—your
 customers. Use it to send customized email, SMS, push notification, in-app
@@ -49,12 +54,11 @@ To learn more about the SDK, read:
 
 For sample code, take a look at the following projects:
 
-- [SampleApp (JavaScript)](https://github.com/Iterable/react-native-sdk/tree/master/SampleApp/javascript)
-- [SampleApp (TypeScript)](https://github.com/Iterable/react-native-sdk/tree/master/SampleApp/typescript)
+- [RNIterableSdk Example App](https://github.com/Iterable/react-native-sdk/tree/master/example)
 
 ## Version mapping
 
-For quick reference, the following table lists the versions of the [Android SDK](https://github.com/Iterable/iterable-android-sdk) and the [iOS SDK](https://github.com/Iterable/swift-sdk) the React Native SDK points to for version 1.2.0 and above. 
+For quick reference, the following table lists the versions of the [Android SDK](https://github.com/Iterable/iterable-android-sdk) and the [iOS SDK](https://github.com/Iterable/swift-sdk) the React Native SDK points to for version 1.2.0 and above.
 
 | RN SDK Version                                                              | Android SDK Version                                                          | iOS SDK Version |
 | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | --------------- |
@@ -92,7 +96,7 @@ For quick reference, the following table lists the versions of the [Android SDK]
 Release notes:
 
 - [Release Notes - Iterable's React Native SDK](https://support.iterable.com/hc/articles/360045714352) (major releases)
-- [Releases page on GitHub](https://github.com/Iterable/react-native-sdk/releases) 
+- [Releases page on GitHub](https://github.com/Iterable/react-native-sdk/releases)
   on GitHub (minor releases)
 
 Support policies:
