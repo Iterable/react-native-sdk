@@ -8,13 +8,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Free Disk Space (Ubuntu)
-        uses: jlumbroso/free-disk-space@main
-        with:
-          tool-cache: true
-          android: false
+        uses: actions/checkout@v4
 
       - name: Setup
         uses: ./.github/actions/setup
