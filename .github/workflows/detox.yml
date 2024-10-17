@@ -148,6 +148,9 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
+      - name: Install ios-deploy, detox, react-native-cli
+        run: npm install -g ios-deploy detox-cli react-native-cli
+
       - name: Install Applesimutils
         run: |
             brew tap wix/brew
@@ -164,7 +167,7 @@ jobs:
         env:
           ITBL_API_KEY: ${{secrets.ITERABLE_API_KEY}}
           ITBL_ID: ${{secrets.ITBL_ID}}
-        run: yarn detox:start &
+        run: cd example && yarn detox:start &
 
       - name: Run Detox tests
         env:

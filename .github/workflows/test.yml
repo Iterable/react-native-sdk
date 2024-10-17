@@ -1,0 +1,42 @@
+name: Detox iOS Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  detox-ios:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20.10.0'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Install example dependencies
+        run: cd example ; yarn install ; cd -
+
+      - name: Install Pods
+        run: cd example/ios && pod install && cd ../..
+
+      - name: Start Metro Bundler
+        run: yarn example start --reset-cache &
+        env:
+          RCT_METRO_PORT: 8081
+
+      - name: Build the app for testing
+        run: yarn example detox build --configuration ios.sim.release
+
+      - name: Run Detox tests
+        run: yarn example detox test --configuration ios.sim.release --cleanup
