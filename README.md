@@ -4,6 +4,7 @@
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/65c0848df0b79f994139/maintainability)](https://codeclimate.com/repos/5ed53e32f0d7ef01a201bb8d/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/65c0848df0b79f994139/test_coverage)](https://codeclimate.com/repos/5ed53e32f0d7ef01a201bb8d/test_coverage)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
 [Iterable](https://www.iterable.com) is a growth marketing platform that helps

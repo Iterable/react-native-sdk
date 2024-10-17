@@ -1,5 +1,37 @@
-# Tests should be moved here in the future.
+# # Tests should be moved here in the future.
+# version: 2.1
+
+# references:
+#   machine_config: &machine_config
+#     machine:
+#       image: default
+
+#   defaults: &defaults
+#     resource_class: large
+#     working_directory: ~/react-native-sdk
+#     docker:
+#       - image: cimg/node:20.10
+
+# orbs:
+#   node: circleci/node@6.3.0
+#   android: circleci/android@3.0.0
+#   rn: react-native-community/react-native@8.0.0
+#   ruby: circleci/ruby@2.2.1
+
+# jobs:
+#   install:
+#     <<: *defaults
+#     steps:
+#       - checkout
+# workflows:
+#   build:
+#     jobs:
+#       - install
+
 version: 2.1
+
+orbs:
+  node: circleci/node@6.3.0
 
 references:
   machine_config: &machine_config
@@ -12,18 +44,71 @@ references:
     docker:
       - image: cimg/node:20.10
 
-orbs:
-  node: circleci/node@6.3.0
-  android: circleci/android@3.0.0
-  rn: react-native-community/react-native@8.0.0
-  ruby: circleci/ruby@2.2.1
+executors:
+  detox-executor:
+    macos:
+      xcode: "14.3.1"  # Use the appropriate Xcode version for your project
+    working_directory: ~/react-native-sdk
 
 jobs:
-  install:
+  detox:
     <<: *defaults
+    executor: detox-executor
     steps:
       - checkout
+
+      - run:
+          name: Install Node.js
+          command: |
+            node -v
+            npm -v
+
+      - run:
+          name: Install Yarn
+          command: |
+            npm install -g yarn
+            yarn -v
+
+      - run:
+          name: Install Detox CLI
+          command: |
+            npm install -g detox-cli
+
+      - run:
+          name: Install Project Dependencies
+          command: |
+            yarn install
+
+      - run:
+          name: Install Example Dependencies
+          command: |
+            cd example
+            yarn install
+            cd ..
+
+      - run:
+          name: Install iOS Dependencies
+          command: |
+            cd example/ios
+            pod install
+            cd ../..
+
+      - run:
+          name: Build the App for Detox
+          command: |
+            cd example
+            detox build --configuration ios.sim.release
+            cd ..
+
+      - run:
+          name: Run Detox Tests
+          command: |
+            cd example
+            detox test --configuration ios.sim.release
+            cd ..
+
 workflows:
-  build:
+  version: 2
+  detox-tests:
     jobs:
-      - install
+      - detox

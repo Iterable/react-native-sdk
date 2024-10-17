@@ -61,6 +61,9 @@ jobs:
         run: cd example ; yarn detox build --configuration ios.sim.release ; cd -
 
       - name: Detox test
+        env:
+          ITBL_API_KEY: ${{secrets.ITERABLE_API_KEY}}
+          ITBL_ID: ${{secrets.ITBL_ID}}
         run: cd example ; yarn detox test --configuration ios.sim.release --cleanup --headless --record-logs all ; cd -
 
       - name: Upload artifacts
