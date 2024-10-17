@@ -17,6 +17,10 @@ module.exports = {
     plugins: {
       log: process.env.CI ? 'failing' : undefined,
       screenshot: process.env.CI ? 'failing' : undefined,
+      video: process.env.CI ? 'failing' : undefined,
+      timeline: process.env.CI ? 'all' : undefined,
+      instruments: process.env.CI ? 'all' : undefined,
+      uiHierarchy: process.env.DETOX_ARGV_OVERRIDE ? 'enabled' : undefined,
     },
   },
   apps: {
@@ -50,7 +54,6 @@ module.exports = {
       headless: Boolean(process.env.CI),
       device: {
         type: 'iPhone SE (3rd generation)',
-        // type: 'iPhone 11'
       },
     },
     attached: {

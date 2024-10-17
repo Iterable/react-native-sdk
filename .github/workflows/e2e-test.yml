@@ -79,7 +79,7 @@ jobs:
           cd ../..
 
       - name: Build Detox
-        run: yarn example detox:ios:build
+        run: yarn example detox:ios:build:ci
 
       - name: Upload iOS app
         uses: actions/upload-artifact@v4
@@ -132,7 +132,7 @@ jobs:
           cd ..
 
       - name: Build Detox
-        run: yarn example detox:android:build
+        run: yarn example detox:android:build:ci
 
       - name: Upload Android app
         uses: actions/upload-artifact@v4
