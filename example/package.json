@@ -11,9 +11,11 @@
     "detox": "detox",
     "detox:start": "E2E_TESTS='true' react-native start",
     "detox:android:build": "detox build --configuration android.emu.debug",
+    "detox:android:build:ci": "detox build --configuration android.emu.release",
     "detox:ios:build": "detox build --configuration ios.sim.debug",
-    "detox:android:test:ci": "detox test --configuration android.emu.debug --headless --record-logs failing --record-videos failing --take-screenshots failing",
-    "detox:ios:test:ci": "detox test --configuration ios.sim.debug --headless --record-logs failing --record-videos failing --take-screenshots failing"
+    "detox:ios:build:ci": "detox build --configuration ios.sim.release",
+    "detox:android:test:ci": "detox test --configuration android.emu.debug --headless --record-logs failing --record-videos failing --take-screenshots failing --cleanup --maxWorkers=2 --debug-synchronization 500",
+    "detox:ios:test:ci": "detox test --configuration ios.sim.debug --headless --record-logs failing --record-videos failing --take-screenshots failing --cleanup --maxWorkers=2 --debug-synchronization 500"
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^6.6.1",

@@ -2,7 +2,6 @@ version: "2"
 exclude_patterns:
   - ".*/"
   - "docs/"
-  - "integration-testing/"
   - "**/node_modules/"
   - "scripts/"
   - "**/__mocks__/"

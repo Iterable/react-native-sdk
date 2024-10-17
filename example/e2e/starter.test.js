@@ -11,6 +11,11 @@ describe('Example', () => {
 
   beforeEach(async () => {});
 
+  afterAll(async () => {
+    await detox.cleanup();
+    await device.terminateApp();
+  });
+
   it('should be able to login', async () => {
     await expect(element(by.text('Login'))).toBeVisible();
     await element(by.id('api-key')).replaceText(ITBL_API_KEY);
