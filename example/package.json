@@ -14,8 +14,8 @@
     "detox:android:build:ci": "detox build --configuration android.emu.debug",
     "detox:ios:build": "detox build --configuration ios.sim.debug",
     "detox:ios:build:ci": "detox build --configuration ios.sim.debug",
-    "detox:android:test:ci": "detox test --configuration android.emu.debug --headless --record-logs all --record-videos failing --take-screenshots failing --cleanup --maxWorkers=2 --debug-synchronization 500 -l trace",
-    "detox:ios:test:ci": "detox test --configuration ios.sim.debug --headless --record-logs all --record-videos failing --take-screenshots failing --cleanup --maxWorkers=2 --debug-synchronization 500 -l trace"
+    "detox:android:test:ci": "detox test --configuration android.emu.debug --headless --record-logs failing --record-videos failing --take-screenshots failing --cleanup --maxWorkers=2 --debug-synchronization 500 -l trace",
+    "detox:ios:test:ci": "detox test --configuration ios.sim.debug --headless --record-logs failing --record-videos failing --take-screenshots failing --cleanup --maxWorkers=2 --debug-synchronization 500 -l trace"
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^6.6.1",
