@@ -5,6 +5,10 @@ describe('Example', () => {
   beforeAll(async () => {
     await device.terminateApp();
     await device.launchApp({
+      launchArgs: {
+        DTXEnableVerboseSyncSystem: 'YES',
+        DTXEnableVerboseSyncResources: 'YES',
+      },
       // launchArgs: { detoxEnableSynchronization: 0 },
       newInstance: true,
     });
