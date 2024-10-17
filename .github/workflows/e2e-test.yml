@@ -21,7 +21,7 @@ jobs:
           echo "test-files=$TEST_FILES" >> $GITHUB_OUTPUT
   build-ios:
     name: iOS - Build app for Detox tests
-    runs-on: macos-14
+    runs-on: macos-14-xlarge
 
     steps:
       - name: Cancel runs from previous PRs
@@ -135,7 +135,7 @@ jobs:
   run-ios-detox-tests:
     needs: [build-ios, find-test-files]
     name: iOS - Run Detox tests
-    runs-on: macos-14
+    runs-on: macos-14-xlarge
 
     strategy:
       fail-fast: true
