@@ -108,7 +108,6 @@ jobs:
             cd ..
 
 workflows:
-  version: 2
   detox-tests:
     jobs:
       - detox
