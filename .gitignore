@@ -85,3 +85,5 @@ android/generated
 .env
 .xcode.env.local
 coverage/
+.watchman-*
+artifacts/
