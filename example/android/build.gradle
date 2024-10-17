@@ -16,6 +16,16 @@ buildscript {
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
     }
+ }
+
+ allprojects {
+    repositories {
+        google()
+        maven { // (4)
+            url("$rootDir/../node_modules/detox/Detox-android")
+        }
+        maven { url 'https://www.jitpack.io' }
+    }
 }
 
 apply plugin: "com.facebook.react.rootproject"
