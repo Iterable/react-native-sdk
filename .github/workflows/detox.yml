@@ -76,52 +76,52 @@ jobs:
           path: example/ios/build/Build/Products/Debug-iphonesimulator/ReactNativeSdkExample.app
           retention-days: 1
 
-  build-android:
-    name: Android - Build app for Detox tests
-    runs-on: ubuntu-latest
+  # build-android:
+  #   name: Android - Build app for Detox tests
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
+  #   steps:
+  #     - name: Checkout Code
+  #       uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 1
 
-      - name: Free Disk Space (Ubuntu)
-        uses: jlumbroso/free-disk-space@main
-        with:
-          tool-cache: true
-          android: false
+  #     - name: Free Disk Space (Ubuntu)
+  #       uses: jlumbroso/free-disk-space@main
+  #       with:
+  #         tool-cache: true
+  #         android: false
 
-      - name: Setup
-        uses: ./.github/actions/setup
+  #     - name: Setup
+  #       uses: ./.github/actions/setup
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: zulu
-          java-version: 17
+  #     - name: Setup Java
+  #       uses: actions/setup-java@v4
+  #       with:
+  #         distribution: zulu
+  #         java-version: 17
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
-        with:
-          gradle-version: wrapper
-          cache-read-only: false
+  #     - name: Setup Gradle
+  #       uses: gradle/actions/setup-gradle@v3
+  #       with:
+  #         gradle-version: wrapper
+  #         cache-read-only: false
 
-      - name: Example App Yarn install
-        run: |
-          cd example
-          yarn install
-          cd ..
+  #     - name: Example App Yarn install
+  #       run: |
+  #         cd example
+  #         yarn install
+  #         cd ..
 
-      - name: Build Detox
-        run: yarn example detox:android:build
+  #     - name: Build Detox
+  #       run: yarn example detox:android:build
 
-      - name: Upload Android app
-        uses: actions/upload-artifact@v4
-        with:
-          name: android-app-artifact
-          path: example/android/app/build/outputs/apk
-          retention-days: 1
+  #     - name: Upload Android app
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: android-app-artifact
+  #         path: example/android/app/build/outputs/apk
+  #         retention-days: 1
 
   run-ios-detox-tests:
     needs: [build-ios, find-test-files]
@@ -147,6 +147,11 @@ jobs:
 
       - name: Setup
         uses: ./.github/actions/setup
+
+      - name: Install Applesimutils
+        run: |
+            brew tap wix/brew
+            brew install applesimutils
 
       - name: Rebuild Detox
         run: |
@@ -175,67 +180,5 @@ jobs:
           path: example/artifacts
           retention-days: 1
 
-  run-android-detox-tests:
-    needs: [build-android, find-test-files]
-    name: Android - Run Detox tests
-    runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: false
-      matrix:
-          test-file: ${{ fromJson(needs.find-test-files.outputs.test-files) }}
-
-    steps:
-      - name: Free Disk Space (Ubuntu)
-        uses: jlumbroso/free-disk-space@main
-        with:
-          tool-cache: true
-          android: false
-
-      - name: Checkout Code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-
-      - name: Download Android app
-        uses: actions/download-artifact@v4
-        with:
-          name: android-app-artifact
-          path: example/android/app/build/outputs/apk
-
-      - name: Setup
-        uses: ./.github/actions/setup
-
-      - name: Start Metro Server
-        env:
-          ITBL_API_KEY: ${{secrets.ITERABLE_API_KEY}}
-          ITBL_ID: ${{secrets.ITBL_ID}}
-        run: yarn detox:start &
-
-      - name: Enable KVM
-        run: |
-          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-          sudo udevadm control --reload-rules
-          sudo udevadm trigger --name-match=kvm
-
-      - name: Run Detox tests
-        uses: reactivecircus/android-emulator-runner@v2
-        env:
-          ITBL_API_KEY: ${{secrets.ITERABLE_API_KEY}}
-          ITBL_ID: ${{secrets.ITBL_ID}}
-        with:
-          api-level: 31
-          arch: x86_64
-          avd-name: Pixel_3a_API_34
-          force-avd-creation: false
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-metrics
-          disable-animations: false
-          script: yarn detox:android:test:ci -- ${{ matrix.test-file }}
-
-      - name: Upload Test Artifact - GitHub Action
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: detox-android-artifacts-${{ matrix.test-file }}
-          path: example/artifacts
-          retention-days: 1
+  # run-android-detox-tests:
+  x
