@@ -10,6 +10,9 @@ jobs:
     steps:
       - name: Cancel runs from previous PRs
         uses: fkirc/skip-duplicate-actions@master
+        with:
+          cancel_others: 'true'
+          concurrent_skipping: 'outdated_runs'
 
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -26,6 +29,9 @@ jobs:
     steps:
       - name: Cancel runs from previous PRs
         uses: fkirc/skip-duplicate-actions@master
+        with:
+          cancel_others: 'true'
+          concurrent_skipping: 'outdated_runs'
 
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -89,6 +95,9 @@ jobs:
     steps:
       - name: Cancel runs from previous PRs
         uses: fkirc/skip-duplicate-actions@master
+        with:
+          cancel_others: 'true'
+          concurrent_skipping: 'outdated_runs'
 
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -145,6 +154,9 @@ jobs:
     steps:
       - name: Cancel runs from previous PRs
         uses: fkirc/skip-duplicate-actions@master
+        with:
+          cancel_others: 'true'
+          concurrent_skipping: 'outdated_runs'
 
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -207,6 +219,9 @@ jobs:
     steps:
       - name: Cancel runs from previous PRs
         uses: fkirc/skip-duplicate-actions@master
+        with:
+          cancel_others: 'true'
+          concurrent_skipping: 'outdated_runs'
 
       - name: Free Disk Space (Ubuntu)
         uses: jlumbroso/free-disk-space@main
