@@ -43,11 +43,7 @@
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prepare": "bob build",
-    "release": "release-it",
-    "detox:android:build": "yarn example detox build --configuration android.emu.debug",
-    "detox:ios:build": "yarn example detox build --configuration ios.sim.debug",
-    "detox:android:test:ci": "yarn example detox test --configuration android.emu.debug --headless --record-logs failing --record-videos failing --take-screenshots failing",
-    "detox:ios:test:ci": "yarn example detox test --configuration ios.sim.debug --headless --record-logs failing --record-videos failing --take-screenshots failing"
+    "release": "release-it"
   },
   "keywords": [
     "react-native",
@@ -199,8 +195,7 @@
   "eslintIgnore": [
     "node_modules/",
     "lib/",
-    "coverage/",
-    "integration-testing/"
+    "coverage/"
   ],
   "prettier": {
     "quoteProps": "consistent",
