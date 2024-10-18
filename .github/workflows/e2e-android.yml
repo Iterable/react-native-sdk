@@ -1,0 +1,102 @@
+name: E2E - Android
+on: push
+
+jobs:
+  e2e-android:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          # tool-cache: true
+          android: false
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Install detox, detox-cli, react-native-cli
+        run: npm install -g detox detox-cli react-native-cli
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          # cache: gradle
+          distribution: zulu
+          java-version: 17
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: wrapper
+          # cache-read-only: false
+
+      - name: Example App Yarn install
+        run: |
+          cd example
+          yarn install --immutable
+          cd ..
+
+      # - name: Cache Detox build
+      #   id: cache-detox-build
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: example/android/app/build
+      #     key: ${{ runner.os }}-detox-build
+      #     restore-keys: |
+      #       ${{ runner.os }}-detox-build
+
+      - name: Detox build
+        env:
+          ITBL_API_KEY: ${{ secrets.ITERABLE_API_KEY }}
+          ITBL_ID: ${{ secrets.ITBL_ID }}
+          CI: true
+        run: |
+          cd example
+          yarn detox build --configuration android.emu.release
+          cd ..
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Get device name
+        id: device
+        run: node -e "console.log('AVD_NAME=' + require('./example/.detoxrc').devices.emulator.device.avdName)" >> $GITHUB_OUTPUT
+
+      - name: Detox test
+        uses: reactivecircus/android-emulator-runner@v2
+        env:
+          ITBL_API_KEY: ${{ secrets.ITERABLE_API_KEY }}
+          ITBL_ID: ${{ secrets.ITBL_ID }}
+          CI: true
+        with:
+          api-level: 31
+          arch: x86_64
+          avd-name: ${{ steps.device.outputs.AVD_NAME }}
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-metrics
+          disable-animations: true
+          script: |
+            yarn detox test --configuration android.emu.release \
+            --headless \
+            --record-logs all \
+            --record-videos all \
+            --take-screenshots all \
+            --capture-view-hierarchy enabled \
+            --maxWorkers=2  \
+            --debug-synchronization 500 \
+            -l trace \
+            --cleanup
+
+      - name: Upload artifacts
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: detox-artifacts
+          path: example/artifacts
