@@ -7,7 +7,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Free Disk Space (Ubuntu)
         uses: jlumbroso/free-disk-space@main
@@ -18,18 +18,18 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
-      - name: Install detox, detox-cli react-native-cli
+      - name: Install detox, detox-cli, react-native-cli
         run: npm install -g detox detox-cli react-native-cli
 
       - name: Setup Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v3
         with:
           # cache: gradle
           distribution: zulu
           java-version: 17
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
+        uses: gradle/gradle-build-action@v2
         with:
           gradle-version: wrapper
           # cache-read-only: false
@@ -42,7 +42,7 @@ jobs:
 
       # - name: Cache Detox build
       #   id: cache-detox-build
-      #   uses: actions/cache@v4
+      #   uses: actions/cache@v3
       #   with:
       #     path: example/android/app/build
       #     key: ${{ runner.os }}-detox-build
@@ -51,8 +51,8 @@ jobs:
 
       - name: Detox build
         env:
-          ITBL_API_KEY: ${{secrets.ITERABLE_API_KEY}}
-          ITBL_ID: ${{secrets.ITBL_ID}}
+          ITBL_API_KEY: ${{ secrets.ITERABLE_API_KEY }}
+          ITBL_ID: ${{ secrets.ITBL_ID }}
           CI: true
         run: |
           cd example
@@ -72,8 +72,8 @@ jobs:
       - name: Detox test
         uses: reactivecircus/android-emulator-runner@v2
         env:
-          ITBL_API_KEY: ${{secrets.ITERABLE_API_KEY}}
-          ITBL_ID: ${{secrets.ITBL_ID}}
+          ITBL_API_KEY: ${{ secrets.ITERABLE_API_KEY }}
+          ITBL_ID: ${{ secrets.ITBL_ID }}
           CI: true
         with:
           api-level: 31
@@ -82,11 +82,11 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-metrics
           disable-animations: true
-          script: yarn detox test --configuration android.emu.release --headless --record-logs all --record-videos failing --take-screenshots failing --record-timeline all --capture-view-hierarchy enabled --cleanup --maxWorkers=2 --workers 1 --debug-synchronization 500 -l trace --cleanup --reuse
+          script: yarn detox test --configuration android.emu.release --headless --record-logs all --record-videos failing --take-screenshots failing --capture-view-hierarchy enabled --maxWorkers=2  --debug-synchronization 500 -l trace --cleanup --reuse
 
       - name: Upload artifacts
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: detox-artifacts
           path: example/artifacts
