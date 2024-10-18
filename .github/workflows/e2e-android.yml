@@ -82,7 +82,7 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-metrics
           disable-animations: true
-          script: yarn detox test --configuration android.emu.release --headless --record-logs all --record-videos failing --take-screenshots failing --capture-view-hierarchy enabled --maxWorkers=2  --debug-synchronization 500 -l trace --cleanup
+          script: yarn detox test --configuration android.emu.release --headless --record-logs all --record-videos all --take-screenshots all --capture-view-hierarchy enabled --maxWorkers=2  --debug-synchronization 500 -l trace --cleanup
 
       - name: Upload artifacts
         if: failure()
