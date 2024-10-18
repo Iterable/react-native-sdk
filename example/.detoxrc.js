@@ -15,13 +15,15 @@ module.exports = {
   },
   skipLegacyWorkersInjection: true,
   testRunner: {
+    detached: true,
+    forwardEnv: true,
     args: {
       $0: 'jest',
       config: 'e2e/jest.config.js',
-      maxWorkers: process.env.CI ? 2 : undefined,
+      maxWorkers: 1,
     },
     jest: {
-      setupTimeout: 120000,
+      setupTimeout: 1200000,
     },
   },
   artifacts: {
@@ -31,7 +33,7 @@ module.exports = {
       video: process.env.CI ? 'failing' : undefined,
       timeline: process.env.CI ? 'all' : undefined,
       instruments: process.env.CI ? 'all' : undefined,
-      uiHierarchy: process.env.DETOX_ARGV_OVERRIDE ? 'enabled' : undefined,
+      uiHierarchy: 'enabled',
     },
   },
   apps: {

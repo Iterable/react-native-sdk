@@ -85,7 +85,8 @@ android {
         versionCode 1
         versionName "1.0"
         testBuildType System.getProperty('testBuildType', 'debug')
-        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        // testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        testInstrumentationRunner 'com.iterable.reactnativesdk.example.DetoxTestAppJUnitRunner'
     }
     signingConfigs {
         debug {
@@ -116,7 +117,6 @@ android {
 }
 
 dependencies {
-    androidTestImplementation('com.wix:detox:+')
     implementation 'androidx.appcompat:appcompat:1.1.0'
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
@@ -126,6 +126,10 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+
+    // androidTestImplementation('com.wix:detox:+')
+    androidTestImplementation 'com.wix:detox:+'
+    androidTestImplementation 'com.linkedin.testbutler:test-butler-library:2.2.1'
 }
 
 apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
