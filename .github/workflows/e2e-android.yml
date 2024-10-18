@@ -66,6 +66,7 @@ jobs:
           sudo udevadm trigger --name-match=kvm
 
       - name: Unregister runners
+        continue-on-error: true
         run: echo "[]" > ~/.local/share/Detox/device.registry.state.lock
 
       - name: Get device name

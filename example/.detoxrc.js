@@ -1,5 +1,15 @@
 /** @type {Detox.DetoxConfig} */
 module.exports = {
+  behavior: {
+    init: {
+      reinstallApp: true,
+      exposeGlobals: true,
+    },
+    launchApp: 'auto',
+    cleanup: {
+      shutdownDevice: true,
+    },
+  },
   logger: {
     level: process.env.CI ? 'debug' : undefined,
   },

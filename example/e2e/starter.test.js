@@ -3,7 +3,7 @@ import { ITBL_API_KEY, ITBL_ID } from '@env';
 
 describe('Example', () => {
   beforeAll(async () => {
-    await detox.init();
+    // await detox.init();
     // await device.terminateApp();
     await device.launchApp({
       /**
