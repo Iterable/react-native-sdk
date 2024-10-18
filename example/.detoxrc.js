@@ -3,6 +3,7 @@ module.exports = {
   logger: {
     level: process.env.CI ? 'debug' : undefined,
   },
+  skipLegacyWorkersInjection: true,
   testRunner: {
     args: {
       $0: 'jest',
@@ -45,7 +46,8 @@ module.exports = {
     'android.release': {
       type: 'android.apk',
       binaryPath: 'android/app/build/outputs/apk/release/app-release.apk',
-      build: 'cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release',
+      build:
+        'cd android ; ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release ; cd -',
     },
   },
   devices: {
@@ -69,6 +71,17 @@ module.exports = {
       device: {
         avdName: 'Pixel_3a_API_34',
       },
+    },
+    'emulator.ci': {
+      type: 'android.emulator',
+      device: {
+        avdName: 'Pixel_3a_API_34',
+      },
+      bootArgs: '-no-boot-anim -noaudio -camera-back none',
+      headless: true,
+      gpuMode: 'swiftshader_indirect',
+      readonly: true,
+      forceAdbInstall: true,
     },
   },
   configurations: {
@@ -105,7 +118,7 @@ module.exports = {
       app: 'android.debug',
     },
     'android.emu.release': {
-      device: 'emulator',
+      device: 'emulator.ci',
       app: 'android.release',
     },
   },

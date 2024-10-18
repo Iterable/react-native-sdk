@@ -3,7 +3,8 @@ import { ITBL_API_KEY, ITBL_ID } from '@env';
 
 describe('Example', () => {
   beforeAll(async () => {
-    await device.terminateApp();
+    await detox.init();
+    // await device.terminateApp();
     await device.launchApp({
       /**
        * Uncomment the following lines to enable verbose logging of
