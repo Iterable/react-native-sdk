@@ -42,7 +42,7 @@ Iterable.inAppManager.getMessages().then((messages) => {
         onValueChange={setConsume}
       />
       <Text style={formStyles.label}>Code:</Text>
-      <CodeBlock codeString={codeString} style={{ height: 270 }} />
+      <CodeBlock codeString={codeString} blockHeight={270} />
       <Pressable
         style={formStyles.button}
         onPress={() => {

@@ -33,6 +33,7 @@ export const Login = ({ navigation }: RootStackScreenProps<Route.Login>) => {
           <View style={styles.formContainer}>
             <Text style={styles.label}>API key</Text>
             <TextInput
+              testID="api-key"
               style={styles.input}
               onChangeText={setApiKey}
               value={apiKey}
@@ -42,6 +43,7 @@ export const Login = ({ navigation }: RootStackScreenProps<Route.Login>) => {
             />
             <Text style={styles.label}>Email address or User Id</Text>
             <TextInput
+              testID="user-id"
               style={styles.input}
               onChangeText={setUserId}
               value={userId}
