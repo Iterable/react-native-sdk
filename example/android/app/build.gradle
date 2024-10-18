@@ -84,6 +84,9 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        testBuildType System.getProperty('testBuildType', 'debug')
+        // testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        testInstrumentationRunner 'com.iterable.reactnativesdk.example.DetoxTestAppJUnitRunner'
     }
     signingConfigs {
         debug {
@@ -103,11 +106,18 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            proguardFile "${rootProject.projectDir}/../node_modules/detox/android/detox/proguard-rules-app.pro"
+        }
+    }
+    sourceSets {
+        androidTest {
+            java.srcDirs += 'src/androidTest/java'
         }
     }
 }
 
 dependencies {
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
 
@@ -116,6 +126,10 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+
+    // androidTestImplementation('com.wix:detox:+')
+    androidTestImplementation 'com.wix:detox:+'
+    androidTestImplementation 'com.linkedin.testbutler:test-butler-library:2.2.1'
 }
 
 apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")

@@ -14,6 +14,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Cancel runs from previous PRs
+        uses: fkirc/skip-duplicate-actions@master
+        with:
+          cancel_others: 'true'
+          concurrent_skipping: 'outdated_runs'
+
       - uses: actions/checkout@v3
 
       - name: Setup
@@ -34,6 +40,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Cancel runs from previous PRs
+        uses: fkirc/skip-duplicate-actions@master
+        with:
+          cancel_others: 'true'
+          concurrent_skipping: 'outdated_runs'
+
       - uses: actions/checkout@v3
 
       - name: Setup
