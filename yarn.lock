@@ -2021,15 +2021,19 @@ __metadata:
     react: 18.3.1
     react-native: 0.75.3
     react-native-builder-bob: ^0.30.2
-    react-native-safe-area-context: ^4.11.0
+    react-native-safe-area-context: ^4.11.1
     react-native-vector-icons: ^10.2.0
-    react-native-webview: ^13.12.2
+    react-native-webview: ^13.12.3
     release-it: ^15.0.0
     turbo: ^1.10.7
     typescript: ^5.2.2
   peerDependencies:
+    "@react-navigation/native": "*"
     react: "*"
     react-native: "*"
+    react-native-safe-area-context: "*"
+    react-native-vector-icons: "*"
+    react-native-webview: "*"
   languageName: unknown
   linkType: soft
 
@@ -10919,13 +10923,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-safe-area-context@npm:^4.11.0":
-  version: 4.11.0
-  resolution: "react-native-safe-area-context@npm:4.11.0"
+"react-native-safe-area-context@npm:^4.11.1":
+  version: 4.11.1
+  resolution: "react-native-safe-area-context@npm:4.11.1"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 6d6af265ecf1b9cb45e042a335f2c5da472ad41eb5d4fda8e31a1607b344726f0f4f9501ef3a3a731cec3784ba93485b44cbdafbf5f13055caa130c703bbd307
+  checksum: fddb4c72c8ec404602317a3d52c555a5f4173dcb94d8403c8368fb8a556ad41741f87419e052fa26e55a80732abb144f16bb6475d808dff392da5480ff7ec813
   languageName: node
   linkType: hard
 
@@ -10944,16 +10948,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-webview@npm:^13.12.2":
-  version: 13.12.2
-  resolution: "react-native-webview@npm:13.12.2"
+"react-native-webview@npm:^13.12.3":
+  version: 13.12.3
+  resolution: "react-native-webview@npm:13.12.3"
   dependencies:
     escape-string-regexp: ^4.0.0
     invariant: 2.2.4
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: d84b2e2e75dc484eb40f8e285607b9686693f2d31e95802e2b358dc0820bcc294b438a77174eba157c31d95675c962c61c94885629af999416ad1355e9618fe0
+  checksum: 94d824fedc6b5c0402926b99a96f71f4752416e4f038be827552015c0bf6d595d71ba656079618402662aec5e2c539018b0bff2906b6f95261f70893e5dd5d80
   languageName: node
   linkType: hard
 
