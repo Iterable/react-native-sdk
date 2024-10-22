@@ -1,8 +1,8 @@
-import { MockRNIterableAPI } from './MockRNIterableAPI'
-import { MockLinking } from './MockLinking'
+import { MockRNIterableAPI } from './MockRNIterableAPI';
+import { MockLinking } from './MockLinking';
 
-import * as ReactNative from 'react-native'
-jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter.js')
+import * as ReactNative from 'react-native';
+jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter.js');
 
 jest.doMock('react-native', () => {
   // Extend ReactNative
@@ -11,10 +11,10 @@ jest.doMock('react-native', () => {
       // Mock RNIterableAPI
       NativeModules: {
         ...ReactNative.NativeModules,
-        RNIterableAPI: MockRNIterableAPI
+        RNIterableAPI: MockRNIterableAPI,
       },
-      Linking: MockLinking
+      Linking: MockLinking,
     },
     ReactNative
-  )
-})
+  );
+});
