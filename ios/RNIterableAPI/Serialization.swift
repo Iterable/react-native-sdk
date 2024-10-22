@@ -50,6 +50,17 @@ extension IterableConfig {
         if let pushIntegrationName = dict["pushIntegrationName"] as? String {
             config.pushIntegrationName = pushIntegrationName
         }
+
+        if let pushPlatform = dict["pushPlatform"] as? NSNumber {
+            switch  pushPlatform {
+            case 0:
+                config.pushPlatform = .sandbox
+            case 1:
+                config.pushPlatform = .production
+            default:
+                config.pushPlatform = .auto
+            }
+        }
         
         if let autoPushRegistration = dict["autoPushRegistration"] as? Bool {
             config.autoPushRegistration = autoPushRegistration
