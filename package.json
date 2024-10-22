@@ -2,187 +2,63 @@
   "name": "@iterable/react-native-sdk",
   "version": "2.0.0-alpha",
   "description": "Iterable SDK for React Native.",
-  "source": "./src/index.tsx",
-  "main": "./lib/commonjs/index.js",
-  "module": "./lib/module/index.js",
-  "exports": {
-    ".": {
-      "import": {
-        "types": "./lib/typescript/module/src/index.d.ts",
-        "default": "./lib/module/index.js"
-      },
-      "require": {
-        "types": "./lib/typescript/commonjs/src/index.d.ts",
-        "default": "./lib/commonjs/index.js"
-      }
-    }
-  },
-  "files": [
-    "src",
-    "lib",
-    "android",
-    "ios",
-    "cpp",
-    "*.podspec",
-    "!ios/build",
-    "!android/build",
-    "!android/gradle",
-    "!android/gradlew",
-    "!android/gradlew.bat",
-    "!android/local.properties",
-    "!**/__tests__",
-    "!**/__fixtures__",
-    "!**/__mocks__",
-    "!**/.*"
-  ],
+  "main": "./js/index.js",
+  "types": "./js/index.d.ts",
   "scripts": {
-    "example": "yarn workspace @iterable/react-native-sdk-example",
     "test": "jest",
-    "typecheck": "tsc",
-    "lint": "eslint \"**/*.{js,ts,tsx}\"",
-    "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
-    "prepare": "bob build",
-    "release": "release-it"
+    "coverage": "jest --coverage",
+    "lint": "eslint . --ext .js,.ts,.jsx,.tsx"
   },
   "keywords": [
     "react-native",
-    "ios",
-    "android",
     "Iterable"
   ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Iterable/react-native-sdk.git"
   },
-  "author": "Iterable <docs@iterable.com> (https://support.iterable.com/hc/en-us/articles/360045714072-Overview-of-Iterable-s-React-Native-SDK)",
+  "author": "Iterable",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Iterable/react-native-sdk/issues"
-  },
-  "homepage": "https://github.com/Iterable/react-native-sdk#readme",
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+  "homepage": "https://github.com/Iterable/react-native-sdk",
+  "dependencies": {
+    "@react-native-community/hooks": "^2.6.0",
+    "@react-navigation/native": "^6.0.6",
+    "eslint": "^8.0.1",
+    "eslint-config-airbnb": "^19.0.4",
+    "react-native-safe-area-context": "^4.1.2",
+    "react-native-vector-icons": "^9.0.0",
+    "react-native-webview": "^11.0.0"
   },
   "devDependencies": {
-    "@commitlint/config-conventional": "^17.0.2",
-    "@evilmartians/lefthook": "^1.5.0",
-    "@react-native/eslint-config": "^0.73.1",
-    "@release-it/conventional-changelog": "^5.0.0",
-    "@types/jest": "^29.5.5",
-    "@types/react": "^18.2.44",
-    "commitlint": "^17.0.2",
-    "del-cli": "^5.1.0",
-    "eslint": "^8.51.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-prettier": "^5.0.1",
-    "jest": "^29.7.0",
-    "prettier": "^3.0.3",
-    "react": "18.3.1",
-    "react-native": "0.75.3",
-    "react-native-builder-bob": "^0.30.2",
-    "release-it": "^15.0.0",
-    "turbo": "^1.10.7",
-    "typescript": "^5.2.2"
-  },
-  "resolutions": {
-    "@types/react": "^18.2.44"
+    "@babel/core": "^7.10.2",
+    "@testing-library/react-native": "^7.2.0",
+    "@types/jest": "^26.0.0",
+    "@types/react": "^16.9.23",
+    "@types/react-native": "^0.62.13",
+    "@types/react-native-vector-icons": "^6.4.10",
+    "@types/react-test-renderer": "^17.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "eslint-config-standard": "^14.0.0",
+    "eslint-config-standard-jsx": "^8.1.0",
+    "eslint-config-standard-react": "^9.2.0",
+    "eslint-config-standard-with-typescript": "^23.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-react": "^7.31.10",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-native": "^4.0.0",
+    "eslint-plugin-standard": "^4.0.0",
+    "i": "^0.3.5",
+    "jest": "^26.0.1",
+    "react": "16.11.0",
+    "react-native": "^0.68.0",
+    "ts-jest": "^26.0.0",
+    "typescript": "^3.9.5"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
-  },
-  "workspaces": [
-    "example"
-  ],
-  "packageManager": "yarn@3.6.1",
-  "jest": {
-    "preset": "react-native",
-    "modulePathIgnorePatterns": [
-      "<rootDir>/example/node_modules",
-      "<rootDir>/lib/"
-    ]
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
-  },
-  "release-it": {
-    "git": {
-      "commitMessage": "chore: release ${version}",
-      "tagName": "v${version}"
-    },
-    "npm": {
-      "publish": true
-    },
-    "github": {
-      "release": true
-    },
-    "plugins": {
-      "@release-it/conventional-changelog": {
-        "preset": "angular"
-      }
-    }
-  },
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "@react-native",
-      "prettier"
-    ],
-    "rules": {
-      "react/react-in-jsx-scope": "off",
-      "prettier/prettier": [
-        "error",
-        {
-          "quoteProps": "consistent",
-          "singleQuote": true,
-          "tabWidth": 2,
-          "trailingComma": "es5",
-          "useTabs": false
-        }
-      ]
-    }
-  },
-  "eslintIgnore": [
-    "node_modules/",
-    "lib/"
-  ],
-  "prettier": {
-    "quoteProps": "consistent",
-    "singleQuote": true,
-    "tabWidth": 2,
-    "trailingComma": "es5",
-    "useTabs": false
-  },
-  "react-native-builder-bob": {
-    "source": "src",
-    "output": "lib",
-    "targets": [
-      [
-        "commonjs",
-        {
-          "esm": true
-        }
-      ],
-      [
-        "module",
-        {
-          "esm": true
-        }
-      ],
-      [
-        "typescript",
-        {
-          "project": "tsconfig.build.json",
-          "esm": true
-        }
-      ]
-    ]
-  },
-  "create-react-native-library": {
-    "type": "module-legacy",
-    "languages": "kotlin-swift",
-    "version": "0.41.2"
   }
 }
