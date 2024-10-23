@@ -47,14 +47,13 @@ To learn more about the SDK, read:
 
 ## Sample projects
 
-For sample code, take a look at the following projects:
+For sample code, take a look at the following project:
 
-- [SampleApp (JavaScript)](https://github.com/Iterable/react-native-sdk/tree/master/SampleApp/javascript)
-- [SampleApp (TypeScript)](https://github.com/Iterable/react-native-sdk/tree/master/SampleApp/typescript)
+- [Example App](https://github.com/Iterable/react-native-sdk/tree/master/example)
 
 ## Version mapping
 
-For quick reference, the following table lists the versions of the [Android SDK](https://github.com/Iterable/iterable-android-sdk) and the [iOS SDK](https://github.com/Iterable/swift-sdk) the React Native SDK points to for version 1.2.0 and above. 
+For quick reference, the following table lists the versions of the [Android SDK](https://github.com/Iterable/iterable-android-sdk) and the [iOS SDK](https://github.com/Iterable/swift-sdk) the React Native SDK points to for version 1.2.0 and above.
 
 | RN SDK Version                                                              | Android SDK Version                                                          | iOS SDK Version |
 | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | --------------- |
@@ -92,7 +91,7 @@ For quick reference, the following table lists the versions of the [Android SDK]
 Release notes:
 
 - [Release Notes - Iterable's React Native SDK](https://support.iterable.com/hc/articles/360045714352) (major releases)
-- [Releases page on GitHub](https://github.com/Iterable/react-native-sdk/releases) 
+- [Releases page on GitHub](https://github.com/Iterable/react-native-sdk/releases)
   on GitHub (minor releases)
 
 Support policies:

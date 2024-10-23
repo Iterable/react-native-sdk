@@ -4,7 +4,6 @@ exclude_patterns:
   - "docs/"
   - "integration-testing/"
   - "**/node_modules/"
-  - "SampleApp/"
   - "scripts/"
   - "**/__mocks__/"
   - "**/__tests__/"
