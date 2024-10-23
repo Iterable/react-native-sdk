@@ -4,7 +4,11 @@
  */
 export type { InboxImpressionRowInfo } from './InboxImpressionRowInfo';
 export type { InboxRowViewModel } from './InboxRowViewModel';
-export { Iterable, IterableCommerceItem } from './Iterable';
+export {
+  Iterable,
+  IterableAttributionInfo,
+  IterableCommerceItem,
+} from './Iterable';
 export {
   IterableAction,
   IterableActionContext,
@@ -27,6 +31,7 @@ export {
 } from './IterableInAppClasses';
 export { IterableInAppManager } from './IterableInAppManager';
 export { IterableInAppMessage } from './IterableInAppMessage';
+export { IterableInbox, type IterableInboxProps } from './IterableInbox';
 export type { IterableInboxCustomizations } from './IterableInboxCustomizations';
 export { IterableInboxEmptyState } from './IterableInboxEmptyState';
 export { IterableInboxMessageCell } from './IterableInboxMessageCell';

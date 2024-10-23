@@ -8,6 +8,7 @@ import type { StackScreenProps } from '@react-navigation/stack';
 import { Route } from '../constants/routes';
 
 export type MainScreenParamList = {
+  [Route.Inbox]: undefined;
   [Route.User]: undefined;
 };
 
