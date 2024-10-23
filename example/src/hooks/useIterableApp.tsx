@@ -1,11 +1,4 @@
-import {
-  Iterable,
-  IterableAction,
-  IterableConfig,
-  IterableInAppShowResponse,
-  IterableLogLevel,
-} from '@iterable/react-native-sdk';
-
+import type { StackNavigationProp } from '@react-navigation/stack';
 import {
   type FunctionComponent,
   createContext,
@@ -15,7 +8,14 @@ import {
 } from 'react';
 import { Alert } from 'react-native';
 
-import type { StackNavigationProp } from '@react-navigation/stack';
+import {
+  Iterable,
+  IterableAction,
+  IterableConfig,
+  IterableInAppShowResponse,
+  IterableLogLevel,
+} from '@iterable/react-native-sdk';
+
 import { Route } from '../constants/routes';
 import type { RootStackParamList } from '../types/navigation';
 
