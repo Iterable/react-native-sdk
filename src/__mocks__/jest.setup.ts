@@ -1,8 +1,16 @@
+import * as ReactNative from 'react-native';
+
 import { MockRNIterableAPI } from './MockRNIterableAPI';
 import { MockLinking } from './MockLinking';
 
-import * as ReactNative from 'react-native';
 jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter.js');
+
+jest.mock('react-native-webview', () => {
+  const { View } = require('react-native');
+  return {
+    WebView: View,
+  };
+});
 
 jest.doMock('react-native', () => {
   // Extend ReactNative
