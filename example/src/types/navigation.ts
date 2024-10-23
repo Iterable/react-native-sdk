@@ -8,13 +8,14 @@ import type { StackScreenProps } from '@react-navigation/stack';
 import { Route } from '../constants/routes';
 
 export type MainScreenParamList = {
+  [Route.Commerce]: undefined;
   [Route.Inbox]: undefined;
   [Route.User]: undefined;
 };
 
 export type RootStackParamList = {
-  [Route.Main]: NavigatorScreenParams<MainScreenParamList>;
   [Route.Login]: undefined;
+  [Route.Main]: NavigatorScreenParams<MainScreenParamList>;
 };
 
 export type MainScreenProps<T extends keyof MainScreenParamList> =

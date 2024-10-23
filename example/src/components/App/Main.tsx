@@ -8,8 +8,9 @@ import type { MainScreenParamList } from '../../types';
 import { routeIcon } from './App.constants';
 import { getIcon } from './App.utils';
 import { User } from '../User';
-import Inbox from '../Inbox';
+import { Inbox } from '../Inbox';
 import { useIterableApp } from '../../hooks';
+import { Commerce } from '../Commerce';
 
 const Tab = createBottomTabNavigator<MainScreenParamList>();
 
@@ -63,6 +64,13 @@ export const Main = () => {
               }
               setIsInboxTab(true);
             },
+          })}
+        />
+        <Tab.Screen
+          name={Route.Commerce}
+          component={Commerce}
+          listeners={() => ({
+            tabPress: () => setIsInboxTab(false),
           })}
         />
         <Tab.Screen
