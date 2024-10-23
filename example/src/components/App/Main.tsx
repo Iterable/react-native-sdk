@@ -1,21 +1,20 @@
-import { Iterable } from '@iterable/react-native-sdk';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
-import { colors } from '../../constants';
-import { Route } from '../../constants/routes';
-import { useIterableApp } from '../../hooks/useIterableApp';
-import type { MainScreenParamList } from '../../types/navigation';
-import { Apis } from '../Apis';
-import { Commerce } from '../Commerce';
-import { CustomizedInbox } from '../CustomizedInbox';
-import { User } from '../User';
-import { routeIcon } from './App.contants';
+import { Iterable } from '@iterable/react-native-sdk';
+
+import { colors, Route } from '../../constants';
+import type { MainScreenParamList } from '../../types';
+import { routeIcon } from './App.constants';
 import { getIcon } from './App.utils';
+import { User } from '../User';
+import { Inbox } from '../Inbox';
+import { useIterableApp } from '../../hooks';
+import { Commerce } from '../Commerce';
 
 const Tab = createBottomTabNavigator<MainScreenParamList>();
 
-export function Main() {
+export const Main = () => {
   const {
     isInboxTab,
     isLoggedIn,
@@ -54,7 +53,7 @@ export function Main() {
       >
         <Tab.Screen
           name={Route.Inbox}
-          component={CustomizedInbox}
+          component={Inbox}
           options={
             unreadMessageCount ? { tabBarBadge: unreadMessageCount } : {}
           }
@@ -75,13 +74,6 @@ export function Main() {
           })}
         />
         <Tab.Screen
-          name={Route.Apis}
-          component={Apis}
-          listeners={() => ({
-            tabPress: () => setIsInboxTab(false),
-          })}
-        />
-        <Tab.Screen
           name={Route.User}
           component={User}
           listeners={() => ({
@@ -91,6 +83,6 @@ export function Main() {
       </Tab.Navigator>
     </>
   );
-}
+};
 
 export default Main;

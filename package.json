@@ -183,7 +183,8 @@
   "eslintIgnore": [
     "node_modules/",
     "lib/",
-    "coverage/"
+    "coverage/",
+    "integration-testing/"
   ],
   "prettier": {
     "quoteProps": "consistent",

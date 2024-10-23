@@ -51,7 +51,7 @@ export const IterableInboxMessageList = ({
         customizations={customizations}
         swipingCheck={setSwiping}
         messageListItemLayout={messageListItemLayout}
-        deleteRow={deleteRow}
+        deleteRow={(messageId: string) => deleteRow(messageId)}
         handleMessageSelect={handleMessageSelect}
         contentWidth={contentWidth}
         isPortrait={isPortrait}

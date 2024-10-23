@@ -21,7 +21,7 @@ export const Commerce = () => {
 
     console.group('Purchase tracked with the following arguments:');
     console.log('Total price:', totalPrice);
-    console.log('Purchase items:', purchaseItems);
+    console.log('Purchase items:', [...purchaseItems]);
     console.log('Data fields:', dataFields);
     console.groupEnd();
 

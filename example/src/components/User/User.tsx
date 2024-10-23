@@ -2,7 +2,7 @@ import { Iterable } from '@iterable/react-native-sdk';
 import { useEffect, useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
-import useIterableApp from '../../hooks/useIterableApp';
+import { useIterableApp } from '../../hooks';
 import styles from './User.styles';
 
 export const User = () => {

@@ -8,7 +8,7 @@ import type { RootStackParamList } from '../../types';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-export default function App() {
+export const App = () => {
   const { isLoggedIn } = useIterableApp();
 
   return (
@@ -28,4 +28,6 @@ export default function App() {
       )}
     </Stack.Navigator>
   );
-}
+};
+
+export default App;

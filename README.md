@@ -51,10 +51,9 @@ To learn more about the SDK, read:
 
 ## Sample projects
 
-For sample code, take a look at the following projects:
+For sample code, take a look at the following project:
 
-- [SampleApp (JavaScript)](https://github.com/Iterable/react-native-sdk/tree/master/SampleApp/javascript)
-- [SampleApp (TypeScript)](https://github.com/Iterable/react-native-sdk/tree/master/SampleApp/typescript)
+- [Example App](https://github.com/Iterable/react-native-sdk/tree/master/example)
 
 ## Version mapping
 

@@ -6,29 +6,17 @@ import type {
 import type { StackScreenProps } from '@react-navigation/stack';
 
 import { Route } from '../constants/routes';
-import type { ApiData } from './api';
-
-export type ApiTabParamList = {
-  [Route.ApiList]: undefined;
-  [Route.ApiDetail]: ApiData;
-};
 
 export type MainScreenParamList = {
-  [Route.Inbox]: undefined;
   [Route.Commerce]: undefined;
-  [Route.Apis]: NavigatorScreenParams<ApiTabParamList>;
+  [Route.Inbox]: undefined;
   [Route.User]: undefined;
 };
 
 export type RootStackParamList = {
-  [Route.Main]: NavigatorScreenParams<MainScreenParamList>;
   [Route.Login]: undefined;
+  [Route.Main]: NavigatorScreenParams<MainScreenParamList>;
 };
-
-export type ApiTabProps<T extends keyof ApiTabParamList> = CompositeScreenProps<
-  StackScreenProps<ApiTabParamList, T>,
-  MainScreenProps<Route.Apis>
->;
 
 export type MainScreenProps<T extends keyof MainScreenParamList> =
   CompositeScreenProps<

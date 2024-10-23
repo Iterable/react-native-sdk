@@ -24,6 +24,10 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+			<string>javascript</string>
+	</array>
 	<key>NSAppTransportSecurity</key>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>

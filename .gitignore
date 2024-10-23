@@ -85,3 +85,8 @@ android/generated
 .env
 .xcode.env.local
 coverage/
+
+# Iterable
+.env
+.xcode.env.local
+coverage/

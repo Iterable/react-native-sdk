@@ -8,8 +8,8 @@ import {
 import { useMemo } from 'react';
 
 import { colors, type Route } from '../../constants';
-import useIterableApp from '../../hooks/useIterableApp';
-import type { RootStackScreenProps } from '../../types/navigation';
+import { useIterableApp } from '../../hooks';
+import type { RootStackScreenProps } from '../../types';
 import { styles } from './Login.styles';
 
 export const Login = ({ navigation }: RootStackScreenProps<Route.Login>) => {
