@@ -156,8 +156,7 @@
   "eslintIgnore": [
     "node_modules/",
     "lib/",
-    "integration-testing/",
-    "SampleApp/"
+    "integration-testing/"
   ],
   "prettier": {
     "quoteProps": "consistent",
