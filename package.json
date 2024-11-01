@@ -23,8 +23,6 @@
   "dependencies": {
     "@react-native-community/hooks": "^2.6.0",
     "@react-navigation/native": "^6.0.6",
-    "eslint": "^8.0.1",
-    "eslint-config-airbnb": "^19.0.4",
     "react-native-safe-area-context": "^4.1.2",
     "react-native-vector-icons": "^9.0.0",
     "react-native-webview": "^11.0.0"
@@ -38,6 +36,8 @@
     "@types/react-native-vector-icons": "^6.4.10",
     "@types/react-test-renderer": "^17.0.1",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "eslint": "8.57.1",
+    "eslint-config-airbnb": "^19.0.4",
     "eslint-config-standard": "^14.0.0",
     "eslint-config-standard-jsx": "^8.1.0",
     "eslint-config-standard-react": "^9.2.0",
