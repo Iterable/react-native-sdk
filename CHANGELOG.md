@@ -1,3 +1,7 @@
+## 1.3.21
+## Fixes
+- Moves lint dependencies into `devDependencies` so that consumers who use `yarn` will not see warnings when installing.
+
 ## 1.3.20
 ## Fixes
 - Fixes an issue where the iOS SDK incorrectly targeted the latest minor version instead of a fixed version, potentially causing breaking changes.
