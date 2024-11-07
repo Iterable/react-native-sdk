@@ -29,7 +29,7 @@ enum IterableAuthResponseResult {
   FAILURE,
 }
 
-export enum EventName {
+export enum IterableEventName {
   handleUrlCalled = 'handleUrlCalled',
   handleCustomActionCalled = 'handleCustomActionCalled',
   handleInAppCalled = 'handleInAppCalled',
@@ -553,13 +553,15 @@ export class Iterable {
   // PRIVATE
   private static setupEventHandlers() {
     //Remove all listeners to avoid duplicate listeners
-    RNEventEmitter.removeAllListeners(EventName.handleUrlCalled);
-    RNEventEmitter.removeAllListeners(EventName.handleInAppCalled);
-    RNEventEmitter.removeAllListeners(EventName.handleCustomActionCalled);
-    RNEventEmitter.removeAllListeners(EventName.handleAuthCalled);
+    RNEventEmitter.removeAllListeners(IterableEventName.handleUrlCalled);
+    RNEventEmitter.removeAllListeners(IterableEventName.handleInAppCalled);
+    RNEventEmitter.removeAllListeners(
+      IterableEventName.handleCustomActionCalled
+    );
+    RNEventEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
 
     if (Iterable.savedConfig.urlHandler) {
-      RNEventEmitter.addListener(EventName.handleUrlCalled, (dict) => {
+      RNEventEmitter.addListener(IterableEventName.handleUrlCalled, (dict) => {
         const url = dict.url;
         const context = IterableActionContext.fromDict(dict.context);
         Iterable.wakeApp();
@@ -576,24 +578,30 @@ export class Iterable {
     }
 
     if (Iterable.savedConfig.customActionHandler) {
-      RNEventEmitter.addListener(EventName.handleCustomActionCalled, (dict) => {
-        const action = IterableAction.fromDict(dict.action);
-        const context = IterableActionContext.fromDict(dict.context);
-        Iterable.savedConfig.customActionHandler!(action, context);
-      });
+      RNEventEmitter.addListener(
+        IterableEventName.handleCustomActionCalled,
+        (dict) => {
+          const action = IterableAction.fromDict(dict.action);
+          const context = IterableActionContext.fromDict(dict.context);
+          Iterable.savedConfig.customActionHandler!(action, context);
+        }
+      );
     }
 
     if (Iterable.savedConfig.inAppHandler) {
-      RNEventEmitter.addListener(EventName.handleInAppCalled, (messageDict) => {
-        const message = IterableInAppMessage.fromDict(messageDict);
-        const result = Iterable.savedConfig.inAppHandler!(message);
-        RNIterableAPI.setInAppShowResponse(result);
-      });
+      RNEventEmitter.addListener(
+        IterableEventName.handleInAppCalled,
+        (messageDict) => {
+          const message = IterableInAppMessage.fromDict(messageDict);
+          const result = Iterable.savedConfig.inAppHandler!(message);
+          RNIterableAPI.setInAppShowResponse(result);
+        }
+      );
     }
 
     if (Iterable.savedConfig.authHandler) {
       let authResponseCallback: IterableAuthResponseResult;
-      RNEventEmitter.addListener(EventName.handleAuthCalled, () => {
+      RNEventEmitter.addListener(IterableEventName.handleAuthCalled, () => {
         Iterable.savedConfig.authHandler!()
           .then((promiseResult) => {
             // Promise result can be either just String OR of type AuthResponse.
@@ -633,12 +641,18 @@ export class Iterable {
           .catch((e) => Iterable.logger.log(e));
       });
 
-      RNEventEmitter.addListener(EventName.handleAuthSuccessCalled, () => {
-        authResponseCallback = IterableAuthResponseResult.SUCCESS;
-      });
-      RNEventEmitter.addListener(EventName.handleAuthFailureCalled, () => {
-        authResponseCallback = IterableAuthResponseResult.FAILURE;
-      });
+      RNEventEmitter.addListener(
+        IterableEventName.handleAuthSuccessCalled,
+        () => {
+          authResponseCallback = IterableAuthResponseResult.SUCCESS;
+        }
+      );
+      RNEventEmitter.addListener(
+        IterableEventName.handleAuthFailureCalled,
+        () => {
+          authResponseCallback = IterableAuthResponseResult.FAILURE;
+        }
+      );
     }
 
     function callUrlHandler(url: any, context: IterableActionContext) {
