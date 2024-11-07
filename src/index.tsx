@@ -2,7 +2,11 @@
  * React Native module for Iterable.
  * @module react-native-iterable-sdk
  */
-export { IterableActionSource, IterableEventName } from './enums';
+export {
+  IterableActionSource,
+  IterableEventName,
+  IterableLogLevel,
+} from './enums';
 export { useAppStateListener, useDeviceOrientation } from './hooks';
 export {
   IterableHtmlInAppContent,
@@ -28,11 +32,8 @@ export {
   type IterableInboxProps,
 } from './inbox';
 export { Iterable } from './Iterable';
-export {
-  IterableAction,
-  IterableActionContext,
-  IterableLogLevel,
-} from './IterableAction';
+export { IterableAction } from './IterableAction';
+export { IterableActionContext } from './IterableActionContext';
 export { IterableAttributionInfo } from './IterableAttributionInfo';
 export { IterableCommerceItem } from './IterableCommerceItem';
 export { IterableConfig } from './IterableConfig';

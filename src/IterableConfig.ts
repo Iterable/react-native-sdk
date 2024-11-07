@@ -1,11 +1,9 @@
-import {
-  IterableAction,
-  IterableActionContext,
-  IterableLogLevel,
-} from './IterableAction';
+import { IterableAction } from './IterableAction';
+import type { IterableActionContext } from './IterableActionContext';
 import { IterableDataRegion } from './IterableDataRegion';
-import { IterableInAppShowResponse, IterableInAppMessage } from './inApp';
 import { IterablePushPlatform } from './IterablePushPlatform';
+import { IterableLogLevel } from './enums';
+import { IterableInAppMessage, IterableInAppShowResponse } from './inApp';
 
 // TODO: Add description
 type AuthCallBack = () => void;

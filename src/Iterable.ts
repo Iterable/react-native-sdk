@@ -5,7 +5,7 @@ import {
   Platform,
 } from 'react-native';
 
-import { IterableAction, IterableActionContext } from './IterableAction';
+import { IterableAction } from './IterableAction';
 import IterableConfig, { AuthResponse } from './IterableConfig';
 import {
   IterableInAppManager,
@@ -18,6 +18,7 @@ import { IterableLogger } from './IterableLogger';
 import type IterableCommerceItem from './IterableCommerceItem';
 import { IterableEventName, IterableAuthResponseResult } from './enums';
 import IterableAttributionInfo from './IterableAttributionInfo';
+import IterableActionContext from './IterableActionContext';
 
 const RNIterableAPI = NativeModules.RNIterableAPI;
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
