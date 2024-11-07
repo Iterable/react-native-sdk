@@ -4,7 +4,7 @@ import { type ViewabilityConfig, type ViewToken, FlatList } from 'react-native';
 import type { InboxImpressionRowInfo } from './InboxImpressionRowInfo';
 import type { InboxRowViewModel } from './InboxRowViewModel';
 import IterableInAppMessage from './IterableInAppMessage';
-import type { IterableInboxCustomizations } from './IterableInboxCustomizations';
+import type { IterableInboxCustomizations } from './inbox/IterableInboxCustomizations';
 import IterableInboxDataModel from './IterableInboxDataModel';
 import IterableInboxMessageCell from './IterableInboxMessageCell';
 

@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 
 import type { InboxRowViewModel } from './InboxRowViewModel';
-import type { IterableInboxCustomizations } from './IterableInboxCustomizations';
+import type { IterableInboxCustomizations } from './inbox/IterableInboxCustomizations';
 
 import IterableInboxDataModel from './IterableInboxDataModel';
 
