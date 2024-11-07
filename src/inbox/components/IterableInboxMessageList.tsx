@@ -2,19 +2,18 @@ import { useCallback, useRef, useState } from 'react';
 import { type ViewabilityConfig, type ViewToken, FlatList } from 'react-native';
 
 import { IterableInAppMessage } from '../../inApp';
-
-import IterableInboxDataModel from '../IterableInboxDataModel';
+import { IterableInboxDataModel } from '../IterableInboxDataModel';
 import type {
-  InboxImpressionRowInfo,
-  InboxRowViewModel,
+  IterableInboxImpressionRowInfo,
+  IterableInboxRowViewModel,
   IterableInboxCustomizations,
 } from '../types';
-import IterableInboxMessageCell from './IterableInboxMessageCell';
+import { IterableInboxMessageCell } from './IterableInboxMessageCell';
 
 // TODO: Comment
 export interface IterableInboxMessageListProps {
   dataModel: IterableInboxDataModel;
-  rowViewModels: InboxRowViewModel[];
+  rowViewModels: IterableInboxRowViewModel[];
   customizations: IterableInboxCustomizations;
   messageListItemLayout: Function;
   deleteRow: Function;
@@ -40,7 +39,7 @@ export const IterableInboxMessageList = ({
   const flatListRef = useRef<FlatList>(null);
 
   function renderRowViewModel(
-    rowViewModel: InboxRowViewModel,
+    rowViewModel: IterableInboxRowViewModel,
     index: number,
     last: boolean
   ) {
@@ -64,14 +63,14 @@ export const IterableInboxMessageList = ({
 
   function getRowInfosFromViewTokens(
     viewTokens: Array<ViewToken>
-  ): Array<InboxImpressionRowInfo> {
+  ): Array<IterableInboxImpressionRowInfo> {
     return viewTokens.map(function (viewToken) {
       const inAppMessage = IterableInAppMessage.fromViewToken(viewToken);
 
       const impression = {
         messageId: inAppMessage.messageId,
         silentInbox: inAppMessage.isSilentInbox(),
-      } as InboxImpressionRowInfo;
+      } as IterableInboxImpressionRowInfo;
 
       return impression;
     });
@@ -103,10 +102,12 @@ export const IterableInboxMessageList = ({
         item,
         index,
       }: {
-        item: InboxRowViewModel;
+        item: IterableInboxRowViewModel;
         index: number;
       }) => renderRowViewModel(item, index, index === rowViewModels.length - 1)}
-      keyExtractor={(item: InboxRowViewModel) => item.inAppMessage.messageId}
+      keyExtractor={(item: IterableInboxRowViewModel) =>
+        item.inAppMessage.messageId
+      }
       viewabilityConfig={inboxSessionViewabilityConfig}
       onViewableItemsChanged={inboxSessionItemsChanged}
       onLayout={() => {

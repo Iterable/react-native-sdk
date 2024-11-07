@@ -17,13 +17,13 @@ import { IterableInAppDeleteSource, IterableInAppLocation } from '../../inApp';
 
 import IterableInboxDataModel from '../IterableInboxDataModel';
 import type {
-  InboxImpressionRowInfo,
-  InboxRowViewModel,
+  IterableInboxImpressionRowInfo,
+  IterableInboxRowViewModel,
   IterableInboxCustomizations,
 } from '../types';
-import IterableInboxEmptyState from './IterableInboxEmptyState';
-import IterableInboxMessageDisplay from './IterableInboxMessageDisplay';
-import IterableInboxMessageList from './IterableInboxMessageList';
+import { IterableInboxEmptyState } from './IterableInboxEmptyState';
+import { IterableInboxMessageDisplay } from './IterableInboxMessageDisplay';
+import { IterableInboxMessageList } from './IterableInboxMessageList';
 
 const RNIterableAPI = NativeModules.RNIterableAPI;
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
@@ -58,13 +58,15 @@ export const IterableInbox = ({
 
   const [selectedRowViewModelIdx, setSelectedRowViewModelIdx] =
     useState<number>(0);
-  const [rowViewModels, setRowViewModels] = useState<InboxRowViewModel[]>([]);
+  const [rowViewModels, setRowViewModels] = useState<
+    IterableInboxRowViewModel[]
+  >([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [animatedValue] = useState<any>(new Animated.Value(0));
   const [isMessageDisplay, setIsMessageDisplay] = useState<boolean>(false);
 
   const [visibleMessageImpressions, setVisibleMessageImpressions] = useState<
-    InboxImpressionRowInfo[]
+    IterableInboxImpressionRowInfo[]
   >([]);
 
   const styles = StyleSheet.create({
@@ -201,7 +203,7 @@ export const IterableInbox = ({
   function handleMessageSelect(
     id: string,
     index: number,
-    models: InboxRowViewModel[]
+    models: IterableInboxRowViewModel[]
   ) {
     let newRowViewModels = models.map((rowViewModel) => {
       return rowViewModel.inAppMessage.messageId === id
@@ -240,13 +242,13 @@ export const IterableInbox = ({
   }
 
   function updateVisibleMessageImpressions(
-    messageImpressions: InboxImpressionRowInfo[]
+    messageImpressions: IterableInboxImpressionRowInfo[]
   ) {
     setVisibleMessageImpressions(messageImpressions);
   }
 
   function showMessageDisplay(
-    rowViewModelList: InboxRowViewModel[],
+    rowViewModelList: IterableInboxRowViewModel[],
     index: number
   ) {
     const selectedRowViewModel = rowViewModelList[index];
@@ -286,7 +288,7 @@ export const IterableInbox = ({
               handleMessageSelect(messageId, index, rowViewModels)
             }
             updateVisibleMessageImpressions={(
-              messageImpressions: InboxImpressionRowInfo[]
+              messageImpressions: IterableInboxImpressionRowInfo[]
             ) => updateVisibleMessageImpressions(messageImpressions)}
             contentWidth={width}
             isPortrait={isPortrait}

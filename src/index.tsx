@@ -27,8 +27,8 @@ export {
   IterableInbox,
   IterableInboxEmptyState,
   IterableInboxMessageCell,
-  type InboxImpressionRowInfo,
-  type InboxRowViewModel,
+  type IterableInboxImpressionRowInfo as InboxImpressionRowInfo,
+  type IterableInboxRowViewModel as InboxRowViewModel,
   type IterableInboxCustomizations,
   type IterableInboxProps,
 } from './inbox';

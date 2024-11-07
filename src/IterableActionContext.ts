@@ -1,5 +1,5 @@
 import type { IterableActionSource } from './enums';
-import IterableAction from './IterableAction';
+import { IterableAction } from './IterableAction';
 
 /**
  * TODO: Add description

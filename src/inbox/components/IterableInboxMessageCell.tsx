@@ -11,15 +11,17 @@ import {
   type ViewStyle,
 } from 'react-native';
 
-import type { InboxRowViewModel, IterableInboxCustomizations } from '../types';
-
-import IterableInboxDataModel from '../IterableInboxDataModel';
+import { IterableInboxDataModel } from '../IterableInboxDataModel';
+import type {
+  IterableInboxRowViewModel,
+  IterableInboxCustomizations,
+} from '../types';
 
 // TODO: Change to component
 function defaultMessageListLayout(
   last: boolean,
   dataModel: IterableInboxDataModel,
-  rowViewModel: InboxRowViewModel,
+  rowViewModel: IterableInboxRowViewModel,
   customizations: IterableInboxCustomizations,
   isPortrait: boolean
 ) {
@@ -121,7 +123,7 @@ function defaultMessageListLayout(
     ? { ...messageContainer, width: '90%' }
     : messageContainer;
 
-  function messageRowStyle(_rowViewModel: InboxRowViewModel) {
+  function messageRowStyle(_rowViewModel: IterableInboxRowViewModel) {
     return last ? { ...messageRow, borderBottomWidth: 1 } : messageRow;
   }
 
@@ -164,7 +166,7 @@ export interface IterableInboxMessageCellProps {
   index: number;
   last: boolean;
   dataModel: IterableInboxDataModel;
-  rowViewModel: InboxRowViewModel;
+  rowViewModel: IterableInboxRowViewModel;
   customizations: IterableInboxCustomizations;
   swipingCheck: Function;
   messageListItemLayout: Function;

@@ -1,3 +1,4 @@
+// TODO: Add description
 export enum IterableEventName {
   handleUrlCalled = 'handleUrlCalled',
   handleCustomActionCalled = 'handleCustomActionCalled',

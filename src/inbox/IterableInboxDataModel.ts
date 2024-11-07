@@ -6,7 +6,10 @@ import {
   IterableInAppLocation,
   IterableInAppMessage,
 } from '../inApp';
-import type { InboxImpressionRowInfo, InboxRowViewModel } from './types';
+import type {
+  IterableInboxImpressionRowInfo,
+  IterableInboxRowViewModel,
+} from './types';
 import { Iterable } from '../Iterable';
 
 const RNIterableAPI = NativeModules.RNIterableAPI;
@@ -71,7 +74,7 @@ export class IterableInboxDataModel {
     RNIterableAPI.removeMessage(id, IterableInAppLocation.inbox, deleteSource);
   }
 
-  async refresh(): Promise<Array<InboxRowViewModel>> {
+  async refresh(): Promise<Array<IterableInboxRowViewModel>> {
     return RNIterableAPI.getInboxMessages().then(
       (messages: Array<IterableInAppMessage>) => {
         return this.processMessages(messages);
@@ -84,16 +87,16 @@ export class IterableInboxDataModel {
 
   // inbox session tracking functions
 
-  startSession(visibleRows: Array<InboxImpressionRowInfo> = []) {
+  startSession(visibleRows: Array<IterableInboxImpressionRowInfo> = []) {
     RNIterableAPI.startSession(visibleRows);
   }
 
-  async endSession(visibleRows: Array<InboxImpressionRowInfo> = []) {
+  async endSession(visibleRows: Array<IterableInboxImpressionRowInfo> = []) {
     await this.updateVisibleRows(visibleRows);
     RNIterableAPI.endSession();
   }
 
-  updateVisibleRows(visibleRows: Array<InboxImpressionRowInfo> = []) {
+  updateVisibleRows(visibleRows: Array<IterableInboxImpressionRowInfo> = []) {
     RNIterableAPI.updateVisibleRows(visibleRows);
   }
 
@@ -132,7 +135,7 @@ export class IterableInboxDataModel {
 
   private processMessages(
     messages: Array<IterableInAppMessage>
-  ): Array<InboxRowViewModel> {
+  ): Array<IterableInboxRowViewModel> {
     return this.sortAndFilter(messages).map(
       IterableInboxDataModel.getInboxRowViewModelForMessage
     );
@@ -162,7 +165,7 @@ export class IterableInboxDataModel {
 
   private static getInboxRowViewModelForMessage(
     message: IterableInAppMessage
-  ): InboxRowViewModel {
+  ): IterableInboxRowViewModel {
     return {
       title: message.inboxMetadata?.title ?? '',
       subtitle: message.inboxMetadata?.subtitle,

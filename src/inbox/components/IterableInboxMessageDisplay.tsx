@@ -19,11 +19,11 @@ import {
 import { Iterable } from '../../Iterable';
 import { IterableAction, IterableActionContext } from '../../IterableAction';
 import { IterableEdgeInsets } from '../../IterableEdgeInsets';
-import { type InboxRowViewModel } from '../types';
+import { type IterableInboxRowViewModel } from '../types';
 
 // TODO: Comment
 export interface IterableInboxMessageDisplayProps {
-  rowViewModel: InboxRowViewModel;
+  rowViewModel: IterableInboxRowViewModel;
   inAppContentPromise: Promise<IterableHtmlInAppContent>;
   returnToInbox: Function;
   deleteRow: Function;

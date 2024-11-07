@@ -3,7 +3,7 @@ import { NativeModules } from 'react-native';
 import { Iterable } from '../Iterable';
 
 import { IterableHtmlInAppContent } from './IterableHtmlInAppContent';
-import IterableInAppMessage from './IterableInAppMessage';
+import { IterableInAppMessage } from './IterableInAppMessage';
 import type { IterableInAppLocation, IterableInAppDeleteSource } from './enums';
 
 // TODO: Create a loader for this

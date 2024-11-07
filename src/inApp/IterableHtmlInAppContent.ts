@@ -1,4 +1,4 @@
-import IterableEdgeInsets from '../IterableEdgeInsets';
+import { IterableEdgeInsets } from '../IterableEdgeInsets';
 
 import type { IterableInAppContent } from './types';
 import { IterableInAppContentType } from './enums';

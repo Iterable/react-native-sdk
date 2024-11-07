@@ -1,3 +1,3 @@
-export * from './InboxImpressionRowInfo';
-export * from './InboxRowViewModel';
+export * from './IterableInboxImpressionRowInfo';
 export * from './IterableInboxCustomizations';
+export * from './IterableInboxRowViewModel';
