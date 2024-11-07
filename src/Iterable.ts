@@ -3,35 +3,28 @@
  */
 
 import {
-  NativeModules,
-  NativeEventEmitter,
   Linking,
+  NativeEventEmitter,
+  NativeModules,
   Platform,
 } from 'react-native';
 
 import {
-  IterableInAppLocation,
+  type IterableAction,
+  type IterableActionContext,
+} from './IterableAction';
+import IterableConfig, { AuthResponse } from './IterableConfig';
+import {
   IterableInAppCloseSource,
   IterableInAppDeleteSource,
+  IterableInAppLocation,
 } from './IterableInAppClasses';
-
 import IterableInAppManager from './IterableInAppManager';
 import IterableInAppMessage from './IterableInAppMessage';
-import IterableConfig, { AuthResponse } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
-import type IterableAction from './IterableAction';
 
 const RNIterableAPI = NativeModules.RNIterableAPI;
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
-
-/**
- * Enum representing the source of IterableAction.
- */
-export enum IterableActionSource {
-  push = 0,
-  appLink = 1,
-  inApp = 2,
-}
 
 enum AuthResponseCallback {
   SUCCESS,

@@ -9,12 +9,12 @@ import {
   Iterable,
   IterableAction,
   IterableActionContext,
+  IterableActionSource,
   IterableConfig,
   IterableLogLevel,
 } from '../index';
 import {
   EventName,
-  IterableActionSource,
   IterableAttributionInfo,
   IterableCommerceItem,
 } from '../Iterable';
