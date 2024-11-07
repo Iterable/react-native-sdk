@@ -215,7 +215,7 @@ export class Iterable {
    * Parameters: none
    */
 
-  static getLastPushPayload(): Promise<any | undefined> {
+  static getLastPushPayload(): Promise<unknown> {
     Iterable.logger.log('getLastPushPayload');
 
     return RNIterableAPI.getLastPushPayload();
@@ -236,17 +236,19 @@ export class Iterable {
   static getAttributionInfo(): Promise<IterableAttributionInfo | undefined> {
     Iterable.logger.log('getAttributionInfo');
 
-    return RNIterableAPI.getAttributionInfo().then((dict: any | undefined) => {
-      if (dict) {
-        return new IterableAttributionInfo(
-          dict.campaignId as number,
-          dict.templateId as number,
-          dict.messageId as string
-        );
-      } else {
-        return undefined;
+    return RNIterableAPI.getAttributionInfo().then(
+      (dict?: IterableAttributionInfo) => {
+        if (dict) {
+          return new IterableAttributionInfo(
+            dict.campaignId as number,
+            dict.templateId as number,
+            dict.messageId as string
+          );
+        } else {
+          return undefined;
+        }
       }
-    });
+    );
   }
 
   /**
@@ -275,7 +277,7 @@ export class Iterable {
    * @param {number} templateId the ID of the template to associate with the push open
    * @param {string} messageId the ID of the message to associate with the push open
    * @param {boolean} appAlreadyRunning whether or not the app was already running when the push notification arrived
-   * @param {any | undefined} dataFields information to store with the push open event
+   * @param {unknown | undefined} dataFields information to store with the push open event
    */
 
   static trackPushOpenWithCampaignId(
@@ -283,7 +285,7 @@ export class Iterable {
     templateId: number,
     messageId: string | undefined,
     appAlreadyRunning: boolean,
-    dataFields: any | undefined
+    dataFields?: unknown
   ) {
     Iterable.logger.log('trackPushOpenWithCampaignId');
 
@@ -301,10 +303,10 @@ export class Iterable {
    * Represent each item in the updateCart event with an IterableCommerceItem object.
    * See IterableCommerceItem class defined above.
    *
-   * @param {Array<IterableCommerceItem>} items the items added to the shopping cart
+   * @param {IterableCommerceItem[]} items the items added to the shopping cart
    */
 
-  static updateCart(items: Array<IterableCommerceItem>) {
+  static updateCart(items: IterableCommerceItem[]) {
     Iterable.logger.log('updateCart');
 
     RNIterableAPI.updateCart(items);
@@ -332,14 +334,14 @@ export class Iterable {
    * Note: total is a parameter that is passed in. Iterable does not sum the price fields of the various items in the purchase event.
    *
    * @param {number} total the total cost of the purchase
-   * @param {Array<IterableCommerceItem>} items the items included in the purchase
+   * @param {IterableCommerceItem[]} items the items included in the purchase
    * @param {any | undefined} dataFields descriptive data to store on the purchase event
    */
 
   static trackPurchase(
     total: number,
-    items: Array<IterableCommerceItem>,
-    dataFields: any | undefined
+    items: IterableCommerceItem[],
+    dataFields?: unknown
   ) {
     Iterable.logger.log('trackPurchase');
 
@@ -439,9 +441,9 @@ export class Iterable {
    * The eventType is set to "customEvent".
    *
    * @param {string} name the eventName of the custom event
-   * @param {any | undefined} dataFields descriptive data to store on the custom event
+   * @param {unknown | undefined} dataFields descriptive data to store on the custom event
    */
-  static trackEvent(name: string, dataFields: any | undefined) {
+  static trackEvent(name: string, dataFields?: unknown) {
     Iterable.logger.log('trackEvent');
 
     RNIterableAPI.trackEvent(name, dataFields);
@@ -458,10 +460,13 @@ export class Iterable {
    * overwrite their counterparts that already exist on the user's profile.
    * Otherwise, they are added.
    *
-   * @param {any} dataFields data fields to store in user profile
+   * @param {unknown | undefined} dataFields data fields to store in user profile
    * @param {boolean} mergeNestedObjects flag indicating whether to merge top-level objects
    */
-  static updateUser(dataFields: any, mergeNestedObjects: boolean) {
+  static updateUser(
+    dataFields: unknown | undefined,
+    mergeNestedObjects: boolean
+  ) {
     Iterable.logger.log('updateUser');
 
     RNIterableAPI.updateUser(dataFields, mergeNestedObjects);
@@ -508,19 +513,19 @@ export class Iterable {
    * pass in null for any of emailListIds, unsubscribedChannelIds, unsubscribedMessageTypeIds, or subscribedMessageTypeIds
    * to indicate that Iterable should not change the current value on the current user's profile.
    *
-   * @param {Array<number> | undefined} emailListIds the list of email lists (by ID) to which the user should be subscribed
-   * @param {Array<number> | undefined} unsubscribedChannelIds the list of message channels (by ID) to which the user should be unsubscribed
-   * @param {Array<number> | undefined} unsubscribedMessageTypeIds the list of message types (by ID) to which the user should be unsubscribed (for opt-out message types)
-   * @param {Array<number> | undefined} subscribedMessageTypeIds the list of message types (by ID) to which the user should be subscribed (for opt-in message types)
+   * @param {number[] | undefined} emailListIds the list of email lists (by ID) to which the user should be subscribed
+   * @param {number[] | undefined} unsubscribedChannelIds the list of message channels (by ID) to which the user should be unsubscribed
+   * @param {number[] | undefined} unsubscribedMessageTypeIds the list of message types (by ID) to which the user should be unsubscribed (for opt-out message types)
+   * @param {number[] | undefined} subscribedMessageTypeIds the list of message types (by ID) to which the user should be subscribed (for opt-in message types)
    * @param {number} campaignId the campaign ID to associate with events generated by this request, use -1 if unknown or not applicable
    * @param {number} templateId the template ID to associate with events generated by this request, use -1 if unknown or not applicable
    */
 
   static updateSubscriptions(
-    emailListIds: Array<number> | undefined,
-    unsubscribedChannelIds: Array<number> | undefined,
-    unsubscribedMessageTypeIds: Array<number> | undefined,
-    subscribedMessageTypeIds: Array<number> | undefined,
+    emailListIds: number[] | undefined,
+    unsubscribedChannelIds: number[] | undefined,
+    unsubscribedMessageTypeIds: number[] | undefined,
+    subscribedMessageTypeIds: number[] | undefined,
     campaignId: number,
     templateId: number
   ) {
@@ -579,6 +584,8 @@ export class Iterable {
         IterableEventName.handleInAppCalled,
         (messageDict) => {
           const message = IterableInAppMessage.fromDict(messageDict);
+          // TODO: Check if we can use chain operator (?.) here instead
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           const result = Iterable.savedConfig.inAppHandler!(message);
           RNIterableAPI.setInAppShowResponse(result);
         }
@@ -588,6 +595,8 @@ export class Iterable {
     if (Iterable.savedConfig.authHandler) {
       let authResponseCallback: IterableAuthResponseResult;
       RNEventEmitter.addListener(IterableEventName.handleAuthCalled, () => {
+        // TODO: Check if we can use chain operator (?.) here instead
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         Iterable.savedConfig.authHandler!()
           .then((promiseResult) => {
             // Promise result can be either just String OR of type AuthResponse.
@@ -603,13 +612,13 @@ export class Iterable {
                   authResponseCallback === IterableAuthResponseResult.SUCCESS
                 ) {
                   if ((promiseResult as IterableAuthResponse).successCallback) {
-                    (promiseResult as IterableAuthResponse).successCallback!();
+                    (promiseResult as IterableAuthResponse).successCallback?.();
                   }
                 } else if (
                   authResponseCallback === IterableAuthResponseResult.FAILURE
                 ) {
                   if ((promiseResult as IterableAuthResponse).failureCallback) {
-                    (promiseResult as IterableAuthResponse).failureCallback!();
+                    (promiseResult as IterableAuthResponse).failureCallback?.();
                   }
                 } else {
                   Iterable.logger.log('No callback received from native layer');
@@ -641,10 +650,10 @@ export class Iterable {
       );
     }
 
-    function callUrlHandler(url: any, context: IterableActionContext) {
+    function callUrlHandler(url: string, context: IterableActionContext) {
       // TODO: Figure out if this is purposeful
       // eslint-disable-next-line eqeqeq
-      if (Iterable.savedConfig.urlHandler!(url, context) == false) {
+      if (Iterable.savedConfig.urlHandler?.(url, context) == false) {
         Linking.canOpenURL(url)
           .then((canOpen) => {
             if (canOpen) {
@@ -659,6 +668,8 @@ export class Iterable {
   }
 
   private static getVersionFromPackageJson(): string {
+    // TODO: Replace this with an import statement
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const json = require('../../../package.json');
     const version = json.version as string;
     return version;
