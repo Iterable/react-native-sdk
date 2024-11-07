@@ -1,8 +1,11 @@
 import { IterableAction } from './IterableAction';
 import type { IterableActionContext } from './IterableActionContext';
 import type { IterableAuthResponse } from './IterableAuthResponse';
-import { IterablePushPlatform } from './IterablePushPlatform';
-import { IterableDataRegion, IterableLogLevel } from './enums';
+import {
+  IterableDataRegion,
+  IterableLogLevel,
+  IterablePushPlatform,
+} from './enums';
 import { IterableInAppMessage, IterableInAppShowResponse } from './inApp';
 
 /**
