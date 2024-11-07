@@ -6,8 +6,7 @@ import {
   IterableInAppLocation,
   IterableInAppMessage,
 } from '../inApp';
-import type { InboxImpressionRowInfo } from '../InboxImpressionRowInfo';
-import type { InboxRowViewModel } from '../InboxRowViewModel';
+import type { InboxImpressionRowInfo, InboxRowViewModel } from './types';
 import { Iterable } from '../Iterable';
 
 const RNIterableAPI = NativeModules.RNIterableAPI;

@@ -2,8 +2,6 @@
  * React Native module for Iterable.
  * @module react-native-iterable-sdk
  */
-export type { InboxImpressionRowInfo } from './InboxImpressionRowInfo';
-export type { InboxRowViewModel } from './InboxRowViewModel';
 export {
   Iterable,
   IterableAttributionInfo,
@@ -38,5 +36,7 @@ export {
   type IterableInboxProps,
   IterableInboxEmptyState,
   IterableInboxMessageCell,
+  type InboxImpressionRowInfo,
+  type InboxRowViewModel,
 } from './inbox';
 export { useAppStateListener, useDeviceOrientation } from './hooks';

@@ -10,19 +10,19 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import { WebView } from 'react-native-webview';
 
-import { type InboxRowViewModel } from '../InboxRowViewModel';
-import { Iterable } from '../Iterable';
-import {
-  IterableAction,
-  IterableActionContext,
-  IterableActionSource,
-} from '../IterableAction';
 import {
   IterableHtmlInAppContent,
   IterableInAppCloseSource,
   IterableInAppLocation,
-} from '../inApp';
-import { IterableEdgeInsets } from '../IterableEdgeInsets';
+} from '../../inApp';
+import { Iterable } from '../../Iterable';
+import {
+  IterableAction,
+  IterableActionContext,
+  IterableActionSource,
+} from '../../IterableAction';
+import { IterableEdgeInsets } from '../../IterableEdgeInsets';
+import { type InboxRowViewModel } from '../types';
 
 // TODO: Comment
 export interface IterableInboxMessageDisplayProps {

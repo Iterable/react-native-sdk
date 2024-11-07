@@ -1,4 +1,2 @@
-export * from './IterableInbox';
-export * from './IterableInboxCustomizations';
-export * from './IterableInboxEmptyState';
-export * from './IterableInboxMessageCell';
+export * from './components';
+export * from './types';

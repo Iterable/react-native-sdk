@@ -1,4 +1,4 @@
-import { IterableInAppMessage } from '.';
+import { IterableInAppMessage } from '../..';
 
 // TODO: Add description
 export type InboxRowViewModel = {
