@@ -11,8 +11,8 @@ import {
   type ViewStyle,
 } from 'react-native';
 
-import type { InboxRowViewModel } from './InboxRowViewModel';
-import type { IterableInboxCustomizations } from './inbox/IterableInboxCustomizations';
+import type { InboxRowViewModel } from '../InboxRowViewModel';
+import type { IterableInboxCustomizations } from './IterableInboxCustomizations';
 
 import IterableInboxDataModel from './IterableInboxDataModel';
 
@@ -161,7 +161,7 @@ function defaultMessageListLayout(
 }
 
 // TODO: Comment
-type MessageCellProps = {
+export interface IterableInboxMessageCellProps {
   index: number;
   last: boolean;
   dataModel: IterableInboxDataModel;
@@ -173,7 +173,7 @@ type MessageCellProps = {
   handleMessageSelect: Function;
   contentWidth: number;
   isPortrait: boolean;
-};
+}
 
 // TODO: Comment
 export const IterableInboxMessageCell = ({
@@ -188,7 +188,7 @@ export const IterableInboxMessageCell = ({
   handleMessageSelect,
   contentWidth,
   isPortrait,
-}: MessageCellProps) => {
+}: IterableInboxMessageCellProps) => {
   const position = useRef(new Animated.ValueXY()).current;
 
   let deleteSliderHeight = customizations.messageRow?.height

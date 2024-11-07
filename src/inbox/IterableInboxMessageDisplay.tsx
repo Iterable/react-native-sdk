@@ -10,29 +10,29 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import { WebView } from 'react-native-webview';
 
-import { type InboxRowViewModel } from './InboxRowViewModel';
-import { Iterable } from './Iterable';
+import { type InboxRowViewModel } from '../InboxRowViewModel';
+import { Iterable } from '../Iterable';
 import {
   IterableAction,
   IterableActionContext,
   IterableActionSource,
-} from './IterableAction';
+} from '../IterableAction';
 import {
   IterableEdgeInsets,
   IterableHtmlInAppContent,
   IterableInAppCloseSource,
   IterableInAppLocation,
-} from './IterableInAppClasses';
+} from '../IterableInAppClasses';
 
 // TODO: Comment
-type MessageDisplayProps = {
+export interface IterableInboxMessageDisplayProps {
   rowViewModel: InboxRowViewModel;
   inAppContentPromise: Promise<IterableHtmlInAppContent>;
   returnToInbox: Function;
   deleteRow: Function;
   contentWidth: number;
   isPortrait: boolean;
-};
+}
 
 // TODO: Comment
 export const IterableInboxMessageDisplay = ({
@@ -42,7 +42,7 @@ export const IterableInboxMessageDisplay = ({
   deleteRow,
   contentWidth,
   isPortrait,
-}: MessageDisplayProps) => {
+}: IterableInboxMessageDisplayProps) => {
   const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title;
   const [inAppContent, setInAppContent] = useState<IterableHtmlInAppContent>(
     new IterableHtmlInAppContent(new IterableEdgeInsets(0, 0, 0, 0), '')

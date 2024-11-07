@@ -1,15 +1,16 @@
 import { useCallback, useRef, useState } from 'react';
 import { type ViewabilityConfig, type ViewToken, FlatList } from 'react-native';
 
-import type { InboxImpressionRowInfo } from './InboxImpressionRowInfo';
-import type { InboxRowViewModel } from './InboxRowViewModel';
-import IterableInAppMessage from './IterableInAppMessage';
-import type { IterableInboxCustomizations } from './inbox/IterableInboxCustomizations';
+import type { InboxImpressionRowInfo } from '../InboxImpressionRowInfo';
+import type { InboxRowViewModel } from '../InboxRowViewModel';
+import IterableInAppMessage from '../IterableInAppMessage';
+
+import type { IterableInboxCustomizations } from './IterableInboxCustomizations';
 import IterableInboxDataModel from './IterableInboxDataModel';
 import IterableInboxMessageCell from './IterableInboxMessageCell';
 
 // TODO: Comment
-type MessageListProps = {
+export interface IterableInboxMessageListProps {
   dataModel: IterableInboxDataModel;
   rowViewModels: InboxRowViewModel[];
   customizations: IterableInboxCustomizations;
@@ -19,7 +20,7 @@ type MessageListProps = {
   updateVisibleMessageImpressions: Function;
   contentWidth: number;
   isPortrait: boolean;
-};
+}
 
 // TODO: Comment
 export const IterableInboxMessageList = ({
@@ -32,7 +33,7 @@ export const IterableInboxMessageList = ({
   updateVisibleMessageImpressions,
   contentWidth,
   isPortrait,
-}: MessageListProps) => {
+}: IterableInboxMessageListProps) => {
   const [swiping, setSwiping] = useState<boolean>(false);
   const flatListRef = useRef<FlatList>(null);
 

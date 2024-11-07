@@ -18,12 +18,13 @@ import {
   IterableInAppDeleteSource,
   IterableInAppLocation,
 } from '../IterableInAppClasses';
-import type { IterableInboxCustomizations } from './IterableInboxCustomizations';
-import IterableInboxDataModel from '../IterableInboxDataModel';
-import IterableInboxEmptyState from '../IterableInboxEmptyState';
-import IterableInboxMessageDisplay from '../IterableInboxMessageDisplay';
-import IterableInboxMessageList from '../IterableInboxMessageList';
 import { useAppStateListener, useDeviceOrientation } from '../hooks';
+
+import type { IterableInboxCustomizations } from './IterableInboxCustomizations';
+import IterableInboxDataModel from './IterableInboxDataModel';
+import IterableInboxEmptyState from './IterableInboxEmptyState';
+import IterableInboxMessageDisplay from './IterableInboxMessageDisplay';
+import IterableInboxMessageList from './IterableInboxMessageList';
 
 const RNIterableAPI = NativeModules.RNIterableAPI;
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);

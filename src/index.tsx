@@ -32,8 +32,11 @@ export {
 } from './IterableInAppClasses';
 export { IterableInAppManager } from './IterableInAppManager';
 export { IterableInAppMessage } from './IterableInAppMessage';
-export { IterableInbox, type IterableInboxProps } from './inbox/IterableInbox';
-export type { IterableInboxCustomizations } from './inbox/IterableInboxCustomizations';
-export { IterableInboxEmptyState } from './IterableInboxEmptyState';
-export { IterableInboxMessageCell } from './IterableInboxMessageCell';
+export {
+  type IterableInboxCustomizations,
+  IterableInbox,
+  type IterableInboxProps,
+  IterableInboxEmptyState,
+  IterableInboxMessageCell,
+} from './inbox';
 export { useAppStateListener, useDeviceOrientation } from './hooks';
