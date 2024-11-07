@@ -1,3 +1,7 @@
+/**
+ * IterableAction represents an action defined as a response to user events.
+ * It is currently used in push notification actions (open push & action buttons).
+ */
 export class IterableAction {
   type: string;
   data?: string;

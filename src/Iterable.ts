@@ -19,6 +19,7 @@ import IterableInAppManager from './IterableInAppManager';
 import IterableInAppMessage from './IterableInAppMessage';
 import IterableConfig, { AuthResponse } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
+import type IterableAction from './IterableAction';
 
 const RNIterableAPI = NativeModules.RNIterableAPI;
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
@@ -44,42 +45,6 @@ export enum IterableLogLevel {
   debug = 1,
   info = 2,
   error = 3,
-}
-
-/**
- * IterableAction represents an action defined as a response to user events.
- * It is currently used in push notification actions (open push & action buttons).
- */
-export class IterableAction {
-  type: string;
-  data?: string;
-  userInput?: string;
-
-  constructor(type: string, data?: string, userInput?: string) {
-    this.type = type;
-    this.data = data;
-    this.userInput = userInput;
-  }
-
-  static fromDict(dict: any): IterableAction {
-    return new IterableAction(dict.type, dict.data, dict.userInput);
-  }
-}
-
-export class IterableActionContext {
-  action: IterableAction;
-  source: IterableActionSource;
-
-  constructor(action: IterableAction, source: IterableActionSource) {
-    this.action = action;
-    this.source = source;
-  }
-
-  static fromDict(dict: any): IterableActionContext {
-    const action = IterableAction.fromDict(dict.action);
-    const source = dict.source as IterableActionSource;
-    return new IterableActionContext(action, source);
-  }
 }
 
 export class IterableAttributionInfo {
