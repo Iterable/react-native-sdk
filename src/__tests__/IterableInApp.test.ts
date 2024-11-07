@@ -2,18 +2,19 @@ import { NativeEventEmitter } from 'react-native';
 
 import { MockRNIterableAPI } from '../__mocks__/MockRNIterableAPI';
 
-import { Iterable, IterableEventName } from '../Iterable';
-import IterableConfig from '../IterableConfig';
 import {
+  Iterable,
+  IterableConfig,
+  IterableEventName,
+  IterableInAppCloseSource,
+  IterableInAppDeleteSource,
   IterableInAppLocation,
+  IterableInAppMessage,
+  IterableInAppShowResponse,
   IterableInAppTrigger,
   IterableInAppTriggerType,
   IterableInboxMetadata,
-  IterableInAppCloseSource,
-  IterableInAppShowResponse,
-  IterableInAppDeleteSource,
-  IterableInAppMessage,
-} from '../inApp';
+} from '..';
 import { IterableLogger } from '../IterableLogger';
 
 describe('Iterable In App', () => {

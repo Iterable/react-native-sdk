@@ -13,10 +13,10 @@ import {
   IterableAttributionInfo,
   IterableCommerceItem,
   IterableConfig,
+  IterableDataRegion,
+  IterableEventName,
   IterableLogLevel,
-} from '../index';
-import { IterableEventName } from '../Iterable';
-import { IterableDataRegion } from '../IterableDataRegion';
+} from '..';
 import { IterableLogger } from '../IterableLogger';
 
 describe('Iterable', () => {

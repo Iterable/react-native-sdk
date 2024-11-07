@@ -1,11 +1,4 @@
-/**
- * Enum representing the source of IterableAction.
- */
-export enum IterableActionSource {
-  push = 0,
-  appLink = 1,
-  inApp = 2,
-}
+import type { IterableActionSource } from './enums';
 
 /**
  * Enum representing what level of logs will Android and iOS project be printing on their consoles respectively.

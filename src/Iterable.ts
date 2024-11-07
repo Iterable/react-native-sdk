@@ -1,7 +1,3 @@
-/**
- * TODO: Split into seperate files
- */
-
 import {
   Linking,
   NativeEventEmitter,
@@ -20,24 +16,11 @@ import {
 } from './inApp';
 import { IterableLogger } from './IterableLogger';
 import type IterableCommerceItem from './IterableCommerceItem';
+import { IterableEventName, IterableAuthResponseResult } from './enums';
+import IterableAttributionInfo from './IterableAttributionInfo';
 
 const RNIterableAPI = NativeModules.RNIterableAPI;
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
-
-enum IterableAuthResponseResult {
-  SUCCESS,
-  FAILURE,
-}
-
-export enum IterableEventName {
-  handleUrlCalled = 'handleUrlCalled',
-  handleCustomActionCalled = 'handleCustomActionCalled',
-  handleInAppCalled = 'handleInAppCalled',
-  handleAuthCalled = 'handleAuthCalled',
-  receivedIterableInboxChanged = 'receivedIterableInboxChanged',
-  handleAuthSuccessCalled = 'handleAuthSuccessCalled',
-  handleAuthFailureCalled = 'handleAuthFailureCalled',
-}
 
 export class Iterable {
   static inAppManager = new IterableInAppManager();

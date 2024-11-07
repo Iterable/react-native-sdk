@@ -10,17 +10,14 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import { WebView } from 'react-native-webview';
 
+import { IterableActionSource } from '../../enums';
 import {
   IterableHtmlInAppContent,
   IterableInAppCloseSource,
   IterableInAppLocation,
 } from '../../inApp';
 import { Iterable } from '../../Iterable';
-import {
-  IterableAction,
-  IterableActionContext,
-  IterableActionSource,
-} from '../../IterableAction';
+import { IterableAction, IterableActionContext } from '../../IterableAction';
 import { IterableEdgeInsets } from '../../IterableEdgeInsets';
 import { type InboxRowViewModel } from '../types';
 
