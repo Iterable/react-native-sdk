@@ -5,7 +5,7 @@ import {
   Platform,
 } from 'react-native';
 
-import { IterableAuthResponseResult, IterableEventName } from './enums';
+import { IterableAuthResponseResult, IterableEventName } from 'core/enums';
 import {
   IterableInAppCloseSource,
   IterableInAppDeleteSource,
@@ -13,6 +13,7 @@ import {
   IterableInAppManager,
   IterableInAppMessage,
 } from 'inApp';
+
 import { IterableAction } from './IterableAction';
 import { IterableActionContext } from './IterableActionContext';
 import { IterableAttributionInfo } from './IterableAttributionInfo';

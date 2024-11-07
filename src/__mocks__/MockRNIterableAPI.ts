@@ -1,4 +1,4 @@
-import { IterableAttributionInfo } from '../IterableAttributionInfo';
+import { IterableAttributionInfo } from '../core/classes/IterableAttributionInfo';
 import { IterableInAppMessage } from 'inApp';
 
 export class MockRNIterableAPI {

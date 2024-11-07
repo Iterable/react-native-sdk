@@ -1,12 +1,13 @@
-import { IterableAction } from './IterableAction';
-import type { IterableActionContext } from './IterableActionContext';
-import type { IterableAuthResponse } from './IterableAuthResponse';
 import {
   IterableDataRegion,
   IterableLogLevel,
   IterablePushPlatform,
-} from './enums';
+} from 'core/enums';
 import { IterableInAppMessage, IterableInAppShowResponse } from 'inApp';
+
+import { IterableAction } from './IterableAction';
+import type { IterableActionContext } from './IterableActionContext';
+import type { IterableAuthResponse } from './IterableAuthResponse';
 
 /**
  * An IterableConfig object sets various properties of the SDK.

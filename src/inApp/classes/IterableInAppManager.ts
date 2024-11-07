@@ -1,10 +1,12 @@
 import { NativeModules } from 'react-native';
 
-import { Iterable } from '../Iterable';
-
+import { Iterable } from 'core';
+import type {
+  IterableInAppDeleteSource,
+  IterableInAppLocation,
+} from 'inApp/enums';
 import { IterableHtmlInAppContent } from './IterableHtmlInAppContent';
 import { IterableInAppMessage } from './IterableInAppMessage';
-import type { IterableInAppLocation, IterableInAppDeleteSource } from './enums';
 
 // TODO: Create a loader for this
 const RNIterableAPI = NativeModules.RNIterableAPI;

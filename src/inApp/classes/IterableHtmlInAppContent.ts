@@ -1,7 +1,7 @@
-import { IterableEdgeInsets } from '../IterableEdgeInsets';
+import { IterableEdgeInsets } from 'core';
 
-import type { IterableInAppContent } from './types';
-import { IterableInAppContentType } from './enums';
+import { IterableInAppContentType } from 'inApp/enums';
+import type { IterableInAppContent } from 'inApp/types';
 
 // TODO: Add description
 export class IterableHtmlInAppContent implements IterableInAppContent {

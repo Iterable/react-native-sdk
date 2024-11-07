@@ -1,10 +1,9 @@
 import { type ViewToken } from 'react-native';
 
-import { IterableUtil } from '../IterableUtil';
-
-import { IterableInboxMetadata } from './IterableInboxMetadata';
-import { IterableInAppTriggerType } from './enums';
+import { IterableUtil } from 'core';
+import { IterableInAppTriggerType } from 'inApp/enums';
 import { IterableInAppTrigger } from './IterableInAppTrigger';
+import { IterableInboxMetadata } from './IterableInboxMetadata';
 
 /**
  * Iterable in-app message

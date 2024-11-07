@@ -11,15 +11,13 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Iterable } from '../../Iterable';
-import { useAppStateListener, useDeviceOrientation } from '../../hooks';
+import { Iterable, useAppStateListener, useDeviceOrientation } from 'core';
 import { IterableInAppDeleteSource, IterableInAppLocation } from 'inApp';
-
-import IterableInboxDataModel from 'inbox/IterableInboxDataModel';
+import { IterableInboxDataModel } from 'inbox/classes';
 import type {
+  IterableInboxCustomizations,
   IterableInboxImpressionRowInfo,
   IterableInboxRowViewModel,
-  IterableInboxCustomizations,
 } from 'inbox/types';
 import { IterableInboxEmptyState } from './IterableInboxEmptyState';
 import { IterableInboxMessageDisplay } from './IterableInboxMessageDisplay';

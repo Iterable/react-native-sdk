@@ -2,7 +2,7 @@ import { useCallback, useRef, useState } from 'react';
 import { type ViewabilityConfig, type ViewToken, FlatList } from 'react-native';
 
 import { IterableInAppMessage } from 'inApp';
-import { IterableInboxDataModel } from 'inbox/IterableInboxDataModel';
+import { IterableInboxDataModel } from 'inbox/classes';
 import type {
   IterableInboxImpressionRowInfo,
   IterableInboxRowViewModel,

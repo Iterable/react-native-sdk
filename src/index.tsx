@@ -3,12 +3,21 @@
  * @module react-native-iterable-sdk
  */
 export {
+  Iterable,
+  IterableAction,
+  IterableActionContext,
+  IterableAttributionInfo,
+  IterableCommerceItem,
+  IterableConfig,
+  IterableEdgeInsets,
+} from 'core/classes';
+export {
   IterableActionSource,
   IterableDataRegion,
   IterableEventName,
   IterableLogLevel,
-} from './enums';
-export { useAppStateListener, useDeviceOrientation } from './hooks';
+} from 'core/enums';
+export { useAppStateListener, useDeviceOrientation } from 'core/hooks';
 export {
   IterableHtmlInAppContent,
   IterableInAppCloseSource,
@@ -22,7 +31,7 @@ export {
   IterableInAppTriggerType,
   IterableInboxMetadata,
   type IterableInAppContent,
-} from './inApp';
+} from 'inApp';
 export {
   IterableInbox,
   IterableInboxEmptyState,
@@ -31,11 +40,4 @@ export {
   type IterableInboxRowViewModel as InboxRowViewModel,
   type IterableInboxCustomizations,
   type IterableInboxProps,
-} from './inbox';
-export { Iterable } from './Iterable';
-export { IterableAction } from './IterableAction';
-export { IterableActionContext } from './IterableActionContext';
-export { IterableAttributionInfo } from './IterableAttributionInfo';
-export { IterableCommerceItem } from './IterableCommerceItem';
-export { IterableConfig } from './IterableConfig';
-export { IterableEdgeInsets } from './IterableEdgeInsets';
+} from 'inbox';

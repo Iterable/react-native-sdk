@@ -11,7 +11,7 @@ import {
   type ViewStyle,
 } from 'react-native';
 
-import { IterableInboxDataModel } from 'inbox/IterableInboxDataModel';
+import { IterableInboxDataModel } from 'inbox/classes';
 import type {
   IterableInboxRowViewModel,
   IterableInboxCustomizations,

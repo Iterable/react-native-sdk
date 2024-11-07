@@ -15,7 +15,7 @@ import {
   IterableInAppTriggerType,
   IterableInboxMetadata,
 } from '..';
-import { IterableLogger } from '../IterableLogger';
+import { IterableLogger } from '../core/classes/IterableLogger';
 
 describe('Iterable In App', () => {
   beforeEach(() => {
