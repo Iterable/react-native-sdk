@@ -1,5 +1,5 @@
 // TODO: Add description
-export type IterableInboxCustomizations = {
+export interface IterableInboxCustomizations {
   navTitle?: string;
   noMessagesTitle?: string;
   noMessagesBody?: string;
@@ -66,4 +66,4 @@ export type IterableInboxCustomizations = {
     borderColor?: string;
     borderTopWidth?: number;
   };
-};
+}
