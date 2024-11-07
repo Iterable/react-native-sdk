@@ -19,62 +19,14 @@ import {
   IterableInAppLocation,
 } from './inApp';
 import { IterableLogger } from './IterableLogger';
+import type IterableCommerceItem from './IterableCommerceItem';
 
 const RNIterableAPI = NativeModules.RNIterableAPI;
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
-enum AuthResponseCallback {
+enum IterableAuthResponseResult {
   SUCCESS,
   FAILURE,
-}
-
-export class IterableAttributionInfo {
-  campaignId: number;
-  templateId: number;
-  messageId: string;
-
-  constructor(campaignId: number, templateId: number, messageId: string) {
-    this.campaignId = campaignId;
-    this.templateId = templateId;
-    this.messageId = messageId;
-  }
-}
-
-export class IterableCommerceItem {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number;
-  sku?: string;
-  description?: string;
-  url?: string;
-  imageUrl?: string;
-  categories?: Array<string>;
-  dataFields?: any;
-
-  constructor(
-    id: string,
-    name: string,
-    price: number,
-    quantity: number,
-    sku?: string,
-    description?: string,
-    url?: string,
-    imageUrl?: string,
-    categories?: Array<string>,
-    dataFields?: any | undefined
-  ) {
-    this.id = id;
-    this.name = name;
-    this.price = price;
-    this.quantity = quantity;
-    this.sku = sku;
-    this.description = description;
-    this.url = url;
-    this.imageUrl = imageUrl;
-    this.categories = categories;
-    this.dataFields = dataFields;
-  }
 }
 
 export enum EventName {
@@ -640,7 +592,7 @@ export class Iterable {
     }
 
     if (Iterable.savedConfig.authHandler) {
-      let authResponseCallback: AuthResponseCallback;
+      let authResponseCallback: IterableAuthResponseResult;
       RNEventEmitter.addListener(EventName.handleAuthCalled, () => {
         Iterable.savedConfig.authHandler!()
           .then((promiseResult) => {
@@ -653,12 +605,14 @@ export class Iterable {
               );
 
               setTimeout(() => {
-                if (authResponseCallback === AuthResponseCallback.SUCCESS) {
+                if (
+                  authResponseCallback === IterableAuthResponseResult.SUCCESS
+                ) {
                   if ((promiseResult as AuthResponse).successCallback) {
                     (promiseResult as AuthResponse).successCallback!();
                   }
                 } else if (
-                  authResponseCallback === AuthResponseCallback.FAILURE
+                  authResponseCallback === IterableAuthResponseResult.FAILURE
                 ) {
                   if ((promiseResult as AuthResponse).failureCallback) {
                     (promiseResult as AuthResponse).failureCallback!();
@@ -680,10 +634,10 @@ export class Iterable {
       });
 
       RNEventEmitter.addListener(EventName.handleAuthSuccessCalled, () => {
-        authResponseCallback = AuthResponseCallback.SUCCESS;
+        authResponseCallback = IterableAuthResponseResult.SUCCESS;
       });
       RNEventEmitter.addListener(EventName.handleAuthFailureCalled, () => {
-        authResponseCallback = AuthResponseCallback.FAILURE;
+        authResponseCallback = IterableAuthResponseResult.FAILURE;
       });
     }
 

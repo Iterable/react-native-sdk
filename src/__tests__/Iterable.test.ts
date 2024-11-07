@@ -10,14 +10,12 @@ import {
   IterableAction,
   IterableActionContext,
   IterableActionSource,
+  IterableAttributionInfo,
+  IterableCommerceItem,
   IterableConfig,
   IterableLogLevel,
 } from '../index';
-import {
-  EventName,
-  IterableAttributionInfo,
-  IterableCommerceItem,
-} from '../Iterable';
+import { EventName } from '../Iterable';
 import { IterableDataRegion } from '../IterableDataRegion';
 import { IterableLogger } from '../IterableLogger';
 

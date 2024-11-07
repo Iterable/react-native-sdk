@@ -2,28 +2,15 @@
  * React Native module for Iterable.
  * @module react-native-iterable-sdk
  */
+export { useAppStateListener, useDeviceOrientation } from './hooks';
 export {
-  Iterable,
-  IterableAttributionInfo,
-  IterableCommerceItem,
-} from './Iterable';
-export {
-  IterableAction,
-  IterableActionContext,
-  IterableActionSource,
-  IterableLogLevel,
-} from './IterableAction';
-export { IterableConfig } from './IterableConfig';
-export { IterableDataRegion } from './IterableDataRegion';
-export { IterableEdgeInsets } from './IterableEdgeInsets';
-export {
-  IterableInAppMessage,
-  IterableInAppManager,
   IterableHtmlInAppContent,
   IterableInAppCloseSource,
   IterableInAppContentType,
   IterableInAppDeleteSource,
   IterableInAppLocation,
+  IterableInAppManager,
+  IterableInAppMessage,
   IterableInAppShowResponse,
   IterableInAppTrigger,
   IterableInAppTriggerType,
@@ -31,12 +18,23 @@ export {
   type IterableInAppContent,
 } from './inApp';
 export {
-  type IterableInboxCustomizations,
   IterableInbox,
-  type IterableInboxProps,
   IterableInboxEmptyState,
   IterableInboxMessageCell,
   type InboxImpressionRowInfo,
   type InboxRowViewModel,
+  type IterableInboxCustomizations,
+  type IterableInboxProps,
 } from './inbox';
-export { useAppStateListener, useDeviceOrientation } from './hooks';
+export { Iterable } from './Iterable';
+export {
+  IterableAction,
+  IterableActionContext,
+  IterableActionSource,
+  IterableLogLevel,
+} from './IterableAction';
+export { IterableAttributionInfo } from './IterableAttributionInfo';
+export { IterableCommerceItem } from './IterableCommerceItem';
+export { IterableConfig } from './IterableConfig';
+export { IterableDataRegion } from './IterableDataRegion';
+export { IterableEdgeInsets } from './IterableEdgeInsets';
