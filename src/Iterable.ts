@@ -12,7 +12,7 @@ import {
   IterableInAppLocation,
   IterableInAppManager,
   IterableInAppMessage,
-} from './inApp';
+} from 'inApp';
 import { IterableAction } from './IterableAction';
 import { IterableActionContext } from './IterableActionContext';
 import { IterableAttributionInfo } from './IterableAttributionInfo';

@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import { type IterableInboxCustomizations } from '../types';
+import { type IterableInboxCustomizations } from 'inbox/types';
 
 // TODO: Comment
 export interface IterableInboxEmptyStateProps {

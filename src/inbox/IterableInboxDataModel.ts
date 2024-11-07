@@ -5,11 +5,11 @@ import {
   IterableInAppDeleteSource,
   IterableInAppLocation,
   IterableInAppMessage,
-} from '../inApp';
+} from 'inApp';
 import type {
   IterableInboxImpressionRowInfo,
   IterableInboxRowViewModel,
-} from './types';
+} from 'inbox/types';
 import { Iterable } from '../Iterable';
 
 const RNIterableAPI = NativeModules.RNIterableAPI;

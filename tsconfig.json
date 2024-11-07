@@ -2,7 +2,11 @@
   "compilerOptions": {
     "rootDir": ".",
     "paths": {
-      "@iterable/react-native-sdk": ["./src/index"]
+      "@iterable/react-native-sdk": ["./src/index"],
+      "inbox/*": ["./src/inbox/*"],
+      "inbox": ["./src/inbox/index"],
+      "inApp/*": ["./src/inApp/*"],
+      "inApp": ["./src/inApp/index"],
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,

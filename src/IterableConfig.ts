@@ -6,7 +6,7 @@ import {
   IterableLogLevel,
   IterablePushPlatform,
 } from './enums';
-import { IterableInAppMessage, IterableInAppShowResponse } from './inApp';
+import { IterableInAppMessage, IterableInAppShowResponse } from 'inApp';
 
 /**
  * An IterableConfig object sets various properties of the SDK.

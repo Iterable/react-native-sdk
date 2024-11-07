@@ -15,11 +15,12 @@ import {
   IterableHtmlInAppContent,
   IterableInAppCloseSource,
   IterableInAppLocation,
-} from '../../inApp';
+} from 'inApp';
 import { Iterable } from '../../Iterable';
-import { IterableAction, IterableActionContext } from '../../IterableAction';
+import { IterableAction } from '../../IterableAction';
 import { IterableEdgeInsets } from '../../IterableEdgeInsets';
-import { type IterableInboxRowViewModel } from '../types';
+import { type IterableInboxRowViewModel } from 'inbox/types';
+import IterableActionContext from '../../IterableActionContext';
 
 // TODO: Comment
 export interface IterableInboxMessageDisplayProps {

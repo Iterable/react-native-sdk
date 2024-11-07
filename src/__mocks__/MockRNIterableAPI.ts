@@ -1,5 +1,5 @@
 import { IterableAttributionInfo } from '../IterableAttributionInfo';
-import { IterableInAppMessage } from '../inApp';
+import { IterableInAppMessage } from 'inApp';
 
 export class MockRNIterableAPI {
   static email?: string;
