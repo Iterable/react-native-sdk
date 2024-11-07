@@ -1,12 +1,10 @@
 import { IterableAction } from './IterableAction';
 import type { IterableActionContext } from './IterableActionContext';
+import type { IterableAuthResponse } from './IterableAuthResponse';
 import { IterableDataRegion } from './IterableDataRegion';
 import { IterablePushPlatform } from './IterablePushPlatform';
 import { IterableLogLevel } from './enums';
 import { IterableInAppMessage, IterableInAppShowResponse } from './inApp';
-
-// TODO: Add description
-type AuthCallBack = () => void;
 
 /**
  * An IterableConfig object sets various properties of the SDK.
@@ -69,7 +67,7 @@ export class IterableConfig {
    * React Native SDK. Provide an implementation for this method only if your app uses a
    * JWT-enabled API key.
    */
-  authHandler?: () => Promise<AuthResponse | String | undefined>;
+  authHandler?: () => Promise<IterableAuthResponse | String | undefined>;
 
   /**
    * Set the verbosity of Android and iOS project's log system.
@@ -160,13 +158,6 @@ export class IterableConfig {
       encryptionEnforced: this.encryptionEnforced,
     };
   }
-}
-
-// TODO: Add comments and descriptions
-export class AuthResponse {
-  authToken?: string = '';
-  successCallback?: AuthCallBack;
-  failureCallback?: AuthCallBack;
 }
 
 export default IterableConfig;

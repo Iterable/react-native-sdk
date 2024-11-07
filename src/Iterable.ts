@@ -5,20 +5,21 @@ import {
   Platform,
 } from 'react-native';
 
-import { IterableAction } from './IterableAction';
-import IterableConfig, { AuthResponse } from './IterableConfig';
+import { IterableAuthResponseResult, IterableEventName } from './enums';
 import {
-  IterableInAppManager,
-  IterableInAppMessage,
   IterableInAppCloseSource,
   IterableInAppDeleteSource,
   IterableInAppLocation,
+  IterableInAppManager,
+  IterableInAppMessage,
 } from './inApp';
-import { IterableLogger } from './IterableLogger';
-import type IterableCommerceItem from './IterableCommerceItem';
-import { IterableEventName, IterableAuthResponseResult } from './enums';
-import IterableAttributionInfo from './IterableAttributionInfo';
+import { IterableAction } from './IterableAction';
 import IterableActionContext from './IterableActionContext';
+import IterableAttributionInfo from './IterableAttributionInfo';
+import { IterableAuthResponse } from './IterableAuthResponse';
+import type IterableCommerceItem from './IterableCommerceItem';
+import { IterableConfig } from './IterableConfig';
+import { IterableLogger } from './IterableLogger';
 
 const RNIterableAPI = NativeModules.RNIterableAPI;
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
@@ -591,23 +592,23 @@ export class Iterable {
             // Promise result can be either just String OR of type AuthResponse.
             // If type AuthReponse, authToken will be parsed looking for `authToken` within promised object. Two additional listeners will be registered for success and failure callbacks sent by native bridge layer.
             // Else it will be looked for as a String.
-            if (typeof promiseResult === typeof new AuthResponse()) {
+            if (typeof promiseResult === typeof new IterableAuthResponse()) {
               RNIterableAPI.passAlongAuthToken(
-                (promiseResult as AuthResponse).authToken
+                (promiseResult as IterableAuthResponse).authToken
               );
 
               setTimeout(() => {
                 if (
                   authResponseCallback === IterableAuthResponseResult.SUCCESS
                 ) {
-                  if ((promiseResult as AuthResponse).successCallback) {
-                    (promiseResult as AuthResponse).successCallback!();
+                  if ((promiseResult as IterableAuthResponse).successCallback) {
+                    (promiseResult as IterableAuthResponse).successCallback!();
                   }
                 } else if (
                   authResponseCallback === IterableAuthResponseResult.FAILURE
                 ) {
-                  if ((promiseResult as AuthResponse).failureCallback) {
-                    (promiseResult as AuthResponse).failureCallback!();
+                  if ((promiseResult as IterableAuthResponse).failureCallback) {
+                    (promiseResult as IterableAuthResponse).failureCallback!();
                   }
                 } else {
                   Iterable.logger.log('No callback received from native layer');
