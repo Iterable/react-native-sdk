@@ -29,8 +29,14 @@ import { type IterableInboxRowViewModel } from '../types';
 export interface IterableInboxMessageDisplayProps {
   rowViewModel: IterableInboxRowViewModel;
   inAppContentPromise: Promise<IterableHtmlInAppContent>;
-  returnToInbox: Function;
-  deleteRow: Function;
+  returnToInbox: (
+    /** Callback to be executed after returning to the inbox */
+    callback?: () => void
+  ) => void;
+  deleteRow: (
+    /** Id of the row to be deleted */
+    id: string
+  ) => void;
   contentWidth: number;
   isPortrait: boolean;
 }
@@ -115,9 +121,8 @@ export const IterableInboxMessageDisplay = ({
     },
   });
 
-  let {
+  const {
     header,
-    returnButtonContainer,
     returnButton,
     returnButtonIcon,
     returnButtonText,
@@ -125,6 +130,7 @@ export const IterableInboxMessageDisplay = ({
     messageTitleText,
     messageDisplayContainer,
   } = styles;
+  let { returnButtonContainer } = styles;
 
   // orientation dependent styling
   returnButtonContainer = !isPortrait

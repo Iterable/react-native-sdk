@@ -26,15 +26,18 @@ import type {
 } from '../types';
 import { IterableInboxEmptyState } from './IterableInboxEmptyState';
 import { IterableInboxMessageDisplay } from './IterableInboxMessageDisplay';
-import { IterableInboxMessageList } from './IterableInboxMessageList';
+import {
+  IterableInboxMessageList,
+  type IterableInboxMessageListProps,
+} from './IterableInboxMessageList';
 
 const RNIterableAPI = NativeModules.RNIterableAPI;
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
 // TODO: Comment
-export interface IterableInboxProps {
+export interface IterableInboxProps
+  extends Pick<IterableInboxMessageListProps, 'messageListItemLayout'> {
   returnToInboxTrigger?: boolean;
-  messageListItemLayout?: Function;
   customizations?: IterableInboxCustomizations;
   tabBarHeight?: number;
   tabBarPadding?: number;
@@ -110,7 +113,8 @@ export const IterableInbox = ({
     },
   });
 
-  let { loadingScreen, container, headline, messageListContainer } = styles;
+  const { loadingScreen, container, messageListContainer } = styles;
+  let { headline } = styles;
 
   const navTitleHeight =
     headline.height + headline.paddingTop + headline.paddingBottom;
@@ -219,6 +223,7 @@ export const IterableInbox = ({
 
     Iterable.trackInAppOpen(
       // TODO: Have a safety check for models[index].inAppMessage
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       models[index].inAppMessage,
       IterableInAppLocation.inbox
@@ -235,7 +240,7 @@ export const IterableInbox = ({
     fetchInboxMessages();
   }
 
-  function returnToInbox(callback?: Function) {
+  function returnToInbox(callback?: () => void) {
     Animated.timing(animatedValue, {
       toValue: 0,
       duration: 300,
@@ -262,7 +267,7 @@ export const IterableInbox = ({
         inAppContentPromise={getHtmlContentForRow(
           selectedRowViewModel.inAppMessage.messageId
         )}
-        returnToInbox={(callback: Function) => returnToInbox(callback)}
+        returnToInbox={returnToInbox}
         deleteRow={(messageId: string) => deleteRow(messageId)}
         contentWidth={width}
         isPortrait={isPortrait}

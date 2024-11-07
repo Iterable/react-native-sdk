@@ -27,7 +27,8 @@ export const IterableInboxEmptyState = ({
   const emptyStateTitle = customizations.noMessagesTitle;
   const emptyStateBody = customizations.noMessagesBody;
 
-  let { container, title, body } = styles;
+  const { title, body } = styles;
+  let { container } = styles;
 
   container = {
     ...container,

@@ -9,17 +9,24 @@ import type {
   IterableInboxRowViewModel,
   IterableInboxCustomizations,
 } from '../types';
-import { IterableInboxMessageCell } from './IterableInboxMessageCell';
+import {
+  IterableInboxMessageCell,
+  type IterableInboxMessageCellProps,
+} from './IterableInboxMessageCell';
 
 // TODO: Comment
-export interface IterableInboxMessageListProps {
+export interface IterableInboxMessageListProps
+  extends Pick<
+    IterableInboxMessageCellProps,
+    'deleteRow' | 'handleMessageSelect' | 'messageListItemLayout'
+  > {
   dataModel: IterableInboxDataModel;
   rowViewModels: IterableInboxRowViewModel[];
   customizations: IterableInboxCustomizations;
-  messageListItemLayout: Function;
-  deleteRow: Function;
-  handleMessageSelect: Function;
-  updateVisibleMessageImpressions: Function;
+  updateVisibleMessageImpressions: (
+    /** Impression details for the rows to be updated */
+    rowInfos: IterableInboxImpressionRowInfo[]
+  ) => void;
   contentWidth: number;
   isPortrait: boolean;
 }
@@ -54,7 +61,7 @@ export const IterableInboxMessageList = ({
         customizations={customizations}
         swipingCheck={setSwiping}
         messageListItemLayout={messageListItemLayout}
-        deleteRow={(messageId: string) => deleteRow(messageId)}
+        deleteRow={deleteRow}
         handleMessageSelect={handleMessageSelect}
         contentWidth={contentWidth}
         isPortrait={isPortrait}

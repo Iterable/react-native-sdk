@@ -175,7 +175,7 @@ export interface IterableInboxMessageCellProps {
     /** Is this the last message in the list? */
     isLast: boolean,
     rowViewModel: IterableInboxRowViewModel
-  ) => [React.ReactNode, number] | undefined;
+  ) => [React.ReactNode, number] | undefined | null;
   deleteRow: (
     /** The ID of the message to delete */
     messageId: string
