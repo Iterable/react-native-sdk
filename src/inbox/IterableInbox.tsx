@@ -11,20 +11,19 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import type { InboxImpressionRowInfo } from './InboxImpressionRowInfo';
-import type { InboxRowViewModel } from './InboxRowViewModel';
-import { Iterable } from './Iterable';
+import type { InboxImpressionRowInfo } from '../InboxImpressionRowInfo';
+import type { InboxRowViewModel } from '../InboxRowViewModel';
+import { Iterable } from '../Iterable';
 import {
   IterableInAppDeleteSource,
   IterableInAppLocation,
-} from './IterableInAppClasses';
-import type { IterableInboxCustomizations } from './IterableInboxCustomizations';
-import IterableInboxDataModel from './IterableInboxDataModel';
-import IterableInboxEmptyState from './IterableInboxEmptyState';
-import IterableInboxMessageDisplay from './IterableInboxMessageDisplay';
-import IterableInboxMessageList from './IterableInboxMessageList';
-import useAppStateListener from './useAppStateListener';
-import useDeviceOrientation from './useDeviceOrientation';
+} from '../IterableInAppClasses';
+import type { IterableInboxCustomizations } from '../IterableInboxCustomizations';
+import IterableInboxDataModel from '../IterableInboxDataModel';
+import IterableInboxEmptyState from '../IterableInboxEmptyState';
+import IterableInboxMessageDisplay from '../IterableInboxMessageDisplay';
+import IterableInboxMessageList from '../IterableInboxMessageList';
+import { useAppStateListener, useDeviceOrientation } from '../hooks';
 
 const RNIterableAPI = NativeModules.RNIterableAPI;
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
