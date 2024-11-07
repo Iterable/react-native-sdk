@@ -68,7 +68,7 @@ export const IterableInbox = ({
     IterableInboxRowViewModel[]
   >([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [animatedValue] = useState<any>(new Animated.Value(0));
+  const [animatedValue] = useState<Animated.Value>(new Animated.Value(0));
   const [isMessageDisplay, setIsMessageDisplay] = useState<boolean>(false);
 
   const [visibleMessageImpressions, setVisibleMessageImpressions] = useState<
