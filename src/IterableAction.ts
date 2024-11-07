@@ -7,6 +7,9 @@ export enum IterableActionSource {
   inApp = 2,
 }
 
+/**
+ * Enum representing what level of logs will Android and iOS project be printing on their consoles respectively.
+ */
 export enum IterableLogLevel {
   debug = 1,
   info = 2,

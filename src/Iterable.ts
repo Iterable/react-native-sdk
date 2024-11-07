@@ -9,10 +9,7 @@ import {
   Platform,
 } from 'react-native';
 
-import {
-  type IterableAction,
-  type IterableActionContext,
-} from './IterableAction';
+import { IterableAction, IterableActionContext } from './IterableAction';
 import IterableConfig, { AuthResponse } from './IterableConfig';
 import {
   IterableInAppCloseSource,
@@ -29,15 +26,6 @@ const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 enum AuthResponseCallback {
   SUCCESS,
   FAILURE,
-}
-
-/**
- * Enum representing what level of logs will Android and iOS project be printing on their consoles respectively.
- */
-export enum IterableLogLevel {
-  debug = 1,
-  info = 2,
-  error = 3,
 }
 
 export class IterableAttributionInfo {
