@@ -12,6 +12,7 @@ export {
 export {
   IterableAction,
   IterableActionContext,
+  IterableActionSource,
   IterableLogLevel,
 } from './IterableAction';
 export { IterableConfig } from './IterableConfig';
