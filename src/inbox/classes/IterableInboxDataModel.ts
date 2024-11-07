@@ -6,6 +6,7 @@ import {
   IterableInAppDeleteSource,
   IterableInAppLocation,
   IterableInAppMessage,
+  type IterableHtmlInAppContentRaw,
 } from '../../inApp';
 import type {
   IterableInboxImpressionRowInfo,
@@ -54,7 +55,7 @@ export class IterableInboxDataModel {
     );
 
     return RNIterableAPI.getHtmlInAppContentForMessage(id).then(
-      (content: any) => {
+      (content: IterableHtmlInAppContentRaw) => {
         return IterableHtmlInAppContent.fromDict(content);
       }
     );

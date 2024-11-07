@@ -1,7 +1,10 @@
-import { IterableEdgeInsets, type IterableEdgeInsetDetails } from '../../core';
+import { IterableEdgeInsets } from '../../core';
 
 import { IterableInAppContentType } from '../enums';
-import type { IterableInAppContent } from '../types';
+import type {
+  IterableHtmlInAppContentRaw,
+  IterableInAppContent,
+} from '../types';
 
 // TODO: Add description
 export class IterableHtmlInAppContent implements IterableInAppContent {
@@ -14,10 +17,7 @@ export class IterableHtmlInAppContent implements IterableInAppContent {
     this.html = html;
   }
 
-  static fromDict(dict: {
-    edgeInsets: IterableEdgeInsetDetails;
-    html: string;
-  }): IterableHtmlInAppContent {
+  static fromDict(dict: IterableHtmlInAppContentRaw): IterableHtmlInAppContent {
     return new IterableHtmlInAppContent(
       IterableEdgeInsets.fromDict(dict.edgeInsets),
       dict.html as string

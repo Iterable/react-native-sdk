@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { WebView } from 'react-native-webview';
+import { WebView, type WebViewMessageEvent } from 'react-native-webview';
 
 import {
   Iterable,
@@ -163,7 +163,7 @@ export const IterableInboxMessageDisplay = ({
     };
   });
 
-  function handleInAppLinkAction(event: any) {
+  function handleInAppLinkAction(event: WebViewMessageEvent) {
     const URL = event.nativeEvent.data;
 
     const action = new IterableAction('openUrl', URL, '');

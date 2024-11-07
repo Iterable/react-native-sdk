@@ -7,14 +7,15 @@ import {
   Text,
   TouchableOpacity,
   View,
+  type PanResponderGestureState,
   type TextStyle,
   type ViewStyle,
 } from 'react-native';
 
 import { IterableInboxDataModel } from '../classes';
 import type {
-  IterableInboxRowViewModel,
   IterableInboxCustomizations,
+  IterableInboxRowViewModel,
 } from '../types';
 
 // TODO: Change to component
@@ -251,7 +252,7 @@ export const IterableInboxMessageCell = ({
   const FORCING_DURATION = 350;
 
   //If user swipes, either complete swipe or reset
-  function userSwipedLeft(gesture: any) {
+  function userSwipedLeft(gesture: PanResponderGestureState) {
     if (gesture.dx < -0.6 * contentWidth) {
       completeSwipe();
     } else {
