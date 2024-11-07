@@ -4,6 +4,7 @@
  */
 export {
   IterableActionSource,
+  IterableDataRegion,
   IterableEventName,
   IterableLogLevel,
 } from './enums';
@@ -37,5 +38,4 @@ export { IterableActionContext } from './IterableActionContext';
 export { IterableAttributionInfo } from './IterableAttributionInfo';
 export { IterableCommerceItem } from './IterableCommerceItem';
 export { IterableConfig } from './IterableConfig';
-export { IterableDataRegion } from './IterableDataRegion';
 export { IterableEdgeInsets } from './IterableEdgeInsets';

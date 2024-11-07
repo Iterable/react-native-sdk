@@ -14,10 +14,10 @@ import {
   IterableInAppMessage,
 } from './inApp';
 import { IterableAction } from './IterableAction';
-import IterableActionContext from './IterableActionContext';
-import IterableAttributionInfo from './IterableAttributionInfo';
+import { IterableActionContext } from './IterableActionContext';
+import { IterableAttributionInfo } from './IterableAttributionInfo';
 import { IterableAuthResponse } from './IterableAuthResponse';
-import type IterableCommerceItem from './IterableCommerceItem';
+import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
 
