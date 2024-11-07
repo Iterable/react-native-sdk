@@ -5,7 +5,7 @@ export class MockRNIterableAPI {
   static email?: string;
   static userId?: string;
   static token?: string;
-  static lastPushPayload?: any;
+  static lastPushPayload?: unknown;
   static attributionInfo?: IterableAttributionInfo;
   static messages?: IterableInAppMessage[];
   static clickedUrl?: string;
@@ -48,7 +48,7 @@ export class MockRNIterableAPI {
 
   static trackEvent = jest.fn();
 
-  static async getLastPushPayload(): Promise<any | undefined> {
+  static async getLastPushPayload(): Promise<unknown | undefined> {
     return await new Promise((resolve) => {
       resolve(MockRNIterableAPI.lastPushPayload);
     });

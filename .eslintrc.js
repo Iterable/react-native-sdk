@@ -21,12 +21,18 @@ module.exports = {
         useTabs: false,
       },
     ],
+    '@typescript-eslint/no-var-requires': ['error', { allow: ['/package\\.json$'] }],
+    '@typescript-eslint/no-require-imports': ['error', { allow: ['/package\\.json$'] }],
   },
   overrides: [
     {
-      files: ['**/*.test.ts', '**/*.test.tsx'],
+      files: ['**/*.test.ts', '**/*.test.tsx', '**/__mocks__/*', '**/__tests__/*'],
       env: {
         jest: true,
+      },
+      rules: {
+        '@typescript-eslint/no-var-requires': 'off',
+        '@typescript-eslint/no-require-imports': 'off',
       },
     },
   ],

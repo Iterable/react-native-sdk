@@ -585,7 +585,7 @@ export class Iterable {
         (messageDict) => {
           const message = IterableInAppMessage.fromDict(messageDict);
           // TODO: Check if we can use chain operator (?.) here instead
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
           const result = Iterable.savedConfig.inAppHandler!(message);
           RNIterableAPI.setInAppShowResponse(result);
         }
@@ -596,7 +596,7 @@ export class Iterable {
       let authResponseCallback: IterableAuthResponseResult;
       RNEventEmitter.addListener(IterableEventName.handleAuthCalled, () => {
         // TODO: Check if we can use chain operator (?.) here instead
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
         Iterable.savedConfig.authHandler!()
           .then((promiseResult) => {
             // Promise result can be either just String OR of type AuthResponse.
@@ -668,8 +668,6 @@ export class Iterable {
   }
 
   private static getVersionFromPackageJson(): string {
-    // TODO: Replace this with an import statement
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const json = require('../../../package.json');
     const version = json.version as string;
     return version;
