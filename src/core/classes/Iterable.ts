@@ -659,7 +659,7 @@ export class Iterable {
   }
 
   private static getVersionFromPackageJson(): string {
-    const json = require('../package.json');
+    const json = require('../../../package.json');
     const version = json.version as string;
     return version;
   }
