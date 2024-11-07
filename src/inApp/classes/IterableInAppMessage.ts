@@ -47,7 +47,7 @@ export class IterableInAppMessage {
   /**
    * Custom Payload for this message.
    */
-  readonly customPayload?: any;
+  readonly customPayload?: unknown;
 
   /**
    * Whether this inbox message has been read
@@ -67,7 +67,7 @@ export class IterableInAppMessage {
     expiresAt: Date | undefined,
     saveToInbox: boolean,
     inboxMetadata: IterableInboxMetadata | undefined,
-    customPayload: any | undefined,
+    customPayload: unknown | undefined,
     read: boolean,
     priorityLevel: number
   ) {
@@ -114,12 +114,12 @@ export class IterableInAppMessage {
     const trigger = IterableInAppTrigger.fromDict(dict.trigger);
     let createdAt = dict.createdAt;
     if (createdAt) {
-      var dateObject = new Date(0);
+      const dateObject = new Date(0);
       createdAt = dateObject.setUTCMilliseconds(createdAt);
     }
     let expiresAt = dict.expiresAt;
     if (expiresAt) {
-      var dateObject = new Date(0);
+      const dateObject = new Date(0);
       expiresAt = dateObject.setUTCMilliseconds(expiresAt);
     }
     const saveToInbox = IterableUtil.readBoolean(dict, 'saveToInbox');
