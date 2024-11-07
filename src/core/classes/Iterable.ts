@@ -25,27 +25,70 @@ import { IterableLogger } from './IterableLogger';
 const RNIterableAPI = NativeModules.RNIterableAPI;
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
+/**
+ * The main class for the Iterable React Native SDK.
+ *
+ * The majority of the high-level functionality can be accomplished through the
+ * static methods of this class.  EG: initializing the SDK, logging in a user,
+ * tracking purchases, etc.
+ *
+ * @example
+ * // Initialize the SDK
+ * Iterable.initialize(YOUR_API_KEY, new IterableConfig());
+ *
+ * // Log in a user
+ * Iterable.setEmail('my.email@company.com');
+ * // OR
+ * Iterable.setUserId('myUserId');
+ *
+ * @hideconstructor
+ */
 export class Iterable {
+  /**
+   * Manager for in app messages
+   * <br>
+   * TODO: Add more info
+   */
   static inAppManager = new IterableInAppManager();
-
+  /**
+   * Logger for the Iterable SDK
+   * Log level is set with {@link IterableLogLevel}
+   * <br>
+   * TODO: Add more info
+   */
   static logger: IterableLogger;
 
+  /**
+   * Current configuration of the Iterable SDK
+   * <br>
+   * TODO: Add more info
+   */
   static savedConfig: IterableConfig;
 
   /**
-   * This static method is used to initialize the React Native SDK in your app's Javascript or Typescript code.
+   * Initializes the Iterable React Native SDK in your app's Javascript or Typescript code.
    *
    * Pass in a mobile API key distributed with the mobile app.
    * Warning: never user server-side API keys with the React Native SDK, mobile API keys have minimal access for security purposes.
    *
-   * Pass in an IterableConfig object with the various customization properties setup.
-   *
-   * Note: Use Iterable.initialize and NOT Iterable.initialize2, as Iterable.initialize2 is only used internally.
+   * Pass in an `IterableConfig` object with the various customization properties setup.
    *
    * @param {string} apiKey mobile API key provided with the application
    * @param {IterableConfig} config config object with various properties
+   *
+   * @example
+   * Initializing the app could look like this:
+   * ```typescript
+   * // Create a new IterableConfig object
+   * const config = new IterableConfig();
+   *
+   * // Set various properties on the config object
+   * config.logLevel = IterableLogLevel.debug;
+   *
+   * // Initialize the SDK with the API key and config object
+   * Iterable.initialize(API_KEY, config);
+   * ```
    */
-
   static initialize(
     apiKey: string,
     config: IterableConfig = new IterableConfig()
@@ -63,6 +106,7 @@ export class Iterable {
   }
 
   /**
+   * @internal
    * DO NOT CALL THIS METHOD.
    * This method is used internally to connect to staging environment.
    */
@@ -89,39 +133,53 @@ export class Iterable {
   }
 
   /**
-   * This static method associates the current user with the passed in email parameter.
+   * Associate the current user with the passed in email parameter.
    *
-   * Iterable's React Native SDK persists the user across app sessions and restarts, until you manually change the user using
-   * Iterable.setEmail or Iterable.setUserId.
+   * Iterable's React Native SDK persists the user across app sessions and
+   * restarts, until you manually change the user using `Iterable.setEmail` or
+   * `Iterable.setUserId`.
    *
-   * User profile creation:
+   * # User profile creation:
    *
-   * If your Iterable project does not have a user with the passed in email, setEmail creates one and adds the email address
-   * to the user's Iterable profile.
+   * If your Iterable project does not have a user with the passed in email,
+   * `setEmail` creates one and adds the email address to the user's Iterable
+   * profile.
    *
    * Registering device token:
    *
-   * If IterableConfig.autoPushRegisteration is set to true, calling setEmail automatically registers the device for push
-   * notifications and sends the deviceId and token to Iterable.
+   * If `IterableConfig.autoPushRegisteration` is set to true, calling
+   * `setEmail` automatically registers the device for push notifications and
+   * sends the deviceId and token to Iterable.
    *
    * Optional JWT token parameter:
    *
-   * An optional valid, pre-fetched JWT can be passed in to avoid race conditions.
-   * The SDK uses this JWT to authenticate API requests for this user.
+   * An optional valid, pre-fetched JWT can be passed in to avoid race
+   * conditions.  The SDK uses this JWT to authenticate API requests for this
+   * user.
    *
    * Signing out a user from the SDK:
    *
-   * To tell the SDK to sign out the current user, pass null into Iterable.setEmail.
-   * If IterableConfig.autoPushRegisteration is set to true, calling Iterable.setEmail(null) prevents Iterable from sending further
-   * push notifications to that user, for that app, on that device.
-   * On the user's Iterable profile, endpointEnabled is set to false for the device.
+   * To tell the SDK to sign out the current user, pass null into
+   * `Iterable.setEmail`.  If IterableConfig.autoPushRegisteration is set to
+   * true, calling `Iterable.setEmail`(null) prevents Iterable from sending
+   * further push notifications to that user, for that app, on that device.  On
+   * the user's Iterable profile, `endpointEnabled` is set to false for the
+   * device.
    *
-   * Note: specify a user by calling Iterable.setEmail or Iterable.setUserId, but NOT both.
+   * Note: specify a user by calling `Iterable.setEmail` or
+   * `Iterable.setUserId`, but **NOT** both
    *
-   * @param {string | null | undefined} email email address to associate with the current user
-   * @param {string | null | undefined} authToken valid, pre-fetched JWT the SDK can use to authenticate API requests, optional - if null/undefined, no JWT related action will be taken
+   * @param {string | null | undefined} email email address to associate with
+   * the current user
+   * @param {string | null | undefined} authToken valid, pre-fetched JWT the SDK
+   * can use to authenticate API requests, optional - if null/undefined, no JWT
+   * related action will be taken
+   *
+   *  @example
+   * ```typescript
+   * Iterable.setEmail('my.user.name@gmail.com');
+   * ```
    */
-
   static setEmail(email?: string | null, authToken?: string | null) {
     Iterable.logger.log('setEmail: ' + email);
 
