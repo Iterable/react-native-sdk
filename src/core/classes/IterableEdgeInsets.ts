@@ -1,3 +1,5 @@
+import type { IterableEdgeInsetDetails } from '../types';
+
 // TODO: Add description
 export class IterableEdgeInsets {
   top: number;
@@ -12,7 +14,7 @@ export class IterableEdgeInsets {
     this.right = right;
   }
 
-  static fromDict(dict: any): IterableEdgeInsets {
+  static fromDict(dict: IterableEdgeInsetDetails): IterableEdgeInsets {
     return new IterableEdgeInsets(
       dict.top as number,
       dict.left as number,
