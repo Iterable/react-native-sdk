@@ -101,17 +101,16 @@ function defaultMessageListLayout(
 
   const resolvedStyles = { ...styles, ...customizations };
 
-  let {
+  const {
     unreadIndicatorContainer,
-    unreadIndicator,
     unreadMessageThumbnailContainer,
-    readMessageThumbnailContainer,
-    messageContainer,
     title,
     body,
     createdAt,
     messageRow,
   } = resolvedStyles;
+  let { unreadIndicator, readMessageThumbnailContainer, messageContainer } =
+    resolvedStyles;
 
   unreadIndicator = !isPortrait
     ? { ...unreadIndicator, marginLeft: 40 }
@@ -168,10 +167,25 @@ export interface IterableInboxMessageCellProps {
   dataModel: IterableInboxDataModel;
   rowViewModel: IterableInboxRowViewModel;
   customizations: IterableInboxCustomizations;
-  swipingCheck: Function;
-  messageListItemLayout: Function;
-  deleteRow: Function;
-  handleMessageSelect: Function;
+  swipingCheck: (
+    /** Should swiping be enabled? */
+    swiping: boolean
+  ) => void;
+  messageListItemLayout: (
+    /** Is this the last message in the list? */
+    isLast: boolean,
+    rowViewModel: IterableInboxRowViewModel
+  ) => [React.ReactNode, number] | undefined;
+  deleteRow: (
+    /** The ID of the message to delete */
+    messageId: string
+  ) => void;
+  handleMessageSelect: (
+    /** The ID of the message to select */
+    messageId: string,
+    /** The index of the message to select */
+    index: number
+  ) => void;
   contentWidth: number;
   isPortrait: boolean;
 }
@@ -197,7 +211,8 @@ export const IterableInboxMessageCell = ({
     : 150;
 
   if (messageListItemLayout(last, rowViewModel)) {
-    deleteSliderHeight = messageListItemLayout(last, rowViewModel)[1];
+    deleteSliderHeight =
+      messageListItemLayout(last, rowViewModel)?.[1] ?? deleteSliderHeight;
   }
 
   const styles = StyleSheet.create({
@@ -225,7 +240,8 @@ export const IterableInboxMessageCell = ({
     },
   });
 
-  let { textContainer, deleteSlider, textStyle } = styles;
+  const { textContainer, textStyle } = styles;
+  let { deleteSlider } = styles;
 
   deleteSlider = isPortrait
     ? deleteSlider
@@ -315,7 +331,7 @@ export const IterableInboxMessageCell = ({
           }}
         >
           {messageListItemLayout(last, rowViewModel)
-            ? messageListItemLayout(last, rowViewModel)[0]
+            ? messageListItemLayout(last, rowViewModel)?.[0]
             : defaultMessageListLayout(
                 last,
                 dataModel,
