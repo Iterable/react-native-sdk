@@ -4,8 +4,7 @@ import {
   IterableLogLevel,
 } from './IterableAction';
 import { IterableDataRegion } from './IterableDataRegion';
-import { IterableInAppShowResponse } from './IterableInAppClasses';
-import IterableInAppMessage from './IterableInAppMessage';
+import { IterableInAppShowResponse, IterableInAppMessage } from './inApp';
 import { IterablePushPlatform } from './IterablePushPlatform';
 
 // TODO: Add description

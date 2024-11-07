@@ -18,6 +18,8 @@ export {
 export { IterableConfig } from './IterableConfig';
 export { IterableDataRegion } from './IterableDataRegion';
 export {
+  IterableInAppMessage,
+  IterableInAppManager,
   IterableEdgeInsets,
   IterableHtmlInAppContent,
   IterableInAppCloseSource,
@@ -29,9 +31,7 @@ export {
   IterableInAppTriggerType,
   IterableInboxMetadata,
   type IterableInAppContent,
-} from './IterableInAppClasses';
-export { IterableInAppManager } from './IterableInAppManager';
-export { IterableInAppMessage } from './IterableInAppMessage';
+} from './inApp';
 export {
   type IterableInboxCustomizations,
   IterableInbox,

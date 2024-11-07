@@ -14,10 +14,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import type { InboxImpressionRowInfo } from '../InboxImpressionRowInfo';
 import type { InboxRowViewModel } from '../InboxRowViewModel';
 import { Iterable } from '../Iterable';
-import {
-  IterableInAppDeleteSource,
-  IterableInAppLocation,
-} from '../IterableInAppClasses';
+import { IterableInAppDeleteSource, IterableInAppLocation } from '../inApp';
 import { useAppStateListener, useDeviceOrientation } from '../hooks';
 
 import type { IterableInboxCustomizations } from './IterableInboxCustomizations';

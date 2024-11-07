@@ -1,6 +1,6 @@
 import { NativeModules } from 'react-native';
 
-import { Iterable } from './Iterable';
+import { Iterable } from '../Iterable';
 import {
   IterableHtmlInAppContent,
   IterableInAppDeleteSource,

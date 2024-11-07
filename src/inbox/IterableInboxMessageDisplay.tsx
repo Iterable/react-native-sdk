@@ -22,7 +22,7 @@ import {
   IterableHtmlInAppContent,
   IterableInAppCloseSource,
   IterableInAppLocation,
-} from '../IterableInAppClasses';
+} from '../inApp';
 
 // TODO: Comment
 export interface IterableInboxMessageDisplayProps {

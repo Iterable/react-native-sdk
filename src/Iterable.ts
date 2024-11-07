@@ -12,12 +12,12 @@ import {
 import { IterableAction, IterableActionContext } from './IterableAction';
 import IterableConfig, { AuthResponse } from './IterableConfig';
 import {
+  IterableInAppManager,
+  IterableInAppMessage,
   IterableInAppCloseSource,
   IterableInAppDeleteSource,
   IterableInAppLocation,
-} from './IterableInAppClasses';
-import IterableInAppManager from './IterableInAppManager';
-import IterableInAppMessage from './IterableInAppMessage';
+} from './inApp';
 import { IterableLogger } from './IterableLogger';
 
 const RNIterableAPI = NativeModules.RNIterableAPI;

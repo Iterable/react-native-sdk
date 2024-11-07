@@ -4,7 +4,6 @@ import { MockRNIterableAPI } from '../__mocks__/MockRNIterableAPI';
 
 import { Iterable, EventName } from '../Iterable';
 import IterableConfig from '../IterableConfig';
-import IterableInAppMessage from '../IterableInAppMessage';
 import {
   IterableInAppLocation,
   IterableInAppTrigger,
@@ -13,7 +12,8 @@ import {
   IterableInAppCloseSource,
   IterableInAppShowResponse,
   IterableInAppDeleteSource,
-} from '../IterableInAppClasses';
+  IterableInAppMessage,
+} from '../inApp';
 import { IterableLogger } from '../IterableLogger';
 
 describe('Iterable In App', () => {
