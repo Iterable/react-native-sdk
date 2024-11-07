@@ -1,4 +1,4 @@
-import type { IterableInAppContentType } from 'inApp/enums';
+import type { IterableInAppContentType } from '../enums';
 
 // TODO: Add description
 export interface IterableInAppContent {

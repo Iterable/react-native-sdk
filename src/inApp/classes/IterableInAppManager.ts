@@ -1,10 +1,10 @@
 import { NativeModules } from 'react-native';
 
-import { Iterable } from 'core';
+import { Iterable } from '../../core';
 import type {
   IterableInAppDeleteSource,
   IterableInAppLocation,
-} from 'inApp/enums';
+} from '../enums';
 import { IterableHtmlInAppContent } from './IterableHtmlInAppContent';
 import { IterableInAppMessage } from './IterableInAppMessage';
 

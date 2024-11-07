@@ -1,10 +1,9 @@
+import { IterableInAppMessage, IterableInAppShowResponse } from '../../inApp';
 import {
   IterableDataRegion,
   IterableLogLevel,
   IterablePushPlatform,
-} from 'core/enums';
-import { IterableInAppMessage, IterableInAppShowResponse } from 'inApp';
-
+} from '../enums';
 import { IterableAction } from './IterableAction';
 import type { IterableActionContext } from './IterableActionContext';
 import type { IterableAuthResponse } from './IterableAuthResponse';

@@ -1,4 +1,4 @@
-import type { IterableInAppTriggerType } from 'inApp/enums';
+import type { IterableInAppTriggerType } from '../enums';
 
 // TODO: Add description
 export class IterableInAppTrigger {

@@ -1,13 +1,14 @@
 import { useCallback, useRef, useState } from 'react';
 import { type ViewabilityConfig, type ViewToken, FlatList } from 'react-native';
 
-import { IterableInAppMessage } from 'inApp';
-import { IterableInboxDataModel } from 'inbox/classes';
+import { IterableInAppMessage } from '../../inApp';
+
+import { IterableInboxDataModel } from '../classes';
 import type {
   IterableInboxImpressionRowInfo,
   IterableInboxRowViewModel,
   IterableInboxCustomizations,
-} from 'inbox/types';
+} from '../types';
 import { IterableInboxMessageCell } from './IterableInboxMessageCell';
 
 // TODO: Comment

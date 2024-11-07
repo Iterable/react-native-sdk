@@ -1,7 +1,7 @@
 import { type ViewToken } from 'react-native';
 
-import { IterableUtil } from 'core';
-import { IterableInAppTriggerType } from 'inApp/enums';
+import { IterableUtil } from '../../core';
+import { IterableInAppTriggerType } from '../enums';
 import { IterableInAppTrigger } from './IterableInAppTrigger';
 import { IterableInboxMetadata } from './IterableInboxMetadata';
 

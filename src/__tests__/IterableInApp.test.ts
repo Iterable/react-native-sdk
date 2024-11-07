@@ -1,7 +1,5 @@
 import { NativeEventEmitter } from 'react-native';
 
-import { MockRNIterableAPI } from '../__mocks__/MockRNIterableAPI';
-
 import {
   Iterable,
   IterableConfig,
@@ -15,7 +13,8 @@ import {
   IterableInAppTriggerType,
   IterableInboxMetadata,
 } from '..';
-import { IterableLogger } from '../core/classes/IterableLogger';
+import { MockRNIterableAPI } from '../__mocks__/MockRNIterableAPI';
+import { IterableLogger } from '../core';
 
 describe('Iterable In App', () => {
   beforeEach(() => {

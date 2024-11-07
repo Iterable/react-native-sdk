@@ -11,11 +11,11 @@ import {
   type ViewStyle,
 } from 'react-native';
 
-import { IterableInboxDataModel } from 'inbox/classes';
+import { IterableInboxDataModel } from '../classes';
 import type {
   IterableInboxRowViewModel,
   IterableInboxCustomizations,
-} from 'inbox/types';
+} from '../types';
 
 // TODO: Change to component
 function defaultMessageListLayout(

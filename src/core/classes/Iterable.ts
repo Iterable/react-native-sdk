@@ -5,14 +5,14 @@ import {
   Platform,
 } from 'react-native';
 
-import { IterableAuthResponseResult, IterableEventName } from 'core/enums';
 import {
   IterableInAppCloseSource,
   IterableInAppDeleteSource,
   IterableInAppLocation,
   IterableInAppManager,
   IterableInAppMessage,
-} from 'inApp';
+} from '../../inApp';
+import { IterableAuthResponseResult, IterableEventName } from '../enums';
 
 import { IterableAction } from './IterableAction';
 import { IterableActionContext } from './IterableActionContext';

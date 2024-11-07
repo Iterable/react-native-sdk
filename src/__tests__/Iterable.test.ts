@@ -2,8 +2,7 @@ import { NativeEventEmitter } from 'react-native';
 
 import { MockLinking } from '../__mocks__/MockLinking';
 import { MockRNIterableAPI } from '../__mocks__/MockRNIterableAPI';
-import { TestHelper } from './TestHelper';
-
+import { IterableLogger } from '../core';
 // import from the same location that consumers import from
 import {
   Iterable,
@@ -17,7 +16,7 @@ import {
   IterableEventName,
   IterableLogLevel,
 } from '..';
-import { IterableLogger } from '../core/classes/IterableLogger';
+import { TestHelper } from './TestHelper';
 
 describe('Iterable', () => {
   beforeEach(() => {

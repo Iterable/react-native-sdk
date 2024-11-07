@@ -16,13 +16,14 @@ import {
   IterableActionContext,
   IterableActionSource,
   IterableEdgeInsets,
-} from 'core';
+} from '../../core';
 import {
   IterableHtmlInAppContent,
   IterableInAppCloseSource,
   IterableInAppLocation,
-} from 'inApp';
-import { type IterableInboxRowViewModel } from 'inbox/types';
+} from '../../inApp';
+
+import { type IterableInboxRowViewModel } from '../types';
 
 // TODO: Comment
 export interface IterableInboxMessageDisplayProps {

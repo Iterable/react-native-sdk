@@ -1,4 +1,4 @@
-import type { IterableActionSource } from 'core/enums';
+import type { IterableActionSource } from '../enums';
 import { IterableAction } from './IterableAction';
 
 /**

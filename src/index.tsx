@@ -10,14 +10,14 @@ export {
   IterableCommerceItem,
   IterableConfig,
   IterableEdgeInsets,
-} from 'core/classes';
+} from './core/classes';
 export {
   IterableActionSource,
   IterableDataRegion,
   IterableEventName,
   IterableLogLevel,
-} from 'core/enums';
-export { useAppStateListener, useDeviceOrientation } from 'core/hooks';
+} from './core/enums';
+export { useAppStateListener, useDeviceOrientation } from './core/hooks';
 export {
   IterableHtmlInAppContent,
   IterableInAppCloseSource,
@@ -31,7 +31,7 @@ export {
   IterableInAppTriggerType,
   IterableInboxMetadata,
   type IterableInAppContent,
-} from 'inApp';
+} from './inApp';
 export {
   IterableInbox,
   IterableInboxEmptyState,
@@ -40,4 +40,4 @@ export {
   type IterableInboxRowViewModel as InboxRowViewModel,
   type IterableInboxCustomizations,
   type IterableInboxProps,
-} from 'inbox';
+} from './inbox';
