@@ -44,7 +44,7 @@
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prepare": "bob build",
     "release": "release-it",
-    "docs": "typedoc ./src/index.tsx --out ./docs --tsconfig ./tsconfig.json --includeVersion --excludeInternal --excludePrivate"
+    "docs": "typedoc ./src/index.tsx --plugin typedoc-plugin-markdown --out ./docs --tsconfig ./tsconfig.json --includeVersion --excludeInternal --excludePrivate"
   },
   "keywords": [
     "react-native",
@@ -92,6 +92,7 @@
     "release-it": "^15.0.0",
     "turbo": "^1.10.7",
     "typedoc": "^0.26.11",
+    "typedoc-plugin-markdown": "^4.2.10",
     "typescript": "^5.2.2"
   },
   "resolutions": {
