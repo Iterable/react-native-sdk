@@ -17,10 +17,10 @@ export {
 } from './IterableAction';
 export { IterableConfig } from './IterableConfig';
 export { IterableDataRegion } from './IterableDataRegion';
+export { IterableEdgeInsets } from './IterableEdgeInsets';
 export {
   IterableInAppMessage,
   IterableInAppManager,
-  IterableEdgeInsets,
   IterableHtmlInAppContent,
   IterableInAppCloseSource,
   IterableInAppContentType,

@@ -18,11 +18,11 @@ import {
   IterableActionSource,
 } from '../IterableAction';
 import {
-  IterableEdgeInsets,
   IterableHtmlInAppContent,
   IterableInAppCloseSource,
   IterableInAppLocation,
 } from '../inApp';
+import { IterableEdgeInsets } from '../IterableEdgeInsets';
 
 // TODO: Comment
 export interface IterableInboxMessageDisplayProps {
