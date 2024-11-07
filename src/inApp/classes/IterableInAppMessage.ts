@@ -84,7 +84,7 @@ export class IterableInAppMessage {
   }
 
   static fromViewToken(viewToken: ViewToken) {
-    var inAppMessage = viewToken.item.inAppMessage as IterableInAppMessage;
+    const inAppMessage = viewToken.item.inAppMessage as IterableInAppMessage;
 
     return new IterableInAppMessage(
       inAppMessage.messageId,
@@ -122,18 +122,18 @@ export class IterableInAppMessage {
       var dateObject = new Date(0);
       expiresAt = dateObject.setUTCMilliseconds(expiresAt);
     }
-    let saveToInbox = IterableUtil.readBoolean(dict, 'saveToInbox');
-    let inboxMetadataDict = dict.inboxMetadata;
+    const saveToInbox = IterableUtil.readBoolean(dict, 'saveToInbox');
+    const inboxMetadataDict = dict.inboxMetadata;
     let inboxMetadata: IterableInboxMetadata | undefined;
     if (inboxMetadataDict) {
       inboxMetadata = IterableInboxMetadata.fromDict(inboxMetadataDict);
     } else {
       inboxMetadata = undefined;
     }
-    let customPayload = dict.customPayload;
-    let read = IterableUtil.readBoolean(dict, 'read');
+    const customPayload = dict.customPayload;
+    const read = IterableUtil.readBoolean(dict, 'read');
 
-    let priorityLevel = dict.priorityLevel as number;
+    const priorityLevel = dict.priorityLevel as number;
 
     return new IterableInAppMessage(
       messageId,

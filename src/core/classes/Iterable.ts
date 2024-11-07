@@ -617,7 +617,7 @@ export class Iterable {
               }, 1000);
             } else if (typeof promiseResult === typeof '') {
               //If promise only returns string
-              RNIterableAPI.passAlongAuthToken(promiseResult as String);
+              RNIterableAPI.passAlongAuthToken(promiseResult as string);
             } else {
               Iterable.logger.log(
                 'Unexpected promise returned. Auth token expects promise of String or AuthResponse type.'

@@ -55,7 +55,7 @@ export const IterableInbox = ({
   const defaultInboxTitle = 'Inbox';
   const inboxDataModel = new IterableInboxDataModel();
 
-  let { height, width, isPortrait } = useDeviceOrientation();
+  const { height, width, isPortrait } = useDeviceOrientation();
   const appState = useAppStateListener();
   const isFocused = useIsFocused();
 
@@ -208,7 +208,7 @@ export const IterableInbox = ({
     index: number,
     models: IterableInboxRowViewModel[]
   ) {
-    let newRowViewModels = models.map((rowViewModel) => {
+    const newRowViewModels = models.map((rowViewModel) => {
       return rowViewModel.inAppMessage.messageId === id
         ? { ...rowViewModel, read: true }
         : rowViewModel;

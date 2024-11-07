@@ -69,7 +69,7 @@ export class IterableConfig {
    * React Native SDK. Provide an implementation for this method only if your app uses a
    * JWT-enabled API key.
    */
-  authHandler?: () => Promise<IterableAuthResponse | String | undefined>;
+  authHandler?: () => Promise<IterableAuthResponse | string | undefined>;
 
   /**
    * Set the verbosity of Android and iOS project's log system.

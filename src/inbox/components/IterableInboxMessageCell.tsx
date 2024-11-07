@@ -31,7 +31,7 @@ function defaultMessageListLayout(
     dataModel.getFormattedDate(rowViewModel.inAppMessage) ?? '';
   const thumbnailURL = rowViewModel.imageUrl;
 
-  let styles = StyleSheet.create({
+  const styles = StyleSheet.create({
     unreadIndicatorContainer: {
       height: '100%',
       flexDirection: 'column',

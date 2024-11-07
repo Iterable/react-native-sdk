@@ -131,7 +131,7 @@ export const IterableInboxMessageDisplay = ({
     ? { ...returnButtonContainer, marginLeft: 80 }
     : returnButtonContainer;
 
-  let JS = `
+  const JS = `
       const links = document.querySelectorAll('a')
 
       links.forEach(link => {
@@ -158,11 +158,11 @@ export const IterableInboxMessageDisplay = ({
   });
 
   function handleInAppLinkAction(event: any) {
-    let URL = event.nativeEvent.data;
+    const URL = event.nativeEvent.data;
 
-    let action = new IterableAction('openUrl', URL, '');
-    let source = IterableActionSource.inApp;
-    let context = new IterableActionContext(action, source);
+    const action = new IterableAction('openUrl', URL, '');
+    const source = IterableActionSource.inApp;
+    const context = new IterableActionContext(action, source);
 
     Iterable.trackInAppClick(
       rowViewModel.inAppMessage,
