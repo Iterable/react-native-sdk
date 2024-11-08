@@ -16,7 +16,7 @@ export class MockRNIterableAPI {
     });
   }
 
-  static setEmail(email: string, authToken?: string | undefined): void {
+  static setEmail(email: string, authToken?: string): void {
     MockRNIterableAPI.email = email;
     MockRNIterableAPI.token = authToken;
   }
@@ -27,7 +27,7 @@ export class MockRNIterableAPI {
     });
   }
 
-  static setUserId(userId: string, authToken?: string | undefined): void {
+  static setUserId(userId: string, authToken?: string): void {
     MockRNIterableAPI.userId = userId;
     MockRNIterableAPI.token = authToken;
   }

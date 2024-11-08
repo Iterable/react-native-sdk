@@ -158,7 +158,7 @@ export const IterableAppProvider: FunctionComponent<
       }
 
       // Initialize app
-      return Iterable.initialize(key as string, config)
+      return Iterable.initialize(key, config)
         .then((isSuccessful) => {
           setIsInitialized(isSuccessful);
 

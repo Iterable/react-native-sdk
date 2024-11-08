@@ -15,12 +15,7 @@ export class IterableEdgeInsets {
   }
 
   static fromDict(dict: IterableEdgeInsetDetails): IterableEdgeInsets {
-    return new IterableEdgeInsets(
-      dict.top as number,
-      dict.left as number,
-      dict.bottom as number,
-      dict.right as number
-    );
+    return new IterableEdgeInsets(dict.top, dict.left, dict.bottom, dict.right);
   }
 }
 

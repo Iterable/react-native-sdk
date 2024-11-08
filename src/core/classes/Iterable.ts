@@ -240,9 +240,9 @@ export class Iterable {
       (dict?: IterableAttributionInfo) => {
         if (dict) {
           return new IterableAttributionInfo(
-            dict.campaignId as number,
-            dict.templateId as number,
-            dict.messageId as string
+            dict.campaignId,
+            dict.templateId,
+            dict.messageId
           );
         } else {
           return undefined;
@@ -402,7 +402,7 @@ export class Iterable {
     message: IterableInAppMessage,
     location: IterableInAppLocation,
     source: IterableInAppCloseSource,
-    clickedUrl?: string | undefined
+    clickedUrl?: string
   ) {
     Iterable.logger.log('trackInAppClose');
 
@@ -485,7 +485,7 @@ export class Iterable {
    * @param authToken the new auth token (JWT) to set with the new email, optional - if null/undefined, no JWT-related action will be taken
    */
 
-  static updateEmail(email: string, authToken?: string | undefined) {
+  static updateEmail(email: string, authToken?: string) {
     Iterable.logger.log('updateEmail');
 
     RNIterableAPI.updateEmail(email, authToken);

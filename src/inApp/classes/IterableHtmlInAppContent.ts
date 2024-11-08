@@ -20,7 +20,7 @@ export class IterableHtmlInAppContent implements IterableInAppContent {
   static fromDict(dict: IterableHtmlInAppContentRaw): IterableHtmlInAppContent {
     return new IterableHtmlInAppContent(
       IterableEdgeInsets.fromDict(dict.edgeInsets),
-      dict.html as string
+      dict.html
     );
   }
 }

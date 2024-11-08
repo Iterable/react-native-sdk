@@ -42,9 +42,9 @@ export const Main = () => {
     <>
       <Tab.Navigator
         screenOptions={({ route }) => {
-          const iconName = routeIcon[route.name as keyof typeof routeIcon];
+          const iconName = routeIcon[route.name];
           return {
-            tabBarIcon: (props) => getIcon(iconName as string, props),
+            tabBarIcon: (props) => getIcon(iconName, props),
             tabBarActiveTintColor: colors.brandPurple,
             tabBarInactiveTintColor: colors.textSecondary,
             headerShown: false,

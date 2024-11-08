@@ -124,8 +124,8 @@ export class IterableInAppMessage {
     read: boolean;
     priorityLevel: number;
   }): IterableInAppMessage {
-    const messageId = dict.messageId as string;
-    const campaignId = dict.campaignId as number;
+    const messageId = dict.messageId;
+    const campaignId = dict.campaignId;
     const trigger = IterableInAppTrigger.fromDict(dict.trigger);
 
     let createdAt = dict.createdAt;
@@ -149,7 +149,7 @@ export class IterableInAppMessage {
     const customPayload = dict.customPayload;
     const read = IterableUtil.readBoolean(dict, 'read');
 
-    const priorityLevel = dict.priorityLevel as number;
+    const priorityLevel = dict.priorityLevel;
 
     return new IterableInAppMessage(
       messageId,

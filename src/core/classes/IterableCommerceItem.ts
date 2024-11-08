@@ -23,7 +23,7 @@ export class IterableCommerceItem {
     url?: string,
     imageUrl?: string,
     categories?: string[],
-    dataFields?: unknown | undefined
+    dataFields?: unknown
   ) {
     this.id = id;
     this.name = name;
