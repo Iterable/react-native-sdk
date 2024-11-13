@@ -166,7 +166,7 @@ brew install cocoapods
 brew unlink cocoapods && brew link cocoapods
 ```
 
-Run `pod install` again, and it should work
+Run `pod install` again, and it should work.
 
 ## Other
 If things are not working and you are stumped as to why, try running the
