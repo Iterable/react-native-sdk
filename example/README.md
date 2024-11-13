@@ -175,6 +175,27 @@ brew unlink cocoapods && brew link cocoapods
 
 Run `pod install` again, and it should work.
 
+## Error: `com.android.builder.errors.EvalIssueException: SDK location not found.  Define a valid SDK location with an ANDROID_HOME environment variable or by setting the sdk.dir path in your projects local properties file`
+
+This means that the project cannot find the location of your Android SDK.
+
+There are two ways to fix this:
+
+### 1. Add `ANDROID_HOME` to your *.zshrc* or *.bashrc* file.
+1. Open your *.zshrc* or *.bashrc*
+2. Add the following to the file:
+   ```bash
+   ANDROID_HOME=/path/to/Android/SDK # EG: ANDROID_HOME=/Users/My.Name/Library/Android/sdk
+   ```
+
+### 2. Add a *local.properties* file to *example/android*.
+1. Go to *example/android*
+2. Create a file called *local.properties*
+3. In *local.properties*, add:
+   ```bash
+   sdk.dir=/path/to/Android/SDK # EG: sdk.dir=/Users/My.Name/Library/Android/sdk
+   ```
+
 ## Other
 If things are not working and you are stumped as to why, try running the
 following in the _example app directory_:
