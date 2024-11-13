@@ -155,6 +155,13 @@ source ~/.zshrc
 source ~/.bash_profile
 ```
 
+5. **Check that the correct ruby version is loading**
+Run the following in your terminal:
+```bash
+ruby --version
+```
+If working, it should say `3.3.6`
+
 ## Error: `bad interpreter: No such file or directory` on `pod install`
 Reinstall cocoapods by doing the following:
 ```bash
