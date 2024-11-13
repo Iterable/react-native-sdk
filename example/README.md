@@ -108,6 +108,66 @@ To fix, run the following in the _example app directory_:
 bundle install
 ```
 
+## Error: `Signing for 'ReactNativeSdkExample' requires a development team.  Select a development team in the Signing & Capabilities Editor`
+
+- Open XCode
+- Go to 'Signing & Capabilities'
+- Choose a team
+- Stop your application, then rerun
+
+If you are still experiencing issues, try deleting `ios/.xcode.env.local`
+
+## Error: `/Library/Ruby/Gems/XYZ does not have write permissions` or `/usr/local/lib does not have write permissions`
+
+This is a common issue with using ruby on Macs.  You can modify the read/write
+access of the computers Ruby folder, but a better (and safer) way is to use
+`rbenv` and [`homebrew`](https://brew.sh/) by doing the following:
+
+1. **Install/update homebrew**
+If you have homebrew, update it by running: `brew update && brew upgrade`.
+If you do not have homebrew, follow the [installation
+instructions](https://brew.sh/).
+
+2. **Install `rbenv` and `ruby-build`**
+```bash
+# Uninstall ruby (you can try skipping this step if you have concerns)
+brew uninstall --ignore-dependencies ruby
+# Install `rbenv` and `ruby-build`
+brew install rbenv ruby-build
+# Install the correct ruby version, eg: 3.3.6
+rbenv install 3.3.6
+# Default to using this ruby version
+rbenv global 3.3.6
+```
+
+3. **Tell your computer to use `rbenv`**
+Add the following to the top of your `.zshrc` or `.bash_profile`:
+```zsh
+eval "$(rbenv init -)"
+```
+
+4. **Reload `.zshrc` or `.bash_profile`**
+Run the following in your terminal:
+```bash
+# If using zsh
+source ~/.zshrc
+# If using bash
+source ~/.bash_profile
+```
+
+## Error: `bad interpreter: No such file or directory` on `pod install`
+Reinstall cocoapods by doing the following:
+```bash
+# Uninstall current version of cocoapods
+brew uninstall cocoapods
+# Install a fresh version of cocoapods
+brew install cocoapods
+# Recreate link to cocoapods
+brew unlink cocoapods && brew link cocoapods
+```
+
+Run `pod install` again, and it should work
+
 ## Other
 If things are not working and you are stumped as to why, try running the
 following in the _example app directory_:
