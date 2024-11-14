@@ -1,6 +1,6 @@
 import { type ViewToken } from 'react-native';
 
-import IterableUtil from './IterableUtil';
+import { IterableUtil } from './IterableUtil';
 
 import {
   IterableInAppTrigger,
@@ -152,5 +152,3 @@ export class IterableInAppMessage {
     );
   }
 }
-
-export default IterableInAppMessage;
