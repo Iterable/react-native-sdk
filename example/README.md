@@ -208,4 +208,44 @@ This will give you information about what react native needs in order to run,
 and whether it is accessible to the app.
 
 Take a look at the OS you are trying to run.  Make sure that everything has been
-installed and that the necessary items have been added to your `PATH`.
+installed and that the necessary items have been added to your `PATH`.  Below
+are example items that are commonly added to the *.zshrc* or *.bashrc*:
+
+```zsh
+# Load rbenv if using (suggested)
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+
+# Load nvm if using (suggested)
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# General paths
+export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$PATH:$(pwd)/bin
+
+# Homebrew setup
+if [ -d "/opt/homebrew/bin" ]; then
+    export PATH="/opt/homebrew/bin:$PATH"
+fi
+
+# Android paths and variables
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export ANDROID_SDK_ROOT=$ANDROID_HOME
+export PATH=$PATH:$ANDROID_HOME
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+export PATH=$PATH:/opt/homebrew/bin/gradle
+export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
+
+# Java variables
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
+
+# Node variables and settings
+export NODE_BINARY=node
+export NODE_OPTIONS=--openssl-legacy-provider
+```
+
+You should also look through the [React Native environment setup
+docs](https://reactnative.dev/docs/set-up-your-environment) and make sure that
+you did not miss anything.
