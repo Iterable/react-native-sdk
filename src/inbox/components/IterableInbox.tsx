@@ -358,5 +358,3 @@ export const IterableInbox = ({
     <View style={container}>{inboxAnimatedView}</View>
   );
 };
-
-export default IterableInbox;

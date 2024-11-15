@@ -123,5 +123,3 @@ export class IterableInAppManager {
     RNIterableAPI.setAutoDisplayPaused(paused);
   }
 }
-
-export default IterableInAppManager;

@@ -176,5 +176,3 @@ export class IterableInboxDataModel {
     };
   }
 }
-
-export default IterableInboxDataModel;

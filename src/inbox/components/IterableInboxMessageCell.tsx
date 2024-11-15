@@ -328,5 +328,3 @@ export const IterableInboxMessageCell = ({
     </>
   );
 };
-
-export default IterableInboxMessageCell;

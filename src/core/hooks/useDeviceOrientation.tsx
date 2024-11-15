@@ -15,5 +15,3 @@ export function useDeviceOrientation() {
 
   return { height, width, isPortrait };
 }
-
-export default useDeviceOrientation;
