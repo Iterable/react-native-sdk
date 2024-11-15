@@ -1,8 +1,5 @@
-'use strict'
-
-type InboxImpressionRowInfo = {
-    messageId: string
-    silentInbox: boolean
-}
-
-export default InboxImpressionRowInfo
+// TODO: Add description
+export type InboxImpressionRowInfo = {
+  messageId: string;
+  silentInbox: boolean;
+};

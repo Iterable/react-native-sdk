@@ -1,22 +1,34 @@
-import { NativeModules, Platform } from 'react-native';
-
-const LINKING_ERROR =
-  `The package '@iterable/react-native-sdk' doesn't seem to be linked. Make sure: \n\n` +
-  Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
-  '- You rebuilt the app after installing the package\n' +
-  '- You are not using Expo Go\n';
-
-const ReactNativeSdk = NativeModules.ReactNativeSdk
-  ? NativeModules.ReactNativeSdk
-  : new Proxy(
-      {},
-      {
-        get() {
-          throw new Error(LINKING_ERROR);
-        },
-      }
-    );
-
-export function multiply(a: number, b: number): Promise<number> {
-  return ReactNativeSdk.multiply(a, b);
-}
+/**
+ * React Native module for Iterable.
+ * @module react-native-iterable-sdk
+ */
+export type { InboxImpressionRowInfo } from './InboxImpressionRowInfo';
+export type { InboxRowViewModel } from './InboxRowViewModel';
+export { Iterable, IterableCommerceItem } from './Iterable';
+export {
+  IterableAction,
+  IterableActionContext,
+  IterableLogLevel,
+} from './IterableAction';
+export { IterableConfig } from './IterableConfig';
+export { IterableDataRegion } from './IterableDataRegion';
+export {
+  IterableEdgeInsets,
+  IterableHtmlInAppContent,
+  IterableInAppCloseSource,
+  IterableInAppContentType,
+  IterableInAppDeleteSource,
+  IterableInAppLocation,
+  IterableInAppShowResponse,
+  IterableInAppTrigger,
+  IterableInAppTriggerType,
+  IterableInboxMetadata,
+  type IterableInAppContent,
+} from './IterableInAppClasses';
+export { IterableInAppManager } from './IterableInAppManager';
+export { IterableInAppMessage } from './IterableInAppMessage';
+export type { IterableInboxCustomizations } from './IterableInboxCustomizations';
+export { IterableInboxEmptyState } from './IterableInboxEmptyState';
+export { IterableInboxMessageCell } from './IterableInboxMessageCell';
+export { useAppStateListener } from './useAppStateListener';
+export { useDeviceOrientation } from './useDeviceOrientation';
