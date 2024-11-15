@@ -5,5 +5,3 @@ export enum IterableInAppShowResponse {
   /** Skip showing in-app */
   skip = 1,
 }
-
-export default IterableInAppShowResponse;

@@ -7,5 +7,3 @@ export enum IterableInAppTriggerType {
   /** Do not display the in-app automatically via the SDK */
   never = 2,
 }
-
-export default IterableInAppTriggerType;

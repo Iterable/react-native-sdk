@@ -24,5 +24,3 @@ export class IterableInboxMetadata {
     return new IterableInboxMetadata(dict.title, dict.subtitle, dict.icon);
   }
 }
-
-export default IterableInboxMetadata;

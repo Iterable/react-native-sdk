@@ -6,5 +6,3 @@ export class IterableAuthResponse {
   successCallback?: () => void;
   failureCallback?: () => void;
 }
-
-export default IterableAuthResponse;

@@ -37,5 +37,3 @@ export class IterableCommerceItem {
     this.dataFields = dataFields;
   }
 }
-
-export default IterableCommerceItem;

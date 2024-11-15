@@ -6,5 +6,3 @@ export enum IterableActionSource {
   appLink = 1,
   inApp = 2,
 }
-
-export default IterableActionSource;

@@ -8,5 +8,3 @@ export enum IterableEventName {
   handleAuthSuccessCalled = 'handleAuthSuccessCalled',
   handleAuthFailureCalled = 'handleAuthFailureCalled',
 }
-
-export default IterableEventName;

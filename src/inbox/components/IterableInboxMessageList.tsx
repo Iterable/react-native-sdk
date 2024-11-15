@@ -124,5 +124,3 @@ export const IterableInboxMessageList = ({
     />
   );
 };
-
-export default IterableInboxMessageList;

@@ -18,5 +18,3 @@ export class IterableEdgeInsets {
     return new IterableEdgeInsets(dict.top, dict.left, dict.bottom, dict.right);
   }
 }
-
-export default IterableEdgeInsets;

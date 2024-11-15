@@ -6,5 +6,3 @@ export enum IterableLogLevel {
   info = 2,
   error = 3,
 }
-
-export default IterableLogLevel;
