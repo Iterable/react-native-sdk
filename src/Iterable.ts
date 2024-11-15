@@ -15,9 +15,9 @@ import {
   IterableInAppDeleteSource,
 } from './IterableInAppClasses';
 
-import IterableInAppManager from './IterableInAppManager';
-import IterableInAppMessage from './IterableInAppMessage';
-import IterableConfig, { AuthResponse } from './IterableConfig';
+import { IterableInAppManager } from './IterableInAppManager';
+import { IterableInAppMessage } from './IterableInAppMessage';
+import { AuthResponse, IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
 
 const RNIterableAPI = NativeModules.RNIterableAPI;
