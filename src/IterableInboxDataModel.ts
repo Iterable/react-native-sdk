@@ -9,7 +9,7 @@ import { Iterable } from './Iterable';
 
 import type { InboxImpressionRowInfo } from './InboxImpressionRowInfo';
 import type { InboxRowViewModel } from './InboxRowViewModel';
-import IterableInAppMessage from './IterableInAppMessage';
+import { IterableInAppMessage } from './IterableInAppMessage';
 
 const RNIterableAPI = NativeModules.RNIterableAPI;
 
@@ -175,5 +175,3 @@ export class IterableInboxDataModel {
     };
   }
 }
-
-export default IterableInboxDataModel;

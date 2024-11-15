@@ -8,5 +8,3 @@ export class IterableUtil {
     }
   }
 }
-
-export default IterableUtil;
