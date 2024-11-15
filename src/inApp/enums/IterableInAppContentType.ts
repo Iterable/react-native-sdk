@@ -4,5 +4,3 @@ export enum IterableInAppContentType {
   alert = 1,
   banner = 2,
 }
-
-export default IterableInAppContentType;

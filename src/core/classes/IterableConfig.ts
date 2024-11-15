@@ -161,5 +161,3 @@ export class IterableConfig {
     };
   }
 }
-
-export default IterableConfig;
