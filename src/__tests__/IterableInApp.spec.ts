@@ -3,8 +3,8 @@ import { NativeEventEmitter } from 'react-native';
 import { MockRNIterableAPI } from '../__mocks__/MockRNIterableAPI';
 
 import { Iterable, EventName } from '../Iterable';
-import IterableConfig from '../IterableConfig';
-import IterableInAppMessage from '../IterableInAppMessage';
+import { IterableConfig } from '../IterableConfig';
+import { IterableInAppMessage } from '../IterableInAppMessage';
 import {
   IterableInAppLocation,
   IterableInAppTrigger,

@@ -3,10 +3,10 @@ import { type ViewabilityConfig, type ViewToken, FlatList } from 'react-native';
 
 import type { InboxImpressionRowInfo } from './InboxImpressionRowInfo';
 import type { InboxRowViewModel } from './InboxRowViewModel';
-import IterableInAppMessage from './IterableInAppMessage';
+import { IterableInAppMessage } from './IterableInAppMessage';
 import type { IterableInboxCustomizations } from './IterableInboxCustomizations';
-import IterableInboxDataModel from './IterableInboxDataModel';
-import IterableInboxMessageCell from './IterableInboxMessageCell';
+import { IterableInboxDataModel } from './IterableInboxDataModel';
+import { IterableInboxMessageCell } from './IterableInboxMessageCell';
 
 // TODO: Comment
 type MessageListProps = {
@@ -112,5 +112,3 @@ export const IterableInboxMessageList = ({
     />
   );
 };
-
-export default IterableInboxMessageList;
