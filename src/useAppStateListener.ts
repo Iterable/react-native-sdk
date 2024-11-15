@@ -25,5 +25,3 @@ export function useAppStateListener() {
 
   return appStateVisibility;
 }
-
-export default useAppStateListener;

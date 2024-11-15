@@ -14,7 +14,7 @@ import {
 import type { InboxRowViewModel } from './InboxRowViewModel';
 import type { IterableInboxCustomizations } from './IterableInboxCustomizations';
 
-import IterableInboxDataModel from './IterableInboxDataModel';
+import { IterableInboxDataModel } from './IterableInboxDataModel';
 
 // TODO: Change to component
 function defaultMessageListLayout(
@@ -327,5 +327,3 @@ export const IterableInboxMessageCell = ({
     </>
   );
 };
-
-export default IterableInboxMessageCell;

@@ -19,12 +19,12 @@ import {
   IterableInAppLocation,
 } from './IterableInAppClasses';
 import type { IterableInboxCustomizations } from './IterableInboxCustomizations';
-import IterableInboxDataModel from './IterableInboxDataModel';
-import IterableInboxEmptyState from './IterableInboxEmptyState';
-import IterableInboxMessageDisplay from './IterableInboxMessageDisplay';
-import IterableInboxMessageList from './IterableInboxMessageList';
-import useAppStateListener from './useAppStateListener';
-import useDeviceOrientation from './useDeviceOrientation';
+import { IterableInboxDataModel } from './IterableInboxDataModel';
+import { IterableInboxEmptyState } from './IterableInboxEmptyState';
+import { IterableInboxMessageDisplay } from './IterableInboxMessageDisplay';
+import { IterableInboxMessageList } from './IterableInboxMessageList';
+import { useAppStateListener } from './useAppStateListener';
+import { useDeviceOrientation } from './useDeviceOrientation';
 
 const RNIterableAPI = NativeModules.RNIterableAPI;
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
@@ -354,5 +354,3 @@ export const IterableInbox = ({
     <View style={container}>{inboxAnimatedView}</View>
   );
 };
-
-export default IterableInbox;
