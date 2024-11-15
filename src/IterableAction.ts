@@ -51,5 +51,3 @@ export class IterableActionContext {
     return new IterableActionContext(action, source);
   }
 }
-
-export default IterableAction;

@@ -246,5 +246,3 @@ export const IterableInboxMessageDisplay = ({
     </View>
   );
 };
-
-export default IterableInboxMessageDisplay;

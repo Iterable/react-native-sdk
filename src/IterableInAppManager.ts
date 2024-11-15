@@ -6,7 +6,7 @@ import {
   IterableInAppDeleteSource,
   IterableInAppLocation,
 } from './IterableInAppClasses';
-import IterableInAppMessage from './IterableInAppMessage';
+import { IterableInAppMessage } from './IterableInAppMessage';
 
 // TODO: Create a loader for this
 const RNIterableAPI = NativeModules.RNIterableAPI;
@@ -123,5 +123,3 @@ export class IterableInAppManager {
     RNIterableAPI.setAutoDisplayPaused(paused);
   }
 }
-
-export default IterableInAppManager;

@@ -10,14 +10,15 @@ import {
 } from 'react-native';
 
 import { IterableAction, IterableActionContext } from './IterableAction';
-import IterableConfig, { AuthResponse } from './IterableConfig';
+import { IterableConfig, AuthResponse } from './IterableConfig';
 import {
   IterableInAppCloseSource,
   IterableInAppDeleteSource,
   IterableInAppLocation,
 } from './IterableInAppClasses';
-import IterableInAppManager from './IterableInAppManager';
-import IterableInAppMessage from './IterableInAppMessage';
+
+import { IterableInAppManager } from './IterableInAppManager';
+import { IterableInAppMessage } from './IterableInAppMessage';
 import { IterableLogger } from './IterableLogger';
 
 const RNIterableAPI = NativeModules.RNIterableAPI;

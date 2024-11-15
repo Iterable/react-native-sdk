@@ -5,7 +5,7 @@ import {
 } from './IterableAction';
 import { IterableDataRegion } from './IterableDataRegion';
 import { IterableInAppShowResponse } from './IterableInAppClasses';
-import IterableInAppMessage from './IterableInAppMessage';
+import { IterableInAppMessage } from './IterableInAppMessage';
 import { IterablePushPlatform } from './IterablePushPlatform';
 
 // TODO: Add description
@@ -171,5 +171,3 @@ export class AuthResponse {
   successCallback?: AuthCallBack;
   failureCallback?: AuthCallBack;
 }
-
-export default IterableConfig;
