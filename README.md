@@ -18,6 +18,12 @@ Iterable's React Native SDK relies on:
     - [React Native 0.60.0+](https://github.com/facebook/react-native)
     - [React Native CLI 2.0.1+](https://reactnative.dev/docs/upgrading#react-native-cli)
 
+    _UI Components require additional peer dependencies_
+    - [React Navigation 6+](https://github.com/react-navigation/react-navigation)
+    - [React Native Safe Area Context 4+](https://github.com/th3rdwave/react-native-safe-area-context)
+    - [React Native Vector Icons 9+](https://github.com/oblador/react-native-vector-icons)
+    - [React Native WebView 11+](https://github.com/react-native-webview/react-native-webview)
+
 - **iOS**
     - Xcode 12+
     - [Deployment target 10.0+](https://help.apple.com/xcode/mac/current/#/deve69552ee5)
