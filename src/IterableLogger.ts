@@ -1,4 +1,4 @@
-import IterableConfig from './IterableConfig';
+import { IterableConfig } from './IterableConfig';
 
 // TODO: Add comments and descriptions
 export class IterableLogger {
@@ -18,5 +18,3 @@ export class IterableLogger {
     }
   }
 }
-
-export default IterableLogger;
