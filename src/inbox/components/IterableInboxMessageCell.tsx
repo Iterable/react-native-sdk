@@ -33,70 +33,70 @@ function defaultMessageListLayout(
   const thumbnailURL = rowViewModel.imageUrl;
 
   const styles = StyleSheet.create({
-    unreadIndicatorContainer: {
-      height: '100%',
-      flexDirection: 'column',
-      justifyContent: 'flex-start',
+    body: {
+      color: 'lightgray',
+      flexWrap: 'wrap',
+      fontSize: 15,
+      paddingBottom: 10,
+      width: '85%',
     },
 
-    unreadIndicator: {
-      width: 15,
-      height: 15,
-      borderRadius: 15 / 2,
-      backgroundColor: 'blue',
-      marginLeft: 10,
-      marginRight: 5,
-      marginTop: 10,
-    },
-
-    unreadMessageThumbnailContainer: {
-      paddingLeft: 10,
-      flexDirection: 'column',
-      justifyContent: 'center',
-    },
-
-    readMessageThumbnailContainer: {
-      paddingLeft: 30,
-      flexDirection: 'column',
-      justifyContent: 'center',
+    createdAt: {
+      color: 'lightgray',
+      fontSize: 12,
     },
 
     messageContainer: {
-      paddingLeft: 10,
-      width: '75%',
       flexDirection: 'column',
       justifyContent: 'center',
+      paddingLeft: 10,
+      width: '75%',
+    },
+
+    messageRow: {
+      backgroundColor: 'white',
+      borderColor: 'lightgray',
+      borderStyle: 'solid',
+      borderTopWidth: 1,
+      flexDirection: 'row',
+      height: 150,
+      paddingBottom: 10,
+      paddingTop: 10,
+      width: '100%',
+    },
+
+    readMessageThumbnailContainer: {
+      flexDirection: 'column',
+      justifyContent: 'center',
+      paddingLeft: 30,
     },
 
     title: {
       fontSize: 22,
+      paddingBottom: 10,
       width: '85%',
-      paddingBottom: 10,
     },
 
-    body: {
-      fontSize: 15,
-      color: 'lightgray',
-      width: '85%',
-      flexWrap: 'wrap',
-      paddingBottom: 10,
+    unreadIndicator: {
+      backgroundColor: 'blue',
+      borderRadius: 15 / 2,
+      height: 15,
+      marginLeft: 10,
+      marginRight: 5,
+      marginTop: 10,
+      width: 15,
     },
 
-    createdAt: {
-      fontSize: 12,
-      color: 'lightgray',
+    unreadIndicatorContainer: {
+      flexDirection: 'column',
+      height: '100%',
+      justifyContent: 'flex-start',
     },
 
-    messageRow: {
-      flexDirection: 'row',
-      backgroundColor: 'white',
-      paddingTop: 10,
-      paddingBottom: 10,
-      width: '100%',
-      height: 150,
-      borderStyle: 'solid',
-      borderColor: 'lightgray',
-      borderTopWidth: 1,
+    unreadMessageThumbnailContainer: {
+      flexDirection: 'column',
+      justifyContent: 'center',
+      paddingLeft: 10,
     },
   });
 
@@ -217,27 +217,27 @@ export const IterableInboxMessageCell = ({
   }
 
   const styles = StyleSheet.create({
-    textContainer: {
-      width: '100%',
-      elevation: 2,
-    },
-
     deleteSlider: {
-      flexDirection: 'row',
       alignItems: 'center',
+      backgroundColor: 'red',
+      elevation: 1,
+      flexDirection: 'row',
+      height: deleteSliderHeight,
       justifyContent: 'flex-end',
       paddingRight: 10,
-      backgroundColor: 'red',
       position: 'absolute',
-      elevation: 1,
       width: '100%',
-      height: deleteSliderHeight,
+    },
+
+    textContainer: {
+      elevation: 2,
+      width: '100%',
     },
 
     textStyle: {
-      fontWeight: 'bold',
-      fontSize: 15,
       color: 'white',
+      fontSize: 15,
+      fontWeight: 'bold',
     },
   });
 

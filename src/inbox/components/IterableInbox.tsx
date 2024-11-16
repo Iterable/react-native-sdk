@@ -78,40 +78,40 @@ export const IterableInbox = ({
   >([]);
 
   const styles = StyleSheet.create({
-    loadingScreen: {
-      height: '100%',
-      backgroundColor: 'whitesmoke',
-    },
-
     container: {
+      alignItems: 'center',
       flex: 1,
       flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'flex-start',
       height: '100%',
-      width: 2 * width,
+      justifyContent: 'flex-start',
       paddingBottom: 0,
       paddingLeft: 0,
       paddingRight: 0,
-    },
-
-    messageListContainer: {
-      height: '100%',
-      width: width,
-      flexDirection: 'column',
-      justifyContent: 'flex-start',
+      width: 2 * width,
     },
 
     headline: {
-      fontWeight: 'bold',
+      backgroundColor: 'whitesmoke',
       fontSize: 40,
-      width: '100%',
+      fontWeight: 'bold',
       height: 60,
       marginTop: 0,
-      paddingTop: 10,
       paddingBottom: 10,
       paddingLeft: 30,
+      paddingTop: 10,
+      width: '100%',
+    },
+
+    loadingScreen: {
       backgroundColor: 'whitesmoke',
+      height: '100%',
+    },
+
+    messageListContainer: {
+      flexDirection: 'column',
+      height: '100%',
+      justifyContent: 'flex-start',
+      width: width,
     },
   });
 

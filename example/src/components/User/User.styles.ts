@@ -7,10 +7,10 @@ const text: TextStyle = {
 };
 
 const styles = StyleSheet.create({
-  container,
   appName: appNameSmall,
   button,
   buttonText,
+  container,
   secondaryButton: {
     ...button,
     backgroundColor: 'gray',

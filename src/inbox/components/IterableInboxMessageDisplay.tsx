@@ -56,12 +56,8 @@ export const IterableInboxMessageDisplay = ({
   );
 
   const styles = StyleSheet.create({
-    messageDisplayContainer: {
-      height: '100%',
-      width: contentWidth,
-      backgroundColor: 'whitesmoke',
-      flexDirection: 'column',
-      justifyContent: 'flex-start',
+    contentContainer: {
+      flex: 1,
     },
 
     header: {
@@ -70,18 +66,47 @@ export const IterableInboxMessageDisplay = ({
       width: '100%',
     },
 
-    returnButtonContainer: {
+    messageDisplayContainer: {
+      backgroundColor: 'whitesmoke',
+      flexDirection: 'column',
+      height: '100%',
+      justifyContent: 'flex-start',
+      width: contentWidth,
+    },
+
+    messageTitle: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      justifyContent: 'center',
+      width: 0.5 * contentWidth,
+    },
+
+    messageTitleContainer: {
+      alignItems: 'center',
       flexDirection: 'row',
       justifyContent: 'flex-start',
-      alignItems: 'center',
-      width: '25%',
-      marginLeft: 0,
       marginTop: 0,
+      width: '75%',
+    },
+
+    messageTitleText: {
+      backgroundColor: 'whitesmoke',
+      fontSize: 20,
+      fontWeight: 'bold',
     },
 
     returnButton: {
-      flexDirection: 'row',
       alignItems: 'center',
+      flexDirection: 'row',
+    },
+
+    returnButtonContainer: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      marginLeft: 0,
+      marginTop: 0,
+      width: '25%',
     },
 
     returnButtonIcon: {
@@ -93,31 +118,6 @@ export const IterableInboxMessageDisplay = ({
     returnButtonText: {
       color: 'deepskyblue',
       fontSize: 20,
-    },
-
-    messageTitleContainer: {
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
-      alignItems: 'center',
-      width: '75%',
-      marginTop: 0,
-    },
-
-    messageTitle: {
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: 0.5 * contentWidth,
-    },
-
-    messageTitleText: {
-      fontWeight: 'bold',
-      fontSize: 20,
-      backgroundColor: 'whitesmoke',
-    },
-
-    contentContainer: {
-      flex: 1,
     },
   });
 

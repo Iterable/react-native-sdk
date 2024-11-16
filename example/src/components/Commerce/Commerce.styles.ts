@@ -9,9 +9,8 @@ import {
 } from '../../constants';
 
 const styles = StyleSheet.create({
-  container,
-  title: { ...title, textAlign: 'center' },
-  subtitle: { ...subtitle, textAlign: 'center' },
+  button: { ...button, marginTop: 10, paddingVertical: 5, width: 100 },
+  buttonText,
   cardContainer: {
     backgroundColor: colors?.white,
     borderWidth: 1,
@@ -26,42 +25,43 @@ const styles = StyleSheet.create({
     height: 150,
     marginBottom: 10,
   },
-  infoContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    gap: 10,
-    alignItems: 'center',
-  },
-  imageContainer: {
-    width: 120,
-    height: 100,
-    flex: 0,
-  },
-  textContainer: {
-    paddingTop: 10,
-    flex: 1,
-    marginLeft: 10,
-  },
   cardImage: {
     height: '100%',
-    width: '100%',
     resizeMode: 'contain',
+    width: '100%',
+  },
+  cardSubtitle: {
+    color: colors.textSecondary,
+    fontSize: 14,
   },
   cardTitle: {
     fontSize: 18,
     fontWeight: 'bold',
   },
-  cardSubtitle: {
-    fontSize: 14,
-    color: colors.textSecondary,
+  container,
+  imageContainer: {
+    flex: 0,
+    height: 100,
+    width: 120,
+  },
+  infoContainer: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 10,
   },
   price: {
-    marginVertical: 5,
-    fontWeight: 'bold',
     color: colors.salmon50,
+    fontWeight: 'bold',
+    marginVertical: 5,
   },
-  button: { ...button, width: 100, marginTop: 10, paddingVertical: 5 },
-  buttonText,
+  subtitle: { ...subtitle, textAlign: 'center' },
+  textContainer: {
+    flex: 1,
+    marginLeft: 10,
+    paddingTop: 10,
+  },
+  title: { ...title, textAlign: 'center' },
 });
 
 export default styles;

@@ -50,22 +50,22 @@ export const IterableInboxEmptyState = ({
 };
 
 const styles = StyleSheet.create({
+  body: {
+    color: 'grey',
+    fontSize: 15,
+  },
+
   container: {
-    height: 0,
+    alignItems: 'center',
     backgroundColor: 'whitesmoke',
     flexDirection: 'column',
+    height: 0,
     justifyContent: 'center',
-    alignItems: 'center',
   },
 
   title: {
-    fontWeight: 'bold',
     fontSize: 20,
+    fontWeight: 'bold',
     paddingBottom: 25,
-  },
-
-  body: {
-    fontSize: 15,
-    color: 'grey',
   },
 });

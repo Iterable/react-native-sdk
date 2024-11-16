@@ -1,6 +1,11 @@
 module.exports = {
   root: true,
-  extends: ['@react-native', 'prettier'],
+  extends: [
+    '@react-native',
+    'plugin:react/recommended',
+    'plugin:react-native/all',
+    'prettier', // Disables ESLint rules that conflict with Prettier
+  ],
   rules: {
     'react/react-in-jsx-scope': 'off',
   },

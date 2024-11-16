@@ -19,22 +19,22 @@ const setButton = (buttonToSet: ViewStyle = {}) => ({
 });
 
 export const styles = StyleSheet.create({
-  loginScreenContainer: {
-    ...container,
-    backgroundColor: 'white',
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  formContainer: { marginTop: 24 },
   appName,
-  title,
-  subtitle,
-  input: { ...input, marginBottom: 15 },
   button: setButton(),
   buttonDisabled: setButton(buttonDisabled),
   buttonText,
   buttonTextDisabled,
+  formContainer: { marginTop: 24 },
+  input: { ...input, marginBottom: 15 },
   label,
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  loginScreenContainer: {
+    ...container,
+    backgroundColor: 'white',
+  },
+  subtitle,
+  title,
 });
