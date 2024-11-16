@@ -1,7 +1,5 @@
 ![Iterable logo](./images/Iterable-Logo.png "Iterable Logo")
 
-[![Docs Coverage](./docs/coverage.svg)](link)
-
 # Iterable's React Native SDK
 
 [Iterable](https://www.iterable.com) is a growth marketing platform that helps

@@ -25,27 +25,66 @@ import { IterableLogger } from './IterableLogger';
 const RNIterableAPI = NativeModules.RNIterableAPI;
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
+/**
+ * @hideconstructor
+ * The main class for the Iterable React Native SDK.
+ *
+ * The majority of the high-level functionality can be accomplished through the
+ * static methods of this class.  EG: initializing the SDK, logging in a user,
+ * tracking purchases, etc.
+ *
+ * @example
+ * // Initialize the SDK
+ * Iterable.initialize(YOUR_API_KEY, new IterableConfig());
+ *
+ * // Log in a user
+ * Iterable.setEmail('my.email@company.com');
+ * // OR
+ * Iterable.setUserId('myUserId');
+ */
 export class Iterable {
+  /**
+   * Manager for in app messages
+   */
   static inAppManager = new IterableInAppManager();
 
+  /**
+   * Logger for the Iterable SDK
+   * Log level is set with {@link IterableLogLevel}
+   */
   static logger: IterableLogger;
 
+  /**
+   * Current configuration of the Iterable SDK
+   */
   static savedConfig: IterableConfig;
 
   /**
-   * This static method is used to initialize the React Native SDK in your app's Javascript or Typescript code.
+   * Initializes the Iterable React Native SDK in your app's Javascript or Typescript code.
    *
    * Pass in a mobile API key distributed with the mobile app.
    * Warning: never user server-side API keys with the React Native SDK, mobile API keys have minimal access for security purposes.
    *
-   * Pass in an IterableConfig object with the various customization properties setup.
+   * Pass in an `IterableConfig` object with the various customization properties setup.
    *
-   * Note: Use Iterable.initialize and NOT Iterable.initialize2, as Iterable.initialize2 is only used internally.
+   * @param apiKey - The [*mobile* API
+   * key](https://support.iterable.com/hc/en-us/articles/360043464871-API-Keys)
+   * for your application
+   * @param config - Configuration object for the SDK
    *
-   * @param apiKey - mobile API key provided with the application
-   * @param config - config object with various properties
+   * @example
+   * Initializing the app could look like this:
+   * ```typescript
+   * // Create a new IterableConfig object
+   * const config = new IterableConfig();
+   *
+   * // Set various properties on the config object
+   * config.logLevel = IterableLogLevel.debug;
+   *
+   * // Initialize the SDK with the API key and config object
+   * Iterable.initialize(API_KEY, config);
+   * ```
    */
-
   static initialize(
     apiKey: string,
     config: IterableConfig = new IterableConfig()
@@ -65,6 +104,8 @@ export class Iterable {
   /**
    * DO NOT CALL THIS METHOD.
    * This method is used internally to connect to staging environment.
+   *
+   * @internal
    */
   static initialize2(
     apiKey: string,
@@ -89,39 +130,54 @@ export class Iterable {
   }
 
   /**
-   * This static method associates the current user with the passed in email parameter.
+   * Associate the current user with the passed in email parameter.
    *
-   * Iterable's React Native SDK persists the user across app sessions and restarts, until you manually change the user using
-   * Iterable.setEmail or Iterable.setUserId.
+   * Note: specify a user by calling `Iterable.setEmail` or
+   * `Iterable.setUserId`, but **NOT** both
    *
-   * User profile creation:
+   * @remarks
+   * Iterable's React Native SDK persists the user across app sessions and
+   * restarts, until you manually change the user using `Iterable.setEmail` or
+   * `Iterable.setUserId`.
    *
-   * If your Iterable project does not have a user with the passed in email, setEmail creates one and adds the email address
-   * to the user's Iterable profile.
+   * ## User profile creation:
    *
-   * Registering device token:
+   * If your Iterable project does not have a user with the passed in email,
+   * `setEmail` creates one and adds the email address to the user's Iterable
+   * profile.
    *
-   * If IterableConfig.autoPushRegisteration is set to true, calling setEmail automatically registers the device for push
-   * notifications and sends the deviceId and token to Iterable.
+   * ## Registering device token:
    *
-   * Optional JWT token parameter:
+   * If `IterableConfig.autoPushRegisteration` is set to true, calling
+   * `setEmail` automatically registers the device for push notifications and
+   * sends the deviceId and token to Iterable.
    *
-   * An optional valid, pre-fetched JWT can be passed in to avoid race conditions.
-   * The SDK uses this JWT to authenticate API requests for this user.
+   * ## Optional JWT token parameter:
    *
-   * Signing out a user from the SDK:
+   * An optional valid, pre-fetched JWT can be passed in to avoid race
+   * conditions.  The SDK uses this JWT to authenticate API requests for this
+   * user.
    *
-   * To tell the SDK to sign out the current user, pass null into Iterable.setEmail.
-   * If IterableConfig.autoPushRegisteration is set to true, calling Iterable.setEmail(null) prevents Iterable from sending further
-   * push notifications to that user, for that app, on that device.
-   * On the user's Iterable profile, endpointEnabled is set to false for the device.
+   * ## Signing out a user from the SDK:
    *
-   * Note: specify a user by calling Iterable.setEmail or Iterable.setUserId, but NOT both.
+   * To tell the SDK to sign out the current user, pass null into
+   * `Iterable.setEmail`.  If IterableConfig.autoPushRegisteration is set to
+   * true, calling `Iterable.setEmail`(null) prevents Iterable from sending
+   * further push notifications to that user, for that app, on that device.  On
+   * the user's Iterable profile, `endpointEnabled` is set to false for the
+   * device.
    *
-   * @param email - email address to associate with the current user
-   * @param authToken - valid, pre-fetched JWT the SDK can use to authenticate API requests, optional - if null/undefined, no JWT related action will be taken
+   * @param email - Email address to associate with
+   * the current user
+   * @param authToken - Valid, pre-fetched JWT the SDK
+   * can use to authenticate API requests, optional - If null/undefined, no JWT
+   * related action will be taken
+   *
+   *  @example
+   * ```typescript
+   * Iterable.setEmail('my.user.name@gmail.com');
+   * ```
    */
-
   static setEmail(email?: string | null, authToken?: string | null) {
     Iterable.logger.log('setEmail: ' + email);
 
@@ -129,10 +185,15 @@ export class Iterable {
   }
 
   /**
-   * This static method returns the email associated with the current user.
-   * Iterable.getEmail returns a promise. Use the keyword `then` to get the result of the promise.
+   * Get the email associated with the current user.
+   *
+   * @example
+   * ```typescript
+   * Iterable.getEmail().then((email) => {
+   *  // Do something with the email
+   * });
+   * ```
    */
-
   static getEmail(): Promise<string | undefined> {
     Iterable.logger.log('getEmail');
 
@@ -140,39 +201,48 @@ export class Iterable {
   }
 
   /**
-   * This static method associates the current user with the passed in userId parameter.
+   * Associate the current user with the passed in `userId` parameter.
    *
-   * Iterable's React Native SDK persists the user across app sessions and restarts, until you manually change the user using
-   * Iterable.setEmail or Iterable.setUserId.
+   * Note: specify a user by calling `Iterable.setEmail` or
+   * `Iterable.setUserId`, but **NOT** both.
    *
-   * User profile creation:
+   * @remarks
+   * Iterable's React Native SDK persists the user across app sessions and
+   * restarts, until you manually change the user using `Iterable.setEmail` or
+   * `Iterable.setUserId`.
    *
-   * If your Iterable project does not have a user with the passed in UserId, setUserId creates one and adds a placeholder email
-   * address to the user's Iterable profile.
+   * ## User profile creation:
    *
-   * Registering device token:
+   * If your Iterable project does not have a user with the passed in UserId,
+   * setUserId creates one and adds a placeholder email address to the user's
+   * Iterable profile.
    *
-   * If IterableConfig.autoPushRegisteration is set to true, calling setUserId automatically registers the device for push
-   * notifications and sends the deviceId and token to Iterable.
+   * ## Registering device token:
    *
-   * Optional JWT token parameter:
+   * If `IterableConfig.autoPushRegisteration` is set to `true`, calling
+   * setUserI`d automatically registers the device for push notifications and
+   * sends the `deviceId` and token to Iterable.
    *
-   * An optional valid, pre-fetched JWT can be passed in to avoid race conditions.
-   * The SDK uses this JWT to authenticate API requests for this user.
+   * ## Optional JWT token parameter:
    *
-   * Signing out a user from the SDK:
+   * An optional valid, pre-fetched JWT can be passed in to avoid race
+   * conditions.  The SDK uses this JWT to authenticate API requests for this
+   * user.
    *
-   * To tell the SDK to sign out the current user, pass null into Iterable.setUserId.
-   * If IterableConfig.autoPushRegisteration is set to true, calling Iterable.setUserId(null) prevents Iterable from sending further
-   * push notifications to that user, for that app, on that device.
-   * On the user's Iterable profile, endpointEnabled is set to false for the device.
+   * ## Signing out a user from the SDK:
    *
-   * Note: specify a user by calling Iterable.setEmail or Iterable.setUserId, but NOT both.
+   * To tell the SDK to sign out the current user, pass null into
+   * `Iterable.setUserId`.  If `IterableConfig.autoPushRegisteration` is set to
+   * true, calling `Iterable.setUserId(null)` prevents Iterable from sending
+   * further push notifications to that user, for that app, on that device.  On
+   * the user's Iterable profile, endpointEnabled is set to false for the
+   * device.
    *
-   * parameters: @param userId - user ID to associate with the current user
-   * optional parameter: @param authToken - valid, pre-fetched JWT the SDK can use to authenticate API requests, optional - if null/undefined, no JWT related action will be taken
+   * @param userId - User ID to associate with the current user
+   * @param authToken - Valid, pre-fetched JWT the SDK can use to authenticate
+   * API requests, optional - If null/undefined, no JWT related action will be
+   * taken
    */
-
   static setUserId(userId?: string | null, authToken?: string | null) {
     Iterable.logger.log('setUserId: ' + userId);
 
@@ -180,12 +250,15 @@ export class Iterable {
   }
 
   /**
-   * This static method returns the userId associated with the current user.
-   * Iterable.getUserId returns a promise. Use the keyword `then` to get the result of the promise.
+   * Get the `userId` associated with the current user.
    *
-   * parameters: none
+   * @example
+   * ```typescript
+   * Iterable.getUserId().then((userId) => {
+   *  // Do something with the userId
+   * });
+   * ```
    */
-
   static getUserId(): Promise<string | undefined> {
     Iterable.logger.log('getUserId');
 
@@ -193,11 +266,13 @@ export class Iterable {
   }
 
   /**
-   * This static method disables the device's token for the current user.
+   * Disable the device's token for the current user.
    *
-   * parameters: none
+   * @example
+   * ```typescript
+   * Iterable.disableDeviceForCurrentUser();
+   * ```
    */
-
   static disableDeviceForCurrentUser() {
     Iterable.logger.log('disableDeviceForCurrentUser');
 
@@ -205,14 +280,16 @@ export class Iterable {
   }
 
   /**
-   * This static method returns the payload of the last push notification with which the user
+   * Get the payload of the last push notification with which the user
    * opened the application (by clicking an action button, etc.).
    *
-   * Iterable.getLastPushPayload returns a promise. Use the keyword `then` to get the result of the promise.
-   *
-   * Parameters: none
+   * @example
+   * ```typescript
+   * Iterable.getLastPushPayload().then((payload) => {
+   *  // Do something with the payload
+   * });
+   * ```
    */
-
   static getLastPushPayload(): Promise<unknown> {
     Iterable.logger.log('getLastPushPayload');
 
@@ -220,17 +297,20 @@ export class Iterable {
   }
 
   /**
-   * This static method returns the attribution information stored.
+   * Get the stored attribution information.
+   *
    * The attribution information contains the campaign ID, template ID, and message ID of the message
    * that prompted the user to recently click a link.
-   * See IterableAttributionInfo class defined above.
    *
-   * Iterable.getAttributionInfo returns a promise that resolves to an IterableAttributionInfo object.
-   * Use the keyword `then` to get the result of the promise.
+   * @see {@link IterableAttributionInfo}
    *
-   * parameters: none
+   * @example
+   * ```typescript
+   * Iterable.getAttributionInfo().then((attributionInfo) => {
+   *  // Do something with the attributionInfo
+   * });
+   * ```
    */
-
   static getAttributionInfo(): Promise<IterableAttributionInfo | undefined> {
     Iterable.logger.log('getAttributionInfo');
 
@@ -250,15 +330,17 @@ export class Iterable {
   }
 
   /**
-   * This static method manually sets the current attribution information stored.
+   * Manually set the current stored attribution information.
+   *
    * The attribution information contains the campaign ID, template ID, and message ID of the message
    * that prompted the user to recently click a link.
-   * See IterableAttributionInfo class defined above.
+   *
+   * @see {@link IterableAttributionInfo}
    *
    * For deep link clicks, Iterable sets attribution information automatically.
    * However, use this method to set it manually if ever necessary.
    *
-   * @param attributionInfo - object storing current attribution info
+   * @param attributionInfo - Object storing current attribution info
    */
 
   static setAttributionInfo(attributionInfo?: IterableAttributionInfo) {
@@ -268,16 +350,16 @@ export class Iterable {
   }
 
   /**
-   * This static method creates a pushOpen event on the current user's Iterable profile,
-   * populating it with data provided to the method call.
+   * Create a pushOpen event on the current user's Iterable profile, populating
+   * it with data provided to the method call.
    *
-   * @param campaignId - the ID of the campaign to associate with the push open
-   * @param templateId - the ID of the template to associate with the push open
-   * @param messageId - the ID of the message to associate with the push open
-   * @param appAlreadyRunning - whether or not the app was already running when the push notification arrived
-   * @param dataFields - information to store with the push open event
+   * @param campaignId - The ID of the campaign to associate with the push open
+   * @param templateId - The ID of the template to associate with the push open
+   * @param messageId - The ID of the message to associate with the push open
+   * @param appAlreadyRunning - Whether or not the app was already running when
+   * the push notification arrived
+   * @param dataFields - Information to store with the push open event
    */
-
   static trackPushOpenWithCampaignId(
     campaignId: number,
     templateId: number,
@@ -297,13 +379,14 @@ export class Iterable {
   }
 
   /**
-   * This static method updates the items saved in the shopping cart (or equivalent).
-   * Represent each item in the updateCart event with an IterableCommerceItem object.
-   * See IterableCommerceItem class defined above.
+   * Update the items saved in the shopping cart (or equivalent).
    *
-   * @param items - the items added to the shopping cart
+   * Represent each item in the updateCart event with an IterableCommerceItem object.
+   *
+   * @see {@link IterableCommerceItem}
+   *
+   * @param items - The items added to the shopping cart
    */
-
   static updateCart(items: IterableCommerceItem[]) {
     Iterable.logger.log('updateCart');
 
@@ -311,9 +394,8 @@ export class Iterable {
   }
 
   /**
-   * This static method launches the application from the background for Android devices.
+   * Launch the application from the background in Android devices.
    */
-
   static wakeApp() {
     if (Platform.OS === 'android') {
       Iterable.logger.log('Attempting to wake the app');
@@ -323,15 +405,17 @@ export class Iterable {
   }
 
   /**
-   * This static method creates a purchase event on the current user's Iterable profile.
-   * Represent each item in the purchase event with an IterableCommerceItem object.
-   * See IterableCommerceItem class defined above.
+   * Create a purchase event on the current user's Iterable profile.
    *
-   * Note: total is a parameter that is passed in. Iterable does not sum the price fields of the various items in the purchase event.
+   * Represent each item in the purchase event with an {@link IterableCommerceItem} object.
    *
-   * @param total - the total cost of the purchase
-   * @param items - the items included in the purchase
-   * @param dataFields - descriptive data to store on the purchase event
+   * @see {@link IterableCommerceItem}
+   *
+   * Note: `total` is a parameter that is passed in. Iterable does not sum the price fields of the various items in the purchase event.
+   *
+   * @param total - The total cost of the purchase
+   * @param items - The items included in the purchase
+   * @param dataFields - Descriptive data to store on the purchase event
    */
 
   static trackPurchase(
@@ -345,12 +429,12 @@ export class Iterable {
   }
 
   /**
-   * This static method creates an inAppOpen event for the specified message on the current user's profile
+   * Create an `inAppOpen` event for the specified message on the current user's profile
    * for manual tracking purposes. Iterable's SDK automatically tracks in-app message opens when you use the
    * SDK's default rendering.
    *
-   * @param message - the in-app message (an IterableInAppMessage object)
-   * @param location - the location of the in-app message (an IterableInAppLocation enum)
+   * @param message - The in-app message (an {@link IterableInAppMessage} object)
+   * @param location - The location of the in-app message (an IterableInAppLocation enum)
    */
 
   static trackInAppOpen(
@@ -363,16 +447,15 @@ export class Iterable {
   }
 
   /**
-   * This static method creates an inAppClick event for the specified message on the current user's profile
+   * Create an `inAppClick` event for the specified message on the current user's profile
    * for manual tracking purposes. Iterable's SDK automatically tracks in-app message clicks when you use the
    * SDK's default rendering. Click events refer to click events within the in-app message to distinguish
-   * from inAppOpen events.
+   * from `inAppOpen` events.
    *
-   * @param message - the in-app message (an IterableInAppMessage object)
-   * @param location - the location of the in-app message (an IterableInAppLocation enum)
-   * @param clickedUrl - the URL clicked by the user
+   * @param message - The in-app message (an {@link IterableInAppMessage} object)
+   * @param location - The location of the in-app message (an IterableInAppLocation enum)
+   * @param clickedUrl - The URL clicked by the user
    */
-
   static trackInAppClick(
     message: IterableInAppMessage,
     location: IterableInAppLocation,
@@ -384,16 +467,15 @@ export class Iterable {
   }
 
   /**
-   * This static method creates an inAppClose event for the specified message on the current user's profile
+   * Create an `inAppClose` event for the specified message on the current user's profile
    * for manual tracking purposes. Iterable's SDK automatically tracks in-app message close events when you use the
    * SDK's default rendering.
    *
-   * @param message - the in-app message (an IterableInAppMessage object)
-   * @param location - the location of the in-app message (an IterableInAppLocation enum)
-   * @param source - the way the in-app was closed (an IterableInAppCloseSource enum)
-   * @param clickedUrl - the URL clicked by the user
+   * @param message - The in-app message (an {@link IterableInAppMessage} object)
+   * @param location - The location of the in-app message (an IterableInAppLocation enum)
+   * @param source - The way the in-app was closed (an IterableInAppCloseSource enum)
+   * @param clickedUrl - The URL clicked by the user
    */
-
   static trackInAppClose(
     message: IterableInAppMessage,
     location: IterableInAppLocation,
@@ -411,14 +493,15 @@ export class Iterable {
   }
 
   /**
-   * This static method removes the specifed message from the current user's message queue.
-   * Also, creates an in-app delete event for the specified message on the current user's profile
-   * unless otherwise specifed (specifying a source of IterableInAppDeleteSource.unknown prevents
-   * an inAppDelete event from being created).
+   * Remove the specified message from the current user's message queue.
    *
-   * @param message - the in-app message (an IterableInAppMessage object)
-   * @param location - the location of the in-app message (an IterableInAppLocation enum)
-   * @param source - how the in-app message was deleted (an IterableInAppDeleteSource enum)
+   * This also creates an in-app delete event for the specified message on the current user's profile
+   * unless otherwise specified (specifying a source of {@link IterableInAppDeleteSource.unknown} prevents
+   * an `inAppDelete` event from being created).
+   *
+   * @param message - The in-app message (an {@link IterableInAppMessage} object)
+   * @param location - The location of the in-app message (an {@link IterableInAppLocation} enum)
+   * @param source - How the in-app message was deleted (an {@link IterableInAppDeleteSource} enum)
    */
 
   static inAppConsume(
@@ -432,12 +515,12 @@ export class Iterable {
   }
 
   /**
-   * This static method creates a custom event to the current user's Iterable profile.
+   * Create a custom event to the current user's Iterable profile.
    * Pass in the name of the event stored in eventName key and the data associated with the event.
    * The eventType is set to "customEvent".
    *
-   * @param name - the eventName of the custom event
-   * @param dataFields - descriptive data to store on the custom event
+   * @param name - The event name of the custom event
+   * @param dataFields - Descriptive data to store on the custom event
    */
   static trackEvent(name: string, dataFields?: unknown) {
     Iterable.logger.log('trackEvent');
@@ -446,18 +529,18 @@ export class Iterable {
   }
 
   /**
-   * This static method saves data to the current user's Iterable profile.
+   * Save data to the current user's Iterable profile.
    *
-   * If mergeNestedObjects is set to true, top-level objects in the passed in dataFields parameter
+   * If `mergeNestedObjects` is set to true, top-level objects in the passed in dataFields parameter
    * are merged with their counterparts that already exist on the user's profile.
    * Otherwise, they are added.
    *
-   * If mergeNestedObjects is set to false, the top-level objects in the passed in dataFields parameter
+   * If `mergeNestedObjects` is set to false, the top-level objects in the passed in dataFields parameter
    * overwrite their counterparts that already exist on the user's profile.
    * Otherwise, they are added.
    *
-   * @param dataFields - data fields to store in user profile
-   * @param mergeNestedObjects - flag indicating whether to merge top-level objects
+   * @param dataFields - Data fields to store in user profile
+   * @param mergeNestedObjects - Flag indicating whether to merge top-level objects
    */
   static updateUser(
     dataFields: unknown | undefined,
@@ -469,18 +552,17 @@ export class Iterable {
   }
 
   /**
-   * This static method changes the value of the email field on the current user's Iterable profile.
+   * Change the value of the email field on the current user's Iterable profile.
    *
-   * If Iterable.setUserId was used to identify the current user, Iterable.updateEmail can be called to
+   * If `Iterable.setUserId` was used to identify the current user, `Iterable.updateEmail` can be called to
    * give the current user a real (non-placeholder) email address.
    *
    * An optional valid, pre-fetched JWT can be passed in to avoid race conditions.
    * The SDK uses this JWT to authenticate API requests for this user.
    *
-   * @param email - the new email to set
-   * @param authToken - the new auth token (JWT) to set with the new email, optional - if null/undefined, no JWT-related action will be taken
+   * @param email - The new email to set
+   * @param authToken - The new auth token (JWT) to set with the new email, optional - If null/undefined, no JWT-related action will be taken
    */
-
   static updateEmail(email: string, authToken?: string) {
     Iterable.logger.log('updateEmail');
 
@@ -488,13 +570,13 @@ export class Iterable {
   }
 
   /**
-   * This static method handles a universal link whether it is internal to the application or an external link.
-   * HandleAppLink will hand the passed in URL to IterableConfig.urlHandler, where it is determined whether or not
+   * Handle a universal link whether it is internal to the application or an external link.
+   *
+   * HandleAppLink will hand the passed in URL to `IterableConfig.urlHandler`, where it is determined whether or not
    * the app can handle the clicked URL.
    *
    * @param link - URL link to be handled
    */
-
   static handleAppLink(link: string): Promise<boolean> {
     Iterable.logger.log('handleAppLink');
 
@@ -502,21 +584,20 @@ export class Iterable {
   }
 
   /**
-   * This static method updates the current user's subscribed email lists, unsubscribed channel IDs,
+   * Update the current user's subscribed email lists, unsubscribed channel IDs,
    * unsubscribed message type IDs (for opt-out message types), and subscribed message type IDs (for opt-in message types)
    * on the current user's profile.
    *
-   * pass in null for any of emailListIds, unsubscribedChannelIds, unsubscribedMessageTypeIds, or subscribedMessageTypeIds
+   * Pass in null for any of `emailListIds`, `unsubscribedChannelIds`, `unsubscribedMessageTypeIds`, or `subscribedMessageTypeIds`
    * to indicate that Iterable should not change the current value on the current user's profile.
    *
-   * @param emailListIds - the list of email lists (by ID) to which the user should be subscribed
-   * @param unsubscribedChannelIds - the list of message channels (by ID) to which the user should be unsubscribed
-   * @param unsubscribedMessageTypeIds - the list of message types (by ID) to which the user should be unsubscribed (for opt-out message types)
-   * @param subscribedMessageTypeIds - the list of message types (by ID) to which the user should be subscribed (for opt-in message types)
-   * @param campaignId - the campaign ID to associate with events generated by this request, use -1 if unknown or not applicable
-   * @param templateId - the template ID to associate with events generated by this request, use -1 if unknown or not applicable
+   * @param emailListIds - The list of email lists (by ID) to which the user should be subscribed
+   * @param unsubscribedChannelIds - The list of message channels (by ID) to which the user should be unsubscribed
+   * @param unsubscribedMessageTypeIds - The list of message types (by ID) to which the user should be unsubscribed (for opt-out message types)
+   * @param subscribedMessageTypeIds - The list of message types (by ID) to which the user should be subscribed (for opt-in message types)
+   * @param campaignId - The campaign ID to associate with events generated by this request, use -1 if unknown or not applicable
+   * @param templateId - The template ID to associate with events generated by this request, use -1 if unknown or not applicable
    */
-
   static updateSubscriptions(
     emailListIds: number[] | undefined,
     unsubscribedChannelIds: number[] | undefined,
@@ -537,7 +618,6 @@ export class Iterable {
     );
   }
 
-  // PRIVATE
   private static setupEventHandlers() {
     //Remove all listeners to avoid duplicate listeners
     RNEventEmitter.removeAllListeners(IterableEventName.handleUrlCalled);
