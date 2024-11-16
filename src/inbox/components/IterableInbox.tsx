@@ -30,9 +30,12 @@ import {
   IterableInboxMessageList,
   type IterableInboxMessageListProps,
 } from './IterableInboxMessageList';
+import { ITERABLE_INBOX_COLORS } from '../constants';
 
 const RNIterableAPI = NativeModules.RNIterableAPI;
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
+
+const DEFAULT_HEADLINE_HEIGHT = 60;
 
 // TODO: Comment
 export interface IterableInboxProps
@@ -91,19 +94,19 @@ export const IterableInbox = ({
     },
 
     headline: {
-      backgroundColor: 'whitesmoke',
+      backgroundColor: ITERABLE_INBOX_COLORS.CONTAINER_BACKGROUND,
       fontSize: 40,
       fontWeight: 'bold',
-      height: 60,
+      height: Platform.OS === 'android' ? 70 : DEFAULT_HEADLINE_HEIGHT,
       marginTop: 0,
       paddingBottom: 10,
-      paddingLeft: 30,
+      paddingLeft: isPortrait ? 30 : 70,
       paddingTop: 10,
       width: '100%',
     },
 
     loadingScreen: {
-      backgroundColor: 'whitesmoke',
+      backgroundColor: ITERABLE_INBOX_COLORS.CONTAINER_BACKGROUND,
       height: '100%',
     },
 
@@ -115,13 +118,9 @@ export const IterableInbox = ({
     },
   });
 
-  const { loadingScreen, container, messageListContainer } = styles;
-  let { headline } = styles;
-
+  const { headline } = styles;
   const navTitleHeight =
-    headline.height + headline.paddingTop + headline.paddingBottom;
-  headline = { ...headline, height: Platform.OS === 'android' ? 70 : 60 };
-  headline = !isPortrait ? { ...headline, paddingLeft: 70 } : headline;
+    DEFAULT_HEADLINE_HEIGHT + headline.paddingTop + headline.paddingBottom;
 
   //fetches inbox messages and adds listener for inbox changes on mount
   useEffect(() => {
@@ -279,9 +278,9 @@ export const IterableInbox = ({
 
   function showMessageList(_loading: boolean) {
     return (
-      <View style={messageListContainer}>
+      <View style={styles.messageListContainer}>
         {showNavTitle ? (
-          <Text style={headline}>
+          <Text style={styles.headline}>
             {customizations?.navTitle
               ? customizations?.navTitle
               : defaultInboxTitle}
@@ -312,7 +311,7 @@ export const IterableInbox = ({
 
   function renderEmptyState() {
     return loading ? (
-      <View style={loadingScreen} />
+      <View style={styles.loadingScreen} />
     ) : (
       <IterableInboxEmptyState
         customizations={customizations}
@@ -360,8 +359,8 @@ export const IterableInbox = ({
   );
 
   return safeAreaMode ? (
-    <SafeAreaView style={container}>{inboxAnimatedView}</SafeAreaView>
+    <SafeAreaView style={styles.container}>{inboxAnimatedView}</SafeAreaView>
   ) : (
-    <View style={container}>{inboxAnimatedView}</View>
+    <View style={styles.container}>{inboxAnimatedView}</View>
   );
 };
