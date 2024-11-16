@@ -3084,6 +3084,7 @@ __metadata:
     release-it: ^15.0.0
     turbo: ^1.10.7
     typedoc: ^0.26.11
+    typedoc-plugin-coverage: ^3.3.0
     typescript: ^5.2.2
   peerDependencies:
     "@react-navigation/native": "*"
@@ -14667,6 +14668,15 @@ __metadata:
   version: 0.0.6
   resolution: "typedarray@npm:0.0.6"
   checksum: 33b39f3d0e8463985eeaeeacc3cb2e28bc3dfaf2a5ed219628c0b629d5d7b810b0eb2165f9f607c34871d5daa92ba1dc69f49051cf7d578b4cbd26c340b9d1b1
+  languageName: node
+  linkType: hard
+
+"typedoc-plugin-coverage@npm:^3.3.0":
+  version: 3.3.0
+  resolution: "typedoc-plugin-coverage@npm:3.3.0"
+  peerDependencies:
+    typedoc: 0.25.x || 0.26.x
+  checksum: b1779429618ab4df38c6b066c4113376b455d19863f70a170fe2e3a06cdcb276b82c4205c67922ea05e926b2fb0c85d932d7e09d00a42d4c4d95689768243524
   languageName: node
   linkType: hard
 

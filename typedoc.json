@@ -19,4 +19,5 @@
     "excludeReferences": false,
     "includeFolders": false
   },
+  "plugin": ["typedoc-plugin-coverage"],
 }

@@ -97,6 +97,7 @@
     "release-it": "^15.0.0",
     "turbo": "^1.10.7",
     "typedoc": "^0.26.11",
+    "typedoc-plugin-coverage": "^3.3.0",
     "typescript": "^5.2.2"
   },
   "resolutions": {
