@@ -17,6 +17,7 @@ import type {
   IterableInboxCustomizations,
   IterableInboxRowViewModel,
 } from '../types';
+import { ITERABLE_INBOX_COLORS } from '../constants';
 
 // TODO: Change to component
 function defaultMessageListLayout(
@@ -34,7 +35,7 @@ function defaultMessageListLayout(
 
   const styles = StyleSheet.create({
     body: {
-      color: 'lightgray',
+      color: ITERABLE_INBOX_COLORS.TEXT_MUTED,
       flexWrap: 'wrap',
       fontSize: 15,
       paddingBottom: 10,
@@ -42,7 +43,7 @@ function defaultMessageListLayout(
     },
 
     createdAt: {
-      color: 'lightgray',
+      color: ITERABLE_INBOX_COLORS.TEXT_MUTED,
       fontSize: 12,
     },
 
@@ -54,8 +55,8 @@ function defaultMessageListLayout(
     },
 
     messageRow: {
-      backgroundColor: 'white',
-      borderColor: 'lightgray',
+      backgroundColor: ITERABLE_INBOX_COLORS.CONTAINER_BACKGROUND_LIGHT,
+      borderColor: ITERABLE_INBOX_COLORS.BORDER,
       borderStyle: 'solid',
       borderTopWidth: 1,
       flexDirection: 'row',
@@ -78,7 +79,7 @@ function defaultMessageListLayout(
     },
 
     unreadIndicator: {
-      backgroundColor: 'blue',
+      backgroundColor: ITERABLE_INBOX_COLORS.UNREAD,
       borderRadius: 15 / 2,
       height: 15,
       marginLeft: 10,
@@ -219,7 +220,7 @@ export const IterableInboxMessageCell = ({
   const styles = StyleSheet.create({
     deleteSlider: {
       alignItems: 'center',
-      backgroundColor: 'red',
+      backgroundColor: ITERABLE_INBOX_COLORS.DESTRUCTIVE,
       elevation: 1,
       flexDirection: 'row',
       height: deleteSliderHeight,
@@ -227,6 +228,7 @@ export const IterableInboxMessageCell = ({
       paddingRight: 10,
       position: 'absolute',
       width: '100%',
+      ...(isPortrait ? {} : { paddingRight: 40 }),
     },
 
     textContainer: {
@@ -235,18 +237,11 @@ export const IterableInboxMessageCell = ({
     },
 
     textStyle: {
-      color: 'white',
+      color: ITERABLE_INBOX_COLORS.TEXT_INVERSE,
       fontSize: 15,
       fontWeight: 'bold',
     },
   });
-
-  const { textContainer, textStyle } = styles;
-  let { deleteSlider } = styles;
-
-  deleteSlider = isPortrait
-    ? deleteSlider
-    : { ...deleteSlider, paddingRight: 40 };
 
   const scrollThreshold = contentWidth / 15;
   const FORCING_DURATION = 350;
@@ -318,11 +313,11 @@ export const IterableInboxMessageCell = ({
 
   return (
     <>
-      <View style={deleteSlider}>
-        <Text style={textStyle}>DELETE</Text>
+      <View style={styles.deleteSlider}>
+        <Text style={styles.textStyle}>DELETE</Text>
       </View>
       <Animated.View
-        style={[textContainer, position.getLayout()]}
+        style={[styles.textContainer, position.getLayout()]}
         {...panResponder.panHandlers}
       >
         <TouchableOpacity
