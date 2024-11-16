@@ -12,9 +12,11 @@ module.exports = {
   overrides: [
     {
       files: ['*.ts', '*.tsx'],
-      plugins: ['@typescript-eslint'],
+      plugins: ['@typescript-eslint/eslint-plugin'],
       extends: [
         'plugin:@typescript-eslint/recommended',
+        // We need more verbose typing to enable the below rule, but we should
+        // do this in the future
         // 'plugin:@typescript-eslint/recommended-requiring-type-checking',
       ],
       parser: '@typescript-eslint/parser',
