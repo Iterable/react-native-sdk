@@ -1265,6 +1265,14 @@
   resolved "https://registry.yarnpkg.com/@react-native/polyfills/-/polyfills-2.0.0.tgz#4c40b74655c83982c8cf47530ee7dc13d957b6aa"
   integrity sha512-K0aGNn1TjalKj+65D7ycc1//H9roAQ51GJVk5ZJQFb2teECGmzd86bYDC0aYdbRf7gtovescq4Zt6FR0tgXiHQ==
 
+"@react-native/virtualized-lists@^0.72.4":
+  version "0.72.8"
+  resolved "https://registry.yarnpkg.com/@react-native/virtualized-lists/-/virtualized-lists-0.72.8.tgz#a2c6a91ea0f1d40eb5a122fb063daedb92ed1dc3"
+  integrity sha512-J3Q4Bkuo99k7mu+jPS9gSUSgq+lLRSI/+ahXNwV92XgJ/8UgOTxu2LPwhJnBk/sQKxq7E8WkZBnBiozukQMqrw==
+  dependencies:
+    invariant "^2.2.4"
+    nullthrows "^1.1.1"
+
 "@react-navigation/core@^6.4.17":
   version "6.4.17"
   resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-6.4.17.tgz#f277a196b578c8a456efcc563d1c9bd87eb4ab04"
@@ -1449,18 +1457,19 @@
     "@types/react" "*"
     "@types/react-native" "^0.70"
 
-"@types/react-native@^0.62.13":
-  version "0.62.18"
-  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.62.18.tgz#ad63691e7c44edef2beeb6af52b2eb942c3ed8a1"
-  integrity sha512-7QfU8EzIYxYqeXpPf8QNv2xi8hrePlgTbRATRo+plRSdVfJu7N6sAXqrFxKJp6bGLvp82GV1gczl93gqiAfXPA==
-  dependencies:
-    "@types/react" "*"
-
 "@types/react-native@^0.70":
   version "0.70.19"
   resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.70.19.tgz#b4e651dcf7f49c69ff3a4c3072584cad93155582"
   integrity sha512-c6WbyCgWTBgKKMESj/8b4w+zWcZSsCforson7UdXtXMecG3MxCinYi6ihhrHVPyUrVzORsvEzK8zg32z4pK6Sg==
   dependencies:
+    "@types/react" "*"
+
+"@types/react-native@^0.72.8":
+  version "0.72.8"
+  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.72.8.tgz#eb6238fab289f5f132f7ccf138bdfe6f21ed93e1"
+  integrity sha512-St6xA7+EoHN5mEYfdWnfYt0e8u6k2FR0P9s2arYgakQGFgU1f9FlPrIEcj0X24pLCF5c5i3WVuLCUdiCYHmOoA==
+  dependencies:
+    "@react-native/virtualized-lists" "^0.72.4"
     "@types/react" "*"
 
 "@types/react-test-renderer@^17.0.1":
