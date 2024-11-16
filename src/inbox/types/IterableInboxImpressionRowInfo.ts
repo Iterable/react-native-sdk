@@ -7,8 +7,7 @@ export interface IterableInboxImpressionRowInfo {
    */
   messageId: string;
   /**
-   // eslint-disable-next-line tsdoc/syntax
-   * TODO: Ask @evantk91 and @Ayyanchira about this field
+   * TODO: Ask about this field
    */
   silentInbox: boolean;
 }
