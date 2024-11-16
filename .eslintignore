@@ -1,2 +1,3 @@
-lib/
 integration-testing/
+lib/
+node_modules/

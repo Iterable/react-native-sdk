@@ -132,18 +132,6 @@
       }
     }
   },
-  "eslintIgnore": [
-    "node_modules/",
-    "lib/",
-    "integration-testing/"
-  ],
-  "prettier": {
-    "quoteProps": "consistent",
-    "singleQuote": true,
-    "tabWidth": 2,
-    "trailingComma": "es5",
-    "useTabs": false
-  },
   "react-native-builder-bob": {
     "source": "src",
     "output": "lib",

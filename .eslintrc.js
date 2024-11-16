@@ -16,8 +16,6 @@ module.exports = {
       parserOptions: {
         project: true,
         tsconfigRootDir: __dirname,
-        ecmaVersion: 2018,
-        sourceType: 'module',
       },
       rules: {
         '@typescript-eslint/no-var-requires': [
