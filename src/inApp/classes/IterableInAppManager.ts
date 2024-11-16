@@ -76,6 +76,7 @@ export class IterableInAppManager {
    * Iterable.inAppManager.showMessage(message, false).then(url => {
    *   console.log("url: " + url)
    * });
+   * ```
    *
    * @param message - The message to show (an {@link_IterableInAppMessage} object)
    * @param consume - Whether or not the message should be consumed from the user's message queue after being shown. This should be defaulted to true.
