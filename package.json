@@ -30,7 +30,7 @@
     "react-native-webview": "^11.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.10.2",
+    "@babel/core": "^7.26.0",
     "@testing-library/react-native": "^7.2.0",
     "@types/jest": "^26.0.0",
     "@types/react": "^16.9.23",
