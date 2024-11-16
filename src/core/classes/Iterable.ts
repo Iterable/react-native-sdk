@@ -260,7 +260,7 @@ export class Iterable {
    * For deep link clicks, Iterable sets attribution information automatically.
    * However, use this method to set it manually if ever necessary.
    *
-   * @param {attributionInfo} IterableAttributionInfo object storing current attribution info
+   * @param {IterableAttributionInfo} attributionInfo - object storing current attribution info
    */
 
   static setAttributionInfo(attributionInfo?: IterableAttributionInfo) {

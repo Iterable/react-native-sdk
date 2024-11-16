@@ -1,0 +1,22 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["./src/index.tsx"],
+  "out": "./docs",
+  "tsconfig": "./tsconfig.json",
+  "excludeInternal": true,
+  "validation": {
+    "invalidLink": true,
+    "notDocumented": false, // TODO: Change to true
+    "notExported": true
+  },
+  "includeVersion": true,
+  "searchInComments": true,
+  "searchInDocuments": true,
+  "navigation": {
+    "includeCategories": false,
+    "includeGroups": false,
+    "compactFolders": false,
+    "excludeReferences": false,
+    "includeFolders": false
+  },
+}

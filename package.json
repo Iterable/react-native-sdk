@@ -42,6 +42,7 @@
     "typecheck": "tsc",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "docs": "typedoc ./src/index.tsx --out ./docs --tsconfig ./tsconfig.json --includeVersion --excludeInternal --excludePrivate",
+    "dd": "typedoc",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prepare": "bob build",
     "release": "release-it"
