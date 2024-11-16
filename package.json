@@ -94,6 +94,7 @@
     "react-native-webview": "^13.12.3",
     "release-it": "^15.0.0",
     "turbo": "^1.10.7",
+    "typedoc": "^0.26.11",
     "typescript": "^5.2.2"
   },
   "resolutions": {
@@ -162,8 +163,5 @@
     "type": "module-legacy",
     "languages": "kotlin-swift",
     "version": "0.41.2"
-  },
-  "dependencies": {
-    "typedoc": "^0.26.11"
   }
 }
