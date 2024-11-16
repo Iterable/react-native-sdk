@@ -112,17 +112,17 @@ export class IterableInAppMessage {
     messageId: string;
     campaignId: number;
     trigger: IterableInAppTrigger;
-    createdAt: number;
-    expiresAt: number;
-    saveToInbox: boolean;
-    inboxMetadata: {
+    createdAt?: number;
+    expiresAt?: number;
+    saveToInbox?: boolean;
+    inboxMetadata?: {
       title: string | undefined;
       subtitle: string | undefined;
       icon: string | undefined;
     };
-    customPayload: unknown;
-    read: boolean;
-    priorityLevel: number;
+    customPayload?: unknown;
+    read?: boolean;
+    priorityLevel?: number;
   }): IterableInAppMessage {
     const messageId = dict.messageId;
     const campaignId = dict.campaignId;
