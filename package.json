@@ -40,7 +40,7 @@
     "test": "jest",
     "test:coverage": "jest --coverage",
     "typecheck": "tsc",
-    "lint": "eslint \"src/**/*.{js,ts,tsx}\"",
+    "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prepare": "bob build",
     "release": "release-it"
@@ -93,8 +93,7 @@
     "react-native-webview": "^13.12.3",
     "release-it": "^15.0.0",
     "turbo": "^1.10.7",
-    "typescript": "^5.2.2",
-    "typescript-eslint": "^8.13.0"
+    "typescript": "^5.2.2"
   },
   "resolutions": {
     "@types/react": "^18.2.44"

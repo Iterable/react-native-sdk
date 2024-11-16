@@ -29,9 +29,10 @@ export const Main = () => {
   useEffect(() => {
     if (loginInProgress) return;
     if (isLoggedIn) {
-      Iterable.inAppManager.getMessages().then((messages) => {
-        setUnreadMessageCount(messages.length);
-      });
+      Iterable.inAppManager
+        .getMessages()
+        .then((messages) => setUnreadMessageCount(messages.length))
+        .catch((error) => console.error('Failed to get messages:', error));
     } else {
       // Reset unread message count when user logs out
       setUnreadMessageCount(0);

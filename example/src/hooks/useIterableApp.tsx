@@ -129,6 +129,7 @@ export const IterableAppProvider: FunctionComponent<
         for (const route of routeNames) {
           if (url.includes(route.toLowerCase())) {
             // TODO: Figure out typing for this
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             navigation.navigate(route);
             return true;

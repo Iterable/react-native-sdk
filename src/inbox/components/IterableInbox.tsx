@@ -36,7 +36,9 @@ const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
 // TODO: Comment
 export interface IterableInboxProps
-  extends Pick<IterableInboxMessageListProps, 'messageListItemLayout'> {
+  extends Partial<
+    Pick<IterableInboxMessageListProps, 'messageListItemLayout'>
+  > {
   returnToInboxTrigger?: boolean;
   customizations?: IterableInboxCustomizations;
   tabBarHeight?: number;

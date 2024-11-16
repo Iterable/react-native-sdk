@@ -27,8 +27,4 @@ export type MainScreenProps<T extends keyof MainScreenParamList> =
 export type RootStackScreenProps<T extends keyof RootStackParamList> =
   StackScreenProps<RootStackParamList, T>;
 
-declare global {
-  namespace ReactNavigation {
-    interface RootParamList extends RootStackParamList {}
-  }
-}
+export type { RootStackParamList as RootParamList };
