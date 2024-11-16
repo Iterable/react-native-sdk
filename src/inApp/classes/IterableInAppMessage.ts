@@ -46,6 +46,33 @@ export class IterableInAppMessage {
 
   /**
    * Custom Payload for this message.
+   *
+   * @example
+   * If the custom payload was the following:
+   * ```json
+   * {
+   *    "customDisplay": true,
+   *    "promotionTitle": "Summer Sale",
+   *    "promotionText": "Everything is 50% off."
+   * }
+   * ```
+   * You could use the following code to determine whether to hide/show the message:
+   * ```typescript
+   *  config.inAppHandler = (message: IterableInAppMessage) => {
+   *    if (message.customPayload.customDisplay == true) {
+   *      return IterableInAppShowResponse.skip
+   *    } else {
+   *      return Iterable.InAppShowResponse.show
+   *    }
+   *  };
+   * ```
+   * You could then handle the showing of this message through a custom function.  EG:
+   * ```typescript
+   * Alert.alert(
+   *  message.customPayload.promotionTitle,
+   *  message.customPayload.promotionText,
+   * );
+   * ```
    */
   readonly customPayload?: unknown;
 
@@ -59,6 +86,20 @@ export class IterableInAppMessage {
    */
   readonly priorityLevel: number;
 
+  /**
+   * Constructs an instance of IterableInAppMessage.
+   *
+   * @param messageId - The unique identifier for the message.
+   * @param campaignId - The identifier for the campaign associated with the message.
+   * @param trigger - The trigger that caused the message to be displayed.
+   * @param createdAt - The date and time when the message was created.
+   * @param expiresAt - The date and time when the message expires.
+   * @param saveToInbox - A boolean indicating whether the message should be saved to the inbox.
+   * @param inboxMetadata - Metadata associated with the inbox message.
+   * @param customPayload - A custom payload associated with the message.
+   * @param read - A boolean indicating whether the message has been read.
+   * @param priorityLevel - The priority level of the message.
+   */
   constructor(
     messageId: string,
     campaignId: number,
@@ -83,6 +124,12 @@ export class IterableInAppMessage {
     this.priorityLevel = priorityLevel;
   }
 
+  /**
+   * Creates an instance of `IterableInAppMessage` from a given `ViewToken`.
+   *
+   * @param viewToken - The `ViewToken` containing the in-app message data.
+   * @returns A new instance of `IterableInAppMessage` populated with data from the `viewToken`.
+   */
   static fromViewToken(viewToken: ViewToken) {
     const inAppMessage = viewToken.item.inAppMessage as IterableInAppMessage;
 
@@ -100,6 +147,13 @@ export class IterableInAppMessage {
     );
   }
 
+  /**
+   * Determines if the in-app message should be silently saved to the inbox.
+   *
+   * TODO: Double check the definition
+   *
+   * @returns `true` if the message should be saved to the inbox without triggering a notification; otherwise, `false`.
+   */
   isSilentInbox(): boolean {
     return (
       // TODO: Figure out if this is purposeful
@@ -108,20 +162,39 @@ export class IterableInAppMessage {
     );
   }
 
+  /**
+   * Creates an instance of `IterableInAppMessage` from a dictionary object.
+   *
+   * @param dict - The dictionary containing the properties of the in-app message.
+   * @returns An instance of `IterableInAppMessage` populated with the provided properties.
+   */
   static fromDict(dict: {
+    /** The unique identifier for the message. */
     messageId: string;
+    /** The campaign identifier associated with the message. */
     campaignId: number;
+    /** The trigger that initiates the in-app message. */
     trigger: IterableInAppTrigger;
+    /** The timestamp when the message was created, in milliseconds. */
     createdAt?: number;
+    /** The timestamp when the message expires, in milliseconds. */
     expiresAt?: number;
+    /** A boolean indicating if the message should be saved to the inbox. */
     saveToInbox?: boolean;
+    /** Metadata for the inbox message, including title, subtitle, and icon. */
     inboxMetadata?: {
+      /** The title of the inbox message. */
       title: string | undefined;
+      /** The subtitle of the inbox message. */
       subtitle: string | undefined;
+      /** The icon of the inbox message. */
       icon: string | undefined;
     };
+    /** Custom payload associated with the message. */
     customPayload?: unknown;
+    /** A boolean indicating if the message has been read. */
     read?: boolean;
+    /** The priority level of the message. */
     priorityLevel?: number;
   }): IterableInAppMessage {
     const messageId = dict.messageId;

@@ -67,6 +67,11 @@ export class Iterable {
    *
    * Pass in an `IterableConfig` object with the various customization properties setup.
    *
+   * **WARNING**: Never use server-side API keys with Iterable's mobile SDKs.
+   * Since API keys are, by necessity, distributed with the mobile apps that
+   * contain them, bad actors can potentially access them. For this reason,
+   * Iterable provides mobile API keys, which have minimal access.
+   *
    * @param apiKey - The [*mobile* API
    * key](https://support.iterable.com/hc/en-us/articles/360043464871-API-Keys)
    * for your application
@@ -213,8 +218,8 @@ export class Iterable {
    *
    * ## User profile creation:
    *
-   * If your Iterable project does not have a user with the passed in UserId,
-   * setUserId creates one and adds a placeholder email address to the user's
+   * If your Iterable project does not have a user with the passed in `UserId`,
+   * `setUserId` creates one and adds a placeholder email address to the user's
    * Iterable profile.
    *
    * ## Registering device token:
@@ -266,7 +271,7 @@ export class Iterable {
   }
 
   /**
-   * Disable the device's token for the current user.
+   * Disable the device's token for the current user.  This will disable push notifications for the current user.
    *
    * @example
    * ```typescript
@@ -297,7 +302,7 @@ export class Iterable {
   }
 
   /**
-   * Get the stored attribution information.
+   * Get the stored attribution information -- possibly based on a recent deep link click.
    *
    * The attribution information contains the campaign ID, template ID, and message ID of the message
    * that prompted the user to recently click a link.
@@ -306,9 +311,16 @@ export class Iterable {
    *
    * @example
    * ```typescript
-   * Iterable.getAttributionInfo().then((attributionInfo) => {
-   *  // Do something with the attributionInfo
-   * });
+   *  Iterable.getAttributionInfo().then((attributionInfo) => {
+   *    Iterable.updateSubscriptions(
+   *      null,
+   *      [33015, 33016, 33018],
+   *      null,
+   *      null,
+   *      attributionInfo.campaignId,
+   *      attributionInfo.templateId
+   *    );
+   *  });
    * ```
    */
   static getAttributionInfo(): Promise<IterableAttributionInfo | undefined> {
@@ -330,7 +342,7 @@ export class Iterable {
   }
 
   /**
-   * Manually set the current stored attribution information.
+   * Manually set the current stored attribution information so that it can later be used when tracking events.
    *
    * The attribution information contains the campaign ID, template ID, and message ID of the message
    * that prompted the user to recently click a link.
@@ -360,8 +372,12 @@ export class Iterable {
   }
 
   /**
-   * Create a pushOpen event on the current user's Iterable profile, populating
+   * Create a `pushOpen` event on the current user's Iterable profile, populating
    * it with data provided to the method call.
+   *
+   * **NOTE**: Iterable's SDK automatically tracks push notification opens.
+   * However, it's also possible to manually track these events by calling this
+   * method.
    *
    * @param campaignId - The ID of the campaign to associate with the push open
    * @param templateId - The ID of the template to associate with the push open
@@ -372,12 +388,13 @@ export class Iterable {
    *
    * @example
    * ```typescript
-   * const CAMPAIGN_ID = 1234;
-   * const TEMPLATE_ID = 5678;
-   * const MESSAGE_ID = '9012';
+   * const CAMPAIGN_ID = 12345;
+   * const TEMPLATE_ID = 67890;
+   * const MESSAGE_ID = '0fc6657517c64014868ea2d15f23082b';
    * const APP_ALREADY_RUNNING = false;
    * const DATA_FIELDS = {
-   * 'key1': 'value1',
+   *    "discount": 0.99,
+   *    "product": "cappuccino",
    * };
    *
    * Iterable.trackPushOpen(CAMPAIGN_ID, TEMPLATE_ID, MESSAGE_ID, APP_ALREADY_RUNNING, DATA_FIELDS);
@@ -458,7 +475,7 @@ export class Iterable {
    *
    * @see {@link IterableCommerceItem}
    *
-   * Note: `total` is a parameter that is passed in. Iterable does not sum the price fields of the various items in the purchase event.
+   * **NOTE**: `total` is a parameter that is passed in. Iterable does not sum the `price` fields of the various items in the purchase event.
    *
    * @param total - The total cost of the purchase
    * @param items - The items included in the purchase
@@ -498,6 +515,11 @@ export class Iterable {
    * const message = new IterableInAppMessage(1234, 4567, IterableInAppTrigger.auto, new Date(), new Date(), false, undefined, undefined, false, 0);
    * Iterable.trackInAppOpen(message, IterableInAppLocation.inApp);
    * ```
+   *
+   * @remarks
+   * Iterable's SDK automatically tracks in-app message opens when you use the
+   * SDK's default rendering. However, it's also possible to manually track
+   * these events by calling this method.
    */
   static trackInAppOpen(
     message: IterableInAppMessage,
@@ -514,15 +536,20 @@ export class Iterable {
    * SDK's default rendering. Click events refer to click events within the in-app message to distinguish
    * from `inAppOpen` events.
    *
-   * @param message - The in-app message (an {@link IterableInAppMessage} object)
-   * @param location - The location of the in-app message (an IterableInAppLocation enum)
-   * @param clickedUrl - The URL clicked by the user
+   * @param message - The in-app message.
+   * @param location - The location of the in-app message.
+   * @param clickedUrl - The URL clicked by the user.
    *
    * @example
    * ```typescript
    * const message = new IterableInAppMessage(1234, 4567, IterableInAppTrigger.auto, new Date(), new Date(), false, undefined, undefined, false, 0);
    * Iterable.trackInAppClick(message, IterableInAppLocation.inApp, 'https://www.example.com');
    * ```
+   *
+   * @remarks
+   * Iterable's SDK automatically tracks in-app message clicks when you use the
+   * SDK's default rendering. However, you can also manually track these events
+   * by calling this method.
    */
   static trackInAppClick(
     message: IterableInAppMessage,
@@ -540,19 +567,21 @@ export class Iterable {
    * tracks in-app message close events when you use the SDK's default
    * rendering.
    *
-   * @param message - The in-app message (an {@link IterableInAppMessage}
-   * object)
-   * @param location - The location of the in-app message (an
-   * IterableInAppLocation enum)
-   * @param source - The way the in-app was closed (an IterableInAppCloseSource
-   * enum)
-   * @param clickedUrl - The URL clicked by the user
+   * @param message - The in-app message.
+   * @param location - The location of the in-app message.  Useful for determining if the messages is in a mobile inbox.
+   * @param source - The way the in-app was closed.
+   * @param clickedUrl - The URL clicked by the user.
    *
    * @example
    * ```typescript
    * const message = new IterableInAppMessage(1234, 4567, IterableInAppTrigger.auto, new Date(), new Date(), false, undefined, undefined, false, 0);
    * Iterable.trackInAppClose(message, IterableInAppLocation.inApp, IterableInAppCloseSource.back, 'https://www.example.com');
    * ```
+   *
+   * @remarks
+   * Iterable's SDK automatically tracks in-app message close events when you
+   * use the SDK's default rendering. However, it's also possible to manually
+   * track these events by calling this method.
    */
   static trackInAppClose(
     message: IterableInAppMessage,
@@ -573,7 +602,7 @@ export class Iterable {
   /**
    * Remove the specified message from the current user's message queue.
    *
-   * This also creates an in-app delete event for the specified message on the current user's profile
+   * This creates an in-app delete event for the specified message on the current user's profile
    * unless otherwise specified (specifying a source of {@link IterableInAppDeleteSource.unknown} prevents
    * an `inAppDelete` event from being created).
    *
@@ -586,6 +615,13 @@ export class Iterable {
    * const message = new IterableInAppMessage(1234, 4567, IterableInAppTrigger.auto, new Date(), new Date(), false, undefined, undefined, false, 0);
    * Iterable.inAppConsume(message, IterableInAppLocation.inApp, IterableInAppDeleteSource.delete);
    * ```
+   *
+   * @remarks
+   * After a user has read an in-app message, you can _consume_ it so that it's no
+   * longer in their queue of messages. When you use the SDK's default rendering
+   * for in-app messages, it handles this automatically. However, you can also
+   * use this method to do it manually (for example, after rendering an in-app
+   * message in a custom way).
    */
   static inAppConsume(
     message: IterableInAppMessage,
@@ -626,16 +662,18 @@ export class Iterable {
   /**
    * Save data to the current user's Iterable profile.
    *
-   * If `mergeNestedObjects` is set to true, top-level objects in the passed in dataFields parameter
+   * If `mergeNestedObjects` is set to `true`, top-level objects in the passed in dataFields parameter
    * are merged with their counterparts that already exist on the user's profile.
    * Otherwise, they are added.
    *
-   * If `mergeNestedObjects` is set to false, the top-level objects in the passed in dataFields parameter
+   * If `mergeNestedObjects` is set to `false`, the top-level objects in the passed in dataFields parameter
    * overwrite their counterparts that already exist on the user's profile.
    * Otherwise, they are added.
    *
    * @param dataFields - Data fields to store in user profile
-   * @param mergeNestedObjects - Flag indicating whether to merge top-level objects
+   * @param mergeNestedObjects - Whether to merge top-level objects included in
+   * dataFields with analogous, existing objects on the user profile (if `true`)
+   * or overwrite them (if `false`).
    *
    * @example
    * This call adds the `firstName` field and `favorites` object to the current
@@ -656,6 +694,9 @@ export class Iterable {
    *   false
    * );
    * ```
+   *
+   * @remarks
+   * **IMPORTANT**: `mergeNestedObjects` only works for data that is stored up to one level deep within an object (for example, `{mySettings:{mobile:true}}`). Note that `mergeNestedObjects` applies to objects, not arrays.
    */
   static updateUser(
     dataFields: unknown | undefined,
@@ -722,8 +763,8 @@ export class Iterable {
    * @param unsubscribedChannelIds - The list of message channels (by ID) to which the user should be unsubscribed
    * @param unsubscribedMessageTypeIds - The list of message types (by ID) to which the user should be unsubscribed (for opt-out message types)
    * @param subscribedMessageTypeIds - The list of message types (by ID) to which the user should be subscribed (for opt-in message types)
-   * @param campaignId - The campaign ID to associate with events generated by this request, use -1 if unknown or not applicable
-   * @param templateId - The template ID to associate with events generated by this request, use -1 if unknown or not applicable
+   * @param campaignId - The campaign ID to associate with events generated by this request, use `-1` if unknown or not applicable
+   * @param templateId - The template ID to associate with events generated by this request, use `-1` if unknown or not applicable
    *
    * @example
    * ```typescript
@@ -734,7 +775,14 @@ export class Iterable {
    * const campaignId = 1234;
    * const templateId = 5678;
    *
-   * Iterable.updateSubscriptions(emailListIds, unsubscribedChannelIds, unsubscribedMessageTypeIds, subscribedMessageTypeIds, campaignId, templateId);
+   * Iterable.updateSubscriptions(
+   *  emailListIds,
+   *  unsubscribedChannelIds,
+   *  unsubscribedMessageTypeIds,
+   *  subscribedMessageTypeIds,
+   *  campaignId,
+   *  templateId,
+   * );
    * ```
    */
   static updateSubscriptions(

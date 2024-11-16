@@ -10,11 +10,15 @@ import type { IterableAuthResponse } from './IterableAuthResponse';
 
 /**
  * An IterableConfig object sets various properties of the SDK.
- * An IterableConfig object is passed into the static initialize method on the Iterable class when initializing the SDK.
+ *
+ * An IterableConfig object is passed into the static initialize method on the
+ * Iterable class when initializing the SDK.
+ *
  */
 export class IterableConfig {
   /**
    * The name of the Iterable push integration that will send push notifications to your app.
+   *
    * Defaults to your app's application ID or bundle ID for iOS.
    *
    * Note: Don't specify this value unless you are using an older Iterable push integration that
@@ -23,28 +27,57 @@ export class IterableConfig {
   pushIntegrationName?: string;
 
   /**
-   * When set to true (which is the default value), IterableSDK will automatically register and deregister
-   * notification tokens when you provide email or userId values to the SDK using `Iterable.setEmail` or `Iterable.setUserId.`
+   * When set to `true` (which is the default value), IterableSDK will automatically register and deregister
+   * notification tokens when you provide `email` or `userId` values to the SDK using `Iterable.setEmail` or `Iterable.setUserId.`
    */
   autoPushRegistration = true;
 
   /**
-   * When set to true, it will check for deferred deep links on first time app launch after installation from the App Store.
+   * @deprecated
+   * When set to `true`, it will check for deferred deep links on first time app launch after installation from the App Store.
+   *
    * This is currently deprecated and will be removed in the future.
    */
   checkForDeferredDeeplink = false;
 
   /**
-   * Number of seconds to wait when displaying multiple in-app messages in sequence.
-   * between each. Defaults to 30 seconds.
+   * Number of seconds between each in-app message when displaying multiple in-app messages in sequence.
+   *
+   * Defaults to 30 seconds.
    */
   inAppDisplayInterval = 30.0;
 
   /**
    * A callback function used to handle deep link URLs and in-app message button and link URLs.
    *
-   * @param url - The URL to be processed.
+   * @param url - The URL to be processed (likely from a click).
    * @param context - The context in which the URL action is being performed.
+   * Describes the source of the URL (push, in-app, or universal link) and
+   * information about any associated custom actions.
+   *
+   * @remarks
+   * Use this method to determine whether or not the app can handle the clicked
+   * URL. If it can, the method should navigate the user to the right content in
+   * the app and return `true`. Otherwise, it should return `false` to have the web
+   * browser open the URL.
+   *
+   * @example
+   * This example searches for URLs that contain product/, followed by more text. Upon finding this sequence of text, the code displays the appropriate screen and returns `true`. When it's not found, the app returns `false`.
+   *
+   * ```typescript
+   * const config = new IterableConfig();
+   *
+   * config.urlHandler = (url, context) => {
+   *  if (url.match(/product\/([^\/]+)/i)) {
+   *    this.navigate(match[1]);
+   *    return true; // handled
+   *  }
+   *  return false; // not handled
+   * };
+   *
+   * Iterable.initialize('<YOUR_API_KEY>', config);
+   * ```
+   *
    * @returns A boolean indicating whether the URL was successfully handled.
    */
   urlHandler?: (url: string, context: IterableActionContext) => boolean;
@@ -54,7 +87,29 @@ export class IterableConfig {
    * and links.
    *
    * @param action - The custom action that was triggered.
-   * @param context - The context in which the action was triggered.
+   * @param context - The context in which the action was triggered.  In other
+   * words, information about where the action was invoked.
+   *
+   * @remarks
+   * Use this method to determine whether or not the app can handle the clicked
+   * custom action URL. If it can, it should handle the action and return `true`.
+   * Otherwise, it should return `false`.
+   *
+   * @example
+   * This example responds to the `action://achievedPremierStatus` custom action URL by updating the app's styles and return `true`. Since this is the only custom action handled by the method, it returns `false` for anything else.
+   * ```typescript
+   *  const config = new IterableConfig();
+   *  config.customActionHandler = (action, context) => {
+   *    if (action.type == "achievedPremierStatus") {
+   *      // For this action, update the app's styles
+   *      this.updateAppStyles("premier");
+   *      return true;
+   *    }
+   *    return false;
+   *  }
+   *  Iterable.initialize('<YOUR_API_KEY>', config);
+   * ```
+   *
    * @returns A boolean indicating whether the action was handled.
    */
   customActionHandler?: (
@@ -64,10 +119,24 @@ export class IterableConfig {
 
   /**
    * Implement this callback to override default in-app behavior.
+   *
    * By default, every single in-app will be shown as soon as it is available.
    * If more than 1 in-app is available, we show the first.
    *
    * @see [In-App Messages with Iterable's React Native SDK](https://support.iterable.com/hc/en-us/articles/360045714172-In-App-Messages-with-Iterable-s-React-Native-SDK)
+   *
+   * @remarks
+   * Implement this property to override default in-app message behavior. For
+   * example, you might use the custom payload associated with an incoming
+   * message to choose whether or not to display it, or you might inspect the
+   * priorityLevel property to determine the message's priority.
+   *
+   * @example
+   * ```typescript
+   * config.inAppHandler = (message: IterableInAppMessage) => {
+   *   return message?.read ? IterableInAppShowResponse.skip :  IterableInAppShowResponse.show;
+   * }
+   * ```
    *
    * @param message - The in-app message to be processed.
    * @returns A response indicating how the in-app message should be shown.
@@ -76,21 +145,67 @@ export class IterableConfig {
 
   /**
    * A function expression that provides a valid JWT for the app's current user
-   * to Iterable's React Native SDK. Provide an implementation for this method
-   * only if your app uses a JWT-enabled API key.
+   * to Iterable's React Native SDK.
    *
-   * @returns A promise that resolves to an `IterableAuthResponse`, a `string`, or `undefined`.
+   * Provide an implementation for this method only if your app uses a
+   * [JWT-enabled API
+   * key](https://support.iterable.com/hc/en-us/articles/360045714132-Installing-Iterable-s-React-Native-SDK#:~:text=app%20uses%20a-,JWT%2Denabled%20API%20key,-.).
+   *
+   * @remarks
+   * To make requests to Iterable's API using a JWT-enabled API key, you should
+   * first fetch a valid JWT for your app's current user from your own server,
+   * which must generate it. The `authHandler` provides this JWT to Iterable's
+   * React Native SDK, which can then append the JWT to subsequent API requests.
+   * The SDK automatically calls `authHandler` at various times:
+   * - When your app sets the user's email or user ID.
+   * - When your app updates the user's email.
+   * - Before the current JWT expires (at a configurable interval set by
+   *   `expiringAuthTokenRefreshPeriod`)
+   * - When your app receives a 401 response from Iterable's API with a
+   *   `InvalidJwtPayload` error code. However, if the SDK receives a second
+   *   consecutive 401 with an `InvalidJwtPayload` error when it makes a request
+   *   with the new token, it won't call the `authHandler` again until you call
+   *   `setEmail` or `setUserId` without passing in an auth token.
+   *
+   * **TIP**: The `setEmail` and `setUserId` mobile SDK methods accept an
+   * optional, prefetched auth token. If you encounter SDK errors related to
+   * auth token requests, try using this parameter.
+   *
+   * For more information about JWT-enabled API keys, read [JWT-Enabled API Keys](https://support.iterable.com/hc/articles/360050801231).
+   *
+   *  @example
+   * This example demonstrates how an app that uses a JWT-enabled API key might initialize the SDK.
+   *
+   * ```typescript
+   * const config = new IterableConfig();
+   *
+   * config.authHandler = () => {
+   *  // ... Fetch a JWT from your server, or locate one you've already retrieved
+   *  return new Promise(function (resolve, reject) {
+   *    // Resolve the promise with a valid auth token for the current user
+   *    resolve("<AUTH_TOKEN>")
+   *  });
+   * };
+   * config.autoPushRegistration = false;
+   *
+   * Iterable.initialize('<YOUR_API_KEY>', config);
+   * ```
+   *
+   * @returns A promise that resolves to an `IterableAuthResponse`, a `string`,
+   * or `undefined`.
    */
   authHandler?: () => Promise<IterableAuthResponse | string | undefined>;
 
   /**
    * Set the verbosity of Android and iOS project's log system.
+   *
    * By default, you will be able to see info level logs printed in IDE when running the app.
    */
   logLevel: IterableLogLevel = IterableLogLevel.info;
 
   /**
-   * Set whether the React Native SDK should print function calls to console
+   * Set whether the React Native SDK should print function calls to console.
+   *
    * This is for calls within the React Native layer, and is separate from `logLevel`
    * which affects the Android and iOS native SDKs
    */
@@ -98,14 +213,30 @@ export class IterableConfig {
 
   /**
    * The number of seconds before the current JWT's expiration that the SDK should call the
-   * authHandler to get an updated JWT.
+   * `authHandler` to get an updated JWT.
    */
   expiringAuthTokenRefreshPeriod = 60.0;
 
   /**
-   * Use this array to declare the specific URL protocols that the SDK can expect to see on incoming
-   * links from Iterable, so it knows that it can safely handle them as needed. This array helps
-   * prevent the SDK from opening links that use unexpected URL protocols.
+   * Use this array to declare the specific URL protocols that the SDK can
+   * expect to see on incoming links from Iterable, so it knows that it can
+   * safely handle them as needed. This array helps prevent the SDK from opening
+   * links that use unexpected URL protocols.
+   *
+   * @example
+   * To allow the SDK to handle `http`, `tel`, and `custom` links, use code similar to this:
+   *
+   * ```typescript
+   * const config = new IterableConfig();
+   * config.allowedProtocols = ["http", "tel", "custom"];
+   * ```
+   *
+   * @remarks
+   * **IMPORTANT**: Iterable's React Native SDK handles https, action, itbl, and
+   * iterable links, regardless of the contents of this array. However, you must
+   * explicitly declare any other types of URL protocols you'd like the SDK to
+   * handle (otherwise, the SDK won't open them in the web browser or as deep
+   * links).
    */
   allowedProtocols: string[] = [];
 
@@ -123,7 +254,15 @@ export class IterableConfig {
 
   /**
    * This specifies the `useInMemoryStorageForInApps` config option downstream to the native SDK layers.
+   *
+   * It determines whether Android and iOS apps should store in-app messages in memory, rather than in an unencrypted local file (defaults to `false`).
+   *
    * Please read the respective `IterableConfig` files for specific details on this config option.
+   *
+   * @remarks
+   * For more information about this option, and the deprecated-but-related
+   * `androidSdkUseInMemoryStorageForInApps` available in version 1.3.7 of
+   * Iterable's React Native SDK, read the [release notes for version 1.3.9](https://github.com/Iterable/react-native-sdk/releases/tag/1.3.9).
    */
   useInMemoryStorageForInApps = false;
 
