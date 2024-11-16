@@ -42,8 +42,8 @@ export class Iterable {
    *
    * Note: Use Iterable.initialize and NOT Iterable.initialize2, as Iterable.initialize2 is only used internally.
    *
-   * @param {string} apiKey mobile API key provided with the application
-   * @param {IterableConfig} config config object with various properties
+   * @param apiKey - mobile API key provided with the application
+   * @param config - config object with various properties
    */
 
   static initialize(
@@ -118,8 +118,8 @@ export class Iterable {
    *
    * Note: specify a user by calling Iterable.setEmail or Iterable.setUserId, but NOT both.
    *
-   * @param {string | null | undefined} email email address to associate with the current user
-   * @param {string | null | undefined} authToken valid, pre-fetched JWT the SDK can use to authenticate API requests, optional - if null/undefined, no JWT related action will be taken
+   * @param email - email address to associate with the current user
+   * @param authToken - valid, pre-fetched JWT the SDK can use to authenticate API requests, optional - if null/undefined, no JWT related action will be taken
    */
 
   static setEmail(email?: string | null, authToken?: string | null) {
@@ -131,8 +131,6 @@ export class Iterable {
   /**
    * This static method returns the email associated with the current user.
    * Iterable.getEmail returns a promise. Use the keyword `then` to get the result of the promise.
-   *
-   * parameters: none
    */
 
   static getEmail(): Promise<string | undefined> {
@@ -171,8 +169,8 @@ export class Iterable {
    *
    * Note: specify a user by calling Iterable.setEmail or Iterable.setUserId, but NOT both.
    *
-   * parameters: @param {string | null | undefined} userId user ID to associate with the current user
-   * optional parameter: @param {string | null | undefined} authToken valid, pre-fetched JWT the SDK can use to authenticate API requests, optional - if null/undefined, no JWT related action will be taken
+   * parameters: @param userId - user ID to associate with the current user
+   * optional parameter: @param authToken - valid, pre-fetched JWT the SDK can use to authenticate API requests, optional - if null/undefined, no JWT related action will be taken
    */
 
   static setUserId(userId?: string | null, authToken?: string | null) {
@@ -260,7 +258,7 @@ export class Iterable {
    * For deep link clicks, Iterable sets attribution information automatically.
    * However, use this method to set it manually if ever necessary.
    *
-   * @param {IterableAttributionInfo} attributionInfo - object storing current attribution info
+   * @param attributionInfo - object storing current attribution info
    */
 
   static setAttributionInfo(attributionInfo?: IterableAttributionInfo) {
@@ -273,11 +271,11 @@ export class Iterable {
    * This static method creates a pushOpen event on the current user's Iterable profile,
    * populating it with data provided to the method call.
    *
-   * @param {number} campaignId the ID of the campaign to associate with the push open
-   * @param {number} templateId the ID of the template to associate with the push open
-   * @param {string} messageId the ID of the message to associate with the push open
-   * @param {boolean} appAlreadyRunning whether or not the app was already running when the push notification arrived
-   * @param {unknown | undefined} dataFields information to store with the push open event
+   * @param campaignId - the ID of the campaign to associate with the push open
+   * @param templateId - the ID of the template to associate with the push open
+   * @param messageId - the ID of the message to associate with the push open
+   * @param appAlreadyRunning - whether or not the app was already running when the push notification arrived
+   * @param dataFields - information to store with the push open event
    */
 
   static trackPushOpenWithCampaignId(
@@ -303,7 +301,7 @@ export class Iterable {
    * Represent each item in the updateCart event with an IterableCommerceItem object.
    * See IterableCommerceItem class defined above.
    *
-   * @param {IterableCommerceItem[]} items the items added to the shopping cart
+   * @param items - the items added to the shopping cart
    */
 
   static updateCart(items: IterableCommerceItem[]) {
@@ -314,8 +312,6 @@ export class Iterable {
 
   /**
    * This static method launches the application from the background for Android devices.
-   *
-   * parameters: none
    */
 
   static wakeApp() {
@@ -333,9 +329,9 @@ export class Iterable {
    *
    * Note: total is a parameter that is passed in. Iterable does not sum the price fields of the various items in the purchase event.
    *
-   * @param {number} total the total cost of the purchase
-   * @param {IterableCommerceItem[]} items the items included in the purchase
-   * @param {any | undefined} dataFields descriptive data to store on the purchase event
+   * @param total - the total cost of the purchase
+   * @param items - the items included in the purchase
+   * @param dataFields - descriptive data to store on the purchase event
    */
 
   static trackPurchase(
@@ -353,8 +349,8 @@ export class Iterable {
    * for manual tracking purposes. Iterable's SDK automatically tracks in-app message opens when you use the
    * SDK's default rendering.
    *
-   * @param {IterableInAppMessage} message the in-app message (an IterableInAppMessage object)
-   * @param {IterableInAppLocation} location the location of the in-app message (an IterableInAppLocation enum)
+   * @param message - the in-app message (an IterableInAppMessage object)
+   * @param location - the location of the in-app message (an IterableInAppLocation enum)
    */
 
   static trackInAppOpen(
@@ -372,9 +368,9 @@ export class Iterable {
    * SDK's default rendering. Click events refer to click events within the in-app message to distinguish
    * from inAppOpen events.
    *
-   * @param {IterableInAppMessage} message the in-app message (an IterableInAppMessage object)
-   * @param {IterableInAppLocation} location the location of the in-app message (an IterableInAppLocation enum)
-   * @param {string} clickedUrl the URL clicked by the user
+   * @param message - the in-app message (an IterableInAppMessage object)
+   * @param location - the location of the in-app message (an IterableInAppLocation enum)
+   * @param clickedUrl - the URL clicked by the user
    */
 
   static trackInAppClick(
@@ -392,10 +388,10 @@ export class Iterable {
    * for manual tracking purposes. Iterable's SDK automatically tracks in-app message close events when you use the
    * SDK's default rendering.
    *
-   * @param {IterableInAppMessage} message the in-app message (an IterableInAppMessage object)
-   * @param {IterableInAppLocation} location the location of the in-app message (an IterableInAppLocation enum)
-   * @param {IterableInAppCloseSource} source the way the in-app was closed (an IterableInAppCloseSource enum)
-   * @param {string} clickedUrl the URL clicked by the user
+   * @param message - the in-app message (an IterableInAppMessage object)
+   * @param location - the location of the in-app message (an IterableInAppLocation enum)
+   * @param source - the way the in-app was closed (an IterableInAppCloseSource enum)
+   * @param clickedUrl - the URL clicked by the user
    */
 
   static trackInAppClose(
@@ -420,9 +416,9 @@ export class Iterable {
    * unless otherwise specifed (specifying a source of IterableInAppDeleteSource.unknown prevents
    * an inAppDelete event from being created).
    *
-   * @param {IterableInAppMessage} message the in-app message (an IterableInAppMessage object)
-   * @param {IterableInAppLocation} location the location of the in-app message (an IterableInAppLocation enum)
-   * @param {IterableInAppDeleteSource} source how the in-app message was deleted (an IterableInAppDeleteSource enum)
+   * @param message - the in-app message (an IterableInAppMessage object)
+   * @param location - the location of the in-app message (an IterableInAppLocation enum)
+   * @param source - how the in-app message was deleted (an IterableInAppDeleteSource enum)
    */
 
   static inAppConsume(
@@ -440,8 +436,8 @@ export class Iterable {
    * Pass in the name of the event stored in eventName key and the data associated with the event.
    * The eventType is set to "customEvent".
    *
-   * @param {string} name the eventName of the custom event
-   * @param {unknown | undefined} dataFields descriptive data to store on the custom event
+   * @param name - the eventName of the custom event
+   * @param dataFields - descriptive data to store on the custom event
    */
   static trackEvent(name: string, dataFields?: unknown) {
     Iterable.logger.log('trackEvent');
@@ -460,8 +456,8 @@ export class Iterable {
    * overwrite their counterparts that already exist on the user's profile.
    * Otherwise, they are added.
    *
-   * @param {unknown | undefined} dataFields data fields to store in user profile
-   * @param {boolean} mergeNestedObjects flag indicating whether to merge top-level objects
+   * @param dataFields - data fields to store in user profile
+   * @param mergeNestedObjects - flag indicating whether to merge top-level objects
    */
   static updateUser(
     dataFields: unknown | undefined,
@@ -481,8 +477,8 @@ export class Iterable {
    * An optional valid, pre-fetched JWT can be passed in to avoid race conditions.
    * The SDK uses this JWT to authenticate API requests for this user.
    *
-   * @param email the new email to set
-   * @param authToken the new auth token (JWT) to set with the new email, optional - if null/undefined, no JWT-related action will be taken
+   * @param email - the new email to set
+   * @param authToken - the new auth token (JWT) to set with the new email, optional - if null/undefined, no JWT-related action will be taken
    */
 
   static updateEmail(email: string, authToken?: string) {
@@ -496,7 +492,7 @@ export class Iterable {
    * HandleAppLink will hand the passed in URL to IterableConfig.urlHandler, where it is determined whether or not
    * the app can handle the clicked URL.
    *
-   * @param {string} link URL link to be handled
+   * @param link - URL link to be handled
    */
 
   static handleAppLink(link: string): Promise<boolean> {
@@ -513,12 +509,12 @@ export class Iterable {
    * pass in null for any of emailListIds, unsubscribedChannelIds, unsubscribedMessageTypeIds, or subscribedMessageTypeIds
    * to indicate that Iterable should not change the current value on the current user's profile.
    *
-   * @param {number[] | undefined} emailListIds the list of email lists (by ID) to which the user should be subscribed
-   * @param {number[] | undefined} unsubscribedChannelIds the list of message channels (by ID) to which the user should be unsubscribed
-   * @param {number[] | undefined} unsubscribedMessageTypeIds the list of message types (by ID) to which the user should be unsubscribed (for opt-out message types)
-   * @param {number[] | undefined} subscribedMessageTypeIds the list of message types (by ID) to which the user should be subscribed (for opt-in message types)
-   * @param {number} campaignId the campaign ID to associate with events generated by this request, use -1 if unknown or not applicable
-   * @param {number} templateId the template ID to associate with events generated by this request, use -1 if unknown or not applicable
+   * @param emailListIds - the list of email lists (by ID) to which the user should be subscribed
+   * @param unsubscribedChannelIds - the list of message channels (by ID) to which the user should be unsubscribed
+   * @param unsubscribedMessageTypeIds - the list of message types (by ID) to which the user should be unsubscribed (for opt-out message types)
+   * @param subscribedMessageTypeIds - the list of message types (by ID) to which the user should be subscribed (for opt-in message types)
+   * @param campaignId - the campaign ID to associate with events generated by this request, use -1 if unknown or not applicable
+   * @param templateId - the template ID to associate with events generated by this request, use -1 if unknown or not applicable
    */
 
   static updateSubscriptions(

@@ -1,6 +1,5 @@
 /**
  * React Native module for Iterable.
- * @module react-native-iterable-sdk
  */
 export {
   Iterable,

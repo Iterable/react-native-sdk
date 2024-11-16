@@ -18,7 +18,7 @@ export class IterableConfig {
    * Defaults to your app's application ID or bundle ID for iOS.
    *
    * Note: Don't specify this value unless you are using an older Iterable push integration that
-   * has a custom name. To view your existing integrations, navigate to Settings > Mobile Apps.
+   * has a custom name. To view your existing integrations, navigate to Settings \> Mobile Apps.
    */
   pushIntegrationName?: string;
 

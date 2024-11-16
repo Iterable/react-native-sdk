@@ -52,8 +52,8 @@ export class IterableInAppManager {
    * This method returns a Promise. Use `then` to get the string it returns, which corresponds to the URL
    * of the button or link the current user tapped in the in-app message to close it.
    *
-   * @param {IterableInAppMessage} message The message to show (an IterableInAppMessage object)
-   * @param {boolean} consume Whether or not the message should be consumed from the user's message queue after being shown. This should be defaulted to true.
+   * @param message - The message to show (an IterableInAppMessage object)
+   * @param consume - Whether or not the message should be consumed from the user's message queue after being shown. This should be defaulted to true.
    */
 
   showMessage(
@@ -69,9 +69,9 @@ export class IterableInAppManager {
    * This method removes the specifed message from the current user's message queue.
    * Also, this method calls the inAppConsume method internally.
    *
-   * @param {IterableInAppMessage} message the in-app message (an IterableInAppMessage object)
-   * @param {IterableInAppLocation} location the location of the in-app message (an IterableInAppLocation enum)
-   * @param {IterableInAppDeleteSource} source how the in-app message was deleted (an IterableInAppDeleteSource enum)
+   * @param message - the in-app message (an IterableInAppMessage object)
+   * @param location - the location of the in-app message (an IterableInAppLocation enum)
+   * @param source - how the in-app message was deleted (an IterableInAppDeleteSource enum)
    */
   removeMessage(
     message: IterableInAppMessage,
@@ -86,8 +86,8 @@ export class IterableInAppManager {
   /**
    * This method sets the read status of specified in-app message.
    *
-   * @param {IterableInAppMessage} message the in-app message (an IterableInAppMessage object)
-   * @param {boolean} read the boolean value indicating whether the in-app message was read
+   * @param message - the in-app message (an IterableInAppMessage object)
+   * @param read - the boolean value indicating whether the in-app message was read
    */
   setReadForMessage(message: IterableInAppMessage, read: boolean) {
     Iterable.logger.log('InAppManager.setRead');
@@ -99,7 +99,7 @@ export class IterableInAppManager {
    * This method returns HTML in-app content for a specified in-app message.
    * This method returns a Promise. Use `then` to get the HTML content returned as an IterableHtmlInAppContent object.
    *
-   * @param {IterableInAppMessage} message the in-app message (an IterableInAppMessage object)
+   * @param message - the in-app message (an IterableInAppMessage object)
    */
 
   getHtmlContentForMessage(
@@ -115,7 +115,7 @@ export class IterableInAppManager {
    * If set to false, the SDK will immediately retrieve and process in-app messages from the message queue.
    * The default value of isAutoDisplayPaused is false (in the native code).
    *
-   * @param {boolean} paused whether the automatic displaying should be paused
+   * @param paused - whether the automatic displaying should be paused
    */
   setAutoDisplayPaused(paused: boolean) {
     Iterable.logger.log('InAppManager.setAutoDisplayPaused');

@@ -28,7 +28,7 @@ interface IterableAppProps {
   config: IterableConfig | null;
   /**
    * Call to initialize the Iterable SDK
-   * @param navigation The navigation prop from the screen
+   * @param navigation - The navigation prop from the screen
    * @returns Promise<boolean> Whether the initialization was successful
    */
   initialize: (navigation: Navigation) => void;
@@ -47,6 +47,7 @@ interface IterableAppProps {
   loginInProgress?: boolean;
   /** Logs the user out */
   logout: () => void;
+  // eslint-disable-next-line tsdoc/syntax
   /** TODO: Ask @evantk91 or @Ayyanchira what this is for */
   returnToInboxTrigger: boolean;
   /** Sets the API key for the user */
@@ -55,6 +56,7 @@ interface IterableAppProps {
   setIsInboxTab: (value: boolean) => void;
   /** Sets whether the login is in progress */
   setLoginInProgress: (value: boolean) => void;
+  // eslint-disable-next-line tsdoc/syntax
   /** TODO: Ask @evantk91 or @Ayyanchira what this is for */
   setReturnToInboxTrigger: (value: boolean) => void;
   /** Sets the user ID for the user */
