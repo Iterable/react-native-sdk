@@ -19,7 +19,11 @@ export {
   IterableLogLevel,
   IterablePushPlatform,
 } from './core/enums';
-export { useAppStateListener, useDeviceOrientation } from './core/hooks';
+export {
+  useAppStateListener,
+  useDeviceOrientation,
+  type IterableDeviceOrientation,
+} from './core/hooks';
 export { type IterableEdgeInsetDetails } from './core/types';
 export {
   IterableHtmlInAppContent,
