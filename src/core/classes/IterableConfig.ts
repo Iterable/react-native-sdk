@@ -24,7 +24,7 @@ export class IterableConfig {
 
   /**
    * When set to true (which is the default value), IterableSDK will automatically register and deregister
-   * notification tokens when you provide email or userId values to the SDK using Iterable.setEmail or Iterable.setUserId.
+   * notification tokens when you provide email or userId values to the SDK using `Iterable.setEmail` or `Iterable.setUserId.`
    */
   autoPushRegistration = true;
 
@@ -42,11 +42,20 @@ export class IterableConfig {
 
   /**
    * A callback function used to handle deep link URLs and in-app message button and link URLs.
+   *
+   * @param url - The URL to be processed.
+   * @param context - The context in which the URL action is being performed.
+   * @returns A boolean indicating whether the URL was successfully handled.
    */
   urlHandler?: (url: string, context: IterableActionContext) => boolean;
 
   /**
-   * A function expression used to handle `action://` URLs for in-app buttons and links.
+   * A function expression used to handle `action://` URLs for in-app buttons
+   * and links.
+   *
+   * @param action - The custom action that was triggered.
+   * @param context - The context in which the action was triggered.
+   * @returns A boolean indicating whether the action was handled.
    */
   customActionHandler?: (
     action: IterableAction,
@@ -58,15 +67,19 @@ export class IterableConfig {
    * By default, every single in-app will be shown as soon as it is available.
    * If more than 1 in-app is available, we show the first.
    *
-   * See "In-App Messages with Iterable's React Native SDK" in support documentation
-   * for more information.
+   * @see [In-App Messages with Iterable's React Native SDK](https://support.iterable.com/hc/en-us/articles/360045714172-In-App-Messages-with-Iterable-s-React-Native-SDK)
+   *
+   * @param message - The in-app message to be processed.
+   * @returns A response indicating how the in-app message should be shown.
    */
   inAppHandler?: (message: IterableInAppMessage) => IterableInAppShowResponse;
 
   /**
-   * A function expression that provides a valid JWT for the app's current user to Iterable's
-   * React Native SDK. Provide an implementation for this method only if your app uses a
-   * JWT-enabled API key.
+   * A function expression that provides a valid JWT for the app's current user
+   * to Iterable's React Native SDK. Provide an implementation for this method
+   * only if your app uses a JWT-enabled API key.
+   *
+   * @returns A promise that resolves to an `IterableAuthResponse`, a `string`, or `undefined`.
    */
   authHandler?: () => Promise<IterableAuthResponse | string | undefined>;
 
@@ -94,9 +107,10 @@ export class IterableConfig {
    * links from Iterable, so it knows that it can safely handle them as needed. This array helps
    * prevent the SDK from opening links that use unexpected URL protocols.
    */
-  allowedProtocols: Array<string> = [];
+  allowedProtocols: string[] = [];
 
   /**
+   * @deprecated
    * DEPRECATED - please use `useInMemoryStorageForInApps` as a replacement for this config option.
    *
    * NOTE: until this option is removed, it will still function with `useInMemoryStorageForInApps` by
@@ -131,23 +145,45 @@ export class IterableConfig {
    */
   encryptionEnforced = false;
 
+  /**
+   * Converts the IterableConfig instance to a dictionary object.
+   *
+   * @returns An object representing the configuration.
+   */
   toDict() {
     return {
       pushIntegrationName: this.pushIntegrationName,
       autoPushRegistration: this.autoPushRegistration,
       inAppDisplayInterval: this.inAppDisplayInterval,
-      // TODO: Figure out if this is purposeful
+      /**
+       * A boolean indicating if a URL handler is present.
+       *
+       * TODO: Figure out if this is purposeful
+       */
       // eslint-disable-next-line eqeqeq
       urlHandlerPresent: this.urlHandler != undefined,
-      // TODO: Figure out if this is purposeful
+      /**
+       * A boolean indicating if a custom action handler is present.
+       *
+       * TODO: Figure out if this is purposeful
+       */
       // eslint-disable-next-line eqeqeq
       customActionHandlerPresent: this.customActionHandler != undefined,
-      // TODO: Figure out if this is purposeful
+      /**
+       * A boolean indicating if an in-app handler is present.
+       *
+       * TODO: Figure out if this is purposeful
+       */
       // eslint-disable-next-line eqeqeq
       inAppHandlerPresent: this.inAppHandler != undefined,
-      // TODO: Figure out if this is purposeful
+      /**
+       * A boolean indicating if an authentication handler is present.
+       *
+       * TODO: Figure out if this is purposeful
+       */
       // eslint-disable-next-line eqeqeq
       authHandlerPresent: this.authHandler != undefined,
+      /** The log level for the SDK. */
       logLevel: this.logLevel,
       expiringAuthTokenRefreshPeriod: this.expiringAuthTokenRefreshPeriod,
       allowedProtocols: this.allowedProtocols,
