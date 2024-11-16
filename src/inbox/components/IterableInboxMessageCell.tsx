@@ -208,10 +208,45 @@ export interface IterableInboxMessageCellProps {
   swipingCheck: (swiping: boolean) => void;
 
   /**
-   * Function to layout the message list item.
+   * Function to specify a layout for the message row.
+   *
+   * @remarks
+   * To specify a custom layout for your inbox rows, when you instantiate your
+   * `IterableInbox`, assign a function to its `messageListItemLayout` prop. The
+   * inbox will call this function for each of its rows, and it should return:
+   *
+   * 1. JSX that represents the custom layout for the row.
+   * 2. The height of the row (must be the same for all rows).
+   *
    * @param isLast - Is this the last message in the list?
    * @param rowViewModel - The view model for the inbox row.
+   *
    * @returns A tuple containing a React node and a number, or undefined/null.
+   *
+   * @example
+   * ```tsx
+   *  const ROW_HEIGHT = 100;
+   *
+   *  // Custom layout for the message row
+   *  const renderCustomLayout = (
+   *    isLast: boolean,
+   *    rowViewModel: IterableInboxRowViewModel,
+   *  ) => {
+   *    return [
+   *      // Component shown in the message row
+   *      <View>
+   *        <Text>Title: {rowViewModel.inAppMessage.inboxMetadata?.title}</Text>
+   *        <Text>Body: {rowViewModel.inAppMessage.inboxMetadata?.subtitle}</Text>
+   *        <Text>Date: {rowViewModel.createdAt}</Text>
+   *        <Text>Has been read: {rowViewModel.read === true}</Text>
+   *      </View>,
+   *     // Height of the row
+   *      ROW_HEIGHT,
+   *    ];
+   *  }
+   *
+   *  <IterableInbox messageListItemLayout={renderCustomLayout} />
+   * ```
    */
   messageListItemLayout: (
     isLast: boolean,
