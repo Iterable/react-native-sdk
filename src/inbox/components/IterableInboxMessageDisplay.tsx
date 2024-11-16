@@ -24,6 +24,7 @@ import {
 } from '../../inApp';
 
 import { type IterableInboxRowViewModel } from '../types';
+import { ITERABLE_INBOX_COLORS } from '../constants';
 
 // TODO: Comment
 export interface IterableInboxMessageDisplayProps {
@@ -67,7 +68,7 @@ export const IterableInboxMessageDisplay = ({
     },
 
     messageDisplayContainer: {
-      backgroundColor: 'whitesmoke',
+      backgroundColor: ITERABLE_INBOX_COLORS.CONTAINER_BACKGROUND,
       flexDirection: 'column',
       height: '100%',
       justifyContent: 'flex-start',
@@ -90,7 +91,7 @@ export const IterableInboxMessageDisplay = ({
     },
 
     messageTitleText: {
-      backgroundColor: 'whitesmoke',
+      backgroundColor: ITERABLE_INBOX_COLORS.CONTAINER_BACKGROUND,
       fontSize: 20,
       fontWeight: 'bold',
     },
@@ -107,35 +108,20 @@ export const IterableInboxMessageDisplay = ({
       marginLeft: 0,
       marginTop: 0,
       width: '25%',
+      ...(isPortrait ? {} : { marginLeft: 80 }),
     },
 
     returnButtonIcon: {
-      color: 'deepskyblue',
+      color: ITERABLE_INBOX_COLORS.BUTTON_PRIMARY_TEXT,
       fontSize: 40,
       paddingLeft: 0,
     },
 
     returnButtonText: {
-      color: 'deepskyblue',
+      color: ITERABLE_INBOX_COLORS.BUTTON_PRIMARY_TEXT,
       fontSize: 20,
     },
   });
-
-  const {
-    header,
-    returnButton,
-    returnButtonIcon,
-    returnButtonText,
-    messageTitleContainer,
-    messageTitleText,
-    messageDisplayContainer,
-  } = styles;
-  let { returnButtonContainer } = styles;
-
-  // orientation dependent styling
-  returnButtonContainer = !isPortrait
-    ? { ...returnButtonContainer, marginLeft: 80 }
-    : returnButtonContainer;
 
   const JS = `
       const links = document.querySelectorAll('a')
@@ -210,9 +196,9 @@ export const IterableInboxMessageDisplay = ({
   }
 
   return (
-    <View style={messageDisplayContainer}>
-      <View style={header}>
-        <View style={returnButtonContainer}>
+    <View style={styles.messageDisplayContainer}>
+      <View style={styles.header}>
+        <View style={styles.returnButtonContainer}>
           <TouchableWithoutFeedback
             onPress={() => {
               returnToInbox();
@@ -223,18 +209,21 @@ export const IterableInboxMessageDisplay = ({
               );
             }}
           >
-            <View style={returnButton}>
-              <Icon name="chevron-back-outline" style={returnButtonIcon} />
-              <Text style={returnButtonText}>Inbox</Text>
+            <View style={styles.returnButton}>
+              <Icon
+                name="chevron-back-outline"
+                style={styles.returnButtonIcon}
+              />
+              <Text style={styles.returnButtonText}>Inbox</Text>
             </View>
           </TouchableWithoutFeedback>
         </View>
-        <View style={messageTitleContainer}>
+        <View style={styles.messageTitleContainer}>
           <View style={styles.messageTitle}>
             <Text
               numberOfLines={1}
               ellipsizeMode="tail"
-              style={messageTitleText}
+              style={styles.messageTitleText}
             >
               {messageTitle}
             </Text>
