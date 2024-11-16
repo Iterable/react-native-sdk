@@ -341,8 +341,18 @@ export class Iterable {
    * However, use this method to set it manually if ever necessary.
    *
    * @param attributionInfo - Object storing current attribution info
+   *
+   * @example
+   * ```typescript
+   * const CAMPAIGN_ID = 1234;
+   * const TEMPLATE_ID = 5678;
+   * const MESSAGE_ID = 9012;
+   *
+   * const attributionInfo = new IterableAttributionInfo(CAMPAIGN_ID, TEMPLATE_ID, MESSAGE_ID);
+   *
+   * Iterable.setAttributionInfo(attributionInfo);
+   * ```
    */
-
   static setAttributionInfo(attributionInfo?: IterableAttributionInfo) {
     Iterable.logger.log('setAttributionInfo');
 
@@ -359,6 +369,19 @@ export class Iterable {
    * @param appAlreadyRunning - Whether or not the app was already running when
    * the push notification arrived
    * @param dataFields - Information to store with the push open event
+   *
+   * @example
+   * ```typescript
+   * const CAMPAIGN_ID = 1234;
+   * const TEMPLATE_ID = 5678;
+   * const MESSAGE_ID = '9012';
+   * const APP_ALREADY_RUNNING = false;
+   * const DATA_FIELDS = {
+   * 'key1': 'value1',
+   * };
+   *
+   * Iterable.trackPushOpen(CAMPAIGN_ID, TEMPLATE_ID, MESSAGE_ID, APP_ALREADY_RUNNING, DATA_FIELDS);
+   * ```
    */
   static trackPushOpenWithCampaignId(
     campaignId: number,
@@ -386,6 +409,23 @@ export class Iterable {
    * @see {@link IterableCommerceItem}
    *
    * @param items - The items added to the shopping cart
+   *
+   * @example
+   * ```typescript
+   * const item = new IterableCommerceItem(
+   *    "TOY1",
+   *    "Red Racecar",
+   *    4.99,
+   *    1,
+   *    "RR123",
+   *    "A small, red racecar.",
+   *    "https://www.example.com/toys/racecar",
+   *    "https://www.example.com/toys/racecar/images/car.png",
+   *    ["Toy", "Inexpensive"],
+   * );
+   *
+   * Iterable.updateCart([item]);
+   * ```
    */
   static updateCart(items: IterableCommerceItem[]) {
     Iterable.logger.log('updateCart');
@@ -395,6 +435,13 @@ export class Iterable {
 
   /**
    * Launch the application from the background in Android devices.
+   *
+   * @group Android Only
+   *
+   * @example
+   * ```typescript
+   * Iterable.wakeApp();
+   * ```
    */
   static wakeApp() {
     if (Platform.OS === 'android') {
@@ -416,8 +463,18 @@ export class Iterable {
    * @param total - The total cost of the purchase
    * @param items - The items included in the purchase
    * @param dataFields - Descriptive data to store on the purchase event
+   *
+   * @example
+   * ```typescript
+   * const items = [
+   *  new IterableCommerceItem('item1', 'Item 1', 10.0, 1),
+   *  new IterableCommerceItem('item2', 'Item 2', 20.0, 2),
+   * ];
+   * const dataFields = { 'key1': 'value1', };
+   *
+   * Iterable.trackPurchase(30.0, items, dataFields);
+   * ```
    */
-
   static trackPurchase(
     total: number,
     items: IterableCommerceItem[],
@@ -435,8 +492,13 @@ export class Iterable {
    *
    * @param message - The in-app message (an {@link IterableInAppMessage} object)
    * @param location - The location of the in-app message (an IterableInAppLocation enum)
+   *
+   * @example
+   * ```typescript
+   * const message = new IterableInAppMessage(1234, 4567, IterableInAppTrigger.auto, new Date(), new Date(), false, undefined, undefined, false, 0);
+   * Iterable.trackInAppOpen(message, IterableInAppLocation.inApp);
+   * ```
    */
-
   static trackInAppOpen(
     message: IterableInAppMessage,
     location: IterableInAppLocation
@@ -455,6 +517,12 @@ export class Iterable {
    * @param message - The in-app message (an {@link IterableInAppMessage} object)
    * @param location - The location of the in-app message (an IterableInAppLocation enum)
    * @param clickedUrl - The URL clicked by the user
+   *
+   * @example
+   * ```typescript
+   * const message = new IterableInAppMessage(1234, 4567, IterableInAppTrigger.auto, new Date(), new Date(), false, undefined, undefined, false, 0);
+   * Iterable.trackInAppClick(message, IterableInAppLocation.inApp, 'https://www.example.com');
+   * ```
    */
   static trackInAppClick(
     message: IterableInAppMessage,
@@ -467,14 +535,24 @@ export class Iterable {
   }
 
   /**
-   * Create an `inAppClose` event for the specified message on the current user's profile
-   * for manual tracking purposes. Iterable's SDK automatically tracks in-app message close events when you use the
-   * SDK's default rendering.
+   * Create an `inAppClose` event for the specified message on the current
+   * user's profile for manual tracking purposes. Iterable's SDK automatically
+   * tracks in-app message close events when you use the SDK's default
+   * rendering.
    *
-   * @param message - The in-app message (an {@link IterableInAppMessage} object)
-   * @param location - The location of the in-app message (an IterableInAppLocation enum)
-   * @param source - The way the in-app was closed (an IterableInAppCloseSource enum)
+   * @param message - The in-app message (an {@link IterableInAppMessage}
+   * object)
+   * @param location - The location of the in-app message (an
+   * IterableInAppLocation enum)
+   * @param source - The way the in-app was closed (an IterableInAppCloseSource
+   * enum)
    * @param clickedUrl - The URL clicked by the user
+   *
+   * @example
+   * ```typescript
+   * const message = new IterableInAppMessage(1234, 4567, IterableInAppTrigger.auto, new Date(), new Date(), false, undefined, undefined, false, 0);
+   * Iterable.trackInAppClose(message, IterableInAppLocation.inApp, IterableInAppCloseSource.back, 'https://www.example.com');
+   * ```
    */
   static trackInAppClose(
     message: IterableInAppMessage,
@@ -502,8 +580,13 @@ export class Iterable {
    * @param message - The in-app message (an {@link IterableInAppMessage} object)
    * @param location - The location of the in-app message (an {@link IterableInAppLocation} enum)
    * @param source - How the in-app message was deleted (an {@link IterableInAppDeleteSource} enum)
+   *
+   * @example
+   * ```typescript
+   * const message = new IterableInAppMessage(1234, 4567, IterableInAppTrigger.auto, new Date(), new Date(), false, undefined, undefined, false, 0);
+   * Iterable.inAppConsume(message, IterableInAppLocation.inApp, IterableInAppDeleteSource.delete);
+   * ```
    */
-
   static inAppConsume(
     message: IterableInAppMessage,
     location: IterableInAppLocation,
@@ -516,11 +599,23 @@ export class Iterable {
 
   /**
    * Create a custom event to the current user's Iterable profile.
+   *
    * Pass in the name of the event stored in eventName key and the data associated with the event.
    * The eventType is set to "customEvent".
    *
    * @param name - The event name of the custom event
    * @param dataFields - Descriptive data to store on the custom event
+   *
+   *  @example
+   * ```typescript
+   * Iterable.trackEvent("completedOnboarding",
+   *  {
+   *    "includedProfilePhoto": true,
+   *    "favoriteColor": "red",
+   *    "favoriteFlavor": "cinnamon",
+   *  }
+   * );
+   * ```
    */
   static trackEvent(name: string, dataFields?: unknown) {
     Iterable.logger.log('trackEvent');
@@ -541,6 +636,26 @@ export class Iterable {
    *
    * @param dataFields - Data fields to store in user profile
    * @param mergeNestedObjects - Flag indicating whether to merge top-level objects
+   *
+   * @example
+   * This call adds the `firstName` field and `favorites` object to the current
+   * user's Iterable profile. Since `mergeNestedObjects` is `false`, this call will
+   * overwrite the existing favorites object (if there is one), replacing it
+   * with the value in the call (otherwise, it would have merged the two
+   * `favorites` objects).
+   *
+   * ```typescript
+   * Iterable.updateUser(
+   *   {
+   *     "firstName": "Joe",
+   *     "favorites": {
+   *       "color": "red",
+   *       "flavor": "cinnamon"
+   *     }
+   *   },
+   *   false
+   * );
+   * ```
    */
   static updateUser(
     dataFields: unknown | undefined,
@@ -562,6 +677,11 @@ export class Iterable {
    *
    * @param email - The new email to set
    * @param authToken - The new auth token (JWT) to set with the new email, optional - If null/undefined, no JWT-related action will be taken
+   *
+   * @example
+   * ```typescript
+   * Iterable.updateEmail('my.new.email@gmail.com', 'myAuthToken');
+   * ```
    */
   static updateEmail(email: string, authToken?: string) {
     Iterable.logger.log('updateEmail');
@@ -576,6 +696,13 @@ export class Iterable {
    * the app can handle the clicked URL.
    *
    * @param link - URL link to be handled
+   *
+   * @example
+   * ```typescript
+   * Iterable.handleAppLink('https://www.example.com').then((handled) => {
+   * console.log('Link handled: ' + handled);
+   * });
+   * ```
    */
   static handleAppLink(link: string): Promise<boolean> {
     Iterable.logger.log('handleAppLink');
@@ -597,6 +724,18 @@ export class Iterable {
    * @param subscribedMessageTypeIds - The list of message types (by ID) to which the user should be subscribed (for opt-in message types)
    * @param campaignId - The campaign ID to associate with events generated by this request, use -1 if unknown or not applicable
    * @param templateId - The template ID to associate with events generated by this request, use -1 if unknown or not applicable
+   *
+   * @example
+   * ```typescript
+   * const emailListIds = [1234, 5678];
+   * const unsubscribedChannelIds = [1234, 5678];
+   * const unsubscribedMessageTypeIds = [1234, 5678];
+   * const subscribedMessageTypeIds = [1234, 5678];
+   * const campaignId = 1234;
+   * const templateId = 5678;
+   *
+   * Iterable.updateSubscriptions(emailListIds, unsubscribedChannelIds, unsubscribedMessageTypeIds, subscribedMessageTypeIds, campaignId, templateId);
+   * ```
    */
   static updateSubscriptions(
     emailListIds: number[] | undefined,
@@ -618,6 +757,26 @@ export class Iterable {
     );
   }
 
+  /**
+   * Sets up event handlers for various Iterable events.
+   *
+   * This method performs the following actions:
+   * - Removes all existing listeners to avoid duplicate listeners.
+   * - Adds listeners for URL handling, custom actions, in-app messages, and authentication.
+   *
+   * Event Handlers:
+   * - `handleUrlCalled`: Invokes the URL handler if configured, with a delay on Android to allow the activity to wake up.
+   * - `handleCustomActionCalled`: Invokes the custom action handler if configured.
+   * - `handleInAppCalled`: Invokes the in-app handler if configured and sets the in-app show response.
+   * - `handleAuthCalled`: Invokes the authentication handler if configured and handles the promise result.
+   * - `handleAuthSuccessCalled`: Sets the authentication response callback to success.
+   * - `handleAuthFailureCalled`: Sets the authentication response callback to failure.
+   *
+   * Helper Functions:
+   * - `callUrlHandler`: Calls the URL handler and attempts to open the URL if the handler returns false.
+   *
+   * @private
+   */
   private static setupEventHandlers() {
     //Remove all listeners to avoid duplicate listeners
     RNEventEmitter.removeAllListeners(IterableEventName.handleUrlCalled);
@@ -743,6 +902,11 @@ export class Iterable {
     }
   }
 
+  /**
+   * Retrieves the version number from the package.json file.
+   *
+   * @returns {string} The version number as specified in the package.json file.
+   */
   private static getVersionFromPackageJson(): string {
     const json = require('../../../package.json');
     const version = json.version as string;
