@@ -4,5 +4,3 @@ export enum IterablePushPlatform {
   production = 1,
   auto = 2,
 }
-
-export default IterablePushPlatform;

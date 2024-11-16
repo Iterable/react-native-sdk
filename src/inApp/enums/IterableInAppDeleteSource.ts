@@ -4,5 +4,3 @@ export enum IterableInAppDeleteSource {
   deleteButton = 1,
   unknown = 100,
 }
-
-export default IterableInAppDeleteSource;

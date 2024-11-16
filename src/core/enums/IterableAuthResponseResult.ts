@@ -5,5 +5,3 @@ export enum IterableAuthResponseResult {
   /** The authentication failed */
   FAILURE,
 }
-
-export default IterableAuthResponseResult;

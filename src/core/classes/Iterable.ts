@@ -723,5 +723,3 @@ export class Iterable {
     return version;
   }
 }
-
-export default Iterable;

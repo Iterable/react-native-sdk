@@ -12,5 +12,3 @@ export class IterableAttributionInfo {
     this.messageId = messageId;
   }
 }
-
-export default IterableAttributionInfo;

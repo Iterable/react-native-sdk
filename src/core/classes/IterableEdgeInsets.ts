@@ -21,5 +21,3 @@ export class IterableEdgeInsets {
     );
   }
 }
-
-export default IterableEdgeInsets;

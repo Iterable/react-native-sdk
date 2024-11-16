@@ -18,5 +18,3 @@ export class IterableLogger {
     }
   }
 }
-
-export default IterableLogger;

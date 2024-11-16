@@ -17,5 +17,3 @@ export class IterableAction {
     return new IterableAction(dict.type, dict.data, dict.userInput);
   }
 }
-
-export default IterableAction;

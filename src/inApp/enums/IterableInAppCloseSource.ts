@@ -4,5 +4,3 @@ export enum IterableInAppCloseSource {
   link = 1,
   unknown = 100,
 }
-
-export default IterableInAppCloseSource;
