@@ -11,10 +11,6 @@ const styles = StyleSheet.create({
   button,
   buttonText,
   container,
-  secondaryButton: {
-    ...button,
-    backgroundColor: 'gray',
-  },
   text,
 });
 

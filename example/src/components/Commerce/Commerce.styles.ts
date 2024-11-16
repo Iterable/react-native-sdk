@@ -6,6 +6,7 @@ import {
   container,
   title,
   subtitle,
+  shadows,
 } from '../../constants';
 
 const styles = StyleSheet.create({
@@ -13,17 +14,17 @@ const styles = StyleSheet.create({
   buttonText,
   cardContainer: {
     backgroundColor: colors?.white,
-    borderWidth: 1,
-    padding: 15,
     borderColor: colors?.grey5,
-    shadowColor: 'rgba(0,0,0, .2)',
-    shadowOffset: { height: 0, width: 0 },
-    shadowOpacity: 1,
-    shadowRadius: 1,
-    elevation: 10, // Required for Android
-    width: '100%',
+    borderWidth: 1,
+    elevation: shadows.card.elevation, // Required for Android
     height: 150,
     marginBottom: 10,
+    padding: 15,
+    shadowColor: shadows.card.color,
+    shadowOffset: shadows.card.offset,
+    shadowOpacity: shadows.card.opacity,
+    shadowRadius: shadows.card.radius,
+    width: '100%',
   },
   cardImage: {
     height: '100%',

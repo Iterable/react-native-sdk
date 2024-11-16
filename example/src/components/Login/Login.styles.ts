@@ -1,10 +1,12 @@
 import { StyleSheet, type ViewStyle } from 'react-native';
+
 import {
   appName,
   buttonBlock,
   buttonDisabled,
   buttonText,
   buttonTextDisabled,
+  colors,
   container,
   input,
   label,
@@ -33,7 +35,7 @@ export const styles = StyleSheet.create({
   },
   loginScreenContainer: {
     ...container,
-    backgroundColor: 'white',
+    backgroundColor: colors.white,
   },
   subtitle,
   title,

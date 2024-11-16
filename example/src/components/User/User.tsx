@@ -21,7 +21,7 @@ export const User = () => {
     <View style={styles.container}>
       <Text style={styles.appName}>Welcome Iterator</Text>
       <Text style={styles.text}>Logged in as {loggedInAs}</Text>
-      <TouchableOpacity style={styles.secondaryButton} onPress={logout}>
+      <TouchableOpacity style={styles.button} onPress={logout}>
         <Text style={styles.buttonText}>Logout</Text>
       </TouchableOpacity>
     </View>
