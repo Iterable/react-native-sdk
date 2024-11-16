@@ -37,20 +37,60 @@ const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
 const DEFAULT_HEADLINE_HEIGHT = 60;
 
-// TODO: Comment
+/**
+ * Props for the IterableInbox component.
+ */
 export interface IterableInboxProps
   extends Partial<
     Pick<IterableInboxMessageListProps, 'messageListItemLayout'>
   > {
+  /**
+   * REVIEW: Flag which should be switched to `true` when a user returns to
+   * their inbox
+   */
   returnToInboxTrigger?: boolean;
+  /** Customization for the look and feel of the inbox */
   customizations?: IterableInboxCustomizations;
+  /** The height of the tab bar */
   tabBarHeight?: number;
+  /** The padding for the tab bar */
   tabBarPadding?: number;
+  /** Is safe area mode enabled? */
   safeAreaMode?: boolean;
+  /** Should the navigation title be shown? */
   showNavTitle?: boolean;
 }
 
-// TODO: Comment
+/**
+ * The `IterableInbox` component is responsible for displaying an inbox of messages.
+ * It handles fetching messages, displaying them in a list, and showing individual message details.
+ * It also manages the state of the inbox, including loading state, selected message, and visible message impressions.
+ *
+ * @example
+ * ```tsx
+ * const [visible, setVisible] = useState<boolean>(false);
+ *
+ * return (
+ *  <>
+ *    <Button title="Return to Inbox" onPress={() => setVisible(!visible)} />
+ *    {visible && (
+ *      <IterableInbox
+ *        returnToInboxTrigger={visible}
+ *        customizations={{
+ *          navTitle: 'My Inbox',
+ *          unreadIndicator: {
+ *            backgroundColor: 'red',
+ *            height: 10,
+ *          }
+ *        }}
+ *        showNavTitle={true}
+ *        tabBarHeight={80}
+ *      />
+ *    )}
+ *  </>
+ * )
+ * ```
+ */
 export const IterableInbox = ({
   returnToInboxTrigger = true,
   messageListItemLayout = () => null,

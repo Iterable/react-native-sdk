@@ -19,7 +19,17 @@ import type {
 } from '../types';
 import { ITERABLE_INBOX_COLORS } from '../constants';
 
-// TODO: Change to component
+/**
+ * Renders a default layout for a message list item in the inbox.
+ *
+ * TODO: Change to component
+ *
+ * @param last - Indicates if this is the last item in the list.
+ * @param dataModel - The data model containing the message data.
+ * @param rowViewModel - The view model for the current row.
+ * @param customizations - Custom styles and configurations.
+ * @param isPortrait - Indicates if the device is in portrait mode.
+ */
 function defaultMessageListLayout(
   last: boolean,
   dataModel: IterableInboxDataModel,
@@ -162,37 +172,79 @@ function defaultMessageListLayout(
   );
 }
 
-// TODO: Comment
+/**
+ * Props for the IterableInboxMessageCell component.
+ */
 export interface IterableInboxMessageCellProps {
+  /**
+   * The index of the message cell.
+   */
   index: number;
+
+  /**
+   * Indicates if this is the last message cell in a list.
+   */
   last: boolean;
+
+  /**
+   * The data model for the inbox message.
+   */
   dataModel: IterableInboxDataModel;
+
+  /**
+   * The view model for the inbox row.
+   */
   rowViewModel: IterableInboxRowViewModel;
+
+  /**
+   * Customizations for the inbox message cell.
+   */
   customizations: IterableInboxCustomizations;
-  swipingCheck: (
-    /** Should swiping be enabled? */
-    swiping: boolean
-  ) => void;
+
+  /**
+   * Function to check if swiping should be enabled.
+   * @param swiping - Should swiping be enabled?
+   */
+  swipingCheck: (swiping: boolean) => void;
+
+  /**
+   * Function to layout the message list item.
+   * @param isLast - Is this the last message in the list?
+   * @param rowViewModel - The view model for the inbox row.
+   * @returns A tuple containing a React node and a number, or undefined/null.
+   */
   messageListItemLayout: (
-    /** Is this the last message in the list? */
     isLast: boolean,
     rowViewModel: IterableInboxRowViewModel
   ) => [React.ReactNode, number] | undefined | null;
-  deleteRow: (
-    /** The ID of the message to delete */
-    messageId: string
-  ) => void;
-  handleMessageSelect: (
-    /** The ID of the message to select */
-    messageId: string,
-    /** The index of the message to select */
-    index: number
-  ) => void;
+
+  /**
+   * Function to delete a message row.
+   * @param messageId - The ID of the message to delete.
+   */
+  deleteRow: (messageId: string) => void;
+
+  /**
+   * Function to handle message selection.
+   * @param messageId - The ID of the message to select.
+   * @param index - The index of the message to select.
+   */
+  handleMessageSelect: (messageId: string, index: number) => void;
+
+  /**
+   * The width of the content.
+   */
   contentWidth: number;
+
+  /**
+   * Indicates if the device is in portrait mode.
+   */
   isPortrait: boolean;
 }
 
-// TODO: Comment
+/**
+ * Component which renders a single message cell in the Iterable inbox.
+ */
 export const IterableInboxMessageCell = ({
   index,
   last,
