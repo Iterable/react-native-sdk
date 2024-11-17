@@ -3085,6 +3085,7 @@ __metadata:
     turbo: ^1.10.7
     typedoc: ^0.26.11
     typedoc-plugin-coverage: ^3.3.0
+    typedoc-plugin-mermaid: ^1.12.0
     typescript: ^5.2.2
   peerDependencies:
     "@react-navigation/native": "*"
@@ -8741,6 +8742,13 @@ __metadata:
   version: 2.0.2
   resolution: "html-escaper@npm:2.0.2"
   checksum: d2df2da3ad40ca9ee3a39c5cc6475ef67c8f83c234475f24d8e9ce0dc80a2c82df8e1d6fa78ddd1e9022a586ea1bd247a615e80a5cd9273d90111ddda7d9e974
+  languageName: node
+  linkType: hard
+
+"html-escaper@npm:^3.0.3":
+  version: 3.0.3
+  resolution: "html-escaper@npm:3.0.3"
+  checksum: a2678be42c15d2ef6e629775dac0925a729f4615c6593db8358b9262c7565c4627134987c00f548eb4eb76cbc3b3392f78475cd02b022f8ae7aeb9a88280831b
   languageName: node
   linkType: hard
 
@@ -14677,6 +14685,17 @@ __metadata:
   peerDependencies:
     typedoc: 0.25.x || 0.26.x
   checksum: b1779429618ab4df38c6b066c4113376b455d19863f70a170fe2e3a06cdcb276b82c4205c67922ea05e926b2fb0c85d932d7e09d00a42d4c4d95689768243524
+  languageName: node
+  linkType: hard
+
+"typedoc-plugin-mermaid@npm:^1.12.0":
+  version: 1.12.0
+  resolution: "typedoc-plugin-mermaid@npm:1.12.0"
+  dependencies:
+    html-escaper: ^3.0.3
+  peerDependencies:
+    typedoc: ">=0.23.0 || 0.24.x || 0.25.x || 0.26.x"
+  checksum: 444060509dec72059f01dd1f867c2e40278dcdd0f91584e05a4fccd25d48a63e4d1a56f845e994b049e9f6f785b1517f874fa1e7d7c4b5106259bddb37080e84
   languageName: node
   linkType: hard
 

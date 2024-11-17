@@ -32,7 +32,7 @@ const config = {
     },
   },
   readme: './README.md',
-  plugin: ['typedoc-plugin-coverage'],
+  plugin: ['typedoc-plugin-coverage', 'typedoc-plugin-mermaid'],
 };
 
 export default config;
