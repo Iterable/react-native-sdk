@@ -10,27 +10,27 @@ import { IterableInboxMetadata } from './IterableInboxMetadata';
  */
 export class IterableInAppMessage {
   /**
-   * the ID for the in-app message
+   * The ID for the in-app message
    */
   readonly messageId: string;
 
   /**
-   * the campaign ID for this message
+   * The campaign ID for this message
    */
   readonly campaignId: number;
 
   /**
-   * when to trigger this in-app
+   * Information regarding the triggering of this in-app message
    */
   readonly trigger: IterableInAppTrigger;
 
   /**
-   * when was this message created
+   * When was this message created?
    */
   readonly createdAt?: Date;
 
   /**
-   * when to expire this in-app (undefined means do not expire)
+   * When to expire this in-app (`undefined` means do not expire)
    */
   readonly expiresAt?: Date;
 
@@ -82,7 +82,7 @@ export class IterableInAppMessage {
   readonly read: boolean;
 
   /**
-   * the priority value this in-app message has
+   * The priority value of this in-app message
    */
   readonly priorityLevel: number;
 

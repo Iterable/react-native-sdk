@@ -86,14 +86,23 @@ export class IterableConfig {
    * A function expression used to handle `action://` URLs for in-app buttons
    * and links.
    *
+   * Use this method to determine whether or not the app can handle the clicked
+   * custom action URL. If it can, it should handle the action and return `true`.
+   * Otherwise, it should return `false`.
+   *
    * @param action - The custom action that was triggered.
    * @param context - The context in which the action was triggered.  In other
    * words, information about where the action was invoked.
    *
    * @remarks
-   * Use this method to determine whether or not the app can handle the clicked
-   * custom action URL. If it can, it should handle the action and return `true`.
-   * Otherwise, it should return `false`.
+   * A custom action URL has format `action://customActionName`: an `action://`
+   * prefix, followed by a custom action name. Decide with your marketing team
+   * on a set of known custom actions your app should support.
+   *
+   * **WARNING**: Earlier versions of the SDK used the `itbl:// prefix` for custom
+   * action URLs. The SDK still supports these custom actions, but they are
+   * deprecated and will not be supported forever. Migrate to `action://` as it's
+   * possible to do so.
    *
    * @example
    * This example responds to the `action://achievedPremierStatus` custom action URL by updating the app's styles and return `true`. Since this is the only custom action handled by the method, it returns `false` for anything else.

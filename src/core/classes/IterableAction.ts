@@ -3,14 +3,9 @@
  * It is currently used in push notification actions (open push & action buttons).
  */
 export class IterableAction {
-  /**
-   * The type of iterable action.
-   */
+  /** The type of iterable action. */
   type: string;
-  /**
-   * TODO: Review
-   * Optional string data associated with the IterableAction.
-   */
+  /** Optional string data associated with the IterableAction. */
   data?: string;
   /**
    * TODO: Review
