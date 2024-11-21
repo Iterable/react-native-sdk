@@ -26,5 +26,5 @@
     "target": "ESNext",
     "verbatimModuleSyntax": true
   },
-  "exclude": ["SampleApp/", "integration-testing/", "example/"]
+  "exclude": ["SampleApp/", "integration-testing/"]
 }
