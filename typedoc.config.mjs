@@ -6,7 +6,7 @@ const config = {
   excludeInternal: true,
   validation: {
     invalidLink: true,
-    notDocumented: false, // TODO: Change to true
+    notDocumented: true,
     notExported: true,
   },
   includeVersion: true,
