@@ -17,6 +17,6 @@ export enum IterableEventName {
   receivedIterableInboxChanged = 'receivedIterableInboxChanged',
   /** Event that fires when authentication with Iterable succeeds */
   handleAuthSuccessCalled = 'handleAuthSuccessCalled',
-  /** Event that fires when authentication with Iterable failse */
+  /** Event that fires when authentication with Iterable fails */
   handleAuthFailureCalled = 'handleAuthFailureCalled',
 }
