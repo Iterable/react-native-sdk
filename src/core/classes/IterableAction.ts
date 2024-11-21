@@ -1,16 +1,17 @@
 /**
  * IterableAction represents an action defined as a response to user events.
+ *
  * It is currently used in push notification actions (open push & action buttons).
  */
 export class IterableAction {
   /** The type of iterable action. */
   type: string;
-  /** Optional string data associated with the IterableAction. */
+  /**
+   * Determines the action.  EG: "open_url", "open_in_app", "deep_link", "join" etc.
+   */
   data?: string;
   /**
-   * TODO: Review
-   * Optional user input string.
-   * This property can be used to store input provided by the user.
+   * Additional info related to the action.
    */
   userInput?: string;
 

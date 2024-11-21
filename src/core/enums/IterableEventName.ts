@@ -7,8 +7,8 @@ export enum IterableEventName {
   /** Event that fires when a custom action is called */
   handleCustomActionCalled = 'handleCustomActionCalled',
   /**
-   * TODO: Review
-   * Event that fires when an in-app message is shown?
+   * TODO: Rename at some point
+   * Event that fires when an in-app message is shown
    */
   handleInAppCalled = 'handleInAppCalled',
   /** Event that fires when a user attempts to authenticate */

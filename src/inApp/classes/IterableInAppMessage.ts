@@ -148,9 +148,7 @@ export class IterableInAppMessage {
   }
 
   /**
-   * Determines if the in-app message should be silently saved to the inbox.
-   *
-   * TODO: Double check the definition
+   * Do you want the in-app message to be saved to the inbox without triggering a notification?
    *
    * @returns `true` if the message should be saved to the inbox without triggering a notification; otherwise, `false`.
    */
