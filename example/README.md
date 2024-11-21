@@ -15,7 +15,7 @@ To install the app dependencies, run the following command from the
 _example app directory_ (the directory in which this document resides):
 
 ```bash
-yarn start
+yarn install
 ```
 
 Once this is done, you will need to install the pods in the _ios_ folder in the
