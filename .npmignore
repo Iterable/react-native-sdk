@@ -1,10 +1,96 @@
-integration-testing
+# Default ignores
+node_modules/
+*.swp
+.DS_Store
+tmp/
+temp/
+*.tmp
+
+# Test files
 jest.config.js
-node_modules
-package-lock.json
-yarn.lock
-tsconfig.json
+integration-testing/
+__tests__/
+__mocks__/
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+
+# Build output
+build/
+dist/
+
+# IDE and editor files
+.idea/
+.vscode/
+jsconfig.json
+
+# Native build artifacts
+ios/build/
+android/app/build/
+
+# Xcode
+build/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata
+*.xccheckout
+*.moved-aside
+DerivedData
+*.hmap
+*.ipa
+*.xcuserstate
+project.xcworkspace
+
+# Android/IJ
+.classpath
+.cxx
+.gradle
+.idea
+.project
+.settings
+local.properties
+android.iml
+
+# Crashlytics plugin (for Android Studio and IntelliJ)
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
+fabric.properties
+
+# Logs and databases:
+*.log
+npm-debug.log*
+logs
+
+# Npm cache directory:
+.npm
+
+# BUCK
+buck-out/
+\.buckd/
+android/app/libs
+android/keystores/debug.keystore
+
+# Yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# Iterable Internals
 .codeclimate.yml
-/ts
-/docs
-/scripts
+example/
+docs/
+scripts/
+coverage/
+.env
+*.local
