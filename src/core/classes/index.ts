@@ -8,3 +8,4 @@ export * from './IterableConfig';
 export * from './IterableEdgeInsets';
 export * from './IterableLogger';
 export * from './IterableUtil';
+export * from './RNIterableAPI';
