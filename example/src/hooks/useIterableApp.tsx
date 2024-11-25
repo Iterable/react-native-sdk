@@ -34,6 +34,8 @@ interface IterableAppProps {
   initialize: (navigation: Navigation) => void;
   /** Whether the SDK has been initialized */
   isInitialized?: boolean;
+  /** Is the tab in focus the `Inbox` tab? */
+  isInboxTab: boolean;
   /** Whether the user is logged in */
   isLoggedIn?: boolean;
   /**
@@ -45,10 +47,16 @@ interface IterableAppProps {
   loginInProgress?: boolean;
   /** Logs the user out */
   logout: () => void;
+  /** TODO: Ask @evantk91 or @Ayyanchira what this is for */
+  returnToInboxTrigger: boolean;
   /** Sets the API key for the user */
   setApiKey: (value: string) => void;
+  /** Sets whether the tab in focus is the `Inbox` tab */
+  setIsInboxTab: (value: boolean) => void;
   /** Sets whether the login is in progress */
   setLoginInProgress: (value: boolean) => void;
+  /** TODO: Ask @evantk91 or @Ayyanchira what this is for */
+  setReturnToInboxTrigger: (value: boolean) => void;
   /** Sets the user ID for the user */
   setUserId: (value: string) => void;
   /** The user ID for the user */
@@ -59,13 +67,17 @@ const IterableAppContext = createContext<IterableAppProps>({
   apiKey: undefined,
   config: null,
   initialize: () => undefined,
+  isInboxTab: false,
   isInitialized: false,
   isLoggedIn: false,
   login: () => undefined,
   loginInProgress: false,
   logout: () => undefined,
+  returnToInboxTrigger: false,
   setApiKey: () => undefined,
+  setIsInboxTab: () => undefined,
   setLoginInProgress: () => undefined,
+  setReturnToInboxTrigger: () => undefined,
   setUserId: () => undefined,
   userId: undefined,
 });
@@ -75,6 +87,9 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export const IterableAppProvider: FunctionComponent<
   React.PropsWithChildren<unknown>
 > = ({ children }) => {
+  const [returnToInboxTrigger, setReturnToInboxTrigger] =
+    useState<boolean>(false);
+  const [isInboxTab, setIsInboxTab] = useState<boolean>(false);
   const [itblConfig, setItblConfig] = useState<IterableConfig | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isInitialized, setIsInitialized] = useState<boolean>(false);
@@ -110,7 +125,7 @@ export const IterableAppProvider: FunctionComponent<
       config.inAppDisplayInterval = 1.0; // Min gap between in-apps. No need to set this in production.
 
       config.urlHandler = (url: string) => {
-        const routeNames = [Route.User];
+        const routeNames = [Route.Inbox, Route.User];
         for (const route of routeNames) {
           if (url.includes(route.toLowerCase())) {
             // TODO: Figure out typing for this
@@ -191,13 +206,17 @@ export const IterableAppProvider: FunctionComponent<
         apiKey,
         config: itblConfig,
         initialize,
+        isInboxTab,
         isInitialized,
         isLoggedIn,
         login,
         loginInProgress,
         logout,
+        returnToInboxTrigger,
         setApiKey,
+        setIsInboxTab,
         setLoginInProgress,
+        setReturnToInboxTrigger,
         setUserId,
         userId,
       }}
