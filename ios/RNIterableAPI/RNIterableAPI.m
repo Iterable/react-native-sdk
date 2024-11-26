@@ -118,10 +118,12 @@ RCT_EXTERN_METHOD(showMessage: (nonnull NSString *) messageId
 
 RCT_EXTERN_METHOD(removeMessage: (nonnull NSString *) messageId
                   location: (nonnull NSNumber *) location
-                  source: (nonnull NSNumber *) source)
+                  source: (nonnull NSNumber *) source
+                  onCompletion: (RCTResponseSenderBlock) onCompletion)
 
 RCT_EXTERN_METHOD(setReadForMessage: (nonnull NSString *) messageId
-                  read: (BOOL) read)
+                  read: (BOOL) read
+                  onCompletion: (RCTResponseSenderBlock) onCompletion)
 
 RCT_EXTERN_METHOD(setAutoDisplayPaused: (BOOL) paused)
 
