@@ -21,7 +21,7 @@ Iterable's React Native SDK relies on:
 - **iOS**
     - Xcode 12+
     - [Deployment target 10.0+](https://help.apple.com/xcode/mac/current/#/deve69552ee5)
-    - [Iterable's iOS SDK](https://github.com/Iterable/swift-sdk)
+    - [Iterable's iOS SDK](https://github.com/Iterable/iterable-swift-sdk)
 
 - **Android**
     - [`minSdkVersion` 16+, `compileSdkVersion` 28+](https://medium.com/androiddevelopers/picking-your-compilesdkversion-minsdkversion-targetsdkversion-a098a0341ebd)
