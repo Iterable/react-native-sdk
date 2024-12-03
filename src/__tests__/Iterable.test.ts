@@ -1,21 +1,25 @@
 import { NativeEventEmitter } from 'react-native';
 
-import { MockRNIterableAPI } from '../__mocks__/MockRNIterableAPI';
 import { MockLinking } from '../__mocks__/MockLinking';
+import { MockRNIterableAPI } from '../__mocks__/MockRNIterableAPI';
 import { TestHelper } from './TestHelper';
 
 // import from the same location that consumers import from
-import { Iterable, IterableConfig, IterableLogLevel } from '../index';
 import {
+  Iterable,
+  IterableAction,
+  IterableActionContext,
+  IterableActionSource,
+  IterableConfig,
+  IterableLogLevel,
+} from '../index';
+import {
+  EventName,
   IterableAttributionInfo,
   IterableCommerceItem,
-  IterableActionContext,
-  EventName,
-  IterableAction,
-  IterableActionSource,
 } from '../Iterable';
-import { IterableLogger } from '../IterableLogger';
 import { IterableDataRegion } from '../IterableDataRegion';
+import { IterableLogger } from '../IterableLogger';
 
 describe('Iterable', () => {
   beforeEach(() => {

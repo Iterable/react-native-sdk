@@ -11,8 +11,12 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { WebView } from 'react-native-webview';
 
 import { type InboxRowViewModel } from './InboxRowViewModel';
-import { Iterable, IterableActionSource } from './Iterable';
-import { IterableAction, IterableActionContext } from './IterableAction';
+import { Iterable } from './Iterable';
+import {
+  IterableAction,
+  IterableActionContext,
+  IterableActionSource,
+} from './IterableAction';
 import {
   IterableEdgeInsets,
   IterableHtmlInAppContent,
