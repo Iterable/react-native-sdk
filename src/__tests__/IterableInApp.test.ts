@@ -1,20 +1,21 @@
 import { NativeEventEmitter } from 'react-native';
 
+import { IterableLogger } from '../core';
 import { MockRNIterableAPI } from '../__mocks__/MockRNIterableAPI';
 
-import { Iterable, EventName } from '../Iterable';
-import { IterableConfig } from '../IterableConfig';
-import { IterableInAppMessage } from '../IterableInAppMessage';
 import {
+  Iterable,
+  IterableConfig,
+  IterableEventName,
+  IterableInAppCloseSource,
+  IterableInAppDeleteSource,
   IterableInAppLocation,
+  IterableInAppMessage,
+  IterableInAppShowResponse,
   IterableInAppTrigger,
   IterableInAppTriggerType,
   IterableInboxMetadata,
-  IterableInAppCloseSource,
-  IterableInAppShowResponse,
-  IterableInAppDeleteSource,
-} from '../IterableInAppClasses';
-import { IterableLogger } from '../IterableLogger';
+} from '..';
 
 describe('Iterable In App', () => {
   beforeEach(() => {
@@ -137,7 +138,7 @@ describe('Iterable In App', () => {
   test('inAppHandler_messageAndEventEmitted_methodCalledWithMessage', () => {
     // sets up event emitter
     const nativeEmitter = new NativeEventEmitter();
-    nativeEmitter.removeAllListeners(EventName.handleInAppCalled);
+    nativeEmitter.removeAllListeners(IterableEventName.handleInAppCalled);
 
     // sets up config file and inAppHandler function
     const config = new IterableConfig();
@@ -170,7 +171,7 @@ describe('Iterable In App', () => {
     );
 
     // WHEN handleInAppCalled event is emitted
-    nativeEmitter.emit(EventName.handleInAppCalled, messageDict);
+    nativeEmitter.emit(IterableEventName.handleInAppCalled, messageDict);
 
     // THEN inAppHandler and MockRNIterableAPI.setInAppShowResponse is called with message
     expect(config.inAppHandler).toBeCalledWith(expectedMessage);
