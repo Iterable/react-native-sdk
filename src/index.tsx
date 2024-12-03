@@ -7,15 +7,18 @@ export {
   IterableAction,
   IterableActionContext,
   IterableAttributionInfo,
+  IterableAuthResponse,
   IterableCommerceItem,
   IterableConfig,
   IterableEdgeInsets,
+  IterableLogger,
 } from './core/classes';
 export {
   IterableActionSource,
   IterableDataRegion,
   IterableEventName,
   IterableLogLevel,
+  IterablePushPlatform,
 } from './core/enums';
 export { useAppStateListener, useDeviceOrientation } from './core/hooks';
 export {
@@ -34,10 +37,13 @@ export {
 } from './inApp';
 export {
   IterableInbox,
+  IterableInboxDataModel,
   IterableInboxEmptyState,
   IterableInboxMessageCell,
   type IterableInboxImpressionRowInfo as InboxImpressionRowInfo,
   type IterableInboxRowViewModel as InboxRowViewModel,
   type IterableInboxCustomizations,
+  type IterableInboxEmptyStateProps,
+  type IterableInboxMessageCellProps,
   type IterableInboxProps,
 } from './inbox';
