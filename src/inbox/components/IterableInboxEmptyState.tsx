@@ -3,17 +3,29 @@ import { StyleSheet, Text, View } from 'react-native';
 import { type IterableInboxCustomizations } from '../types';
 import { ITERABLE_INBOX_COLORS } from '../constants';
 
-// TODO: Comment
+/**
+ * Props for the IterableInboxEmptyState component.
+ */
 export interface IterableInboxEmptyStateProps {
+  /** Customizations for the inbox. */
   customizations: IterableInboxCustomizations;
+  /** Height of the tab bar. */
   tabBarHeight: number;
+  /** Padding of the tab bar. */
   tabBarPadding: number;
+  /** Height of the navigation title. */
   navTitleHeight: number;
+  /** Width of the content area. */
   contentWidth: number;
+  /** Height of the component. */
   height: number;
+  /** Indicates if the device is in portrait mode. */
   isPortrait: boolean;
 }
 
+/**
+ * A functional component that renders an empty state for the inbox when there are no messages.
+ */
 export const IterableInboxEmptyState = ({
   customizations,
   tabBarHeight,

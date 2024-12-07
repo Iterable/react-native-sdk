@@ -14,24 +14,47 @@ import {
   type IterableInboxMessageCellProps,
 } from './IterableInboxMessageCell';
 
-// TODO: Comment
+/**
+ * Props for the IterableInboxMessageList component.
+ */
 export interface IterableInboxMessageListProps
   extends Pick<
     IterableInboxMessageCellProps,
     'deleteRow' | 'handleMessageSelect' | 'messageListItemLayout'
   > {
+  /**
+   * The data model for the inbox.
+   */
   dataModel: IterableInboxDataModel;
+  /**
+   * The view models for the rows in the inbox.
+   */
   rowViewModels: IterableInboxRowViewModel[];
+  /**
+   * Customizations for the inbox.
+   */
   customizations: IterableInboxCustomizations;
+  /**
+   * Function to update the visible message impressions.
+   * @param rowInfos - Impression details for the rows to be updated.
+   */
   updateVisibleMessageImpressions: (
     /** Impression details for the rows to be updated */
     rowInfos: IterableInboxImpressionRowInfo[]
   ) => void;
+  /**
+   * The width of the content.
+   */
   contentWidth: number;
+  /**
+   * Indicates if the device is in portrait mode.
+   */
   isPortrait: boolean;
 }
 
-// TODO: Comment
+/**
+ * A component that renders a list of inbox messages.
+ */
 export const IterableInboxMessageList = ({
   dataModel,
   rowViewModels,

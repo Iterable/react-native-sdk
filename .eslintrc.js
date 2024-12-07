@@ -12,7 +12,7 @@ module.exports = {
   overrides: [
     {
       files: ['*.ts', '*.tsx'],
-      plugins: ['@typescript-eslint/eslint-plugin'],
+      plugins: ['@typescript-eslint/eslint-plugin', 'eslint-plugin-tsdoc'],
       extends: [
         'plugin:@typescript-eslint/recommended',
         // We need more verbose typing to enable the below rule, but we should
@@ -33,6 +33,7 @@ module.exports = {
           'error',
           { allow: ['/package\\.json$'] },
         ],
+        'tsdoc/syntax': 'warn',
       },
     },
     {
