@@ -13,9 +13,9 @@ export class IterableActionContext {
     this.source = source;
   }
 
-  static fromDict(dict: any): IterableActionContext {
+  static fromDict(dict: IterableActionContext): IterableActionContext {
     const action = IterableAction.fromDict(dict.action);
-    const source = dict.source as IterableActionSource;
+    const source = dict.source;
     return new IterableActionContext(action, source);
   }
 }

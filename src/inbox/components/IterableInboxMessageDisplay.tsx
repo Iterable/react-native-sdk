@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { WebView } from 'react-native-webview';
+import { WebView, type WebViewMessageEvent } from 'react-native-webview';
 
 import {
   Iterable,
@@ -24,13 +24,20 @@ import {
 } from '../../inApp';
 
 import { type IterableInboxRowViewModel } from '../types';
+import { ITERABLE_INBOX_COLORS } from '../constants';
 
 // TODO: Comment
 export interface IterableInboxMessageDisplayProps {
   rowViewModel: IterableInboxRowViewModel;
   inAppContentPromise: Promise<IterableHtmlInAppContent>;
-  returnToInbox: Function;
-  deleteRow: Function;
+  returnToInbox: (
+    /** Callback to be executed after returning to the inbox */
+    callback?: () => void
+  ) => void;
+  deleteRow: (
+    /** Id of the row to be deleted */
+    id: string
+  ) => void;
   contentWidth: number;
   isPortrait: boolean;
 }
@@ -50,12 +57,8 @@ export const IterableInboxMessageDisplay = ({
   );
 
   const styles = StyleSheet.create({
-    messageDisplayContainer: {
-      height: '100%',
-      width: contentWidth,
-      backgroundColor: 'whitesmoke',
-      flexDirection: 'column',
-      justifyContent: 'flex-start',
+    contentContainer: {
+      flex: 1,
     },
 
     header: {
@@ -64,74 +67,63 @@ export const IterableInboxMessageDisplay = ({
       width: '100%',
     },
 
-    returnButtonContainer: {
+    messageDisplayContainer: {
+      backgroundColor: ITERABLE_INBOX_COLORS.CONTAINER_BACKGROUND,
+      flexDirection: 'column',
+      height: '100%',
+      justifyContent: 'flex-start',
+      width: contentWidth,
+    },
+
+    messageTitle: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      justifyContent: 'center',
+      width: 0.5 * contentWidth,
+    },
+
+    messageTitleContainer: {
+      alignItems: 'center',
       flexDirection: 'row',
       justifyContent: 'flex-start',
-      alignItems: 'center',
-      width: '25%',
-      marginLeft: 0,
       marginTop: 0,
+      width: '75%',
+    },
+
+    messageTitleText: {
+      backgroundColor: ITERABLE_INBOX_COLORS.CONTAINER_BACKGROUND,
+      fontSize: 20,
+      fontWeight: 'bold',
     },
 
     returnButton: {
-      flexDirection: 'row',
       alignItems: 'center',
+      flexDirection: 'row',
+    },
+
+    returnButtonContainer: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      marginLeft: 0,
+      marginTop: 0,
+      width: '25%',
+      ...(isPortrait ? {} : { marginLeft: 80 }),
     },
 
     returnButtonIcon: {
-      color: 'deepskyblue',
+      color: ITERABLE_INBOX_COLORS.BUTTON_PRIMARY_TEXT,
       fontSize: 40,
       paddingLeft: 0,
     },
 
     returnButtonText: {
-      color: 'deepskyblue',
+      color: ITERABLE_INBOX_COLORS.BUTTON_PRIMARY_TEXT,
       fontSize: 20,
-    },
-
-    messageTitleContainer: {
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
-      alignItems: 'center',
-      width: '75%',
-      marginTop: 0,
-    },
-
-    messageTitle: {
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: 0.5 * contentWidth,
-    },
-
-    messageTitleText: {
-      fontWeight: 'bold',
-      fontSize: 20,
-      backgroundColor: 'whitesmoke',
-    },
-
-    contentContainer: {
-      flex: 1,
     },
   });
 
-  let {
-    header,
-    returnButtonContainer,
-    returnButton,
-    returnButtonIcon,
-    returnButtonText,
-    messageTitleContainer,
-    messageTitleText,
-    messageDisplayContainer,
-  } = styles;
-
-  // orientation dependent styling
-  returnButtonContainer = !isPortrait
-    ? { ...returnButtonContainer, marginLeft: 80 }
-    : returnButtonContainer;
-
-  let JS = `
+  const JS = `
       const links = document.querySelectorAll('a')
 
       links.forEach(link => {
@@ -157,12 +149,12 @@ export const IterableInboxMessageDisplay = ({
     };
   });
 
-  function handleInAppLinkAction(event: any) {
-    let URL = event.nativeEvent.data;
+  function handleInAppLinkAction(event: WebViewMessageEvent) {
+    const URL = event.nativeEvent.data;
 
-    let action = new IterableAction('openUrl', URL, '');
-    let source = IterableActionSource.inApp;
-    let context = new IterableActionContext(action, source);
+    const action = new IterableAction('openUrl', URL, '');
+    const source = IterableActionSource.inApp;
+    const context = new IterableActionContext(action, source);
 
     Iterable.trackInAppClick(
       rowViewModel.inAppMessage,
@@ -204,9 +196,9 @@ export const IterableInboxMessageDisplay = ({
   }
 
   return (
-    <View style={messageDisplayContainer}>
-      <View style={header}>
-        <View style={returnButtonContainer}>
+    <View style={styles.messageDisplayContainer}>
+      <View style={styles.header}>
+        <View style={styles.returnButtonContainer}>
           <TouchableWithoutFeedback
             onPress={() => {
               returnToInbox();
@@ -217,18 +209,21 @@ export const IterableInboxMessageDisplay = ({
               );
             }}
           >
-            <View style={returnButton}>
-              <Icon name="chevron-back-outline" style={returnButtonIcon} />
-              <Text style={returnButtonText}>Inbox</Text>
+            <View style={styles.returnButton}>
+              <Icon
+                name="chevron-back-outline"
+                style={styles.returnButtonIcon}
+              />
+              <Text style={styles.returnButtonText}>Inbox</Text>
             </View>
           </TouchableWithoutFeedback>
         </View>
-        <View style={messageTitleContainer}>
+        <View style={styles.messageTitleContainer}>
           <View style={styles.messageTitle}>
             <Text
               numberOfLines={1}
               ellipsizeMode="tail"
-              style={messageTitleText}
+              style={styles.messageTitleText}
             >
               {messageTitle}
             </Text>

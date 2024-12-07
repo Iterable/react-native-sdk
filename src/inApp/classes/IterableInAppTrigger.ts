@@ -8,10 +8,9 @@ export class IterableInAppTrigger {
     this.type = type;
   }
 
-  static fromDict(dict: any): IterableInAppTrigger {
-    const type = dict.type as
-      | IterableInAppTriggerType
-      | IterableInAppTriggerType.immediate;
-    return new IterableInAppTrigger(type);
+  static fromDict(dict: {
+    type: IterableInAppTriggerType;
+  }): IterableInAppTrigger {
+    return new IterableInAppTrigger(dict.type);
   }
 }

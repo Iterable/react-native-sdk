@@ -13,7 +13,7 @@ export class IterableAction {
     this.userInput = userInput;
   }
 
-  static fromDict(dict: any): IterableAction {
+  static fromDict(dict: IterableAction): IterableAction {
     return new IterableAction(dict.type, dict.data, dict.userInput);
   }
 }
