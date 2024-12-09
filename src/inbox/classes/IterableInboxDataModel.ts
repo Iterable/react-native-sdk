@@ -6,6 +6,7 @@ import {
   IterableInAppDeleteSource,
   IterableInAppLocation,
   IterableInAppMessage,
+  type IterableHtmlInAppContentRaw,
 } from '../../inApp';
 import type {
   IterableInboxImpressionRowInfo,
@@ -22,8 +23,6 @@ export class IterableInboxDataModel {
     message2: IterableInAppMessage
   ) => number;
   dateMapperFn?: (message: IterableInAppMessage) => string | undefined;
-
-  constructor() {}
 
   set(
     filter?: (message: IterableInAppMessage) => boolean,
@@ -56,7 +55,7 @@ export class IterableInboxDataModel {
     );
 
     return RNIterableAPI.getHtmlInAppContentForMessage(id).then(
-      (content: any) => {
+      (content: IterableHtmlInAppContentRaw) => {
         return IterableHtmlInAppContent.fromDict(content);
       }
     );
@@ -74,9 +73,9 @@ export class IterableInboxDataModel {
     RNIterableAPI.removeMessage(id, IterableInAppLocation.inbox, deleteSource);
   }
 
-  async refresh(): Promise<Array<IterableInboxRowViewModel>> {
+  async refresh(): Promise<IterableInboxRowViewModel[]> {
     return RNIterableAPI.getInboxMessages().then(
-      (messages: Array<IterableInAppMessage>) => {
+      (messages: IterableInAppMessage[]) => {
         return this.processMessages(messages);
       },
       () => {
@@ -87,16 +86,16 @@ export class IterableInboxDataModel {
 
   // inbox session tracking functions
 
-  startSession(visibleRows: Array<IterableInboxImpressionRowInfo> = []) {
+  startSession(visibleRows: IterableInboxImpressionRowInfo[] = []) {
     RNIterableAPI.startSession(visibleRows);
   }
 
-  async endSession(visibleRows: Array<IterableInboxImpressionRowInfo> = []) {
+  async endSession(visibleRows: IterableInboxImpressionRowInfo[] = []) {
     await this.updateVisibleRows(visibleRows);
     RNIterableAPI.endSession();
   }
 
-  updateVisibleRows(visibleRows: Array<IterableInboxImpressionRowInfo> = []) {
+  updateVisibleRows(visibleRows: IterableInboxImpressionRowInfo[] = []) {
     RNIterableAPI.updateVisibleRows(visibleRows);
   }
 
@@ -106,8 +105,8 @@ export class IterableInboxDataModel {
     message1: IterableInAppMessage,
     message2: IterableInAppMessage
   ) => {
-    let createdAt1 = message1.createdAt ?? new Date(0);
-    let createdAt2 = message2.createdAt ?? new Date(0);
+    const createdAt1 = message1.createdAt ?? new Date(0);
+    const createdAt2 = message2.createdAt ?? new Date(0);
 
     if (createdAt1 < createdAt2) return 1;
     if (createdAt1 > createdAt2) return -1;
@@ -134,16 +133,16 @@ export class IterableInboxDataModel {
   }
 
   private processMessages(
-    messages: Array<IterableInAppMessage>
-  ): Array<IterableInboxRowViewModel> {
+    messages: IterableInAppMessage[]
+  ): IterableInboxRowViewModel[] {
     return this.sortAndFilter(messages).map(
       IterableInboxDataModel.getInboxRowViewModelForMessage
     );
   }
 
   private sortAndFilter(
-    messages: Array<IterableInAppMessage>
-  ): Array<IterableInAppMessage> {
+    messages: IterableInAppMessage[]
+  ): IterableInAppMessage[] {
     let sortedFilteredMessages = messages.slice();
 
     // TODO: Figure out if this is purposeful

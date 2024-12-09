@@ -16,7 +16,11 @@ export class IterableInboxMetadata {
     this.icon = icon;
   }
 
-  static fromDict(dict: any): IterableInboxMetadata {
+  static fromDict(dict: {
+    title: string | undefined;
+    subtitle: string | undefined;
+    icon: string | undefined;
+  }): IterableInboxMetadata {
     return new IterableInboxMetadata(dict.title, dict.subtitle, dict.icon);
   }
 }
