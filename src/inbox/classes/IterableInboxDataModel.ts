@@ -1,6 +1,4 @@
-import { NativeModules } from 'react-native';
-
-import { Iterable } from '../../core';
+import { Iterable, RNIterableAPI } from '../../core';
 import {
   IterableHtmlInAppContent,
   IterableInAppDeleteSource,
@@ -12,8 +10,6 @@ import type {
   IterableInboxImpressionRowInfo,
   IterableInboxRowViewModel,
 } from '../types';
-
-const RNIterableAPI = NativeModules.RNIterableAPI;
 
 /**
  * The `IterableInboxDataModel` class provides methods to manage and manipulate
