@@ -43,6 +43,7 @@ android.iml
 # Cocoapods
 #
 example/ios/Pods
+integration-testing/ios/Pods
 
 # Ruby
 example/vendor/
