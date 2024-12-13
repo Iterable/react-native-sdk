@@ -653,8 +653,10 @@ extension ReactIterableAPI: IterableAuthDelegate {
         ITBInfo()
         
         DispatchQueue.global(qos: .userInitiated).async {
-            self.sendEvent(withName: EventName.handleAuthCalled.rawValue,
-                           body: nil)
+            if self.shouldEmit {
+                self.sendEvent(withName: EventName.handleAuthCalled.rawValue,
+                               body: nil)
+            }
             
             let authTokenRetrievalResult = self.authHandlerSemaphore.wait(timeout: .now() + 30.0)
             
@@ -664,18 +666,22 @@ extension ReactIterableAPI: IterableAuthDelegate {
                 DispatchQueue.main.async {
                     completion(self.passedAuthToken)
                 }
-                
-                self.sendEvent(withName: EventName.handleAuthSuccessCalled.rawValue,
-                               body: nil)
+
+                if self.shouldEmit {
+                    self.sendEvent(withName: EventName.handleAuthSuccessCalled.rawValue,
+                                   body: nil)
+                }
             } else {
                 ITBInfo("authTokenRetrieval timed out")
                 
                 DispatchQueue.main.async {
                     completion(nil)
                 }
-                
-                self.sendEvent(withName: EventName.handleAuthFailureCalled.rawValue,
-                               body: nil)
+
+                if self.shouldEmit {
+                    self.sendEvent(withName: EventName.handleAuthFailureCalled.rawValue,
+                                   body: nil)
+                }
             }
         }
     }
