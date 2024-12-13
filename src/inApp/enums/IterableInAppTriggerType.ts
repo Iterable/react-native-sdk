@@ -1,4 +1,6 @@
-// TODO: Add description
+/**
+ * Different types of triggers for displaying in-app messages.
+ */
 export enum IterableInAppTriggerType {
   /** Tries to display the in-app automatically immediately  */
   immediate = 0,

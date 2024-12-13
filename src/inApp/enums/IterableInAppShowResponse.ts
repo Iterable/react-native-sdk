@@ -1,4 +1,6 @@
-// TODO: Add description
+/**
+ * Options for showing in-app messages
+ */
 export enum IterableInAppShowResponse {
   /** Show in-app */
   show = 0,

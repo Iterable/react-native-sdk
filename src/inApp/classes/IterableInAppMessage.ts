@@ -2,6 +2,7 @@ import { type ViewToken } from 'react-native';
 
 import { IterableUtil } from '../../core';
 import { IterableInAppTriggerType } from '../enums';
+import type { IterableInAppMessageRaw } from '../types';
 import { IterableInAppTrigger } from './IterableInAppTrigger';
 import { IterableInboxMetadata } from './IterableInboxMetadata';
 
@@ -10,27 +11,27 @@ import { IterableInboxMetadata } from './IterableInboxMetadata';
  */
 export class IterableInAppMessage {
   /**
-   * the ID for the in-app message
+   * The ID for the in-app message
    */
   readonly messageId: string;
 
   /**
-   * the campaign ID for this message
+   * The campaign ID for this message
    */
   readonly campaignId: number;
 
   /**
-   * when to trigger this in-app
+   * Information regarding the triggering of this in-app message
    */
   readonly trigger: IterableInAppTrigger;
 
   /**
-   * when was this message created
+   * When was this message created?
    */
   readonly createdAt?: Date;
 
   /**
-   * when to expire this in-app (undefined means do not expire)
+   * When to expire this in-app (`undefined` means do not expire)
    */
   readonly expiresAt?: Date;
 
@@ -46,6 +47,33 @@ export class IterableInAppMessage {
 
   /**
    * Custom Payload for this message.
+   *
+   * @example
+   * If the custom payload was the following:
+   * ```json
+   * {
+   *    "customDisplay": true,
+   *    "promotionTitle": "Summer Sale",
+   *    "promotionText": "Everything is 50% off."
+   * }
+   * ```
+   * You could use the following code to determine whether to hide/show the message:
+   * ```typescript
+   *  config.inAppHandler = (message: IterableInAppMessage) => {
+   *    if (message.customPayload.customDisplay == true) {
+   *      return IterableInAppShowResponse.skip
+   *    } else {
+   *      return Iterable.InAppShowResponse.show
+   *    }
+   *  };
+   * ```
+   * You could then handle the showing of this message through a custom function.  EG:
+   * ```typescript
+   * Alert.alert(
+   *  message.customPayload.promotionTitle,
+   *  message.customPayload.promotionText,
+   * );
+   * ```
    */
   readonly customPayload?: unknown;
 
@@ -55,10 +83,24 @@ export class IterableInAppMessage {
   readonly read: boolean;
 
   /**
-   * the priority value this in-app message has
+   * The priority value of this in-app message
    */
   readonly priorityLevel: number;
 
+  /**
+   * Constructs an instance of IterableInAppMessage.
+   *
+   * @param messageId - The unique identifier for the message.
+   * @param campaignId - The identifier for the campaign associated with the message.
+   * @param trigger - The trigger that caused the message to be displayed.
+   * @param createdAt - The date and time when the message was created.
+   * @param expiresAt - The date and time when the message expires.
+   * @param saveToInbox - A boolean indicating whether the message should be saved to the inbox.
+   * @param inboxMetadata - Metadata associated with the inbox message.
+   * @param customPayload - A custom payload associated with the message.
+   * @param read - A boolean indicating whether the message has been read.
+   * @param priorityLevel - The priority level of the message.
+   */
   constructor(
     messageId: string,
     campaignId: number,
@@ -83,6 +125,12 @@ export class IterableInAppMessage {
     this.priorityLevel = priorityLevel;
   }
 
+  /**
+   * Creates an instance of `IterableInAppMessage` from a given `ViewToken`.
+   *
+   * @param viewToken - The `ViewToken` containing the in-app message data.
+   * @returns A new instance of `IterableInAppMessage` populated with data from the `viewToken`.
+   */
   static fromViewToken(viewToken: ViewToken) {
     const inAppMessage = viewToken.item.inAppMessage as IterableInAppMessage;
 
@@ -100,6 +148,11 @@ export class IterableInAppMessage {
     );
   }
 
+  /**
+   * Do you want the in-app message to be saved to the inbox without triggering a notification?
+   *
+   * @returns `true` if the message should be saved to the inbox without triggering a notification; otherwise, `false`.
+   */
   isSilentInbox(): boolean {
     return (
       // TODO: Figure out if this is purposeful
@@ -108,22 +161,13 @@ export class IterableInAppMessage {
     );
   }
 
-  static fromDict(dict: {
-    messageId: string;
-    campaignId: number;
-    trigger: IterableInAppTrigger;
-    createdAt: number;
-    expiresAt: number;
-    saveToInbox: boolean;
-    inboxMetadata: {
-      title: string | undefined;
-      subtitle: string | undefined;
-      icon: string | undefined;
-    };
-    customPayload: unknown;
-    read: boolean;
-    priorityLevel: number;
-  }): IterableInAppMessage {
+  /**
+   * Creates an instance of `IterableInAppMessage` from a dictionary object.
+   *
+   * @param dict - The dictionary containing the properties of the in-app message.
+   * @returns An instance of `IterableInAppMessage` populated with the provided properties.
+   */
+  static fromDict(dict: IterableInAppMessageRaw): IterableInAppMessage {
     const messageId = dict.messageId;
     const campaignId = dict.campaignId;
     const trigger = IterableInAppTrigger.fromDict(dict.trigger);
