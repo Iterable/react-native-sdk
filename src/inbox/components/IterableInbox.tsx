@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import {
   Animated,
   NativeEventEmitter,
-  NativeModules,
   Platform,
   StyleSheet,
   Text,
@@ -13,12 +12,14 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import {
   Iterable,
+  RNIterableAPI,
   useAppStateListener,
   useDeviceOrientation,
 } from '../../core';
 import { IterableInAppDeleteSource, IterableInAppLocation } from '../../inApp';
 
 import { IterableInboxDataModel } from '../classes';
+import { ITERABLE_INBOX_COLORS } from '../constants';
 import type {
   IterableInboxCustomizations,
   IterableInboxImpressionRowInfo,
@@ -30,9 +31,7 @@ import {
   IterableInboxMessageList,
   type IterableInboxMessageListProps,
 } from './IterableInboxMessageList';
-import { ITERABLE_INBOX_COLORS } from '../constants';
 
-const RNIterableAPI = NativeModules.RNIterableAPI;
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
 const DEFAULT_HEADLINE_HEIGHT = 60;
