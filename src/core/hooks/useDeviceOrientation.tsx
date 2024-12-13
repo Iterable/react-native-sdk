@@ -13,6 +13,7 @@ export interface IterableDeviceOrientation {
   isPortrait: boolean;
 }
 
+/* eslint-disable tsdoc/syntax */
 /**
  * Custom hook to get the current device orientation.
  *
@@ -28,6 +29,7 @@ export interface IterableDeviceOrientation {
  * The `useEffect` hook only includes `width` in its dependency array. This is because the height and width are typically updated together,
  * and including only `width` prevents unnecessary re-renders.
  */
+/* eslint-enable tsdoc/syntax */
 export function useDeviceOrientation(): IterableDeviceOrientation {
   const { height, width } = useWindowDimensions();
 
@@ -35,7 +37,7 @@ export function useDeviceOrientation(): IterableDeviceOrientation {
 
   useEffect(() => {
     setIsPortrait(height >= width);
-    //  TODO: why is height not included in the dependency array?
+    // MOB-10425: why is height not included in the dependency array?
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [width]);
 

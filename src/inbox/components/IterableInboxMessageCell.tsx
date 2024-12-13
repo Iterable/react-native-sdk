@@ -152,7 +152,7 @@ function defaultMessageListLayout(
       >
         {thumbnailURL ? (
           <Image
-            // TODO: Use stylesheet according to best practices
+            // MOB-10429: Use stylesheet according to best practices
             // eslint-disable-next-line react-native/no-inline-styles
             style={{ height: 80, width: 80 }}
             source={{ uri: thumbnailURL }}

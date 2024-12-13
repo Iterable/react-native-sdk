@@ -155,7 +155,7 @@ export class IterableInAppMessage {
    */
   isSilentInbox(): boolean {
     return (
-      // TODO: Figure out if this is purposeful
+      // MOB-10424: Figure out if this is purposeful
       // eslint-disable-next-line eqeqeq
       this.saveToInbox && this.trigger.type == IterableInAppTriggerType.never
     );
@@ -199,7 +199,7 @@ export class IterableInAppMessage {
       messageId,
       campaignId,
       trigger,
-      // TODO: Speak to the team about `IterableInAppMessage` requiring a date
+      // MOB-10426: Speak to the team about `IterableInAppMessage` requiring a date
       // object, but being passed a number in this case
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       //  @ts-ignore

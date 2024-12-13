@@ -128,7 +128,7 @@ export const IterableAppProvider: FunctionComponent<
         const routeNames = [Route.Commerce, Route.Inbox, Route.User];
         for (const route of routeNames) {
           if (url.includes(route.toLowerCase())) {
-            // TODO: Figure out typing for this
+            // [MOB-10418](https://iterable.atlassian.net/browse/MOB-10418): Figure out typing for this
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             navigation.navigate(route);
@@ -184,7 +184,7 @@ export const IterableAppProvider: FunctionComponent<
         .finally(() => {
           // For some reason, ios is throwing an error on initialize.
           // To temporarily fix this, we're using the finally block to login.
-          // TODO: Find out why initialize is throwing an error on ios
+          // MOB-10419: Find out why initialize is throwing an error on ios
           setIsInitialized(true);
           if (getUserId()) {
             login();
