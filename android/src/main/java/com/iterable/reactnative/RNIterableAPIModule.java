@@ -21,6 +21,7 @@ import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.modules.core.RCTNativeAppEventEmitter;
+import com.iterable.iterableapi.AuthFailure;
 import com.iterable.iterableapi.InboxSessionManager;
 import com.iterable.iterableapi.IterableAction;
 import com.iterable.iterableapi.IterableActionContext;
@@ -597,7 +598,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     }
 
     @Override
-    public void onTokenRegistrationFailed(Throwable object) {
+    public void onAuthFailure(AuthFailure authFailure) {
         IterableLogger.v(TAG, "Failed to set authToken");
         sendEvent(EventName.handleAuthFailureCalled.name(), null);
     }
