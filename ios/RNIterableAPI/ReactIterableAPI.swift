@@ -146,6 +146,17 @@ class ReactIterableAPI: RCTEventEmitter {
         inAppHandlerSemaphore.signal()
     }
     
+    @objc(registerDeviceToken:)
+    func registerDeviceToken(token: String) {
+        ITBInfo()
+        
+        if let deviceTokenData = token.data(using: .utf8) {
+            IterableAPI.register(token: deviceTokenData)
+        } else {
+            ITBInfo("Failed to convert device token string to data")
+        }
+    }
+
     @objc(disableDeviceForCurrentUser)
     func disableDeviceForCurrentUser() {
         ITBInfo()
