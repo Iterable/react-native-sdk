@@ -20,10 +20,10 @@ jobs:
           xcode-version: 15
 
       - name: Install dependencies
-        run: cd integration-testing/  && yarn install
+        run: cd integration-testing && yarn install
 
       - name: pod install
-        run: cd integration-testing/ios/ && pod install
+        run: cd integration-testing/ios && pod install
 
       - name: Build and Test
         shell: bash
