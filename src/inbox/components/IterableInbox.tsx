@@ -36,6 +36,9 @@ const RNIterableAPI = NativeModules.RNIterableAPI;
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
 const DEFAULT_HEADLINE_HEIGHT = 60;
+const ANDROID_HEADLINE_HEIGHT = 70;
+const HEADLINE_PADDING_LEFT_PORTRAIT = 30;
+const HEADLINE_PADDING_LEFT_LANDSCAPE = 70;
 
 /**
  * Props for the IterableInbox component.
@@ -229,10 +232,15 @@ export const IterableInbox = ({
       backgroundColor: ITERABLE_INBOX_COLORS.CONTAINER_BACKGROUND,
       fontSize: 40,
       fontWeight: 'bold',
-      height: Platform.OS === 'android' ? 70 : DEFAULT_HEADLINE_HEIGHT,
+      height:
+        Platform.OS === 'android'
+          ? ANDROID_HEADLINE_HEIGHT
+          : DEFAULT_HEADLINE_HEIGHT,
       marginTop: 0,
       paddingBottom: 10,
-      paddingLeft: isPortrait ? 30 : 70,
+      paddingLeft: isPortrait
+        ? HEADLINE_PADDING_LEFT_PORTRAIT
+        : HEADLINE_PADDING_LEFT_LANDSCAPE,
       paddingTop: 10,
       width: '100%',
     },
@@ -250,9 +258,10 @@ export const IterableInbox = ({
     },
   });
 
-  const { headline } = styles;
   const navTitleHeight =
-    DEFAULT_HEADLINE_HEIGHT + headline.paddingTop + headline.paddingBottom;
+    DEFAULT_HEADLINE_HEIGHT +
+    styles.headline.paddingTop +
+    styles.headline.paddingBottom;
 
   //fetches inbox messages and adds listener for inbox changes on mount
   useEffect(() => {

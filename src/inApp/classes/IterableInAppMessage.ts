@@ -2,6 +2,7 @@ import { type ViewToken } from 'react-native';
 
 import { IterableUtil } from '../../core';
 import { IterableInAppTriggerType } from '../enums';
+import type { IterableInAppMessageRaw } from '../types';
 import { IterableInAppTrigger } from './IterableInAppTrigger';
 import { IterableInboxMetadata } from './IterableInboxMetadata';
 
@@ -166,35 +167,7 @@ export class IterableInAppMessage {
    * @param dict - The dictionary containing the properties of the in-app message.
    * @returns An instance of `IterableInAppMessage` populated with the provided properties.
    */
-  static fromDict(dict: {
-    /** The unique identifier for the message. */
-    messageId: string;
-    /** The campaign identifier associated with the message. */
-    campaignId: number;
-    /** The trigger that initiates the in-app message. */
-    trigger: IterableInAppTrigger;
-    /** The timestamp when the message was created, in milliseconds. */
-    createdAt?: number;
-    /** The timestamp when the message expires, in milliseconds. */
-    expiresAt?: number;
-    /** A boolean indicating if the message should be saved to the inbox. */
-    saveToInbox?: boolean;
-    /** Metadata for the inbox message, including title, subtitle, and icon. */
-    inboxMetadata?: {
-      /** The title of the inbox message. */
-      title: string | undefined;
-      /** The subtitle of the inbox message. */
-      subtitle: string | undefined;
-      /** The icon of the inbox message. */
-      icon: string | undefined;
-    };
-    /** Custom payload associated with the message. */
-    customPayload?: unknown;
-    /** A boolean indicating if the message has been read. */
-    read?: boolean;
-    /** The priority level of the message. */
-    priorityLevel?: number;
-  }): IterableInAppMessage {
+  static fromDict(dict: IterableInAppMessageRaw): IterableInAppMessage {
     const messageId = dict.messageId;
     const campaignId = dict.campaignId;
     const trigger = IterableInAppTrigger.fromDict(dict.trigger);
