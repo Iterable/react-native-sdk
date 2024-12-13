@@ -8,7 +8,6 @@ temp/
 
 # Test files
 jest.config.js
-integration-testing/
 __tests__/
 __mocks__/
 *.test.ts
