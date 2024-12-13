@@ -12,7 +12,6 @@ import type { IterableAuthResponse } from './IterableAuthResponse';
  * An IterableConfig object sets various properties of the SDK.
  * An IterableConfig object is passed into the static initialize method on the Iterable class when initializing the SDK.
  */
-
 export class IterableConfig {
   /**
    * The name of the Iterable push integration that will send push notifications to your app.
@@ -39,7 +38,7 @@ export class IterableConfig {
    * Number of seconds to wait when displaying multiple in-app messages in sequence.
    * between each. Defaults to 30 seconds.
    */
-  inAppDisplayInterval: number = 30.0;
+  inAppDisplayInterval = 30.0;
 
   /**
    * A callback function used to handle deep link URLs and in-app message button and link URLs.
@@ -69,7 +68,7 @@ export class IterableConfig {
    * React Native SDK. Provide an implementation for this method only if your app uses a
    * JWT-enabled API key.
    */
-  authHandler?: () => Promise<IterableAuthResponse | String | undefined>;
+  authHandler?: () => Promise<IterableAuthResponse | string | undefined>;
 
   /**
    * Set the verbosity of Android and iOS project's log system.
@@ -82,13 +81,13 @@ export class IterableConfig {
    * This is for calls within the React Native layer, and is separate from `logLevel`
    * which affects the Android and iOS native SDKs
    */
-  logReactNativeSdkCalls: boolean = true;
+  logReactNativeSdkCalls = true;
 
   /**
    * The number of seconds before the current JWT's expiration that the SDK should call the
    * authHandler to get an updated JWT.
    */
-  expiringAuthTokenRefreshPeriod: number = 60.0;
+  expiringAuthTokenRefreshPeriod = 60.0;
 
   /**
    * Use this array to declare the specific URL protocols that the SDK can expect to see on incoming
@@ -106,13 +105,13 @@ export class IterableConfig {
    *
    * This specifies the `useInMemoryStorageForInApps` config option downstream to the Android SDK layer.
    */
-  androidSdkUseInMemoryStorageForInApps: boolean = false;
+  androidSdkUseInMemoryStorageForInApps = false;
 
   /**
    * This specifies the `useInMemoryStorageForInApps` config option downstream to the native SDK layers.
    * Please read the respective `IterableConfig` files for specific details on this config option.
    */
-  useInMemoryStorageForInApps: boolean = false;
+  useInMemoryStorageForInApps = false;
 
   /**
    * This specifies the data region which determines the data center and associated endpoints used by the SDK
@@ -130,9 +129,9 @@ export class IterableConfig {
    * Android only feature: This controls whether the SDK should enforce encryption for all PII stored on disk.
    * By default, the SDK will not enforce encryption and may fallback to unencrypted storage in case the encryption fails.
    */
-  encryptionEnforced: boolean = false;
+  encryptionEnforced = false;
 
-  toDict(): any {
+  toDict() {
     return {
       pushIntegrationName: this.pushIntegrationName,
       autoPushRegistration: this.autoPushRegistration,

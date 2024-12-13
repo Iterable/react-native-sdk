@@ -8,7 +8,7 @@ export class IterableLogger {
     this.config = config;
   }
 
-  log(message: String) {
+  log(message: string) {
     // default to `true` in the case of unit testing where `Iterable` is not initialized
     // which is most likely in a debug environment anyways
     const loggingEnabled = this.config.logReactNativeSdkCalls ?? true;

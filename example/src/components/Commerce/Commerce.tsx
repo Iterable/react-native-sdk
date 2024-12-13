@@ -36,7 +36,8 @@ export const Commerce = () => {
       <View style={styles.container}>
         <Text style={styles.title}>Commerce</Text>
         <Text style={styles.subtitle}>
-          Purchase will be tracked when "Buy" is clicked. See logs for output.
+          Purchase will be tracked when &quot;Buy&quot; is clicked. See logs for
+          output.
         </Text>
         {items.map((item) => (
           <View key={item.id} style={styles.cardContainer}>

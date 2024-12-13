@@ -7,15 +7,17 @@ import {
   Text,
   TouchableOpacity,
   View,
+  type PanResponderGestureState,
   type TextStyle,
   type ViewStyle,
 } from 'react-native';
 
 import { IterableInboxDataModel } from '../classes';
 import type {
-  IterableInboxRowViewModel,
   IterableInboxCustomizations,
+  IterableInboxRowViewModel,
 } from '../types';
+import { ITERABLE_INBOX_COLORS } from '../constants';
 
 // TODO: Change to component
 function defaultMessageListLayout(
@@ -31,87 +33,86 @@ function defaultMessageListLayout(
     dataModel.getFormattedDate(rowViewModel.inAppMessage) ?? '';
   const thumbnailURL = rowViewModel.imageUrl;
 
-  let styles = StyleSheet.create({
-    unreadIndicatorContainer: {
-      height: '100%',
-      flexDirection: 'column',
-      justifyContent: 'flex-start',
+  const styles = StyleSheet.create({
+    body: {
+      color: ITERABLE_INBOX_COLORS.TEXT_MUTED,
+      flexWrap: 'wrap',
+      fontSize: 15,
+      paddingBottom: 10,
+      width: '85%',
     },
 
-    unreadIndicator: {
-      width: 15,
-      height: 15,
-      borderRadius: 15 / 2,
-      backgroundColor: 'blue',
-      marginLeft: 10,
-      marginRight: 5,
-      marginTop: 10,
-    },
-
-    unreadMessageThumbnailContainer: {
-      paddingLeft: 10,
-      flexDirection: 'column',
-      justifyContent: 'center',
-    },
-
-    readMessageThumbnailContainer: {
-      paddingLeft: 30,
-      flexDirection: 'column',
-      justifyContent: 'center',
+    createdAt: {
+      color: ITERABLE_INBOX_COLORS.TEXT_MUTED,
+      fontSize: 12,
     },
 
     messageContainer: {
-      paddingLeft: 10,
-      width: '75%',
       flexDirection: 'column',
       justifyContent: 'center',
+      paddingLeft: 10,
+      width: '75%',
+    },
+
+    messageRow: {
+      backgroundColor: ITERABLE_INBOX_COLORS.CONTAINER_BACKGROUND_LIGHT,
+      borderColor: ITERABLE_INBOX_COLORS.BORDER,
+      borderStyle: 'solid',
+      borderTopWidth: 1,
+      flexDirection: 'row',
+      height: 150,
+      paddingBottom: 10,
+      paddingTop: 10,
+      width: '100%',
+    },
+
+    readMessageThumbnailContainer: {
+      flexDirection: 'column',
+      justifyContent: 'center',
+      paddingLeft: 30,
     },
 
     title: {
       fontSize: 22,
+      paddingBottom: 10,
       width: '85%',
-      paddingBottom: 10,
     },
 
-    body: {
-      fontSize: 15,
-      color: 'lightgray',
-      width: '85%',
-      flexWrap: 'wrap',
-      paddingBottom: 10,
+    unreadIndicator: {
+      backgroundColor: ITERABLE_INBOX_COLORS.UNREAD,
+      borderRadius: 15 / 2,
+      height: 15,
+      marginLeft: 10,
+      marginRight: 5,
+      marginTop: 10,
+      width: 15,
     },
 
-    createdAt: {
-      fontSize: 12,
-      color: 'lightgray',
+    unreadIndicatorContainer: {
+      flexDirection: 'column',
+      height: '100%',
+      justifyContent: 'flex-start',
     },
 
-    messageRow: {
-      flexDirection: 'row',
-      backgroundColor: 'white',
-      paddingTop: 10,
-      paddingBottom: 10,
-      width: '100%',
-      height: 150,
-      borderStyle: 'solid',
-      borderColor: 'lightgray',
-      borderTopWidth: 1,
+    unreadMessageThumbnailContainer: {
+      flexDirection: 'column',
+      justifyContent: 'center',
+      paddingLeft: 10,
     },
   });
 
   const resolvedStyles = { ...styles, ...customizations };
 
-  let {
+  const {
     unreadIndicatorContainer,
-    unreadIndicator,
     unreadMessageThumbnailContainer,
-    readMessageThumbnailContainer,
-    messageContainer,
     title,
     body,
     createdAt,
     messageRow,
   } = resolvedStyles;
+  let { unreadIndicator, readMessageThumbnailContainer, messageContainer } =
+    resolvedStyles;
 
   unreadIndicator = !isPortrait
     ? { ...unreadIndicator, marginLeft: 40 }
@@ -168,10 +169,25 @@ export interface IterableInboxMessageCellProps {
   dataModel: IterableInboxDataModel;
   rowViewModel: IterableInboxRowViewModel;
   customizations: IterableInboxCustomizations;
-  swipingCheck: Function;
-  messageListItemLayout: Function;
-  deleteRow: Function;
-  handleMessageSelect: Function;
+  swipingCheck: (
+    /** Should swiping be enabled? */
+    swiping: boolean
+  ) => void;
+  messageListItemLayout: (
+    /** Is this the last message in the list? */
+    isLast: boolean,
+    rowViewModel: IterableInboxRowViewModel
+  ) => [React.ReactNode, number] | undefined | null;
+  deleteRow: (
+    /** The ID of the message to delete */
+    messageId: string
+  ) => void;
+  handleMessageSelect: (
+    /** The ID of the message to select */
+    messageId: string,
+    /** The index of the message to select */
+    index: number
+  ) => void;
   contentWidth: number;
   isPortrait: boolean;
 }
@@ -197,45 +213,41 @@ export const IterableInboxMessageCell = ({
     : 150;
 
   if (messageListItemLayout(last, rowViewModel)) {
-    deleteSliderHeight = messageListItemLayout(last, rowViewModel)[1];
+    deleteSliderHeight =
+      messageListItemLayout(last, rowViewModel)?.[1] ?? deleteSliderHeight;
   }
 
   const styles = StyleSheet.create({
-    textContainer: {
-      width: '100%',
-      elevation: 2,
-    },
-
     deleteSlider: {
-      flexDirection: 'row',
       alignItems: 'center',
+      backgroundColor: ITERABLE_INBOX_COLORS.DESTRUCTIVE,
+      elevation: 1,
+      flexDirection: 'row',
+      height: deleteSliderHeight,
       justifyContent: 'flex-end',
       paddingRight: 10,
-      backgroundColor: 'red',
       position: 'absolute',
-      elevation: 1,
       width: '100%',
-      height: deleteSliderHeight,
+      ...(isPortrait ? {} : { paddingRight: 40 }),
+    },
+
+    textContainer: {
+      elevation: 2,
+      width: '100%',
     },
 
     textStyle: {
-      fontWeight: 'bold',
+      color: ITERABLE_INBOX_COLORS.TEXT_INVERSE,
       fontSize: 15,
-      color: 'white',
+      fontWeight: 'bold',
     },
   });
-
-  let { textContainer, deleteSlider, textStyle } = styles;
-
-  deleteSlider = isPortrait
-    ? deleteSlider
-    : { ...deleteSlider, paddingRight: 40 };
 
   const scrollThreshold = contentWidth / 15;
   const FORCING_DURATION = 350;
 
   //If user swipes, either complete swipe or reset
-  function userSwipedLeft(gesture: any) {
+  function userSwipedLeft(gesture: PanResponderGestureState) {
     if (gesture.dx < -0.6 * contentWidth) {
       completeSwipe();
     } else {
@@ -301,11 +313,11 @@ export const IterableInboxMessageCell = ({
 
   return (
     <>
-      <View style={deleteSlider}>
-        <Text style={textStyle}>DELETE</Text>
+      <View style={styles.deleteSlider}>
+        <Text style={styles.textStyle}>DELETE</Text>
       </View>
       <Animated.View
-        style={[textContainer, position.getLayout()]}
+        style={[styles.textContainer, position.getLayout()]}
         {...panResponder.panHandlers}
       >
         <TouchableOpacity
@@ -315,7 +327,7 @@ export const IterableInboxMessageCell = ({
           }}
         >
           {messageListItemLayout(last, rowViewModel)
-            ? messageListItemLayout(last, rowViewModel)[0]
+            ? messageListItemLayout(last, rowViewModel)?.[0]
             : defaultMessageListLayout(
                 last,
                 dataModel,

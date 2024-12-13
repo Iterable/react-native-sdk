@@ -26,15 +26,26 @@ import type {
 } from '../types';
 import { IterableInboxEmptyState } from './IterableInboxEmptyState';
 import { IterableInboxMessageDisplay } from './IterableInboxMessageDisplay';
-import { IterableInboxMessageList } from './IterableInboxMessageList';
+import {
+  IterableInboxMessageList,
+  type IterableInboxMessageListProps,
+} from './IterableInboxMessageList';
+import { ITERABLE_INBOX_COLORS } from '../constants';
 
 const RNIterableAPI = NativeModules.RNIterableAPI;
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
+const DEFAULT_HEADLINE_HEIGHT = 60;
+const ANDROID_HEADLINE_HEIGHT = 70;
+const HEADLINE_PADDING_LEFT_PORTRAIT = 30;
+const HEADLINE_PADDING_LEFT_LANDSCAPE = 70;
+
 // TODO: Comment
-export interface IterableInboxProps {
+export interface IterableInboxProps
+  extends Partial<
+    Pick<IterableInboxMessageListProps, 'messageListItemLayout'>
+  > {
   returnToInboxTrigger?: boolean;
-  messageListItemLayout?: Function;
   customizations?: IterableInboxCustomizations;
   tabBarHeight?: number;
   tabBarPadding?: number;
@@ -55,7 +66,7 @@ export const IterableInbox = ({
   const defaultInboxTitle = 'Inbox';
   const inboxDataModel = new IterableInboxDataModel();
 
-  let { height, width, isPortrait } = useDeviceOrientation();
+  const { height, width, isPortrait } = useDeviceOrientation();
   const appState = useAppStateListener();
   const isFocused = useIsFocused();
 
@@ -65,7 +76,7 @@ export const IterableInbox = ({
     IterableInboxRowViewModel[]
   >([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [animatedValue] = useState<any>(new Animated.Value(0));
+  const [animatedValue] = useState<Animated.Value>(new Animated.Value(0));
   const [isMessageDisplay, setIsMessageDisplay] = useState<boolean>(false);
 
   const [visibleMessageImpressions, setVisibleMessageImpressions] = useState<
@@ -73,49 +84,52 @@ export const IterableInbox = ({
   >([]);
 
   const styles = StyleSheet.create({
-    loadingScreen: {
-      height: '100%',
-      backgroundColor: 'whitesmoke',
-    },
-
     container: {
+      alignItems: 'center',
       flex: 1,
       flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'flex-start',
       height: '100%',
-      width: 2 * width,
+      justifyContent: 'flex-start',
       paddingBottom: 0,
       paddingLeft: 0,
       paddingRight: 0,
-    },
-
-    messageListContainer: {
-      height: '100%',
-      width: width,
-      flexDirection: 'column',
-      justifyContent: 'flex-start',
+      width: 2 * width,
     },
 
     headline: {
-      fontWeight: 'bold',
+      backgroundColor: ITERABLE_INBOX_COLORS.CONTAINER_BACKGROUND,
       fontSize: 40,
-      width: '100%',
-      height: 60,
+      fontWeight: 'bold',
+      height:
+        Platform.OS === 'android'
+          ? ANDROID_HEADLINE_HEIGHT
+          : DEFAULT_HEADLINE_HEIGHT,
       marginTop: 0,
-      paddingTop: 10,
       paddingBottom: 10,
-      paddingLeft: 30,
-      backgroundColor: 'whitesmoke',
+      paddingLeft: isPortrait
+        ? HEADLINE_PADDING_LEFT_PORTRAIT
+        : HEADLINE_PADDING_LEFT_LANDSCAPE,
+      paddingTop: 10,
+      width: '100%',
+    },
+
+    loadingScreen: {
+      backgroundColor: ITERABLE_INBOX_COLORS.CONTAINER_BACKGROUND,
+      height: '100%',
+    },
+
+    messageListContainer: {
+      flexDirection: 'column',
+      height: '100%',
+      justifyContent: 'flex-start',
+      width: width,
     },
   });
 
-  let { loadingScreen, container, headline, messageListContainer } = styles;
-
   const navTitleHeight =
-    headline.height + headline.paddingTop + headline.paddingBottom;
-  headline = { ...headline, height: Platform.OS === 'android' ? 70 : 60 };
-  headline = !isPortrait ? { ...headline, paddingLeft: 70 } : headline;
+    DEFAULT_HEADLINE_HEIGHT +
+    styles.headline.paddingTop +
+    styles.headline.paddingBottom;
 
   //fetches inbox messages and adds listener for inbox changes on mount
   useEffect(() => {
@@ -208,7 +222,7 @@ export const IterableInbox = ({
     index: number,
     models: IterableInboxRowViewModel[]
   ) {
-    let newRowViewModels = models.map((rowViewModel) => {
+    const newRowViewModels = models.map((rowViewModel) => {
       return rowViewModel.inAppMessage.messageId === id
         ? { ...rowViewModel, read: true }
         : rowViewModel;
@@ -219,6 +233,7 @@ export const IterableInbox = ({
 
     Iterable.trackInAppOpen(
       // TODO: Have a safety check for models[index].inAppMessage
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       models[index].inAppMessage,
       IterableInAppLocation.inbox
@@ -235,7 +250,7 @@ export const IterableInbox = ({
     fetchInboxMessages();
   }
 
-  function returnToInbox(callback?: Function) {
+  function returnToInbox(callback?: () => void) {
     Animated.timing(animatedValue, {
       toValue: 0,
       duration: 300,
@@ -262,7 +277,7 @@ export const IterableInbox = ({
         inAppContentPromise={getHtmlContentForRow(
           selectedRowViewModel.inAppMessage.messageId
         )}
-        returnToInbox={(callback: Function) => returnToInbox(callback)}
+        returnToInbox={returnToInbox}
         deleteRow={(messageId: string) => deleteRow(messageId)}
         contentWidth={width}
         isPortrait={isPortrait}
@@ -272,9 +287,9 @@ export const IterableInbox = ({
 
   function showMessageList(_loading: boolean) {
     return (
-      <View style={messageListContainer}>
+      <View style={styles.messageListContainer}>
         {showNavTitle ? (
-          <Text style={headline}>
+          <Text style={styles.headline}>
             {customizations?.navTitle
               ? customizations?.navTitle
               : defaultInboxTitle}
@@ -305,7 +320,7 @@ export const IterableInbox = ({
 
   function renderEmptyState() {
     return loading ? (
-      <View style={loadingScreen} />
+      <View style={styles.loadingScreen} />
     ) : (
       <IterableInboxEmptyState
         customizations={customizations}
@@ -353,8 +368,8 @@ export const IterableInbox = ({
   );
 
   return safeAreaMode ? (
-    <SafeAreaView style={container}>{inboxAnimatedView}</SafeAreaView>
+    <SafeAreaView style={styles.container}>{inboxAnimatedView}</SafeAreaView>
   ) : (
-    <View style={container}>{inboxAnimatedView}</View>
+    <View style={styles.container}>{inboxAnimatedView}</View>
   );
 };

@@ -10,8 +10,8 @@ export class IterableCommerceItem {
   description?: string;
   url?: string;
   imageUrl?: string;
-  categories?: Array<string>;
-  dataFields?: any;
+  categories?: string[];
+  dataFields?: unknown;
 
   constructor(
     id: string,
@@ -22,8 +22,8 @@ export class IterableCommerceItem {
     description?: string,
     url?: string,
     imageUrl?: string,
-    categories?: Array<string>,
-    dataFields?: any | undefined
+    categories?: string[],
+    dataFields?: unknown
   ) {
     this.id = id;
     this.name = name;

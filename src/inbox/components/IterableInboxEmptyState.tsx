@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import { type IterableInboxCustomizations } from '../types';
+import { ITERABLE_INBOX_COLORS } from '../constants';
 
 // TODO: Comment
 export interface IterableInboxEmptyStateProps {
@@ -27,44 +28,44 @@ export const IterableInboxEmptyState = ({
   const emptyStateTitle = customizations.noMessagesTitle;
   const emptyStateBody = customizations.noMessagesBody;
 
-  let { container, title, body } = styles;
-
-  container = {
-    ...container,
-    height: height - navTitleHeight - tabBarHeight - tabBarPadding,
-  };
-
-  if (!isPortrait) {
-    container = { ...container, height: height - navTitleHeight };
-  }
-
   return (
-    <View style={container}>
-      <Text style={title}>
+    <View
+      style={[
+        styles.container,
+        {
+          height: isPortrait
+            ? height - navTitleHeight - tabBarHeight - tabBarPadding
+            : height - navTitleHeight,
+        },
+      ]}
+    >
+      <Text style={styles.title}>
         {emptyStateTitle ? emptyStateTitle : defaultTitle}
       </Text>
-      <Text style={body}>{emptyStateBody ? emptyStateBody : defaultBody}</Text>
+      <Text style={styles.body}>
+        {emptyStateBody ? emptyStateBody : defaultBody}
+      </Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  body: {
+    color: ITERABLE_INBOX_COLORS.TEXT,
+    fontSize: 15,
+  },
+
   container: {
-    height: 0,
-    backgroundColor: 'whitesmoke',
-    flexDirection: 'column',
-    justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: ITERABLE_INBOX_COLORS.CONTAINER_BACKGROUND,
+    flexDirection: 'column',
+    height: 0,
+    justifyContent: 'center',
   },
 
   title: {
-    fontWeight: 'bold',
     fontSize: 20,
+    fontWeight: 'bold',
     paddingBottom: 25,
-  },
-
-  body: {
-    fontSize: 15,
-    color: 'grey',
   },
 });

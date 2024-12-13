@@ -29,9 +29,10 @@ export const Main = () => {
   useEffect(() => {
     if (loginInProgress) return;
     if (isLoggedIn) {
-      Iterable.inAppManager.getMessages().then((messages) => {
-        setUnreadMessageCount(messages.length);
-      });
+      Iterable.inAppManager
+        .getMessages()
+        .then((messages) => setUnreadMessageCount(messages.length))
+        .catch((error) => console.error('Failed to get messages:', error));
     } else {
       // Reset unread message count when user logs out
       setUnreadMessageCount(0);
@@ -42,9 +43,9 @@ export const Main = () => {
     <>
       <Tab.Navigator
         screenOptions={({ route }) => {
-          const iconName = routeIcon[route.name as keyof typeof routeIcon];
+          const iconName = routeIcon[route.name];
           return {
-            tabBarIcon: (props) => getIcon(iconName as string, props),
+            tabBarIcon: (props) => getIcon(iconName, props),
             tabBarActiveTintColor: colors.brandPurple,
             tabBarInactiveTintColor: colors.textSecondary,
             headerShown: false,

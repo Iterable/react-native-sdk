@@ -47,7 +47,7 @@ export class IterableInAppMessage {
   /**
    * Custom Payload for this message.
    */
-  readonly customPayload?: any;
+  readonly customPayload?: unknown;
 
   /**
    * Whether this inbox message has been read
@@ -67,7 +67,7 @@ export class IterableInAppMessage {
     expiresAt: Date | undefined,
     saveToInbox: boolean,
     inboxMetadata: IterableInboxMetadata | undefined,
-    customPayload: any | undefined,
+    customPayload: unknown | undefined,
     read: boolean,
     priorityLevel: number
   ) {
@@ -84,7 +84,7 @@ export class IterableInAppMessage {
   }
 
   static fromViewToken(viewToken: ViewToken) {
-    var inAppMessage = viewToken.item.inAppMessage as IterableInAppMessage;
+    const inAppMessage = viewToken.item.inAppMessage as IterableInAppMessage;
 
     return new IterableInAppMessage(
       inAppMessage.messageId,
@@ -108,37 +108,57 @@ export class IterableInAppMessage {
     );
   }
 
-  static fromDict(dict: any): IterableInAppMessage {
-    const messageId = dict.messageId as string;
-    const campaignId = dict.campaignId as number;
+  static fromDict(dict: {
+    messageId: string;
+    campaignId: number;
+    trigger: IterableInAppTrigger;
+    createdAt: number;
+    expiresAt: number;
+    saveToInbox: boolean;
+    inboxMetadata: {
+      title: string | undefined;
+      subtitle: string | undefined;
+      icon: string | undefined;
+    };
+    customPayload: unknown;
+    read: boolean;
+    priorityLevel: number;
+  }): IterableInAppMessage {
+    const messageId = dict.messageId;
+    const campaignId = dict.campaignId;
     const trigger = IterableInAppTrigger.fromDict(dict.trigger);
+
     let createdAt = dict.createdAt;
     if (createdAt) {
-      var dateObject = new Date(0);
+      const dateObject = new Date(0);
       createdAt = dateObject.setUTCMilliseconds(createdAt);
     }
     let expiresAt = dict.expiresAt;
     if (expiresAt) {
-      var dateObject = new Date(0);
+      const dateObject = new Date(0);
       expiresAt = dateObject.setUTCMilliseconds(expiresAt);
     }
-    let saveToInbox = IterableUtil.readBoolean(dict, 'saveToInbox');
-    let inboxMetadataDict = dict.inboxMetadata;
+    const saveToInbox = IterableUtil.readBoolean(dict, 'saveToInbox');
+    const inboxMetadataDict = dict.inboxMetadata;
     let inboxMetadata: IterableInboxMetadata | undefined;
     if (inboxMetadataDict) {
       inboxMetadata = IterableInboxMetadata.fromDict(inboxMetadataDict);
     } else {
       inboxMetadata = undefined;
     }
-    let customPayload = dict.customPayload;
-    let read = IterableUtil.readBoolean(dict, 'read');
+    const customPayload = dict.customPayload;
+    const read = IterableUtil.readBoolean(dict, 'read');
 
-    let priorityLevel = dict.priorityLevel as number;
+    const priorityLevel = dict.priorityLevel;
 
     return new IterableInAppMessage(
       messageId,
       campaignId,
       trigger,
+      // TODO: Speak to the team about `IterableInAppMessage` requiring a date
+      // object, but being passed a number in this case
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //  @ts-ignore
       createdAt,
       expiresAt,
       saveToInbox,
