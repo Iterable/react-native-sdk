@@ -21,6 +21,12 @@ Iterable's React Native SDK relies on:
     - [react-native-vector-icons 10.2.0+](https://www.npmjs.com/package/react-native-vector-icons)
     - [react-native-webview 13.12.3+](https://www.npmjs.com/package/react-native-webview)
 
+    _UI Components require additional peer dependencies_
+    - [React Navigation 6+](https://github.com/react-navigation/react-navigation)
+    - [React Native Safe Area Context 4+](https://github.com/th3rdwave/react-native-safe-area-context)
+    - [React Native Vector Icons 9+](https://github.com/oblador/react-native-vector-icons)
+    - [React Native WebView 11+](https://github.com/react-native-webview/react-native-webview)
+
 - **iOS**
     - Xcode 12+
     - [Deployment target 13.4+](https://help.apple.com/xcode/mac/current/#/deve69552ee5)
@@ -60,6 +66,7 @@ For quick reference, the following table lists the versions of the [Android SDK]
 
 | RN SDK Version                                                              | Android SDK Version                                                          | iOS SDK Version |
 | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | --------------- |
+| [1.3.21](https://www.npmjs.com/package/@iterable/react-native-sdk/v/1.3.20) | [3.5.2](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.5.2) | [6.5.4](https://github.com/Iterable/swift-sdk/releases/tag/6.5.4)
 | [1.3.20](https://www.npmjs.com/package/@iterable/react-native-sdk/v/1.3.20) | [3.5.2](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.5.2) | [6.5.4](https://github.com/Iterable/swift-sdk/releases/tag/6.5.4)
 | [1.3.19](https://www.npmjs.com/package/@iterable/react-native-sdk/v/1.3.19) | [3.5.2](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.5.2) | [6.5.3](https://github.com/Iterable/swift-sdk/releases/tag/6.5.3)
 | [1.3.18](https://www.npmjs.com/package/@iterable/react-native-sdk/v/1.3.18) | [3.5.2](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.5.2) | [6.5.3](https://github.com/Iterable/swift-sdk/releases/tag/6.5.3)

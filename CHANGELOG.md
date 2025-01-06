@@ -1,3 +1,10 @@
+## 1.3.21
+## Fixes
+- Fixes an issue where react native components that use safe-area-context or react-navigation throw an error because the sdk's components try and use its own local node_modules instead of the consumer's project.
+
+#### Added
+- Added a new configuration in IterableConfig, `IterablePushPlatform`, allowing developers to manually register a device as either sandbox or production. This provides greater control over push notification environments.
+
 ## 1.3.20
 ## Fixes
 - Fixes an issue where the iOS SDK incorrectly targeted the latest minor version instead of a fixed version, potentially causing breaking changes.
