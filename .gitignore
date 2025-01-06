@@ -43,6 +43,7 @@ android.iml
 # Cocoapods
 #
 example/ios/Pods
+integration-testing/ios/Pods
 
 # Ruby
 example/vendor/
@@ -86,3 +87,4 @@ android/generated
 .xcode.env.local
 coverage/
 docs/
+integration-testing/.yarn/
