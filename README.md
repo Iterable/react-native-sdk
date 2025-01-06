@@ -7,7 +7,7 @@ you to create better experiences for—and deeper relationships with—your
 customers. Use it to send customized email, SMS, push notification, in-app
 message and web push notification campaigns to your customers.
 
-This SDK helps you integate your React Native-based iOS and Android apps with
+This SDK helps you integrate your React Native-based iOS and Android apps with
 Iterable. It supports JavaScript and TypeScript.
 
 ## Requirements
@@ -15,8 +15,11 @@ Iterable. It supports JavaScript and TypeScript.
 Iterable's React Native SDK relies on:
 
 - **React Native**
-    - [React Native 0.60.0+](https://github.com/facebook/react-native)
-    - [React Native CLI 2.0.1+](https://reactnative.dev/docs/upgrading#react-native-cli)
+    - [React Native 0.75.3+](https://github.com/facebook/react-native)
+    - [@react-navigation/native 6.1.18+](https://www.npmjs.com/package/@react-navigation/native)
+    - [react-native-safe-area-context 4.11.1+](https://www.npmjs.com/package/react-native-safe-area-context)
+    - [react-native-vector-icons 10.2.0+](https://www.npmjs.com/package/react-native-vector-icons)
+    - [react-native-webview 13.12.3+](https://www.npmjs.com/package/react-native-webview)
 
     _UI Components require additional peer dependencies_
     - [React Navigation 6+](https://github.com/react-navigation/react-navigation)
@@ -26,11 +29,11 @@ Iterable's React Native SDK relies on:
 
 - **iOS**
     - Xcode 12+
-    - [Deployment target 10.0+](https://help.apple.com/xcode/mac/current/#/deve69552ee5)
-    - [Iterable's iOS SDK](https://github.com/Iterable/swift-sdk)
+    - [Deployment target 13.4+](https://help.apple.com/xcode/mac/current/#/deve69552ee5)
+    - [Iterable's iOS SDK](https://github.com/Iterable/iterable-swift-sdk)
 
 - **Android**
-    - [`minSdkVersion` 16+, `compileSdkVersion` 28+](https://medium.com/androiddevelopers/picking-your-compilesdkversion-minsdkversion-targetsdkversion-a098a0341ebd)
+    - [`minSdkVersion` 21+, `compileSdkVersion` 31+](https://medium.com/androiddevelopers/picking-your-compilesdkversion-minsdkversion-targetsdkversion-a098a0341ebd)
     - [Iterable's Android SDK](https://github.com/Iterable/iterable-android-sdk)
 
 ## Installation
@@ -53,14 +56,13 @@ To learn more about the SDK, read:
 
 ## Sample projects
 
-For sample code, take a look at the following projects:
+For sample code, take a look at the following project:
 
-- [SampleApp (JavaScript)](https://github.com/Iterable/react-native-sdk/tree/master/SampleApp/javascript)
-- [SampleApp (TypeScript)](https://github.com/Iterable/react-native-sdk/tree/master/SampleApp/typescript)
+- [Example App](https://github.com/Iterable/react-native-sdk/tree/master/example)
 
 ## Version mapping
 
-For quick reference, the following table lists the versions of the [Android SDK](https://github.com/Iterable/iterable-android-sdk) and the [iOS SDK](https://github.com/Iterable/swift-sdk) the React Native SDK points to for version 1.2.0 and above. 
+For quick reference, the following table lists the versions of the [Android SDK](https://github.com/Iterable/iterable-android-sdk) and the [iOS SDK](https://github.com/Iterable/swift-sdk) the React Native SDK points to for version 1.2.0 and above.
 
 | RN SDK Version                                                              | Android SDK Version                                                          | iOS SDK Version |
 | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | --------------- |
@@ -99,7 +101,7 @@ For quick reference, the following table lists the versions of the [Android SDK]
 Release notes:
 
 - [Release Notes - Iterable's React Native SDK](https://support.iterable.com/hc/articles/360045714352) (major releases)
-- [Releases page on GitHub](https://github.com/Iterable/react-native-sdk/releases) 
+- [Releases page on GitHub](https://github.com/Iterable/react-native-sdk/releases)
   on GitHub (minor releases)
 
 Support policies:
