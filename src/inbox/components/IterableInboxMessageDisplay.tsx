@@ -26,23 +26,46 @@ import {
 import { type IterableInboxRowViewModel } from '../types';
 import { ITERABLE_INBOX_COLORS } from '../constants';
 
-// TODO: Comment
+/**
+ * Props for the IterableInboxMessageDisplay component.
+ */
 export interface IterableInboxMessageDisplayProps {
+  /**
+   * The view model for the inbox row.
+   */
   rowViewModel: IterableInboxRowViewModel;
+
+  /**
+   * A promise that resolves to the HTML content of the in-app message.
+   */
   inAppContentPromise: Promise<IterableHtmlInAppContent>;
-  returnToInbox: (
-    /** Callback to be executed after returning to the inbox */
-    callback?: () => void
-  ) => void;
-  deleteRow: (
-    /** Id of the row to be deleted */
-    id: string
-  ) => void;
+
+  /**
+   * Function to return to the inbox, with an optional callback to be executed after returning.
+   * @param callback - Optional callback to be executed after returning to the inbox.
+   */
+  returnToInbox: (callback?: () => void) => void;
+
+  /**
+   * Function to delete a row from the inbox.
+   * @param id - The ID of the row to be deleted.
+   */
+  deleteRow: (id: string) => void;
+
+  /**
+   * The width of the content.
+   */
   contentWidth: number;
+
+  /**
+   * Boolean indicating if the device is in portrait mode.
+   */
   isPortrait: boolean;
 }
 
-// TODO: Comment
+/**
+ * Component to display an Iterable inbox message.
+ */
 export const IterableInboxMessageDisplay = ({
   rowViewModel,
   inAppContentPromise,

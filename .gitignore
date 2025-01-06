@@ -85,3 +85,4 @@ android/generated
 .env
 .xcode.env.local
 coverage/
+docs/
