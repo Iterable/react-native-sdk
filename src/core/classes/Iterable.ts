@@ -1,9 +1,4 @@
-import {
-  Linking,
-  NativeEventEmitter,
-  NativeModules,
-  Platform,
-} from 'react-native';
+import { Linking, NativeEventEmitter, Platform } from 'react-native';
 
 import {
   IterableInAppCloseSource,
@@ -21,8 +16,8 @@ import { IterableAuthResponse } from './IterableAuthResponse';
 import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
+import { RNIterableAPI } from './RNIterableAPI';
 
-const RNIterableAPI = NativeModules.RNIterableAPI;
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
 /**
