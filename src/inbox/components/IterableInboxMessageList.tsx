@@ -119,7 +119,7 @@ export const IterableInboxMessageList = ({
 
       updateVisibleMessageImpressions(rowInfos);
     },
-    // TODO: Figure out if we need the missing dependencies
+    // MOB-10427: Figure out if we need the missing dependencies
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );

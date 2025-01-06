@@ -101,7 +101,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
 
         IterableApi.getInstance().getInAppManager().addListener(this);
 
-        // TODO: Figure out what the error cases are and handle them appropriately
+        // MOB-10421: Figure out what the error cases are and handle them appropriately
         // This is just here to match the TS types and let the JS thread know when we are done initializing
         promise.resolve(true);
     }
@@ -592,7 +592,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     @Override
     public void onTokenRegistrationSuccessful(String authToken) {
         IterableLogger.v(TAG, "authToken successfully set");
-        //TODO: Pass successhandler to event listener
+        // MOB-10422: Pass successhandler to event listener
         sendEvent(EventName.handleAuthSuccessCalled.name(), null);
     }
 

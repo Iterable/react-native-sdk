@@ -20,8 +20,8 @@ import { RNIterableAPI } from './RNIterableAPI';
 
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
+/* eslint-disable tsdoc/syntax */
 /**
- * @hideconstructor
  * The main class for the Iterable React Native SDK.
  *
  * The majority of the high-level functionality can be accomplished through the
@@ -37,6 +37,7 @@ const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
  * // OR
  * Iterable.setUserId('myUserId');
  */
+/* eslint-enable tsdoc/syntax */
 export class Iterable {
   /**
    * Manager for in app messages
@@ -220,7 +221,7 @@ export class Iterable {
    * ## Registering device token:
    *
    * If `IterableConfig.autoPushRegisteration` is set to `true`, calling
-   * setUserI`d automatically registers the device for push notifications and
+   * `setUserId` automatically registers the device for push notifications and
    * sends the `deviceId` and token to Iterable.
    *
    * ## Optional JWT token parameter:
@@ -740,8 +741,8 @@ export class Iterable {
   /**
    * tsdoc/syntax needs to be disabled as it conflicts with the mermaid syntax.
    * unfortunately, disabling it inline does not appear to work.
-   * eslint-disable tsdoc/syntax
    */
+  /* eslint-disable tsdoc/syntax */
   /**
    * Handle a universal link.
    *
@@ -814,6 +815,7 @@ export class Iterable {
    *  }
    * ```
    */
+  /* eslint-enable tsdoc/syntax */
   static handleAppLink(link: string): Promise<boolean> {
     Iterable.logger.log('handleAppLink');
 
@@ -936,8 +938,7 @@ export class Iterable {
         IterableEventName.handleInAppCalled,
         (messageDict) => {
           const message = IterableInAppMessage.fromDict(messageDict);
-          // TODO: Check if we can use chain operator (?.) here instead
-
+          // MOB-10423: Check if we can use chain operator (?.) here instead
           const result = Iterable.savedConfig.inAppHandler!(message);
           RNIterableAPI.setInAppShowResponse(result);
         }
@@ -947,7 +948,7 @@ export class Iterable {
     if (Iterable.savedConfig.authHandler) {
       let authResponseCallback: IterableAuthResponseResult;
       RNEventEmitter.addListener(IterableEventName.handleAuthCalled, () => {
-        // TODO: Check if we can use chain operator (?.) here instead
+        // MOB-10423: Check if we can use chain operator (?.) here instead
 
         Iterable.savedConfig.authHandler!()
           .then((promiseResult) => {
@@ -1003,7 +1004,7 @@ export class Iterable {
     }
 
     function callUrlHandler(url: string, context: IterableActionContext) {
-      // TODO: Figure out if this is purposeful
+      // MOB-10424: Figure out if this is purposeful
       // eslint-disable-next-line eqeqeq
       if (Iterable.savedConfig.urlHandler?.(url, context) == false) {
         Linking.canOpenURL(url)
@@ -1022,7 +1023,7 @@ export class Iterable {
   /**
    * Retrieves the version number from the package.json file.
    *
-   * @returns {string} The version number as specified in the package.json file.
+   * @returns The version number as specified in the package.json file.
    *
    * @internal
    */

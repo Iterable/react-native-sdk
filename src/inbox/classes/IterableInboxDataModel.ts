@@ -254,13 +254,13 @@ export class IterableInboxDataModel {
   ): IterableInAppMessage[] {
     let sortedFilteredMessages = messages.slice();
 
-    // TODO: Figure out if this is purposeful
+    // MOB-10424: Figure out if this is purposeful
     // eslint-disable-next-line eqeqeq
     if (this.filterFn != undefined) {
       sortedFilteredMessages = sortedFilteredMessages.filter(this.filterFn);
     }
 
-    // TODO: Figure out if this is purposeful
+    // MOB-10424: Figure out if this is purposeful
     // eslint-disable-next-line eqeqeq
     if (this.comparatorFn != undefined) {
       sortedFilteredMessages.sort(this.comparatorFn);

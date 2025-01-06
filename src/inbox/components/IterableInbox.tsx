@@ -272,7 +272,7 @@ export const IterableInbox = ({
       removeInboxChangedListener();
       inboxDataModel.endSession(visibleMessageImpressions);
     };
-    //  TODO: figure out if missing dependency is a bug
+    //  MOB-10427: figure out if missing dependency is a bug
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -289,7 +289,7 @@ export const IterableInbox = ({
         inboxDataModel.endSession(visibleMessageImpressions);
       }
     }
-    //  TODO: figure out if missing dependency is a bug
+    //  MOB-10427: figure out if missing dependency is a bug
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appState]);
 
@@ -303,14 +303,14 @@ export const IterableInbox = ({
         inboxDataModel.endSession(visibleMessageImpressions);
       }
     }
-    //  TODO: figure out if missing dependency is a bug
+    //  MOB-10427: figure out if missing dependency is a bug
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocused]);
 
   //updates the visible rows when visible messages changes
   useEffect(() => {
     inboxDataModel.updateVisibleRows(visibleMessageImpressions);
-    //  TODO: figure out if missing dependency is a bug
+    //  MOB-10427: figure out if missing dependency is a bug
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visibleMessageImpressions]);
 
@@ -319,7 +319,7 @@ export const IterableInbox = ({
     if (isMessageDisplay) {
       returnToInbox();
     }
-    //  TODO: figure out if missing dependency is a bug
+    //  MOB-10427: figure out if missing dependency is a bug
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [returnToInboxTrigger]);
 
@@ -363,7 +363,7 @@ export const IterableInbox = ({
     setSelectedRowViewModelIdx(index);
 
     Iterable.trackInAppOpen(
-      // TODO: Have a safety check for models[index].inAppMessage
+      // MOB-10428: Have a safety check for models[index].inAppMessage
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       models[index].inAppMessage,
@@ -476,7 +476,7 @@ export const IterableInbox = ({
 
   const inboxAnimatedView = (
     <Animated.View
-      //  TODO: Change to use `StyleSheet.create` for styles, per best practices
+      // MOB-10429: Change to use `StyleSheet.create` for styles, per best practices
       // eslint-disable-next-line react-native/no-inline-styles
       style={{
         transform: [
