@@ -1,6 +1,6 @@
 {
   "name": "@iterable/react-native-sdk",
-  "version": "2.0.0-alpha",
+  "version": "2.0.0-alpha-rc.9",
   "description": "Iterable SDK for React Native.",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
@@ -24,6 +24,8 @@
     "ios",
     "cpp",
     "*.podspec",
+    "scripts/autoCreatePackageInfo.js",
+    "scripts/createPackageInfoFile.js",
     "!ios/build",
     "!android/build",
     "!android/gradle",
@@ -36,6 +38,8 @@
     "!**/.*"
   ],
   "scripts": {
+    "add_build_info": "node scripts/autoCreatePackageInfo.js",
+    "preinstall": "yarn add_build_info",
     "example": "yarn workspace @iterable/react-native-sdk-example",
     "test": "jest",
     "test:coverage": "jest --coverage",
@@ -43,7 +47,7 @@
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "docs": "typedoc",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
-    "prepare": "bob build",
+    "prepare": "yarn add_build_info; yarn bob build",
     "release": "release-it"
   },
   "keywords": [
