@@ -86,4 +86,3 @@ android/generated
 .xcode.env.local
 coverage/
 docs/
-itblBuildInfo.ts
