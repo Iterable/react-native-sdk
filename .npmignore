@@ -89,7 +89,6 @@ android/keystores/debug.keystore
 .codeclimate.yml
 example/
 docs/
-scripts/
 coverage/
 .env
 *.local

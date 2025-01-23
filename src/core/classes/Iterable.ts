@@ -1,5 +1,7 @@
 import { Linking, NativeEventEmitter, Platform } from 'react-native';
 
+import { buildInfo } from '../../itblBuildInfo';
+
 import {
   IterableInAppCloseSource,
   IterableInAppDeleteSource,
@@ -1027,9 +1029,7 @@ export class Iterable {
    *
    * @internal
    */
-  private static getVersionFromPackageJson(): string {
-    const json = require('../../../package.json');
-    const version = json.version as string;
-    return version;
+  public static getVersionFromPackageJson(): string {
+    return buildInfo.version as string;
   }
 }

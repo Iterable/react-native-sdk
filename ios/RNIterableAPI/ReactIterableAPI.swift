@@ -578,7 +578,7 @@ extension ReactIterableAPI: IterableURLDelegate {
         let contextDict = ReactIterableAPI.contextToDictionary(context: context)
         sendEvent(withName: EventName.handleUrlCalled.rawValue,
                   body: ["url": url.absoluteString,
-                         "context": contextDict])
+                         "context": contextDict] as [String : Any])
         
         return true
     }
