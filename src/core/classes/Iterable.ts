@@ -46,9 +46,6 @@ export class Iterable {
    */
   static inAppManager = new IterableInAppManager();
 
-  static version = RNIterableAPI.currentVersion;
-  static packageName = RNIterableAPI.packageName;
-
   /**
    * Logger for the Iterable SDK
    * Log level is set with {@link IterableLogLevel}
