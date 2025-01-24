@@ -11,6 +11,11 @@ you have any questions or issues.
   - [react-native-safe-area-context](https://github.com/AppAndFlow/react-native-safe-area-context)
   - [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons)
   - [react-native-webview](https://github.com/react-native-webview/react-native-webview)
+- Update exports to include components which previously were obtained via direct
+  path.  EG: Instead of `import IterableInbox from
+  '@iterable/react-native-sdk/js/IterableInbox'`, you can now import it by doing
+  `import {IterableInbox} from '@iterable/react-native-sdk'`.
+  - **NOTE**: This is a breaking change.  All nested imports will need to be updated.
 - Replaced non-working sample application with a new example app
 - Changed scaffolding to use [react-native-builder-bob](https://callstack.github.io/react-native-builder-bob/create)
 - Fixed linting issues and made lint rules stricter
