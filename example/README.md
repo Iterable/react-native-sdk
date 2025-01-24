@@ -88,6 +88,9 @@ yarn android
 yarn ios
 ```
 
+**NOTE**: If you are getting an error when running ios, make sure that *Xcode > Project Navigator > ReactNativeSdkExample > Build Settings > User
+   Script Sandboxing* is set to **No**
+
 If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
 
 This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
