@@ -1,7 +1,4 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useState, useEffect } from 'react';
-
-import { Iterable } from '@iterable/react-native-sdk';
 
 import { colors, Route } from '../../constants';
 import type { MainScreenParamList } from '../../types';
@@ -17,27 +14,10 @@ const Tab = createBottomTabNavigator<MainScreenParamList>();
 export const Main = () => {
   const {
     isInboxTab,
-    isLoggedIn,
-    loginInProgress,
     returnToInboxTrigger,
     setIsInboxTab,
     setReturnToInboxTrigger,
-    userId,
   } = useIterableApp();
-  const [unreadMessageCount, setUnreadMessageCount] = useState<number>(0);
-
-  useEffect(() => {
-    if (loginInProgress) return;
-    if (isLoggedIn) {
-      Iterable.inAppManager
-        .getMessages()
-        .then((messages) => setUnreadMessageCount(messages.length))
-        .catch((error) => console.error('Failed to get messages:', error));
-    } else {
-      // Reset unread message count when user logs out
-      setUnreadMessageCount(0);
-    }
-  }, [isLoggedIn, loginInProgress, userId]);
 
   return (
     <>
@@ -55,9 +35,6 @@ export const Main = () => {
         <Tab.Screen
           name={Route.Inbox}
           component={Inbox}
-          options={
-            unreadMessageCount ? { tabBarBadge: unreadMessageCount } : {}
-          }
           listeners={() => ({
             tabPress: () => {
               if (isInboxTab) {

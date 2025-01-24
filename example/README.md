@@ -199,6 +199,10 @@ There are two ways to fix this:
    sdk.dir=/path/to/Android/SDK # EG: sdk.dir=/Users/My.Name/Library/Android/sdk
    ```
 
+## Error: `bundler: failed to load command: pod`
+Run `bundle install` in the _example app directory_.  You can also try running
+it in _ios_ in the _example app directory_.
+
 ## Other
 If things are not working and you are stumped as to why, try running the
 following in the _example app directory_:
