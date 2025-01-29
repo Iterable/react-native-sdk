@@ -15,17 +15,14 @@ Iterable. It supports JavaScript and TypeScript.
 Iterable's React Native SDK relies on:
 
 - **React Native**
-    - [React Native 0.75.3+](https://github.com/facebook/react-native)
-    - [@react-navigation/native 6.1.18+](https://www.npmjs.com/package/@react-navigation/native)
-    - [react-native-safe-area-context 4.11.1+](https://www.npmjs.com/package/react-native-safe-area-context)
-    - [react-native-vector-icons 10.2.0+](https://www.npmjs.com/package/react-native-vector-icons)
-    - [react-native-webview 13.12.3+](https://www.npmjs.com/package/react-native-webview)
+    - [React Native 0.75+](https://github.com/facebook/react-native)
+    - [React 18.1+](https://github.com/facebook/react)
 
     _UI Components require additional peer dependencies_
     - [React Navigation 6+](https://github.com/react-navigation/react-navigation)
     - [React Native Safe Area Context 4+](https://github.com/th3rdwave/react-native-safe-area-context)
-    - [React Native Vector Icons 9+](https://github.com/oblador/react-native-vector-icons)
-    - [React Native WebView 11+](https://github.com/react-native-webview/react-native-webview)
+    - [React Native Vector Icons 10+](https://github.com/oblador/react-native-vector-icons)
+    - [React Native WebView 13+](https://github.com/react-native-webview/react-native-webview)
 
 - **iOS**
     - Xcode 12+
@@ -66,6 +63,7 @@ For quick reference, the following table lists the versions of the [Android SDK]
 
 | RN SDK Version                                                              | Android SDK Version                                                          | iOS SDK Version |
 | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | --------------- |
+| [2.0.0-beta](https://www.npmjs.com/package/@iterable/react-native-sdk/v/2.0.0-beta) | [3.5.2](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.5.2) | [6.5.4](https://github.com/Iterable/swift-sdk/releases/tag/6.5.4)
 | [1.3.21](https://www.npmjs.com/package/@iterable/react-native-sdk/v/1.3.20) | [3.5.2](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.5.2) | [6.5.4](https://github.com/Iterable/swift-sdk/releases/tag/6.5.4)
 | [1.3.20](https://www.npmjs.com/package/@iterable/react-native-sdk/v/1.3.20) | [3.5.2](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.5.2) | [6.5.4](https://github.com/Iterable/swift-sdk/releases/tag/6.5.4)
 | [1.3.19](https://www.npmjs.com/package/@iterable/react-native-sdk/v/1.3.19) | [3.5.2](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.5.2) | [6.5.3](https://github.com/Iterable/swift-sdk/releases/tag/6.5.3)

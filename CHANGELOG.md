@@ -1,3 +1,30 @@
+## 2.0.0-beta
+**NOTE**: This is a beta release of the SDK. Please contact Iterable support if
+you have any questions or issues.
+## Fixes
+- Updated React Native to
+  [7.3.1](https://reactnative.dev/docs/0.73/getting-started).  See the version
+  [CHANGELOG](https://github.com/facebook/react-native/releases/tag/v0.73.1) for
+  further details.
+- Updated dependencies, including:
+  - [@react-navigation](https://reactnavigation.org/docs/elements/)
+  - [react-native-safe-area-context](https://github.com/AppAndFlow/react-native-safe-area-context)
+  - [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons)
+  - [react-native-webview](https://github.com/react-native-webview/react-native-webview)
+- Update exports to include components which previously were obtained via direct
+  path.  EG: Instead of `import IterableInbox from
+  '@iterable/react-native-sdk/js/IterableInbox'`, you can now import it by doing
+  `import {IterableInbox} from '@iterable/react-native-sdk'`.
+  - **NOTE**: This is a breaking change.  All nested imports will need to be updated.
+- Replaced non-working sample application with a new example app
+- Changed scaffolding to use [react-native-builder-bob](https://callstack.github.io/react-native-builder-bob/create)
+- Fixed linting issues and made lint rules stricter
+- Fixed unit tests
+- Removed broken integration tests
+- Changed folder structure to prepare for it to be divided into multiple packages
+- Removed duplicate code
+- Made lint rules stricter
+
 ## 1.3.21
 ## Fixes
 - Fixes an issue where react native components that use safe-area-context or react-navigation throw an error because the sdk's components try and use its own local node_modules instead of the consumer's project.
@@ -67,7 +94,7 @@ Iterable.initialize('<YOUR_API_KEY>', config);
 
 This release deprecates `androidSdkUseInMemoryStorageForInApps`, which was introduced in version 1.3.7, and replaces it with `useInMemoryStorageForInApps`.  However, for now:
 
-- Android apps store in-app messages in memory if `useInMemoryStorageForInApps` is `true`, `androidSdkUseInMemoryStorageForInApps` is `true`, or if both are `true`.  
+- Android apps store in-app messages in memory if `useInMemoryStorageForInApps` is `true`, `androidSdkUseInMemoryStorageForInApps` is `true`, or if both are `true`.
 
 - iOS apps store in-app messages in memory if `useInMemoryStorageForInApps` is `true`. `androidSdkUseInMemoryStorageForInApps` does not affect iOS apps.
 
@@ -93,7 +120,7 @@ storing them at rest:
 messages at rest—before or after this update.)
 
 When a user upgrades to a version of your app that uses this version of the SDK
-(or higher), the fields shown above are encrypted. No data that's already stored 
+(or higher), the fields shown above are encrypted. No data that's already stored
 is lost.
 
 For more information about this encryption in iOS, examine the source code for
@@ -118,16 +145,16 @@ them at rest:
 (Note that, in Android apps, Iterable's React Native SDK does not store the last
 push payload at rest—before or after this update.)
 
-For more information about this encryption in Android, examine the source code 
+For more information about this encryption in Android, examine the source code
 for Iterable's Android SDK (upon which the React Native SDK relies):
 [`IterableKeychain`](https://github.com/Iterable/iterable-android-sdk/blob/master/iterableapi/src/main/java/com/iterable/iterableapi/IterableKeychain.kt).
 
 ##### Storing in-app messages in memory
-This release also allows you to have your Android apps (regardless of `minSdkVersion`) 
+This release also allows you to have your Android apps (regardless of `minSdkVersion`)
 store in-app messages in memory, rather than in an unencrypted local file.
 However, an unencrypted local file is still the default option.
 
-To store in-app messages in memory, on `IterableConfig`, set 
+To store in-app messages in memory, on `IterableConfig`, set
 `androidSdkUseInMemoryStorageForInApps` to `true` (defaults to `false`):
 
 ```javascript
@@ -138,7 +165,7 @@ Iterable.initialize('<YOUR_API_KEY>', config);
 ```
 
 When users upgrade to a version of your Android app that uses this version of
-the SDK (or higher), and you've set this configuration option to `true`, the 
+the SDK (or higher), and you've set this configuration option to `true`, the
 local file used for in-app message storage (if it already exists) is deleted
 However, no data is lost.
 
@@ -158,7 +185,7 @@ encrypt data):
 ### Objective-C compatibility headers for React Native 0.68+
 To help solve build errors that can arise when using Iterable's SDK with React
 Native 0.68+, which uses Objective-C++, we've created some Objective-C
-compatibility headers that you can import into your project. For details, read 
+compatibility headers that you can import into your project. For details, read
 [Installing Iterable's React Native SDK — Step 3.3: Import the SDK](https://support.iterable.com/hc/articles/360045714132#step-3-3-import-the-sdk).
 
 ## 1.1.0
