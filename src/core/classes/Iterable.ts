@@ -19,6 +19,7 @@ import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
 import { RNIterableAPI } from './RNIterableAPI';
+import type { IterableAuthFailure } from '../types';
 
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
@@ -999,9 +1000,17 @@ export class Iterable {
       );
       RNEventEmitter.addListener(
         IterableEventName.handleAuthFailureCalled,
-        () => {
+        (authFailure: IterableAuthFailure) => {
           authResponseCallback = IterableAuthResponseResult.FAILURE;
-        }
+          
+            if (authResponseCallback === IterableAuthResponseResult.FAILURE) {
+              const authResponse = promiseResult as IterableAuthResponse;
+              if (authResponse?.failureCallback) {
+                authResponse.failureCallback(authFailure);
+              }
+            }
+          }
+        
       );
     }
 

@@ -7,7 +7,7 @@ import {
 import { IterableAction } from './IterableAction';
 import type { IterableActionContext } from './IterableActionContext';
 import type { IterableAuthResponse } from './IterableAuthResponse';
-
+import type { IterableAuthFailure } from '../types/IterableAuthFailure';
 /**
  * An IterableConfig object sets various properties of the SDK.
  *
@@ -203,7 +203,7 @@ export class IterableConfig {
    * @returns A promise that resolves to an `IterableAuthResponse`, a `string`,
    * or `undefined`.
    */
-  authHandler?: () => Promise<IterableAuthResponse | string | undefined>;
+  authHandler?: () => Promise<IterableAuthResponse | string | IterableAuthFailure | undefined>;
 
   /**
    * Set the verbosity of Android and iOS project's log system.
