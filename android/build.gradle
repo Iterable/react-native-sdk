@@ -95,7 +95,7 @@ dependencies {
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-  api "com.iterable:iterableapi:3.5.2"
-    // api project(":iterableapi") // links to local android SDK repo rather than by release
+  api "com.iterable:iterableapi:3.5.10"
+//  api project(":iterableapi") // links to local android SDK repo rather than by release
 }
 

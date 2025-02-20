@@ -21,6 +21,7 @@ import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.modules.core.RCTNativeAppEventEmitter;
+import com.iterable.iterableapi.AuthFailure;
 import com.iterable.iterableapi.InboxSessionManager;
 import com.iterable.iterableapi.IterableAction;
 import com.iterable.iterableapi.IterableActionContext;
@@ -109,7 +110,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     @ReactMethod
     public void setEmail(@Nullable String email) {
         IterableLogger.d(TAG, "setEmail: " + email);
-        
+
         IterableApi.getInstance().setEmail(email);
     }
 
@@ -154,7 +155,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     @ReactMethod
     public void setUserId(@Nullable String userId, @Nullable String authToken) {
         IterableLogger.d(TAG, "setUserId: " + userId + " authToken: " + authToken);
-        
+
         IterableApi.getInstance().setUserId(userId, authToken);
     }
 
@@ -595,12 +596,26 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         // MOB-10422: Pass successhandler to event listener
         sendEvent(EventName.handleAuthSuccessCalled.name(), null);
     }
+    
+  @Override
+  public void onAuthFailure(AuthFailure authFailure) {
 
-    @Override
-    public void onTokenRegistrationFailed(Throwable object) {
-        IterableLogger.v(TAG, "Failed to set authToken");
-        sendEvent(EventName.handleAuthFailureCalled.name(), null);
+      //Create a JSON object for the authFailure object
+    JSONObject messageJson = new JSONObject();
+    try {
+      messageJson.put("userKey", authFailure.userKey);
+      messageJson.put("failedAuthToken", authFailure.failedAuthToken);
+      messageJson.put("failedRequestTime", authFailure.failedRequestTime);
+      messageJson.put("failureReason", authFailure.failureReason.name());
+      WritableMap eventData = Serialization.convertJsonToMap(messageJson);
+      sendEvent(EventName.handleUrlCalled.name(), eventData);
+    } catch (JSONException e) {
+      IterableLogger.v(TAG, "Failed to set authToken");
     }
+
+
+
+  }
 
     @ReactMethod
     public void addListener(String eventName) {
