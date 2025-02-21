@@ -206,6 +206,15 @@ export class IterableConfig {
   authHandler?: () => Promise<IterableAuthResponse | string | IterableAuthFailure | undefined>;
 
   /**
+   * A callback function that is called when the SDK encounters an error while
+   * validing the JWT.
+   * 
+   * The retry for JWT should be automatically handled by the native SDK, so 
+   * this is just for logging/transparency purposes.
+   */
+  onJWTError?: (authFailure: IterableAuthFailure) => void;
+
+  /**
    * Set the verbosity of Android and iOS project's log system.
    *
    * By default, you will be able to see info level logs printed in IDE when running the app.

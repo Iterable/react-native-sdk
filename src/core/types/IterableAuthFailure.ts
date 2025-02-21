@@ -1,3 +1,5 @@
+import type { IterableAuthFailureReason } from "../enums/IterableAuthFailureReason";
+
 /**
  * Represents an auth failure object.
  */
@@ -12,5 +14,5 @@ export interface IterableAuthFailure {
   failedRequestTime: number;
 
   /** indicates a reason for failure */
-  failureReason: string;
+  failureReason: IterableAuthFailureReason;
 } 

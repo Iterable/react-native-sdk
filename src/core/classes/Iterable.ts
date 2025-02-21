@@ -953,12 +953,16 @@ export class Iterable {
       RNEventEmitter.addListener(IterableEventName.handleAuthCalled, () => {
         // MOB-10423: Check if we can use chain operator (?.) here instead
 
+
+        //This is where RN SDK asks front end of the client/app to pass authToken
         Iterable.savedConfig.authHandler!()
           .then((promiseResult) => {
             // Promise result can be either just String OR of type AuthResponse.
             // If type AuthReponse, authToken will be parsed looking for `authToken` within promised object. Two additional listeners will be registered for success and failure callbacks sent by native bridge layer.
             // Else it will be looked for as a String.
             if (typeof promiseResult === typeof new IterableAuthResponse()) {
+
+              // Set authToken at bridge layer
               RNIterableAPI.passAlongAuthToken(
                 (promiseResult as IterableAuthResponse).authToken
               );
@@ -973,6 +977,9 @@ export class Iterable {
                 } else if (
                   authResponseCallback === IterableAuthResponseResult.FAILURE
                 ) {
+                  // We are currently only reporting JWT related errors.  In
+                  // the future, we should handle other types of errors as 
+                  // well.
                   if ((promiseResult as IterableAuthResponse).failureCallback) {
                     (promiseResult as IterableAuthResponse).failureCallback?.();
                   }
@@ -998,19 +1005,17 @@ export class Iterable {
           authResponseCallback = IterableAuthResponseResult.SUCCESS;
         }
       );
+
       RNEventEmitter.addListener(
         IterableEventName.handleAuthFailureCalled,
-        (authFailure: IterableAuthFailure) => {
+        (authFailureResponse: IterableAuthFailure) => {
+          // This line will just mark the flag for above listener to indicate something failed
+          // catch(err) will only indicate failure on high level. No actions should be taken inside catch(err)
           authResponseCallback = IterableAuthResponseResult.FAILURE;
-          
-            if (authResponseCallback === IterableAuthResponseResult.FAILURE) {
-              const authResponse = promiseResult as IterableAuthResponse;
-              if (authResponse?.failureCallback) {
-                authResponse.failureCallback(authFailure);
-              }
-            }
-          }
-        
+
+          // This line will call the actual JWT error with authFailure objec
+          Iterable.savedConfig?.onJWTError?.(authFailureResponse);
+        }
       );
     }
 
