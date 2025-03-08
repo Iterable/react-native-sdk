@@ -649,6 +649,19 @@ extension ReactIterableAPI: IterableInAppDelegate {
 }
 
 extension ReactIterableAPI: IterableAuthDelegate {
+    func onAuthFailure(_ authFailure: IterableSDK.AuthFailure) {
+        ITBInfo()
+        
+        var failureDict: [String: Any] = [:]
+        failureDict["userKey"] = authFailure.userKey
+        failureDict["failedAuthToken"] = authFailure.failedAuthToken
+        failureDict["failedRequestTime"] = authFailure.failedRequestTime
+        failureDict["failureReason"] = authFailure.failureReason.rawValue
+        
+        sendEvent(withName: EventName.handleAuthFailureCalled.rawValue,
+                  body: failureDict)
+    }
+    
     func onAuthTokenRequested(completion: @escaping AuthTokenRetrievalHandler) {
         ITBInfo()
         
@@ -674,13 +687,12 @@ extension ReactIterableAPI: IterableAuthDelegate {
                     completion(nil)
                 }
                 
+              //TODO: RN should be able to handle nil case as well. Or we can wrap this up under one of the existing AuthFailure. But again, its not a authFailure in this one. Its a timeout error.
+              // TODO: Create a Dictionary representing AuthFailure object due to `null` auth token and pass it in body instead of passing `nil`
+              
                 self.sendEvent(withName: EventName.handleAuthFailureCalled.rawValue,
                                body: nil)
             }
         }
-    }
-    
-    func onTokenRegistrationFailed(_ reason: String?) {
-        
     }
 }
