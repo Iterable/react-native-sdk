@@ -1,6 +1,6 @@
 {
   "name": "@iterable/react-native-sdk",
-  "version": "2.0.0-beta.expo.1",
+  "version": "2.0.0-beta.expo.4",
   "description": "Iterable SDK for React Native.",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
@@ -26,6 +26,7 @@
     "*.podspec",
     "scripts/autoCreatePackageInfo.js",
     "scripts/createPackageInfoFile.js",
+    "app.plugin.js",
     "!ios/build",
     "!android/build",
     "!android/gradle",
@@ -150,7 +151,10 @@
       [
         "commonjs",
         {
-          "esm": true
+          "esm": true,
+          "include": [
+            "src/**/*"
+          ]
         }
       ],
       [
@@ -176,6 +180,7 @@
   "expo": {
     "autolinking": {
       "nativeModulesDir": "./src"
-    }
+    },
+    "plugin": "./app.plugin.js"
   }
 }

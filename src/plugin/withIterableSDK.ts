@@ -1,4 +1,6 @@
-import { type ConfigPlugin } from '@expo/config-plugins';
+import { type ConfigPlugin, createRunOncePlugin } from '@expo/config-plugins';
+
+const pkg = require('../package.json');
 
 const withIterableSDK: ConfigPlugin = (config) => {
   console.log('withIterableSDK', config);
@@ -17,4 +19,4 @@ const withIterableSDK: ConfigPlugin = (config) => {
   return config;
 };
 
-export default withIterableSDK;
+export default createRunOncePlugin(withIterableSDK, pkg.name, pkg.version);

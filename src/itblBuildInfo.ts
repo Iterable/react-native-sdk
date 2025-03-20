@@ -3,5 +3,5 @@
  * It contains the version of the package
  */
 export const buildInfo = {
-  version: '2.0.0-beta.expo.1',
+  version: '2.0.0-beta.expo.4',
 };
