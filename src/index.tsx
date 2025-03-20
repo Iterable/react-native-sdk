@@ -52,3 +52,9 @@ export {
   type IterableInboxProps,
   type IterableInboxRowViewModel,
 } from './inbox';
+
+// // Export a different implementation based on platform
+// export const IterableSDK = Platform.select({
+//   native: require('./native').default,
+//   default: require('./expo').default,
+// });
