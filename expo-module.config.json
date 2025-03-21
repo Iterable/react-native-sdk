@@ -1,0 +1,20 @@
+{
+  "platforms": ["ios", "android"],
+  "ios": {
+    "modules": ["IterableReactNativeSDK"]
+  },
+  "android": {
+    "modules": ["com.iterable.reactnative.RNIterableAPIModule"]
+  },
+  "plugin": {
+    "androidPackage": "com.iterable.reactnative",
+    "build": {
+      "ios": {
+        "podspecName": "RNIterableAPI"
+      },
+      "android": {
+        "sourceDir": "android"
+      }
+    }
+  }
+}

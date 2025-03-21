@@ -27,6 +27,7 @@
     "scripts/autoCreatePackageInfo.js",
     "scripts/createPackageInfoFile.js",
     "app.plugin.js",
+    "expo-module.config.json",
     "!ios/build",
     "!android/build",
     "!android/gradle",
@@ -48,6 +49,8 @@
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "docs": "typedoc",
     "expo-module": "expo-module",
+    "expo:build": "expo-module build",
+    "expo:clean": "expo-module clean",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prepare": "yarn add_build_info; yarn bob build",
     "release": "release-it"
@@ -113,12 +116,16 @@
   },
   "peerDependencies": {
     "@react-navigation/native": "*",
-    "expo": "*",
     "react": "*",
     "react-native": "*",
     "react-native-safe-area-context": "*",
     "react-native-vector-icons": "*",
     "react-native-webview": "*"
+  },
+  "peerDependenciesMeta": {
+    "expo": {
+      "optional": true
+    }
   },
   "workspaces": [
     "example"
