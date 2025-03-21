@@ -19,19 +19,21 @@
 
 // export default withIterableSDK;
 
-import { type ConfigPlugin, createRunOncePlugin } from '@expo/config-plugins';
+import { type ConfigPlugin, withPlugins } from '@expo/config-plugins';
 
-const withIterableSDK: ConfigPlugin = (config, _props) => {
-  console.log(` _props:`, _props);
-  console.log(` config:`, config);
-  // const props = _props || { androidApiKey: '', iosApiKey: '', baseUrl: '' };
+const withIterableSDK: ConfigPlugin = (c) => {
+  return withPlugins(c, [
+    // Add Iterable SDK specific configurations
+    (config) => {
+      // Ensure the config object exists
+      if (!config.plugins) {
+        config.plugins = [];
+      }
 
-  // config = withAndroidBrazeSdk(config, props);
-  // config = withIOSBrazeSdk(config, props);
-
-  return config;
+      // Return the modified config
+      return config;
+    },
+  ]);
 };
 
-const pkg = require('../package.json');
-
-export default createRunOncePlugin(withIterableSDK, pkg.name, pkg.version);
+export default withIterableSDK;

@@ -1,14 +1,18 @@
-// Using CommonJS syntax instead of ES modules
-// const { withPlugins } = require('@expo/config-plugins');
+const { withPlugins } = require('@expo/config-plugins');
 
-// const withIterableSDK = (config) => {
-//   return withPlugins(config, [
-//     // Your plugin modifications will go here
-//   ]);
-// };
+const withIterableSDK = (config) => {
+  return withPlugins(config, [
+    // Add Iterable SDK specific configurations
+    (config) => {
+      // Ensure the config object exists
+      if (!config.plugins) {
+        config.plugins = [];
+      }
 
-// module.exports = withIterableSDK;
+      // Return the modified config
+      return config;
+    },
+  ]);
+};
 
-// /Users/Loren.Posen/mobile/RN/react-native-sdk/lib/commonjs/plugin/withIterableSDK.js
-
-module.exports = require('./lib/commonjs/plugin/withIterableSDK');
+module.exports = withIterableSDK;
