@@ -2,19 +2,19 @@ import { useIsFocused } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import {
   Animated,
-  NativeEventEmitter,
   Platform,
   StyleSheet,
   Text,
   View,
+  NativeModules,
+  NativeEventEmitter,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import {
   Iterable,
-  RNIterableAPI,
   useAppStateListener,
-  useDeviceOrientation,
+  useDeviceOrientation
 } from '../../core';
 import { IterableInAppDeleteSource, IterableInAppLocation } from '../../inApp';
 
@@ -32,6 +32,7 @@ import {
   type IterableInboxMessageListProps,
 } from './IterableInboxMessageList';
 
+const RNIterableAPI = NativeModules.RNIterableAPI
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
 const DEFAULT_HEADLINE_HEIGHT = 60;
