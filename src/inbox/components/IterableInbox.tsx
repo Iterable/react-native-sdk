@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import {
   Animated,
   NativeEventEmitter,
+  NativeModules,
   Platform,
   StyleSheet,
   Text,
@@ -10,12 +11,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import {
-  Iterable,
-  RNIterableAPI,
-  useAppStateListener,
-  useDeviceOrientation,
-} from '../../core';
+import { Iterable, useAppStateListener, useDeviceOrientation } from '../../core';
 import { IterableInAppDeleteSource, IterableInAppLocation } from '../../inApp';
 
 import { IterableInboxDataModel } from '../classes';
@@ -32,6 +28,7 @@ import {
   type IterableInboxMessageListProps,
 } from './IterableInboxMessageList';
 
+const RNIterableAPI = NativeModules.RNIterableAPI;
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
 const DEFAULT_HEADLINE_HEIGHT = 60;
@@ -43,9 +40,7 @@ const HEADLINE_PADDING_LEFT_LANDSCAPE = 70;
  * Props for the IterableInbox component.
  */
 export interface IterableInboxProps
-  extends Partial<
-    Pick<IterableInboxMessageListProps, 'messageListItemLayout'>
-  > {
+  extends Partial<Pick<IterableInboxMessageListProps, 'messageListItemLayout'>> {
   /**
    * Flag which, when switched, returns a user to their inbox from _within_ the
    * inbox component (from the details of the particular message to the message
@@ -201,11 +196,8 @@ export const IterableInbox = ({
   const appState = useAppStateListener();
   const isFocused = useIsFocused();
 
-  const [selectedRowViewModelIdx, setSelectedRowViewModelIdx] =
-    useState<number>(0);
-  const [rowViewModels, setRowViewModels] = useState<
-    IterableInboxRowViewModel[]
-  >([]);
+  const [selectedRowViewModelIdx, setSelectedRowViewModelIdx] = useState<number>(0);
+  const [rowViewModels, setRowViewModels] = useState<IterableInboxRowViewModel[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [animatedValue] = useState<Animated.Value>(new Animated.Value(0));
   const [isMessageDisplay, setIsMessageDisplay] = useState<boolean>(false);
@@ -231,15 +223,10 @@ export const IterableInbox = ({
       backgroundColor: ITERABLE_INBOX_COLORS.CONTAINER_BACKGROUND,
       fontSize: 40,
       fontWeight: 'bold',
-      height:
-        Platform.OS === 'android'
-          ? ANDROID_HEADLINE_HEIGHT
-          : DEFAULT_HEADLINE_HEIGHT,
+      height: Platform.OS === 'android' ? ANDROID_HEADLINE_HEIGHT : DEFAULT_HEADLINE_HEIGHT,
       marginTop: 0,
       paddingBottom: 10,
-      paddingLeft: isPortrait
-        ? HEADLINE_PADDING_LEFT_PORTRAIT
-        : HEADLINE_PADDING_LEFT_LANDSCAPE,
+      paddingLeft: isPortrait ? HEADLINE_PADDING_LEFT_PORTRAIT : HEADLINE_PADDING_LEFT_LANDSCAPE,
       paddingTop: 10,
       width: '100%',
     },
@@ -258,9 +245,7 @@ export const IterableInbox = ({
   });
 
   const navTitleHeight =
-    DEFAULT_HEADLINE_HEIGHT +
-    styles.headline.paddingTop +
-    styles.headline.paddingBottom;
+    DEFAULT_HEADLINE_HEIGHT + styles.headline.paddingTop + styles.headline.paddingBottom;
 
   //fetches inbox messages and adds listener for inbox changes on mount
   useEffect(() => {
@@ -348,11 +333,7 @@ export const IterableInbox = ({
     return inboxDataModel.getHtmlContentForMessageId(id);
   }
 
-  function handleMessageSelect(
-    id: string,
-    index: number,
-    models: IterableInboxRowViewModel[]
-  ) {
+  function handleMessageSelect(id: string, index: number, models: IterableInboxRowViewModel[]) {
     const newRowViewModels = models.map((rowViewModel) => {
       return rowViewModel.inAppMessage.messageId === id
         ? { ...rowViewModel, read: true }
@@ -367,17 +348,14 @@ export const IterableInbox = ({
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       models[index].inAppMessage,
-      IterableInAppLocation.inbox
+      IterableInAppLocation.inbox,
     );
 
     slideLeft();
   }
 
   function deleteRow(messageId: string) {
-    inboxDataModel.deleteItemById(
-      messageId,
-      IterableInAppDeleteSource.inboxSwipe
-    );
+    inboxDataModel.deleteItemById(messageId, IterableInAppDeleteSource.inboxSwipe);
     fetchInboxMessages();
   }
 
@@ -390,24 +368,17 @@ export const IterableInbox = ({
     setIsMessageDisplay(false);
   }
 
-  function updateVisibleMessageImpressions(
-    messageImpressions: IterableInboxImpressionRowInfo[]
-  ) {
+  function updateVisibleMessageImpressions(messageImpressions: IterableInboxImpressionRowInfo[]) {
     setVisibleMessageImpressions(messageImpressions);
   }
 
-  function showMessageDisplay(
-    rowViewModelList: IterableInboxRowViewModel[],
-    index: number
-  ) {
+  function showMessageDisplay(rowViewModelList: IterableInboxRowViewModel[], index: number) {
     const selectedRowViewModel = rowViewModelList[index];
 
     return selectedRowViewModel ? (
       <IterableInboxMessageDisplay
         rowViewModel={selectedRowViewModel}
-        inAppContentPromise={getHtmlContentForRow(
-          selectedRowViewModel.inAppMessage.messageId
-        )}
+        inAppContentPromise={getHtmlContentForRow(selectedRowViewModel.inAppMessage.messageId)}
         returnToInbox={returnToInbox}
         deleteRow={(messageId: string) => deleteRow(messageId)}
         contentWidth={width}
@@ -421,9 +392,7 @@ export const IterableInbox = ({
       <View style={styles.messageListContainer}>
         {showNavTitle ? (
           <Text style={styles.headline}>
-            {customizations?.navTitle
-              ? customizations?.navTitle
-              : defaultInboxTitle}
+            {customizations?.navTitle ? customizations?.navTitle : defaultInboxTitle}
           </Text>
         ) : null}
         {rowViewModels.length ? (
@@ -437,7 +406,7 @@ export const IterableInbox = ({
               handleMessageSelect(messageId, index, rowViewModels)
             }
             updateVisibleMessageImpressions={(
-              messageImpressions: IterableInboxImpressionRowInfo[]
+              messageImpressions: IterableInboxImpressionRowInfo[],
             ) => updateVisibleMessageImpressions(messageImpressions)}
             contentWidth={width}
             isPortrait={isPortrait}
