@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react';
+import {
+  useEffect,
+  useState } from 'react';
 import {
   Linking,
   ScrollView,
@@ -15,7 +17,7 @@ import {
   IterableAction,
   IterableActionContext,
   IterableActionSource,
-  IterableEdgeInsets,
+  // IterableEdgeInsets,
 } from '../../core';
 import {
   IterableHtmlInAppContent,
@@ -75,9 +77,11 @@ export const IterableInboxMessageDisplay = ({
   isPortrait,
 }: IterableInboxMessageDisplayProps) => {
   const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title;
-  const [inAppContent, setInAppContent] = useState<IterableHtmlInAppContent>(
-    new IterableHtmlInAppContent(new IterableEdgeInsets(0, 0, 0, 0), '')
-  );
+  // const [inAppContent] = useState<IterableHtmlInAppContent>(
+  //   new IterableHtmlInAppContent(new IterableEdgeInsets(0, 0, 0, 0), '')
+  // );
+  const [inAppContent, setInAppContent] = useState<IterableHtmlInAppContent | null>(null);
+  console.log(` inAppContent:`, inAppContent);
 
   const styles = StyleSheet.create({
     contentContainer: {
@@ -253,15 +257,17 @@ export const IterableInboxMessageDisplay = ({
           </View>
         </View>
       </View>
-      <ScrollView contentContainerStyle={styles.contentContainer}>
-        <WebView
-          originWhiteList={['*']}
-          source={{ html: inAppContent.html }}
-          style={{ width: contentWidth }}
-          onMessage={(event) => handleInAppLinkAction(event)}
-          injectedJavaScript={JS}
-        />
-      </ScrollView>
+      {inAppContent && (
+        <ScrollView contentContainerStyle={styles.contentContainer}>
+            <WebView
+              originWhiteList={['*']}
+              source={{ html: inAppContent.html }}
+              style={{ width: contentWidth }}
+              onMessage={(event) => handleInAppLinkAction(event)}
+              injectedJavaScript={JS}
+          />
+        </ScrollView>)
+      }
     </View>
   );
 };
