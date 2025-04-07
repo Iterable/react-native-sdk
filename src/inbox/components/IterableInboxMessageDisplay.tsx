@@ -10,21 +10,15 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import { WebView, type WebViewMessageEvent } from 'react-native-webview';
 
-import {
-  Iterable,
-  IterableAction,
-  IterableActionContext,
-  IterableActionSource,
-  IterableEdgeInsets,
-} from '../../core';
+import { Iterable, IterableAction, IterableActionContext, IterableActionSource } from '../../core';
 import {
   IterableHtmlInAppContent,
   IterableInAppCloseSource,
   IterableInAppLocation,
 } from '../../inApp';
 
-import { type IterableInboxRowViewModel } from '../types';
 import { ITERABLE_INBOX_COLORS } from '../constants';
+import { type IterableInboxRowViewModel } from '../types';
 
 /**
  * Props for the IterableInboxMessageDisplay component.
@@ -75,9 +69,7 @@ export const IterableInboxMessageDisplay = ({
   isPortrait,
 }: IterableInboxMessageDisplayProps) => {
   const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title;
-  const [inAppContent, setInAppContent] = useState<IterableHtmlInAppContent>(
-    new IterableHtmlInAppContent(new IterableEdgeInsets(0, 0, 0, 0), '')
-  );
+  const [inAppContent, setInAppContent] = useState<IterableHtmlInAppContent | null>(null);
 
   const styles = StyleSheet.create({
     contentContainer: {
@@ -179,16 +171,12 @@ export const IterableInboxMessageDisplay = ({
     const source = IterableActionSource.inApp;
     const context = new IterableActionContext(action, source);
 
-    Iterable.trackInAppClick(
-      rowViewModel.inAppMessage,
-      IterableInAppLocation.inbox,
-      URL
-    );
+    Iterable.trackInAppClick(rowViewModel.inAppMessage, IterableInAppLocation.inbox, URL);
     Iterable.trackInAppClose(
       rowViewModel.inAppMessage,
       IterableInAppLocation.inbox,
       IterableInAppCloseSource.link,
-      URL
+      URL,
     );
 
     //handle delete action
@@ -228,40 +216,35 @@ export const IterableInboxMessageDisplay = ({
               Iterable.trackInAppClose(
                 rowViewModel.inAppMessage,
                 IterableInAppLocation.inbox,
-                IterableInAppCloseSource.back
+                IterableInAppCloseSource.back,
               );
             }}
           >
             <View style={styles.returnButton}>
-              <Icon
-                name="chevron-back-outline"
-                style={styles.returnButtonIcon}
-              />
+              <Icon name="chevron-back-outline" style={styles.returnButtonIcon} />
               <Text style={styles.returnButtonText}>Inbox</Text>
             </View>
           </TouchableWithoutFeedback>
         </View>
         <View style={styles.messageTitleContainer}>
           <View style={styles.messageTitle}>
-            <Text
-              numberOfLines={1}
-              ellipsizeMode="tail"
-              style={styles.messageTitleText}
-            >
+            <Text numberOfLines={1} ellipsizeMode="tail" style={styles.messageTitleText}>
               {messageTitle}
             </Text>
           </View>
         </View>
       </View>
-      <ScrollView contentContainerStyle={styles.contentContainer}>
-        <WebView
-          originWhiteList={['*']}
-          source={{ html: inAppContent.html }}
-          style={{ width: contentWidth }}
-          onMessage={(event) => handleInAppLinkAction(event)}
-          injectedJavaScript={JS}
-        />
-      </ScrollView>
+      {inAppContent && (
+        <ScrollView contentContainerStyle={styles.contentContainer}>
+          <WebView
+            originWhiteList={['*']}
+            source={{ html: inAppContent.html }}
+            style={{ width: contentWidth }}
+            onMessage={(event) => handleInAppLinkAction(event)}
+            injectedJavaScript={JS}
+          />
+        </ScrollView>
+      )}
     </View>
   );
 };
