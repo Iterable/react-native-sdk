@@ -90,7 +90,7 @@ export class Iterable {
    */
   static initialize(
     apiKey: string,
-    config: IterableConfig = new IterableConfig()
+    config: IterableConfig = new IterableConfig(),
   ): Promise<boolean> {
     Iterable.savedConfig = config;
 
@@ -114,7 +114,7 @@ export class Iterable {
   static initialize2(
     apiKey: string,
     config: IterableConfig = new IterableConfig(),
-    apiEndPoint: string
+    apiEndPoint: string,
   ): Promise<boolean> {
     Iterable.savedConfig = config;
 
@@ -125,12 +125,7 @@ export class Iterable {
     this.setupEventHandlers();
     const version = this.getVersionFromPackageJson();
 
-    return RNIterableAPI.initialize2WithApiKey(
-      apiKey,
-      config.toDict(),
-      version,
-      apiEndPoint
-    );
+    return RNIterableAPI.initialize2WithApiKey(apiKey, config.toDict(), version, apiEndPoint);
   }
 
   /**
@@ -325,19 +320,13 @@ export class Iterable {
   static getAttributionInfo(): Promise<IterableAttributionInfo | undefined> {
     Iterable?.logger?.log('getAttributionInfo');
 
-    return RNIterableAPI.getAttributionInfo().then(
-      (dict?: IterableAttributionInfo) => {
-        if (dict) {
-          return new IterableAttributionInfo(
-            dict.campaignId,
-            dict.templateId,
-            dict.messageId
-          );
-        } else {
-          return undefined;
-        }
+    return RNIterableAPI.getAttributionInfo().then((dict?: IterableAttributionInfo) => {
+      if (dict) {
+        return new IterableAttributionInfo(dict.campaignId, dict.templateId, dict.messageId);
+      } else {
+        return undefined;
       }
-    );
+    });
   }
 
   /**
@@ -404,7 +393,7 @@ export class Iterable {
     templateId: number,
     messageId: string | undefined,
     appAlreadyRunning: boolean,
-    dataFields?: unknown
+    dataFields?: unknown,
   ) {
     Iterable?.logger?.log('trackPushOpenWithCampaignId');
 
@@ -413,7 +402,7 @@ export class Iterable {
       templateId,
       messageId,
       appAlreadyRunning,
-      dataFields
+      dataFields,
     );
   }
 
@@ -491,11 +480,7 @@ export class Iterable {
    * Iterable.trackPurchase(30.0, items, dataFields);
    * ```
    */
-  static trackPurchase(
-    total: number,
-    items: IterableCommerceItem[],
-    dataFields?: unknown
-  ) {
+  static trackPurchase(total: number, items: IterableCommerceItem[], dataFields?: unknown) {
     Iterable?.logger?.log('trackPurchase');
 
     RNIterableAPI.trackPurchase(total, items, dataFields);
@@ -520,10 +505,7 @@ export class Iterable {
    * SDK's default rendering. However, it's also possible to manually track
    * these events by calling this method.
    */
-  static trackInAppOpen(
-    message: IterableInAppMessage,
-    location: IterableInAppLocation
-  ) {
+  static trackInAppOpen(message: IterableInAppMessage, location: IterableInAppLocation) {
     Iterable?.logger?.log('trackInAppOpen');
 
     RNIterableAPI.trackInAppOpen(message.messageId, location);
@@ -553,7 +535,7 @@ export class Iterable {
   static trackInAppClick(
     message: IterableInAppMessage,
     location: IterableInAppLocation,
-    clickedUrl: string
+    clickedUrl: string,
   ) {
     Iterable?.logger?.log('trackInAppClick');
 
@@ -586,16 +568,11 @@ export class Iterable {
     message: IterableInAppMessage,
     location: IterableInAppLocation,
     source: IterableInAppCloseSource,
-    clickedUrl?: string
+    clickedUrl?: string,
   ) {
     Iterable?.logger?.log('trackInAppClose');
 
-    RNIterableAPI.trackInAppClose(
-      message.messageId,
-      location,
-      source,
-      clickedUrl
-    );
+    RNIterableAPI.trackInAppClose(message.messageId, location, source, clickedUrl);
   }
 
   /**
@@ -637,7 +614,7 @@ export class Iterable {
   static inAppConsume(
     message: IterableInAppMessage,
     location: IterableInAppLocation,
-    source: IterableInAppDeleteSource
+    source: IterableInAppDeleteSource,
   ) {
     Iterable?.logger?.log('inAppConsume');
 
@@ -709,10 +686,7 @@ export class Iterable {
    * @remarks
    * **IMPORTANT**: `mergeNestedObjects` only works for data that is stored up to one level deep within an object (for example, `{mySettings:{mobile:true}}`). Note that `mergeNestedObjects` applies to objects, not arrays.
    */
-  static updateUser(
-    dataFields: unknown | undefined,
-    mergeNestedObjects: boolean
-  ) {
+  static updateUser(dataFields: unknown | undefined, mergeNestedObjects: boolean) {
     Iterable?.logger?.log('updateUser');
 
     RNIterableAPI.updateUser(dataFields, mergeNestedObjects);
@@ -865,7 +839,7 @@ export class Iterable {
     unsubscribedMessageTypeIds: number[] | undefined,
     subscribedMessageTypeIds: number[] | undefined,
     campaignId: number,
-    templateId: number
+    templateId: number,
   ) {
     Iterable?.logger?.log('updateSubscriptions');
 
@@ -875,7 +849,7 @@ export class Iterable {
       unsubscribedMessageTypeIds,
       subscribedMessageTypeIds,
       campaignId,
-      templateId
+      templateId,
     );
   }
 
@@ -903,9 +877,7 @@ export class Iterable {
     //Remove all listeners to avoid duplicate listeners
     RNEventEmitter.removeAllListeners(IterableEventName.handleUrlCalled);
     RNEventEmitter.removeAllListeners(IterableEventName.handleInAppCalled);
-    RNEventEmitter.removeAllListeners(
-      IterableEventName.handleCustomActionCalled
-    );
+    RNEventEmitter.removeAllListeners(IterableEventName.handleCustomActionCalled);
     RNEventEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
 
     if (Iterable.savedConfig.urlHandler) {
@@ -926,26 +898,20 @@ export class Iterable {
     }
 
     if (Iterable.savedConfig.customActionHandler) {
-      RNEventEmitter.addListener(
-        IterableEventName.handleCustomActionCalled,
-        (dict) => {
-          const action = IterableAction.fromDict(dict.action);
-          const context = IterableActionContext.fromDict(dict.context);
-          Iterable.savedConfig.customActionHandler!(action, context);
-        }
-      );
+      RNEventEmitter.addListener(IterableEventName.handleCustomActionCalled, (dict) => {
+        const action = IterableAction.fromDict(dict.action);
+        const context = IterableActionContext.fromDict(dict.context);
+        Iterable.savedConfig.customActionHandler!(action, context);
+      });
     }
 
     if (Iterable.savedConfig.inAppHandler) {
-      RNEventEmitter.addListener(
-        IterableEventName.handleInAppCalled,
-        (messageDict) => {
-          const message = IterableInAppMessage.fromDict(messageDict);
-          // MOB-10423: Check if we can use chain operator (?.) here instead
-          const result = Iterable.savedConfig.inAppHandler!(message);
-          RNIterableAPI.setInAppShowResponse(result);
-        }
-      );
+      RNEventEmitter.addListener(IterableEventName.handleInAppCalled, (messageDict) => {
+        const message = IterableInAppMessage.fromDict(messageDict);
+        // MOB-10423: Check if we can use chain operator (?.) here instead
+        const result = Iterable.savedConfig.inAppHandler!(message);
+        RNIterableAPI.setInAppShowResponse(result);
+      });
     }
 
     if (Iterable.savedConfig.authHandler) {
@@ -959,20 +925,14 @@ export class Iterable {
             // If type AuthReponse, authToken will be parsed looking for `authToken` within promised object. Two additional listeners will be registered for success and failure callbacks sent by native bridge layer.
             // Else it will be looked for as a String.
             if (typeof promiseResult === typeof new IterableAuthResponse()) {
-              RNIterableAPI.passAlongAuthToken(
-                (promiseResult as IterableAuthResponse).authToken
-              );
+              RNIterableAPI.passAlongAuthToken((promiseResult as IterableAuthResponse).authToken);
 
               setTimeout(() => {
-                if (
-                  authResponseCallback === IterableAuthResponseResult.SUCCESS
-                ) {
+                if (authResponseCallback === IterableAuthResponseResult.SUCCESS) {
                   if ((promiseResult as IterableAuthResponse).successCallback) {
                     (promiseResult as IterableAuthResponse).successCallback?.();
                   }
-                } else if (
-                  authResponseCallback === IterableAuthResponseResult.FAILURE
-                ) {
+                } else if (authResponseCallback === IterableAuthResponseResult.FAILURE) {
                   if ((promiseResult as IterableAuthResponse).failureCallback) {
                     (promiseResult as IterableAuthResponse).failureCallback?.();
                   }
@@ -985,25 +945,19 @@ export class Iterable {
               RNIterableAPI.passAlongAuthToken(promiseResult as string);
             } else {
               Iterable?.logger?.log(
-                'Unexpected promise returned. Auth token expects promise of String or AuthResponse type.'
+                'Unexpected promise returned. Auth token expects promise of String or AuthResponse type.',
               );
             }
           })
           .catch((e) => Iterable?.logger?.log(e));
       });
 
-      RNEventEmitter.addListener(
-        IterableEventName.handleAuthSuccessCalled,
-        () => {
-          authResponseCallback = IterableAuthResponseResult.SUCCESS;
-        }
-      );
-      RNEventEmitter.addListener(
-        IterableEventName.handleAuthFailureCalled,
-        () => {
-          authResponseCallback = IterableAuthResponseResult.FAILURE;
-        }
-      );
+      RNEventEmitter.addListener(IterableEventName.handleAuthSuccessCalled, () => {
+        authResponseCallback = IterableAuthResponseResult.SUCCESS;
+      });
+      RNEventEmitter.addListener(IterableEventName.handleAuthFailureCalled, () => {
+        authResponseCallback = IterableAuthResponseResult.FAILURE;
+      });
     }
 
     function callUrlHandler(url: string, context: IterableActionContext) {

@@ -1,10 +1,7 @@
 import { NativeModules } from 'react-native';
 
 import { Iterable } from '../../core';
-import type {
-  IterableInAppDeleteSource,
-  IterableInAppLocation,
-} from '../enums';
+import type { IterableInAppDeleteSource, IterableInAppLocation } from '../enums';
 import { IterableHtmlInAppContent } from './IterableHtmlInAppContent';
 import { IterableInAppMessage } from './IterableInAppMessage';
 
@@ -82,10 +79,7 @@ export class IterableInAppManager {
    *
    * @returns A Promise that resolves to the URL of the button or link the user tapped to close the in-app message.
    */
-  showMessage(
-    message: IterableInAppMessage,
-    consume: boolean
-  ): Promise<string | undefined> {
+  showMessage(message: IterableInAppMessage, consume: boolean): Promise<string | undefined> {
     Iterable?.logger?.log('InAppManager.show');
 
     return RNIterableAPI.showMessage(message.messageId, consume);
@@ -112,7 +106,7 @@ export class IterableInAppManager {
   removeMessage(
     message: IterableInAppMessage,
     location: IterableInAppLocation,
-    source: IterableInAppDeleteSource
+    source: IterableInAppDeleteSource,
   ): void {
     Iterable?.logger?.log('InAppManager.remove');
 
@@ -148,9 +142,7 @@ export class IterableInAppManager {
    * Iterable.inAppManager.getHtmlContentForMessage(message);
    * ```
    */
-  getHtmlContentForMessage(
-    message: IterableInAppMessage
-  ): Promise<IterableHtmlInAppContent> {
+  getHtmlContentForMessage(message: IterableInAppMessage): Promise<IterableHtmlInAppContent> {
     Iterable?.logger?.log('InAppManager.getHtmlContentForMessage');
 
     return RNIterableAPI.getHtmlInAppContentForMessage(message.messageId);
