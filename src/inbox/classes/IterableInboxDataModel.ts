@@ -1,6 +1,6 @@
 import { NativeModules } from 'react-native';
 
-import { Iterable } from '../../core';
+import { Iterable } from '../../core/classes/Iterable';
 import {
   IterableHtmlInAppContent,
   IterableInAppDeleteSource,
@@ -8,7 +8,10 @@ import {
   IterableInAppMessage,
   type IterableHtmlInAppContentRaw,
 } from '../../inApp';
-import type { IterableInboxImpressionRowInfo, IterableInboxRowViewModel } from '../types';
+import type {
+  IterableInboxImpressionRowInfo,
+  IterableInboxRowViewModel,
+} from '../types';
 
 const RNIterableAPI = NativeModules.RNIterableAPI;
 
@@ -36,7 +39,10 @@ export class IterableInboxDataModel {
    *          a positive number if `message1` should come after `message2`,
    *          or 0 if they are considered equal.
    */
-  comparatorFn?: (message1: IterableInAppMessage, message2: IterableInAppMessage) => number;
+  comparatorFn?: (
+    message1: IterableInAppMessage,
+    message2: IterableInAppMessage
+  ) => number;
   /**
    * Optional function to map an IterableInAppMessage to a date string or undefined.
    * This function can be used to extract and format the date from a message.
@@ -55,8 +61,11 @@ export class IterableInboxDataModel {
    */
   set(
     filter?: (message: IterableInAppMessage) => boolean,
-    comparator?: (message1: IterableInAppMessage, message2: IterableInAppMessage) => number,
-    dateMapper?: (message: IterableInAppMessage) => string | undefined,
+    comparator?: (
+      message1: IterableInAppMessage,
+      message2: IterableInAppMessage
+    ) => number,
+    dateMapper?: (message: IterableInAppMessage) => string | undefined
   ) {
     this.filterFn = filter;
     this.comparatorFn = comparator;
@@ -88,12 +97,14 @@ export class IterableInboxDataModel {
    * @returns  A promise that resolves to the HTML content of the specified message.
    */
   getHtmlContentForMessageId(id: string): Promise<IterableHtmlInAppContent> {
-    Iterable?.logger?.log('IterableInboxDataModel.getHtmlContentForItem messageId: ' + id);
+    Iterable?.logger?.log(
+      'IterableInboxDataModel.getHtmlContentForItem messageId: ' + id
+    );
 
     return RNIterableAPI.getHtmlInAppContentForMessage(id).then(
       (content: IterableHtmlInAppContentRaw) => {
         return IterableHtmlInAppContent.fromDict(content);
-      },
+      }
     );
   }
 
@@ -133,7 +144,7 @@ export class IterableInboxDataModel {
       },
       () => {
         return [];
-      },
+      }
     );
   }
 
@@ -185,7 +196,7 @@ export class IterableInboxDataModel {
    */
   private static sortByMostRecent = (
     message1: IterableInAppMessage,
-    message2: IterableInAppMessage,
+    message2: IterableInAppMessage
   ) => {
     const createdAt1 = message1.createdAt ?? new Date(0);
     const createdAt2 = message2.createdAt ?? new Date(0);
@@ -228,8 +239,12 @@ export class IterableInboxDataModel {
    * @param messages - An array of `IterableInAppMessage` objects to be processed.
    * @returns An array of `IterableInboxRowViewModel` objects representing the processed messages.
    */
-  private processMessages(messages: IterableInAppMessage[]): IterableInboxRowViewModel[] {
-    return this.sortAndFilter(messages).map(IterableInboxDataModel.getInboxRowViewModelForMessage);
+  private processMessages(
+    messages: IterableInAppMessage[]
+  ): IterableInboxRowViewModel[] {
+    return this.sortAndFilter(messages).map(
+      IterableInboxDataModel.getInboxRowViewModelForMessage
+    );
   }
 
   /**
@@ -238,7 +253,9 @@ export class IterableInboxDataModel {
    * @param messages - The array of messages to be sorted and filtered.
    * @returns The sorted and filtered array of messages.
    */
-  private sortAndFilter(messages: IterableInAppMessage[]): IterableInAppMessage[] {
+  private sortAndFilter(
+    messages: IterableInAppMessage[]
+  ): IterableInAppMessage[] {
     let sortedFilteredMessages = messages.slice();
 
     // MOB-10424: Figure out if this is purposeful
@@ -265,7 +282,7 @@ export class IterableInboxDataModel {
    * @returns An object representing the inbox row view model.
    */
   private static getInboxRowViewModelForMessage(
-    message: IterableInAppMessage,
+    message: IterableInAppMessage
   ): IterableInboxRowViewModel {
     return {
       title: message.inboxMetadata?.title ?? '',

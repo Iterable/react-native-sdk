@@ -10,7 +10,14 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import { WebView, type WebViewMessageEvent } from 'react-native-webview';
 
-import { Iterable, IterableAction, IterableActionContext, IterableActionSource } from '../../core';
+import {
+  IterableAction,
+  IterableActionContext,
+  IterableActionSource,
+} from '../../core';
+// expo throws an error if this is not imported directly due to circular
+// dependencies
+import { Iterable } from '../../core/classes/Iterable';
 import {
   IterableHtmlInAppContent,
   IterableInAppCloseSource,
@@ -69,7 +76,8 @@ export const IterableInboxMessageDisplay = ({
   isPortrait,
 }: IterableInboxMessageDisplayProps) => {
   const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title;
-  const [inAppContent, setInAppContent] = useState<IterableHtmlInAppContent | null>(null);
+  const [inAppContent, setInAppContent] =
+    useState<IterableHtmlInAppContent | null>(null);
 
   const styles = StyleSheet.create({
     contentContainer: {
@@ -171,12 +179,16 @@ export const IterableInboxMessageDisplay = ({
     const source = IterableActionSource.inApp;
     const context = new IterableActionContext(action, source);
 
-    Iterable.trackInAppClick(rowViewModel.inAppMessage, IterableInAppLocation.inbox, URL);
+    Iterable.trackInAppClick(
+      rowViewModel.inAppMessage,
+      IterableInAppLocation.inbox,
+      URL
+    );
     Iterable.trackInAppClose(
       rowViewModel.inAppMessage,
       IterableInAppLocation.inbox,
       IterableInAppCloseSource.link,
-      URL,
+      URL
     );
 
     //handle delete action
@@ -216,19 +228,26 @@ export const IterableInboxMessageDisplay = ({
               Iterable.trackInAppClose(
                 rowViewModel.inAppMessage,
                 IterableInAppLocation.inbox,
-                IterableInAppCloseSource.back,
+                IterableInAppCloseSource.back
               );
             }}
           >
             <View style={styles.returnButton}>
-              <Icon name="chevron-back-outline" style={styles.returnButtonIcon} />
+              <Icon
+                name="chevron-back-outline"
+                style={styles.returnButtonIcon}
+              />
               <Text style={styles.returnButtonText}>Inbox</Text>
             </View>
           </TouchableWithoutFeedback>
         </View>
         <View style={styles.messageTitleContainer}>
           <View style={styles.messageTitle}>
-            <Text numberOfLines={1} ellipsizeMode="tail" style={styles.messageTitleText}>
+            <Text
+              numberOfLines={1}
+              ellipsizeMode="tail"
+              style={styles.messageTitleText}
+            >
               {messageTitle}
             </Text>
           </View>
