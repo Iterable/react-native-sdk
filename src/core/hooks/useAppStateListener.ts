@@ -5,7 +5,7 @@ import { AppState } from 'react-native';
  * A hook that listens to the app state changes and returns the current app
  * state.
  *
- * @returns {string} The current app state.
+ * @returns The current app state.
  *
  * @example
  * ```typescript

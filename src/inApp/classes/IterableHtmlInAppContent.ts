@@ -20,8 +20,8 @@ export class IterableHtmlInAppContent implements IterableInAppContent {
   /**
    * Constructs an `IterableHtmlInAppContent` instance with the provided `edgeInsets` and `html`.
    *
-   * @param edgeInsets The space around the in-app content.
-   * @param html The raw HTML content of the in-app message.
+   * @param edgeInsets - The space around the in-app content.
+   * @param html - The raw HTML content of the in-app message.
    */
   constructor(edgeInsets: IterableEdgeInsets, html: string) {
     this.edgeInsets = edgeInsets;
@@ -31,7 +31,7 @@ export class IterableHtmlInAppContent implements IterableInAppContent {
   /**
    * Creates a new `IterableHtmlInAppContent` instance from a raw dictionary representation.
    *
-   * @param dict The raw dictionary representation of the HTML in-app content.
+   * @param dict - The raw dictionary representation of the HTML in-app content.
    * @returns A new `IterableHtmlInAppContent` instance with the values from the provided dictionary.
    */
   static fromDict(dict: IterableHtmlInAppContentRaw): IterableHtmlInAppContent {
