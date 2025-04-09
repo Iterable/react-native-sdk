@@ -1,4 +1,5 @@
-import { IterableInAppMessage, IterableInAppShowResponse } from '../../inApp';
+import { type IterableInAppMessage } from '../../inApp/classes/IterableInAppMessage';
+import { IterableInAppShowResponse } from '../../inApp/enums';
 import {
   IterableDataRegion,
   IterableLogLevel,

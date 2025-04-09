@@ -1,4 +1,7 @@
-import type { IterableEdgeInsetDetails } from '../../core';
+// expo throws an error if this is not imported directly due to circular
+// dependencies
+// See https://github.com/expo/expo/issues/35100
+import type { IterableEdgeInsetDetails } from '../../core/types/IterableEdgeInsetDetails';
 
 /**
  * The raw in-App content details returned from the server.

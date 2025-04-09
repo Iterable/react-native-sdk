@@ -7,12 +7,12 @@ import {
 
 import { buildInfo } from '../../itblBuildInfo';
 
-import {
-  IterableInAppCloseSource,
-  IterableInAppDeleteSource,
-  IterableInAppLocation,
-  IterableInAppMessage,
-} from '../../inApp';
+// TODO: Organize these so that there are no circular dependencies
+// See https://github.com/expo/expo/issues/35100
+import { IterableInAppMessage } from '../../inApp/classes/IterableInAppMessage';
+import { IterableInAppCloseSource } from '../../inApp/enums/IterableInAppCloseSource';
+import { IterableInAppDeleteSource } from '../../inApp/enums/IterableInAppDeleteSource';
+import { IterableInAppLocation } from '../../inApp/enums/IterableInAppLocation';
 import { IterableAuthResponseResult, IterableEventName } from '../enums';
 
 import { IterableAction } from './IterableAction';
