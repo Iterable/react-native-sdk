@@ -1,7 +1,18 @@
+## 2.0.0-beta.1
+
+- Added disclaimer to README to alert users that we do not yet support React
+  Native New Architecture [`#630`](https://github.com/Iterable/react-native-sdk/pull/630)
+- Resolved circular dependencies which were making the SDK incompatible with Expo [`#629`](https://github.com/Iterable/react-native-sdk/pull/629)
+- Removed beta disclaimer link
+  [`#625`](https://github.com/Iterable/react-native-sdk/pull/625)
+- Added extra troubleshooting steps to example app README
+- Added safe concurrent Ruby version to Gemfile
+
+
 ## 2.0.0-beta
 **NOTE**: This is a beta release of the SDK. Please contact Iterable support if
 you have any questions or issues.
-## Fixes
+### Fixes
 - Updated React Native to
   [7.3.1](https://reactnative.dev/docs/0.73/getting-started).  See the version
   [CHANGELOG](https://github.com/facebook/react-native/releases/tag/v0.73.1) for
@@ -26,32 +37,32 @@ you have any questions or issues.
 - Made lint rules stricter
 
 ## 1.3.21
-## Fixes
+### Fixes
 - Fixes an issue where react native components that use safe-area-context or react-navigation throw an error because the sdk's components try and use its own local node_modules instead of the consumer's project.
 
 #### Added
 - Added a new configuration in IterableConfig, `IterablePushPlatform`, allowing developers to manually register a device as either sandbox or production. This provides greater control over push notification environments.
 
 ## 1.3.20
-## Fixes
+### Fixes
 - Fixes an issue where the iOS SDK incorrectly targeted the latest minor version instead of a fixed version, potentially causing breaking changes.
 
 ## 1.3.19
-## Updates
+### Updates
 - updates to RN version 0.68.0 to address various security vulnerabilities
 
 ## 1.3.18
-## Updates
+### Updates
 - adds user id login for sample apps
 - version mapping to newest native SDK versions
 - updates versions of various package dependencies
 
 ## 1.3.17
-## Fixed
+### Fixed
 - Fixes a specific Android issue where apps could crash due to EncryptedSharedPreference being null.
 
 ## 1.3.16
-## Updates
+### Updates
 
 This release allows you to use projects hosted on Iterable's EU data center. If your project is hosted on Iterable's [European data center (EUDC)](https://support.iterable.com/hc/articles/17572750887444), configure the SDK to use Iterable's EU-based API endpoints:
 
@@ -67,14 +78,14 @@ Iterable.initialize('<YOUR_API_KEY>', config);
 - Resolves an additional push notification problem on Android wherein the customActionHandler and urlHandler were not being invoked in specific scenarios, as documented in issue #470. (Credit to @tnortman-jabra for the report and the fix)
 
 ## 1.3.15
-## Updates
+### Updates
 - Resolves Android build issues caused in 1.3.14
 - Fixes a specific Android issue where custom action handlers were not invoked when tapping on push notification when the app is in background.
 
 ## 1.3.14
 > **Warning**
 > This version causes build failure on Android. Please use 1.3.15 which fixes this issue.
-## updates
+### Updates
 - updates `Iterable.setEmail` and `Iterable.setUserId` to take in null parameter type
 - fixes `Iterable.updateUser` on the Android side to merge nested objects in the user profile when `mergeNestedObjects` is set to true
 
