@@ -10,6 +10,25 @@ message and web push notification campaigns to your customers.
 This SDK helps you integrate your React Native-based iOS and Android apps with
 Iterable. It supports JavaScript and TypeScript.
 
+
+<!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->
+
+<!-- code_chunk_output -->
+
+- [Requirements](#requirements)
+- [Architecture Support](#architecture-support)
+- [Installation](#installation)
+- [Features](#features)
+- [Sample projects](#sample-projects)
+- [Version mapping](#version-mapping)
+- [Release notes, support and troubleshooting](#release-notes-support-and-troubleshooting)
+- [License](#license)
+- [Want to contribute?](#want-to-contribute)
+
+<!-- /code_chunk_output -->
+
+
+
 ## Requirements
 
 Iterable's React Native SDK relies on:
@@ -32,6 +51,10 @@ Iterable's React Native SDK relies on:
 - **Android**
     - [`minSdkVersion` 21+, `compileSdkVersion` 31+](https://medium.com/androiddevelopers/picking-your-compilesdkversion-minsdkversion-targetsdkversion-a098a0341ebd)
     - [Iterable's Android SDK](https://github.com/Iterable/iterable-android-sdk)
+
+## Architecture Support
+
+**Important**: Iterable's React Native SDK currently does not support [React Native's New Architecture](https://reactnative.dev/architecture/landing-page) (Fabric, TurboModules, and Codegen). The SDK is designed to work with the **legacy architecture only**. If you're using the New Architecture in your React Native application, you may encounter compatibility issues.
 
 ## Installation
 
