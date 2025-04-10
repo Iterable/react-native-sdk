@@ -11,20 +11,21 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { WebView, type WebViewMessageEvent } from 'react-native-webview';
 
 import {
-  Iterable,
   IterableAction,
   IterableActionContext,
   IterableActionSource,
-  IterableEdgeInsets,
 } from '../../core';
+// expo throws an error if this is not imported directly due to circular
+// dependencies
+import { Iterable } from '../../core/classes/Iterable';
 import {
   IterableHtmlInAppContent,
   IterableInAppCloseSource,
   IterableInAppLocation,
 } from '../../inApp';
 
-import { type IterableInboxRowViewModel } from '../types';
 import { ITERABLE_INBOX_COLORS } from '../constants';
+import { type IterableInboxRowViewModel } from '../types';
 
 /**
  * Props for the IterableInboxMessageDisplay component.
@@ -75,9 +76,8 @@ export const IterableInboxMessageDisplay = ({
   isPortrait,
 }: IterableInboxMessageDisplayProps) => {
   const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title;
-  const [inAppContent, setInAppContent] = useState<IterableHtmlInAppContent>(
-    new IterableHtmlInAppContent(new IterableEdgeInsets(0, 0, 0, 0), '')
-  );
+  const [inAppContent, setInAppContent] =
+    useState<IterableHtmlInAppContent | null>(null);
 
   const styles = StyleSheet.create({
     contentContainer: {
@@ -253,15 +253,17 @@ export const IterableInboxMessageDisplay = ({
           </View>
         </View>
       </View>
-      <ScrollView contentContainerStyle={styles.contentContainer}>
-        <WebView
-          originWhiteList={['*']}
-          source={{ html: inAppContent.html }}
-          style={{ width: contentWidth }}
-          onMessage={(event) => handleInAppLinkAction(event)}
-          injectedJavaScript={JS}
-        />
-      </ScrollView>
+      {inAppContent && (
+        <ScrollView contentContainerStyle={styles.contentContainer}>
+          <WebView
+            originWhiteList={['*']}
+            source={{ html: inAppContent.html }}
+            style={{ width: contentWidth }}
+            onMessage={(event) => handleInAppLinkAction(event)}
+            injectedJavaScript={JS}
+          />
+        </ScrollView>
+      )}
     </View>
   );
 };

@@ -1,6 +1,9 @@
 import { type ViewToken } from 'react-native';
 
-import { IterableUtil } from '../../core';
+// expo throws an error if this is not imported directly due to circular
+// dependencies
+// See https://github.com/expo/expo/issues/35100
+import { IterableUtil } from '../../core/classes/IterableUtil';
 import { IterableInAppTriggerType } from '../enums';
 import type { IterableInAppMessageRaw } from '../types';
 import { IterableInAppTrigger } from './IterableInAppTrigger';

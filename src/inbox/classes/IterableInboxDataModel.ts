@@ -1,4 +1,6 @@
-import { Iterable, RNIterableAPI } from '../../core';
+import { NativeModules } from 'react-native';
+
+import { Iterable } from '../../core/classes/Iterable';
 import {
   IterableHtmlInAppContent,
   IterableInAppDeleteSource,
@@ -10,6 +12,8 @@ import type {
   IterableInboxImpressionRowInfo,
   IterableInboxRowViewModel,
 } from '../types';
+
+const RNIterableAPI = NativeModules.RNIterableAPI;
 
 /**
  * The `IterableInboxDataModel` class provides methods to manage and manipulate
@@ -93,7 +97,7 @@ export class IterableInboxDataModel {
    * @returns  A promise that resolves to the HTML content of the specified message.
    */
   getHtmlContentForMessageId(id: string): Promise<IterableHtmlInAppContent> {
-    Iterable.logger.log(
+    Iterable?.logger?.log(
       'IterableInboxDataModel.getHtmlContentForItem messageId: ' + id
     );
 
@@ -110,7 +114,7 @@ export class IterableInboxDataModel {
    * @param id - The unique identifier of the message to be marked as read.
    */
   setMessageAsRead(id: string) {
-    Iterable.logger.log('IterableInboxDataModel.setMessageAsRead');
+    Iterable?.logger?.log('IterableInboxDataModel.setMessageAsRead');
 
     RNIterableAPI.setReadForMessage(id, true);
   }
@@ -122,7 +126,7 @@ export class IterableInboxDataModel {
    * @param deleteSource - The source from which the delete action is initiated.
    */
   deleteItemById(id: string, deleteSource: IterableInAppDeleteSource) {
-    Iterable.logger.log('IterableInboxDataModel.deleteItemById');
+    Iterable?.logger?.log('IterableInboxDataModel.deleteItemById');
 
     RNIterableAPI.removeMessage(id, IterableInAppLocation.inbox, deleteSource);
   }

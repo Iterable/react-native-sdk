@@ -203,6 +203,23 @@ There are two ways to fix this:
 Run `bundle install` in the _example app directory_.  You can also try running
 it in _ios_ in the _example app directory_.
 
+## Error: `uninitialized constant ActiveSupport::LoggerThreadSafeLevel::Logger`
+
+This is a known issue with Ruby 3.4.0.  You can fix it by running the following:
+```bash
+gem install xcodeproj -v '< 1.26.0'
+gem install concurrent-ruby -v '< 1.3.4'
+```
+
+## Unable to build on Xcode 16.3
+
+There is a [known issue](https://github.com/facebook/react-native/issues/50411)
+with Xcode 16.3 and react-native@0.75.3.
+
+Until New Architecture is supporter by Iterable, we cannot upgrade to 0.76.
+Therefore, to fix it we need to downgrade Xcode to 16.2.
+- [Download Xcode 16.2](https://download.developer.apple.com/Developer_Tools/Xcode_16.2/Xcode_16.2.xip)
+
 ## Other
 If things are not working and you are stumped as to why, try running the
 following in the _example app directory_:

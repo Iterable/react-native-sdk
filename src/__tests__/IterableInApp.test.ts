@@ -1,6 +1,8 @@
 import { NativeEventEmitter } from 'react-native';
 
 import { IterableLogger } from '../core';
+import { IterableInAppManager } from '../inApp';
+
 import { MockRNIterableAPI } from '../__mocks__/MockRNIterableAPI';
 
 import {
@@ -200,13 +202,12 @@ describe('Iterable In App', () => {
 
     // WHEN the simulated local queue is set to the in-app messages
     MockRNIterableAPI.setMessages(messages);
+    const inAppManager = new IterableInAppManager();
 
     // THEN Iterable,inAppManager.getMessages returns the list of in-app messages
-    return await Iterable.inAppManager
-      .getMessages()
-      .then((messagesObtained) => {
-        expect(messagesObtained).toEqual(messages);
-      });
+    return await inAppManager.getMessages().then((messagesObtained) => {
+      expect(messagesObtained).toEqual(messages);
+    });
   });
 
   test('showMessage_messageAndConsume_returnsClickedUrl', async () => {
@@ -223,13 +224,11 @@ describe('Iterable In App', () => {
 
     // WHEN the simulated clicked url is set to the clicked url
     MockRNIterableAPI.setClickedUrl(clickedUrl);
-
+    const inAppManager = new IterableInAppManager();
     // THEN Iterable,inAppManager.showMessage returns the simulated clicked url
-    return await Iterable.inAppManager
-      .showMessage(message, consume)
-      .then((url) => {
-        expect(url).toEqual(clickedUrl);
-      });
+    return await inAppManager.showMessage(message, consume).then((url) => {
+      expect(url).toEqual(clickedUrl);
+    });
   });
 
   test('removeMessage_params_methodCalledWithParams', () => {
@@ -243,9 +242,10 @@ describe('Iterable In App', () => {
     const location: IterableInAppLocation = IterableInAppLocation.inApp;
     const source: IterableInAppDeleteSource =
       IterableInAppDeleteSource.deleteButton;
+    const inAppManager = new IterableInAppManager();
 
     // WHEN Iterable.inAppManager.removeMessage is called
-    Iterable.inAppManager.removeMessage(message, location, source);
+    inAppManager.removeMessage(message, location, source);
 
     // THEN corresponding method is called on MockIterableAPI with appropriate parameters
     expect(MockRNIterableAPI.removeMessage).toBeCalledWith(
@@ -266,7 +266,8 @@ describe('Iterable In App', () => {
     const read: boolean = true;
 
     // WHEN Iterable.inAppManager.setReadForMessage is called
-    Iterable.inAppManager.setReadForMessage(message, read);
+    const inAppManager = new IterableInAppManager();
+    inAppManager.setReadForMessage(message, read);
 
     // THEN corresponding method is called on MockRNIterableAPI with appropriate parameters
     expect(MockRNIterableAPI.setReadForMessage).toBeCalledWith(
@@ -280,7 +281,8 @@ describe('Iterable In App', () => {
     const paused: boolean = true;
 
     // WHEN Iterable.inAppManager.setAutoDisplayPaused is called
-    Iterable.inAppManager.setAutoDisplayPaused(paused);
+    const inAppManager = new IterableInAppManager();
+    inAppManager.setAutoDisplayPaused(paused);
 
     // THEN corresponding method is called on MockRNIterableAPI with appropriate parameters
     expect(MockRNIterableAPI.setAutoDisplayPaused).toBeCalledWith(paused);
