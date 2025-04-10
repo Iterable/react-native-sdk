@@ -1,6 +1,6 @@
 {
   "name": "@iterable/react-native-sdk",
-  "version": "2.0.0-beta",
+  "version": "2.0.0-beta.1",
   "description": "Iterable SDK for React Native.",
   "source": "./src/index.tsx",
   "main": "./lib/module/index.js",
@@ -8,8 +8,8 @@
   "exports": {
     ".": {
       "types": "./lib/typescript/src/index.d.ts",
-        "default": "./lib/module/index.js"
-      },
+      "default": "./lib/module/index.js"
+    },
     "./package.json": "./package.json"
   },
   "files": [
