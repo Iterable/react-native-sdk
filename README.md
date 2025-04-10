@@ -33,6 +33,10 @@ Iterable's React Native SDK relies on:
     - [`minSdkVersion` 21+, `compileSdkVersion` 31+](https://medium.com/androiddevelopers/picking-your-compilesdkversion-minsdkversion-targetsdkversion-a098a0341ebd)
     - [Iterable's Android SDK](https://github.com/Iterable/iterable-android-sdk)
 
+## Architecture Support
+
+**Important**: Iterable's React Native SDK currently does not support [React Native's New Architecture](https://reactnative.dev/architecture/landing-page) (Fabric, TurboModules, and Codegen). The SDK is designed to work with the legacy architecture only. If you're using the New Architecture in your React Native application, you may encounter compatibility issues.
+
 ## Installation
 
 For installation instructions, read [Installing Iterable's React Native SDK](https://support.iterable.com/hc/articles/360045714132).
