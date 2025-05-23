@@ -494,13 +494,19 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         try {
             // Test placement 1
             JSONObject placement1 = new JSONObject();
-            placement1.put("placementId", "test_placement_1");
+            placement1.put("placementId", 808);
             testPlacements.put(placement1);
             
             // Test placement 2
             JSONObject placement2 = new JSONObject();
-            placement2.put("placementId", "test_placement_2");
+            placement2.put("placementId", 1121);
             testPlacements.put(placement2);
+
+            // Test placement 2
+            JSONObject placement3 = new JSONObject();
+            placement3.put("placementId", 112);
+            testPlacements.put(placement3);
+            
             
             promise.resolve(Serialization.convertJsonToArray(testPlacements));
         } catch (JSONException e) {

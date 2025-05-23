@@ -3,9 +3,9 @@
  * Contains placement id and the associated embedded messages
  */
 export class IterableEmbeddedPlacement {
-  readonly placementId: string;
+  readonly placementId: number;
 
-  constructor(placementId: string) {
+  constructor(placementId: number) {
     this.placementId = placementId;
   }
 }

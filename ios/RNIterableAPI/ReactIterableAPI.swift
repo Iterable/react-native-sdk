@@ -480,8 +480,8 @@ class ReactIterableAPI: RCTEventEmitter {
         
         // Create test data
         let testPlacements: [[String: Any]] = [
-            ["placementId": "test_placement_1"],
-            ["placementId": "test_placement_2"]
+            ["placementId": "meow"],
+            ["placementId": "woof woof"]
         ]
         
         resolver(testPlacements)
