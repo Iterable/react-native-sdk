@@ -470,6 +470,22 @@ class ReactIterableAPI: RCTEventEmitter {
         
         inboxSessionManager.updateVisibleRows(visibleRows: serializedRows)
     }
+
+    // MARK: - SDK Embedded Manager Functions
+
+    @objc(getEmbeddedPlacements:rejecter:)
+    func getEmbeddedPlacements(resolver: @escaping RCTPromiseResolveBlock,
+                             rejecter: @escaping RCTPromiseRejectBlock) {
+        ITBInfo()
+        
+        // Create test data
+        let testPlacements: [[String: Any]] = [
+            ["placementId": "test_placement_1"],
+            ["placementId": "test_placement_2"]
+        ]
+        
+        resolver(testPlacements)
+    }
     
     // MARK: - SDK Auth Manager Functions
     
@@ -481,7 +497,7 @@ class ReactIterableAPI: RCTEventEmitter {
         
         authHandlerSemaphore.signal()
     }
-    
+        
     // MARK: Private
     private var shouldEmit = false
     private let _methodQueue = DispatchQueue(label: String(describing: ReactIterableAPI.self))

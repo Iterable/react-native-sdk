@@ -483,6 +483,36 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     // endregion
 
     // ---------------------------------------------------------------------------------------
+    // region Embedded APIs
+
+    @ReactMethod
+    public void getEmbeddedPlacements(Promise promise) {
+        IterableLogger.d(TAG, "getEmbeddedPlacements");
+        
+        // Create test data
+        JSONArray testPlacements = new JSONArray();
+        try {
+            // Test placement 1
+            JSONObject placement1 = new JSONObject();
+            placement1.put("placementId", "test_placement_1");
+            testPlacements.put(placement1);
+            
+            // Test placement 2
+            JSONObject placement2 = new JSONObject();
+            placement2.put("placementId", "test_placement_2");
+            testPlacements.put(placement2);
+            
+            promise.resolve(Serialization.convertJsonToArray(testPlacements));
+        } catch (JSONException e) {
+
+            promise.reject("", "Failed to create test placements");
+        }
+    }
+
+    // ---------------------------------------------------------------------------------------
+    // endregion
+
+    // ---------------------------------------------------------------------------------------
     // region Private Serialization Functions
 
     private static Integer[] readableArrayToIntegerArray(ReadableArray array) {
