@@ -1,6 +1,4 @@
 export class IterableEmbeddedMessageMetadata {
-  static readonly TAG = 'ItblEmbeddedMessageMetadata';
-
   readonly messageId: string;
   readonly placementId: number;
   readonly campaignId?: number;
@@ -17,12 +15,13 @@ export class IterableEmbeddedMessageMetadata {
     this.campaignId = campaignId;
     this.isProof = isProof;
   }
-  static fromDict(dict: {
-    messageId: string;
-    placementId: number;
-    campaignId: number | undefined;
-    isProof: boolean;
-  }): IterableEmbeddedMessageMetadata {
+
+  static fromDict(
+    dict: Partial<EmbeddedMessageMetadataDict>
+  ): IterableEmbeddedMessageMetadata {
+    if (!dict.messageId || !dict.placementId) {
+      throw new Error('messageId and placementId are required');
+    }
     return new IterableEmbeddedMessageMetadata(
       dict.messageId,
       dict.placementId,
@@ -30,4 +29,11 @@ export class IterableEmbeddedMessageMetadata {
       dict.isProof
     );
   }
+}
+
+export interface EmbeddedMessageMetadataDict {
+  messageId: string;
+  placementId: number;
+  campaignId?: number;
+  isProof?: boolean;
 }
