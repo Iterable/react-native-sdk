@@ -2,9 +2,9 @@ import { IterableEmbeddedMessageMetadata } from './IterableEmbeddedMessageMetada
 import { IterableEmbeddedMessageElements } from './IterableEmbeddedMessageElements';
 
 export class IterableEmbeddedMessage {
-  readonly metadata: IterableEmbeddedMessageMetadata;
-  readonly elements: IterableEmbeddedMessageElements;
-  readonly payload: Record<string, unknown>;
+  metadata: IterableEmbeddedMessageMetadata;
+  elements: IterableEmbeddedMessageElements;
+  payload: Record<string, unknown>;
 
   constructor(
     metadata: IterableEmbeddedMessageMetadata,
