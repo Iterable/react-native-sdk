@@ -21,7 +21,10 @@ export class IterableEmbeddedMessageButton {
     if (!dict.id) {
       throw new Error('id is required');
     }
-    return new IterableEmbeddedMessageButton(dict.id, dict.title, dict.action);
+    const action = dict.action
+      ? IterableEmbeddedMessageElementsButtonAction.fromDict(dict.action)
+      : undefined;
+    return new IterableEmbeddedMessageButton(dict.id, dict.title, action);
   }
 }
 
