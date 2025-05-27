@@ -33,5 +33,5 @@ export class IterableEmbeddedPlacement {
 
 interface EmbeddedPlacementDict {
   placementId: number;
-  messages: IterableEmbeddedMessage[];
+  messages?: IterableEmbeddedMessage[];
 }
