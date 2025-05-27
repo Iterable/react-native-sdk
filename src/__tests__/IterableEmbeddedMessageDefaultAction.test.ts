@@ -7,10 +7,8 @@ describe('IterableEmbeddedMessageDefaultAction', () => {
       'iterableEmbeddedMessageDefaultAction_fromDict_valid_dictionary'
     );
 
-    const action = new IterableEmbeddedMessageDefaultAction(
-      'openUrl',
-      'https://example.com'
-    );
+    const dict = { type: 'openUrl', data: 'https://example.com' };
+    const action = IterableEmbeddedMessageDefaultAction.fromDict(dict);
     expect(action).toBeInstanceOf(IterableEmbeddedMessageDefaultAction);
     expect(action.type).toBe('openUrl');
     expect(action.data).toBe('https://example.com');
