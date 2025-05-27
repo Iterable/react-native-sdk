@@ -1,5 +1,4 @@
 import { IterableEmbeddedMessageMetadata } from '../embedded/classes/IterableEmbeddedMessageMetadata';
-import type { EmbeddedMessageMetadataDict } from '../embedded/classes/IterableEmbeddedMessageMetadata';
 import { Iterable } from '../core';
 
 describe('IterableEmbeddedMessage', () => {
@@ -53,9 +52,7 @@ describe('IterableEmbeddedMessage', () => {
     };
 
     expect(() => {
-      IterableEmbeddedMessageMetadata.fromDict(
-        dict as Partial<EmbeddedMessageMetadataDict>
-      );
+      IterableEmbeddedMessageMetadata.fromDict(dict);
     }).toThrow('messageId and placementId are required');
   });
 });
