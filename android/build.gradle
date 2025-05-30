@@ -1,6 +1,11 @@
 buildscript {
   // Buildscript is evaluated before everything else so we can't use getExtOrDefault
-  def kotlin_version = rootProject.ext.has("kotlinVersion") ? rootProject.ext.get("kotlinVersion") : project.properties["RNIterable_kotlinVersion"]
+  // def kotlin_version = rootProject.ext.has("kotlinVersion") ?
+  // rootProject.ext.get("kotlinVersion") :
+  // project.properties["RNIterable_kotlinVersion"]
+  ext.getExtOrDefault = {name ->
+    return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties['RNIterable_' + name]
+  }
 
   repositories {
     google()
@@ -8,10 +13,19 @@ buildscript {
   }
 
   dependencies {
-    classpath "com.android.tools.build:gradle:7.2.1"
+    classpath "com.android.tools.build:gradle:8.7.2"
     // noinspection DifferentKotlinGradleVersion
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${getExtOrDefault('kotlinVersion')}"
   }
+}
+
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+
+apply plugin: "com.facebook.react"
+
+def getExtOrIntegerDefault(name) {
+  return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties["RNIterable_" + name]).toInteger()
 }
 
 def reactNativeArchitectures() {
@@ -34,10 +48,6 @@ def getExtOrDefault(name) {
   return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties["RNIterable_" + name]
 }
 
-def getExtOrIntegerDefault(name) {
-  return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties["RNIterable_" + name]).toInteger()
-}
-
 def supportsNamespace() {
   def parsed = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.tokenize('.')
   def major = parsed[0].toInteger()
@@ -54,6 +64,10 @@ android {
     sourceSets {
       main {
         manifest.srcFile "src/main/AndroidManifestNew.xml"
+        java.srcDirs += [
+          "generated/java",
+          "generated/jni"
+        ]
       }
     }
   }
@@ -63,7 +77,10 @@ android {
   defaultConfig {
     minSdkVersion getExtOrIntegerDefault("minSdkVersion")
     targetSdkVersion getExtOrIntegerDefault("targetSdkVersion")
+  }
 
+  buildFeatures {
+    buildConfig true
   }
 
   buildTypes {
@@ -93,9 +110,16 @@ dependencies {
   // For < 0.71, this will be from the local maven repo
   // For > 0.71, this will be replaced by `com.facebook.react:react-android:$version` by react gradle plugin
   //noinspection GradleDynamicVersion
-  implementation "com.facebook.react:react-native:+"
+  implementation "com.facebook.react:react-android"
+  // implementation "com.facebook.react:react-native:+"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
   api "com.iterable:iterableapi:3.5.2"
     // api project(":iterableapi") // links to local android SDK repo rather than by release
+}
+
+react {
+  jsRootDir = file("../src/")
+  libraryName = "RNIterable"
+  codegenJavaPackageName = "com.iterable.reactnative"
 }
 
