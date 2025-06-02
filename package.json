@@ -1,6 +1,6 @@
 {
   "name": "@iterable/react-native-sdk",
-  "version": "2.0.0-beta.1",
+  "version": "2.0.0-beta.1-rc.17",
   "description": "Iterable SDK for React Native.",
   "source": "./src/index.tsx",
   "main": "./lib/module/index.js",
@@ -88,7 +88,7 @@
     "prettier": "^3.0.3",
     "react": "18.3.1",
     "react-native": "0.75.3",
-    "react-native-builder-bob": "^0.39.0",
+    "react-native-builder-bob": "^0.40.4",
     "react-native-safe-area-context": "^4.11.1",
     "react-native-vector-icons": "^10.2.0",
     "react-native-webview": "^13.12.3",
