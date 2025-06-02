@@ -22,7 +22,6 @@ import { IterableAuthResponse } from './IterableAuthResponse';
 import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
-import { IterableEmbeddedManager } from '../../embedded/classes/IterableEmbeddedManager';
 
 const RNIterableAPI = NativeModules.RNIterableAPI;
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
@@ -56,12 +55,6 @@ export class Iterable {
    * Current configuration of the Iterable SDK
    */
   static savedConfig: IterableConfig = new IterableConfig();
-
-  /**
-   * Instantiates embedded manager
-   */
-  static embeddedManager: IterableEmbeddedManager =
-    new IterableEmbeddedManager();
 
   /**
    * Initializes the Iterable React Native SDK in your app's Javascript or Typescript code.
