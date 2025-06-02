@@ -22,6 +22,7 @@ import com.iterable.iterableapi.IterableInAppHandler;
 import com.iterable.iterableapi.IterableInAppLocation;
 import com.iterable.iterableapi.IterableInAppMessage;
 import com.iterable.iterableapi.IterableInboxSession;
+import com.iterable.iterableapi.IterableEmbeddedMessage;
 import com.iterable.iterableapi.IterableLogger;
 import com.iterable.iterableapi.RNIterableInternal;
 
@@ -134,6 +135,15 @@ class Serialization {
             inAppMessagesJson.put(messageJson);
         }
         return inAppMessagesJson;
+    }
+
+    static JSONArray serializeEmbeddedMessages(List<IterableEmbeddedMessage> embeddedMessages) {
+        JSONArray embeddedMessagesJson = new JSONArray();
+        for (IterableEmbeddedMessage message : embeddedMessages) {
+            JSONObject messageJson = RNIterableInternal.getEmbeddedMessageJson(message);
+            embeddedMessagesJson.put(messageJson);
+        }
+        return embeddedMessagesJson;
     }
 
     static IterableConfig.Builder getConfigFromReadableMap(ReadableMap iterableContextMap) {

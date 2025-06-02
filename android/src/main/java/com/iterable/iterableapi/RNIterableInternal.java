@@ -20,6 +20,10 @@ public class RNIterableInternal {
         return message.toJSONObject();
     }
 
+    public static JSONObject getEmbeddedMessageJson(IterableEmbeddedMessage message) {
+        return IterableEmbeddedMessage.Companion.toJSONObject(message);
+    }
+
     public static IterableInAppMessage getMessageById(String messageId) {
         return IterableApi.getInstance().getInAppManager().getMessageById(messageId);
     }

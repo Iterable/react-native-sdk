@@ -35,6 +35,7 @@ import com.iterable.iterableapi.IterableInAppHandler;
 import com.iterable.iterableapi.IterableInAppLocation;
 import com.iterable.iterableapi.IterableInAppManager;
 import com.iterable.iterableapi.IterableInAppMessage;
+import com.iterable.iterableapi.IterableEmbeddedPlacement;
 import com.iterable.iterableapi.IterableInboxSession;
 import com.iterable.iterableapi.IterableLogger;
 import com.iterable.iterableapi.IterableUrlHandler;
@@ -490,28 +491,28 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         IterableLogger.d(TAG, "getEmbeddedPlacements");
         
         // Create test data
-        JSONArray testPlacements = new JSONArray();
+        // JSONArray testPlacements = new JSONArray();
         try {
-            // Test placement 1
-            JSONObject placement1 = new JSONObject();
-            placement1.put("placementId", 808);
-            testPlacements.put(placement1);
+            // // Test placement 1
+            // JSONObject placement1 = new JSONObject();
+            // placement1.put("placementId", 808);
+            // testPlacements.put(placement1);
             
-            // Test placement 2
-            JSONObject placement2 = new JSONObject();
-            placement2.put("placementId", 1121);
-            testPlacements.put(placement2);
+            // // Test placement 2
+            // JSONObject placement2 = new JSONObject();
+            // placement2.put("placementId", 1121);
+            // testPlacements.put(placement2);
 
-            // Test placement 2
-            JSONObject placement3 = new JSONObject();
-            placement3.put("placementId", 112);
-            testPlacements.put(placement3);
-            
-            
-            promise.resolve(Serialization.convertJsonToArray(testPlacements));
+            // // Test placement 2
+            // JSONObject placement3 = new JSONObject();
+            // placement3.put("placementId", 112);
+            // testPlacements.put(placement3);
+
+            JSONArray embeddedPlacementsJsonArray = Serialization.serializeEmbeddedMessages(IterableApi.getInstance().getEmbeddedManager().getMessages(1551));
+            promise.resolve(Serialization.convertJsonToArray(embeddedPlacementsJsonArray));
         } catch (JSONException e) {
-
-            promise.reject("", "Failed to create test placements");
+            IterableLogger.e(TAG, e.getLocalizedMessage());
+            promise.reject("", "Failed to create test placements: " + e.getLocalizedMessage());
         }
     }
 
