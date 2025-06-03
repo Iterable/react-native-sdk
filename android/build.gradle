@@ -23,6 +23,10 @@ def isNewArchitectureEnabled() {
   return rootProject.hasProperty("newArchEnabled") && rootProject.getProperty("newArchEnabled") == "true"
 }
 
+def isFabricEnabled() {
+  return rootProject.hasProperty("fabricEnabled") && rootProject.getProperty("fabricEnabled") == "true"
+}
+
 apply plugin: "com.android.library"
 apply plugin: "kotlin-android"
 
@@ -64,6 +68,17 @@ android {
     minSdkVersion getExtOrIntegerDefault("minSdkVersion")
     targetSdkVersion getExtOrIntegerDefault("targetSdkVersion")
 
+    if (isNewArchitectureEnabled()) {
+      buildConfigField("boolean", "IS_NEW_ARCHITECTURE_ENABLED", "true")
+      if (isFabricEnabled()) {
+        buildConfigField("boolean", "IS_FABRIC_ENABLED", "true")
+      } else {
+        buildConfigField("boolean", "IS_FABRIC_ENABLED", "false")
+      }
+    } else {
+      buildConfigField("boolean", "IS_NEW_ARCHITECTURE_ENABLED", "false")
+      buildConfigField("boolean", "IS_FABRIC_ENABLED", "false")
+    }
   }
 
   buildTypes {
@@ -79,6 +94,10 @@ android {
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  buildFeatures {
+    buildConfig true
   }
 }
 
@@ -97,5 +116,16 @@ dependencies {
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
   api "com.iterable:iterableapi:3.5.2"
     // api project(":iterableapi") // links to local android SDK repo rather than by release
+
+  if (isNewArchitectureEnabled()) {
+    implementation project(":ReactAndroid")
+    implementation project(":ReactCommon")
+    implementation project(":ReactCommon:jsi")
+    implementation project(":ReactCommon:reactnativejni")
+    implementation project(":ReactCommon:reactnativejni:jsi")
+    implementation project(":ReactCommon:reactnativejni:jsc")
+    implementation project(":ReactCommon:reactnativejni:hermes")
+    implementation project(":ReactCommon:reactnativejni:fabricjni")
+  }
 }
 
