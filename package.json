@@ -113,6 +113,24 @@
   "peerDependenciesMeta": {
     "expo": {
       "optional": true
+    },
+    "@react-navigation/native": {
+      "optional": false
+    },
+    "react": {
+      "optional": false
+    },
+    "react-native": {
+      "optional": false
+    },
+    "react-native-safe-area-context": {
+      "optional": false
+    },
+    "react-native-vector-icons": {
+      "optional": false
+    },
+    "react-native-webview": {
+      "optional": false
     }
   },
   "sideEffects": false,

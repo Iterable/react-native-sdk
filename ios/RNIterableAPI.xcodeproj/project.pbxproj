@@ -180,6 +180,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
+					"RCT_NEW_ARCH_ENABLED=1",
+					"RCT_FABRIC_ENABLED=1",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -194,6 +196,17 @@
 				SDKROOT = iphoneos;
 				VALID_ARCHS = "arm64 arm64e x86_64";
 				EXCLUDED_ARCHS[sdk=iphonesimulator*] = "arm64";
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-DFOLLY_NO_CONFIG",
+					"-DFOLLY_MOBILE=1",
+					"-DFOLLY_USE_LIBCPP=1",
+					"-DFOLLY_HAVE_LIBGFLAGS=0",
+					"-DFOLLY_HAVE_LIBJEMALLOC=0",
+					"-DFOLLY_HAVE_PREADV=0",
+					"-DFOLLY_HAVE_PWRITEV=0",
+					"-DFOLLY_HAVE_TFO=0",
+				);
 			};
 			name = Debug;
 		};
@@ -248,6 +261,22 @@
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = "arm64 arm64e x86_64";
 				EXCLUDED_ARCHS[sdk=iphonesimulator*] = "arm64";
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-DFOLLY_NO_CONFIG",
+					"-DFOLLY_MOBILE=1",
+					"-DFOLLY_USE_LIBCPP=1",
+					"-DFOLLY_HAVE_LIBGFLAGS=0",
+					"-DFOLLY_HAVE_LIBJEMALLOC=0",
+					"-DFOLLY_HAVE_PREADV=0",
+					"-DFOLLY_HAVE_PWRITEV=0",
+					"-DFOLLY_HAVE_TFO=0",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"RCT_NEW_ARCH_ENABLED=1",
+					"RCT_FABRIC_ENABLED=1",
+				);
 			};
 			name = Release;
 		};
