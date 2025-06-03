@@ -25,6 +25,7 @@ export {
   type IterableDeviceOrientation,
 } from './core/hooks';
 export { type IterableEdgeInsetDetails } from './core/types';
+export { IterableEmbeddedManager, IterableEmbeddedPlacement } from './embedded';
 export {
   IterableHtmlInAppContent,
   IterableInAppCloseSource,
