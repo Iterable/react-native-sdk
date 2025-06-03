@@ -41,4 +41,18 @@ Pod::Spec.new do |s|
     end
   end
 
+  # Fabric dependencies
+  if ENV['RCT_FABRIC_ENABLED'] == '1' then
+    s.compiler_flags = folly_compiler_flags + " -DRCT_FABRIC_ENABLED=1"
+    s.pod_target_xcconfig = {
+      "HEADER_SEARCH_PATHS" => "\"$(PODS_ROOT)/boost\" \"$(PODS_ROOT)/Headers/Private/React-Core\"",
+      "OTHER_CPLUSPLUSFLAGS" => "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1",
+      "CLANG_CXX_LANGUAGE_STANDARD" => "c++17"
+    }
+    s.dependency "React-RCTFabric"
+    s.dependency "React-Fabric"
+    s.dependency "React-FabricComponents"
+    s.dependency "React-graphics"
+    s.dependency "React-utils"
+  end
 end
