@@ -1921,7 +1921,7 @@ SPEC CHECKSUMS:
   glog: 69ef571f3de08433d766d614c73a9838a06bf7eb
   hermes-engine: 8d2103d6c0176779aea4e25df6bb1410f9946680
   Iterable-iOS-SDK: 710bf6dada7dae9c03a09db7f0bc6c9d9a671f40
-  Iterable-React-Native-SDK: c7a9d3cf7504301f60a398213767fc6722431b57
+  Iterable-React-Native-SDK: f7d3f5792998368806a78c92143f20418ce2ddeb
   RCT-Folly: 4464f4d875961fce86008d45f4ecf6cef6de0740
   RCTDeprecation: 4191f6e64b72d9743f6fe1a8a16e89e868f5e9e7
   RCTRequired: 9bb589570f2bb3abc6518761e3fd1ad9b7f7f06c
