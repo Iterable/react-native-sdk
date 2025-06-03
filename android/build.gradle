@@ -64,6 +64,18 @@ android {
     minSdkVersion getExtOrIntegerDefault("minSdkVersion")
     targetSdkVersion getExtOrIntegerDefault("targetSdkVersion")
 
+    ndk {
+      abiFilters reactNativeArchitectures()
+    }
+  }
+
+  splits {
+    abi {
+      enable true
+      reset()
+      include(*reactNativeArchitectures())
+      universalApk false
+    }
   }
 
   buildTypes {
