@@ -24,6 +24,10 @@ import com.iterable.iterableapi.IterableInAppMessage;
 import com.iterable.iterableapi.IterableInboxSession;
 import com.iterable.iterableapi.IterableLogger;
 import com.iterable.iterableapi.RNIterableInternal;
+import com.iterable.iterableapi.IterableAttributionInfo;
+import com.iterable.iterableapi.IterableCommerceItem;
+import com.iterable.iterableapi.IterableInAppCloseSource;
+import com.iterable.iterableapi.IterableInAppDeleteSource;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,8 +36,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
-class Serialization {
+public class Serialization {
     static String TAG = "Serialization";
 
     static IterableInAppLocation getIterableInAppLocationFromInteger(@Nullable Integer location) {
@@ -94,7 +99,7 @@ class Serialization {
                 categories[i] = categoriesArray.getString(i);
             }
         }
-        
+
         return new CommerceItem(itemMap.getString("id"),
                 itemMap.getString("name"),
                 itemMap.getDouble("price"),
@@ -216,7 +221,7 @@ class Serialization {
 
                 configBuilder.setDataRegion(iterableDataRegion);
             }
-          
+
             if (iterableContextJSON.has("encryptionEnforced")) {
                 configBuilder.setEncryptionEnforced(iterableContextJSON.optBoolean("encryptionEnforced"));
             }
@@ -281,12 +286,10 @@ class Serialization {
         return list;
     }
 
-
-
     // ---------------------------------------------------------------------------------------
     // region React Native JSON conversion methods
     // obtained from https://gist.github.com/viperwarp/2beb6bbefcc268dee7ad
-    
+
     static WritableMap convertJsonToMap(JSONObject jsonObject) throws JSONException {
         WritableMap map = new WritableNativeMap();
 
@@ -393,4 +396,171 @@ class Serialization {
     }
     // ---------------------------------------------------------------------------------------
     // endregion
+
+    public static Map<String, Object> getMapFromReadableMap(ReadableMap readableMap) {
+        if (readableMap == null) {
+            return null;
+        }
+
+        Map<String, Object> map = new HashMap<>();
+        for (String key : readableMap.toHashMap().keySet()) {
+            ReadableType type = readableMap.getType(key);
+            switch (type) {
+                case Null:
+                    map.put(key, null);
+                    break;
+                case Boolean:
+                    map.put(key, readableMap.getBoolean(key));
+                    break;
+                case Number:
+                    map.put(key, readableMap.getDouble(key));
+                    break;
+                case String:
+                    map.put(key, readableMap.getString(key));
+                    break;
+                case Map:
+                    map.put(key, getMapFromReadableMap(readableMap.getMap(key)));
+                    break;
+                case Array:
+                    map.put(key, getListFromReadableArray(readableMap.getArray(key)));
+                    break;
+            }
+        }
+        return map;
+    }
+
+    public static List<Object> getListFromReadableArray(ReadableArray readableArray) {
+        if (readableArray == null) {
+            return null;
+        }
+
+        List<Object> list = new ArrayList<>();
+        for (int i = 0; i < readableArray.size(); i++) {
+            ReadableType type = readableArray.getType(i);
+            switch (type) {
+                case Null:
+                    list.add(null);
+                    break;
+                case Boolean:
+                    list.add(readableArray.getBoolean(i));
+                    break;
+                case Number:
+                    list.add(readableArray.getDouble(i));
+                    break;
+                case String:
+                    list.add(readableArray.getString(i));
+                    break;
+                case Map:
+                    list.add(getMapFromReadableMap(readableArray.getMap(i)));
+                    break;
+                case Array:
+                    list.add(getListFromReadableArray(readableArray.getArray(i)));
+                    break;
+            }
+        }
+        return list;
+    }
+
+    public static IterableConfig getIterableConfigFromReadableMap(ReadableMap config) {
+        if (config == null) {
+            return new IterableConfig.Builder().build();
+        }
+
+        IterableConfig.Builder builder = new IterableConfig.Builder();
+
+        if (config.hasKey("pushIntegrationName")) {
+            builder.setPushIntegrationName(config.getString("pushIntegrationName"));
+        }
+
+        if (config.hasKey("autoPushRegistration")) {
+            builder.setAutoPushRegistration(config.getBoolean("autoPushRegistration"));
+        }
+
+        if (config.hasKey("logLevel")) {
+            builder.setLogLevel(config.getInt("logLevel"));
+        }
+
+        if (config.hasKey("inAppDisplayInterval")) {
+            builder.setInAppDisplayInterval(config.getDouble("inAppDisplayInterval"));
+        }
+
+        if (config.hasKey("urlHandler")) {
+            builder.setUrlHandler(new IterableUrlHandler(config.getMap("urlHandler")));
+        }
+
+        if (config.hasKey("customActionHandler")) {
+            builder.setCustomActionHandler(new IterableCustomActionHandler(config.getMap("customActionHandler")));
+        }
+
+        if (config.hasKey("inAppHandler")) {
+            builder.setInAppHandler(new IterableInAppHandler(config.getMap("inAppHandler")));
+        }
+
+        return builder.build();
+    }
+
+    public static IterableAttributionInfo getAttributionInfoFromReadableMap(ReadableMap attributionInfo) {
+        if (attributionInfo == null) {
+            return null;
+        }
+
+        return new IterableAttributionInfo(
+            attributionInfo.getString("campaignId"),
+            attributionInfo.getString("templateId"),
+            attributionInfo.getString("messageId")
+        );
+    }
+
+    public static List<IterableCommerceItem> getCommerceItemsFromReadableArray(ReadableArray items) {
+        if (items == null) {
+            return null;
+        }
+
+        List<IterableCommerceItem> commerceItems = new ArrayList<>();
+        for (int i = 0; i < items.size(); i++) {
+            ReadableMap item = items.getMap(i);
+            commerceItems.add(new IterableCommerceItem(
+                item.getString("id"),
+                item.getString("name"),
+                item.getDouble("price"),
+                item.getInt("quantity")
+            ));
+        }
+        return commerceItems;
+    }
+
+    public static IterableInAppLocation getInAppLocationFromInteger(int location) {
+        switch (location) {
+            case 0:
+                return IterableInAppLocation.IN_APP;
+            case 1:
+                return IterableInAppLocation.INBOX;
+            default:
+                return IterableInAppLocation.IN_APP;
+        }
+    }
+
+    public static IterableInAppCloseSource getInAppCloseSourceFromInteger(int source) {
+        switch (source) {
+            case 0:
+                return IterableInAppCloseSource.BACK;
+            case 1:
+                return IterableInAppCloseSource.LINK;
+            case 2:
+                return IterableInAppCloseSource.CLOSE;
+            default:
+                return IterableInAppCloseSource.BACK;
+        }
+    }
+
+    public static IterableInAppDeleteSource getInAppDeleteSourceFromInteger(int source) {
+        switch (source) {
+            case 0:
+                return IterableInAppDeleteSource.INBOX_SWIPE;
+            case 1:
+                return IterableInAppDeleteSource.DELETE_BUTTON;
+            default:
+                return IterableInAppDeleteSource.INBOX_SWIPE;
+        }
+    }
 }
