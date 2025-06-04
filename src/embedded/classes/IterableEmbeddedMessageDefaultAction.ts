@@ -1,3 +1,7 @@
+/**
+ * IterableEmbeddedMessageDefaultAction represents the default action defined as
+ * a response to user events for an embedded message
+ */
 export class IterableEmbeddedMessageDefaultAction {
   /**
    * The type of iterable action

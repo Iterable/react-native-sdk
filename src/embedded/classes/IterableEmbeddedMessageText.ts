@@ -1,3 +1,6 @@
+/**
+ * IterableEmbeddedMessageText represents a text element in an embedded message.
+ */
 export class IterableEmbeddedMessageText {
   /** The id of the text element */
   readonly id: string;
