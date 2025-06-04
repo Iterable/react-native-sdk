@@ -5,6 +5,6 @@
 #import <React/RCTEventEmitter.h>
 #import <React/RCTBridgeModule.h>
 
-@interface RNIterableAPISpec : NSObject <RCTComponentViewFactory>
+@interface RNIterableAPISpec : RCTEventEmitter <RCTBridgeModule>
 
 @end
