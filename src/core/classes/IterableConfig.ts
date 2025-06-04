@@ -295,6 +295,13 @@ export class IterableConfig {
   encryptionEnforced = false;
 
   /**
+   * This specifies whether the SDK should enable embedded messaging.
+   *
+   * By default, the SDK will not enable embedded messaging.
+   */
+  enableEmbeddedMessaging = false;
+
+  /**
    * Converts the IterableConfig instance to a dictionary object.
    *
    * @returns An object representing the configuration.
@@ -342,6 +349,7 @@ export class IterableConfig {
       dataRegion: this.dataRegion,
       pushPlatform: this.pushPlatform,
       encryptionEnforced: this.encryptionEnforced,
+      enableEmbeddedMessaging: this.enableEmbeddedMessaging,
     };
   }
 }
