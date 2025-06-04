@@ -1,4 +1,4 @@
-import { IterableEmbeddedMessageButton } from '../embedded/classes/IterableEmbeddedMessageElementsButton';
+import { IterableEmbeddedMessageElementsButton } from '../embedded/classes/IterableEmbeddedMessageElementsButton';
 import { IterableEmbeddedMessageElementsButtonAction } from '../embedded/classes/IterableEmbeddedMessageElementsButtonAction';
 import { Iterable } from '../core/classes/Iterable';
 
@@ -14,9 +14,9 @@ describe('IterableEmbeddedMessageButton', () => {
       action: { type: 'openUrl', data: 'https://example.com' },
     };
 
-    const button = IterableEmbeddedMessageButton.fromDict(dict);
+    const button = IterableEmbeddedMessageElementsButton.fromDict(dict);
 
-    expect(button).toBeInstanceOf(IterableEmbeddedMessageButton);
+    expect(button).toBeInstanceOf(IterableEmbeddedMessageElementsButton);
     expect(button.id).toBe('button-123');
     expect(button.title).toBe('Click Me!');
     expect(button.action).toBeInstanceOf(
@@ -31,9 +31,9 @@ describe('IterableEmbeddedMessageButton', () => {
 
     const dict = { id: 'button-123' };
 
-    const button = IterableEmbeddedMessageButton.fromDict(dict);
+    const button = IterableEmbeddedMessageElementsButton.fromDict(dict);
 
-    expect(button).toBeInstanceOf(IterableEmbeddedMessageButton);
+    expect(button).toBeInstanceOf(IterableEmbeddedMessageElementsButton);
     expect(button.id).toBe('button-123');
     expect(button.title).toBeUndefined();
     expect(button.action).toBeUndefined();
@@ -47,9 +47,9 @@ describe('IterableEmbeddedMessageButton', () => {
       title: 'Click Me!',
     };
 
-    const button = IterableEmbeddedMessageButton.fromDict(dict);
+    const button = IterableEmbeddedMessageElementsButton.fromDict(dict);
 
-    expect(button).toBeInstanceOf(IterableEmbeddedMessageButton);
+    expect(button).toBeInstanceOf(IterableEmbeddedMessageElementsButton);
     expect(button.id).toBe('button-123');
     expect(button.title).toBe('Click Me!');
     expect(button.action).toBeUndefined();
@@ -63,7 +63,7 @@ describe('IterableEmbeddedMessageButton', () => {
       action: { type: 'openUrl', data: 'https://example.com' },
     };
 
-    expect(() => IterableEmbeddedMessageButton.fromDict(dict)).toThrow(
+    expect(() => IterableEmbeddedMessageElementsButton.fromDict(dict)).toThrow(
       'id is required'
     );
   });
@@ -78,9 +78,9 @@ describe('IterableEmbeddedMessageButton', () => {
       action: { type: 'close' },
     };
 
-    const button = IterableEmbeddedMessageButton.fromDict(dict);
+    const button = IterableEmbeddedMessageElementsButton.fromDict(dict);
 
-    expect(button).toBeInstanceOf(IterableEmbeddedMessageButton);
+    expect(button).toBeInstanceOf(IterableEmbeddedMessageElementsButton);
     expect(button.id).toBe('button-123');
     expect(button.action).toBeInstanceOf(
       IterableEmbeddedMessageElementsButtonAction
