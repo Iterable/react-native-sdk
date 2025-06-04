@@ -1,4 +1,4 @@
-import { NativeModules, Platform } from 'react-native';
+import { NativeModules } from 'react-native';
 import type {
   IterableConfig,
   IterableInAppMessage,
@@ -8,12 +8,23 @@ import type {
   IterableAttributionInfo,
   IterableCommerceItem,
 } from './types';
+import {
+  ArchitectureDetectorInstance,
+  ArchitectureFeature,
+} from './ArchitectureDetector';
 
 const { RNIterableAPI } = NativeModules;
+
+interface IterableError {
+  code: string;
+  message: string;
+  details?: unknown;
+}
 
 class IterableSDK {
   private static instance: IterableSDK;
   private initialized = false;
+  private architectureDetector = ArchitectureDetectorInstance;
 
   private constructor() {}
 
@@ -37,11 +48,21 @@ class IterableSDK {
 
     return new Promise((resolve, reject) => {
       try {
+        const architectureName =
+          this.architectureDetector.getArchitectureName();
+        console.log(
+          `Initializing Iterable SDK with ${architectureName} architecture`
+        );
+        console.log(
+          'Available features:',
+          this.architectureDetector.getAvailableFeatures()
+        );
+
         RNIterableAPI.initializeWithApiKey(
           apiKey,
           config || {},
-          Platform.OS === 'ios' ? 'Fabric' : 'TurboModule',
-          (error: any) => {
+          architectureName,
+          (error: IterableError | null) => {
             if (error) {
               reject(error);
             } else {
@@ -57,6 +78,35 @@ class IterableSDK {
   }
 
   /**
+   * Check if a specific feature is available in the current architecture
+   * @param feature - Feature to check
+   */
+  isFeatureAvailable(feature: ArchitectureFeature): boolean {
+    return this.architectureDetector.isFeatureAvailable(feature);
+  }
+
+  /**
+   * Get all available features
+   */
+  getAvailableFeatures(): ArchitectureFeature[] {
+    return this.architectureDetector.getAvailableFeatures();
+  }
+
+  /**
+   * Get features that are only available in the new architecture
+   */
+  getNewArchitectureFeatures(): ArchitectureFeature[] {
+    return this.architectureDetector.getNewArchitectureFeatures();
+  }
+
+  /**
+   * Get the current architecture name
+   */
+  getArchitectureName(): string {
+    return this.architectureDetector.getArchitectureName();
+  }
+
+  /**
    * Set the user's email
    * @param email - User's email address
    * @param authToken - Optional authentication token
@@ -64,13 +114,17 @@ class IterableSDK {
   setEmail(email: string, authToken?: string): Promise<void> {
     return new Promise((resolve, reject) => {
       try {
-        RNIterableAPI.setEmail(email, authToken, (error: any) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve();
+        RNIterableAPI.setEmail(
+          email,
+          authToken,
+          (error: IterableError | null) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve();
+            }
           }
-        });
+        );
       } catch (error) {
         reject(error);
       }
@@ -83,7 +137,7 @@ class IterableSDK {
   getEmail(): Promise<string | null> {
     return new Promise((resolve, reject) => {
       try {
-        RNIterableAPI.getEmail((error: any, email: string) => {
+        RNIterableAPI.getEmail((error: IterableError | null, email: string) => {
           if (error) {
             reject(error);
           } else {
@@ -104,13 +158,17 @@ class IterableSDK {
   setUserId(userId: string, authToken?: string): Promise<void> {
     return new Promise((resolve, reject) => {
       try {
-        RNIterableAPI.setUserId(userId, authToken, (error: any) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve();
+        RNIterableAPI.setUserId(
+          userId,
+          authToken,
+          (error: IterableError | null) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve();
+            }
           }
-        });
+        );
       } catch (error) {
         reject(error);
       }
@@ -123,13 +181,15 @@ class IterableSDK {
   getUserId(): Promise<string | null> {
     return new Promise((resolve, reject) => {
       try {
-        RNIterableAPI.getUserId((error: any, userId: string) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve(userId);
+        RNIterableAPI.getUserId(
+          (error: IterableError | null, userId: string) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(userId);
+            }
           }
-        });
+        );
       } catch (error) {
         reject(error);
       }
@@ -144,13 +204,17 @@ class IterableSDK {
   trackEvent(name: string, dataFields?: IterableEventData): Promise<void> {
     return new Promise((resolve, reject) => {
       try {
-        RNIterableAPI.trackEvent(name, dataFields || {}, (error: any) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve();
+        RNIterableAPI.trackEvent(
+          name,
+          dataFields || {},
+          (error: IterableError | null) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve();
+            }
           }
-        });
+        );
       } catch (error) {
         reject(error);
       }
@@ -171,7 +235,7 @@ class IterableSDK {
         RNIterableAPI.updateUser(
           dataFields,
           mergeNestedObjects,
-          (error: any) => {
+          (error: IterableError | null) => {
             if (error) {
               reject(error);
             } else {
@@ -189,10 +253,18 @@ class IterableSDK {
    * Get in-app messages
    */
   getInAppMessages(): Promise<IterableInAppMessage[]> {
+    if (!this.isFeatureAvailable(ArchitectureFeature.IN_APP_MESSAGES)) {
+      return Promise.reject(
+        new Error(
+          'In-app messages are not available in the current architecture'
+        )
+      );
+    }
+
     return new Promise((resolve, reject) => {
       try {
         RNIterableAPI.getInAppMessages(
-          (error: any, messages: IterableInAppMessage[]) => {
+          (error: IterableError | null, messages: IterableInAppMessage[]) => {
             if (error) {
               reject(error);
             } else {
@@ -210,10 +282,18 @@ class IterableSDK {
    * Get inbox messages
    */
   getInboxMessages(): Promise<IterableInboxMessage[]> {
+    if (!this.isFeatureAvailable(ArchitectureFeature.INBOX_MESSAGES)) {
+      return Promise.reject(
+        new Error(
+          'Inbox messages are not available in the current architecture'
+        )
+      );
+    }
+
     return new Promise((resolve, reject) => {
       try {
         RNIterableAPI.getInboxMessages(
-          (error: any, messages: IterableInboxMessage[]) => {
+          (error: IterableError | null, messages: IterableInboxMessage[]) => {
             if (error) {
               reject(error);
             } else {
@@ -235,13 +315,17 @@ class IterableSDK {
   showMessage(messageId: string, consume: boolean): Promise<void> {
     return new Promise((resolve, reject) => {
       try {
-        RNIterableAPI.showMessage(messageId, consume, (error: any) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve();
+        RNIterableAPI.showMessage(
+          messageId,
+          consume,
+          (error: IterableError | null) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve();
+            }
           }
-        });
+        );
       } catch (error) {
         reject(error);
       }
@@ -256,13 +340,17 @@ class IterableSDK {
   setReadForMessage(messageId: string, read: boolean): Promise<void> {
     return new Promise((resolve, reject) => {
       try {
-        RNIterableAPI.setReadForMessage(messageId, read, (error: any) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve();
+        RNIterableAPI.setReadForMessage(
+          messageId,
+          read,
+          (error: IterableError | null) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve();
+            }
           }
-        });
+        );
       } catch (error) {
         reject(error);
       }
@@ -286,7 +374,7 @@ class IterableSDK {
           messageId,
           location,
           deleteSource,
-          (error: any) => {
+          (error: IterableError | null) => {
             if (error) {
               reject(error);
             } else {
@@ -307,7 +395,7 @@ class IterableSDK {
   updateCart(items: IterableCommerceItem[]): Promise<void> {
     return new Promise((resolve, reject) => {
       try {
-        RNIterableAPI.updateCart(items, (error: any) => {
+        RNIterableAPI.updateCart(items, (error: IterableError | null) => {
           if (error) {
             reject(error);
           } else {
@@ -331,13 +419,21 @@ class IterableSDK {
     items: IterableCommerceItem[],
     dataFields?: IterableEventData
   ): Promise<void> {
+    if (!this.isFeatureAvailable(ArchitectureFeature.COMMERCE_TRACKING)) {
+      return Promise.reject(
+        new Error(
+          'Commerce tracking is not available in the current architecture'
+        )
+      );
+    }
+
     return new Promise((resolve, reject) => {
       try {
         RNIterableAPI.trackPurchase(
           total,
           items,
           dataFields || {},
-          (error: any) => {
+          (error: IterableError | null) => {
             if (error) {
               reject(error);
             } else {
@@ -355,10 +451,16 @@ class IterableSDK {
    * Get attribution info
    */
   getAttributionInfo(): Promise<IterableAttributionInfo | null> {
+    if (!this.isFeatureAvailable(ArchitectureFeature.ATTRIBUTION)) {
+      return Promise.reject(
+        new Error('Attribution is not available in the current architecture')
+      );
+    }
+
     return new Promise((resolve, reject) => {
       try {
         RNIterableAPI.getAttributionInfo(
-          (error: any, info: IterableAttributionInfo) => {
+          (error: IterableError | null, info: IterableAttributionInfo) => {
             if (error) {
               reject(error);
             } else {
@@ -379,13 +481,16 @@ class IterableSDK {
   setAttributionInfo(attributionInfo: IterableAttributionInfo): Promise<void> {
     return new Promise((resolve, reject) => {
       try {
-        RNIterableAPI.setAttributionInfo(attributionInfo, (error: any) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve();
+        RNIterableAPI.setAttributionInfo(
+          attributionInfo,
+          (error: IterableError | null) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve();
+            }
           }
-        });
+        );
       } catch (error) {
         reject(error);
       }
