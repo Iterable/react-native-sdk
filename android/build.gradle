@@ -1,4 +1,13 @@
 buildscript {
+  ext {
+    buildToolsVersion = "33.0.0"
+    minSdkVersion = 21
+    compileSdkVersion = 33
+    targetSdkVersion = 33
+    ndkVersion = "23.1.7779620"
+    kotlinVersion = "1.8.0"
+    gradleVersion = "7.5.1"
+  }
   // Buildscript is evaluated before everything else so we can't use getExtOrDefault
   def kotlin_version = rootProject.ext.has("kotlinVersion") ? rootProject.ext.get("kotlinVersion") : project.properties["RNIterable_kotlinVersion"]
 
@@ -8,9 +17,9 @@ buildscript {
   }
 
   dependencies {
-    classpath "com.android.tools.build:gradle:7.2.1"
-    // noinspection DifferentKotlinGradleVersion
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    classpath("com.android.tools.build:gradle:${gradleVersion}")
+    classpath("com.facebook.react:react-native-gradle-plugin")
+    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
   }
 }
 
@@ -29,10 +38,7 @@ def isFabricEnabled() {
 
 apply plugin: "com.android.library"
 apply plugin: "kotlin-android"
-
-if (isNewArchitectureEnabled()) {
-  apply plugin: "com.facebook.react"
-}
+apply plugin: "com.facebook.react"
 
 def getExtOrDefault(name) {
   return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties["RNIterable_" + name]
@@ -62,11 +68,13 @@ android {
     }
   }
 
-  compileSdkVersion getExtOrIntegerDefault("compileSdkVersion")
+  compileSdkVersion rootProject.ext.compileSdkVersion
 
   defaultConfig {
-    minSdkVersion getExtOrIntegerDefault("minSdkVersion")
-    targetSdkVersion getExtOrIntegerDefault("targetSdkVersion")
+    minSdkVersion rootProject.ext.minSdkVersion
+    targetSdkVersion rootProject.ext.targetSdkVersion
+    versionCode 1
+    versionName "1.0"
 
     if (isNewArchitectureEnabled()) {
       buildConfigField("boolean", "IS_NEW_ARCHITECTURE_ENABLED", "true")
@@ -84,11 +92,12 @@ android {
   buildTypes {
     release {
       minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
   }
 
   lintOptions {
-    disable "GradleCompatible"
+    abortOnError false
   }
 
   compileOptions {
@@ -98,6 +107,29 @@ android {
 
   buildFeatures {
     buildConfig true
+  }
+
+  // Configure build variants for old and new architecture
+  flavorDimensions "architecture"
+  productFlavors {
+    oldArch {
+      dimension "architecture"
+      buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", "false"
+    }
+    newArch {
+      dimension "architecture"
+      buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", "true"
+    }
+  }
+
+  // Configure source sets for each architecture
+  sourceSets {
+    oldArch {
+      java.srcDirs = ['src/main/java', 'src/oldArch/java']
+    }
+    newArch {
+      java.srcDirs = ['src/main/java', 'src/newArch/java']
+    }
   }
 }
 
@@ -113,8 +145,59 @@ dependencies {
   // For > 0.71, this will be replaced by `com.facebook.react:react-android:$version` by react gradle plugin
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
+  implementation "com.facebook.react:react-android:+"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
   api "com.iterable:iterableapi:3.5.2"
   // api project(":iterableapi") // links to local android SDK repo rather than by release
+
+  // Architecture-specific dependencies
+  oldArchImplementation "com.facebook.react:react-native-gradle-plugin"
+  newArchImplementation "com.facebook.react:react-native-gradle-plugin"
+  newArchImplementation "com.facebook.react:react-native-turbomodule-core"
+  newArchImplementation "com.facebook.react:react-native-turbomodule-interface"
+}
+
+// Configure React Native
+react {
+  // Enable Hermes
+  hermesCommand = "../../node_modules/react-native/sdks/hermesc/%OS-BIN%/hermesc"
+  // Enable new architecture
+  newArchEnabled = true
+}
+
+// Configure publishing
+afterEvaluate {
+  publishing {
+    publications {
+      release(MavenPublication) {
+        from components.release
+        groupId = 'com.iterable'
+        artifactId = 'react-native-sdk'
+        version = '2.0.0'
+      }
+    }
+  }
+}
+
+allprojects {
+  repositories {
+    maven {
+      // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+      url("$rootDir/../node_modules/react-native/android")
+    }
+    maven {
+      // Android JSC is installed from npm
+      url("$rootDir/../node_modules/jsc-android/dist")
+    }
+    mavenCentral {
+      // We don't want to fetch react-native from Maven Central as there are
+      // older versions over there.
+      content {
+        excludeGroup "com.facebook.react"
+      }
+    }
+    google()
+    maven { url 'https://www.jitpack.io' }
+  }
 }
 

@@ -48,6 +48,9 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import com.facebook.react.module.annotations.ReactModule;
+
+@ReactModule(name = RNIterableAPISpec.NAME)
 public class RNIterableAPIModule extends ReactContextBaseJavaModule implements IterableUrlHandler, IterableCustomActionHandler, IterableInAppHandler, IterableAuthHandler, IterableInAppManager.Listener {
     private final ReactApplicationContext reactContext;
     private static String TAG = "RNIterableAPIModule";
@@ -62,258 +65,154 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
 
     private final InboxSessionManager sessionManager = new InboxSessionManager();
 
+    private final RNIterableAPITurboModule turboModule;
+
     public RNIterableAPIModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.reactContext = reactContext;
+        this.turboModule = new RNIterableAPIImpl(reactContext);
     }
-
-    // ---------------------------------------------------------------------------------------
-    // region IterableSDK calls
 
     @Override
+    @NonNull
     public String getName() {
-        return "RNIterableAPI";
+        return RNIterableAPISpec.NAME;
     }
 
     @ReactMethod
-    public void initializeWithApiKey(String apiKey, ReadableMap configReadableMap, String version, Promise promise) {
-        IterableLogger.d(TAG, "initializeWithApiKey: " + apiKey);
-        IterableConfig.Builder configBuilder = Serialization.getConfigFromReadableMap(configReadableMap);
-
-        if (configReadableMap.hasKey("urlHandlerPresent") && configReadableMap.getBoolean("urlHandlerPresent") == true) {
-            configBuilder.setUrlHandler(this);
-        }
-
-        if (configReadableMap.hasKey("customActionHandlerPresent") && configReadableMap.getBoolean("customActionHandlerPresent") == true) {
-            configBuilder.setCustomActionHandler(this);
-        }
-
-        if (configReadableMap.hasKey("inAppHandlerPresent") && configReadableMap.getBoolean("inAppHandlerPresent") == true) {
-            configBuilder.setInAppHandler(this);
-        }
-
-        if (configReadableMap.hasKey("authHandlerPresent") && configReadableMap.getBoolean("authHandlerPresent") == true) {
-            configBuilder.setAuthHandler(this);
-        }
-
-        IterableApi.initialize(reactContext, apiKey, configBuilder.build());
-        IterableApi.getInstance().setDeviceAttribute("reactNativeSDKVersion", version);
-
-        IterableApi.getInstance().getInAppManager().addListener(this);
-
-        // MOB-10421: Figure out what the error cases are and handle them appropriately
-        // This is just here to match the TS types and let the JS thread know when we are done initializing
-        promise.resolve(true);
+    public void initializeWithApiKey(String apiKey, ReadableMap config, String version, Promise promise) {
+        turboModule.initializeWithApiKey(apiKey, config, version, promise);
     }
 
     @ReactMethod
-    public void setEmail(@Nullable String email) {
-        IterableLogger.d(TAG, "setEmail: " + email);
-        
-        IterableApi.getInstance().setEmail(email);
+    public void initialize2WithApiKey(String apiKey, ReadableMap config, String apiEndPoint, String version, Promise promise) {
+        turboModule.initialize2WithApiKey(apiKey, config, apiEndPoint, version, promise);
     }
 
     @ReactMethod
-    public void setEmail(@Nullable String email, @Nullable String authToken) {
-        IterableLogger.d(TAG, "setEmail: " + email + " authToken: " + authToken);
-
-        IterableApi.getInstance().setEmail(email, authToken);
-    }
-
-    @ReactMethod
-    public void updateEmail(String email) {
-        IterableLogger.d(TAG, "updateEmail: " + email);
-
-        IterableApi.getInstance().updateEmail(email);
-    }
-
-    @ReactMethod
-    public void updateEmail(String email, @Nullable String authToken) {
-        IterableLogger.d(TAG, "updateEmail: " + email + " authToken: " + authToken);
-
-        IterableApi.getInstance().updateEmail(email, authToken);
+    public void setEmail(String email, String authToken) {
+        turboModule.setEmail(email, authToken);
     }
 
     @ReactMethod
     public void getEmail(Promise promise) {
-        promise.resolve(RNIterableInternal.getEmail());
+        turboModule.getEmail(promise);
     }
 
     @ReactMethod
-    public void sampleMethod(String stringArgument, int numberArgument, Callback callback) {
-        // TODO: Implement some actually useful functionality
-        callback.invoke("Received numberArgument: " + numberArgument + " stringArgument: " + stringArgument);
-    }
-
-    @ReactMethod
-    public void setUserId(@Nullable String userId) {
-        IterableLogger.d(TAG, "setUserId: " + userId);
-        IterableApi.getInstance().setUserId(userId);
-    }
-
-    @ReactMethod
-    public void setUserId(@Nullable String userId, @Nullable String authToken) {
-        IterableLogger.d(TAG, "setUserId: " + userId + " authToken: " + authToken);
-        
-        IterableApi.getInstance().setUserId(userId, authToken);
-    }
-
-    @ReactMethod
-    public void updateUser(ReadableMap dataFields, Boolean mergeNestedObjects) {
-        IterableLogger.v(TAG, "updateUser");
-        IterableApi.getInstance().updateUser(optSerializedDataFields(dataFields), mergeNestedObjects);
+    public void setUserId(String userId, String authToken) {
+        turboModule.setUserId(userId, authToken);
     }
 
     @ReactMethod
     public void getUserId(Promise promise) {
-        promise.resolve(RNIterableInternal.getUserId());
-    }
-
-    @ReactMethod
-    public void trackEvent(String name, ReadableMap dataFields) {
-        IterableLogger.v(TAG, "trackEvent");
-        IterableApi.getInstance().track(name, optSerializedDataFields(dataFields));
-    }
-
-    @ReactMethod
-    public void updateCart(ReadableArray items) {
-        IterableLogger.v(TAG, "updateCart");
-        IterableApi.getInstance().updateCart(Serialization.commerceItemsFromReadableArray(items));
-    }
-
-    @ReactMethod
-    public void trackPurchase(Double total, ReadableArray items, ReadableMap dataFields) {
-        IterableLogger.v(TAG, "trackPurchase");
-        IterableApi.getInstance().trackPurchase(total, Serialization.commerceItemsFromReadableArray(items), optSerializedDataFields(dataFields));
-    }
-
-    @ReactMethod
-    public void trackPushOpenWithCampaignId(Integer campaignId, Integer templateId, String messageId, Boolean appAlreadyRunning, ReadableMap dataFields) {
-        RNIterableInternal.trackPushOpenWithCampaignId(campaignId, templateId, messageId, optSerializedDataFields(dataFields));
-    }
-
-    @ReactMethod
-    public void updateSubscriptions(ReadableArray emailListIds, ReadableArray unsubscribedChannelIds, ReadableArray unsubscribedMessageTypeIds, ReadableArray subscribedMessageTypeIds, Integer campaignId, Integer templateId) {
-        IterableLogger.v(TAG, "updateSubscriptions");
-        Integer finalCampaignId = null, finalTemplateId = null;
-        if (campaignId > 0) {
-            finalCampaignId = campaignId;
-        }
-        if (templateId > 0) {
-            finalTemplateId = templateId;
-        }
-        IterableApi.getInstance().updateSubscriptions(readableArrayToIntegerArray(emailListIds),
-                readableArrayToIntegerArray(unsubscribedChannelIds),
-                readableArrayToIntegerArray(unsubscribedMessageTypeIds),
-                readableArrayToIntegerArray(subscribedMessageTypeIds),
-                finalCampaignId,
-                finalTemplateId
-        );
-    }
-
-    @ReactMethod
-    public void showMessage(String messageId, boolean consume, final Promise promise) {
-        if (messageId == null || messageId == "") {
-            promise.reject("", "messageId is null or empty");
-            return;
-        }
-        IterableApi.getInstance().getInAppManager().showMessage(RNIterableInternal.getMessageById(messageId), consume, new IterableHelper.IterableUrlCallback() {
-            @Override
-            public void execute(@Nullable Uri url) {
-                promise.resolve(url.toString());
-            }
-        });
-    }
-
-    @ReactMethod
-    public void setReadForMessage(String messageId, boolean read) {
-        IterableLogger.v(TAG, "setReadForMessage");
-        IterableApi.getInstance().getInAppManager().setRead(RNIterableInternal.getMessageById(messageId), read);
-    }
-
-    @ReactMethod
-    public void removeMessage(String messageId, Integer location, Integer deleteSource) {
-        IterableLogger.v(TAG, "removeMessage");
-        IterableApi.getInstance().getInAppManager().removeMessage(RNIterableInternal.getMessageById(messageId), Serialization.getIterableDeleteActionTypeFromInteger(deleteSource), Serialization.getIterableInAppLocationFromInteger(location));
-    }
-
-    @ReactMethod
-    public void getHtmlInAppContentForMessage(String messageId, final Promise promise) {
-        IterableLogger.printInfo();
-        IterableInAppMessage message = RNIterableInternal.getMessageById(messageId);
-
-        if (message == null) {
-            promise.reject("", "Could not find message with id: " + messageId);
-            return;
-        }
-
-        JSONObject messageContent = Serialization.messageContentToJsonObject(message.getContent());
-
-        if (messageContent == null) {
-            promise.reject("", "messageContent is null for message id: " + messageId);
-            return;
-        }
-
-        try {
-            promise.resolve(Serialization.convertJsonToMap(messageContent));
-        } catch (JSONException e) {
-            promise.reject("", "Failed to convert JSONObject to ReadableMap");
-        }
-    }
-
-    @ReactMethod
-    public void getAttributionInfo(Promise promise) {
-        IterableLogger.printInfo();
-        IterableAttributionInfo attributionInfo = IterableApi.getInstance().getAttributionInfo();
-        if (attributionInfo != null) {
-            try {
-                promise.resolve(Serialization.convertJsonToMap(attributionInfo.toJSONObject()));
-            } catch (JSONException e) {
-                IterableLogger.e(TAG, "Failed converting attribution info to JSONObject");
-                promise.reject("", "Failed to convert AttributionInfo to ReadableMap");
-            }
-        } else {
-            promise.resolve(null);
-        }
-    }
-
-    @ReactMethod
-    public void setAttributionInfo(ReadableMap attributionInfoReadableMap) {
-        IterableLogger.printInfo();
-        try {
-            JSONObject attributionInfoJson = Serialization.convertMapToJson(attributionInfoReadableMap);
-            IterableAttributionInfo attributionInfo = IterableAttributionInfo.fromJSONObject(attributionInfoJson);
-            RNIterableInternal.setAttributionInfo(attributionInfo);
-        } catch (JSONException e) {
-            IterableLogger.e(TAG, "Failed converting ReadableMap to JSON");
-        }
-    }
-
-    @ReactMethod
-    public void getLastPushPayload(Promise promise) {
-        Bundle payloadData = IterableApi.getInstance().getPayloadData();
-        if (payloadData != null) {
-            promise.resolve(Arguments.fromBundle(IterableApi.getInstance().getPayloadData()));
-        } else {
-            IterableLogger.d(TAG, "No payload data found");
-            promise.resolve(null);
-        }
+        turboModule.getUserId(promise);
     }
 
     @ReactMethod
     public void disableDeviceForCurrentUser() {
-        IterableLogger.v(TAG, "disableDevice");
-        IterableApi.getInstance().disablePush();
+        turboModule.disableDeviceForCurrentUser();
     }
 
     @ReactMethod
-    public void handleAppLink(String uri, Promise promise) {
-        IterableLogger.printInfo();
-        promise.resolve(IterableApi.getInstance().handleAppLink(uri));
+    public void getLastPushPayload(Promise promise) {
+        turboModule.getLastPushPayload(promise);
     }
 
-    // ---------------------------------------------------------------------------------------
-    // endregion
+    @ReactMethod
+    public void trackPushOpen(double campaignId, Double templateId, String messageId, boolean appAlreadyRunning, ReadableMap dataFields) {
+        turboModule.trackPushOpen(campaignId, templateId, messageId, appAlreadyRunning, dataFields);
+    }
+
+    @ReactMethod
+    public void getInAppMessages(Promise promise) {
+        turboModule.getInAppMessages(promise);
+    }
+
+    @ReactMethod
+    public void getInboxMessages(Promise promise) {
+        turboModule.getInboxMessages(promise);
+    }
+
+    @ReactMethod
+    public void getUnreadInboxMessagesCount(Promise promise) {
+        turboModule.getUnreadInboxMessagesCount(promise);
+    }
+
+    @ReactMethod
+    public void showMessage(String messageId, boolean consume, Promise promise) {
+        turboModule.showMessage(messageId, consume, promise);
+    }
+
+    @ReactMethod
+    public void setReadForMessage(String messageId, boolean read) {
+        turboModule.setReadForMessage(messageId, read);
+    }
+
+    @ReactMethod
+    public void removeMessage(String messageId, double location, double deleteSource) {
+        turboModule.removeMessage(messageId, location, deleteSource);
+    }
+
+    @ReactMethod
+    public void trackEvent(String name, ReadableMap dataFields) {
+        turboModule.trackEvent(name, dataFields);
+    }
+
+    @ReactMethod
+    public void updateUser(ReadableMap dataFields, boolean mergeNestedObjects) {
+        turboModule.updateUser(dataFields, mergeNestedObjects);
+    }
+
+    @ReactMethod
+    public void updateEmail(String email, String authToken) {
+        turboModule.updateEmail(email, authToken);
+    }
+
+    @ReactMethod
+    public void getAttributionInfo(Promise promise) {
+        turboModule.getAttributionInfo(promise);
+    }
+
+    @ReactMethod
+    public void setAttributionInfo(ReadableMap attributionInfo) {
+        turboModule.setAttributionInfo(attributionInfo);
+    }
+
+    @ReactMethod
+    public void updateCart(ReadableArray items) {
+        turboModule.updateCart(items);
+    }
+
+    @ReactMethod
+    public void trackPurchase(double total, ReadableArray items, ReadableMap dataFields) {
+        turboModule.trackPurchase(total, items, dataFields);
+    }
+
+    @ReactMethod
+    public void trackInAppOpen(String messageId, double location) {
+        turboModule.trackInAppOpen(messageId, location);
+    }
+
+    @ReactMethod
+    public void trackInAppClick(String messageId, double location, String clickedUrl) {
+        turboModule.trackInAppClick(messageId, location, clickedUrl);
+    }
+
+    @ReactMethod
+    public void trackInAppClose(String messageId, double location, double source, String clickedUrl) {
+        turboModule.trackInAppClose(messageId, location, source, clickedUrl);
+    }
+
+    @ReactMethod
+    public void inAppConsume(String messageId, double location, double source) {
+        turboModule.inAppConsume(messageId, location, source);
+    }
+
+    @ReactMethod
+    public void handleAppLink(String appLink, Promise promise) {
+        turboModule.handleAppLink(appLink, promise);
+    }
 
     // ---------------------------------------------------------------------------------------
     // region Track APIs

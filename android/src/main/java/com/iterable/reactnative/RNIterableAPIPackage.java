@@ -14,7 +14,7 @@ public class RNIterableAPIPackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(@NonNull ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
-        modules.add(new RNIterableAPIImpl(reactContext));
+        modules.add(new RNIterableAPIModule(reactContext));
         return modules;
     }
 

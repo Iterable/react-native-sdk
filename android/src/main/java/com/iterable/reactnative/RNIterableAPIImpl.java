@@ -9,6 +9,7 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.facebook.react.turbomodule.core.interfaces.TurboModule;
 import com.iterable.reactnative.bridge.IterableBridge;
 import com.iterable.reactnative.bridge.IterableConfig;
 import com.iterable.reactnative.bridge.IterableInAppMessage;
@@ -20,11 +21,12 @@ import com.iterable.reactnative.bridge.IterableAttributionInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RNIterableAPIImpl extends RNIterableAPISpec {
+public class RNIterableAPIImpl implements RNIterableAPITurboModule {
+    private final ReactApplicationContext reactContext;
     private final IterableBridge iterableBridge;
 
     public RNIterableAPIImpl(ReactApplicationContext reactContext) {
-        super(reactContext);
+        this.reactContext = reactContext;
         this.iterableBridge = new IterableBridge(reactContext);
     }
 
@@ -365,7 +367,7 @@ public class RNIterableAPIImpl extends RNIterableAPISpec {
     }
 
     private void sendEvent(String eventName, String body) {
-        getReactApplicationContext()
+        reactContext
             .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
             .emit(eventName, body);
     }
