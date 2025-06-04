@@ -54,7 +54,69 @@ Iterable's React Native SDK relies on:
 
 ## Architecture Support
 
-**Important**: Iterable's React Native SDK currently does not support [React Native's New Architecture](https://reactnative.dev/architecture/landing-page) (Fabric, TurboModules, and Codegen). The SDK is designed to work with the **legacy architecture only**. If you're using the New Architecture in your React Native application, you may encounter compatibility issues.
+Iterable's React Native SDK supports both the legacy architecture and React Native's New Architecture (Fabric, TurboModules, and Codegen). The SDK is designed to work seamlessly with both architectures, providing flexibility for your React Native application.
+
+### New Architecture Support
+
+Starting from version 2.0.0-beta.1, the SDK supports React Native's New Architecture. To use the SDK with the New Architecture:
+
+1. Enable the New Architecture in your project:
+   ```bash
+   yarn switch-arch new
+   ```
+
+2. Clean and rebuild your project:
+   ```bash
+   yarn clean
+   yarn build:new-arch
+   ```
+
+3. For Android, ensure your `android/gradle.properties` has:
+   ```properties
+   newArchEnabled=true
+   ```
+
+4. For iOS, the New Architecture will be automatically enabled when building with the new architecture flag.
+
+### Legacy Architecture Support
+
+To use the SDK with the legacy architecture:
+
+1. Ensure you're using the legacy architecture:
+   ```bash
+   yarn switch-arch old
+   ```
+
+2. Clean and rebuild your project:
+   ```bash
+   yarn clean
+   yarn build:old-arch
+   ```
+
+3. For Android, ensure your `android/gradle.properties` has:
+   ```properties
+   newArchEnabled=false
+   ```
+
+### Building for Both Architectures
+
+If you need to support both architectures in your project:
+
+1. Build for both architectures:
+   ```bash
+   yarn build:all
+   ```
+
+This will create builds for both the old and new architecture, allowing you to test and deploy your app with either architecture.
+
+### CI/CD Integration
+
+The SDK includes CI/CD configurations that test both architectures. The CI pipeline will:
+- Build the library with both old and new architecture
+- Build Android example app with both architectures
+- Build iOS example app with both architectures
+
+This ensures that your SDK works correctly with both architectures in your CI/CD pipeline.
 
 ## Installation
 
