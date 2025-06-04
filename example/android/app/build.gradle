@@ -85,6 +85,40 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+    packagingOptions {
+        exclude '**/libc++_shared.so'
+        exclude '**/libfbjni.so'
+        exclude '**/libfolly_runtime.so'
+        exclude '**/libglog.so'
+        exclude '**/libhermes.so'
+        exclude '**/libjsi.so'
+        exclude '**/libreact_codegen_rngesturehandler_codegen.so'
+        exclude '**/libreact_debug.so'
+        exclude '**/libreact_nativemodule_core.so'
+        exclude '**/libreact_render_debug.so'
+        exclude '**/libreact_render_graphics.so'
+        exclude '**/librrc_view.so'
+        exclude '**/libruntimeexecutor.so'
+        exclude '**/libturbomodulejsijni.so'
+        exclude '**/libyoga.so'
+        pickFirst '**/libc++_shared.so'
+        pickFirst '**/libfbjni.so'
+        pickFirst '**/libfolly_runtime.so'
+        pickFirst '**/libglog.so'
+        pickFirst '**/libhermes.so'
+        pickFirst '**/libjsi.so'
+        pickFirst '**/libreact_codegen_rngesturehandler_codegen.so'
+        pickFirst '**/libreact_debug.so'
+        pickFirst '**/libreact_nativemodule_core.so'
+        pickFirst '**/libreact_render_debug.so'
+        pickFirst '**/libreact_render_graphics.so'
+        pickFirst '**/librrc_view.so'
+        pickFirst '**/libruntimeexecutor.so'
+        pickFirst '**/libturbomodulejsijni.so'
+        pickFirst '**/libyoga.so'
+    }
+
     signingConfigs {
         debug {
             storeFile file('debug.keystore')
