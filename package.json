@@ -43,7 +43,11 @@
     "docs": "typedoc",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prepare": "yarn add_build_info; yarn bob build",
-    "release": "release-it"
+    "release": "release-it",
+    "build:old-arch": "yarn add_build_info; yarn bob build --no-new-arch",
+    "build:new-arch": "yarn add_build_info; yarn bob build --new-arch",
+    "build:all": "yarn build:old-arch && yarn build:new-arch",
+    "switch-arch": "node switch-arch.js"
   },
   "keywords": [
     "react-native",
@@ -158,11 +162,20 @@
           "project": "tsconfig.build.json"
         }
       ]
-    ]
+    ],
+    "configs": {
+      "old-arch": {
+        "newArchEnabled": false
+      },
+      "new-arch": {
+        "newArchEnabled": true
+      }
+    }
   },
   "create-react-native-library": {
     "type": "module-legacy",
     "languages": "kotlin-swift",
     "version": "0.41.2"
-  }
+  },
+  "newArchEnabled": true
 }
