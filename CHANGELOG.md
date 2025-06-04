@@ -1,3 +1,7 @@
+## 2.0.0
+
+GA release. No changes from 2.0.0-beta.1.
+
 ## 2.0.0-beta.1
 
 - Added disclaimer to README to alert users that we do not yet support React
