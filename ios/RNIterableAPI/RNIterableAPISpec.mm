@@ -1,11 +1,18 @@
 #import "RNIterableAPISpec.h"
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
+#import <React/RCTTurboModule.h>
 #import <IterableSDK/IterableSDK.h>
 
 @implementation RNIterableAPISpec
 
 RCT_EXPORT_MODULE(RNIterableAPI)
+
+- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
+    (const facebook::react::ObjCTurboModule::InitParams &)params
+{
+    return std::make_shared<facebook::react::NativeRNIterableAPISpecJSI>(params);
+}
 
 - (NSArray<NSString *> *)supportedEvents {
     return @[
