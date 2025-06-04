@@ -115,17 +115,6 @@ dependencies {
   implementation "com.facebook.react:react-native:+"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
   api "com.iterable:iterableapi:3.5.2"
-    // api project(":iterableapi") // links to local android SDK repo rather than by release
-
-  if (isNewArchitectureEnabled()) {
-    implementation project(":ReactAndroid")
-    implementation project(":ReactCommon")
-    implementation project(":ReactCommon:jsi")
-    implementation project(":ReactCommon:reactnativejni")
-    implementation project(":ReactCommon:reactnativejni:jsi")
-    implementation project(":ReactCommon:reactnativejni:jsc")
-    implementation project(":ReactCommon:reactnativejni:hermes")
-    implementation project(":ReactCommon:reactnativejni:fabricjni")
-  }
+  // api project(":iterableapi") // links to local android SDK repo rather than by release
 }
 
