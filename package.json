@@ -1,6 +1,6 @@
 {
   "name": "@iterable/react-native-sdk",
-  "version": "2.0.0",
+  "version": "111111112.0.0-interop-rc.4",
   "description": "Iterable SDK for React Native.",
   "source": "./src/index.tsx",
   "main": "./lib/module/index.js",
@@ -117,9 +117,10 @@
   },
   "sideEffects": false,
   "workspaces": [
-    "example"
+    "example",
+    "AppLibTest"
   ],
-  "packageManager": "yarn@3.6.1",
+  "packageManager": "yarn@3.6.4",
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
