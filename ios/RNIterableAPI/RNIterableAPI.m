@@ -133,6 +133,11 @@ RCT_EXTERN_METHOD(endSession)
 
 RCT_EXTERN_METHOD(updateVisibleRows: (nonnull NSArray *) visibleRows)
 
+// MARK: - SDK Embedded Manager Functions
+
+RCT_EXTERN_METHOD(getEmbeddedPlacements: (RCTPromiseResolveBlock) resolve
+                  rejecter: (RCTPromiseRejectBlock) reject)
+
 // MARK: - SDK Auth Manager Functions
 
 RCT_EXTERN_METHOD(passAlongAuthToken: (NSString *) authToken)
