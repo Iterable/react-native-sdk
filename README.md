@@ -54,7 +54,11 @@ Iterable's React Native SDK relies on:
 
 ## Architecture Support
 
-**Important**: Iterable's React Native SDK currently does not support [React Native's New Architecture](https://reactnative.dev/architecture/landing-page) (Fabric, TurboModules, and Codegen). The SDK is designed to work with the **legacy architecture only**. If you're using the New Architecture in your React Native application, you may encounter compatibility issues.
+**Important**: Iterable's React Native SDK has limited support for [React
+Native's New Architecture](https://reactnative.dev/architecture/landing-page)
+through interop. We are in the process of updating the SDK to fully support the New
+Architecture, and suggest using the legacy architecture in the meantime.  *TLDR;* Use the New Architecture at your own risk --
+you may encounter significant issues.
 
 ## Installation
 
