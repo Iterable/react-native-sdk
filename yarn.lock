@@ -3086,9 +3086,9 @@ __metadata:
     "@react-native/metro-config": 0.79.3
     "@react-native/typescript-config": 0.79.3
     "@react-navigation/bottom-tabs": ^6.6.1
-    "@react-navigation/native": ^6.1.18
+    "@react-navigation/native": ^6.0.8
     "@react-navigation/native-stack": ^6.11.0
-    "@react-navigation/stack": ^6.4.1
+    "@react-navigation/stack": ^6.3.21
     "@types/jest": ^29.5.13
     "@types/react": ^19.0.0
     "@types/react-test-renderer": ^19.0.0
@@ -4238,7 +4238,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/native@npm:^6.1.18":
+"@react-navigation/native@npm:^6.0.8, @react-navigation/native@npm:^6.1.18":
   version: 6.1.18
   resolution: "@react-navigation/native@npm:6.1.18"
   dependencies:
@@ -4262,7 +4262,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/stack@npm:^6.4.1":
+"@react-navigation/stack@npm:^6.3.21":
   version: 6.4.1
   resolution: "@react-navigation/stack@npm:6.4.1"
   dependencies:
@@ -6067,21 +6067,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"caniuse-lite@npm:^1.0.30001663":
-  version: 1.0.30001664
-  resolution: "caniuse-lite@npm:1.0.30001664"
-  checksum: cee25b4ea8a84779b7c9a60c1f9e304f6d99b79ef622b25fbc7873b4e55e8722a1091dd6c8b77bd7723e9f26a84b4a820a50a864989dd477e7ee51dc30461dca
-  languageName: node
-  linkType: hard
-
-"caniuse-lite@npm:^1.0.30001669":
-  version: 1.0.30001669
-  resolution: "caniuse-lite@npm:1.0.30001669"
-  checksum: 8ed0c69d0c6aa3b1cbc5ba4e5f5330943e7b7165e257f6955b8b73f043d07ad922265261f2b54d9bbaf02886bbdba5e6f5b16662310a13f91f17035af3212de1
-  languageName: node
-  linkType: hard
-
-"caniuse-lite@npm:^1.0.30001718":
+"caniuse-lite@npm:^1.0.30001663, caniuse-lite@npm:^1.0.30001669, caniuse-lite@npm:^1.0.30001718":
   version: 1.0.30001721
   resolution: "caniuse-lite@npm:1.0.30001721"
   checksum: 1f1e1f5f070f97ee83a08601709413300957be624790a8f7b3aebd5746d648e8d50be4ef9572a50281198b2f7acc63fdfc1a0bc04c23bbffba0ab4b3c69d4b76

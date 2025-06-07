@@ -161,6 +161,14 @@
       ]
     ]
   },
+  "codegenConfig": {
+    "name": "RNIterableSpec",
+    "type": "modules",
+    "jsSrcsDir": "src",
+    "android": {
+      "javaPackageName": "com.iterable.reactnative"
+    }
+  },
   "create-react-native-library": {
     "type": "module-legacy",
     "languages": "kotlin-swift",
