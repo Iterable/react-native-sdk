@@ -27,6 +27,6 @@ class MainActivity : ReactActivity() {
    * This being in Kotlin **may** cause issues with react-native-screens
    */
   override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(null)
+    super.onCreate(savedInstanceState)
   }
 }
