@@ -1,6 +1,6 @@
 /**
- * IterableEmbeddedMessageElementsButtonAction represents an action defined as a response to user events
- * for an embedded message button.
+ * IterableEmbeddedMessageElementsButtonAction represents an action defined as
+ * a response to user events for an embedded message button
  */
 export class IterableEmbeddedMessageElementsButtonAction {
   /**
