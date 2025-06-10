@@ -2,8 +2,8 @@ import { useIsFocused } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import {
   Animated,
-  NativeEventEmitter,
-  NativeModules,
+  // NativeEventEmitter,
+  // NativeModules,
   Platform,
   StyleSheet,
   Text,

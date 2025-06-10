@@ -1,4 +1,4 @@
-import { NativeModules } from 'react-native';
+// import { NativeModules } from 'react-native';
 
 import { Iterable } from '../../core/classes/Iterable';
 import type {
@@ -39,6 +39,7 @@ export class IterableInAppManager {
   getMessages(): Promise<IterableInAppMessage[]> {
     Iterable?.logger?.log('InAppManager.getMessages');
 
+    // @ts-expect-error fix when you know the types
     return RNIterableAPI.getInAppMessages();
   }
 
@@ -62,6 +63,7 @@ export class IterableInAppManager {
   getInboxMessages(): Promise<IterableInAppMessage[]> {
     Iterable?.logger?.log('InAppManager.getInboxMessages');
 
+    // @ts-expect-error fix when you know the types
     return RNIterableAPI.getInboxMessages();
   }
 
@@ -89,6 +91,7 @@ export class IterableInAppManager {
   ): Promise<string | undefined> {
     Iterable?.logger?.log('InAppManager.show');
 
+    // @ts-expect-error fix when you know the types
     return RNIterableAPI.showMessage(message.messageId, consume);
   }
 
@@ -154,6 +157,7 @@ export class IterableInAppManager {
   ): Promise<IterableHtmlInAppContent> {
     Iterable?.logger?.log('InAppManager.getHtmlContentForMessage');
 
+    // @ts-expect-error fix when you know the types
     return RNIterableAPI.getHtmlInAppContentForMessage(message.messageId);
   }
 

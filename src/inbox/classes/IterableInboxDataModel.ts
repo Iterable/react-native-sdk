@@ -102,6 +102,7 @@ export class IterableInboxDataModel {
     );
 
     return RNIterableAPI.getHtmlInAppContentForMessage(id).then(
+      // @ts-expect-error fix when you know the types
       (content: IterableHtmlInAppContentRaw) => {
         return IterableHtmlInAppContent.fromDict(content);
       }
@@ -139,6 +140,7 @@ export class IterableInboxDataModel {
    */
   async refresh(): Promise<IterableInboxRowViewModel[]> {
     return RNIterableAPI.getInboxMessages().then(
+      // @ts-expect-error fix when you know the types
       (messages: IterableInAppMessage[]) => {
         return this.processMessages(messages);
       },
@@ -154,6 +156,7 @@ export class IterableInboxDataModel {
    * @param visibleRows - An array of `IterableInboxImpressionRowInfo` objects representing the rows that are currently visible.
    */
   startSession(visibleRows: IterableInboxImpressionRowInfo[] = []) {
+    // @ts-expect-error fix when you know the types
     RNIterableAPI.startSession(visibleRows);
   }
 
@@ -181,6 +184,7 @@ export class IterableInboxDataModel {
    *                      Defaults to an empty array if not provided.
    */
   updateVisibleRows(visibleRows: IterableInboxImpressionRowInfo[] = []) {
+    // @ts-expect-error fix when you know the types
     RNIterableAPI.updateVisibleRows(visibleRows);
   }
 

@@ -16,6 +16,9 @@ export interface IterableConfigDict {
   // dataRegion: IterableDataRegion;
   // pushPlatform?: IterablePushPlatform;
   encryptionEnforced?: boolean;
+  logLevel?: string;
+  dataRegion?: string;
+  pushPlatform?: string;
 }
 
 /**
@@ -25,20 +28,20 @@ export interface Spec extends TurboModule {
   // Native SDK Functions
   initializeWithApiKey(
     apiKey: string,
-    config: { [key: string]: IterableConfigDict },
+    config: IterableConfigDict,
     version?: string
   ): Promise<boolean>;
 
   initialize2WithApiKey(
     apiKey: string,
-    config: { [key: string]: IterableConfigDict },
+    config: IterableConfigDict,
     apiEndPointOverride: string,
     version: string
   ): Promise<boolean>;
 
-  setEmail(email: string, authToken: string | null): void;
+  setEmail(email: string | null | undefined, authToken: string | null | undefined): void;
   getEmail(): Promise<string | null>;
-  setUserId(userId: string, authToken: string | null): void;
+  setUserId(userId: string | null | undefined, authToken: string | null | undefined): void;
   getUserId(): Promise<string | null>;
 
   // Iterable API Request Functions
@@ -70,20 +73,20 @@ export interface Spec extends TurboModule {
     messageId: string,
     location: number,
     source: number,
-    clickedUrl: string | null
+    clickedUrl?: string | null
   ): void;
 
   inAppConsume(messageId: string, location: number, source: number): void;
   trackEvent(name: string, dataFields: { [key: string]: string | number | boolean | null } | null): void;
   updateUser(dataFields: { [key: string]: string | number | boolean | null }, mergeNestedObjects: boolean): void;
-  updateEmail(email: string, authToken: string | null): void;
+  updateEmail(email: string, authToken: string | null | undefined): void;
   handleAppLink(appLink: string): Promise<boolean>;
 
   updateSubscriptions(
-    emailListIds: number[] | null,
-    unsubscribedChannelIds: number[] | null,
-    unsubscribedMessageTypeIds: number[] | null,
-    subscribedMessageTypeIds: number[] | null,
+    emailListIds: number[] | null | undefined,
+    unsubscribedChannelIds: number[] | null | undefined,
+    unsubscribedMessageTypeIds: number[] | null | undefined,
+    subscribedMessageTypeIds: number[] | null | undefined,
     campaignId: number,
     templateId: number
   ): void;

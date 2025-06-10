@@ -43,7 +43,8 @@
     "docs": "typedoc",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prepare": "yarn add_build_info; yarn bob build",
-    "release": "release-it"
+    "release": "release-it",
+    "generateNativeCode": "node scripts/generateNativeCode.js"
   },
   "keywords": [
     "react-native",
