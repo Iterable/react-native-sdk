@@ -493,7 +493,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
             JSONArray embeddedMessageJsonArray = Serialization.serializeEmbeddedMessages(IterableApi.getInstance().getEmbeddedManager().getMessages(10));
             IterableLogger.d(TAG, "Messages for placement: " + embeddedMessageJsonArray);
             
-            promise.resolve("Success");
+            promise.resolve(Serialization.convertJsonToArray(embeddedMessageJsonArray));
         } catch (JSONException e) {
             IterableLogger.e(TAG, e.getLocalizedMessage());
             promise.reject("", "Failed to fetch messages with error " + e.getLocalizedMessage());

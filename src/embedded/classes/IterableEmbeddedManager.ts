@@ -1,7 +1,7 @@
 import { NativeModules } from 'react-native';
 
 import { Iterable } from '../../core/classes/Iterable';
-import { IterableEmbeddedPlacement } from './IterableEmbeddedPlacement';
+import type { IterableEmbeddedMessage } from './IterableEmbeddedMessage';
 
 const RNIterableAPI = NativeModules.RNIterableAPI;
 
@@ -16,9 +16,9 @@ export class IterableEmbeddedManager {
    *
    * @returns A Promise that resolves to an array of embedded placements.
    */
-  getPlacements(): Promise<IterableEmbeddedPlacement[]> {
-    Iterable?.logger?.log('EmbeddedManager.getPlacements');
+  getMessages(): Promise<IterableEmbeddedMessage[]> {
+    Iterable?.logger?.log('EmbeddedManager.getMessages');
 
-    return RNIterableAPI.getEmbeddedPlacements();
+    return RNIterableAPI.getEmbeddedMessages();
   }
 }
