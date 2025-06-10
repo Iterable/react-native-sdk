@@ -170,13 +170,23 @@
     "name": "RNIterableSpec",
     "type": "modules",
     "jsSrcsDir": "src",
+    "outputDir": {
+      "ios": "ios/generated",
+      "android": "android/generated"
+    },
     "android": {
       "javaPackageName": "com.iterable.reactnative"
     }
+  },
+  "react-native": {
+    "newArchEnabled": true
   },
   "create-react-native-library": {
     "type": "module-legacy",
     "languages": "kotlin-swift",
     "version": "0.41.2"
+  },
+  "dependencies": {
+    "@react-native-community/cli": "18.0.0"
   }
 }
