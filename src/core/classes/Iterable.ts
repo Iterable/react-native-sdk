@@ -22,11 +22,11 @@ import { IterableAuthResponse } from './IterableAuthResponse';
 import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
-import RNIterableAPI from '../api';
+import RNIterableAPI, { RNEventEmitter } from '../api';
 
 // const RNIterableAPI = NativeModules.RNIterableAPI;
 // TODO: figure out how to handle event emitters
-const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
+// const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
 /* eslint-disable tsdoc/syntax */
 /**

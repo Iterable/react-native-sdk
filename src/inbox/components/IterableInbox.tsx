@@ -31,11 +31,11 @@ import {
   IterableInboxMessageList,
   type IterableInboxMessageListProps,
 } from './IterableInboxMessageList';
-import RNIterableAPI from '../../core/api';
+import { RNEventEmitter } from '../../core/api';
 
 // const RNIterableAPI = NativeModules.RNIterableAPI;
 // TODO: figure out how to handle event emitters
-const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
+// const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
 const DEFAULT_HEADLINE_HEIGHT = 60;
 const ANDROID_HEADLINE_HEIGHT = 70;

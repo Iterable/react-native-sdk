@@ -3,6 +3,7 @@ import { NativeModules } from 'react-native'; // fallback
 
 const LegacyModule = NativeModules.RNIterableAPI;
 
-const Iterable = TurboIterableModule ?? LegacyModule;
+const IterableAPI = TurboIterableModule ?? LegacyModule;
 
-export default Iterable;
+export default IterableAPI;
+export * from './RNEventEmitter';

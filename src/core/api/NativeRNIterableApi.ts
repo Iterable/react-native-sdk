@@ -26,7 +26,7 @@ export interface Spec extends TurboModule {
   initializeWithApiKey(
     apiKey: string,
     config: { [key: string]: IterableConfigDict },
-    version: string
+    version?: string
   ): Promise<boolean>;
 
   initialize2WithApiKey(
