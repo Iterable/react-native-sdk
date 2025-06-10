@@ -26,6 +26,10 @@ export {
 } from './core/hooks';
 export { type IterableEdgeInsetDetails } from './core/types';
 export {
+  IterableEmbeddedManager,
+  IterableEmbeddedPlacement,
+} from './embedded/classes';
+export {
   IterableHtmlInAppContent,
   IterableInAppCloseSource,
   IterableInAppContentType,
