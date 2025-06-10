@@ -1,4 +1,4 @@
-import TurboIterableModule from './NativeIterableModuleSpec'; // new arch
+import TurboIterableModule from './NativeRNIterableApi'; // new arch
 import { NativeModules } from 'react-native'; // fallback
 
 const LegacyModule = NativeModules.RNIterableAPI;

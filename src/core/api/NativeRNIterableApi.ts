@@ -1,16 +1,37 @@
 import { type TurboModule, TurboModuleRegistry } from 'react-native';
 
+export interface IterableConfigDict {
+  pushIntegrationName?: string;
+  autoPushRegistration?: boolean;
+  inAppDisplayInterval?: number;
+  urlHandlerPresent: boolean;
+  customActionHandlerPresent: boolean;
+  inAppHandlerPresent: boolean;
+  authHandlerPresent: boolean;
+  // logLevel: IterableLogLevel;
+  expiringAuthTokenRefreshPeriod?: number;
+  allowedProtocols?: string[];
+  androidSdkUseInMemoryStorageForInApps?: boolean;
+  useInMemoryStorageForInApps?: boolean;
+  // dataRegion: IterableDataRegion;
+  // pushPlatform?: IterablePushPlatform;
+  encryptionEnforced?: boolean;
+}
+
+/**
+ * TODO: Get correct types for the native SDK
+ */
 export interface Spec extends TurboModule {
   // Native SDK Functions
   initializeWithApiKey(
     apiKey: string,
-    config: Record<string, unknown>,
+    config: { [key: string]: IterableConfigDict },
     version: string
   ): Promise<boolean>;
 
   initialize2WithApiKey(
     apiKey: string,
-    config: Record<string, unknown>,
+    config: { [key: string]: IterableConfigDict },
     apiEndPointOverride: string,
     version: string
   ): Promise<boolean>;
@@ -23,24 +44,24 @@ export interface Spec extends TurboModule {
   // Iterable API Request Functions
   disableDeviceForCurrentUser(): void;
   setInAppShowResponse(inAppShowResponse: number): void;
-  getLastPushPayload(): Promise<Record<string, unknown> | null>;
-  getAttributionInfo(): Promise<Record<string, unknown> | null>;
-  setAttributionInfo(attributionInfo: Record<string, unknown> | null): void;
+  getLastPushPayload(): Promise<{ [key: string]: string | number | boolean | null } | null>;
+  getAttributionInfo(): Promise<{ [key: string]: string | number | boolean | null } | null>;
+  setAttributionInfo(attributionInfo: { [key: string]: string | number | boolean | null } | null): void;
 
   trackPushOpenWithCampaignId(
     campaignId: number,
     templateId: number,
     messageId: string,
     appAlreadyRunning: boolean,
-    dataFields: Record<string, unknown> | null
+    dataFields: { [key: string]: string | number | boolean | null } | null
   ): void;
 
-  updateCart(items: Array<Record<string, unknown>>): void;
+  updateCart(items: Array<{ [key: string]: string | number | boolean | null }>): void;
 
   trackPurchase(
     total: number,
-    items: Array<Record<string, unknown>>,
-    dataFields: Record<string, unknown> | null
+    items: Array<{ [key: string]: string | number | boolean | null }>,
+    dataFields: { [key: string]: string | number | boolean | null } | null
   ): void;
 
   trackInAppOpen(messageId: string, location: number): void;
@@ -53,8 +74,8 @@ export interface Spec extends TurboModule {
   ): void;
 
   inAppConsume(messageId: string, location: number, source: number): void;
-  trackEvent(name: string, dataFields: Record<string, unknown> | null): void;
-  updateUser(dataFields: Record<string, unknown>, mergeNestedObjects: boolean): void;
+  trackEvent(name: string, dataFields: { [key: string]: string | number | boolean | null } | null): void;
+  updateUser(dataFields: { [key: string]: string | number | boolean | null }, mergeNestedObjects: boolean): void;
   updateEmail(email: string, authToken: string | null): void;
   handleAppLink(appLink: string): Promise<boolean>;
 
@@ -68,9 +89,9 @@ export interface Spec extends TurboModule {
   ): void;
 
   // SDK In-App Manager Functions
-  getInAppMessages(): Promise<Array<Record<string, unknown>>>;
+  getInAppMessages(): Promise<Array<{ [key: string]: string | number | boolean | null }>>;
   getHtmlInAppContentForMessage(messageId: string): Promise<string>;
-  getInboxMessages(): Promise<Array<Record<string, unknown>>>;
+  getInboxMessages(): Promise<Array<{ [key: string]: string | number | boolean | null }>>;
   getUnreadInboxMessagesCount(): Promise<number>;
   showMessage(messageId: string, consume: boolean): Promise<boolean>;
   removeMessage(messageId: string, location: number, source: number): void;
@@ -78,9 +99,9 @@ export interface Spec extends TurboModule {
   setAutoDisplayPaused(paused: boolean): void;
 
   // SDK Inbox Session Tracking Functions
-  startSession(visibleRows: Array<Record<string, unknown>>): void;
+  startSession(visibleRows: Array<{ [key: string]: string | number | boolean | null }>): void;
   endSession(): void;
-  updateVisibleRows(visibleRows: Array<Record<string, unknown>>): void;
+  updateVisibleRows(visibleRows: Array<{ [key: string]: string | number | boolean | null }>): void;
 
   // SDK Auth Manager Functions
   passAlongAuthToken(authToken: string | null): void;
