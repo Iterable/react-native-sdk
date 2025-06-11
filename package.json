@@ -43,7 +43,8 @@
     "docs": "typedoc",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prepare": "yarn add_build_info; yarn bob build",
-    "release": "release-it"
+    "release": "release-it",
+    "generateNativeCode": "node scripts/generateNativeCode.js"
   },
   "keywords": [
     "react-native",
@@ -67,6 +68,7 @@
   "devDependencies": {
     "@commitlint/config-conventional": "^17.0.2",
     "@evilmartians/lefthook": "^1.5.0",
+    "@react-native-community/cli-platform-ios": "^18.0.0",
     "@react-native/babel-preset": "0.79.3",
     "@react-native/eslint-config": "0.79.3",
     "@react-native/metro-config": "0.79.3",
@@ -170,13 +172,23 @@
     "name": "RNIterableSpec",
     "type": "modules",
     "jsSrcsDir": "src",
+    "outputDir": {
+      "ios": "ios/generated",
+      "android": "android/generated"
+    },
     "android": {
       "javaPackageName": "com.iterable.reactnative"
     }
+  },
+  "react-native": {
+    "newArchEnabled": true
   },
   "create-react-native-library": {
     "type": "module-legacy",
     "languages": "kotlin-swift",
     "version": "0.41.2"
+  },
+  "dependencies": {
+    "@react-native-community/cli": "18.0.0"
   }
 }

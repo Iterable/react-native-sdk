@@ -3,7 +3,10 @@
 //  Copyright © 2020 Iterable. All rights reserved.
 //
 
-#import <React/RCTBridgeModule.h>
+#import "RNIterableAPI.h"
+#ifdef RCT_NEW_ARCH_ENABLED
+#import "RNIterableSpec.h"
+#endif // RCT_NEW_ARCH_ENABLED
 
 @interface RCT_EXTERN_REMAP_MODULE(RNIterableAPI, ReactIterableAPI, NSObject)
 
@@ -136,5 +139,13 @@ RCT_EXTERN_METHOD(updateVisibleRows: (nonnull NSArray *) visibleRows)
 // MARK: - SDK Auth Manager Functions
 
 RCT_EXTERN_METHOD(passAlongAuthToken: (NSString *) authToken)
+
+#ifdef RCT_NEW_ARCH_ENABLED
+ - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
+    (const facebook::react::ObjCTurboModule::InitParams &)params
+ {
+    return std::make_shared<facebook::react::NativeRNIterableApiSpecJSI>(params);
+ }
+#endif // RCT_NEW_ARCH_ENABLED
 
 @end

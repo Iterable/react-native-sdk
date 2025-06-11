@@ -2,8 +2,8 @@ import { useIsFocused } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import {
   Animated,
-  NativeEventEmitter,
-  NativeModules,
+  // NativeEventEmitter,
+  // NativeModules,
   Platform,
   StyleSheet,
   Text,
@@ -31,9 +31,11 @@ import {
   IterableInboxMessageList,
   type IterableInboxMessageListProps,
 } from './IterableInboxMessageList';
+import { RNEventEmitter } from '../../core/api';
 
-const RNIterableAPI = NativeModules.RNIterableAPI;
-const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
+// const RNIterableAPI = NativeModules.RNIterableAPI;
+// TODO: figure out how to handle event emitters
+// const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
 const DEFAULT_HEADLINE_HEIGHT = 60;
 const ANDROID_HEADLINE_HEIGHT = 70;

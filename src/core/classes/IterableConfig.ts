@@ -1,5 +1,6 @@
 import { type IterableInAppMessage } from '../../inApp/classes/IterableInAppMessage';
 import { IterableInAppShowResponse } from '../../inApp/enums';
+import type { IterableConfigDict } from '../api/NativeRNIterableApi';
 import {
   IterableDataRegion,
   IterableLogLevel,
@@ -299,7 +300,7 @@ export class IterableConfig {
    *
    * @returns An object representing the configuration.
    */
-  toDict() {
+  toDict():IterableConfigDict {
     return {
       pushIntegrationName: this.pushIntegrationName,
       autoPushRegistration: this.autoPushRegistration,
@@ -333,13 +334,16 @@ export class IterableConfig {
       // eslint-disable-next-line eqeqeq
       authHandlerPresent: this.authHandler != undefined,
       /** The log level for the SDK. */
+      // @ts-ignore
       logLevel: this.logLevel,
       expiringAuthTokenRefreshPeriod: this.expiringAuthTokenRefreshPeriod,
       allowedProtocols: this.allowedProtocols,
       androidSdkUseInMemoryStorageForInApps:
         this.androidSdkUseInMemoryStorageForInApps,
       useInMemoryStorageForInApps: this.useInMemoryStorageForInApps,
+       // @ts-ignore
       dataRegion: this.dataRegion,
+      // @ts-ignore
       pushPlatform: this.pushPlatform,
       encryptionEnforced: this.encryptionEnforced,
     };

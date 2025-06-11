@@ -1,7 +1,7 @@
 import {
   Linking,
-  NativeEventEmitter,
-  NativeModules,
+  // NativeEventEmitter,
+  // NativeModules,
   Platform,
 } from 'react-native';
 
@@ -22,9 +22,11 @@ import { IterableAuthResponse } from './IterableAuthResponse';
 import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
+import RNIterableAPI, { RNEventEmitter } from '../api';
 
-const RNIterableAPI = NativeModules.RNIterableAPI;
-const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
+// const RNIterableAPI = NativeModules.RNIterableAPI;
+// TODO: figure out how to handle event emitters
+// const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
 /* eslint-disable tsdoc/syntax */
 /**
@@ -197,7 +199,7 @@ export class Iterable {
    * });
    * ```
    */
-  static getEmail(): Promise<string | undefined> {
+  static getEmail(): Promise<string | null | undefined> {
     Iterable?.logger?.log('getEmail');
 
     return RNIterableAPI.getEmail();
@@ -262,7 +264,7 @@ export class Iterable {
    * });
    * ```
    */
-  static getUserId(): Promise<string | undefined> {
+  static getUserId(): Promise<string | undefined | null> {
     Iterable?.logger?.log('getUserId');
 
     return RNIterableAPI.getUserId();
@@ -325,12 +327,12 @@ export class Iterable {
     Iterable?.logger?.log('getAttributionInfo');
 
     return RNIterableAPI.getAttributionInfo().then(
-      (dict?: IterableAttributionInfo) => {
+      (dict: { [key: string]: string | number | boolean | null } | null) => {
         if (dict) {
           return new IterableAttributionInfo(
-            dict.campaignId,
-            dict.templateId,
-            dict.messageId
+            dict.campaignId as number,
+            dict.templateId as number,
+            dict.messageId as string
           );
         } else {
           return undefined;
@@ -363,9 +365,10 @@ export class Iterable {
    * Iterable.setAttributionInfo(attributionInfo);
    * ```
    */
-  static setAttributionInfo(attributionInfo?: IterableAttributionInfo) {
+  static setAttributionInfo(attributionInfo?: IterableAttributionInfo | null  ) {
     Iterable?.logger?.log('setAttributionInfo');
 
+    // @ts-ignore
     RNIterableAPI.setAttributionInfo(attributionInfo);
   }
 
@@ -410,9 +413,9 @@ export class Iterable {
     RNIterableAPI.trackPushOpenWithCampaignId(
       campaignId,
       templateId,
-      messageId,
+      messageId as string,
       appAlreadyRunning,
-      dataFields
+      dataFields as { [key: string]: string | number | boolean | null } | null
     );
   }
 
@@ -445,6 +448,7 @@ export class Iterable {
   static updateCart(items: IterableCommerceItem[]) {
     Iterable?.logger?.log('updateCart');
 
+    // @ts-ignore
     RNIterableAPI.updateCart(items);
   }
 
@@ -462,6 +466,7 @@ export class Iterable {
     if (Platform.OS === 'android') {
       Iterable?.logger?.log('Attempting to wake the app');
 
+      // @ts-ignore
       RNIterableAPI.wakeApp();
     }
   }
@@ -497,6 +502,7 @@ export class Iterable {
   ) {
     Iterable?.logger?.log('trackPurchase');
 
+    // @ts-ignore
     RNIterableAPI.trackPurchase(total, items, dataFields);
   }
 
@@ -666,6 +672,7 @@ export class Iterable {
   static trackEvent(name: string, dataFields?: unknown) {
     Iterable?.logger?.log('trackEvent');
 
+    // @ts-ignore
     RNIterableAPI.trackEvent(name, dataFields);
   }
 
@@ -714,6 +721,7 @@ export class Iterable {
   ) {
     Iterable?.logger?.log('updateUser');
 
+    // @ts-ignore
     RNIterableAPI.updateUser(dataFields, mergeNestedObjects);
   }
 
@@ -734,7 +742,7 @@ export class Iterable {
    * Iterable.updateEmail('my.new.email@gmail.com', 'myAuthToken');
    * ```
    */
-  static updateEmail(email: string, authToken?: string) {
+  static updateEmail(email: string, authToken?: string | null) {
     Iterable?.logger?.log('updateEmail');
 
     RNIterableAPI.updateEmail(email, authToken);
@@ -959,7 +967,7 @@ export class Iterable {
             // Else it will be looked for as a String.
             if (typeof promiseResult === typeof new IterableAuthResponse()) {
               RNIterableAPI.passAlongAuthToken(
-                (promiseResult as IterableAuthResponse).authToken
+                (promiseResult as IterableAuthResponse).authToken as string | null
               );
 
               setTimeout(() => {
