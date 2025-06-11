@@ -25,6 +25,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		779227302DFA3AD400D69EC0 /* RNIterableAPI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNIterableAPI.h; sourceTree = "<group>"; };
 		AC13877C243BA05600A02674 /* Serialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Serialization.swift; sourceTree = "<group>"; };
 		AC547A9024004D39008782E7 /* libRNIterableAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNIterableAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC76DC302423C2290071587E /* ReactIterableAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactIterableAPI.swift; sourceTree = "<group>"; };
@@ -66,6 +67,7 @@
 				AC76DC302423C2290071587E /* ReactIterableAPI.swift */,
 				AC76DC312423C2290071587E /* RNIterable-Bridging-Header.h */,
 				ACDDDF2124212BB9001686E5 /* RNIterableAPI.mm */,
+				779227302DFA3AD400D69EC0 /* RNIterableAPI.h */,
 			);
 			path = RNIterableAPI;
 			sourceTree = "<group>";
