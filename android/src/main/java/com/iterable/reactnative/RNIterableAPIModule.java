@@ -486,11 +486,11 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     // region Embedded APIs
 
     @ReactMethod
-    public void getEmbeddedMessages(Promise promise) {
-        IterableLogger.d(TAG, "getEmbeddedMessages");
+    public void getEmbeddedMessages(Integer placementId, Promise promise) {
+        IterableLogger.d(TAG, "getEmbeddedMessages for placement: " + placementId);
         
         try {
-            JSONArray embeddedMessageJsonArray = Serialization.serializeEmbeddedMessages(IterableApi.getInstance().getEmbeddedManager().getMessages(10));
+            JSONArray embeddedMessageJsonArray = Serialization.serializeEmbeddedMessages(IterableApi.getInstance().getEmbeddedManager().getMessages(placementId));
             IterableLogger.d(TAG, "Messages for placement: " + embeddedMessageJsonArray);
             
             promise.resolve(Serialization.convertJsonToArray(embeddedMessageJsonArray));

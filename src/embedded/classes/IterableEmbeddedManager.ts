@@ -14,11 +14,14 @@ export class IterableEmbeddedManager {
   /**
    * Retrieve the current user's list of embedded placements.
    *
+   * @param {number} placementId The ID of the placement to retrieve messages from.
    * @returns A Promise that resolves to an array of embedded placements.
    */
-  getMessages(): Promise<IterableEmbeddedMessage[]> {
-    Iterable?.logger?.log('EmbeddedManager.getMessages');
+  getMessages(placementId: number): Promise<IterableEmbeddedMessage[]> {
+    Iterable?.logger?.log(
+      `EmbeddedManager.getMessages for placement ${placementId}`
+    );
 
-    return RNIterableAPI.getEmbeddedMessages();
+    return RNIterableAPI.getEmbeddedMessages(placementId);
   }
 }
