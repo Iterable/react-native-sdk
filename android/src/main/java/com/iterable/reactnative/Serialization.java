@@ -221,6 +221,10 @@ class Serialization {
                 configBuilder.setEncryptionEnforced(iterableContextJSON.optBoolean("encryptionEnforced"));
             }
 
+            if (iterableContextJSON.has("enableEmbeddedMessaging")) {
+                configBuilder.setEnableEmbeddedMessaging(iterableContextJSON.optBoolean("enableEmbeddedMessaging"));
+            }
+
             return configBuilder;
         } catch (JSONException e) {
             e.printStackTrace();
