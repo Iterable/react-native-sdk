@@ -139,9 +139,11 @@ class Serialization {
 
     static JSONArray serializeEmbeddedMessages(List<IterableEmbeddedMessage> embeddedMessages) {
         JSONArray embeddedMessagesJson = new JSONArray();
-        for (IterableEmbeddedMessage message : embeddedMessages) {
-            JSONObject messageJson = IterableEmbeddedMessage.Companion.toJSONObject(message);
-            embeddedMessagesJson.put(messageJson);
+        if (embeddedMessages != null) {
+            for (IterableEmbeddedMessage message : embeddedMessages) {
+                JSONObject messageJson = IterableEmbeddedMessage.Companion.toJSONObject(message);
+                embeddedMessagesJson.put(messageJson);
+            }
         }
         return embeddedMessagesJson;
     }
