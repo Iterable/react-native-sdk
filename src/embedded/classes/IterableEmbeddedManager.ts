@@ -1,7 +1,7 @@
 import { NativeModules } from 'react-native';
 
 import { Iterable } from '../../core/classes/Iterable';
-import { IterableEmbeddedPlacement } from './IterableEmbeddedPlacement';
+import type { IterableEmbeddedMessage } from './IterableEmbeddedMessage';
 
 const RNIterableAPI = NativeModules.RNIterableAPI;
 
@@ -14,11 +14,14 @@ export class IterableEmbeddedManager {
   /**
    * Retrieve the current user's list of embedded placements.
    *
+   * @param {number} placementId The ID of the placement to retrieve messages from.
    * @returns A Promise that resolves to an array of embedded placements.
    */
-  getPlacements(): Promise<IterableEmbeddedPlacement[]> {
-    Iterable?.logger?.log('EmbeddedManager.getPlacements');
+  getMessages(placementId: number): Promise<IterableEmbeddedMessage[]> {
+    Iterable?.logger?.log(
+      `EmbeddedManager.getMessages for placement ${placementId}`
+    );
 
-    return RNIterableAPI.getEmbeddedPlacements();
+    return RNIterableAPI.getEmbeddedMessages(placementId);
   }
 }
