@@ -92,7 +92,10 @@ extension IterableConfig {
                 config.dataRegion = IterableDataRegion.US
             }
         }
-        
+
+        if let enableEmbeddedMessaging = dict["enableEmbeddedMesssaging"] as? Bool {
+            config.enableEmbeddedMessaging = enableEmbeddedMessaging
+        }
         
         return config
     }
