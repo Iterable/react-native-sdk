@@ -55,7 +55,10 @@ export class IterableEmbeddedMessageElementsButton {
  * An interface defining the dictionary object containing the properties for the embedded message button.
  */
 export interface EmbeddedMessageElementsButtonDict {
+  /** The ID for the embedded message button */
   id: string;
+  /** The title for the embedded message button */
   title?: string;
+  /** The action for the embedded message button */
   action?: IterableEmbeddedMessageElementsButtonAction;
 }
