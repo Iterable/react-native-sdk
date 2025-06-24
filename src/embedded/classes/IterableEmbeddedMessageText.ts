@@ -42,7 +42,10 @@ export class IterableEmbeddedMessageText {
  * An interface defining the dictionary object containing the properties for an embedded message text.
  */
 export interface EmbeddedMessageTextDict {
+  /** The id of the text element */
   id: string;
+  /** The text of the text element */
   text?: string;
+  /** The type of the text element */
   type?: string;
 }

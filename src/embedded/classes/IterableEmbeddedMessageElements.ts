@@ -91,11 +91,18 @@ export class IterableEmbeddedMessageElements {
  * An interface defining the dictionary object containing the properties for the embedded message elements.
  */
 export interface EmbeddedMessageElementsDict {
+  /** The title of the embedded message */
   title?: string;
+  /** The body of the embedded message */
   body?: string;
+  /** The url of the embedded message image */
   mediaUrl?: string;
+  /** The caption of the embedded message image */
   mediaUrlCaption?: string;
+  /** The default action of the embedded message */
   defaultAction?: IterableEmbeddedMessageDefaultAction;
+  /** The buttons of the embedded message */
   buttons?: IterableEmbeddedMessageElementsButton[];
+  /** The text elements of the embedded message */
   text?: IterableEmbeddedMessageText[];
 }
