@@ -46,6 +46,8 @@ export class IterableEmbeddedMessageDefaultAction {
  * An interface defining the dictionary object containing the properties for the embedded message default action.
  */
 export interface EmbeddedMessageDefaultActionDict {
+  /** The type of the action */
   type: string;
+  /** The url for the action when the type is `openUrl` */
   data?: string;
 }
