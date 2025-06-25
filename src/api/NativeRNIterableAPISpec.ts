@@ -110,4 +110,4 @@ export interface Spec extends TurboModule {
   passAlongAuthToken(authToken: string | null): void;
 }
 
-export default TurboModuleRegistry.getEnforcing<Spec>('RNIterableAPI');
+export default TurboModuleRegistry.getEnforcing<Spec>('ReactIterableAPI');
