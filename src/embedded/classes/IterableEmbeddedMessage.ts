@@ -52,7 +52,10 @@ export class IterableEmbeddedMessage {
  * An interface defining the dictionary object containing the properties for the embedded message.
  */
 interface EmbeddedMessageDict {
+  /** The metadata of the embedded message */
   metadata: IterableEmbeddedMessageMetadata;
+  /** The elements of the embedded message */
   elements: IterableEmbeddedMessageElements;
+  /** The custom payload of the embedded message */
   payload: Record<string, unknown>;
 }
