@@ -48,7 +48,7 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-public class RNIterableAPIModule extends ReactContextBaseJavaModule implements IterableUrlHandler, IterableCustomActionHandler, IterableInAppHandler, IterableAuthHandler, IterableInAppManager.Listener {
+public class RNIterableAPIModule extends RNIterableAPISpec implements IterableUrlHandler, IterableCustomActionHandler, IterableInAppHandler, IterableAuthHandler, IterableInAppManager.Listener {
     private final ReactApplicationContext reactContext;
     private static String TAG = "RNIterableAPIModule";
 
@@ -69,11 +69,6 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
 
     // ---------------------------------------------------------------------------------------
     // region IterableSDK calls
-
-    @Override
-    public String getName() {
-        return "RNIterableAPI";
-    }
 
     @ReactMethod
     public void initializeWithApiKey(String apiKey, ReadableMap configReadableMap, String version, Promise promise) {
