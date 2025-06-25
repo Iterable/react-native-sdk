@@ -65,6 +65,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
+    "@babel/core": "^7.27.4",
     "@commitlint/config-conventional": "^17.0.2",
     "@evilmartians/lefthook": "^1.5.0",
     "@react-native-community/cli": "18.0.0",
@@ -183,14 +184,6 @@
       "android": "android/generated"
     },
     "ios": {
-      "headerSearchPaths": [
-        "\"$(PODS_ROOT)/boost\"",
-        "\"$(PODS_ROOT)/DoubleConversion\"",
-        "\"$(PODS_ROOT)/RCT-Folly\"",
-        "\"$(PODS_ROOT)/Headers/Public/React-Codegen/react/renderer/components\"",
-        "\"$(PODS_ROOT)/Headers/Private/React-Fabric\"",
-        "\"$(PODS_ROOT)/Headers/Private/React-RCTFabric\""
-      ],
       "podspecPath": "./Iterable-React-Native-SDK.podspec"
     }
   },
