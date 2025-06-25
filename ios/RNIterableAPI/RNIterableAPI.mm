@@ -136,4 +136,18 @@ RCT_EXTERN_METHOD(updateVisibleRows: (nonnull NSArray *) visibleRows)
 
 RCT_EXTERN_METHOD(passAlongAuthToken: (NSString *) authToken)
 
+// - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
+//     (const facebook::react::ObjCTurboModule::InitParams &)params
+// {
+//     return std::make_shared<facebook::react::NativeRNIterableAPISpecSpecBase>(params);
+// }
+
+#ifdef RCT_NEW_ARCH_ENABLED
+ - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
+    (const facebook::react::ObjCTurboModule::InitParams &)params
+ {
+    return std::make_shared<facebook::react::NativeRNIterableAPISpecJSI>(params);
+ }
+#endif
+
 @end

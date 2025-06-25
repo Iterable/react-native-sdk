@@ -11,7 +11,9 @@ module.exports = {
     '@iterable/react-native-sdk': {
       root: __dirname,
       platforms: {
-        ios: {},
+        ios: {
+          // modules: true,
+        },
         android: {},
       },
     },

@@ -7,7 +7,15 @@
 //
 #import <React/RCTBridgeModule.h>
 #import <React/RCTTurboModule.h>
+#ifdef RCT_NEW_ARCH_ENABLED
+#import <ReactIterableAPI/ReactIterableAPI.h>
+#endif
 
 @interface ReactIterableAPI : NSObject <RCTBridgeModule, RCTTurboModule>
 @end
 
+#ifdef RCT_NEW_ARCH_ENABLED
+@interface ReactIterableAPI () <NativeRNIterableAPISpec>
+
+@end
+#endif

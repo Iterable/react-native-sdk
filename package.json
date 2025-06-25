@@ -167,12 +167,20 @@
       ]
     ]
   },
+  "react-native": {
+    "newArchEnabled": true
+  },
   "codegenConfig": {
-    "name": "ReactIterableAPI",
+    "name": "ReactIterableAPISpec",
     "type": "modules",
     "jsSrcsDir": "./src/api",
     "android": {
       "javaPackageName": "com.iterable.reactnative"
+    },
+    "includesGeneratedCode": true,
+    "outputDir": {
+      "ios": "ios/generated",
+      "android": "android/generated"
     },
     "ios": {
       "headerSearchPaths": [
