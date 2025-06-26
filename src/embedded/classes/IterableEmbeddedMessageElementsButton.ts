@@ -1,5 +1,3 @@
-import { IterableEmbeddedMessageElementsButtonAction } from './IterableEmbeddedMessageElementsButtonAction';
-
 /**
  * IterableEmbeddedMessageElementsButton represents a button in an embedded message.
  */
@@ -9,45 +7,30 @@ export class IterableEmbeddedMessageElementsButton {
   /** The title for the embedded message button */
   readonly title?: string;
   /** The action for the embedded message button */
-  readonly action?: IterableEmbeddedMessageElementsButtonAction;
+  readonly action?: {
+    type: string;
+    data?: string;
+  };
 
   /**
    * Creates an instance of IterableEmbeddedMessageButton.
    *
-   * @param id - The ID for the embedded message button.
-   * @param title - The title for the embedded message button.
-   * @param action - The action for the embedded message button.
-   */
-  constructor(
-    id: string,
-    title?: string,
-    action?: IterableEmbeddedMessageElementsButtonAction
-  ) {
-    this.id = id;
-    this.title = title;
-    this.action = action;
-  }
-
-  /**
-   * Creates an instance of `IterableEmbeddedMessageButton` from a dictionary object.
-   *
    * @param dict - The dictionary object containing the properties to initialize the `IterableEmbeddedMessageButton` instance.
-   * @returns A new instance of `IterableEmbeddedMessageButton` initialized with the provided dictionary properties.
    */
-  static fromDict(
-    dict: Partial<EmbeddedMessageElementsButtonDict>
-  ): IterableEmbeddedMessageElementsButton {
+  constructor(dict: EmbeddedMessageElementsButtonDict) {
     if (!dict.id) {
       throw new Error('id is required');
     }
-    const action = dict.action
-      ? IterableEmbeddedMessageElementsButtonAction.fromDict(dict.action)
-      : undefined;
-    return new IterableEmbeddedMessageElementsButton(
-      dict.id,
-      dict.title,
-      action
-    );
+
+    this.id = dict.id;
+    this.title = dict.title;
+
+    if (dict.action) {
+      this.action = {
+        type: dict.action.type,
+        data: dict.action.data,
+      };
+    }
   }
 }
 
@@ -60,5 +43,8 @@ export interface EmbeddedMessageElementsButtonDict {
   /** The title for the embedded message button */
   title?: string;
   /** The action for the embedded message button */
-  action?: IterableEmbeddedMessageElementsButtonAction;
+  action?: {
+    type: string;
+    data?: string;
+  };
 }

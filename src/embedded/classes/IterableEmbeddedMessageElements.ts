@@ -67,8 +67,8 @@ export class IterableEmbeddedMessageElements {
       ? IterableEmbeddedMessageDefaultAction.fromDict(dict.defaultAction)
       : undefined;
 
-    const buttons = dict.buttons?.map((button) =>
-      IterableEmbeddedMessageElementsButton.fromDict(button)
+    const buttons = dict.buttons?.map(
+      (button) => new IterableEmbeddedMessageElementsButton(button)
     );
 
     const text = dict.text?.map((text) =>
