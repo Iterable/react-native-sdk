@@ -41,7 +41,7 @@ export class IterableEmbeddedMessage {
     }
     const metadata = IterableEmbeddedMessageMetadata.fromDict(dict.metadata);
     const elements = dict.elements
-      ? IterableEmbeddedMessageElements.fromDict(dict.elements)
+      ? new IterableEmbeddedMessageElements(dict.elements)
       : undefined;
     const payload = dict.payload;
     return new IterableEmbeddedMessage(metadata, elements, payload);

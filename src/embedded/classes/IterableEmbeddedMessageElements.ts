@@ -2,6 +2,9 @@ import { IterableEmbeddedMessageDefaultAction } from './IterableEmbeddedMessageD
 import { IterableEmbeddedMessageElementsButton } from './IterableEmbeddedMessageElementsButton';
 import { IterableEmbeddedMessageText } from './IterableEmbeddedMessageText';
 
+import type { EmbeddedMessageElementsButtonDict } from './IterableEmbeddedMessageElementsButton';
+import type { EmbeddedMessageTextDict } from './IterableEmbeddedMessageText';
+
 /**
  * IterableEmbeddedMessageElements represents the elements of an embedded message.
  */
@@ -24,66 +27,22 @@ export class IterableEmbeddedMessageElements {
   /**
    * Creates an instance of `IterableEmbeddedMessageElements`.
    *
-   * @param title - The title of the embedded message.
-   * @param body - The body of the embedded message.
-   * @param mediaUrl - The url of the embedded message image.
-   * @param mediaUrlCaption - The caption of the embedded message image.
-   * @param defaultAction - The default action of the embedded message.
-   * @param buttons - The buttons of the embedded message.
-   * @param text - The text elements of the embedded message.
-   */
-  constructor(
-    title?: string,
-    body?: string,
-    mediaUrl?: string,
-    mediaUrlCaption?: string,
-    defaultAction?: IterableEmbeddedMessageDefaultAction,
-    buttons?: IterableEmbeddedMessageElementsButton[],
-    text?: IterableEmbeddedMessageText[]
-  ) {
-    this.title = title;
-    this.body = body;
-    this.mediaUrl = mediaUrl;
-    this.mediaUrlCaption = mediaUrlCaption;
-    this.defaultAction = defaultAction;
-    this.buttons = buttons;
-    this.text = text;
-  }
-
-  /**
-   * Creates an instance of `IterableEmbeddedMessageElements` from a dictionary object.
-   *
    * @param dict - The dictionary object containing the properties to initialize the `IterableEmbeddedMessageElements` instance.
-   * @returns A new instance of `IterableEmbeddedMessageElements` initialized with the provided dictionary properties.
    */
-  static fromDict(
-    dict: Partial<EmbeddedMessageElementsDict>
-  ): IterableEmbeddedMessageElements {
-    const title = dict.title;
-    const body = dict.body;
-    const mediaUrl = dict.mediaUrl;
-    const mediaUrlCaption = dict.mediaUrlCaption;
-    const defaultAction = dict.defaultAction
+  constructor(dict: Partial<EmbeddedMessageElementsDict>) {
+    this.title = dict.title;
+    this.body = dict.body;
+    this.mediaUrl = dict.mediaUrl;
+    this.mediaUrlCaption = dict.mediaUrlCaption;
+    this.defaultAction = dict.defaultAction
       ? IterableEmbeddedMessageDefaultAction.fromDict(dict.defaultAction)
       : undefined;
 
-    const buttons = dict.buttons?.map(
+    this.buttons = dict.buttons?.map(
       (button) => new IterableEmbeddedMessageElementsButton(button)
     );
 
-    const text = dict.text?.map(
-      (text) => new IterableEmbeddedMessageText(text)
-    );
-
-    return new IterableEmbeddedMessageElements(
-      title,
-      body,
-      mediaUrl,
-      mediaUrlCaption,
-      defaultAction,
-      buttons,
-      text
-    );
+    this.text = dict.text?.map((text) => new IterableEmbeddedMessageText(text));
   }
 }
 
@@ -102,7 +61,7 @@ export interface EmbeddedMessageElementsDict {
   /** The default action of the embedded message */
   defaultAction?: IterableEmbeddedMessageDefaultAction;
   /** The buttons of the embedded message */
-  buttons?: IterableEmbeddedMessageElementsButton[];
+  buttons?: EmbeddedMessageElementsButtonDict[];
   /** The text elements of the embedded message */
-  text?: IterableEmbeddedMessageText[];
+  text?: EmbeddedMessageTextDict[];
 }

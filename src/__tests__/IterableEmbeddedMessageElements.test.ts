@@ -50,7 +50,7 @@ describe('IterableEmbeddedMessageElements', () => {
       ],
     };
 
-    const elements = IterableEmbeddedMessageElements.fromDict(dict);
+    const elements = new IterableEmbeddedMessageElements(dict);
 
     expect(elements).toBeInstanceOf(IterableEmbeddedMessageElements);
     expect(elements.title).toBe('Awesome Title');
@@ -108,7 +108,7 @@ describe('IterableEmbeddedMessageElements', () => {
       body: 'Simple Body',
     };
 
-    const elements = IterableEmbeddedMessageElements.fromDict(dict);
+    const elements = new IterableEmbeddedMessageElements(dict);
 
     expect(elements).toBeInstanceOf(IterableEmbeddedMessageElements);
     expect(elements.title).toBe('Simple Title');
@@ -127,7 +127,7 @@ describe('IterableEmbeddedMessageElements', () => {
 
     const dict = {};
 
-    const elements = IterableEmbeddedMessageElements.fromDict(dict);
+    const elements = new IterableEmbeddedMessageElements(dict);
 
     expect(elements).toBeInstanceOf(IterableEmbeddedMessageElements);
     expect(elements.title).toBeUndefined();
@@ -151,7 +151,7 @@ describe('IterableEmbeddedMessageElements', () => {
       mediaUrlCaption: 'Check this out!',
     };
 
-    const elements = IterableEmbeddedMessageElements.fromDict(dict);
+    const elements = new IterableEmbeddedMessageElements(dict);
 
     expect(elements).toBeInstanceOf(IterableEmbeddedMessageElements);
     expect(elements.title).toBe('Media Title');
@@ -177,7 +177,7 @@ describe('IterableEmbeddedMessageElements', () => {
       },
     };
 
-    const elements = IterableEmbeddedMessageElements.fromDict(dict);
+    const elements = new IterableEmbeddedMessageElements(dict);
 
     expect(elements).toBeInstanceOf(IterableEmbeddedMessageElements);
     expect(elements.title).toBe('Action Title');
@@ -203,7 +203,7 @@ describe('IterableEmbeddedMessageElements', () => {
       text: [],
     };
 
-    const elements = IterableEmbeddedMessageElements.fromDict(dict);
+    const elements = new IterableEmbeddedMessageElements(dict);
 
     expect(elements).toBeInstanceOf(IterableEmbeddedMessageElements);
     expect(elements.title).toBe('Empty Arrays Title');
