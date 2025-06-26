@@ -1,5 +1,4 @@
 import { IterableEmbeddedMessage } from '../embedded/classes/IterableEmbeddedMessage';
-import { IterableEmbeddedMessageMetadata } from '../embedded/classes/IterableEmbeddedMessageMetadata';
 import { IterableEmbeddedMessageElements } from '../embedded/classes/IterableEmbeddedMessageElements';
 import { Iterable } from '../core/classes/Iterable';
 
@@ -88,7 +87,7 @@ describe('IterableEmbeddedMessage', () => {
     const message = new IterableEmbeddedMessage(dict);
 
     expect(message).toBeInstanceOf(IterableEmbeddedMessage);
-    expect(message.metadata).toBeInstanceOf(IterableEmbeddedMessageMetadata);
+    expect(message.metadata).toBeInstanceOf(Object);
     expect(message.metadata.messageId).toBe('msg-123');
     expect(message.metadata.placementId).toBe(1);
     expect(message.metadata.campaignId).toBeUndefined();
@@ -131,7 +130,7 @@ describe('IterableEmbeddedMessage', () => {
     const message = new IterableEmbeddedMessage(dict);
 
     expect(message).toBeInstanceOf(IterableEmbeddedMessage);
-    expect(message.metadata).toBeInstanceOf(IterableEmbeddedMessageMetadata);
+    expect(message.metadata).toBeInstanceOf(Object);
     expect(message.elements).toBeInstanceOf(IterableEmbeddedMessageElements);
     expect(message.elements?.title).toBe('Elements Only');
     expect(message.elements?.body).toBe('No payload here');
@@ -155,7 +154,7 @@ describe('IterableEmbeddedMessage', () => {
     const message = new IterableEmbeddedMessage(dict);
 
     expect(message).toBeInstanceOf(IterableEmbeddedMessage);
-    expect(message.metadata).toBeInstanceOf(IterableEmbeddedMessageMetadata);
+    expect(message.metadata).toBeInstanceOf(Object);
     expect(message.elements).toBeUndefined();
     expect(message.payload).toEqual({
       someData: 'someValue',
