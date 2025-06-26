@@ -71,8 +71,8 @@ export class IterableEmbeddedMessageElements {
       (button) => new IterableEmbeddedMessageElementsButton(button)
     );
 
-    const text = dict.text?.map((text) =>
-      IterableEmbeddedMessageText.fromDict(text)
+    const text = dict.text?.map(
+      (text) => new IterableEmbeddedMessageText(text)
     );
 
     return new IterableEmbeddedMessageElements(

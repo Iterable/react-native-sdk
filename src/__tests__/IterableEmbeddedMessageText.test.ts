@@ -6,7 +6,7 @@ describe('IterableEmbeddedMessageText', () => {
     Iterable.logger.log('iterableEmbeddedMessageText_fromDict_all_properties');
 
     const dict = { id: 'text-123', text: 'Hello World!', type: 'heading' };
-    const text = IterableEmbeddedMessageText.fromDict(dict);
+    const text = new IterableEmbeddedMessageText(dict);
 
     expect(text).toBeInstanceOf(IterableEmbeddedMessageText);
     expect(text.id).toBe('text-123');
@@ -18,7 +18,7 @@ describe('IterableEmbeddedMessageText', () => {
     Iterable.logger.log('iterableEmbeddedMessageText_fromDict_required_only');
 
     const dict = { id: 'text-123' };
-    const text = IterableEmbeddedMessageText.fromDict(dict);
+    const text = new IterableEmbeddedMessageText(dict);
 
     expect(text).toBeInstanceOf(IterableEmbeddedMessageText);
     expect(text.id).toBe('text-123');
@@ -31,7 +31,8 @@ describe('IterableEmbeddedMessageText', () => {
 
     const dict = { text: 'Hello World!', type: 'heading' };
 
-    expect(() => IterableEmbeddedMessageText.fromDict(dict)).toThrow(
+    // @ts-expect-error - id is purposely missing
+    expect(() => new IterableEmbeddedMessageText(dict)).toThrow(
       'id is required'
     );
   });

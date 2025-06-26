@@ -16,25 +16,14 @@ export class IterableEmbeddedMessageText {
    * @param text - The text of the text element
    * @param type - The type of the text element
    */
-  constructor(id: string, text?: string, type?: string) {
-    this.id = id;
-    this.text = text;
-    this.type = type;
-  }
-
-  /**
-   * Creates an instance of `IterableEmbeddedMessageText` from a dictionary object.
-   *
-   * @param dict - The dictionary object containing the properties to initialize the `IterableEmbeddedMessageText` instance.
-   * @returns A new instance of `IterableEmbeddedMessageText` initialized with the provided dictionary properties.
-   */
-  static fromDict(
-    dict: Partial<EmbeddedMessageTextDict>
-  ): IterableEmbeddedMessageText {
+  constructor(dict: EmbeddedMessageTextDict) {
     if (!dict.id) {
       throw new Error('id is required');
     }
-    return new IterableEmbeddedMessageText(dict.id, dict.text, dict.type);
+
+    this.id = dict.id;
+    this.text = dict.text;
+    this.type = dict.type;
   }
 }
 
