@@ -14,43 +14,16 @@ export class IterableEmbeddedMessageMetadata {
   /**
    * Constructs an instance of IterableEmbeddedMessageMetadata.
    *
-   * @param messageId - The ID for the embedded message.
-   * @param placementId - The placement ID for the embedded message.
-   * @param campaignId - The campaign ID for the embedded message.
-   * @param isProof - Whether the embedded message is a proof.
+   * @param dict - The dictionary object containing the metadata properties.
    */
-  constructor(
-    messageId: string,
-    placementId: number,
-    campaignId: number | undefined,
-    isProof: boolean = false
-  ) {
-    this.messageId = messageId;
-    this.placementId = placementId;
-    this.campaignId = campaignId;
-    this.isProof = isProof;
-  }
-
-  /**
-   * Creates an instance of `IterableEmbeddedMessageMetadata` from a dictionary object.
-   *
-   * @param dict - The dictionary objectcontaining the metadata properties.
-   * This corresponds to the properties in {@link IterableEmbeddedMessageMetadata}
-   *
-   * @returns A new instance of `IterableEmbeddedMessageMetadata` with the provided properties.
-   */
-  static fromDict(
-    dict: Partial<EmbeddedMessageMetadataDict>
-  ): IterableEmbeddedMessageMetadata {
+  constructor(dict: EmbeddedMessageMetadataDict) {
     if (!dict.messageId || !dict.placementId) {
       throw new Error('messageId and placementId are required');
     }
-    return new IterableEmbeddedMessageMetadata(
-      dict.messageId,
-      dict.placementId,
-      dict.campaignId,
-      dict.isProof
-    );
+    this.messageId = dict.messageId;
+    this.placementId = dict.placementId;
+    this.campaignId = dict.campaignId;
+    this.isProof = dict.isProof ?? false;
   }
 }
 

@@ -14,7 +14,7 @@ describe('IterableEmbeddedMessage', () => {
       isProof: false,
     };
 
-    const result = IterableEmbeddedMessageMetadata.fromDict(dict);
+    const result = new IterableEmbeddedMessageMetadata(dict);
 
     expect(result).toBeInstanceOf(IterableEmbeddedMessageMetadata);
     expect(result.messageId).toBe('123');
@@ -33,7 +33,7 @@ describe('IterableEmbeddedMessage', () => {
       placementId: 456,
     };
 
-    const result = IterableEmbeddedMessageMetadata.fromDict(dict);
+    const result = new IterableEmbeddedMessageMetadata(dict);
 
     expect(result).toBeInstanceOf(IterableEmbeddedMessageMetadata);
     expect(result.messageId).toBe('123');
@@ -52,7 +52,8 @@ describe('IterableEmbeddedMessage', () => {
     };
 
     expect(() => {
-      IterableEmbeddedMessageMetadata.fromDict(dict);
+      // @ts-expect-error - messageId is purposely missing
+      new IterableEmbeddedMessageMetadata(dict);
     }).toThrow('messageId and placementId are required');
   });
 });

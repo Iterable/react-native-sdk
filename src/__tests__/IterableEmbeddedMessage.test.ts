@@ -47,12 +47,12 @@ describe('IterableEmbeddedMessage', () => {
       },
     };
 
-    const message = IterableEmbeddedMessage.fromDict(dict);
+    const message = new IterableEmbeddedMessage(dict);
 
     expect(message).toBeInstanceOf(IterableEmbeddedMessage);
 
     // Check metadata
-    expect(message.metadata).toBeInstanceOf(IterableEmbeddedMessageMetadata);
+    expect(message.metadata).toBeInstanceOf(Object);
     expect(message.metadata.messageId).toBe('msg-123');
     expect(message.metadata.placementId).toBe(1);
     expect(message.metadata.campaignId).toBe(456);
@@ -85,7 +85,7 @@ describe('IterableEmbeddedMessage', () => {
       },
     };
 
-    const message = IterableEmbeddedMessage.fromDict(dict);
+    const message = new IterableEmbeddedMessage(dict);
 
     expect(message).toBeInstanceOf(IterableEmbeddedMessage);
     expect(message.metadata).toBeInstanceOf(IterableEmbeddedMessageMetadata);
@@ -107,7 +107,8 @@ describe('IterableEmbeddedMessage', () => {
       },
     };
 
-    expect(() => IterableEmbeddedMessage.fromDict(dict)).toThrow(
+    // @ts-expect-error - metadata is purposely missing
+    expect(() => new IterableEmbeddedMessage(dict)).toThrow(
       'metadata is required'
     );
   });
@@ -127,7 +128,7 @@ describe('IterableEmbeddedMessage', () => {
       },
     };
 
-    const message = IterableEmbeddedMessage.fromDict(dict);
+    const message = new IterableEmbeddedMessage(dict);
 
     expect(message).toBeInstanceOf(IterableEmbeddedMessage);
     expect(message.metadata).toBeInstanceOf(IterableEmbeddedMessageMetadata);
@@ -151,7 +152,7 @@ describe('IterableEmbeddedMessage', () => {
       },
     };
 
-    const message = IterableEmbeddedMessage.fromDict(dict);
+    const message = new IterableEmbeddedMessage(dict);
 
     expect(message).toBeInstanceOf(IterableEmbeddedMessage);
     expect(message.metadata).toBeInstanceOf(IterableEmbeddedMessageMetadata);

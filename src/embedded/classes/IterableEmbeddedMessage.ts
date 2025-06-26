@@ -1,61 +1,57 @@
-import { IterableEmbeddedMessageMetadata } from './IterableEmbeddedMessageMetadata';
 import { IterableEmbeddedMessageElements } from './IterableEmbeddedMessageElements';
+import type { EmbeddedMessageElementsDict } from './IterableEmbeddedMessageElements';
 
 /**
  * IterableEmbeddedMessage represents an embedded message.
  */
 export class IterableEmbeddedMessage {
   /** The metadata of the embedded message */
-  metadata: IterableEmbeddedMessageMetadata;
+  readonly metadata: {
+    messageId: string;
+    placementId: number;
+    campaignId?: number;
+    isProof: boolean;
+  };
   /** The elements of the embedded message */
-  elements?: IterableEmbeddedMessageElements;
+  readonly elements?: IterableEmbeddedMessageElements;
   /** The custom payload of the embedded message */
-  payload?: Record<string, unknown>;
+  readonly payload?: Record<string, unknown>;
 
   /**
    * Creates an instance of `IterableEmbeddedMessage`.
    *
-   * @param metadata - The metadata of the embedded message.
-   * @param elements - The elements of the embedded message.
-   * @param payload - The custom payload of the embedded message.
-   */
-  constructor(
-    metadata: IterableEmbeddedMessageMetadata,
-    elements?: IterableEmbeddedMessageElements,
-    payload?: Record<string, unknown>
-  ) {
-    this.metadata = metadata;
-    this.elements = elements;
-    this.payload = payload;
-  }
-
-  /**
-   * Creates an instance of `IterableEmbeddedMessage` from a dictionary object.
-   *
    * @param dict - The dictionary object containing the properties to initialize the `IterableEmbeddedMessage` instance.
-   * @returns A new instance of `IterableEmbeddedMessage` initialized with the provided dictionary properties.
    */
-  static fromDict(dict: Partial<EmbeddedMessageDict>): IterableEmbeddedMessage {
+  constructor(dict: EmbeddedMessageDict) {
     if (!dict.metadata) {
       throw new Error('metadata is required');
     }
-    const metadata = IterableEmbeddedMessageMetadata.fromDict(dict.metadata);
-    const elements = dict.elements
+    this.metadata = {
+      messageId: dict.metadata.messageId,
+      placementId: dict.metadata.placementId,
+      campaignId: dict.metadata.campaignId,
+      isProof: dict.metadata.isProof,
+    };
+    this.elements = dict.elements
       ? new IterableEmbeddedMessageElements(dict.elements)
       : undefined;
-    const payload = dict.payload;
-    return new IterableEmbeddedMessage(metadata, elements, payload);
+    this.payload = dict.payload;
   }
 }
 
 /**
  * An interface defining the dictionary object containing the properties for the embedded message.
  */
-interface EmbeddedMessageDict {
+export interface EmbeddedMessageDict {
   /** The metadata of the embedded message */
-  metadata: IterableEmbeddedMessageMetadata;
+  metadata: {
+    messageId: string;
+    placementId: number;
+    campaignId?: number;
+    isProof: boolean;
+  };
   /** The elements of the embedded message */
-  elements: IterableEmbeddedMessageElements;
+  elements?: EmbeddedMessageElementsDict;
   /** The custom payload of the embedded message */
-  payload: Record<string, unknown>;
+  payload?: Record<string, unknown>;
 }
