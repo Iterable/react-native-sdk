@@ -1,4 +1,3 @@
-import { IterableEmbeddedMessageDefaultAction } from './IterableEmbeddedMessageDefaultAction';
 import { IterableEmbeddedMessageElementsButton } from './IterableEmbeddedMessageElementsButton';
 import { IterableEmbeddedMessageText } from './IterableEmbeddedMessageText';
 
@@ -18,7 +17,10 @@ export class IterableEmbeddedMessageElements {
   /** The caption of the embedded message image */
   readonly mediaUrlCaption?: string;
   /** The default action of the embedded message */
-  readonly defaultAction?: IterableEmbeddedMessageDefaultAction;
+  readonly defaultAction?: {
+    type: string;
+    data?: string;
+  };
   /** The buttons of the embedded message */
   readonly buttons?: IterableEmbeddedMessageElementsButton[];
   /** The text elements of the embedded message */
@@ -34,9 +36,13 @@ export class IterableEmbeddedMessageElements {
     this.body = dict.body;
     this.mediaUrl = dict.mediaUrl;
     this.mediaUrlCaption = dict.mediaUrlCaption;
-    this.defaultAction = dict.defaultAction
-      ? IterableEmbeddedMessageDefaultAction.fromDict(dict.defaultAction)
-      : undefined;
+
+    if (dict.defaultAction) {
+      this.defaultAction = {
+        type: dict.defaultAction.type,
+        data: dict.defaultAction.data,
+      };
+    }
 
     this.buttons = dict.buttons?.map(
       (button) => new IterableEmbeddedMessageElementsButton(button)
@@ -59,7 +65,10 @@ export interface EmbeddedMessageElementsDict {
   /** The caption of the embedded message image */
   mediaUrlCaption?: string;
   /** The default action of the embedded message */
-  defaultAction?: IterableEmbeddedMessageDefaultAction;
+  defaultAction?: {
+    type: string;
+    data?: string;
+  };
   /** The buttons of the embedded message */
   buttons?: EmbeddedMessageElementsButtonDict[];
   /** The text elements of the embedded message */

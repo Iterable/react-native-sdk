@@ -1,5 +1,4 @@
 import { IterableEmbeddedMessageElements } from '../embedded/classes/IterableEmbeddedMessageElements';
-import { IterableEmbeddedMessageDefaultAction } from '../embedded/classes/IterableEmbeddedMessageDefaultAction';
 import { IterableEmbeddedMessageElementsButton } from '../embedded/classes/IterableEmbeddedMessageElementsButton';
 import { IterableEmbeddedMessageText } from '../embedded/classes/IterableEmbeddedMessageText';
 import { Iterable } from '../core/classes/Iterable';
@@ -59,9 +58,7 @@ describe('IterableEmbeddedMessageElements', () => {
     expect(elements.mediaUrlCaption).toBe('Check out this sick image!');
 
     // Check defaultAction
-    expect(elements.defaultAction).toBeInstanceOf(
-      IterableEmbeddedMessageDefaultAction
-    );
+    expect(elements.defaultAction).toBeInstanceOf(Object);
     expect(elements.defaultAction?.type).toBe('openUrl');
     expect(elements.defaultAction?.data).toBe('https://example.com');
 
@@ -182,9 +179,7 @@ describe('IterableEmbeddedMessageElements', () => {
     expect(elements).toBeInstanceOf(IterableEmbeddedMessageElements);
     expect(elements.title).toBe('Action Title');
     expect(elements.body).toBe('Action Body');
-    expect(elements.defaultAction).toBeInstanceOf(
-      IterableEmbeddedMessageDefaultAction
-    );
+    expect(elements.defaultAction).toBeInstanceOf(Object);
     expect(elements.defaultAction?.type).toBe('openUrl');
     expect(elements.defaultAction?.data).toBe('https://example.com');
     expect(elements.buttons).toBeUndefined();
