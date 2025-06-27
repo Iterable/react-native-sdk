@@ -1,6 +1,4 @@
 import { IterableEmbeddedMessage } from '../embedded/classes/IterableEmbeddedMessage';
-import { IterableEmbeddedMessageMetadata } from '../embedded/classes/IterableEmbeddedMessageMetadata';
-import { IterableEmbeddedMessageElements } from '../embedded/classes/IterableEmbeddedMessageElements';
 import { Iterable } from '../core/classes/Iterable';
 
 describe('IterableEmbeddedMessage', () => {
@@ -47,19 +45,19 @@ describe('IterableEmbeddedMessage', () => {
       },
     };
 
-    const message = IterableEmbeddedMessage.fromDict(dict);
+    const message = new IterableEmbeddedMessage(dict);
 
     expect(message).toBeInstanceOf(IterableEmbeddedMessage);
 
     // Check metadata
-    expect(message.metadata).toBeInstanceOf(IterableEmbeddedMessageMetadata);
+    expect(message.metadata).toBeInstanceOf(Object);
     expect(message.metadata.messageId).toBe('msg-123');
     expect(message.metadata.placementId).toBe(1);
     expect(message.metadata.campaignId).toBe(456);
     expect(message.metadata.isProof).toBe(false);
 
     // Check elements
-    expect(message.elements).toBeInstanceOf(IterableEmbeddedMessageElements);
+    expect(message.elements).toBeInstanceOf(Object);
     expect(message.elements?.title).toBe('Awesome Title');
     expect(message.elements?.body).toBe('Radical Body Text');
     expect(message.elements?.mediaUrl).toBe('https://example.com/image.jpg');
@@ -85,10 +83,10 @@ describe('IterableEmbeddedMessage', () => {
       },
     };
 
-    const message = IterableEmbeddedMessage.fromDict(dict);
+    const message = new IterableEmbeddedMessage(dict);
 
     expect(message).toBeInstanceOf(IterableEmbeddedMessage);
-    expect(message.metadata).toBeInstanceOf(IterableEmbeddedMessageMetadata);
+    expect(message.metadata).toBeInstanceOf(Object);
     expect(message.metadata.messageId).toBe('msg-123');
     expect(message.metadata.placementId).toBe(1);
     expect(message.metadata.campaignId).toBeUndefined();
@@ -107,7 +105,8 @@ describe('IterableEmbeddedMessage', () => {
       },
     };
 
-    expect(() => IterableEmbeddedMessage.fromDict(dict)).toThrow(
+    // @ts-expect-error - metadata is purposely missing
+    expect(() => new IterableEmbeddedMessage(dict)).toThrow(
       'metadata is required'
     );
   });
@@ -127,11 +126,11 @@ describe('IterableEmbeddedMessage', () => {
       },
     };
 
-    const message = IterableEmbeddedMessage.fromDict(dict);
+    const message = new IterableEmbeddedMessage(dict);
 
     expect(message).toBeInstanceOf(IterableEmbeddedMessage);
-    expect(message.metadata).toBeInstanceOf(IterableEmbeddedMessageMetadata);
-    expect(message.elements).toBeInstanceOf(IterableEmbeddedMessageElements);
+    expect(message.metadata).toBeInstanceOf(Object);
+    expect(message.elements).toBeInstanceOf(Object);
     expect(message.elements?.title).toBe('Elements Only');
     expect(message.elements?.body).toBe('No payload here');
     expect(message.payload).toBeUndefined();
@@ -151,10 +150,10 @@ describe('IterableEmbeddedMessage', () => {
       },
     };
 
-    const message = IterableEmbeddedMessage.fromDict(dict);
+    const message = new IterableEmbeddedMessage(dict);
 
     expect(message).toBeInstanceOf(IterableEmbeddedMessage);
-    expect(message.metadata).toBeInstanceOf(IterableEmbeddedMessageMetadata);
+    expect(message.metadata).toBeInstanceOf(Object);
     expect(message.elements).toBeUndefined();
     expect(message.payload).toEqual({
       someData: 'someValue',
