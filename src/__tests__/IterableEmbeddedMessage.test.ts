@@ -1,5 +1,4 @@
 import { IterableEmbeddedMessage } from '../embedded/classes/IterableEmbeddedMessage';
-import { IterableEmbeddedMessageElements } from '../embedded/classes/IterableEmbeddedMessageElements';
 import { Iterable } from '../core/classes/Iterable';
 
 describe('IterableEmbeddedMessage', () => {
@@ -58,7 +57,7 @@ describe('IterableEmbeddedMessage', () => {
     expect(message.metadata.isProof).toBe(false);
 
     // Check elements
-    expect(message.elements).toBeInstanceOf(IterableEmbeddedMessageElements);
+    expect(message.elements).toBeInstanceOf(Object);
     expect(message.elements?.title).toBe('Awesome Title');
     expect(message.elements?.body).toBe('Radical Body Text');
     expect(message.elements?.mediaUrl).toBe('https://example.com/image.jpg');
@@ -131,7 +130,7 @@ describe('IterableEmbeddedMessage', () => {
 
     expect(message).toBeInstanceOf(IterableEmbeddedMessage);
     expect(message.metadata).toBeInstanceOf(Object);
-    expect(message.elements).toBeInstanceOf(IterableEmbeddedMessageElements);
+    expect(message.elements).toBeInstanceOf(Object);
     expect(message.elements?.title).toBe('Elements Only');
     expect(message.elements?.body).toBe('No payload here');
     expect(message.payload).toBeUndefined();

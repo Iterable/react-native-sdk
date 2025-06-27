@@ -1,5 +1,5 @@
-import { IterableEmbeddedMessageElements } from './IterableEmbeddedMessageElements';
-import type { EmbeddedMessageElementsDict } from './IterableEmbeddedMessageElements';
+import { IterableEmbeddedMessageButton } from './IterableEmbeddedMessageButton';
+import { IterableEmbeddedMessageText } from './IterableEmbeddedMessageText';
 
 /**
  * IterableEmbeddedMessage represents an embedded message.
@@ -7,13 +7,37 @@ import type { EmbeddedMessageElementsDict } from './IterableEmbeddedMessageEleme
 export class IterableEmbeddedMessage {
   /** The metadata of the embedded message */
   readonly metadata: {
+    /** The id of the message */
     messageId: string;
+    /** The placement id of the message */
     placementId: number;
+    /** The campaign id of the message */
     campaignId?: number;
+    /** Whether the message is a proof */
     isProof: boolean;
   };
   /** The elements of the embedded message */
-  readonly elements?: IterableEmbeddedMessageElements;
+  readonly elements?: {
+    /** The title of the embedded message */
+    title?: string;
+    /** The body of the embedded message */
+    body?: string;
+    /** The media url of the embedded message */
+    mediaUrl?: string;
+    /** The media url caption of the embedded message */
+    mediaUrlCaption?: string;
+    /** The default action of the embedded message */
+    defaultAction?: {
+      /** The type of action */
+      type: string;
+      /** The url for the action when the type is `openUrl` */
+      data?: string;
+    };
+    /** The buttons of the embedded message */
+    buttons?: IterableEmbeddedMessageButton[];
+    /** The text of the embedded message */
+    text?: IterableEmbeddedMessageText[];
+  };
   /** The custom payload of the embedded message */
   readonly payload?: Record<string, unknown>;
 
@@ -32,9 +56,35 @@ export class IterableEmbeddedMessage {
       campaignId: dict.metadata.campaignId,
       isProof: dict.metadata.isProof,
     };
-    this.elements = dict.elements
-      ? new IterableEmbeddedMessageElements(dict.elements)
-      : undefined;
+
+    if (dict.elements) {
+      this.elements = {
+        title: dict.elements?.title,
+        body: dict.elements?.body,
+        mediaUrl: dict.elements?.mediaUrl,
+        mediaUrlCaption: dict.elements?.mediaUrlCaption,
+      };
+
+      if (dict.elements?.defaultAction) {
+        this.elements.defaultAction = {
+          type: dict.elements.defaultAction.type,
+          data: dict.elements.defaultAction.data,
+        };
+      }
+
+      if (dict.elements?.buttons) {
+        this.elements.buttons = dict.elements.buttons.map(
+          (button) => new IterableEmbeddedMessageButton(button)
+        );
+      }
+
+      if (dict.elements?.text) {
+        this.elements.text = dict.elements.text.map(
+          (text) => new IterableEmbeddedMessageText(text)
+        );
+      }
+    }
+
     this.payload = dict.payload;
   }
 }
@@ -45,13 +95,37 @@ export class IterableEmbeddedMessage {
 export interface EmbeddedMessageDict {
   /** The metadata of the embedded message */
   metadata: {
+    /** The id of the message */
     messageId: string;
+    /** The placement id of the message */
     placementId: number;
+    /** The campaign id of the message */
     campaignId?: number;
+    /** Whether the message is a proof */
     isProof: boolean;
   };
   /** The elements of the embedded message */
-  elements?: EmbeddedMessageElementsDict;
+  elements?: {
+    /** The title of the embedded message */
+    title?: string;
+    /** The body of the embedded message */
+    body?: string;
+    /** The media url of the embedded message */
+    mediaUrl?: string;
+    /** The media url caption of the embedded message */
+    mediaUrlCaption?: string;
+    /** The default action of the embedded message */
+    defaultAction?: {
+      /** The type of action */
+      type: string;
+      /** The url for the action when the type is `openUrl` */
+      data?: string;
+    };
+    /** The buttons of the embedded message */
+    buttons?: IterableEmbeddedMessageButton[];
+    /** The text of the embedded message */
+    text?: IterableEmbeddedMessageText[];
+  };
   /** The custom payload of the embedded message */
   payload?: Record<string, unknown>;
 }

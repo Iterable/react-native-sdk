@@ -1,4 +1,4 @@
-import { IterableEmbeddedMessageElementsButton } from '../embedded/classes/IterableEmbeddedMessageElementsButton';
+import { IterableEmbeddedMessageButton } from '../embedded/classes/IterableEmbeddedMessageButton';
 import { Iterable } from '../core/classes/Iterable';
 
 describe('IterableEmbeddedMessageButton', () => {
@@ -13,9 +13,9 @@ describe('IterableEmbeddedMessageButton', () => {
       action: { type: 'openUrl', data: 'https://example.com' },
     };
 
-    const button = new IterableEmbeddedMessageElementsButton(dict);
+    const button = new IterableEmbeddedMessageButton(dict);
 
-    expect(button).toBeInstanceOf(IterableEmbeddedMessageElementsButton);
+    expect(button).toBeInstanceOf(IterableEmbeddedMessageButton);
     expect(button.id).toBe('button-123');
     expect(button.title).toBe('Click Me!');
     expect(button.action).toBeInstanceOf(Object);
@@ -28,9 +28,9 @@ describe('IterableEmbeddedMessageButton', () => {
 
     const dict = { id: 'button-123' };
 
-    const button = new IterableEmbeddedMessageElementsButton(dict);
+    const button = new IterableEmbeddedMessageButton(dict);
 
-    expect(button).toBeInstanceOf(IterableEmbeddedMessageElementsButton);
+    expect(button).toBeInstanceOf(IterableEmbeddedMessageButton);
     expect(button.id).toBe('button-123');
     expect(button.title).toBeUndefined();
     expect(button.action).toBeUndefined();
@@ -44,9 +44,9 @@ describe('IterableEmbeddedMessageButton', () => {
       title: 'Click Me!',
     };
 
-    const button = new IterableEmbeddedMessageElementsButton(dict);
+    const button = new IterableEmbeddedMessageButton(dict);
 
-    expect(button).toBeInstanceOf(IterableEmbeddedMessageElementsButton);
+    expect(button).toBeInstanceOf(IterableEmbeddedMessageButton);
     expect(button.id).toBe('button-123');
     expect(button.title).toBe('Click Me!');
     expect(button.action).toBeUndefined();
@@ -60,7 +60,7 @@ describe('IterableEmbeddedMessageButton', () => {
       action: { type: 'openUrl', data: 'https://example.com' },
     };
     // @ts-expect-error - id is purposely missing
-    expect(() => new IterableEmbeddedMessageElementsButton(dict)).toThrow(
+    expect(() => new IterableEmbeddedMessageButton(dict)).toThrow(
       'id is required'
     );
   });
@@ -75,9 +75,9 @@ describe('IterableEmbeddedMessageButton', () => {
       action: { type: 'close' },
     };
 
-    const button = new IterableEmbeddedMessageElementsButton(dict);
+    const button = new IterableEmbeddedMessageButton(dict);
 
-    expect(button).toBeInstanceOf(IterableEmbeddedMessageElementsButton);
+    expect(button).toBeInstanceOf(IterableEmbeddedMessageButton);
     expect(button.id).toBe('button-123');
     expect(button.action).toBeInstanceOf(Object);
     expect(button.action?.type).toBe('close');

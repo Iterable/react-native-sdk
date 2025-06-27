@@ -1,14 +1,16 @@
 /**
  * IterableEmbeddedMessageElementsButton represents a button in an embedded message.
  */
-export class IterableEmbeddedMessageElementsButton {
+export class IterableEmbeddedMessageButton {
   /** The ID for the embedded message button */
   readonly id: string;
   /** The title for the embedded message button */
   readonly title?: string;
   /** The action for the embedded message button */
   readonly action?: {
+    /** The type of action */
     type: string;
+    /** The url for the action when the type is `openUrl` */
     data?: string;
   };
 
@@ -44,7 +46,9 @@ export interface EmbeddedMessageElementsButtonDict {
   title?: string;
   /** The action for the embedded message button */
   action?: {
+    /** The type of action */
     type: string;
+    /** The url for the action when the type is `openUrl` */
     data?: string;
   };
 }
