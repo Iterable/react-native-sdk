@@ -16,6 +16,7 @@ import com.iterable.iterableapi.IterableAction;
 import com.iterable.iterableapi.IterableActionContext;
 import com.iterable.iterableapi.IterableConfig;
 import com.iterable.iterableapi.IterableDataRegion;
+import com.iterable.iterableapi.IterableEmbeddedMessage;
 import com.iterable.iterableapi.IterableInAppCloseAction;
 import com.iterable.iterableapi.IterableInAppDeleteActionType;
 import com.iterable.iterableapi.IterableInAppHandler;
@@ -134,6 +135,17 @@ class Serialization {
             inAppMessagesJson.put(messageJson);
         }
         return inAppMessagesJson;
+    }
+
+    static JSONArray serializeEmbeddedMessages(List<IterableEmbeddedMessage> embeddedMessages) {
+        JSONArray embeddedMessagesJson = new JSONArray();
+        if (embeddedMessages != null) {
+            for (IterableEmbeddedMessage message : embeddedMessages) {
+                JSONObject messageJson = IterableEmbeddedMessage.Companion.toJSONObject(message);
+                embeddedMessagesJson.put(messageJson);
+            }
+        }
+        return embeddedMessagesJson;
     }
 
     static IterableConfig.Builder getConfigFromReadableMap(ReadableMap iterableContextMap) {

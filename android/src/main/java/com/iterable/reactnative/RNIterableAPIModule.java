@@ -486,20 +486,17 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     // region Embedded APIs
 
     @ReactMethod
-    public void getEmbeddedPlacements(Promise promise) {
-        IterableLogger.d(TAG, "getEmbeddedPlacements");
-
-        JSONArray testPlacements = new JSONArray();
-        int[] testPlacementIds = {808, 1121, 112};
-
+    public void getEmbeddedMessages(Integer placementId, Promise promise) {
+        IterableLogger.d(TAG, "getEmbeddedMessages for placement: " + placementId);
+        
         try {
-            for (int placementId : testPlacementIds) {
-                testPlacements.put(createTestPlacement(placementId));
-            }
-
-            promise.resolve(Serialization.convertJsonToArray(testPlacements));
+            JSONArray embeddedMessageJsonArray = Serialization.serializeEmbeddedMessages(IterableApi.getInstance().getEmbeddedManager().getMessages(placementId));
+            IterableLogger.d(TAG, "Messages for placement: " + embeddedMessageJsonArray);
+            
+            promise.resolve(Serialization.convertJsonToArray(embeddedMessageJsonArray));
         } catch (JSONException e) {
-            promise.reject("", "Failed to create test placements");
+            IterableLogger.e(TAG, e.getLocalizedMessage());
+            promise.reject("", "Failed to fetch messages with error " + e.getLocalizedMessage());
         }
     }
 
