@@ -34,7 +34,6 @@
   ],
   "scripts": {
     "add_build_info": "node scripts/autoCreatePackageInfo.js",
-    "preinstall": "yarn add_build_info",
     "example": "yarn workspace @iterable/react-native-sdk-example",
     "test": "jest",
     "test:coverage": "jest --coverage",
