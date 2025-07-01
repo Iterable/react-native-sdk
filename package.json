@@ -1,6 +1,6 @@
 {
   "name": "@iterable/react-native-sdk",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Iterable SDK for React Native.",
   "source": "./src/index.tsx",
   "main": "./lib/module/index.js",
@@ -34,7 +34,6 @@
   ],
   "scripts": {
     "add_build_info": "node scripts/autoCreatePackageInfo.js",
-    "preinstall": "yarn add_build_info",
     "example": "yarn workspace @iterable/react-native-sdk-example",
     "test": "jest",
     "test:coverage": "jest --coverage",
