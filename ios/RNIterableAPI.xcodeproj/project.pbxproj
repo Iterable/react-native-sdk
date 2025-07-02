@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		AC13877D243BA05600A02674 /* Serialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC13877C243BA05600A02674 /* Serialization.swift */; };
 		AC76DC322423C2290071587E /* ReactIterableAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC76DC302423C2290071587E /* ReactIterableAPI.swift */; };
-		ACDDDF2224212BB9001686E5 /* RNIterableAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = ACDDDF2124212BB9001686E5 /* RNIterableAPI.m */; };
+		ACDDDF2224212BB9001686E5 /* RNIterableAPI.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACDDDF2124212BB9001686E5 /* RNIterableAPI.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,11 +25,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		779227302DFA3AD400D69EC0 /* RNIterableAPI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNIterableAPI.h; sourceTree = "<group>"; };
 		AC13877C243BA05600A02674 /* Serialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Serialization.swift; sourceTree = "<group>"; };
 		AC547A9024004D39008782E7 /* libRNIterableAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNIterableAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC76DC302423C2290071587E /* ReactIterableAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactIterableAPI.swift; sourceTree = "<group>"; };
 		AC76DC312423C2290071587E /* RNIterable-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RNIterable-Bridging-Header.h"; sourceTree = "<group>"; };
-		ACDDDF2124212BB9001686E5 /* RNIterableAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNIterableAPI.m; sourceTree = "<group>"; };
+		ACDDDF2124212BB9001686E5 /* RNIterableAPI.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNIterableAPI.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,7 +66,8 @@
 				AC13877C243BA05600A02674 /* Serialization.swift */,
 				AC76DC302423C2290071587E /* ReactIterableAPI.swift */,
 				AC76DC312423C2290071587E /* RNIterable-Bridging-Header.h */,
-				ACDDDF2124212BB9001686E5 /* RNIterableAPI.m */,
+				ACDDDF2124212BB9001686E5 /* RNIterableAPI.mm */,
+				779227302DFA3AD400D69EC0 /* RNIterableAPI.h */,
 			);
 			path = RNIterableAPI;
 			sourceTree = "<group>";
@@ -130,7 +132,7 @@
 			files = (
 				AC76DC322423C2290071587E /* ReactIterableAPI.swift in Sources */,
 				AC13877D243BA05600A02674 /* Serialization.swift in Sources */,
-				ACDDDF2224212BB9001686E5 /* RNIterableAPI.m in Sources */,
+				ACDDDF2224212BB9001686E5 /* RNIterableAPI.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

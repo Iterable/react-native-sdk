@@ -2,8 +2,7 @@
 //  Created by Tapash Majumder on 3/19/20.
 //  Copyright © 2020 Iterable. All rights reserved.
 //
-
-#import <React/RCTBridgeModule.h>
+#import "RNIterableAPI.h"
 
 @interface RCT_EXTERN_REMAP_MODULE(RNIterableAPI, ReactIterableAPI, NSObject)
 
