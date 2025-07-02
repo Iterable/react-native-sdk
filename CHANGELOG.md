@@ -1,3 +1,22 @@
+## 2.0.1
+- Added support for React Native New Architecture through interop.  **WARNING**:
+  As support for the New Architecture is through interop, developers should use
+  this at their own risk.
+- React Native support updated to 0.79.3
+
+### Fixes
+- Removed preinstall script from package.json (17199b3)
+- Disabled empty body warnings in Podfile build settings (40f3c8f)
+- Removed pod lockfile as the dependencies change depending on whether it is new
+  arch (19c8c90)
+- Updated Babel and Jest configurations for React Native 0.79.3 support
+  (56584b5)
+- Removed duplicate methods as it prevents rendering in new arch (b7f0c71)
+
+## 2.0.0
+
+GA release. No changes from 2.0.0-beta.1.
+
 ## 2.0.0-beta.1
 
 - Added disclaimer to README to alert users that we do not yet support React

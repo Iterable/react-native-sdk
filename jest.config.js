@@ -6,7 +6,7 @@ module.exports = {
   ],
   testMatch: ['<rootDir>/src/__tests__/**/*.(test|spec).[jt]s?(x)'],
   transformIgnorePatterns: [
-    'node_modules/(?!((jest-)?react-native(-.*)?|@react-native(-community)?)/)',
+    'node_modules/(?!(react-native|@react-native|@react-navigation|react-native-screens|react-native-safe-area-context|react-native-gesture-handler|react-native-webview|react-native-vector-icons)/)',
   ],
   collectCoverageFrom: [
     'src/**/*.{cjs,js,jsx,mjs,ts,tsx}',
@@ -17,6 +17,7 @@ module.exports = {
     '<rootDir>/example/node_modules',
     '<rootDir>/lib/',
   ],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   coverageThreshold: {
     global: {
       branches: 10,
