@@ -64,8 +64,10 @@
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
+    "@babel/core": "^7.27.4",
     "@commitlint/config-conventional": "^17.0.2",
     "@evilmartians/lefthook": "^1.5.0",
+    "@react-native-community/cli": "18.0.0",
     "@react-native/babel-preset": "0.79.3",
     "@react-native/eslint-config": "0.79.3",
     "@react-native/metro-config": "0.79.3",
@@ -165,12 +167,23 @@
       ]
     ]
   },
+  "react-native": {
+    "newArchEnabled": true
+  },
   "codegenConfig": {
-    "name": "RNIterableSpec",
+    "name": "ReactIterableAPISpec",
     "type": "modules",
-    "jsSrcsDir": "src",
+    "jsSrcsDir": "./src/api",
     "android": {
       "javaPackageName": "com.iterable.reactnative"
+    },
+    "includesGeneratedCode": true,
+    "outputDir": {
+      "ios": "ios/generated",
+      "android": "android/generated"
+    },
+    "ios": {
+      "podspecPath": "./Iterable-React-Native-SDK.podspec"
     }
   },
   "create-react-native-library": {

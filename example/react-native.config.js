@@ -6,6 +6,7 @@ module.exports = {
     ios: {
       automaticPodsInstallation: true,
     },
+    android: {},
   },
   dependencies: {
     [pkg.name]: {
