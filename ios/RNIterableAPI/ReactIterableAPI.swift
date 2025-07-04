@@ -679,7 +679,12 @@ extension ReactIterableAPI: IterableAuthDelegate {
             }
         }
     }
-    
+
+    func onAuthFailure(_ authFailure: IterableSDK.AuthFailure) {
+            
+    }
+
+    // Deprecated in iterable-swift-sdk 6.5.5: https://github.com/Iterable/iterable-swift-sdk/releases/tag/6.5.5
     func onTokenRegistrationFailed(_ reason: String?) {
         
     }
