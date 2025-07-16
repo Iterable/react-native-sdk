@@ -1,3 +1,9 @@
+## 2.0.2
+### Fixes
+- Migrate AppDelegate to Swift and remove Objective-C files
+  ([06b82a0](https://github.com/Iterable/react-native-sdk/commit/06b82a0))
+- Fixed misspelling ([bc2e84c](https://github.com/Iterable/react-native-sdk/commit/bc2e84c))
+
 ## 2.0.1
 - Added support for React Native New Architecture through interop.  **WARNING**:
   As support for the New Architecture is through interop, developers should use
