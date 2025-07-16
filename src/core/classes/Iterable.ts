@@ -155,7 +155,7 @@ export class Iterable {
    *
    * ## Registering device token:
    *
-   * If `IterableConfig.autoPushRegisteration` is set to true, calling
+   * If `IterableConfig.autoPushRegistration` is set to true, calling
    * `setEmail` automatically registers the device for push notifications and
    * sends the deviceId and token to Iterable.
    *
@@ -168,7 +168,7 @@ export class Iterable {
    * ## Signing out a user from the SDK:
    *
    * To tell the SDK to sign out the current user, pass null into
-   * `Iterable.setEmail`.  If IterableConfig.autoPushRegisteration is set to
+   * `Iterable.setEmail`.  If IterableConfig.autoPushRegistration is set to
    * true, calling `Iterable.setEmail`(null) prevents Iterable from sending
    * further push notifications to that user, for that app, on that device.  On
    * the user's Iterable profile, `endpointEnabled` is set to false for the
@@ -226,7 +226,7 @@ export class Iterable {
    *
    * ## Registering device token:
    *
-   * If `IterableConfig.autoPushRegisteration` is set to `true`, calling
+   * If `IterableConfig.autoPushRegistration` is set to `true`, calling
    * `setUserId` automatically registers the device for push notifications and
    * sends the `deviceId` and token to Iterable.
    *
@@ -239,7 +239,7 @@ export class Iterable {
    * ## Signing out a user from the SDK:
    *
    * To tell the SDK to sign out the current user, pass null into
-   * `Iterable.setUserId`.  If `IterableConfig.autoPushRegisteration` is set to
+   * `Iterable.setUserId`.  If `IterableConfig.autoPushRegistration` is set to
    * true, calling `Iterable.setUserId(null)` prevents Iterable from sending
    * further push notifications to that user, for that app, on that device.  On
    * the user's Iterable profile, endpointEnabled is set to false for the
