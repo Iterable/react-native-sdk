@@ -232,7 +232,7 @@ open class ReactIterableAPI: RCTEventEmitter {
   }
 
   @objc(trackInAppClick:location:clickedUrl:)
-  func trackInAppClick(
+  public func trackInAppClick(
     messageId: String,
     location locationNumber: NSNumber,
     clickedUrl: String
@@ -320,8 +320,8 @@ open class ReactIterableAPI: RCTEventEmitter {
   @objc(trackEvent:dataFields:)
   public func trackEvent(name: String, dataFields: NSDictionary?) {
     ITBInfo()
-    
-    IterableAPI.track(event: name, dataFields: dataFields as? [AnyHashable : Any])
+
+    IterableAPI.track(event: name, dataFields: dataFields as? [AnyHashable: Any])
   }
 
   @objc(updateUser:mergeNestedObjects:)

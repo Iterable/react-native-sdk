@@ -66,11 +66,11 @@ export interface Spec extends TurboModule {
     dataFields?: { [key: string]: string | number | boolean }
   ): void;
   trackInAppOpen(messageId: string, location: number): void;
-  // trackInAppClick(
-  //   messageId: string,
-  //   location: number,
-  //   clickedUrl: string
-  // ): void;
+  trackInAppClick(
+    messageId: string,
+    location: number,
+    clickedUrl: string
+  ): void;
   // trackInAppClose(
   //   messageId: string,
   //   location: number,
