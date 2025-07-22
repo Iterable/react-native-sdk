@@ -148,7 +148,7 @@ open class ReactIterableAPI: RCTEventEmitter {
   }
 
   @objc(getUserId:rejecter:)
-  func getUserId(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
+  public func getUserId(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
     ITBInfo()
     resolver(IterableAPI.userId)
   }

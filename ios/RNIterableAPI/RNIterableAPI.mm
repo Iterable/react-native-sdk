@@ -90,6 +90,13 @@ RCT_EXPORT_MODULE(RNIterableAPI)
   [_swiftAPI setUserId:userId authToken:authToken];
 }
 
+- (void)getUserId:(RCTPromiseResolveBlock)resolve
+          reject:(RCTPromiseRejectBlock)reject
+{
+  NSLog(@"ReactNativeSdk getUserId");
+  [_swiftAPI getUserId:resolve rejecter:reject];
+}
+
 @end
 
 

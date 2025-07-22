@@ -13,7 +13,14 @@ export const Utility = () => {
             console.log('Iterable.getEmail() --> email', email);
           });
         }}>
-        <Text style={styles.buttonText}>Iterable.getEmail()</Text>
+        <Text style={styles.buttonText}>Iterable.getEmail()aeff</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => {
+          Iterable.getUserId().then((userId) => {
+            console.log('Iterable.getUserId() --> userId', userId);
+          });
+        }}>
+        <Text style={styles.buttonText}>Iterable.getUserId()</Text>
       </TouchableOpacity>
     </View>
   );

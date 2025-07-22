@@ -264,10 +264,10 @@ export class Iterable {
    * });
    * ```
    */
-  static getUserId(): Promise<string | undefined> {
+  static getUserId(): Promise<string | null> {
     Iterable?.logger?.log('getUserId');
 
-    return RNIterableAPI.getUserId();
+    return api.getUserId();
   }
 
   /**
