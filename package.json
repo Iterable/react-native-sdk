@@ -177,11 +177,17 @@
     ]
   },
   "codegenConfig": {
-    "name": "RNIterableSpec",
+    "name": "RNIterableAPISpec",
     "type": "modules",
     "jsSrcsDir": "src",
     "android": {
       "javaPackageName": "com.iterable.reactnative"
+    },
+    "ios": {
+      "modules": {
+        "RNIterableAPI": "RNIterableAPI",
+        "ReactIterableAPI": "ReactIterableAPI"
+      }
     }
   },
   "create-react-native-library": {
