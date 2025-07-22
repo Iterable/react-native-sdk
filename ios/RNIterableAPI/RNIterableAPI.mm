@@ -69,24 +69,15 @@ RCT_EXPORT_MODULE(RNIterableAPI)
                           rejecter:reject];
 }
 
-// Export the initialize2 method
-// RCT_EXPORT_METHOD(initialize2WithApiKey:(NSString *)apiKey
-//                   config:(NSDictionary *)config
-//                   apiEndPointOverride:(NSString *)apiEndPointOverride
-//                   version:(NSString *)version
-//                   resolve:(RCTPromiseResolveBlock)resolve
-//                   reject:(RCTPromiseRejectBlock)reject)
-// {
-//   [_swiftAPI initialize2WithApiKey:apiKey
-//                             config:config
-//                 apiEndPointOverride:apiEndPointOverride
-//                            version:version
-//                           resolver:resolve
-//                          rejecter:reject];
-// }
+- (void)setEmail:(NSString * _Nullable)email
+       authToken:(NSString * _Nullable)authToken
+{
+  NSLog(@"ReactNativeSdk setEmail");
+  [_swiftAPI setEmail:email authToken:authToken];
+}
 
-
-
+// - (void)setEmail:(NSString * _Nullable)email
+//        authToken:(NSString * _Nullable)authToken;
 
 @end
 

@@ -32,13 +32,13 @@ export interface Spec extends TurboModule {
 
   initialize2WithApiKey(
     apiKey: string,
-    config: IterableConfigDict,
+    config: { [key: string]: string | number | boolean },
     apiEndPointOverride: string,
     version: string
   ): Promise<boolean>;
 
-  // // User management
-  // setEmail(email: string | null, authToken?: string | null): void;
+  // User management
+  setEmail(email: string | null, authToken?: string | null): void;
   // getEmail(): Promise<string | null>;
   // setUserId(userId: string | null, authToken?: string | null): void;
   // getUserId(): Promise<string | null>;

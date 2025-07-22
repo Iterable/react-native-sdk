@@ -186,7 +186,7 @@ export class Iterable {
   static setEmail(email?: string | null, authToken?: string | null) {
     Iterable?.logger?.log('setEmail: ' + email);
 
-    RNIterableAPI.setEmail(email, authToken);
+    api.setEmail(email, authToken);
   }
 
   /**
