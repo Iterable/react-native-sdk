@@ -31,9 +31,11 @@ import {
   IterableInboxMessageList,
   type IterableInboxMessageListProps,
 } from './IterableInboxMessageList';
+import { api, oldApi } from '../../api';
 
-const RNIterableAPI = NativeModules.RNIterableAPI;
-const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
+const RNIterableAPI =oldApi;
+// const RNIterableAPI = NativeModules.RNIterableAPI;
+// const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
 const DEFAULT_HEADLINE_HEIGHT = 60;
 const ANDROID_HEADLINE_HEIGHT = 70;
@@ -325,13 +327,13 @@ export const IterableInbox = ({
   }, [returnToInboxTrigger]);
 
   function addInboxChangedListener() {
-    RNEventEmitter.addListener('receivedIterableInboxChanged', () => {
-      fetchInboxMessages();
-    });
+    // RNEventEmitter.addListener('receivedIterableInboxChanged', () => {
+    //   fetchInboxMessages();
+    // });
   }
 
   function removeInboxChangedListener() {
-    RNEventEmitter.removeAllListeners('receivedIterableInboxChanged');
+    // RNEventEmitter.removeAllListeners('receivedIterableInboxChanged');
   }
 
   async function fetchInboxMessages() {

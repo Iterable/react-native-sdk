@@ -7,8 +7,9 @@ import type {
 } from '../enums';
 import { IterableHtmlInAppContent } from './IterableHtmlInAppContent';
 import { IterableInAppMessage } from './IterableInAppMessage';
+import { api, oldApi } from '../../api';
 
-const RNIterableAPI = NativeModules.RNIterableAPI;
+const RNIterableAPI = oldApi;
 
 /**
  * Manages in-app messages for the current user.

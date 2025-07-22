@@ -12,8 +12,10 @@ import type {
   IterableInboxImpressionRowInfo,
   IterableInboxRowViewModel,
 } from '../types';
+import { api, oldApi } from '../../api';
 
-const RNIterableAPI = NativeModules.RNIterableAPI;
+const RNIterableAPI = oldApi;
+// const RNIterableAPI = NativeModules.RNIterableAPI;
 
 /**
  * The `IterableInboxDataModel` class provides methods to manage and manipulate
