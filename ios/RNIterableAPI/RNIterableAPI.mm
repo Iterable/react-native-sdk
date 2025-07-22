@@ -117,6 +117,14 @@ RCT_EXPORT_MODULE(RNIterableAPI)
   [_swiftAPI getInboxMessages:resolve rejecter:reject];
 }
 
+// NOTE: This is not used anywhere on the JS side.
+- (void)getUnreadInboxMessagesCount:(RCTPromiseResolveBlock)resolve
+          reject:(RCTPromiseRejectBlock)reject
+{
+  NSLog(@"ReactNativeSdk getUnreadInboxMessagesCount");
+  [_swiftAPI getUnreadInboxMessagesCount:resolve rejecter:reject];
+}
+
 @end
 
 

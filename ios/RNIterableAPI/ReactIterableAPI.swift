@@ -372,7 +372,7 @@ open class ReactIterableAPI: RCTEventEmitter {
   }
 
   @objc(getUnreadInboxMessagesCount:rejecter:)
-  func getUnreadInboxMessagesCount(
+  public func getUnreadInboxMessagesCount(
     resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock
   ) {
     ITBInfo()
