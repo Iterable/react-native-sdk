@@ -68,16 +68,6 @@ open class ReactIterableAPI: RCTEventEmitter {
     print("Hello from Swift Again")
   }
 
-  // @objc(initializeWithApiKey:config:)
-  // func initializeWithApiKey(apiKey: String, config: NSDictionary) {
-  //   NSLog("initialize called from swift")
-  //   ITBInfo()
-
-  //   //    self.initialize(
-  //   //      apiKey: apiKey
-  //   //    )
-  // }
-
   @objc(initializeWithApiKey:config:version:resolver:rejecter:)
   public func initializeWithApiKey(
     apiKey: String,
@@ -198,14 +188,13 @@ open class ReactIterableAPI: RCTEventEmitter {
     appAlreadyRunning: Bool,
     dataFields: NSDictionary?
   ) {
-    let swiftDict = configDict as? [AnyHashable: Any]
     ITBInfo()
     IterableAPI.track(
       pushOpen: campaignId,
       templateId: templateId,
       messageId: messageId,
       appAlreadyRunning: appAlreadyRunning,
-      dataFields: swiftDict)
+      dataFields: dataFields)
   }
 
   @objc(updateCart:)
@@ -228,7 +217,7 @@ open class ReactIterableAPI: RCTEventEmitter {
   }
 
   @objc(trackInAppOpen:location:)
-  func trackInAppOpen(
+  public func trackInAppOpen(
     messageId: String,
     location locationNumber: NSNumber
   ) {
@@ -328,10 +317,9 @@ open class ReactIterableAPI: RCTEventEmitter {
 
   @objc(trackEvent:dataFields:)
   public func trackEvent(name: String, dataFields: NSDictionary?) {
-    let swiftDict = dataFields as? [AnyHashable: Any]
 
     ITBInfo()
-    IterableAPI.track(event: name, dataFields: swiftDict)
+    IterableAPI.track(event: name, dataFields: dataFields)
   }
 
   @objc(updateUser:mergeNestedObjects:)
