@@ -52,3 +52,4 @@ export {
   type IterableInboxProps,
   type IterableInboxRowViewModel,
 } from './inbox';
+export {api} from './api';

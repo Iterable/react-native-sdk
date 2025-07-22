@@ -21,7 +21,7 @@ export interface IterableConfigDict {
 
 export interface Spec extends TurboModule {
   // multiply(a: number, b: number): number;
-  // hello(): void;
+  hello(): void;
 
   // Initialization
   // initializeWithApiKey(

@@ -28,12 +28,10 @@ RCT_EXPORT_MODULE(RNIterableAPI)
   return self;
 }
 
-
-
-// - (void)hello {
-//   NSLog(@"Hello from Objective-C");
-//   [(ReactIterableAPI *)_swiftAPI hello];
-// }
+- (void)hello {
+  NSLog(@"Hello from Objective-C");
+  [(ReactIterableAPI *)_swiftAPI hello];
+}
 
 // - (void)initializeWithApiKey:(NSString *)apiKey
 //                       config:(NSDictionary *)config

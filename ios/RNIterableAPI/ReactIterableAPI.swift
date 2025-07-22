@@ -64,6 +64,10 @@ open class ReactIterableAPI: RCTEventEmitter {
 
   // MARK: - Native SDK Functions
 
+  @objc public func hello() {
+    print("Hello from Swift Again")
+  }
+
   @objc(initializeWithApiKey:config:version:resolver:rejecter:)
   func initialize(
     apiKey: String,
