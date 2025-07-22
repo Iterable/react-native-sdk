@@ -69,7 +69,7 @@ open class ReactIterableAPI: RCTEventEmitter {
   }
 
   @objc(initializeWithApiKey:config:)
-  public func initializeWithApiKey(apiKey: String, config: NSDictionary) {
+  func initializeWithApiKey(apiKey: String, config: NSDictionary) {
     NSLog("initialize called from swift")
     ITBInfo()
 
@@ -520,44 +520,43 @@ open class ReactIterableAPI: RCTEventEmitter {
     let launchOptions = createLaunchOptions()
     let iterableConfig = IterableConfig.from(dict: configDict)
 
-    // TODO: add this back in later
-    // if let urlHandlerPresent = configDict["urlHandlerPresent"] as? Bool, urlHandlerPresent == true {
-    //   iterableConfig.urlDelegate = self
-    // }
+    if let urlHandlerPresent = configDict["urlHandlerPresent"] as? Bool, urlHandlerPresent == true {
+      iterableConfig.urlDelegate = self
+    }
 
-    // if let customActionHandlerPresent = configDict["customActionHandlerPresent"] as? Bool,
-    //   customActionHandlerPresent == true
-    // {
-    //   iterableConfig.customActionDelegate = self
-    // }
+    if let customActionHandlerPresent = configDict["customActionHandlerPresent"] as? Bool,
+      customActionHandlerPresent == true
+    {
+      iterableConfig.customActionDelegate = self
+    }
 
-    // if let inAppHandlerPresent = configDict["inAppHandlerPresent"] as? Bool,
-    //   inAppHandlerPresent == true
-    // {
-    //   iterableConfig.inAppDelegate = self
-    // }
+    if let inAppHandlerPresent = configDict["inAppHandlerPresent"] as? Bool,
+      inAppHandlerPresent == true
+    {
+      iterableConfig.inAppDelegate = self
+    }
 
-    // if let authHandlerPresent = configDict["authHandlerPresent"] as? Bool, authHandlerPresent {
-    //   iterableConfig.authDelegate = self
-    // }
+    if let authHandlerPresent = configDict["authHandlerPresent"] as? Bool, authHandlerPresent {
+      iterableConfig.authDelegate = self
+    }
 
     // connect new inbox in-app payloads to the RN SDK
-    // NotificationCenter.default.addObserver(
-    //   self, selector: #selector(receivedIterableInboxChanged),
-    //   name: Notification.Name.iterableInboxChanged, object: nil)
+    NotificationCenter.default.addObserver(
+      self, selector: #selector(receivedIterableInboxChanged),
+      name: Notification.Name.iterableInboxChanged, object: nil)
 
-    // DispatchQueue.main.async {
-    //   IterableAPI.initialize2(
-    //     apiKey: apiKey,
-    //     launchOptions: launchOptions,
-    //     config: iterableConfig,
-    //     apiEndPointOverride: apiEndPointOverride
-    //   ) { result in
-    //     resolver(result)
-    //   }
+    DispatchQueue.main.async {
+      IterableAPI.initialize2(
+        apiKey: apiKey,
+        launchOptions: launchOptions,
+        config: iterableConfig,
+        apiEndPointOverride: apiEndPointOverride
+      ) { result in
+        resolver(result)
+      }
 
-    //   IterableAPI.setDeviceAttribute(name: "reactNativeSDKVersion", value: version)
-    // }
+      IterableAPI.setDeviceAttribute(name: "reactNativeSDKVersion", value: version)
+    }
   }
 
   @objc(receivedIterableInboxChanged)
@@ -590,110 +589,110 @@ open class ReactIterableAPI: RCTEventEmitter {
   }
 }
 
-// extension ReactIterableAPI: IterableURLDelegate {
-//   public func handle(iterableURL url: URL, inContext context: IterableActionContext) -> Bool {
-//     ITBInfo()
-//     guard shouldEmit else {
-//       return false
-//     }
-//     let contextDict = ReactIterableAPI.contextToDictionary(context: context)
-//     sendEvent(
-//       withName: EventName.handleUrlCalled.rawValue,
-//       body: [
-//         "url": url.absoluteString,
-//         "context": contextDict,
-//       ] as [String: Any])
-//     return true
-//   }
+extension ReactIterableAPI: IterableURLDelegate {
+  public func handle(iterableURL url: URL, inContext context: IterableActionContext) -> Bool {
+    ITBInfo()
+    guard shouldEmit else {
+      return false
+    }
+    let contextDict = ReactIterableAPI.contextToDictionary(context: context)
+    sendEvent(
+      withName: EventName.handleUrlCalled.rawValue,
+      body: [
+        "url": url.absoluteString,
+        "context": contextDict,
+      ] as [String: Any])
+    return true
+  }
 
-//   private static func contextToDictionary(context: IterableActionContext) -> [AnyHashable: Any] {
-//     var result = [AnyHashable: Any]()
-//     let actionDict = actionToDictionary(action: context.action)
-//     result["action"] = actionDict
-//     result["source"] = context.source.rawValue
-//     return result
-//   }
+  private static func contextToDictionary(context: IterableActionContext) -> [AnyHashable: Any] {
+    var result = [AnyHashable: Any]()
+    let actionDict = actionToDictionary(action: context.action)
+    result["action"] = actionDict
+    result["source"] = context.source.rawValue
+    return result
+  }
 
-//   private static func actionToDictionary(action: IterableAction) -> [AnyHashable: Any] {
-//     var actionDict = [AnyHashable: Any]()
-//     actionDict["type"] = action.type
-//     if let data = action.data {
-//       actionDict["data"] = data
-//     }
-//     if let userInput = action.userInput {
-//       actionDict["userInput"] = userInput
-//     }
-//     return actionDict
-//   }
-// }
+  private static func actionToDictionary(action: IterableAction) -> [AnyHashable: Any] {
+    var actionDict = [AnyHashable: Any]()
+    actionDict["type"] = action.type
+    if let data = action.data {
+      actionDict["data"] = data
+    }
+    if let userInput = action.userInput {
+      actionDict["userInput"] = userInput
+    }
+    return actionDict
+  }
+}
 
-// extension ReactIterableAPI: IterableCustomActionDelegate {
-//   public func handle(
-//     iterableCustomAction action: IterableAction, inContext context: IterableActionContext
-//   )
-//     -> Bool
-//   {
-//     ITBInfo()
-//     let actionDict = ReactIterableAPI.actionToDictionary(action: action)
-//     let contextDict = ReactIterableAPI.contextToDictionary(context: context)
-//     sendEvent(
-//       withName: EventName.handleCustomActionCalled.rawValue,
-//       body: [
-//         "action": actionDict,
-//         "context": contextDict,
-//       ])
-//     return true
-//   }
-// }
+extension ReactIterableAPI: IterableCustomActionDelegate {
+  public func handle(
+    iterableCustomAction action: IterableAction, inContext context: IterableActionContext
+  )
+    -> Bool
+  {
+    ITBInfo()
+    let actionDict = ReactIterableAPI.actionToDictionary(action: action)
+    let contextDict = ReactIterableAPI.contextToDictionary(context: context)
+    sendEvent(
+      withName: EventName.handleCustomActionCalled.rawValue,
+      body: [
+        "action": actionDict,
+        "context": contextDict,
+      ])
+    return true
+  }
+}
 
-// extension ReactIterableAPI: IterableInAppDelegate {
-//   public func onNew(message: IterableInAppMessage) -> InAppShowResponse {
-//     ITBInfo()
-//     guard shouldEmit else {
-//       return .show
-//     }
-//     sendEvent(
-//       withName: EventName.handleInAppCalled.rawValue,
-//       body: message.toDict())
-//     let timeoutResult = inAppHandlerSemaphore.wait(timeout: .now() + 2.0)
-//     if timeoutResult == .success {
-//       ITBInfo("inAppShowResponse: \(inAppShowResponse == .show)")
-//       return inAppShowResponse
-//     } else {
-//       ITBInfo("timed out")
-//       return .show
-//     }
-//   }
-// }
+extension ReactIterableAPI: IterableInAppDelegate {
+  public func onNew(message: IterableInAppMessage) -> InAppShowResponse {
+    ITBInfo()
+    guard shouldEmit else {
+      return .show
+    }
+    sendEvent(
+      withName: EventName.handleInAppCalled.rawValue,
+      body: message.toDict())
+    let timeoutResult = inAppHandlerSemaphore.wait(timeout: .now() + 2.0)
+    if timeoutResult == .success {
+      ITBInfo("inAppShowResponse: \(inAppShowResponse == .show)")
+      return inAppShowResponse
+    } else {
+      ITBInfo("timed out")
+      return .show
+    }
+  }
+}
 
-// extension ReactIterableAPI: IterableAuthDelegate {
-//   public func onAuthTokenRequested(completion: @escaping AuthTokenRetrievalHandler) {
-//     ITBInfo()
-//     DispatchQueue.global(qos: .userInitiated).async {
-//       self.sendEvent(
-//         withName: EventName.handleAuthCalled.rawValue,
-//         body: nil as Any?)
-//       let authTokenRetrievalResult = self.authHandlerSemaphore.wait(timeout: .now() + 30.0)
-//       if authTokenRetrievalResult == .success {
-//         ITBInfo("authTokenRetrieval successful")
-//         DispatchQueue.main.async {
-//           completion(self.passedAuthToken)
-//         }
-//         self.sendEvent(
-//           withName: EventName.handleAuthSuccessCalled.rawValue,
-//           body: nil as Any?)
-//       } else {
-//         ITBInfo("authTokenRetrieval timed out")
-//         DispatchQueue.main.async {
-//           completion(nil)
-//         }
-//         self.sendEvent(
-//           withName: EventName.handleAuthFailureCalled.rawValue,
-//           body: nil as Any?)
-//       }
-//     }
-//   }
+extension ReactIterableAPI: IterableAuthDelegate {
+  public func onAuthTokenRequested(completion: @escaping AuthTokenRetrievalHandler) {
+    ITBInfo()
+    DispatchQueue.global(qos: .userInitiated).async {
+      self.sendEvent(
+        withName: EventName.handleAuthCalled.rawValue,
+        body: nil as Any?)
+      let authTokenRetrievalResult = self.authHandlerSemaphore.wait(timeout: .now() + 30.0)
+      if authTokenRetrievalResult == .success {
+        ITBInfo("authTokenRetrieval successful")
+        DispatchQueue.main.async {
+          completion(self.passedAuthToken)
+        }
+        self.sendEvent(
+          withName: EventName.handleAuthSuccessCalled.rawValue,
+          body: nil as Any?)
+      } else {
+        ITBInfo("authTokenRetrieval timed out")
+        DispatchQueue.main.async {
+          completion(nil)
+        }
+        self.sendEvent(
+          withName: EventName.handleAuthFailureCalled.rawValue,
+          body: nil as Any?)
+      }
+    }
+  }
 
-//   public func onTokenRegistrationFailed(_ reason: String?) {
-//   }
-// }
+  public func onTokenRegistrationFailed(_ reason: String?) {
+  }
+}
