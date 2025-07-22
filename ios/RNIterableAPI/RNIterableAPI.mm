@@ -76,8 +76,12 @@ RCT_EXPORT_MODULE(RNIterableAPI)
   [_swiftAPI setEmail:email authToken:authToken];
 }
 
-// - (void)setEmail:(NSString * _Nullable)email
-//        authToken:(NSString * _Nullable)authToken;
+- (void)getEmail:(RCTPromiseResolveBlock)resolve
+          reject:(RCTPromiseRejectBlock)reject
+{
+  NSLog(@"ReactNativeSdk getEmail");
+  [_swiftAPI getEmail:resolve rejecter:reject];
+}
 
 @end
 

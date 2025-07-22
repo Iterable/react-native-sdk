@@ -39,7 +39,7 @@ export interface Spec extends TurboModule {
 
   // User management
   setEmail(email: string | null, authToken?: string | null): void;
-  // getEmail(): Promise<string | null>;
+  getEmail(): Promise<string | null>;
   // setUserId(userId: string | null, authToken?: string | null): void;
   // getUserId(): Promise<string | null>;
 

@@ -130,7 +130,7 @@ open class ReactIterableAPI: RCTEventEmitter {
   }
 
   @objc(getEmail:rejecter:)
-  func getEmail(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
+  public func getEmail(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
     ITBInfo()
     resolver(IterableAPI.email)
   }

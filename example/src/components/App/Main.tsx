@@ -8,6 +8,7 @@ import { User } from '../User';
 import { Inbox } from '../Inbox';
 import { useIterableApp } from '../../hooks';
 import { Commerce } from '../Commerce';
+import { Utility } from '../Utility';
 
 const Tab = createBottomTabNavigator<MainScreenParamList>();
 
@@ -54,6 +55,13 @@ export const Main = () => {
         <Tab.Screen
           name={Route.User}
           component={User}
+          listeners={() => ({
+            tabPress: () => setIsInboxTab(false),
+          })}
+        />
+         <Tab.Screen
+          name={Route.Utility}
+          component={Utility}
           listeners={() => ({
             tabPress: () => setIsInboxTab(false),
           })}

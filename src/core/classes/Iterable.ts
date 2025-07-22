@@ -199,10 +199,10 @@ export class Iterable {
    * });
    * ```
    */
-  static getEmail(): Promise<string | undefined> {
+  static getEmail(): Promise<string | null> {
     Iterable?.logger?.log('getEmail');
 
-    return RNIterableAPI.getEmail();
+    return api.getEmail();
   }
 
   /**

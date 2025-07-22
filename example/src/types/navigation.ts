@@ -11,6 +11,7 @@ export type MainScreenParamList = {
   [Route.Commerce]: undefined;
   [Route.Inbox]: undefined;
   [Route.User]: undefined;
+  [Route.Utility]: undefined;
 };
 
 export type RootStackParamList = {
