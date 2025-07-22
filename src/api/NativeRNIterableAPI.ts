@@ -45,7 +45,7 @@ export interface Spec extends TurboModule {
 
   // In-app messaging
   setInAppShowResponse(number: number): void;
-  // getInAppMessages(): Promise<{ [key: string]: string | number | boolean }[]>;
+  getInAppMessages(): Promise<{ [key: string]: string | number | boolean }[]>;
   // getInboxMessages(): Promise<{ [key: string]: string | number | boolean }[]>;
   // getUnreadInboxMessagesCount(): Promise<number>;
   // showMessage(messageId: string, consume: boolean): Promise<string | null>;

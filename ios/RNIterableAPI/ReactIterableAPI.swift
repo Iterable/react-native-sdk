@@ -360,7 +360,7 @@ open class ReactIterableAPI: RCTEventEmitter {
   // MARK: - SDK In-App Manager Functions
 
   @objc(getInAppMessages:rejecter:)
-  func getInAppMessages(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
+  public func getInAppMessages(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
     ITBInfo()
     resolver(IterableAPI.inAppManager.getMessages().map { $0.toDict() })
   }

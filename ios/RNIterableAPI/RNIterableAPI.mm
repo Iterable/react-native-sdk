@@ -103,6 +103,13 @@ RCT_EXPORT_MODULE(RNIterableAPI)
   [_swiftAPI setInAppShowResponse:inAppShowResponse];
 }
 
+- (void)getInAppMessages:(RCTPromiseResolveBlock)resolve
+          reject:(RCTPromiseRejectBlock)reject
+{
+  NSLog(@"ReactNativeSdk getInAppMessages");
+  [_swiftAPI getInAppMessages:resolve rejecter:reject];
+}
+
 @end
 
 
