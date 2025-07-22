@@ -1,15 +1,15 @@
 #import "RNIterableAPI.h"
-// #import <IterableSDK/IterableSDK.h>  // umbrella (Objective-C) header
+#import <IterableSDK/IterableSDK.h>  // umbrella (Objective-C) header
 
-// // Forward-declare the Swift protocols/enum used in the Swift header.
-// @protocol IterableInAppDelegate;
-// @protocol IterableCustomActionDelegate;
-// @protocol IterableAuthDelegate;
-// @protocol IterableURLDelegate;
-// typedef NS_ENUM(NSInteger, InAppShowResponse) {
-//   InAppShowResponseShow = 0,
-//   InAppShowResponseSkip = 1, // use real cases if different; values just need to exist
-// };
+// Forward-declare the Swift protocols/enum used in the Swift header.
+@protocol IterableInAppDelegate;
+@protocol IterableCustomActionDelegate;
+@protocol IterableAuthDelegate;
+@protocol IterableURLDelegate;
+typedef NS_ENUM(NSInteger, InAppShowResponse) {
+  InAppShowResponseShow = 0,
+  InAppShowResponseSkip = 1, // use real cases if different; values just need to exist
+};
 
 #import "RNIterableAPI-Swift.h"
 
