@@ -191,20 +191,21 @@ open class ReactIterableAPI: RCTEventEmitter {
   }
 
   @objc(trackPushOpenWithCampaignId:templateId:messageId:appAlreadyRunning:dataFields:)
-  func trackPushOpen(
+  public func trackPushOpenWithCampaignId(
     campaignId: NSNumber,
     templateId: NSNumber?,
     messageId: String,
     appAlreadyRunning: Bool,
-    dataFields: [AnyHashable: Any]?
+    dataFields: NSDictionary?
   ) {
+    let swiftDict = configDict as? [AnyHashable: Any]
     ITBInfo()
     IterableAPI.track(
       pushOpen: campaignId,
       templateId: templateId,
       messageId: messageId,
       appAlreadyRunning: appAlreadyRunning,
-      dataFields: dataFields)
+      dataFields: swiftDict)
   }
 
   @objc(updateCart:)

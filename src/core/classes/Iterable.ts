@@ -409,7 +409,7 @@ export class Iterable {
   ) {
     Iterable?.logger?.log('trackPushOpenWithCampaignId');
 
-    RNIterableAPI.trackPushOpenWithCampaignId(
+    api.trackPushOpenWithCampaignId(
       campaignId,
       templateId,
       messageId,

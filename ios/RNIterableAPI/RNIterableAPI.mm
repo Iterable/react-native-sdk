@@ -162,6 +162,16 @@ RCT_EXPORT_MODULE(RNIterableAPI)
   [_swiftAPI trackEvent:name dataFields:dataFields];
 }
 
+- (void)trackPushOpenWithCampaignId:(NSNumber *)campaignId
+       templateId:(NSNumber *)templateId
+       messageId:(NSString *)messageId
+       appAlreadyRunning:(BOOL)appAlreadyRunning
+       dataFields:(NSDictionary *)dataFields
+{
+  NSLog(@"ReactNativeSdk trackPushOpenWithCampaignId");
+  [_swiftAPI trackPushOpenWithCampaignId:campaignId templateId:templateId messageId:messageId appAlreadyRunning:appAlreadyRunning dataFields:dataFields];
+}
+
 @end
 
 

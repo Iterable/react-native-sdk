@@ -58,13 +58,13 @@ export interface Spec extends TurboModule {
     name: string,
     dataFields?: { [key: string]: string | number | boolean }
   ): void;
-  // trackPushOpenWithCampaignId(
-  //   campaignId: number,
-  //   templateId: number | null,
-  //   messageId: string,
-  //   appAlreadyRunning: boolean,
-  //   dataFields?: { [key: string]: string | number | boolean }
-  // ): void;
+  trackPushOpenWithCampaignId(
+    campaignId: number,
+    templateId: number | null,
+    messageId: string,
+    appAlreadyRunning: boolean,
+    dataFields?: { [key: string]: string | number | boolean }
+  ): void;
   // trackInAppOpen(messageId: string, location: number): void;
   // trackInAppClick(
   //   messageId: string,
