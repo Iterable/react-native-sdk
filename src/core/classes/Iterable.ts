@@ -668,7 +668,7 @@ export class Iterable {
   static trackEvent(name: string, dataFields?: unknown) {
     Iterable?.logger?.log('trackEvent');
 
-    RNIterableAPI.trackEvent(name, dataFields);
+    api.trackEvent(name, dataFields);
   }
 
   /**

@@ -326,9 +326,11 @@ open class ReactIterableAPI: RCTEventEmitter {
   }
 
   @objc(trackEvent:dataFields:)
-  func trackEvent(name: String, dataFields: [AnyHashable: Any]?) {
+  public func trackEvent(name: String, dataFields: NSDictionary?) {
+    let swiftDict = dataFields as? [AnyHashable: Any]
+
     ITBInfo()
-    IterableAPI.track(event: name, dataFields: dataFields)
+    IterableAPI.track(event: name, dataFields: swiftDict)
   }
 
   @objc(updateUser:mergeNestedObjects:)

@@ -53,11 +53,11 @@ export interface Spec extends TurboModule {
   setReadForMessage(messageId: string, read: boolean): void;
   setAutoDisplayPaused(autoDisplayPaused: boolean): void;
 
-  // // Tracking
-  // trackEvent(
-  //   name: string,
-  //   dataFields?: { [key: string]: string | number | boolean }
-  // ): void;
+  // Tracking
+  trackEvent(
+    name: string,
+    dataFields?: { [key: string]: string | number | boolean }
+  ): void;
   // trackPushOpenWithCampaignId(
   //   campaignId: number,
   //   templateId: number | null,

@@ -155,6 +155,13 @@ RCT_EXPORT_MODULE(RNIterableAPI)
   [_swiftAPI setAutoDisplayPaused:autoDisplayPaused];
 }
 
+- (void)trackEvent:(NSString *)name
+       dataFields:(NSDictionary *)dataFields
+{
+  NSLog(@"ReactNativeSdk trackEvent");
+  [_swiftAPI trackEvent:name dataFields:dataFields];
+}
+
 @end
 
 
