@@ -174,6 +174,6 @@ export class IterableInAppManager {
   setAutoDisplayPaused(paused: boolean) {
     Iterable?.logger?.log('InAppManager.setAutoDisplayPaused');
 
-    RNIterableAPI.setAutoDisplayPaused(paused);
+    api.setAutoDisplayPaused(paused);
   }
 }

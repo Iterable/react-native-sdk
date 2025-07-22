@@ -149,6 +149,12 @@ RCT_EXPORT_MODULE(RNIterableAPI)
   [_swiftAPI setReadForMessage:messageId read:read];
 }
 
+- (void)setAutoDisplayPaused:(BOOL)autoDisplayPaused
+{
+  NSLog(@"ReactNativeSdk setAutoDisplayPaused");
+  [_swiftAPI setAutoDisplayPaused:autoDisplayPaused];
+}
+
 @end
 
 

@@ -450,7 +450,7 @@ open class ReactIterableAPI: RCTEventEmitter {
   }
 
   @objc(setAutoDisplayPaused:)
-  func set(autoDisplayPaused: Bool) {
+  public func setAutoDisplayPaused(autoDisplayPaused: Bool) {
     ITBInfo()
     DispatchQueue.main.async {
       IterableAPI.inAppManager.isAutoDisplayPaused = autoDisplayPaused
