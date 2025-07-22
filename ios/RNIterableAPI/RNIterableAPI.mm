@@ -83,6 +83,13 @@ RCT_EXPORT_MODULE(RNIterableAPI)
   [_swiftAPI getEmail:resolve rejecter:reject];
 }
 
+- (void)setUserId:(NSString * _Nullable)userId
+       authToken:(NSString * _Nullable)authToken
+{
+  NSLog(@"ReactNativeSdk setUserId");
+  [_swiftAPI setUserId:userId authToken:authToken];
+}
+
 @end
 
 

@@ -136,13 +136,13 @@ open class ReactIterableAPI: RCTEventEmitter {
   }
 
   @objc(setUserId:)
-  func set(userId: String?) {
+  public func setUserId(userId: String?) {
     ITBInfo()
     IterableAPI.userId = userId
   }
 
   @objc(setUserId:authToken:)
-  func set(userId: String?, authToken: String?) {
+  public func setUserId(userId: String?, authToken: String?) {
     ITBInfo()
     IterableAPI.setUserId(userId, authToken)
   }

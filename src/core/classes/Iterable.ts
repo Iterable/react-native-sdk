@@ -251,7 +251,7 @@ export class Iterable {
   static setUserId(userId?: string | null, authToken?: string | null) {
     Iterable?.logger?.log('setUserId: ' + userId);
 
-    RNIterableAPI.setUserId(userId, authToken);
+    api.setUserId(userId, authToken);
   }
 
   /**
