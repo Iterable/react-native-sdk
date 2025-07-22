@@ -944,7 +944,7 @@ export class Iterable {
       //     const message = IterableInAppMessage.fromDict(messageDict);
       //     // MOB-10423: Check if we can use chain operator (?.) here instead
       //     const result = Iterable.savedConfig.inAppHandler!(message);
-      //     RNIterableAPI.setInAppShowResponse(result);
+      //     api.setInAppShowResponse(result);
       //   }
       // );
     }

@@ -43,8 +43,8 @@ export interface Spec extends TurboModule {
   setUserId(userId?: string | null, authToken?: string | null): void;
   getUserId(): Promise<string | null | undefined>;
 
-  // // In-app messaging
-  // setInAppShowResponse(number: number): void;
+  // In-app messaging
+  setInAppShowResponse(number: number): void;
   // getInAppMessages(): Promise<{ [key: string]: string | number | boolean }[]>;
   // getInboxMessages(): Promise<{ [key: string]: string | number | boolean }[]>;
   // getUnreadInboxMessagesCount(): Promise<number>;

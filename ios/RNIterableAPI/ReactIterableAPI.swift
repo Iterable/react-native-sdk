@@ -156,7 +156,7 @@ open class ReactIterableAPI: RCTEventEmitter {
   // MARK: - Iterable API Request Functions
 
   @objc(setInAppShowResponse:)
-  func set(inAppShowResponse number: NSNumber) {
+  public func setInAppShowResponse(inAppShowResponse number: NSNumber) {
     ITBInfo()
     self.inAppShowResponse = InAppShowResponse.from(number: number)
     inAppHandlerSemaphore.signal()

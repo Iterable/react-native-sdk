@@ -97,6 +97,12 @@ RCT_EXPORT_MODULE(RNIterableAPI)
   [_swiftAPI getUserId:resolve rejecter:reject];
 }
 
+- (void)setInAppShowResponse:(NSNumber *)inAppShowResponse
+{
+  NSLog(@"ReactNativeSdk setInAppShowResponse");
+  [_swiftAPI setInAppShowResponse:inAppShowResponse];
+}
+
 @end
 
 
