@@ -65,7 +65,7 @@ export interface Spec extends TurboModule {
     appAlreadyRunning: boolean,
     dataFields?: { [key: string]: string | number | boolean }
   ): void;
-  // trackInAppOpen(messageId: string, location: number): void;
+  trackInAppOpen(messageId: string, location: number): void;
   // trackInAppClick(
   //   messageId: string,
   //   location: number,

@@ -189,12 +189,14 @@ open class ReactIterableAPI: RCTEventEmitter {
     dataFields: NSDictionary?
   ) {
     ITBInfo()
+    let swiftDict = dataFields as? [AnyHashable: Any]
+
     IterableAPI.track(
       pushOpen: campaignId,
       templateId: templateId,
       messageId: messageId,
       appAlreadyRunning: appAlreadyRunning,
-      dataFields: dataFields)
+      dataFields: swiftDict)
   }
 
   @objc(updateCart:)
@@ -317,9 +319,9 @@ open class ReactIterableAPI: RCTEventEmitter {
 
   @objc(trackEvent:dataFields:)
   public func trackEvent(name: String, dataFields: NSDictionary?) {
-
     ITBInfo()
-    IterableAPI.track(event: name, dataFields: dataFields)
+    
+    IterableAPI.track(event: name, dataFields: dataFields as? [AnyHashable : Any])
   }
 
   @objc(updateUser:mergeNestedObjects:)

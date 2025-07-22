@@ -527,7 +527,7 @@ export class Iterable {
   ) {
     Iterable?.logger?.log('trackInAppOpen');
 
-    RNIterableAPI.trackInAppOpen(message.messageId, location);
+    api.trackInAppOpen(message.messageId, location);
   }
 
   /**
