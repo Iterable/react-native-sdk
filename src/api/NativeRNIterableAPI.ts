@@ -2,21 +2,21 @@ import type { TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
 
 export interface IterableConfigDict {
-  // pushIntegrationName?: string;
-  // autoPushRegistration?: boolean;
-  // inAppDisplayInterval?: number;
+  pushIntegrationName?: string;
+  autoPushRegistration?: boolean;
+  inAppDisplayInterval?: number;
   urlHandlerPresent: boolean;
-  // customActionHandlerPresent: boolean;
-  // inAppHandlerPresent: boolean;
-  // authHandlerPresent: boolean;
-  // expiringAuthTokenRefreshPeriod?: number;
-  // allowedProtocols?: string[];
-  // androidSdkUseInMemoryStorageForInApps?: boolean;
-  // useInMemoryStorageForInApps?: boolean;
-  // encryptionEnforced?: boolean;
-  // logLevel?: string;
-  // dataRegion?: string;
-  // pushPlatform?: string;
+  customActionHandlerPresent?: boolean;
+  inAppHandlerPresent?: boolean;
+  authHandlerPresent?: boolean;
+  expiringAuthTokenRefreshPeriod?: number;
+  allowedProtocols?: string[];
+  androidSdkUseInMemoryStorageForInApps?: boolean;
+  useInMemoryStorageForInApps?: boolean;
+  encryptionEnforced?: boolean;
+  logLevel?: string | number;
+  dataRegion?: string | number;
+  pushPlatform?: string | number;
 }
 
 export interface Spec extends TurboModule {
@@ -24,17 +24,11 @@ export interface Spec extends TurboModule {
   hello(): void;
 
   // Initialization
-  // initializeWithApiKey(
-  //   apiKey: string,
-  //   config: IterableConfigDict,
-  //   version: string
-  // ): Promise<boolean>;
-  // testing change
   initializeWithApiKey(
     apiKey: string,
-    config: IterableConfigDict,
+    config: { [key: string]: string | number | boolean },
     version: string
-  ): void;
+  ): Promise<boolean>;
 
   // initialize2WithApiKey(
   //   apiKey: string,

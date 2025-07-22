@@ -28,33 +28,39 @@ RCT_EXPORT_MODULE(RNIterableAPI)
   return self;
 }
 
+- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
+    (const facebook::react::ObjCTurboModule::InitParams &)params
+{
+    return std::make_shared<facebook::react::NativeRNIterableAPISpecJSI>(params);
+}
+
 - (void)hello {
   NSLog(@"Hello from Objective-C");
   [(ReactIterableAPI *)_swiftAPI hello];
 }
 
-- (void)initializeWithApiKey:(NSString *)apiKey
-                      config:(NSDictionary *)config
-{
-  NSLog(@"initializeWithApiKey > Objective-C");
-  BOOL urlHandlerPresent = [config[@"urlHandlerPresent"] boolValue];
-
-  [_swiftAPI initializeWithApiKey:apiKey config:config];
-}
-
 // - (void)initializeWithApiKey:(NSString *)apiKey
-//                     config:(NSDictionary *)config
-//                    version:(NSString *)version
-//                   resolve:(RCTPromiseResolveBlock)resolve
-//                   reject:(RCTPromiseRejectBlock)reject
+//                       config:(NSDictionary *)config
 // {
-//   NSLog(@"ReactNativeSdk initializeWithApiKey");
-//   [_swiftAPI initializeWithApiKey:apiKey
-//                              config:config
-//                             version:version
-//                            resolver:resolve
-//                           rejecter:reject];
+//   NSLog(@"initializeWithApiKey > Objective-C");
+//   BOOL urlHandlerPresent = [config[@"urlHandlerPresent"] boolValue];
+
+//   [_swiftAPI initializeWithApiKey:apiKey config:config];
 // }
+
+- (void)initializeWithApiKey:(NSString *)apiKey
+                    config:(NSDictionary *)config
+                   version:(NSString *)version
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject
+{
+  NSLog(@"ReactNativeSdk initializeWithApiKey");
+  [_swiftAPI initializeWithApiKey:apiKey
+                             config:config
+                            version:version
+                           resolver:resolve
+                          rejecter:reject];
+}
 
 // Export the initialize method
 // RCT_EXPORT_METHOD(initializeWithApiKey:(NSString *)apiKey
@@ -91,11 +97,7 @@ RCT_EXPORT_MODULE(RNIterableAPI)
 //                          rejecter:reject];
 // }
 
-- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
-    (const facebook::react::ObjCTurboModule::InitParams &)params
-{
-    return std::make_shared<facebook::react::NativeRNIterableAPISpecJSI>(params);
-}
+
 
 
 @end

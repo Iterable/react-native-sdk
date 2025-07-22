@@ -103,7 +103,7 @@ export class Iterable {
 
     const version = this.getVersionFromPackageJson();
 
-    return RNIterableAPI.initializeWithApiKey(apiKey, config.toDict(), version);
+    return api.initializeWithApiKey(apiKey, config.toDict(), version);
   }
 
   /**

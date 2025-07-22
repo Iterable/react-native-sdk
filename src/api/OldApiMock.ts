@@ -11,9 +11,9 @@ export interface IterableConfigDict {
   androidSdkUseInMemoryStorageForInApps?: boolean;
   useInMemoryStorageForInApps?: boolean;
   encryptionEnforced?: boolean;
-  logLevel?: string;
-  dataRegion?: string;
-  pushPlatform?: string;
+  logLevel?: string | number;
+  dataRegion?: string | number;
+  pushPlatform?: string | number;
 }
 
 export class OldApiMock {

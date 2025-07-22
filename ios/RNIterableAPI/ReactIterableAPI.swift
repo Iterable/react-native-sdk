@@ -68,38 +68,39 @@ open class ReactIterableAPI: RCTEventEmitter {
     print("Hello from Swift Again")
   }
 
-  @objc(initializeWithApiKey:config:)
-  func initializeWithApiKey(apiKey: String, config: NSDictionary) {
-    NSLog("initialize called from swift")
-    ITBInfo()
-
-    //    self.initialize(
-    //      apiKey: apiKey
-    //    )
-  }
-
-  // @objc(initializeWithApiKey:config:version:resolver:rejecter:)
-  // public func initialize(
-  //   apiKey: String,
-  //   config configDict: [AnyHashable: Any],
-  //   version: String,
-  //   resolver: @escaping RCTPromiseResolveBlock,
-  //   rejecter: @escaping RCTPromiseRejectBlock
-  // ) {
+  // @objc(initializeWithApiKey:config:)
+  // func initializeWithApiKey(apiKey: String, config: NSDictionary) {
+  //   NSLog("initialize called from swift")
   //   ITBInfo()
 
-  //   initialize(
-  //     withApiKey: apiKey,
-  //     config: configDict,
-  //     version: version,
-  //     resolver: resolver,
-  //     rejecter: rejecter)
+  //   //    self.initialize(
+  //   //      apiKey: apiKey
+  //   //    )
   // }
+
+  @objc(initializeWithApiKey:config:version:resolver:rejecter:)
+  public func initializeWithApiKey(
+    apiKey: String,
+    config configDict: NSDictionary,
+    version: String,
+    resolver: @escaping RCTPromiseResolveBlock,
+    rejecter: @escaping RCTPromiseRejectBlock
+  ) {
+    NSLog("initializeWithApiKey called from swift")
+    ITBInfo()
+
+    initialize(
+      withApiKey: apiKey,
+      config: configDict,
+      version: version,
+      resolver: resolver,
+      rejecter: rejecter)
+  }
 
   @objc(initialize2WithApiKey:config:apiEndPointOverride:version:resolver:rejecter:)
   func initialize2(
     apiKey: String,
-    config configDict: [AnyHashable: Any],
+    config configDict: NSDictionary,
     version: String,
     apiEndPointOverride: String,
     resolver: @escaping RCTPromiseResolveBlock,
@@ -510,7 +511,7 @@ open class ReactIterableAPI: RCTEventEmitter {
 
   @objc func initialize(
     withApiKey apiKey: String,
-    config configDict: [AnyHashable: Any],
+    config configDict: NSDictionary,
     version: String,
     apiEndPointOverride: String? = nil,
     resolver: @escaping RCTPromiseResolveBlock,
