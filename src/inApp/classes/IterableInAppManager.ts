@@ -89,7 +89,7 @@ export class IterableInAppManager {
   ): Promise<string | undefined> {
     Iterable?.logger?.log('InAppManager.show');
 
-    return RNIterableAPI.showMessage(message.messageId, consume);
+    return api.showMessage(message.messageId, consume);
   }
 
   /**

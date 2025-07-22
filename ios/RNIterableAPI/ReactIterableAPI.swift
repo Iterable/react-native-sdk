@@ -380,7 +380,7 @@ open class ReactIterableAPI: RCTEventEmitter {
   }
 
   @objc(showMessage:consume:resolver:rejecter:)
-  func show(
+  public func showMessage(
     messageId: String, consume: Bool, resolver: @escaping RCTPromiseResolveBlock,
     rejecter: RCTPromiseRejectBlock
   ) {
