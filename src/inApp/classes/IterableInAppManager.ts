@@ -134,7 +134,7 @@ export class IterableInAppManager {
   setReadForMessage(message: IterableInAppMessage, read: boolean) {
     Iterable?.logger?.log('InAppManager.setRead');
 
-    RNIterableAPI.setReadForMessage(message.messageId, read);
+    api.setReadForMessage(message.messageId, read);
   }
 
   /**

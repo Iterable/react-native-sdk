@@ -142,6 +142,13 @@ RCT_EXPORT_MODULE(RNIterableAPI)
   [_swiftAPI removeMessage:messageId location:location source:source];
 }
 
+- (void)setReadForMessage:(NSString *)messageId
+       read:(BOOL)read
+{
+  NSLog(@"ReactNativeSdk setReadForMessage");
+  [_swiftAPI setReadForMessage:messageId read:read];
+}
+
 @end
 
 

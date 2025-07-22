@@ -50,7 +50,7 @@ export interface Spec extends TurboModule {
   getUnreadInboxMessagesCount(): Promise<number>;
   showMessage(messageId: string, consume: boolean): Promise<string | null>;
   removeMessage(messageId: string, location: number, source: number): void;
-  // setReadForMessage(messageId: string, read: boolean): void;
+  setReadForMessage(messageId: string, read: boolean): void;
   // setAutoDisplayPaused(autoDisplayPaused: boolean): void;
 
   // // Tracking

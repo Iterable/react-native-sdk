@@ -440,7 +440,7 @@ open class ReactIterableAPI: RCTEventEmitter {
   }
 
   @objc(setReadForMessage:read:)
-  func setRead(for messageId: String, read: Bool) {
+  public func setReadForMessage(for messageId: String, read: Bool) {
     ITBInfo()
     guard let message = IterableAPI.inAppManager.getMessage(withId: messageId) else {
       ITBError("Could not find message with id: \(messageId)")

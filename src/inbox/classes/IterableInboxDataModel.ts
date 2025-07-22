@@ -118,7 +118,7 @@ export class IterableInboxDataModel {
   setMessageAsRead(id: string) {
     Iterable?.logger?.log('IterableInboxDataModel.setMessageAsRead');
 
-    RNIterableAPI.setReadForMessage(id, true);
+    api.setReadForMessage(id, true);
   }
 
   /**
