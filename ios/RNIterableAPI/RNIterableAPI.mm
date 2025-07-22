@@ -33,14 +33,14 @@ RCT_EXPORT_MODULE(RNIterableAPI)
   [(ReactIterableAPI *)_swiftAPI hello];
 }
 
-// - (void)initializeWithApiKey:(NSString *)apiKey
-//                       config:(NSDictionary *)config
-// {
-//   NSLog(@"initializeWithApiKey > Objective-C");
-//   BOOL urlHandlerPresent = [config[@"urlHandlerPresent"] boolValue];
+- (void)initializeWithApiKey:(NSString *)apiKey
+                      config:(NSDictionary *)config
+{
+  NSLog(@"initializeWithApiKey > Objective-C");
+  BOOL urlHandlerPresent = [config[@"urlHandlerPresent"] boolValue];
 
-//   [_swiftAPI initializeWithApiKey:apiKey config:config];
-// }
+  [_swiftAPI initializeWithApiKey:apiKey config:config];
+}
 
 // - (void)initializeWithApiKey:(NSString *)apiKey
 //                     config:(NSDictionary *)config

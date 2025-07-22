@@ -30,11 +30,11 @@ export interface Spec extends TurboModule {
   //   version: string
   // ): Promise<boolean>;
   // testing change
-  // initializeWithApiKey(
-  //   apiKey: string,
-  //   config: IterableConfigDict,
-  //   version: string
-  // ): void;
+  initializeWithApiKey(
+    apiKey: string,
+    config: IterableConfigDict,
+    version: string
+  ): void;
 
   // initialize2WithApiKey(
   //   apiKey: string,

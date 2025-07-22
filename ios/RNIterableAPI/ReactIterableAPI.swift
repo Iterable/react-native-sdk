@@ -68,23 +68,33 @@ open class ReactIterableAPI: RCTEventEmitter {
     print("Hello from Swift Again")
   }
 
-  @objc(initializeWithApiKey:config:version:resolver:rejecter:)
-  func initialize(
-    apiKey: String,
-    config configDict: [AnyHashable: Any],
-    version: String,
-    resolver: @escaping RCTPromiseResolveBlock,
-    rejecter: @escaping RCTPromiseRejectBlock
-  ) {
+  @objc(initializeWithApiKey:config:)
+  public func initializeWithApiKey(apiKey: String, config: NSDictionary) {
+    NSLog("initialize called from swift")
     ITBInfo()
 
-    initialize(
-      withApiKey: apiKey,
-      config: configDict,
-      version: version,
-      resolver: resolver,
-      rejecter: rejecter)
+    //    self.initialize(
+    //      apiKey: apiKey
+    //    )
   }
+
+  // @objc(initializeWithApiKey:config:version:resolver:rejecter:)
+  // public func initialize(
+  //   apiKey: String,
+  //   config configDict: [AnyHashable: Any],
+  //   version: String,
+  //   resolver: @escaping RCTPromiseResolveBlock,
+  //   rejecter: @escaping RCTPromiseRejectBlock
+  // ) {
+  //   ITBInfo()
+
+  //   initialize(
+  //     withApiKey: apiKey,
+  //     config: configDict,
+  //     version: version,
+  //     resolver: resolver,
+  //     rejecter: rejecter)
+  // }
 
   @objc(initialize2WithApiKey:config:apiEndPointOverride:version:resolver:rejecter:)
   func initialize2(
