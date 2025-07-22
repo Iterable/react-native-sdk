@@ -77,7 +77,7 @@ export interface Spec extends TurboModule {
     source: number,
     clickedUrl?: string
   ): void;
-  // inAppConsume(messageId: string, location: number, source: number): void;
+  inAppConsume(messageId: string, location: number, source: number): void;
 
   // // Commerce
   // updateCart(items: { [key: string]: string | number | boolean }[]): void;

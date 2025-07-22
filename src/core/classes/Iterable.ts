@@ -642,7 +642,7 @@ export class Iterable {
   ) {
     Iterable?.logger?.log('inAppConsume');
 
-    RNIterableAPI.inAppConsume(message.messageId, location, source);
+    api.inAppConsume(message.messageId, location, source);
   }
 
   /**

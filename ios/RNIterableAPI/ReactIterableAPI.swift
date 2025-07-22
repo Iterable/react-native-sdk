@@ -274,7 +274,7 @@ open class ReactIterableAPI: RCTEventEmitter {
   }
 
   @objc(inAppConsume:location:source:)
-  func inAppConsume(
+  public func inAppConsume(
     messageId: String,
     location locationNumber: NSNumber,
     source sourceNumber: NSNumber
