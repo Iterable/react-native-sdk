@@ -204,6 +204,12 @@ RCT_EXPORT_MODULE(RNIterableAPI)
   [_swiftAPI inAppConsume:messageId location:location source:source];
 }
 
+- (void)updateCart:(NSArray *)items
+{
+  NSLog(@"ReactNativeSdk updateCart");
+  [_swiftAPI updateCart:items];
+}
+
 @end
 
 

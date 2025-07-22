@@ -447,7 +447,7 @@ export class Iterable {
   static updateCart(items: IterableCommerceItem[]) {
     Iterable?.logger?.log('updateCart');
 
-    RNIterableAPI.updateCart(items);
+    api.updateCart(items);
   }
 
   /**

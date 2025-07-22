@@ -200,7 +200,7 @@ open class ReactIterableAPI: RCTEventEmitter {
   }
 
   @objc(updateCart:)
-  func updateCart(items: [[AnyHashable: Any]]) {
+  public func updateCart(items: [[AnyHashable: Any]]) {
     ITBInfo()
     IterableAPI.updateCart(items: items.compactMap(CommerceItem.from(dict:)))
   }
