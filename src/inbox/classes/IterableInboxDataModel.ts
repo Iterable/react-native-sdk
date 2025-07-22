@@ -130,7 +130,7 @@ export class IterableInboxDataModel {
   deleteItemById(id: string, deleteSource: IterableInAppDeleteSource) {
     Iterable?.logger?.log('IterableInboxDataModel.deleteItemById');
 
-    RNIterableAPI.removeMessage(id, IterableInAppLocation.inbox, deleteSource);
+    api.removeMessage(id, IterableInAppLocation.inbox, deleteSource);
   }
 
   /**

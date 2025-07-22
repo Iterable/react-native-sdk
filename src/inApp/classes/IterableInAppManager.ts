@@ -117,7 +117,7 @@ export class IterableInAppManager {
   ): void {
     Iterable?.logger?.log('InAppManager.remove');
 
-    return RNIterableAPI.removeMessage(message.messageId, location, source);
+    return api.removeMessage(message.messageId, location, source);
   }
 
   /**

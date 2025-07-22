@@ -395,7 +395,9 @@ open class ReactIterableAPI: RCTEventEmitter {
   }
 
   @objc(removeMessage:location:source:)
-  func remove(messageId: String, location locationNumber: NSNumber, source sourceNumber: NSNumber) {
+  public func removeMessage(
+    messageId: String, location locationNumber: NSNumber, source sourceNumber: NSNumber
+  ) {
     ITBInfo()
     guard let message = IterableAPI.inAppManager.getMessage(withId: messageId) else {
       ITBError("Could not find message with id: \(messageId)")

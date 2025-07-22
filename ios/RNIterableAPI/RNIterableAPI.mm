@@ -134,6 +134,14 @@ RCT_EXPORT_MODULE(RNIterableAPI)
   [_swiftAPI showMessage:messageId consume:consume resolver:resolve rejecter:reject];
 }
 
+- (void)removeMessage:(NSString *)messageId
+       location:(NSNumber *)location
+       source:(NSNumber *)source
+{
+  NSLog(@"ReactNativeSdk removeMessage");
+  [_swiftAPI removeMessage:messageId location:location source:source];
+}
+
 @end
 
 
