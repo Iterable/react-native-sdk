@@ -110,6 +110,13 @@ RCT_EXPORT_MODULE(RNIterableAPI)
   [_swiftAPI getInAppMessages:resolve rejecter:reject];
 }
 
+- (void)getInboxMessages:(RCTPromiseResolveBlock)resolve
+          reject:(RCTPromiseRejectBlock)reject
+{
+  NSLog(@"ReactNativeSdk getInboxMessages");
+  [_swiftAPI getInboxMessages:resolve rejecter:reject];
+}
+
 @end
 
 

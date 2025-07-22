@@ -366,7 +366,7 @@ open class ReactIterableAPI: RCTEventEmitter {
   }
 
   @objc(getInboxMessages:rejecter:)
-  func getInboxMessages(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
+  public func getInboxMessages(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
     ITBInfo()
     resolver(IterableAPI.inAppManager.getInboxMessages().map { $0.toDict() })
   }

@@ -140,7 +140,7 @@ export class IterableInboxDataModel {
    * If the fetch operation fails, the promise resolves to an empty array.
    */
   async refresh(): Promise<IterableInboxRowViewModel[]> {
-    return RNIterableAPI.getInboxMessages().then(
+    return api.getInboxMessages().then(
       (messages: IterableInAppMessage[]) => {
         return this.processMessages(messages);
       },

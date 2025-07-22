@@ -62,7 +62,7 @@ export class IterableInAppManager {
   getInboxMessages(): Promise<IterableInAppMessage[]> {
     Iterable?.logger?.log('InAppManager.getInboxMessages');
 
-    return RNIterableAPI.getInboxMessages();
+    return api.getInboxMessages();
   }
 
   /**
