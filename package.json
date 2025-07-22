@@ -181,7 +181,7 @@
   "codegenConfig": {
     "name": "RNIterableSpec",
     "type": "modules",
-    "jsSrcsDir": "src",
+    "jsSrcsDir": "src/",
     "android": {
       "javaPackageName": "com.iterable.reactnative"
     }
