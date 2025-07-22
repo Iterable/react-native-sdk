@@ -71,12 +71,12 @@ export interface Spec extends TurboModule {
     location: number,
     clickedUrl: string
   ): void;
-  // trackInAppClose(
-  //   messageId: string,
-  //   location: number,
-  //   source: number,
-  //   clickedUrl?: string
-  // ): void;
+  trackInAppClose(
+    messageId: string,
+    location: number,
+    source: number,
+    clickedUrl?: string
+  ): void;
   // inAppConsume(messageId: string, location: number, source: number): void;
 
   // // Commerce

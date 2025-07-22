@@ -248,7 +248,7 @@ open class ReactIterableAPI: RCTEventEmitter {
   }
 
   @objc(trackInAppClose:location:source:clickedUrl:)
-  func trackInAppClose(
+  public func trackInAppClose(
     messageId: String,
     location locationNumber: NSNumber,
     source sourceNumber: NSNumber,

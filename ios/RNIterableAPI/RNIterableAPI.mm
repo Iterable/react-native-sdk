@@ -187,6 +187,15 @@ RCT_EXPORT_MODULE(RNIterableAPI)
   [_swiftAPI trackInAppClick:messageId location:location clickedUrl:clickedUrl];
 }
 
+- (void)trackInAppClose:(NSString *)messageId
+       location:(NSNumber *)location
+       source:(NSNumber *)source
+       clickedUrl:(NSString *)clickedUrl
+{
+  NSLog(@"ReactNativeSdk trackInAppClose");
+  [_swiftAPI trackInAppClose:messageId location:location source:source clickedUrl:clickedUrl];
+}
+
 @end
 
 

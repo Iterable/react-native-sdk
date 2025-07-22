@@ -591,7 +591,7 @@ export class Iterable {
   ) {
     Iterable?.logger?.log('trackInAppClose');
 
-    RNIterableAPI.trackInAppClose(
+    api.trackInAppClose(
       message.messageId,
       location,
       source,
