@@ -98,7 +98,7 @@ open class ReactIterableAPI: RCTEventEmitter {
   }
 
   @objc(initialize2WithApiKey:config:apiEndPointOverride:version:resolver:rejecter:)
-  func initialize2(
+  public func initialize2WithApiKey(
     apiKey: String,
     config configDict: NSDictionary,
     version: String,

@@ -39,20 +39,11 @@ RCT_EXPORT_MODULE(RNIterableAPI)
   [(ReactIterableAPI *)_swiftAPI hello];
 }
 
-// - (void)initializeWithApiKey:(NSString *)apiKey
-//                       config:(NSDictionary *)config
-// {
-//   NSLog(@"initializeWithApiKey > Objective-C");
-//   BOOL urlHandlerPresent = [config[@"urlHandlerPresent"] boolValue];
-
-//   [_swiftAPI initializeWithApiKey:apiKey config:config];
-// }
-
 - (void)initializeWithApiKey:(NSString *)apiKey
                     config:(NSDictionary *)config
                    version:(NSString *)version
-                  resolve:(RCTPromiseResolveBlock)resolve
-                  reject:(RCTPromiseRejectBlock)reject
+                   resolve:(RCTPromiseResolveBlock)resolve
+                   reject:(RCTPromiseRejectBlock)reject
 {
   NSLog(@"ReactNativeSdk initializeWithApiKey");
   [_swiftAPI initializeWithApiKey:apiKey
@@ -62,24 +53,21 @@ RCT_EXPORT_MODULE(RNIterableAPI)
                           rejecter:reject];
 }
 
-// Export the initialize method
-// RCT_EXPORT_METHOD(initializeWithApiKey:(NSString *)apiKey
-//                   config:(NSDictionary *)config
-//                   version:(NSString *)version
-//                   resolve:(RCTPromiseResolveBlock)resolve
-//                   reject:(RCTPromiseRejectBlock)reject)
-// {
-//   NSLog(@"ReactNativeSdk initializeWithApiKey");
-//   if (_swiftAPI) {
-//     [_swiftAPI initializeWithApiKey:apiKey
-//                              config:config
-//                             version:version
-//                            resolver:resolve
-//                           rejecter:reject];
-//   } else {
-//     reject(@"error", @"Swift API not initialized", nil);
-//   }
-// }
+- (void)initialize2WithApiKey:(NSString *)apiKey
+                    config:(NSDictionary *)config
+                   version:(NSString *)version
+       apiEndPointOverride:(NSString *)apiEndPointOverride
+                   resolve:(RCTPromiseResolveBlock)resolve
+                   reject:(RCTPromiseRejectBlock)reject
+{
+  NSLog(@"ReactNativeSdk initialize2WithApiKey");
+  [_swiftAPI initialize2WithApiKey:apiKey
+                            config:config
+               apiEndPointOverride:apiEndPointOverride
+                           version:version
+                          resolver:resolve
+                          rejecter:reject];
+}
 
 // Export the initialize2 method
 // RCT_EXPORT_METHOD(initialize2WithApiKey:(NSString *)apiKey
