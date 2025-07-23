@@ -38,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       launchOptions: launchOptions
     )
 
-    setupUserNotificationCenter()
+    // setupUserNotificationCenter()
 
     return true
   }
@@ -50,22 +50,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // ReactIterableAPI.register(token: deviceToken)
   }
 
-  private func setupUserNotificationCenter() {
-    UNUserNotificationCenter.current().delegate = self
-    UNUserNotificationCenter.current().getNotificationSettings { (settings) in
-      if settings.authorizationStatus != .authorized {
-        ITBInfo("Not authorized")
-        // not authorized, ask for permission
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) {
-          (success, error) in
-          ITBInfo("auth: \(success)")
-        }
-      } else {
-        // already authorized
-        ITBInfo("Already authorized")
-      }
-    }
-  }
+  // private func setupUserNotificationCenter() {
+  //   UNUserNotificationCenter.current().delegate = self
+  //   UNUserNotificationCenter.current().getNotificationSettings { (settings) in
+  //     if settings.authorizationStatus != .authorized {
+  //       NSLog("Not authorized")
+  //       // not authorized, ask for permission
+  //       UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) {
+  //         (success, error) in
+  //         NSLog("auth: \(success)")
+  //       }
+  //     } else {
+  //       // already authorized
+  //       NSLog("Already authorized")
+  //     }
+  //   }
+  // }
 }
 
 class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {

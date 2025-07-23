@@ -40,6 +40,6 @@ target 'ReactNativeSdkExample' do
   end
 end
 
-# target 'ReactNativeSdkExampleNotificationService' do
-#   pod 'Iterable-iOS-AppExtensions'
-# end
+target 'ReactNativeSdkExampleNotificationService' do
+  pod 'Iterable-iOS-AppExtensions'
+end
