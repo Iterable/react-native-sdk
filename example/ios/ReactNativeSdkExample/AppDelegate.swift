@@ -5,7 +5,7 @@
 //  Created by Loren Posen on 6/11/25.
 //
 
-// import IterableAPI
+import IterableSDK
 import React
 import ReactAppDependencyProvider
 import React_RCTAppDelegate
@@ -58,10 +58,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
   ) {
 
-    // IterableAppIntegration.application(
-    //   application, didReceiveRemoteNotification: userInfo,
-    //   fetchCompletionHandler: completionHandler
-    // )
+    IterableAppIntegration.application(
+      application, didReceiveRemoteNotification: userInfo,
+      fetchCompletionHandler: completionHandler
+    )
   }
 
   public func application(
@@ -71,7 +71,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      * Register the device token with Iterable.
      * @see Step 3.5.4 of https://support.iterable.com/hc/en-us/articles/360045714132-Installing-Iterable-s-React-Native-SDK#step-3-5-set-up-support-for-push-notifications
      */
-    // IterableAPI.register(token: deviceToken)
+    IterableAPI.register(token: deviceToken)
   }
 
   /**
@@ -149,7 +149,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     _ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse,
     withCompletionHandler completionHandler: @escaping () -> Void
   ) {
-    // IterableAppIntegration.userNotificationCenter(
-    //   center, didReceive: response, withCompletionHandler: completionHandler)
+    IterableAppIntegration.userNotificationCenter(
+      center, didReceive: response, withCompletionHandler: completionHandler)
   }
 }
