@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   var reactNativeDelegate: ReactNativeDelegate?
   var reactNativeFactory: RCTReactNativeFactory?
 
-  func application(
+  public func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
@@ -57,11 +57,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     _ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],
     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
   ) {
-
     IterableAppIntegration.application(
       application, didReceiveRemoteNotification: userInfo,
       fetchCompletionHandler: completionHandler
     )
+    NSLog("didReceiveRemoteNotification: \(userInfo)")
   }
 
   public func application(
@@ -72,6 +72,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      * @see Step 3.5.4 of https://support.iterable.com/hc/en-us/articles/360045714132-Installing-Iterable-s-React-Native-SDK#step-3-5-set-up-support-for-push-notifications
      */
     IterableAPI.register(token: deviceToken)
+    NSLog("didRegisterForRemoteNotificationsWithDeviceToken: \(deviceToken)")
   }
 
   /**
@@ -136,20 +137,20 @@ class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
 /// * Handle incoming push notifications and enable push notification tracking.
 /// * @see Step 3.5.5 of https://support.iterable.com/hc/en-us/articles/360045714132-Installing-Iterable-s-React-Native-SDK#step-3-5-set-up-support-for-push-notifications
 extension AppDelegate: UNUserNotificationCenterDelegate {
-  // App is running in the foreground
   public func userNotificationCenter(
-    _ center: UNUserNotificationCenter, willPresent notification: UNNotification,
+    _: UNUserNotificationCenter, willPresent _: UNNotification,
     withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
   ) {
-    completionHandler([.alert, .badge, .sound, .banner])
+    completionHandler([.badge, .banner, .list, .sound])
+    NSLog("willPresent")
   }
 
-  // The method will be called on the delegate when the user responded to the notification by opening the application, dismissing the notification or choosing a UNNotificationAction. The delegate must be set before the application returns from applicationDidFinishLaunching:.
   public func userNotificationCenter(
     _ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse,
     withCompletionHandler completionHandler: @escaping () -> Void
   ) {
     IterableAppIntegration.userNotificationCenter(
       center, didReceive: response, withCompletionHandler: completionHandler)
+    NSLog("didReceive")
   }
 }
