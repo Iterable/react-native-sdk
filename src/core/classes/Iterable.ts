@@ -499,7 +499,7 @@ export class Iterable {
   ) {
     Iterable?.logger?.log('trackPurchase');
 
-    RNIterableAPI.trackPurchase(total, items, dataFields);
+    api.trackPurchase(total, items, dataFields);
   }
 
   /**

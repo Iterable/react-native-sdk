@@ -206,7 +206,7 @@ open class ReactIterableAPI: RCTEventEmitter {
   }
 
   @objc(trackPurchase:items:dataFields:)
-  func trackPurchase(
+  public func trackPurchase(
     total: NSNumber,
     items: [[AnyHashable: Any]],
     dataFields: [AnyHashable: Any]?

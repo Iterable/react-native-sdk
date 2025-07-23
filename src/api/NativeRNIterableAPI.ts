@@ -81,11 +81,11 @@ export interface Spec extends TurboModule {
 
   // Commerce
   updateCart(items: { [key: string]: string | number | boolean }[]): void;
-  // trackPurchase(
-  //   total: number,
-  //   items: { [key: string]: string | number | boolean }[],
-  //   dataFields?: { [key: string]: string | number | boolean }
-  // ): void;
+  trackPurchase(
+    total: number,
+    items: { [key: string]: string | number | boolean }[],
+    dataFields?: { [key: string]: string | number | boolean }
+  ): void;
 
   // // User data
   // updateUser(

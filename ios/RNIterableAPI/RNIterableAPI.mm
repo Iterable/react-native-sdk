@@ -210,6 +210,14 @@ RCT_EXPORT_MODULE(RNIterableAPI)
   [_swiftAPI updateCart:items];
 }
 
+- (void)trackPurchase:(NSNumber *)total
+       items:(NSArray *)items
+       dataFields:(NSDictionary *)dataFields
+{
+  NSLog(@"ReactNativeSdk trackPurchase");
+  [_swiftAPI trackPurchase:total items:items dataFields:dataFields];
+}
+
 @end
 
 
