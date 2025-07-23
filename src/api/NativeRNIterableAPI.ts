@@ -126,11 +126,11 @@ export interface Spec extends TurboModule {
     templateId: number
   ): void;
 
-  // // Session tracking
-  // startSession(
-  //   visibleRows: { [key: string]: string | number | boolean }[]
-  // ): void;
-  // endSession(): void;
+  // Session tracking
+  startSession(
+    visibleRows: { [key: string]: string | number | boolean }[]
+  ): void;
+  endSession(): void;
   // updateVisibleRows(
   //   visibleRows: { [key: string]: string | number | boolean }[]
   // ): void;

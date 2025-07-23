@@ -156,7 +156,7 @@ export class IterableInboxDataModel {
    * @param visibleRows - An array of `IterableInboxImpressionRowInfo` objects representing the rows that are currently visible.
    */
   startSession(visibleRows: IterableInboxImpressionRowInfo[] = []) {
-    RNIterableAPI.startSession(visibleRows);
+    api.startSession(visibleRows);
   }
 
   /**
@@ -167,7 +167,7 @@ export class IterableInboxDataModel {
    */
   async endSession(visibleRows: IterableInboxImpressionRowInfo[] = []) {
     await this.updateVisibleRows(visibleRows);
-    RNIterableAPI.endSession();
+    api.endSession();
   }
 
   /**

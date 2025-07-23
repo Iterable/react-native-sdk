@@ -459,13 +459,13 @@ open class ReactIterableAPI: RCTEventEmitter {
   // MARK: - SDK Inbox Session Tracking Functions
 
   @objc(startSession:)
-  func startSession(visibleRows: [[AnyHashable: Any]]) {
+  public func startSession(visibleRows: [[AnyHashable: Any]]) {
     let serializedRows = InboxImpressionTracker.RowInfo.rowInfos(from: visibleRows)
     inboxSessionManager.startSession(visibleRows: serializedRows)
   }
 
   @objc(endSession)
-  func endSession() {
+  public func endSession() {
     guard let sessionInfo = inboxSessionManager.endSession() else {
       ITBError("Could not find session info")
       return

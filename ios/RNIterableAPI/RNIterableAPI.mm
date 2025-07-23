@@ -285,6 +285,18 @@ RCT_EXPORT_MODULE(RNIterableAPI)
   [_swiftAPI updateSubscriptions:emailListIds unsubscribedChannelIds:unsubscribedChannelIds unsubscribedMessageTypeIds:unsubscribedMessageTypeIds subscribedMessageTypeIds:subscribedMessageTypeIds campaignId:campaignId templateId:templateId];
 }
 
+- (void)startSession:(NSArray *)visibleRows
+{
+  NSLog(@"ReactNativeSdk startSession");
+  [_swiftAPI startSession:visibleRows];
+}
+
+- (void)endSession
+{
+  NSLog(@"ReactNativeSdk endSession");
+  [_swiftAPI endSession];
+}
+
 @end
 
 
