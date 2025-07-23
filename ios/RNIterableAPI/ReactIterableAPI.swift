@@ -6,12 +6,15 @@ import React
   func sendEvent(withName: String, body: Any?)
 }
 
-@objc public class ReactIterableAPI: RCTEventEmitter {
+@objc(ReactIterableAPI)
+public class ReactIterableAPI: RCTEventEmitter {
   deinit {
     NotificationCenter.default.removeObserver(self)
   }
 
   @objc public weak var delegate: ReactIterableAPIDelegate? = nil
+
+  // MARK: - React Native Functions
 
   @objc override public class func moduleName() -> String! {
     return "RNIterableAPI"
@@ -53,10 +56,6 @@ import React
   }
 
   // MARK: - Native SDK Functions
-
-  @objc public func hello() {
-    print("Hello from Swift Again")
-  }
 
   @objc(initializeWithApiKey:config:version:resolver:rejecter:)
   public func initializeWithApiKey(

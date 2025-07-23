@@ -4,8 +4,7 @@ import {
   createContext,
   useCallback,
   useContext,
-  useState,
-  useEffect,
+  useState
 } from 'react';
 import { Alert } from 'react-native';
 
@@ -14,8 +13,7 @@ import {
   IterableAction,
   IterableConfig,
   IterableInAppShowResponse,
-  IterableLogLevel,
-  api
+  IterableLogLevel
 } from '@iterable/react-native-sdk';
 
 import { Route } from '../constants/routes';
@@ -89,11 +87,6 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export const IterableAppProvider: FunctionComponent<
   React.PropsWithChildren<unknown>
 > = ({ children }) => {
-  useEffect(() => {
-    console.log('api', api);
-    api.hello();
-  }, []);
-
   const [returnToInboxTrigger, setReturnToInboxTrigger] =
     useState<boolean>(false);
   const [isInboxTab, setIsInboxTab] = useState<boolean>(false);

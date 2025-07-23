@@ -1,28 +1,7 @@
 import type { TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
 
-export interface IterableConfigDict {
-  pushIntegrationName?: string;
-  autoPushRegistration?: boolean;
-  inAppDisplayInterval?: number;
-  urlHandlerPresent: boolean;
-  customActionHandlerPresent?: boolean;
-  inAppHandlerPresent?: boolean;
-  authHandlerPresent?: boolean;
-  expiringAuthTokenRefreshPeriod?: number;
-  allowedProtocols?: string[];
-  androidSdkUseInMemoryStorageForInApps?: boolean;
-  useInMemoryStorageForInApps?: boolean;
-  encryptionEnforced?: boolean;
-  logLevel?: string | number;
-  dataRegion?: string | number;
-  pushPlatform?: string | number;
-}
-
 export interface Spec extends TurboModule {
-  // multiply(a: number, b: number): number;
-  hello(): void;
-
   // Initialization
   initializeWithApiKey(
     apiKey: string,
