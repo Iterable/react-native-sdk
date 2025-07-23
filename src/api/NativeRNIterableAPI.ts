@@ -108,10 +108,10 @@ export interface Spec extends TurboModule {
     [key: string]: string | number | boolean;
   } | null>;
 
-  // // Content
-  // getHtmlInAppContentForMessage(
-  //   messageId: string
-  // ): Promise<{ [key: string]: string | number | boolean }>;
+  // Content
+  getHtmlInAppContentForMessage(
+    messageId: string
+  ): Promise<{ [key: string]: string | number | boolean }>;
 
   // // App links
   // handleAppLink(appLink: string): Promise<boolean>;

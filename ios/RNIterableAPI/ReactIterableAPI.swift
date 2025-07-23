@@ -300,7 +300,7 @@ open class ReactIterableAPI: RCTEventEmitter {
   }
 
   @objc(getHtmlInAppContentForMessage:resolver:rejecter:)
-  func getHtmlInAppContent(
+  public func getHtmlInAppContent(
     messageId: String, resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock
   ) {
     ITBInfo()

@@ -258,6 +258,13 @@ RCT_EXPORT_MODULE(RNIterableAPI)
   [_swiftAPI getLastPushPayload:resolve rejecter:reject];
 }
 
+- (void)getHtmlInAppContentForMessage:(NSString *)messageId
+       resolve:(RCTPromiseResolveBlock)resolve
+       reject:(RCTPromiseRejectBlock)reject
+{
+  NSLog(@"ReactNativeSdk getHtmlInAppContentForMessage");
+  [_swiftAPI getHtmlInAppContentForMessage:messageId resolver:resolve rejecter:reject];
+}
 
 @end
 

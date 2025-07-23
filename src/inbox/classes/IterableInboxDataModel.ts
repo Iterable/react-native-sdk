@@ -103,7 +103,7 @@ export class IterableInboxDataModel {
       'IterableInboxDataModel.getHtmlContentForItem messageId: ' + id
     );
 
-    return RNIterableAPI.getHtmlInAppContentForMessage(id).then(
+    return api.getHtmlInAppContentForMessage(id).then(
       (content: IterableHtmlInAppContentRaw) => {
         return IterableHtmlInAppContent.fromDict(content);
       }

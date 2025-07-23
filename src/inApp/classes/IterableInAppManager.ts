@@ -154,7 +154,7 @@ export class IterableInAppManager {
   ): Promise<IterableHtmlInAppContent> {
     Iterable?.logger?.log('InAppManager.getHtmlContentForMessage');
 
-    return RNIterableAPI.getHtmlInAppContentForMessage(message.messageId);
+    return api.getHtmlInAppContentForMessage(message.messageId);
   }
 
   /**
