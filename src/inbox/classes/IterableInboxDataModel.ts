@@ -14,7 +14,6 @@ import type {
 } from '../types';
 
 const RNIterableAPI = api;
-// const RNIterableAPI = NativeModules.RNIterableAPI;
 
 /**
  * The `IterableInboxDataModel` class provides methods to manage and manipulate

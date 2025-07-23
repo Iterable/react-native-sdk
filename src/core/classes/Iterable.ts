@@ -182,7 +182,7 @@ export class Iterable {
    * Iterable.setEmail('my.user.name@gmail.com');
    * ```
    */
-  static setEmail(email?: string | null, authToken?: string | null) {
+  static setEmail(email?: string | null, authToken?: string | undefined) {
     Iterable?.logger?.log('setEmail: ' + email);
 
     RNIterableAPI.setEmail(email, authToken);
@@ -263,7 +263,7 @@ export class Iterable {
    * });
    * ```
    */
-  static getUserId(): Promise<string | null> {
+  static getUserId(): Promise<string | undefined> {
     Iterable?.logger?.log('getUserId');
 
     return RNIterableAPI.getUserId();
@@ -326,7 +326,7 @@ export class Iterable {
     Iterable?.logger?.log('getAttributionInfo');
 
     return RNIterableAPI.getAttributionInfo().then(
-      (dict?: { [key: string]: string | number | boolean } | null) => {
+      (dict?: IterableAttributionInfo) => {
         if (dict) {
           return new IterableAttributionInfo(
             dict.campaignId,
