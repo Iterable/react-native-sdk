@@ -251,6 +251,14 @@ RCT_EXPORT_MODULE(RNIterableAPI)
   [_swiftAPI disableDeviceForCurrentUser];
 }
 
+- (void)getLastPushPayload:(RCTPromiseResolveBlock)resolve
+          reject:(RCTPromiseRejectBlock)reject
+{
+  NSLog(@"ReactNativeSdk getLastPushPayload");
+  [_swiftAPI getLastPushPayload:resolve rejecter:reject];
+}
+
+
 @end
 
 

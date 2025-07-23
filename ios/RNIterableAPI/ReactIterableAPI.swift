@@ -159,7 +159,8 @@ open class ReactIterableAPI: RCTEventEmitter {
   }
 
   @objc(getLastPushPayload:rejecter:)
-  func getLastPushPayload(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
+  public func getLastPushPayload(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock)
+  {
     ITBInfo()
     resolver(IterableAPI.lastPushPayload)
   }

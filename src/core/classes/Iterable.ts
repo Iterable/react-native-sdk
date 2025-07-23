@@ -298,7 +298,7 @@ export class Iterable {
   static getLastPushPayload(): Promise<unknown> {
     Iterable?.logger?.log('getLastPushPayload');
 
-    return RNIterableAPI.getLastPushPayload();
+    return api.getLastPushPayload();
   }
 
   /**

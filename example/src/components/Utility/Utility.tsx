@@ -43,6 +43,13 @@ export const Utility = () => {
           }}>
           <Text style={styles.buttonText}>Iterable.disableDeviceForCurrentUser()</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => {
+            Iterable.getLastPushPayload().then((lastPushPayload) => {
+              console.log('Iterable.getLastPushPayload() --> lastPushPayload', lastPushPayload);
+            });
+          }}>
+          <Text style={styles.buttonText}>Iterable.getLastPushPayload()</Text>
+        </TouchableOpacity>
     </View>
   );
 };

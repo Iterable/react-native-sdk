@@ -104,9 +104,9 @@ export interface Spec extends TurboModule {
 
   // Device management
   disableDeviceForCurrentUser(): void;
-  // getLastPushPayload(): Promise<{
-  //   [key: string]: string | number | boolean;
-  // } | null>;
+  getLastPushPayload(): Promise<{
+    [key: string]: string | number | boolean;
+  } | null>;
 
   // // Content
   // getHtmlInAppContentForMessage(
