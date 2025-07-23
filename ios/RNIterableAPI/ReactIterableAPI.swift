@@ -172,13 +172,14 @@ open class ReactIterableAPI: RCTEventEmitter {
   }
 
   @objc(setAttributionInfo:)
-  func set(attributionInfo dict: [AnyHashable: Any]?) {
+  public func setAttributionInfo(attributionInfo dict: NSDictionary?) {
     ITBInfo()
     guard let dict = dict else {
       IterableAPI.attributionInfo = nil
       return
     }
-    IterableAPI.attributionInfo = SerializationUtil.dictionaryToDecodable(dict: dict)
+    IterableAPI.attributionInfo = SerializationUtil.dictionaryToDecodable(
+      dict: dict as! [AnyHashable: Any])
   }
 
   @objc(trackPushOpenWithCampaignId:templateId:messageId:appAlreadyRunning:dataFields:)

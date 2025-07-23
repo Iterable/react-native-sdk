@@ -239,6 +239,13 @@ RCT_EXPORT_MODULE(RNIterableAPI)
   [_swiftAPI getAttributionInfo:resolve rejecter:reject];
 }
 
+- (void)setAttributionInfo:(NSDictionary *)attributionInfo
+{
+  NSLog(@"ReactNativeSdk setAttributionInfo");
+  [_swiftAPI setAttributionInfo:attributionInfo];
+}
+
+
 @end
 
 

@@ -29,6 +29,15 @@ export const Utility = () => {
         }}>
         <Text style={styles.buttonText}>Iterable.getAttributionInfo()</Text>
       </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => {
+          Iterable.setAttributionInfo({
+            campaignId: 123,
+            templateId: 456,
+            messageId: '789',
+          });
+        }}>
+        <Text style={styles.buttonText}>Iterable.setAttributionInfo()</Text>
+      </TouchableOpacity>
     </View>
   );
 };

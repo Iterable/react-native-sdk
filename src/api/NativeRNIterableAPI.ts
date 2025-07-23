@@ -98,9 +98,9 @@ export interface Spec extends TurboModule {
   getAttributionInfo(): Promise<{
     [key: string]: string | number | boolean;
   } | null>;
-  // setAttributionInfo(
-  //   dict: { [key: string]: string | number | boolean } | null
-  // ): void;
+  setAttributionInfo(
+    dict: { [key: string]: string | number | boolean } | null
+  ): void;
 
   // // Device management
   // disableDeviceForCurrentUser(): void;
