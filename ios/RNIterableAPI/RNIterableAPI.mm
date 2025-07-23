@@ -232,6 +232,13 @@ RCT_EXPORT_MODULE(RNIterableAPI)
   [_swiftAPI updateEmail:email authToken:authToken];
 }
 
+- (void)getAttributionInfo:(RCTPromiseResolveBlock)resolve
+          reject:(RCTPromiseRejectBlock)reject
+{
+  NSLog(@"ReactNativeSdk getAttributionInfo");
+  [_swiftAPI getAttributionInfo:resolve rejecter:reject];
+}
+
 @end
 
 

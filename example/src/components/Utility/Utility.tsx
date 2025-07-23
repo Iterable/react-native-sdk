@@ -22,6 +22,13 @@ export const Utility = () => {
         }}>
         <Text style={styles.buttonText}>Iterable.getUserId()</Text>
       </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => {
+          Iterable.getAttributionInfo().then((attributionInfo) => {
+            console.log('Iterable.getAttributionInfo() --> attributionInfo', attributionInfo);
+          });
+        }}>
+        <Text style={styles.buttonText}>Iterable.getAttributionInfo()</Text>
+      </TouchableOpacity>
     </View>
   );
 };

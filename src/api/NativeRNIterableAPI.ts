@@ -94,10 +94,10 @@ export interface Spec extends TurboModule {
   ): void;
   updateEmail(email: string, authToken?: string): void;
 
-  // // Attribution
-  // getAttributionInfo(): Promise<{
-  //   [key: string]: string | number | boolean;
-  // } | null>;
+  // Attribution
+  getAttributionInfo(): Promise<{
+    [key: string]: string | number | boolean;
+  } | null>;
   // setAttributionInfo(
   //   dict: { [key: string]: string | number | boolean } | null
   // ): void;

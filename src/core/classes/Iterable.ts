@@ -326,8 +326,8 @@ export class Iterable {
   static getAttributionInfo(): Promise<IterableAttributionInfo | undefined> {
     Iterable?.logger?.log('getAttributionInfo');
 
-    return RNIterableAPI.getAttributionInfo().then(
-      (dict?: IterableAttributionInfo) => {
+    return api.getAttributionInfo().then(
+      (dict?: { [key: string]: string | number | boolean } | null) => {
         if (dict) {
           return new IterableAttributionInfo(
             dict.campaignId,
