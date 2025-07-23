@@ -1,9 +1,23 @@
-import { Iterable } from '@iterable/react-native-sdk';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Iterable, api } from '@iterable/react-native-sdk';
+import { useEffect } from 'react';
+import { NativeEventEmitter, NativeModules, Text, TouchableOpacity, View } from 'react-native';
 
 import styles from './Utility.styles';
 
+const { RNIterableAPI } = NativeModules;
+const newEmitter = new NativeEventEmitter(api);
+
 export const Utility = () => {
+  useEffect(() => {
+    console.log(`🚀 > RNIterableAPI:`, RNIterableAPI);
+
+    const newSub = newEmitter.addListener('onTestEventDispatch', (event) => {
+      console.log('*** ITBL JS *** RECEIVED onTestEventDispatch:', event);
+    });
+    return () => {
+      newSub.remove();
+    };
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -49,6 +63,12 @@ export const Utility = () => {
             });
           }}>
           <Text style={styles.buttonText}>Iterable.getLastPushPayload()</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => {
+          console.log('*** ITBL JS *** SENDING testEventDispatch');
+            api.testEventDispatch();
+          }}>
+          <Text style={styles.buttonText}>dispatch test event</Text>
         </TouchableOpacity>
     </View>
   );

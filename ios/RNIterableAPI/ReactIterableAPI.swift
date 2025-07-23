@@ -2,21 +2,16 @@ import Foundation
 import IterableSDK
 import React
 
-@objc(ReactIterableAPI)
-@objcMembers
-open class ReactIterableAPI: RCTEventEmitter {
+@objc public protocol ReactIterableAPIDelegate {
+  func sendEvent(withName: String, body: Any?)
+}
+
+@objc public class ReactIterableAPI: RCTEventEmitter {
   deinit {
     NotificationCenter.default.removeObserver(self)
   }
 
-  // Singleton instance
-  @objc public static let shared = ReactIterableAPI()
-
-  // Private initializer to enforce singleton
-  @objc private override init() {
-    print("ReactIterableAPI init")
-    super.init()
-  }
+  @objc public weak var delegate: ReactIterableAPIDelegate? = nil
 
   @objc override public class func moduleName() -> String! {
     return "RNIterableAPI"
@@ -38,16 +33,11 @@ open class ReactIterableAPI: RCTEventEmitter {
     case receivedIterableInboxChanged
     case handleAuthSuccessCalled
     case handleAuthFailureCalled
+    case onTestEventDispatch
   }
 
-  @objc override public func supportedEvents() -> [String]! {
-    var result = [String]()
-
-    EventName.allCases.forEach {
-      result.append($0.rawValue)
-    }
-
-    return result
+  @objc public static var supportedEvents: [String] {
+    return EventName.allCases.map(\.rawValue)
   }
 
   override public func startObserving() {
@@ -61,10 +51,6 @@ open class ReactIterableAPI: RCTEventEmitter {
 
     shouldEmit = false
   }
-
-  // REQUIRED stubs for RCTEventEmitter
-  open override func addListener(_ eventName: String!) { /* no-op */  }
-  open override func removeListeners(_ count: Double) { /* no-op */  }
 
   // MARK: - Native SDK Functions
 
@@ -492,6 +478,13 @@ open class ReactIterableAPI: RCTEventEmitter {
     inboxSessionManager.updateVisibleRows(visibleRows: serializedRows)
   }
 
+  @objc(testEventDispatch)
+  public func testEventDispatch() {
+    NSLog("***ITBL SWIFT*** shouldEmit: \(shouldEmit)")
+    NSLog("***ITBL SWIFT*** testEventDispatch", EventName.onTestEventDispatch.rawValue)
+    delegate?.sendEvent(withName: EventName.onTestEventDispatch.rawValue, body: 0)
+  }
+
   // MARK: - SDK Auth Manager Functions
 
   @objc(passAlongAuthToken:)
@@ -570,7 +563,8 @@ open class ReactIterableAPI: RCTEventEmitter {
     guard shouldEmit else {
       return
     }
-    sendEvent(withName: EventName.receivedIterableInboxChanged.rawValue, body: nil as Any?)
+    delegate?.sendEvent(
+      withName: EventName.receivedIterableInboxChanged.rawValue, body: nil as Any?)
   }
 
   private func createLaunchOptions() -> [UIApplication.LaunchOptionsKey: Any]? {
@@ -602,7 +596,7 @@ extension ReactIterableAPI: IterableURLDelegate {
       return false
     }
     let contextDict = ReactIterableAPI.contextToDictionary(context: context)
-    sendEvent(
+    delegate?.sendEvent(
       withName: EventName.handleUrlCalled.rawValue,
       body: [
         "url": url.absoluteString,
@@ -641,7 +635,7 @@ extension ReactIterableAPI: IterableCustomActionDelegate {
     ITBInfo()
     let actionDict = ReactIterableAPI.actionToDictionary(action: action)
     let contextDict = ReactIterableAPI.contextToDictionary(context: context)
-    sendEvent(
+    delegate?.sendEvent(
       withName: EventName.handleCustomActionCalled.rawValue,
       body: [
         "action": actionDict,
@@ -657,7 +651,7 @@ extension ReactIterableAPI: IterableInAppDelegate {
     guard shouldEmit else {
       return .show
     }
-    sendEvent(
+    delegate?.sendEvent(
       withName: EventName.handleInAppCalled.rawValue,
       body: message.toDict())
     let timeoutResult = inAppHandlerSemaphore.wait(timeout: .now() + 2.0)

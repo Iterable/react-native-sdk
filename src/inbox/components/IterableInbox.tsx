@@ -33,7 +33,7 @@ import {
 } from './IterableInboxMessageList';
 import { api, oldApi } from '../../api';
 
-const RNIterableAPI =oldApi;
+// const RNIterableAPI =oldApi;
 // const RNIterableAPI = NativeModules.RNIterableAPI;
 const RNEventEmitter = new NativeEventEmitter(api);
 

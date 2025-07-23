@@ -44,7 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     * Request permissions for push notifications.
     * @see Step 3.5.5 of https://support.iterable.com/hc/en-us/articles/360045714132-Installing-Iterable-s-React-Native-SDK#step-3-5-set-up-support-for-push-notifications
     */
-    requestPushPermissions()
+    requestPushPermissions(application)
 
     return true
   }
@@ -100,23 +100,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     open url: URL,
     options: [UIApplication.OpenURLOptionsKey: Any] = [:]
   ) -> Bool {
-    RCTLinkingManager.application(app, open: url, options: options)
+    return RCTLinkingManager.application(app, open: url, options: options)
   }
 
-  public func requestPushPermissions() {
-    UNUserNotificationCenter.current().getNotificationSettings { (settings) in
-      if settings.authorizationStatus != .authorized {
-        NSLog("Not authorized")
-        // not authorized, ask for permission
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) {
-          (success, error) in
-          NSLog("auth: \(success)")
+  public func requestPushPermissions(_ application: UIApplication) {
+    UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) {
+      granted, _ in
+      DispatchQueue.main.async {
+        if granted {
+          application.registerForRemoteNotifications()
+        } else {
+          NSLog("Push permission denied")
         }
-      } else {
-        // already authorized
-        NSLog("Already authorized")
       }
     }
+    //   UNUserNotificationCenter.current().getNotificationSettings { (settings) in
+    //     if settings.authorizationStatus != .authorized {
+    //       NSLog("Not authorized")
+    //       // not authorized, ask for permission
+    //       UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) {
+    //         (success, error) in
+    //         NSLog("auth: \(success)")
+    //       }
+    //     } else {
+    //       // already authorized
+    //       NSLog("Already authorized")
+    //     }
+    //   }
   }
 }
 

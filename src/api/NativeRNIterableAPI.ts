@@ -145,6 +145,9 @@ export interface Spec extends TurboModule {
   // REQUIRED for RCTEventEmitter
   addListener(eventName: string): void;
   removeListeners(count: number): void;
+
+  // testing
+  testEventDispatch(): void;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('RNIterableAPI');
