@@ -297,6 +297,14 @@ RCT_EXPORT_MODULE(RNIterableAPI)
   [_swiftAPI endSession];
 }
 
+- (void)updateVisibleRows:(NSArray *)visibleRows
+{
+  NSLog(@"ReactNativeSdk updateVisibleRows");
+  [_swiftAPI updateVisibleRows:visibleRows];
+}
+
+
+
 @end
 
 

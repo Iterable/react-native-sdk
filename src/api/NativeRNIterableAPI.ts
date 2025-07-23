@@ -131,9 +131,9 @@ export interface Spec extends TurboModule {
     visibleRows: { [key: string]: string | number | boolean }[]
   ): void;
   endSession(): void;
-  // updateVisibleRows(
-  //   visibleRows: { [key: string]: string | number | boolean }[]
-  // ): void;
+  updateVisibleRows(
+    visibleRows: { [key: string]: string | number | boolean }[]
+  ): void;
 
   // // Auth
   // passAlongAuthToken(authToken: string | null): void;

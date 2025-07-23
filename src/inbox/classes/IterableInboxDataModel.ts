@@ -183,7 +183,7 @@ export class IterableInboxDataModel {
    *                      Defaults to an empty array if not provided.
    */
   updateVisibleRows(visibleRows: IterableInboxImpressionRowInfo[] = []) {
-    RNIterableAPI.updateVisibleRows(visibleRows);
+    api.updateVisibleRows(visibleRows);
   }
 
   /**

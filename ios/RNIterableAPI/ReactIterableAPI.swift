@@ -483,7 +483,7 @@ open class ReactIterableAPI: RCTEventEmitter {
   }
 
   @objc(updateVisibleRows:)
-  func updateVisibleRows(visibleRows: [[AnyHashable: Any]]) {
+  public func updateVisibleRows(visibleRows: [[AnyHashable: Any]]) {
     let serializedRows = InboxImpressionTracker.RowInfo.rowInfos(from: visibleRows)
     inboxSessionManager.updateVisibleRows(visibleRows: serializedRows)
   }
