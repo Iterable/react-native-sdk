@@ -5,10 +5,12 @@
 //  Created by Loren Posen on 6/11/25.
 //
 
-import UIKit
+// import IterableAPI
 import React
-import React_RCTAppDelegate
 import ReactAppDependencyProvider
+import React_RCTAppDelegate
+import UIKit
+import UserNotifications
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -36,7 +38,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       launchOptions: launchOptions
     )
 
+    setupUserNotificationCenter()
+
     return true
+  }
+
+  func application(
+    _ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
+  ) {
+    NSLog("didRegisterForRemoteNotificationsWithDeviceToken: \(deviceToken)")
+    // ReactIterableAPI.register(token: deviceToken)
+  }
+
+  private func setupUserNotificationCenter() {
+    UNUserNotificationCenter.current().delegate = self
+    UNUserNotificationCenter.current().getNotificationSettings { (settings) in
+      if settings.authorizationStatus != .authorized {
+        ITBInfo("Not authorized")
+        // not authorized, ask for permission
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) {
+          (success, error) in
+          ITBInfo("auth: \(success)")
+        }
+      } else {
+        // already authorized
+        ITBInfo("Already authorized")
+      }
+    }
   }
 }
 
@@ -46,11 +74,10 @@ class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
   }
 
   override func bundleURL() -> URL? {
-#if DEBUG
-    RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index")
-#else
-    Bundle.main.url(forResource: "main", withExtension: "jsbundle")
-#endif
+    #if DEBUG
+      RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index")
+    #else
+      Bundle.main.url(forResource: "main", withExtension: "jsbundle")
+    #endif
   }
 }
-
