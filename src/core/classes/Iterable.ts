@@ -281,7 +281,7 @@ export class Iterable {
   static disableDeviceForCurrentUser() {
     Iterable?.logger?.log('disableDeviceForCurrentUser');
 
-    RNIterableAPI.disableDeviceForCurrentUser();
+    api.disableDeviceForCurrentUser();
   }
 
   /**

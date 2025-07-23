@@ -153,7 +153,7 @@ open class ReactIterableAPI: RCTEventEmitter {
   }
 
   @objc(disableDeviceForCurrentUser)
-  func disableDeviceForCurrentUser() {
+  public func disableDeviceForCurrentUser() {
     ITBInfo()
     IterableAPI.disableDeviceForCurrentUser()
   }

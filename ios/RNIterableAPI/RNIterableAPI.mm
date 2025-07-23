@@ -245,6 +245,11 @@ RCT_EXPORT_MODULE(RNIterableAPI)
   [_swiftAPI setAttributionInfo:attributionInfo];
 }
 
+- (void)disableDeviceForCurrentUser
+{
+  NSLog(@"ReactNativeSdk disableDeviceForCurrentUser");
+  [_swiftAPI disableDeviceForCurrentUser];
+}
 
 @end
 

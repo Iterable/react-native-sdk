@@ -102,8 +102,8 @@ export interface Spec extends TurboModule {
     dict: { [key: string]: string | number | boolean } | null
   ): void;
 
-  // // Device management
-  // disableDeviceForCurrentUser(): void;
+  // Device management
+  disableDeviceForCurrentUser(): void;
   // getLastPushPayload(): Promise<{
   //   [key: string]: string | number | boolean;
   // } | null>;
