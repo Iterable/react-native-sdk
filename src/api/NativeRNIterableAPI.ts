@@ -113,8 +113,8 @@ export interface Spec extends TurboModule {
     messageId: string
   ): Promise<{ [key: string]: string | number | boolean }>;
 
-  // // App links
-  // handleAppLink(appLink: string): Promise<boolean>;
+  // App links
+  handleAppLink(appLink: string): Promise<boolean>;
 
   // // Subscriptions
   // updateSubscriptions(

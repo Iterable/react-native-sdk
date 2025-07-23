@@ -266,6 +266,15 @@ RCT_EXPORT_MODULE(RNIterableAPI)
   [_swiftAPI getHtmlInAppContentForMessage:messageId resolver:resolve rejecter:reject];
 }
 
+- (void)handleAppLink:(NSString *)appLink
+       resolve:(RCTPromiseResolveBlock)resolve
+       reject:(RCTPromiseRejectBlock)reject
+{
+  NSLog(@"ReactNativeSdk handleAppLink");
+  [_swiftAPI handleAppLink:appLink resolver:resolve rejecter:reject];
+}
+
+
 @end
 
 

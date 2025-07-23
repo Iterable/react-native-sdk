@@ -345,7 +345,9 @@ open class ReactIterableAPI: RCTEventEmitter {
   }
 
   @objc(handleAppLink:resolver:rejecter:)
-  func handle(appLink: String, resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
+  public func handle(
+    appLink: String, resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock
+  ) {
     ITBInfo()
     if let url = URL(string: appLink) {
       resolver(IterableAPI.handle(universalLink: url))

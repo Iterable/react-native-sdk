@@ -823,7 +823,7 @@ export class Iterable {
   static handleAppLink(link: string): Promise<boolean> {
     Iterable?.logger?.log('handleAppLink');
 
-    return RNIterableAPI.handleAppLink(link);
+    return api.handleAppLink(link);
   }
 
   /**
