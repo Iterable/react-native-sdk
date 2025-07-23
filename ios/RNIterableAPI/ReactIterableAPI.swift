@@ -491,7 +491,7 @@ open class ReactIterableAPI: RCTEventEmitter {
   // MARK: - SDK Auth Manager Functions
 
   @objc(passAlongAuthToken:)
-  func passAlong(authToken: String?) {
+  public func passAlongAuthToken(authToken: String?) {
     ITBInfo()
     passedAuthToken = authToken
     authHandlerSemaphore.signal()

@@ -303,6 +303,12 @@ RCT_EXPORT_MODULE(RNIterableAPI)
   [_swiftAPI updateVisibleRows:visibleRows];
 }
 
+- (void)passAlongAuthToken:(NSString *)authToken
+{
+  NSLog(@"ReactNativeSdk passAlongAuthToken");
+  [_swiftAPI passAlongAuthToken:authToken];
+}
+
 
 
 @end

@@ -135,10 +135,10 @@ export interface Spec extends TurboModule {
     visibleRows: { [key: string]: string | number | boolean }[]
   ): void;
 
-  // // Auth
-  // passAlongAuthToken(authToken: string | null): void;
+  // Auth
+  passAlongAuthToken(authToken: string | null): void;
 
-  // // Wake app -- android only
+  // Wake app -- android only
   // wakeApp(): void;
 
   // // If your module will emit events, include the required listener stubs:
