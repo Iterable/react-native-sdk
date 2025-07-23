@@ -1,6 +1,6 @@
 import {
   Linking,
-  // NativeEventEmitter,
+  NativeEventEmitter,
   // NativeModules,
   Platform,
 } from 'react-native';
@@ -26,7 +26,7 @@ import { IterableLogger } from './IterableLogger';
 
 const RNIterableAPI = oldApi;
 // const RNIterableAPI = NativeModules.RNIterableAPI;
-// const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
+const RNEventEmitter = new NativeEventEmitter(api);
 
 /* eslint-disable tsdoc/syntax */
 /**
@@ -126,7 +126,7 @@ export class Iterable {
     this.setupEventHandlers();
     const version = this.getVersionFromPackageJson();
 
-    return RNIterableAPI.initialize2WithApiKey(
+    return api.initialize2WithApiKey(
       apiKey,
       config.toDict(),
       version,
@@ -902,111 +902,111 @@ export class Iterable {
    */
   private static setupEventHandlers() {
     //Remove all listeners to avoid duplicate listeners
-    // RNEventEmitter.removeAllListeners(IterableEventName.handleUrlCalled);
-    // RNEventEmitter.removeAllListeners(IterableEventName.handleInAppCalled);
-    // RNEventEmitter.removeAllListeners(
-    //   IterableEventName.handleCustomActionCalled
-    // );
-    // RNEventEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
+    RNEventEmitter.removeAllListeners(IterableEventName.handleUrlCalled);
+    RNEventEmitter.removeAllListeners(IterableEventName.handleInAppCalled);
+    RNEventEmitter.removeAllListeners(
+      IterableEventName.handleCustomActionCalled
+    );
+    RNEventEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
 
     if (Iterable.savedConfig.urlHandler) {
-      // RNEventEmitter.addListener(IterableEventName.handleUrlCalled, (dict) => {
-      //   const url = dict.url;
-      //   const context = IterableActionContext.fromDict(dict.context);
-      //   Iterable.wakeApp();
+      RNEventEmitter.addListener(IterableEventName.handleUrlCalled, (dict) => {
+        const url = dict.url;
+        const context = IterableActionContext.fromDict(dict.context);
+        Iterable.wakeApp();
 
-      //   if (Platform.OS === 'android') {
-      //     //Give enough time for Activity to wake up.
-      //     setTimeout(() => {
-      //       callUrlHandler(url, context);
-      //     }, 1000);
-      //   } else {
-      //     callUrlHandler(url, context);
-      //   }
-      // });
+        if (Platform.OS === 'android') {
+          //Give enough time for Activity to wake up.
+          setTimeout(() => {
+            callUrlHandler(url, context);
+          }, 1000);
+        } else {
+          callUrlHandler(url, context);
+        }
+      });
     }
 
     if (Iterable.savedConfig.customActionHandler) {
-      // RNEventEmitter.addListener(
-      //   IterableEventName.handleCustomActionCalled,
-      //   (dict) => {
-      //     const action = IterableAction.fromDict(dict.action);
-      //     const context = IterableActionContext.fromDict(dict.context);
-      //     Iterable.savedConfig.customActionHandler!(action, context);
-      //   }
-      // );
+      RNEventEmitter.addListener(
+        IterableEventName.handleCustomActionCalled,
+        (dict) => {
+          const action = IterableAction.fromDict(dict.action);
+          const context = IterableActionContext.fromDict(dict.context);
+          Iterable.savedConfig.customActionHandler!(action, context);
+        }
+      );
     }
 
     if (Iterable.savedConfig.inAppHandler) {
-      // RNEventEmitter.addListener(
-      //   IterableEventName.handleInAppCalled,
-      //   (messageDict) => {
-      //     const message = IterableInAppMessage.fromDict(messageDict);
-      //     // MOB-10423: Check if we can use chain operator (?.) here instead
-      //     const result = Iterable.savedConfig.inAppHandler!(message);
-      //     api.setInAppShowResponse(result);
-      //   }
-      // );
+      RNEventEmitter.addListener(
+        IterableEventName.handleInAppCalled,
+        (messageDict) => {
+          const message = IterableInAppMessage.fromDict(messageDict);
+          // MOB-10423: Check if we can use chain operator (?.) here instead
+          const result = Iterable.savedConfig.inAppHandler!(message);
+          api.setInAppShowResponse(result);
+        }
+      );
     }
 
     if (Iterable.savedConfig.authHandler) {
       let authResponseCallback: IterableAuthResponseResult;
-      // RNEventEmitter.addListener(IterableEventName.handleAuthCalled, () => {
-      //   // MOB-10423: Check if we can use chain operator (?.) here instead
+      RNEventEmitter.addListener(IterableEventName.handleAuthCalled, () => {
+        // MOB-10423: Check if we can use chain operator (?.) here instead
 
-      //   Iterable.savedConfig.authHandler!()
-      //     .then((promiseResult) => {
-      //       // Promise result can be either just String OR of type AuthResponse.
-      //       // If type AuthReponse, authToken will be parsed looking for `authToken` within promised object. Two additional listeners will be registered for success and failure callbacks sent by native bridge layer.
-      //       // Else it will be looked for as a String.
-      //       if (typeof promiseResult === typeof new IterableAuthResponse()) {
-      //         api.passAlongAuthToken(
-      //           (promiseResult as IterableAuthResponse).authToken
-      //         );
+        Iterable.savedConfig.authHandler!()
+          .then((promiseResult) => {
+            // Promise result can be either just String OR of type AuthResponse.
+            // If type AuthReponse, authToken will be parsed looking for `authToken` within promised object. Two additional listeners will be registered for success and failure callbacks sent by native bridge layer.
+            // Else it will be looked for as a String.
+            if (typeof promiseResult === typeof new IterableAuthResponse()) {
+              api.passAlongAuthToken(
+                (promiseResult as IterableAuthResponse).authToken
+              );
 
-      //         setTimeout(() => {
-      //           if (
-      //             authResponseCallback === IterableAuthResponseResult.SUCCESS
-      //           ) {
-      //             if ((promiseResult as IterableAuthResponse).successCallback) {
-      //               (promiseResult as IterableAuthResponse).successCallback?.();
-      //             }
-      //           } else if (
-      //             authResponseCallback === IterableAuthResponseResult.FAILURE
-      //           ) {
-      //             if ((promiseResult as IterableAuthResponse).failureCallback) {
-      //               (promiseResult as IterableAuthResponse).failureCallback?.();
-      //             }
-      //           } else {
-      //             Iterable?.logger?.log(
-      //               'No callback received from native layer'
-      //             );
-      //           }
-      //         }, 1000);
-      //       } else if (typeof promiseResult === typeof '') {
-      //         //If promise only returns string
-      //         api.passAlongAuthToken(promiseResult as string);
-      //       } else {
-      //         Iterable?.logger?.log(
-      //           'Unexpected promise returned. Auth token expects promise of String or AuthResponse type.'
-      //         );
-      //       }
-      //     })
-      //     .catch((e) => Iterable?.logger?.log(e));
-      // });
+              setTimeout(() => {
+                if (
+                  authResponseCallback === IterableAuthResponseResult.SUCCESS
+                ) {
+                  if ((promiseResult as IterableAuthResponse).successCallback) {
+                    (promiseResult as IterableAuthResponse).successCallback?.();
+                  }
+                } else if (
+                  authResponseCallback === IterableAuthResponseResult.FAILURE
+                ) {
+                  if ((promiseResult as IterableAuthResponse).failureCallback) {
+                    (promiseResult as IterableAuthResponse).failureCallback?.();
+                  }
+                } else {
+                  Iterable?.logger?.log(
+                    'No callback received from native layer'
+                  );
+                }
+              }, 1000);
+            } else if (typeof promiseResult === typeof '') {
+              //If promise only returns string
+              api.passAlongAuthToken(promiseResult as string);
+            } else {
+              Iterable?.logger?.log(
+                'Unexpected promise returned. Auth token expects promise of String or AuthResponse type.'
+              );
+            }
+          })
+          .catch((e) => Iterable?.logger?.log(e));
+      });
 
-      // RNEventEmitter.addListener(
-      //   IterableEventName.handleAuthSuccessCalled,
-      //   () => {
-      //     authResponseCallback = IterableAuthResponseResult.SUCCESS;
-      //   }
-      // );
-      // RNEventEmitter.addListener(
-      //   IterableEventName.handleAuthFailureCalled,
-      //   () => {
-      //     authResponseCallback = IterableAuthResponseResult.FAILURE;
-      //   }
-      // );
+      RNEventEmitter.addListener(
+        IterableEventName.handleAuthSuccessCalled,
+        () => {
+          authResponseCallback = IterableAuthResponseResult.SUCCESS;
+        }
+      );
+      RNEventEmitter.addListener(
+        IterableEventName.handleAuthFailureCalled,
+        () => {
+          authResponseCallback = IterableAuthResponseResult.FAILURE;
+        }
+      );
     }
 
     function callUrlHandler(url: string, context: IterableActionContext) {

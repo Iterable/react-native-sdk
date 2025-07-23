@@ -2,7 +2,7 @@ import Foundation
 import IterableSDK
 import React
 
-// @objc(ReactIterableAPI)
+@objc(ReactIterableAPI)
 @objcMembers
 open class ReactIterableAPI: RCTEventEmitter {
   deinit {
@@ -40,7 +40,7 @@ open class ReactIterableAPI: RCTEventEmitter {
     case handleAuthFailureCalled
   }
 
-  override public func supportedEvents() -> [String]! {
+  @objc override public func supportedEvents() -> [String]! {
     var result = [String]()
 
     EventName.allCases.forEach {
@@ -61,6 +61,10 @@ open class ReactIterableAPI: RCTEventEmitter {
 
     shouldEmit = false
   }
+
+  // REQUIRED stubs for RCTEventEmitter
+  open override func addListener(_ eventName: String!) { /* no-op */  }
+  open override func removeListeners(_ count: Double) { /* no-op */  }
 
   // MARK: - Native SDK Functions
 
@@ -562,7 +566,7 @@ open class ReactIterableAPI: RCTEventEmitter {
   }
 
   @objc(receivedIterableInboxChanged)
-  private func receivedIterableInboxChanged() {
+  func receivedIterableInboxChanged() {
     guard shouldEmit else {
       return
     }

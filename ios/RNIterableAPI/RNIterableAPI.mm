@@ -16,22 +16,38 @@ typedef NS_ENUM(NSInteger, InAppShowResponse) {
 
 @implementation RNIterableAPI {
   ReactIterableAPI *_swiftAPI;
+  BOOL _hasListeners;
 }
 
 RCT_EXPORT_MODULE(RNIterableAPI)
 
 - (instancetype)init {
-  NSLog(@"RNIterableAPI init");
   if ((self = [super init])) {
-    _swiftAPI = [ReactIterableAPI shared];
+    _swiftAPI = [ReactIterableAPI shared]; // NOT .shared
   }
   return self;
 }
 
-- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
-    (const facebook::react::ObjCTurboModule::InitParams &)params
-{
-    return std::make_shared<facebook::react::NativeRNIterableAPISpecJSI>(params);
+- (void)setBridge:(RCTBridge *)bridge {
+  [super setBridge:bridge];
+
+  // inject both bridge and callableJSModules
+  [_swiftAPI setValue:bridge forKey:@"bridge"];
+  [_swiftAPI setValue:self.callableJSModules forKey:@"callableJSModules"];
+}
+- (void)startObserving {
+  [super startObserving];
+  [_swiftAPI setValue:self.callableJSModules forKey:@"callableJSModules"]; // ensure again
+  [_swiftAPI startObserving];
+}
+
+- (void)stopObserving {
+  [super stopObserving];
+  [_swiftAPI stopObserving];
+}
+
+- (NSArray<NSString *> *)supportedEvents {
+  return [_swiftAPI supportedEvents];
 }
 
 - (void)hello {
@@ -309,7 +325,11 @@ RCT_EXPORT_MODULE(RNIterableAPI)
   [_swiftAPI passAlongAuthToken:authToken];
 }
 
-
+- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
+    (const facebook::react::ObjCTurboModule::InitParams &)params
+{
+    return std::make_shared<facebook::react::NativeRNIterableAPISpecJSI>(params);
+}
 
 @end
 

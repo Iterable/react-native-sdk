@@ -138,12 +138,12 @@ export interface Spec extends TurboModule {
   // Auth
   passAlongAuthToken(authToken: string | null): void;
 
-  // Wake app -- android only
+  // // Wake app -- android only
   // wakeApp(): void;
 
-  // // If your module will emit events, include the required listener stubs:
-  // addListener(eventName: string): void;
-  // removeListeners(count: number): void;
+  // REQUIRED for RCTEventEmitter
+  addListener(eventName: string): void;
+  removeListeners(count: number): void;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('RNIterableAPI');
