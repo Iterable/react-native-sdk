@@ -1,5 +1,4 @@
-import { NativeModules } from 'react-native';
-
+import { api } from '../../api';
 import { Iterable } from '../../core/classes/Iterable';
 import type {
   IterableInAppDeleteSource,
@@ -7,9 +6,8 @@ import type {
 } from '../enums';
 import { IterableHtmlInAppContent } from './IterableHtmlInAppContent';
 import { IterableInAppMessage } from './IterableInAppMessage';
-import { api, oldApi } from '../../api';
 
-const RNIterableAPI = oldApi;
+const RNIterableAPI = api;
 
 /**
  * Manages in-app messages for the current user.
@@ -39,7 +37,7 @@ export class IterableInAppManager {
   getMessages(): Promise<IterableInAppMessage[]> {
     Iterable?.logger?.log('InAppManager.getMessages');
 
-    return api.getInAppMessages();
+    return RNIterableAPI.getInAppMessages();
   }
 
   /**
@@ -62,7 +60,7 @@ export class IterableInAppManager {
   getInboxMessages(): Promise<IterableInAppMessage[]> {
     Iterable?.logger?.log('InAppManager.getInboxMessages');
 
-    return api.getInboxMessages();
+    return RNIterableAPI.getInboxMessages();
   }
 
   /**
@@ -89,7 +87,7 @@ export class IterableInAppManager {
   ): Promise<string | undefined> {
     Iterable?.logger?.log('InAppManager.show');
 
-    return api.showMessage(message.messageId, consume);
+    return RNIterableAPI.showMessage(message.messageId, consume);
   }
 
   /**
@@ -117,7 +115,7 @@ export class IterableInAppManager {
   ): void {
     Iterable?.logger?.log('InAppManager.remove');
 
-    return api.removeMessage(message.messageId, location, source);
+    return RNIterableAPI.removeMessage(message.messageId, location, source);
   }
 
   /**
@@ -134,7 +132,7 @@ export class IterableInAppManager {
   setReadForMessage(message: IterableInAppMessage, read: boolean) {
     Iterable?.logger?.log('InAppManager.setRead');
 
-    api.setReadForMessage(message.messageId, read);
+    RNIterableAPI.setReadForMessage(message.messageId, read);
   }
 
   /**
@@ -154,7 +152,7 @@ export class IterableInAppManager {
   ): Promise<IterableHtmlInAppContent> {
     Iterable?.logger?.log('InAppManager.getHtmlContentForMessage');
 
-    return api.getHtmlInAppContentForMessage(message.messageId);
+    return RNIterableAPI.getHtmlInAppContentForMessage(message.messageId);
   }
 
   /**
@@ -174,6 +172,6 @@ export class IterableInAppManager {
   setAutoDisplayPaused(paused: boolean) {
     Iterable?.logger?.log('InAppManager.setAutoDisplayPaused');
 
-    api.setAutoDisplayPaused(paused);
+    RNIterableAPI.setAutoDisplayPaused(paused);
   }
 }

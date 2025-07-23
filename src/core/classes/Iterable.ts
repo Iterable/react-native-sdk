@@ -14,7 +14,7 @@ import { IterableInAppCloseSource } from '../../inApp/enums/IterableInAppCloseSo
 import { IterableInAppDeleteSource } from '../../inApp/enums/IterableInAppDeleteSource';
 import { IterableInAppLocation } from '../../inApp/enums/IterableInAppLocation';
 import { IterableAuthResponseResult, IterableEventName } from '../enums';
-import { api, oldApi } from '../../api';
+import { api } from '../../api';
 
 import { IterableAction } from './IterableAction';
 import { IterableActionContext } from './IterableActionContext';
@@ -24,8 +24,7 @@ import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
 
-const RNIterableAPI = oldApi;
-// const RNIterableAPI = NativeModules.RNIterableAPI;
+const RNIterableAPI = api;
 const RNEventEmitter = new NativeEventEmitter(api);
 
 /* eslint-disable tsdoc/syntax */
@@ -103,7 +102,7 @@ export class Iterable {
 
     const version = this.getVersionFromPackageJson();
 
-    return api.initializeWithApiKey(apiKey, config.toDict(), version);
+    return RNIterableAPI.initializeWithApiKey(apiKey, config.toDict(), version);
   }
 
   /**
@@ -126,7 +125,7 @@ export class Iterable {
     this.setupEventHandlers();
     const version = this.getVersionFromPackageJson();
 
-    return api.initialize2WithApiKey(
+    return RNIterableAPI.initialize2WithApiKey(
       apiKey,
       config.toDict(),
       version,
@@ -186,7 +185,7 @@ export class Iterable {
   static setEmail(email?: string | null, authToken?: string | null) {
     Iterable?.logger?.log('setEmail: ' + email);
 
-    api.setEmail(email, authToken);
+    RNIterableAPI.setEmail(email, authToken);
   }
 
   /**
@@ -202,7 +201,7 @@ export class Iterable {
   static getEmail(): Promise<string | null> {
     Iterable?.logger?.log('getEmail');
 
-    return api.getEmail();
+    return RNIterableAPI.getEmail();
   }
 
   /**
@@ -251,7 +250,7 @@ export class Iterable {
   static setUserId(userId?: string | null, authToken?: string | null) {
     Iterable?.logger?.log('setUserId: ' + userId);
 
-    api.setUserId(userId, authToken);
+    RNIterableAPI.setUserId(userId, authToken);
   }
 
   /**
@@ -267,7 +266,7 @@ export class Iterable {
   static getUserId(): Promise<string | null> {
     Iterable?.logger?.log('getUserId');
 
-    return api.getUserId();
+    return RNIterableAPI.getUserId();
   }
 
   /**
@@ -281,7 +280,7 @@ export class Iterable {
   static disableDeviceForCurrentUser() {
     Iterable?.logger?.log('disableDeviceForCurrentUser');
 
-    api.disableDeviceForCurrentUser();
+    RNIterableAPI.disableDeviceForCurrentUser();
   }
 
   /**
@@ -298,7 +297,7 @@ export class Iterable {
   static getLastPushPayload(): Promise<unknown> {
     Iterable?.logger?.log('getLastPushPayload');
 
-    return api.getLastPushPayload();
+    return RNIterableAPI.getLastPushPayload();
   }
 
   /**
@@ -326,7 +325,7 @@ export class Iterable {
   static getAttributionInfo(): Promise<IterableAttributionInfo | undefined> {
     Iterable?.logger?.log('getAttributionInfo');
 
-    return api.getAttributionInfo().then(
+    return RNIterableAPI.getAttributionInfo().then(
       (dict?: { [key: string]: string | number | boolean } | null) => {
         if (dict) {
           return new IterableAttributionInfo(
@@ -368,7 +367,7 @@ export class Iterable {
   static setAttributionInfo(attributionInfo?: IterableAttributionInfo) {
     Iterable?.logger?.log('setAttributionInfo');
 
-    api.setAttributionInfo(attributionInfo);
+    RNIterableAPI.setAttributionInfo(attributionInfo);
   }
 
   /**
@@ -409,7 +408,7 @@ export class Iterable {
   ) {
     Iterable?.logger?.log('trackPushOpenWithCampaignId');
 
-    api.trackPushOpenWithCampaignId(
+    RNIterableAPI.trackPushOpenWithCampaignId(
       campaignId,
       templateId,
       messageId,
@@ -447,7 +446,7 @@ export class Iterable {
   static updateCart(items: IterableCommerceItem[]) {
     Iterable?.logger?.log('updateCart');
 
-    api.updateCart(items);
+    RNIterableAPI.updateCart(items);
   }
 
   /**
@@ -499,7 +498,7 @@ export class Iterable {
   ) {
     Iterable?.logger?.log('trackPurchase');
 
-    api.trackPurchase(total, items, dataFields);
+    RNIterableAPI.trackPurchase(total, items, dataFields);
   }
 
   /**
@@ -527,7 +526,7 @@ export class Iterable {
   ) {
     Iterable?.logger?.log('trackInAppOpen');
 
-    api.trackInAppOpen(message.messageId, location);
+    RNIterableAPI.trackInAppOpen(message.messageId, location);
   }
 
   /**
@@ -558,7 +557,7 @@ export class Iterable {
   ) {
     Iterable?.logger?.log('trackInAppClick');
 
-    api.trackInAppClick(message.messageId, location, clickedUrl);
+    RNIterableAPI.trackInAppClick(message.messageId, location, clickedUrl);
   }
 
   /**
@@ -591,7 +590,7 @@ export class Iterable {
   ) {
     Iterable?.logger?.log('trackInAppClose');
 
-    api.trackInAppClose(
+    RNIterableAPI.trackInAppClose(
       message.messageId,
       location,
       source,
@@ -642,7 +641,7 @@ export class Iterable {
   ) {
     Iterable?.logger?.log('inAppConsume');
 
-    api.inAppConsume(message.messageId, location, source);
+    RNIterableAPI.inAppConsume(message.messageId, location, source);
   }
 
   /**
@@ -668,7 +667,7 @@ export class Iterable {
   static trackEvent(name: string, dataFields?: unknown) {
     Iterable?.logger?.log('trackEvent');
 
-    api.trackEvent(name, dataFields);
+    RNIterableAPI.trackEvent(name, dataFields);
   }
 
   /**
@@ -716,7 +715,7 @@ export class Iterable {
   ) {
     Iterable?.logger?.log('updateUser');
 
-    api.updateUser(dataFields, mergeNestedObjects);
+    RNIterableAPI.updateUser(dataFields, mergeNestedObjects);
   }
 
   /**
@@ -739,7 +738,7 @@ export class Iterable {
   static updateEmail(email: string, authToken?: string) {
     Iterable?.logger?.log('updateEmail');
 
-    api.updateEmail(email, authToken);
+    RNIterableAPI.updateEmail(email, authToken);
   }
 
   /**
@@ -823,7 +822,7 @@ export class Iterable {
   static handleAppLink(link: string): Promise<boolean> {
     Iterable?.logger?.log('handleAppLink');
 
-    return api.handleAppLink(link);
+    return RNIterableAPI.handleAppLink(link);
   }
 
   /**
@@ -870,7 +869,7 @@ export class Iterable {
   ) {
     Iterable?.logger?.log('updateSubscriptions');
 
-    api.updateSubscriptions(
+    RNIterableAPI.updateSubscriptions(
       emailListIds,
       unsubscribedChannelIds,
       unsubscribedMessageTypeIds,
@@ -944,7 +943,7 @@ export class Iterable {
           const message = IterableInAppMessage.fromDict(messageDict);
           // MOB-10423: Check if we can use chain operator (?.) here instead
           const result = Iterable.savedConfig.inAppHandler!(message);
-          api.setInAppShowResponse(result);
+          RNIterableAPI.setInAppShowResponse(result);
         }
       );
     }
@@ -960,7 +959,7 @@ export class Iterable {
             // If type AuthReponse, authToken will be parsed looking for `authToken` within promised object. Two additional listeners will be registered for success and failure callbacks sent by native bridge layer.
             // Else it will be looked for as a String.
             if (typeof promiseResult === typeof new IterableAuthResponse()) {
-              api.passAlongAuthToken(
+              RNIterableAPI.passAlongAuthToken(
                 (promiseResult as IterableAuthResponse).authToken
               );
 
@@ -985,7 +984,7 @@ export class Iterable {
               }, 1000);
             } else if (typeof promiseResult === typeof '') {
               //If promise only returns string
-              api.passAlongAuthToken(promiseResult as string);
+              RNIterableAPI.passAlongAuthToken(promiseResult as string);
             } else {
               Iterable?.logger?.log(
                 'Unexpected promise returned. Auth token expects promise of String or AuthResponse type.'

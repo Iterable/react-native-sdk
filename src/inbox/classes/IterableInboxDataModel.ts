@@ -1,5 +1,5 @@
-import { NativeModules } from 'react-native';
 
+import { api } from '../../api';
 import { Iterable } from '../../core/classes/Iterable';
 import {
   IterableHtmlInAppContent,
@@ -12,9 +12,8 @@ import type {
   IterableInboxImpressionRowInfo,
   IterableInboxRowViewModel,
 } from '../types';
-import { api, oldApi } from '../../api';
 
-const RNIterableAPI = oldApi;
+const RNIterableAPI = api;
 // const RNIterableAPI = NativeModules.RNIterableAPI;
 
 /**
@@ -103,7 +102,7 @@ export class IterableInboxDataModel {
       'IterableInboxDataModel.getHtmlContentForItem messageId: ' + id
     );
 
-    return api.getHtmlInAppContentForMessage(id).then(
+    return RNIterableAPI.getHtmlInAppContentForMessage(id).then(
       (content: IterableHtmlInAppContentRaw) => {
         return IterableHtmlInAppContent.fromDict(content);
       }
@@ -118,7 +117,7 @@ export class IterableInboxDataModel {
   setMessageAsRead(id: string) {
     Iterable?.logger?.log('IterableInboxDataModel.setMessageAsRead');
 
-    api.setReadForMessage(id, true);
+    RNIterableAPI.setReadForMessage(id, true);
   }
 
   /**
@@ -130,7 +129,7 @@ export class IterableInboxDataModel {
   deleteItemById(id: string, deleteSource: IterableInAppDeleteSource) {
     Iterable?.logger?.log('IterableInboxDataModel.deleteItemById');
 
-    api.removeMessage(id, IterableInAppLocation.inbox, deleteSource);
+    RNIterableAPI.removeMessage(id, IterableInAppLocation.inbox, deleteSource);
   }
 
   /**
@@ -140,7 +139,7 @@ export class IterableInboxDataModel {
    * If the fetch operation fails, the promise resolves to an empty array.
    */
   async refresh(): Promise<IterableInboxRowViewModel[]> {
-    return api.getInboxMessages().then(
+    return RNIterableAPI.getInboxMessages().then(
       (messages: IterableInAppMessage[]) => {
         return this.processMessages(messages);
       },
@@ -156,7 +155,7 @@ export class IterableInboxDataModel {
    * @param visibleRows - An array of `IterableInboxImpressionRowInfo` objects representing the rows that are currently visible.
    */
   startSession(visibleRows: IterableInboxImpressionRowInfo[] = []) {
-    api.startSession(visibleRows);
+    RNIterableAPI.startSession(visibleRows);
   }
 
   /**
@@ -167,7 +166,7 @@ export class IterableInboxDataModel {
    */
   async endSession(visibleRows: IterableInboxImpressionRowInfo[] = []) {
     await this.updateVisibleRows(visibleRows);
-    api.endSession();
+    RNIterableAPI.endSession();
   }
 
   /**
@@ -183,7 +182,7 @@ export class IterableInboxDataModel {
    *                      Defaults to an empty array if not provided.
    */
   updateVisibleRows(visibleRows: IterableInboxImpressionRowInfo[] = []) {
-    api.updateVisibleRows(visibleRows);
+    RNIterableAPI.updateVisibleRows(visibleRows);
   }
 
   /**
