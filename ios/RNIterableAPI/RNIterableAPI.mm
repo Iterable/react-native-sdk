@@ -218,6 +218,13 @@ RCT_EXPORT_MODULE(RNIterableAPI)
   [_swiftAPI trackPurchase:total items:items dataFields:dataFields];
 }
 
+- (void)updateUser:(NSDictionary *)dataFields
+       mergeNestedObjects:(BOOL)mergeNestedObjects
+{
+  NSLog(@"ReactNativeSdk updateUser");
+  [_swiftAPI updateUser:dataFields mergeNestedObjects:mergeNestedObjects];
+}
+
 @end
 
 

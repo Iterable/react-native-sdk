@@ -716,7 +716,7 @@ export class Iterable {
   ) {
     Iterable?.logger?.log('updateUser');
 
-    RNIterableAPI.updateUser(dataFields, mergeNestedObjects);
+    api.updateUser(dataFields, mergeNestedObjects);
   }
 
   /**

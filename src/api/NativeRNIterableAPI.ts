@@ -87,11 +87,11 @@ export interface Spec extends TurboModule {
     dataFields?: { [key: string]: string | number | boolean }
   ): void;
 
-  // // User data
-  // updateUser(
-  //   dataFields: { [key: string]: string | number | boolean },
-  //   mergeNestedObjects: boolean
-  // ): void;
+  // User data
+  updateUser(
+    dataFields: { [key: string]: string | number | boolean },
+    mergeNestedObjects: boolean
+  ): void;
   // updateEmail(email: string, authToken?: string): void;
 
   // // Attribution

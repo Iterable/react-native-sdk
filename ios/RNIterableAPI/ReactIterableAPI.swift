@@ -325,9 +325,10 @@ open class ReactIterableAPI: RCTEventEmitter {
   }
 
   @objc(updateUser:mergeNestedObjects:)
-  func updateUser(dataFields: [AnyHashable: Any], mergeNestedObjects: Bool) {
+  public func updateUser(dataFields: NSDictionary, mergeNestedObjects: Bool) {
     ITBInfo()
-    IterableAPI.updateUser(dataFields, mergeNestedObjects: mergeNestedObjects)
+    IterableAPI.updateUser(
+      (dataFields as? [AnyHashable: Any])!, mergeNestedObjects: mergeNestedObjects)
   }
 
   @objc(updateEmail:authToken:)
