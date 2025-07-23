@@ -12,7 +12,7 @@ typedef NS_ENUM(NSInteger, InAppShowResponse) {
   InAppShowResponseSkip = 1, // use real cases if different; values just need to exist
 };
 
-#import "RNIterableAPI-Swift.h"
+#import "Iterable_React_Native_SDK-Swift.h"
 
 @interface RNIterableAPI () <ReactIterableAPIDelegate>
 @end
