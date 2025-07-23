@@ -225,6 +225,13 @@ RCT_EXPORT_MODULE(RNIterableAPI)
   [_swiftAPI updateUser:dataFields mergeNestedObjects:mergeNestedObjects];
 }
 
+- (void)updateEmail:(NSString *)email
+       authToken:(NSString *)authToken
+{
+  NSLog(@"ReactNativeSdk updateEmail");
+  [_swiftAPI updateEmail:email authToken:authToken];
+}
+
 @end
 
 

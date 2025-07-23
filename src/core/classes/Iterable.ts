@@ -739,7 +739,7 @@ export class Iterable {
   static updateEmail(email: string, authToken?: string) {
     Iterable?.logger?.log('updateEmail');
 
-    RNIterableAPI.updateEmail(email, authToken);
+    api.updateEmail(email, authToken);
   }
 
   /**

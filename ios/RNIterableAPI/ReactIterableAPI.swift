@@ -332,7 +332,7 @@ open class ReactIterableAPI: RCTEventEmitter {
   }
 
   @objc(updateEmail:authToken:)
-  func updateEmail(email: String, with authToken: String?) {
+  public func updateEmail(email: String, with authToken: String?) {
     ITBInfo()
     if let authToken = authToken {
       IterableAPI.updateEmail(email, withToken: authToken, onSuccess: nil, onFailure: nil)
