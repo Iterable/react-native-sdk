@@ -116,15 +116,15 @@ export interface Spec extends TurboModule {
   // App links
   handleAppLink(appLink: string): Promise<boolean>;
 
-  // // Subscriptions
-  // updateSubscriptions(
-  //   emailListIds: number[] | null,
-  //   unsubscribedChannelIds: number[] | null,
-  //   unsubscribedMessageTypeIds: number[] | null,
-  //   subscribedMessageTypeIds: number[] | null,
-  //   campaignId: number,
-  //   templateId: number
-  // ): void;
+  // Subscriptions
+  updateSubscriptions(
+    emailListIds: number[] | null,
+    unsubscribedChannelIds: number[] | null,
+    unsubscribedMessageTypeIds: number[] | null,
+    subscribedMessageTypeIds: number[] | null,
+    campaignId: number,
+    templateId: number
+  ): void;
 
   // // Session tracking
   // startSession(

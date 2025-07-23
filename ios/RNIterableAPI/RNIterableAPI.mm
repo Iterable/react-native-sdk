@@ -274,6 +274,16 @@ RCT_EXPORT_MODULE(RNIterableAPI)
   [_swiftAPI handleAppLink:appLink resolver:resolve rejecter:reject];
 }
 
+- (void)updateSubscriptions:(NSArray *)emailListIds
+       unsubscribedChannelIds:(NSArray *)unsubscribedChannelIds
+       unsubscribedMessageTypeIds:(NSArray *)unsubscribedMessageTypeIds
+       subscribedMessageTypeIds:(NSArray *)subscribedMessageTypeIds
+       campaignId:(NSNumber *)campaignId
+       templateId:(NSNumber *)templateId
+{
+  NSLog(@"ReactNativeSdk updateSubscriptions");
+  [_swiftAPI updateSubscriptions:emailListIds unsubscribedChannelIds:unsubscribedChannelIds unsubscribedMessageTypeIds:unsubscribedMessageTypeIds subscribedMessageTypeIds:subscribedMessageTypeIds campaignId:campaignId templateId:templateId];
+}
 
 @end
 

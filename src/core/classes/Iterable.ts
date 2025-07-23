@@ -870,7 +870,7 @@ export class Iterable {
   ) {
     Iterable?.logger?.log('updateSubscriptions');
 
-    RNIterableAPI.updateSubscriptions(
+    api.updateSubscriptions(
       emailListIds,
       unsubscribedChannelIds,
       unsubscribedMessageTypeIds,

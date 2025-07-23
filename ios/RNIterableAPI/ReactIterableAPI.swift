@@ -418,7 +418,7 @@ open class ReactIterableAPI: RCTEventEmitter {
     updateSubscriptions:unsubscribedChannelIds:unsubscribedMessageTypeIds:subscribedMessageTypeIds:
     campaignId:templateId:
   )
-  func updateSubscriptions(
+  public func updateSubscriptions(
     emailListIds: [NSNumber]?,
     unsubscribedChannelIds: [NSNumber]?,
     unsubscribedMessageTypeIds: [NSNumber]?,
