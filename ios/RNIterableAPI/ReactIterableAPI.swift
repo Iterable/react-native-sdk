@@ -65,7 +65,6 @@ public class ReactIterableAPI: RCTEventEmitter {
     resolver: @escaping RCTPromiseResolveBlock,
     rejecter: @escaping RCTPromiseRejectBlock
   ) {
-    NSLog("initializeWithApiKey called from swift")
     ITBInfo()
 
     initialize(
@@ -131,7 +130,6 @@ public class ReactIterableAPI: RCTEventEmitter {
     ITBInfo()
     resolver(IterableAPI.userId)
   }
-
   // MARK: - Iterable API Request Functions
 
   @objc(setInAppShowResponse:)
@@ -479,8 +477,7 @@ public class ReactIterableAPI: RCTEventEmitter {
 
   @objc(testEventDispatch)
   public func testEventDispatch() {
-    NSLog("***ITBL SWIFT*** shouldEmit: \(shouldEmit)")
-    NSLog("***ITBL SWIFT*** testEventDispatch", EventName.onTestEventDispatch.rawValue)
+
     delegate?.sendEvent(withName: EventName.onTestEventDispatch.rawValue, body: 0)
   }
 
