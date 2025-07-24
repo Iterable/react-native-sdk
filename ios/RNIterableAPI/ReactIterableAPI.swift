@@ -35,6 +35,7 @@ public class ReactIterableAPI: RCTEventEmitter {
         case receivedIterableInboxChanged
         case handleAuthSuccessCalled
         case handleAuthFailureCalled
+        case onTestEventDispatch
     }
 
     @objc public static var supportedEvents: [String] {
@@ -194,21 +195,23 @@ public class ReactIterableAPI: RCTEventEmitter {
     }
 
     @objc(updateCart:)
-    public func updateCart(items: [[AnyHashable: Any]]) {
+    public func updateCart(items: [NSDictionary]) {
         ITBInfo()
 
-        IterableAPI.updateCart(items: items.compactMap(CommerceItem.from(dict:)))
+        let swiftItems = items.compactMap { $0 as? [AnyHashable: Any] }
+        IterableAPI.updateCart(items: swiftItems.compactMap(CommerceItem.from(dict:)))
     }
 
     @objc(trackPurchase:items:dataFields:)
     public func trackPurchase(total: NSNumber,
-                       items: [[AnyHashable: Any]],
-                       dataFields: [AnyHashable: Any]?) {
+                       items: [NSDictionary],
+                       dataFields: NSDictionary?) {
         ITBInfo()
 
+        let swiftItems = items.compactMap { $0 as? [AnyHashable: Any] }
         IterableAPI.track(purchase: total,
-                          items: items.compactMap(CommerceItem.from(dict:)),
-                          dataFields: dataFields)
+                          items: swiftItems.compactMap(CommerceItem.from(dict:)),
+                          dataFields: dataFields as? [AnyHashable: Any])
     }
 
     @objc(trackInAppOpen:location:)
@@ -313,7 +316,11 @@ public class ReactIterableAPI: RCTEventEmitter {
     public func updateUser(dataFields: NSDictionary, mergeNestedObjects: Bool) {
         ITBInfo()
 
-        IterableAPI.updateUser(dataFields as? [AnyHashable: Any], mergeNestedObjects: mergeNestedObjects)
+      IterableAPI
+        .updateUser(
+          dataFields as! [AnyHashable: Any],
+          mergeNestedObjects: mergeNestedObjects
+        )
     }
 
     @objc(updateEmail:authToken:)
@@ -438,8 +445,8 @@ public class ReactIterableAPI: RCTEventEmitter {
     // MARK: - SDK Inbox Session Tracking Functions
 
     @objc(startSession:)
-    public func startSession(visibleRows: [[AnyHashable: Any]]) {
-        let serializedRows = InboxImpressionTracker.RowInfo.rowInfos(from: visibleRows)
+    public func startSession(visibleRows: [NSDictionary]) {
+        let serializedRows = InboxImpressionTracker.RowInfo.rowInfos(from: visibleRows as! [[AnyHashable: Any]])
 
         inboxSessionManager.startSession(visibleRows: serializedRows)
     }
@@ -465,7 +472,7 @@ public class ReactIterableAPI: RCTEventEmitter {
 
     @objc(updateVisibleRows:)
     public func updateVisibleRows(visibleRows: [NSDictionary]) {
-        let serializedRows = InboxImpressionTracker.RowInfo.rowInfos(from: visibleRows)
+        let serializedRows = InboxImpressionTracker.RowInfo.rowInfos(from: visibleRows as! [[AnyHashable: Any]])
 
         inboxSessionManager.updateVisibleRows(visibleRows: serializedRows)
     }
@@ -503,7 +510,9 @@ public class ReactIterableAPI: RCTEventEmitter {
         ITBInfo()
 
         let launchOptions = createLaunchOptions()
-        let iterableConfig = IterableConfig.from(dict: configDict)
+        let iterableConfig = IterableConfig.from(
+          dict: configDict as? [AnyHashable: Any]
+        )
 
         if let urlHandlerPresent = configDict["urlHandlerPresent"] as? Bool, urlHandlerPresent == true {
             iterableConfig.urlDelegate = self

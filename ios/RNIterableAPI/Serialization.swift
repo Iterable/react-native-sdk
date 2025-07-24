@@ -36,7 +36,7 @@ struct SerializationUtil {
 }
 
 extension IterableConfig {
-    static func from(dict: NSDictionary?) -> IterableConfig {
+    static func from(dict: [AnyHashable: Any]?) -> IterableConfig {
         let config = IterableConfig()
 
         guard let dict = dict else {
@@ -248,7 +248,7 @@ extension LogLevel {
 }
 
 extension InboxImpressionTracker.RowInfo {
-    static func from(dict: NSDictionary) -> InboxImpressionTracker.RowInfo? {
+    static func from(dict: [AnyHashable: Any]) -> InboxImpressionTracker.RowInfo? {
         guard let messageId = dict["messageId"] as? String else {
             return nil
         }
