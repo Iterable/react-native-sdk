@@ -1,14 +1,14 @@
 import {
   Linking,
   NativeEventEmitter,
-  NativeModules,
-  Platform,
+  Platform
 } from 'react-native';
 
 import { buildInfo } from '../../itblBuildInfo';
 
 // TODO: Organize these so that there are no circular dependencies
 // See https://github.com/expo/expo/issues/35100
+import { RNIterableAPI } from '../../api';
 import { IterableInAppMessage } from '../../inApp/classes/IterableInAppMessage';
 import { IterableInAppCloseSource } from '../../inApp/enums/IterableInAppCloseSource';
 import { IterableInAppDeleteSource } from '../../inApp/enums/IterableInAppDeleteSource';
@@ -23,7 +23,6 @@ import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
 
-const RNIterableAPI = NativeModules.RNIterableAPI;
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
 /* eslint-disable tsdoc/syntax */
