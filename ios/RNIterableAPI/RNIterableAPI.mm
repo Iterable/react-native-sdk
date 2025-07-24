@@ -12,8 +12,8 @@
 @protocol IterableAuthDelegate;
 @protocol IterableURLDelegate;
 typedef NS_ENUM(NSInteger, InAppShowResponse) {
-  InAppShowResponseShow = 0,
-  InAppShowResponseSkip = 1,
+  show = 0,
+  skip = 1,
 };
 
 #import "Iterable_React_Native_SDK-Swift.h"
