@@ -1,5 +1,5 @@
 import type { TurboModule } from 'react-native';
-import { TurboModuleRegistry } from 'react-native';
+import { NativeModules, TurboModuleRegistry } from 'react-native';
 
 export interface Spec extends TurboModule {
   // Initialization
@@ -128,5 +128,4 @@ export interface Spec extends TurboModule {
   // testing
   testEventDispatch(): void;
 }
-
 export default TurboModuleRegistry.getEnforcing<Spec>('RNIterableAPI');

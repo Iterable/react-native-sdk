@@ -1,6 +1,10 @@
 #import "RNIterableAPI.h"
+
+#if RCT_NEW_ARCH_ENABLED
 #import "RNIterableAPISpec.h"
-#import <IterableSDK/IterableSDK.h>  // umbrella (Objective-C) header
+#endif
+
+#import <IterableSDK/IterableSDK.h> // umbrella (Objective-C) header
 
 // Forward-declare the Swift protocols/enum used in the Swift header.
 @protocol IterableInAppDelegate;
@@ -9,7 +13,7 @@
 @protocol IterableURLDelegate;
 typedef NS_ENUM(NSInteger, InAppShowResponse) {
   InAppShowResponseShow = 0,
-  InAppShowResponseSkip = 1, // use real cases if different; values just need to exist
+  InAppShowResponseSkip = 1,
 };
 
 #import "Iterable_React_Native_SDK-Swift.h"
@@ -17,15 +21,15 @@ typedef NS_ENUM(NSInteger, InAppShowResponse) {
 @interface RNIterableAPI () <ReactIterableAPIDelegate>
 @end
 
-
 @implementation RNIterableAPI {
   ReactIterableAPI *_swiftAPI;
 }
 
+#pragma mark - Init / bridge wiring
+
 - (instancetype)init {
   self = [super init];
-  if(self) {
-    // Option 2.B - Instantiate the Calculator and set the delegate
+  if (self) {
     _swiftAPI = [ReactIterableAPI new];
     _swiftAPI.delegate = self;
   }
@@ -34,38 +38,49 @@ typedef NS_ENUM(NSInteger, InAppShowResponse) {
 
 RCT_EXPORT_MODULE()
 
++ (BOOL)requiresMainQueueSetup {
+  return NO;
+}
+
+#pragma mark - TurboModule hook (new arch only)
+
+#if RCT_NEW_ARCH_ENABLED
+- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
+    (const facebook::react::ObjCTurboModule::InitParams &)params {
+  return std::make_shared<facebook::react::NativeRNIterableAPISpecJSI>(params);
+}
+#endif
+
+#pragma mark - Events
+
 - (NSArray<NSString *> *)supportedEvents {
   return [ReactIterableAPI supportedEvents];
 }
 
-- (void)sendEventWithName:(NSString * _Nonnull)name result:(double)result {
+- (void)sendEventWithName:(NSString *_Nonnull)name result:(double)result {
   [self sendEventWithName:name body:@(result)];
 }
 
-- (void)testEventDispatch {
-  [_swiftAPI testEventDispatch];
-}
+#pragma mark - Public API (all paths call into Swift)
 
-- (void)initializeWithApiKey:(NSString *)apiKey
-                    config:(NSDictionary *)config
-                   version:(NSString *)version
-                   resolve:(RCTPromiseResolveBlock)resolve
-                   reject:(RCTPromiseRejectBlock)reject
-{
+RCT_EXPORT_METHOD(testEventDispatch) { [_swiftAPI testEventDispatch]; }
+
+RCT_EXPORT_METHOD(
+    initializeWithApiKey : (NSString *)apiKey config : (NSDictionary *)
+        config version : (NSString *)version resolve : (RCTPromiseResolveBlock)
+            resolve reject : (RCTPromiseRejectBlock)reject) {
   [_swiftAPI initializeWithApiKey:apiKey
-                             config:config
-                            version:version
-                           resolver:resolve
-                          rejecter:reject];
+                           config:config
+                          version:version
+                         resolver:resolve
+                         rejecter:reject];
 }
 
-- (void)initialize2WithApiKey:(NSString *)apiKey
-                    config:(NSDictionary *)config
-                   version:(NSString *)version
-       apiEndPointOverride:(NSString *)apiEndPointOverride
-                   resolve:(RCTPromiseResolveBlock)resolve
-                   reject:(RCTPromiseRejectBlock)reject
-{
+RCT_EXPORT_METHOD(
+    initialize2WithApiKey : (NSString *)apiKey config : (NSDictionary *)
+        config version : (NSString *)version apiEndPointOverride : (NSString *)
+            apiEndPointOverride resolve : (RCTPromiseResolveBlock)
+                resolve reject : (RCTPromiseRejectBlock)reject) {
   [_swiftAPI initialize2WithApiKey:apiKey
                             config:config
                apiEndPointOverride:apiEndPointOverride
@@ -74,217 +89,186 @@ RCT_EXPORT_MODULE()
                           rejecter:reject];
 }
 
-- (void)setEmail:(NSString * _Nullable)email
-       authToken:(NSString * _Nullable)authToken
-{
+RCT_EXPORT_METHOD(setEmail : (NSString *_Nullable)
+                      email authToken : (NSString *_Nullable)authToken) {
   [_swiftAPI setEmail:email authToken:authToken];
 }
 
-- (void)getEmail:(RCTPromiseResolveBlock)resolve
-          reject:(RCTPromiseRejectBlock)reject
-{
+RCT_EXPORT_METHOD(getEmail : (RCTPromiseResolveBlock)
+                      resolve reject : (RCTPromiseRejectBlock)reject) {
   [_swiftAPI getEmail:resolve rejecter:reject];
 }
 
-- (void)setUserId:(NSString * _Nullable)userId
-       authToken:(NSString * _Nullable)authToken
-{
+RCT_EXPORT_METHOD(setUserId : (NSString *_Nullable)
+                      userId authToken : (NSString *_Nullable)authToken) {
   [_swiftAPI setUserId:userId authToken:authToken];
 }
 
-- (void)getUserId:(RCTPromiseResolveBlock)resolve
-          reject:(RCTPromiseRejectBlock)reject
-{
+RCT_EXPORT_METHOD(getUserId : (RCTPromiseResolveBlock)
+                      resolve reject : (RCTPromiseRejectBlock)reject) {
   [_swiftAPI getUserId:resolve rejecter:reject];
 }
 
-- (void)setInAppShowResponse:(NSNumber *)inAppShowResponse
-{
+RCT_EXPORT_METHOD(setInAppShowResponse : (NSNumber *)inAppShowResponse) {
   [_swiftAPI setInAppShowResponse:inAppShowResponse];
 }
 
-- (void)getInAppMessages:(RCTPromiseResolveBlock)resolve
-          reject:(RCTPromiseRejectBlock)reject
-{
+RCT_EXPORT_METHOD(getInAppMessages : (RCTPromiseResolveBlock)
+                      resolve reject : (RCTPromiseRejectBlock)reject) {
   [_swiftAPI getInAppMessages:resolve rejecter:reject];
 }
 
-- (void)getInboxMessages:(RCTPromiseResolveBlock)resolve
-          reject:(RCTPromiseRejectBlock)reject
-{
+RCT_EXPORT_METHOD(getInboxMessages : (RCTPromiseResolveBlock)
+                      resolve reject : (RCTPromiseRejectBlock)reject) {
   [_swiftAPI getInboxMessages:resolve rejecter:reject];
 }
 
 // NOTE: This is not used anywhere on the JS side.
-- (void)getUnreadInboxMessagesCount:(RCTPromiseResolveBlock)resolve
-          reject:(RCTPromiseRejectBlock)reject
-{
+RCT_EXPORT_METHOD(getUnreadInboxMessagesCount : (RCTPromiseResolveBlock)
+                      resolve reject : (RCTPromiseRejectBlock)reject) {
   [_swiftAPI getUnreadInboxMessagesCount:resolve rejecter:reject];
 }
 
-- (void)showMessage:(NSString *)messageId
-       consume:(BOOL)consume
-       resolve:(RCTPromiseResolveBlock)resolve
-       reject:(RCTPromiseRejectBlock)reject
-{
-  [_swiftAPI showMessage:messageId consume:consume resolver:resolve rejecter:reject];
+RCT_EXPORT_METHOD(showMessage : (NSString *)messageId consume : (BOOL)
+                      consume resolve : (RCTPromiseResolveBlock)
+                          resolve reject : (RCTPromiseRejectBlock)reject) {
+  [_swiftAPI showMessage:messageId
+                 consume:consume
+                resolver:resolve
+                rejecter:reject];
 }
 
-- (void)removeMessage:(NSString *)messageId
-       location:(NSNumber *)location
-       source:(NSNumber *)source
-{
+RCT_EXPORT_METHOD(removeMessage : (NSString *)messageId location : (NSNumber *)
+                      location source : (NSNumber *)source) {
   [_swiftAPI removeMessage:messageId location:location source:source];
 }
 
-- (void)setReadForMessage:(NSString *)messageId
-       read:(BOOL)read
-{
+RCT_EXPORT_METHOD(setReadForMessage : (NSString *)messageId read : (BOOL)read) {
   [_swiftAPI setReadForMessage:messageId read:read];
 }
 
-- (void)setAutoDisplayPaused:(BOOL)autoDisplayPaused
-{
+RCT_EXPORT_METHOD(setAutoDisplayPaused : (BOOL)autoDisplayPaused) {
   [_swiftAPI setAutoDisplayPaused:autoDisplayPaused];
 }
 
-- (void)trackEvent:(NSString *)name
-       dataFields:(NSDictionary *)dataFields
-{
+RCT_EXPORT_METHOD(trackEvent : (NSString *)name dataFields : (NSDictionary *)
+                      dataFields) {
   [_swiftAPI trackEvent:name dataFields:dataFields];
 }
 
-- (void)trackPushOpenWithCampaignId:(NSNumber *)campaignId
-       templateId:(NSNumber *)templateId
-       messageId:(NSString *)messageId
-       appAlreadyRunning:(BOOL)appAlreadyRunning
-       dataFields:(NSDictionary *)dataFields
-{
-  [_swiftAPI trackPushOpenWithCampaignId:campaignId templateId:templateId messageId:messageId appAlreadyRunning:appAlreadyRunning dataFields:dataFields];
+RCT_EXPORT_METHOD(
+    trackPushOpenWithCampaignId : (NSNumber *)
+        campaignId templateId : (NSNumber *)templateId messageId : (NSString *)
+            messageId appAlreadyRunning : (BOOL)
+                appAlreadyRunning dataFields : (NSDictionary *)dataFields) {
+  [_swiftAPI trackPushOpenWithCampaignId:campaignId
+                              templateId:templateId
+                               messageId:messageId
+                       appAlreadyRunning:appAlreadyRunning
+                              dataFields:dataFields];
 }
 
-- (void)trackInAppOpen:(NSString *)messageId
-       location:(NSNumber *)location
-{
+RCT_EXPORT_METHOD(trackInAppOpen : (NSString *)messageId location : (NSNumber *)
+                      location) {
   [_swiftAPI trackInAppOpen:messageId location:location];
 }
 
-- (void)trackInAppClick:(NSString *)messageId
-       location:(NSNumber *)location
-       clickedUrl:(NSString *)clickedUrl
-{
+RCT_EXPORT_METHOD(trackInAppClick : (NSString *)messageId location : (
+    NSNumber *)location clickedUrl : (NSString *)clickedUrl) {
   [_swiftAPI trackInAppClick:messageId location:location clickedUrl:clickedUrl];
 }
 
-- (void)trackInAppClose:(NSString *)messageId
-       location:(NSNumber *)location
-       source:(NSNumber *)source
-       clickedUrl:(NSString *)clickedUrl
-{
-  [_swiftAPI trackInAppClose:messageId location:location source:source clickedUrl:clickedUrl];
+RCT_EXPORT_METHOD(trackInAppClose : (NSString *)messageId location : (
+    NSNumber *)location source : (NSNumber *)source clickedUrl : (NSString *)
+                      clickedUrl) {
+  [_swiftAPI trackInAppClose:messageId
+                    location:location
+                      source:source
+                  clickedUrl:clickedUrl];
 }
 
-- (void)inAppConsume:(NSString *)messageId
-       location:(NSNumber *)location
-       source:(NSNumber *)source
-{
+RCT_EXPORT_METHOD(inAppConsume : (NSString *)messageId location : (NSNumber *)
+                      location source : (NSNumber *)source) {
   [_swiftAPI inAppConsume:messageId location:location source:source];
 }
 
-- (void)updateCart:(NSArray *)items
-{
+RCT_EXPORT_METHOD(updateCart : (NSArray *)items) {
   [_swiftAPI updateCart:items];
 }
 
-- (void)trackPurchase:(NSNumber *)total
-       items:(NSArray *)items
-       dataFields:(NSDictionary *)dataFields
-{
+RCT_EXPORT_METHOD(trackPurchase : (NSNumber *)total items : (NSArray *)
+                      items dataFields : (NSDictionary *)dataFields) {
   [_swiftAPI trackPurchase:total items:items dataFields:dataFields];
 }
 
-- (void)updateUser:(NSDictionary *)dataFields
-       mergeNestedObjects:(BOOL)mergeNestedObjects
-{
+RCT_EXPORT_METHOD(updateUser : (NSDictionary *)dataFields mergeNestedObjects : (
+    BOOL)mergeNestedObjects) {
   [_swiftAPI updateUser:dataFields mergeNestedObjects:mergeNestedObjects];
 }
 
-- (void)updateEmail:(NSString *)email
-       authToken:(NSString *)authToken
-{
+RCT_EXPORT_METHOD(updateEmail : (NSString *)email authToken : (NSString *)
+                      authToken) {
   [_swiftAPI updateEmail:email authToken:authToken];
 }
 
-- (void)getAttributionInfo:(RCTPromiseResolveBlock)resolve
-          reject:(RCTPromiseRejectBlock)reject
-{
+RCT_EXPORT_METHOD(getAttributionInfo : (RCTPromiseResolveBlock)
+                      resolve reject : (RCTPromiseRejectBlock)reject) {
   [_swiftAPI getAttributionInfo:resolve rejecter:reject];
 }
 
-- (void)setAttributionInfo:(NSDictionary *)attributionInfo
-{
+RCT_EXPORT_METHOD(setAttributionInfo : (NSDictionary *)attributionInfo) {
   [_swiftAPI setAttributionInfo:attributionInfo];
 }
 
-- (void)disableDeviceForCurrentUser
-{
+RCT_EXPORT_METHOD(disableDeviceForCurrentUser) {
   [_swiftAPI disableDeviceForCurrentUser];
 }
 
-- (void)getLastPushPayload:(RCTPromiseResolveBlock)resolve
-          reject:(RCTPromiseRejectBlock)reject
-{
+RCT_EXPORT_METHOD(getLastPushPayload : (RCTPromiseResolveBlock)
+                      resolve reject : (RCTPromiseRejectBlock)reject) {
   [_swiftAPI getLastPushPayload:resolve rejecter:reject];
 }
 
-- (void)getHtmlInAppContentForMessage:(NSString *)messageId
-       resolve:(RCTPromiseResolveBlock)resolve
-       reject:(RCTPromiseRejectBlock)reject
-{
-  [_swiftAPI getHtmlInAppContentForMessage:messageId resolver:resolve rejecter:reject];
+RCT_EXPORT_METHOD(getHtmlInAppContentForMessage : (NSString *)
+                      messageId resolve : (RCTPromiseResolveBlock)
+                          resolve reject : (RCTPromiseRejectBlock)reject) {
+  [_swiftAPI getHtmlInAppContentForMessage:messageId
+                                  resolver:resolve
+                                  rejecter:reject];
 }
 
-- (void)handleAppLink:(NSString *)appLink
-       resolve:(RCTPromiseResolveBlock)resolve
-       reject:(RCTPromiseRejectBlock)reject
-{
+RCT_EXPORT_METHOD(handleAppLink : (NSString *)appLink resolve : (
+    RCTPromiseResolveBlock)resolve reject : (RCTPromiseRejectBlock)reject) {
   [_swiftAPI handleAppLink:appLink resolver:resolve rejecter:reject];
 }
 
-- (void)updateSubscriptions:(NSArray *)emailListIds
-       unsubscribedChannelIds:(NSArray *)unsubscribedChannelIds
-       unsubscribedMessageTypeIds:(NSArray *)unsubscribedMessageTypeIds
-       subscribedMessageTypeIds:(NSArray *)subscribedMessageTypeIds
-       campaignId:(NSNumber *)campaignId
-       templateId:(NSNumber *)templateId
-{
-  [_swiftAPI updateSubscriptions:emailListIds unsubscribedChannelIds:unsubscribedChannelIds unsubscribedMessageTypeIds:unsubscribedMessageTypeIds subscribedMessageTypeIds:subscribedMessageTypeIds campaignId:campaignId templateId:templateId];
+RCT_EXPORT_METHOD(
+    updateSubscriptions : (NSArray *)emailListIds unsubscribedChannelIds : (
+        NSArray *)
+        unsubscribedChannelIds unsubscribedMessageTypeIds : (NSArray *)
+            unsubscribedMessageTypeIds subscribedMessageTypeIds : (NSArray *)
+                subscribedMessageTypeIds campaignId : (NSNumber *)
+                    campaignId templateId : (NSNumber *)templateId) {
+  [_swiftAPI updateSubscriptions:emailListIds
+          unsubscribedChannelIds:unsubscribedChannelIds
+      unsubscribedMessageTypeIds:unsubscribedMessageTypeIds
+        subscribedMessageTypeIds:subscribedMessageTypeIds
+                      campaignId:campaignId
+                      templateId:templateId];
 }
 
-- (void)startSession:(NSArray *)visibleRows
-{
+RCT_EXPORT_METHOD(startSession : (NSArray *)visibleRows) {
   [_swiftAPI startSession:visibleRows];
 }
 
-- (void)endSession
-{
-  [_swiftAPI endSession];
-}
+RCT_EXPORT_METHOD(endSession) { [_swiftAPI endSession]; }
 
-- (void)updateVisibleRows:(NSArray *)visibleRows
-{
+RCT_EXPORT_METHOD(updateVisibleRows : (NSArray *)visibleRows) {
   [_swiftAPI updateVisibleRows:visibleRows];
 }
 
-- (void)passAlongAuthToken:(NSString *)authToken
-{
+RCT_EXPORT_METHOD(passAlongAuthToken : (NSString *)authToken) {
   [_swiftAPI passAlongAuthToken:authToken];
-}
-
-- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
-    (const facebook::react::ObjCTurboModule::InitParams &)params
-{
-    return std::make_shared<facebook::react::NativeRNIterableAPISpecJSI>(params);
 }
 
 @end
