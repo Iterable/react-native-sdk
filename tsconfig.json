@@ -26,6 +26,5 @@
     "strict": true,
     "target": "ESNext",
     "verbatimModuleSyntax": true
-  },
-  "include": ["src/**/*.ts", "src/**/*.tsx"]
+  }
 }

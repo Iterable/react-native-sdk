@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports */
 import { NativeModules } from 'react-native';
 
 export const isTurboModuleEnabled = global.__turboModuleProxy != null;

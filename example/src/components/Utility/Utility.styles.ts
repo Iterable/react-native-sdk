@@ -1,5 +1,5 @@
 import { StyleSheet, type TextStyle } from 'react-native';
-import { appNameSmall, button, buttonText, container, buttonBlock } from '../../constants';
+import { appNameSmall, buttonBlock, buttonText, container } from '../../constants';
 
 const text: TextStyle = {
   textAlign: 'center',
