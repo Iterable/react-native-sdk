@@ -11,42 +11,42 @@ struct SerializationUtil {
     static func dateToInt(date: Date) -> Int {
         Int(date.timeIntervalSince1970 * 1000)
     }
-    
+
     static func intToDate(int: Int) -> Date {
         let seconds = Double(int) / 1000.0 // ms -> seconds
-        
+
         return Date(timeIntervalSince1970: seconds)
     }
-    
+
     static func encodableToDictionary<T>(encodable: T) -> [String: Any]? where T: Encodable {
         guard let data = try? JSONEncoder().encode(encodable) else {
             return nil
         }
-        
+
         return try? JSONSerialization.jsonObject(with: data, options: [.allowFragments]) as? [String: Any]
     }
-    
+
     static func dictionaryToDecodable<T>(dict: [AnyHashable: Any]) -> T? where T: Decodable {
         guard let data = try? JSONSerialization.data(withJSONObject: dict, options: []) else {
             return nil
         }
-        
+
         return try? JSONDecoder().decode(T.self, from: data)
     }
 }
 
 extension IterableConfig {
-    static func from(dict: [AnyHashable: Any]?) -> IterableConfig {
+    static func from(dict: NSDictionary?) -> IterableConfig {
         let config = IterableConfig()
-        
+
         guard let dict = dict else {
             return config
         }
-        
+
         if let allowedProtocols = dict["allowedProtocols"] as? [String] {
             config.allowedProtocols = allowedProtocols
         }
-        
+
         if let pushIntegrationName = dict["pushIntegrationName"] as? String {
             config.pushIntegrationName = pushIntegrationName
         }
@@ -61,15 +61,15 @@ extension IterableConfig {
                 config.pushPlatform = .auto
             }
         }
-        
+
         if let autoPushRegistration = dict["autoPushRegistration"] as? Bool {
             config.autoPushRegistration = autoPushRegistration
         }
-        
+
         if let inAppDisplayInterval = dict["inAppDisplayInterval"] as? Double {
             config.inAppDisplayInterval = inAppDisplayInterval
         }
-        
+
         if let expiringAuthTokenRefreshPeriod = dict["expiringAuthTokenRefreshPeriod"] as? TimeInterval {
             config.expiringAuthTokenRefreshPeriod = expiringAuthTokenRefreshPeriod
         }
@@ -77,7 +77,7 @@ extension IterableConfig {
         if let logLevelNumber = dict["logLevel"] as? NSNumber {
             config.logDelegate = createLogDelegate(logLevelNumber: logLevelNumber)
         }
-        
+
         if let useInMemoryStorageForInApp = dict["useInMemoryStorageForInApps"] as? Bool {
             config.useInMemoryStorageForInApps = useInMemoryStorageForInApp
         }
@@ -92,11 +92,11 @@ extension IterableConfig {
                 config.dataRegion = IterableDataRegion.US
             }
         }
-        
-        
+
+
         return config
     }
-    
+
     private static func createLogDelegate(logLevelNumber: NSNumber) -> IterableLogDelegate {
         DefaultLogDelegate(minLogLevel: LogLevel.from(number: logLevelNumber))
     }
@@ -107,26 +107,26 @@ extension CommerceItem {
         guard let id = dict["id"] as? String else {
             return nil
         }
-        
+
         guard let name = dict["name"] as? String else {
             return nil
         }
-        
+
         guard let price = dict["price"] as? NSNumber else {
             return nil
         }
-        
+
         guard let quantity = dict["quantity"] as? UInt else {
             return nil
         }
-        
+
         let sku = dict["sku"] as? String
         let description = dict["description"] as? String
         let url = dict["url"] as? String
         let imageUrl = dict["imageUrl"] as? String
         let categories = dict["categories"] as? [String]
         let dataFields = dict["dataFields"] as? [AnyHashable: Any]
-        
+
         return CommerceItem(id: id,
                             name: name,
                             price: price,
@@ -182,7 +182,7 @@ extension IterableInAppMessage {
         dict["customPayload"] = customPayload
         dict["read"] = read
         dict["priorityLevel"] = priorityLevel
-        
+
         return dict
     }
 }
@@ -212,7 +212,7 @@ extension InAppCloseSource {
         guard let value = number as? Int else {
             return nil
         }
-        
+
         return InAppCloseSource(rawValue: value)
     }
 }
@@ -222,7 +222,7 @@ extension InAppDeleteSource {
         guard let value = number as? Int else {
             return nil
         }
-        
+
         return InAppDeleteSource(rawValue: value)
     }
 }
@@ -248,20 +248,20 @@ extension LogLevel {
 }
 
 extension InboxImpressionTracker.RowInfo {
-    static func from(dict: [AnyHashable: Any]) -> InboxImpressionTracker.RowInfo? {
+    static func from(dict: NSDictionary) -> InboxImpressionTracker.RowInfo? {
         guard let messageId = dict["messageId"] as? String else {
             return nil
         }
-        
+
         guard let silentInbox = dict["silentInbox"] as? Bool else {
             return nil
         }
-        
+
         let rowInfo = InboxImpressionTracker.RowInfo(messageId: messageId, silentInbox: silentInbox)
-        
+
         return rowInfo
     }
-    
+
     static func rowInfos(from rows: [[AnyHashable: Any]]) -> [InboxImpressionTracker.RowInfo] {
         return rows.compactMap(InboxImpressionTracker.RowInfo.from(dict:))
     }
