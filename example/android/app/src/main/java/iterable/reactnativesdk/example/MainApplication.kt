@@ -1,4 +1,4 @@
-package iterable.reactnativesdk.example
+package com.iterable.reactnativesdk.example
 
 import android.app.Application
 import com.facebook.react.PackageList

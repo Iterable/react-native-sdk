@@ -1,7 +1,7 @@
 import {
   Linking,
   NativeEventEmitter,
-  NativeModules,
+  // NativeModules,
   Platform,
 } from 'react-native';
 
@@ -14,6 +14,7 @@ import { IterableInAppCloseSource } from '../../inApp/enums/IterableInAppCloseSo
 import { IterableInAppDeleteSource } from '../../inApp/enums/IterableInAppDeleteSource';
 import { IterableInAppLocation } from '../../inApp/enums/IterableInAppLocation';
 import { IterableAuthResponseResult, IterableEventName } from '../enums';
+import { api } from '../../api';
 
 import { IterableAction } from './IterableAction';
 import { IterableActionContext } from './IterableActionContext';
@@ -23,8 +24,8 @@ import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
 
-const RNIterableAPI = NativeModules.RNIterableAPI;
-const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
+const RNIterableAPI = api;
+const RNEventEmitter = new NativeEventEmitter(api);
 
 /* eslint-disable tsdoc/syntax */
 /**
@@ -181,7 +182,7 @@ export class Iterable {
    * Iterable.setEmail('my.user.name@gmail.com');
    * ```
    */
-  static setEmail(email?: string | null, authToken?: string | null) {
+  static setEmail(email?: string | null, authToken?: string | undefined) {
     Iterable?.logger?.log('setEmail: ' + email);
 
     RNIterableAPI.setEmail(email, authToken);
@@ -197,7 +198,7 @@ export class Iterable {
    * });
    * ```
    */
-  static getEmail(): Promise<string | undefined> {
+  static getEmail(): Promise<string | null> {
     Iterable?.logger?.log('getEmail');
 
     return RNIterableAPI.getEmail();

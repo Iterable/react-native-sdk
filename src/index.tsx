@@ -1,6 +1,7 @@
 /**
  * React Native module for Iterable.
  */
+export {api} from './api';
 export {
   Iterable,
   IterableAction,
@@ -52,3 +53,4 @@ export {
   type IterableInboxProps,
   type IterableInboxRowViewModel,
 } from './inbox';
+

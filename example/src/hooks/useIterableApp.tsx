@@ -4,7 +4,7 @@ import {
   createContext,
   useCallback,
   useContext,
-  useState,
+  useState
 } from 'react';
 import { Alert } from 'react-native';
 
@@ -13,7 +13,7 @@ import {
   IterableAction,
   IterableConfig,
   IterableInAppShowResponse,
-  IterableLogLevel,
+  IterableLogLevel
 } from '@iterable/react-native-sdk';
 
 import { Route } from '../constants/routes';
