@@ -1,15 +1,17 @@
 #import <Foundation/Foundation.h>
-#import <React/RCTEventEmitter.h>
 
 #if RCT_NEW_ARCH_ENABLED
 
 #import <RNIterableAPISpec/RNIterableAPISpec.h>
-@interface RNIterableAPI : RCTEventEmitter <NativeRNIterableAPISpec>
+#import <React/RCTUtils.h>
+#import <React/RCTConvert.h>
+#import <React/RCTTurboModuleRegistry.h>
+@interface RNIterableAPI : NSObject <NativeRNIterableAPISpec>
 
-#else
-
-#import <React/RCTBridgeModule.h>
-@interface RNIterableAPI : RCTEventEmitter <RCTBridgeModule>
+// #else
+// #import <React/RCTEventEmitter.h>
+// #import <React/RCTBridgeModule.h>
+// @interface RNIterableAPI : RCTEventEmitter <RCTBridgeModule>
 
 #endif
 

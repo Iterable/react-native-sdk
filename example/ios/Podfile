@@ -13,6 +13,8 @@ prepare_react_native_project!
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
   Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
+  # IMPORTANT: New Architecture Issue solution
+  # This is needed to use the Swift code from Iterable-iOS-SDK in the RNIterableAPI module
   use_frameworks! :linkage => :dynamic
 end
 
@@ -34,4 +36,8 @@ target 'ReactNativeSdkExample' do
       # :ccache_enabled => true
     )
   end
+end
+
+target 'NotificationExt' do
+  pod 'Iterable-iOS-AppExtensions'
 end

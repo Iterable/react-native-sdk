@@ -23,24 +23,65 @@ typedef NS_ENUM(NSInteger, InAppShowResponse) {
 }
 
 - (instancetype)init {
-  self = [super init];
-  if(self) {
-    // Option 2.B - Instantiate the Calculator and set the delegate
+  if (self = [super init]) {
     _swiftAPI = [ReactIterableAPI new];
-    _swiftAPI.delegate = self;
+    // [_api configureWithBridge:self.bridge];
   }
   return self;
 }
 
+// - (instancetype)init {
+//   self = [super init];
+//   if(self) {
+//     // Option 2.B - Instantiate the Calculator and set the delegate
+//     _swiftAPI = [ReactIterableAPI shared];
+//     _swiftAPI.delegate = self;
+//   }
+//   return self;
+// }
+
 RCT_EXPORT_MODULE()
 
-- (NSArray<NSString *> *)supportedEvents {
-  return [ReactIterableAPI supportedEvents];
+// - (NSArray<NSString *> *)supportedEvents {
+//   return [ReactIterableAPI supportedEvents];
+// }
+
+
+// // 2) When JS calls emitter.addListener(), React will call this on *your* module.
+// //    Forward it to the Swift emitter so that its `startObserving()` fires.
+// - (void)startObserving {
+//   [_swiftAPI startObserving];
+// }
+
+// // 3) When JS calls emitter.removeListeners(n), React will call this.
+// //    Forward it to Swift so its `stopObserving()` fires.
+// - (void)stopObserving {
+//   [_swiftAPI stopObserving];
+// }
+
+// // 4) Swift will call this delegate method when it wants to emit.
+// //    Forward it up to React’s `sendEventWithName:body:`
+// - (void)sendEventWithName:(NSString *)name body:(id)body {
+//   [super sendEventWithName:name body:body];
+// }
+
+- (void)addListener:(NSString *)eventName {
+  // No-op; required to prevent selector crash
 }
 
-- (void)sendEventWithName:(NSString * _Nonnull)name result:(double)result {
-  [self sendEventWithName:name body:@(result)];
+- (void)removeListeners:(double)count {
+  // No-op; required to prevent selector crash
 }
+
+// - (void)addListener:(NSString *)eventName
+// {
+//   [_swiftAPI.delegate addListener:eventName];
+// }
+
+// - (void)removeListeners:(double)count
+// {
+//   [_swiftAPI.delegate removeListeners:count];
+// }
 
 - (void)testEventDispatch {
   [_swiftAPI testEventDispatch];
@@ -251,10 +292,10 @@ RCT_EXPORT_MODULE()
   [_swiftAPI handleAppLink:appLink resolver:resolve rejecter:reject];
 }
 
-- (void)updateSubscriptions:(NSArray *)emailListIds
-       unsubscribedChannelIds:(NSArray *)unsubscribedChannelIds
-       unsubscribedMessageTypeIds:(NSArray *)unsubscribedMessageTypeIds
-       subscribedMessageTypeIds:(NSArray *)subscribedMessageTypeIds
+- (void)updateSubscriptions:(NSArray * _Nullable)emailListIds
+       unsubscribedChannelIds:(NSArray * _Nullable)unsubscribedChannelIds
+       unsubscribedMessageTypeIds:(NSArray * _Nullable)unsubscribedMessageTypeIds
+       subscribedMessageTypeIds:(NSArray * _Nullable)subscribedMessageTypeIds
        campaignId:(NSNumber *)campaignId
        templateId:(NSNumber *)templateId
 {
@@ -280,6 +321,10 @@ RCT_EXPORT_MODULE()
 {
   [_swiftAPI passAlongAuthToken:authToken];
 }
+
+using namespace facebook::react;
+
+
 
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
     (const facebook::react::ObjCTurboModule::InitParams &)params

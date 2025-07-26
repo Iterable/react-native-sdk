@@ -325,6 +325,7 @@ export const IterableInbox = ({
 
   function addInboxChangedListener() {
     RNEventEmitter.addListener('receivedIterableInboxChanged', () => {
+      console.log('*** ITBL JS *** receivedIterableInboxChanged');
       fetchInboxMessages();
     });
   }

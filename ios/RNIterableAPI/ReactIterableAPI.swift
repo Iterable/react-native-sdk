@@ -1,31 +1,89 @@
 import Foundation
 import IterableSDK
 import React
+
 @objc public protocol ReactIterableAPIDelegate {
   func sendEvent(withName: String, body: Any?)
 }
 
-@objc(ReactIterableAPI)
-public class ReactIterableAPI: RCTEventEmitter {
-    deinit {
-        NotificationCenter.default.removeObserver(self)
+@objc protocol RCTAppContext {
+    func emit(eventName: String, payload: Any?)
+}
+
+@objc(BridgelessEventEmitterHost)
+class BridgelessEventEmitterHost: NSObject {
+    private let appContext: RCTAppContext
+
+    init(appContext: RCTAppContext) {
+        self.appContext = appContext
+        super.init()
+        NSLog("*** BridgelessEventEmitterHost initialized ***")
     }
 
-    @objc public weak var delegate: ReactIterableAPIDelegate? = nil
+    func send(name: String, body: Any?) {
+        appContext.emit(eventName: name, payload: body)
+    }
+
+    func getShouldEmit() -> Bool {
+        // Optional logic if you want to control flow
+        return true
+    }
+}
+
+class EventDispatcher {
+    private var bridgelessEmitter: BridgelessEventEmitterHost?
+
+    init(appContext: RCTAppContext) {
+        NSLog("*** BRIDGELESS EventDispatcher init ***")
+        self.bridgelessEmitter = BridgelessEventEmitterHost(appContext: appContext)
+    }
+
+    func send(name: String, body: Any?) {
+        if let emitter = bridgelessEmitter {
+            emitter.send(name: name, body: body)
+        } else {
+            NSLog("⚠️ No emitter available to send event: \(name)")
+        }
+    }
+
+    func getShouldEmit() -> Bool {
+        return bridgelessEmitter?.getShouldEmit() ?? false
+    }
+}
+
+@objc(ReactIterableAPI)
+public class ReactIterableAPI: NSObject {
+    @objc public static let shared = ReactIterableAPI()
+
+    private var savedLaunchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
+    private var eventDispatcher: EventDispatcher?
+
+    override public init() {
+        super.init()
+
+        NSLog("*** ReactIterableAPI init ***")
+    }
+
+    init(appContext: RCTAppContext) {
+        eventDispatcher = EventDispatcher(appContext: appContext)
+    }
+
+//    @objc public weak var delegate: ReactIterableAPIDelegate? = nil
 
     // MARK: - React Native Functions
 
-    @objc override public class func moduleName() -> String! {
-        return "RNIterableAPI"
-    }
+//    @objc override public class func moduleName() -> String! {
+//        return "RNIterableAPI"
+//    }
 
-    override open var methodQueue: DispatchQueue! {
-        _methodQueue
-    }
+  // IMPORTANT: This is part of legacy event emitter
+//    override open var methodQueue: DispatchQueue! {
+//        _methodQueue
+//    }
 
-    @objc override public static func requiresMainQueueSetup() -> Bool {
-        false
-    }
+//    @objc override public static func requiresMainQueueSetup() -> Bool {
+//        false
+//    }
 
     enum EventName: String, CaseIterable {
         case handleUrlCalled
@@ -38,25 +96,9 @@ public class ReactIterableAPI: RCTEventEmitter {
         case onTestEventDispatch
     }
 
-    @objc public static var supportedEvents: [String] {
-      return EventName.allCases.map(\.rawValue)
-    }
-
-    override public func startObserving() {
-        ITBInfo()
-
-        shouldEmit = true
-    }
-
-    override public func stopObserving() {
-        ITBInfo()
-
-        shouldEmit = false
-    }
-
     @objc(testEventDispatch)
     public func testEventDispatch() {
-        delegate?.sendEvent(withName: EventName.onTestEventDispatch.rawValue, body: 0)
+      eventDispatcher?.send(name: EventName.onTestEventDispatch.rawValue, body: 0)
     }
 
     // MARK: - Native SDK Functions
@@ -510,6 +552,7 @@ public class ReactIterableAPI: RCTEventEmitter {
         ITBInfo()
 
         let launchOptions = createLaunchOptions()
+        NSLog("*** launchOptions: \(launchOptions) ***")
         let iterableConfig = IterableConfig.from(
           dict: configDict as? [AnyHashable: Any]
         )
@@ -547,22 +590,39 @@ public class ReactIterableAPI: RCTEventEmitter {
 
     @objc(receivedIterableInboxChanged)
     public func receivedIterableInboxChanged() {
-        guard shouldEmit else {
-            return
-        }
+        NSLog("*** receivedIterableInboxChanged1 ***")
+//        guard shouldEmit else {
+//            return
+//        }
 
-        delegate?.sendEvent(withName: EventName.receivedIterableInboxChanged.rawValue, body: nil)
+        NSLog("***SEND EVENT***: receivedIterableInboxChanged")
+
+      eventDispatcher?.send(name: EventName.receivedIterableInboxChanged.rawValue, body: nil)
+//        sendEvent(withName: EventName.receivedIterableInboxChanged.rawValue, body: nil)
     }
 
     private func createLaunchOptions() -> [UIApplication.LaunchOptionsKey: Any]? {
-        guard let bridge = self.bridge else {
-            return nil
-        }
+        return nil
+        // new‐arch path: use what we captured
+//        if let opts = savedLaunchOptions {
+//            return ReactIterableAPI.createLaunchOptions(bridgeLaunchOptions: opts)
+//        }
 
-        return ReactIterableAPI.createLaunchOptions(bridgeLaunchOptions: bridge.launchOptions)
+         // legacy‐bridge path left in if you’re still building for RCTBridge
+//        if let legacy = bridge?.launchOptions {
+//            return ReactIterableAPI.createLaunchOptions(bridgeLaunchOptions: legacy)
+//        }
+
+//        return nil
+        // guard let bridge = self.bridge else {
+        //     return nil
+        // }
+
+        // return ReactIterableAPI.createLaunchOptions(bridgeLaunchOptions: bridge.launchOptions)
     }
 
     private static func createLaunchOptions(bridgeLaunchOptions: [AnyHashable: Any]?) -> [UIApplication.LaunchOptionsKey: Any]? {
+      NSLog("*** createLaunchOptions2 ***: \(bridgeLaunchOptions)")
         guard let bridgeLaunchOptions = bridgeLaunchOptions,
               let remoteNotification = bridgeLaunchOptions[UIApplication.LaunchOptionsKey.remoteNotification.rawValue] else {
             return nil
@@ -579,12 +639,15 @@ extension ReactIterableAPI: IterableURLDelegate {
     public func handle(iterableURL url: URL, inContext context: IterableActionContext) -> Bool {
         ITBInfo()
 
-        guard shouldEmit else {
-            return false
-        }
+//        guard shouldEmit else {
+//            return false
+//        }
 
         let contextDict = ReactIterableAPI.contextToDictionary(context: context)
-        delegate?.sendEvent(withName: EventName.handleUrlCalled.rawValue,
+
+        NSLog("***SEND EVENT***: handle(iterableURL url: \(url.absoluteString), inContext context: \(contextDict)")
+
+      eventDispatcher?.send(name: EventName.handleUrlCalled.rawValue,
                   body: ["url": url.absoluteString,
                          "context": contextDict] as [String : Any])
 
@@ -625,7 +688,9 @@ extension ReactIterableAPI: IterableCustomActionDelegate {
         let actionDict = ReactIterableAPI.actionToDictionary(action: action)
         let contextDict = ReactIterableAPI.contextToDictionary(context: context)
 
-        delegate?.sendEvent(withName: EventName.handleCustomActionCalled.rawValue,
+        NSLog("***SEND EVENT***: handle(iterableCustomAction action: \(actionDict), inContext context: \(contextDict)")
+
+      eventDispatcher?.send(name: EventName.handleCustomActionCalled.rawValue,
                   body: ["action": actionDict,
                          "context": contextDict])
 
@@ -637,11 +702,13 @@ extension ReactIterableAPI: IterableInAppDelegate {
     public func onNew(message: IterableInAppMessage) -> InAppShowResponse {
         ITBInfo()
 
-        guard shouldEmit else {
-            return .show
-        }
+//        guard shouldEmit else {
+//            return .show
+//        }
 
-        delegate?.sendEvent(withName: EventName.handleInAppCalled.rawValue,
+        NSLog("***SEND EVENT***: onNew(message: \(message.toDict())")
+
+      eventDispatcher?.send(name: EventName.handleInAppCalled.rawValue,
                   body: message.toDict())
 
         let timeoutResult = inAppHandlerSemaphore.wait(timeout: .now() + 2.0)
@@ -661,7 +728,9 @@ extension ReactIterableAPI: IterableAuthDelegate {
         ITBInfo()
 
         DispatchQueue.global(qos: .userInitiated).async {
-            self.sendEvent(withName: EventName.handleAuthCalled.rawValue,
+            NSLog("***SEND EVENT***: onAuthTokenRequested")
+
+          self.eventDispatcher?.send(name: EventName.handleAuthCalled.rawValue,
                            body: nil as Any?)
 
             let authTokenRetrievalResult = self.authHandlerSemaphore.wait(timeout: .now() + 30.0)
@@ -673,7 +742,10 @@ extension ReactIterableAPI: IterableAuthDelegate {
                     completion(self.passedAuthToken)
                 }
 
-                self.sendEvent(withName: EventName.handleAuthSuccessCalled.rawValue,
+                NSLog("***SEND EVENT***: handleAuthSuccessCalled")
+
+              self.eventDispatcher?
+                .send(name: EventName.handleAuthSuccessCalled.rawValue,
                                body: nil as Any?)
             } else {
                 ITBInfo("authTokenRetrieval timed out")
@@ -682,7 +754,10 @@ extension ReactIterableAPI: IterableAuthDelegate {
                     completion(nil)
                 }
 
-                self.sendEvent(withName: EventName.handleAuthFailureCalled.rawValue,
+                NSLog("***SEND EVENT***: handleAuthFailureCalled")
+
+              self.eventDispatcher?
+                .send(name: EventName.handleAuthFailureCalled.rawValue,
                                body: nil as Any?)
             }
         }
