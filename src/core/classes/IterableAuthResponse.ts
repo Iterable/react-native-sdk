@@ -5,7 +5,7 @@
  */
 export class IterableAuthResponse {
   /** JWT Token */
-  authToken?: string = '';
+  authToken?: string | null = '';
   /** Callback when the authentication to Iterable succeeds */
   successCallback?: () => void;
   /** Callback when the authentication to Iterable fails */
