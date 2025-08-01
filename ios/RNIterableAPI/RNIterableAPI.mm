@@ -1,139 +1,269 @@
-//
-//  Created by Tapash Majumder on 3/19/20.
-//  Copyright © 2020 Iterable. All rights reserved.
-//
 #import "RNIterableAPI.h"
+#import "RNIterableAPISpec.h"
+#import <IterableSDK/IterableSDK.h> // umbrella (Objective-C) header
 
-@interface RCT_EXTERN_REMAP_MODULE(RNIterableAPI, ReactIterableAPI, NSObject)
+// Forward-declare the Swift protocols/enum used in the Swift header.
+@protocol IterableInAppDelegate;
+@protocol IterableCustomActionDelegate;
+@protocol IterableAuthDelegate;
+@protocol IterableURLDelegate;
+typedef NS_ENUM(NSInteger, InAppShowResponse) {
+  show = 0,
+  skip = 1,
+};
 
-// MARK: - Native SDK Functions
+#import "Iterable_React_Native_SDK-Swift.h"
 
-RCT_EXTERN_METHOD(initializeWithApiKey: (nonnull NSString *) apiKey
-                  config: (nonnull NSDictionary *) config
-                  version: (nonnull NSString *) version
-                  resolver: (RCTPromiseResolveBlock) resolve
-                  rejecter: (RCTPromiseRejectBlock) reject)
+@interface RNIterableAPI () <ReactIterableAPIDelegate>
+@end
 
-RCT_EXTERN_METHOD(initialize2WithApiKey: (nonnull NSString *) apiKey
-                  config: (nonnull NSDictionary *) config
-                  apiEndPointOverride: (nonnull NSString *) apiEndPoint
-                  version: (nonnull NSString *) version
-                  resolver: (RCTPromiseResolveBlock) resolve
-                  rejecter: (RCTPromiseRejectBlock) reject)
+@implementation RNIterableAPI {
+  ReactIterableAPI *_swiftAPI;
+}
 
-RCT_EXTERN_METHOD(setEmail: (NSString *) email
-                  authToken: (NSString *) authToken)
+- (instancetype)init {
+  self = [super init];
+  if (self) {
+    _swiftAPI = [ReactIterableAPI new];
+    _swiftAPI.delegate = self;
+  }
+  return self;
+}
 
-RCT_EXTERN_METHOD(getEmail: (RCTPromiseResolveBlock) resolve
-                  rejecter: (RCTPromiseRejectBlock) reject)
+RCT_EXPORT_MODULE()
 
-RCT_EXTERN_METHOD(setUserId: (NSString *) userId
-                  authToken: (NSString *) authToken)
+- (NSArray<NSString *> *)supportedEvents {
+  return [ReactIterableAPI supportedEvents];
+}
 
-RCT_EXTERN_METHOD(getUserId: (RCTPromiseResolveBlock) resolve
-                  rejecter: (RCTPromiseRejectBlock) reject)
+- (void)sendEventWithName:(NSString *_Nonnull)name result:(double)result {
+  [self sendEventWithName:name body:@(result)];
+}
 
-// MARK: - Iterable API Request Functions
+- (void)startObserving {
+  [(ReactIterableAPI *)_swiftAPI startObserving];
+}
 
-RCT_EXTERN_METHOD(disableDeviceForCurrentUser)
+- (void)stopObserving {
+  [(ReactIterableAPI *)_swiftAPI stopObserving];
+}
 
-RCT_EXTERN_METHOD(setInAppShowResponse: (nonnull NSNumber *) inAppShowResponse)
+- (void)initializeWithApiKey:(NSString *)apiKey
+                      config:(NSDictionary *)config
+                     version:(NSString *)version
+                     resolve:(RCTPromiseResolveBlock)resolve
+                      reject:(RCTPromiseRejectBlock)reject {
+  [_swiftAPI initializeWithApiKey:apiKey
+                           config:config
+                          version:version
+                         resolver:resolve
+                         rejecter:reject];
+}
 
-RCT_EXTERN_METHOD(getLastPushPayload: (RCTPromiseResolveBlock) resolve
-                  rejecter: (RCTPromiseRejectBlock) reject)
+- (void)initialize2WithApiKey:(NSString *)apiKey
+                       config:(NSDictionary *)config
+                      version:(NSString *)version
+          apiEndPointOverride:(NSString *)apiEndPointOverride
+                      resolve:(RCTPromiseResolveBlock)resolve
+                       reject:(RCTPromiseRejectBlock)reject {
+  [_swiftAPI initialize2WithApiKey:apiKey
+                            config:config
+               apiEndPointOverride:apiEndPointOverride
+                           version:version
+                          resolver:resolve
+                          rejecter:reject];
+}
 
-RCT_EXTERN_METHOD(getAttributionInfo: (RCTPromiseResolveBlock) resolve
-                  rejecter: (RCTPromiseRejectBlock) reject)
+- (void)setEmail:(NSString *_Nullable)email
+       authToken:(NSString *_Nullable)authToken {
+  [_swiftAPI setEmail:email authToken:authToken];
+}
 
-RCT_EXTERN_METHOD(setAttributionInfo: (NSDictionary *) attributionInfo)
+- (void)getEmail:(RCTPromiseResolveBlock)resolve
+          reject:(RCTPromiseRejectBlock)reject {
+  [_swiftAPI getEmail:resolve rejecter:reject];
+}
 
-RCT_EXTERN_METHOD(trackPushOpenWithCampaignId: (nonnull NSNumber *) campaignId
-                  templateId: (nonnull NSNumber *) templateId
-                  messageId: (nonnull NSString *) messageId
-                  appAlreadyRunning: (BOOL) appAlreadyRunning
-                  dataFields: (NSDictionary *) dataFields)
+- (void)setUserId:(NSString *_Nullable)userId
+        authToken:(NSString *_Nullable)authToken {
+  [_swiftAPI setUserId:userId authToken:authToken];
+}
 
-RCT_EXTERN_METHOD(updateCart: (NSArray *) items)
+- (void)getUserId:(RCTPromiseResolveBlock)resolve
+           reject:(RCTPromiseRejectBlock)reject {
+  [_swiftAPI getUserId:resolve rejecter:reject];
+}
 
-RCT_EXTERN_METHOD(trackPurchase: (nonnull NSNumber *) total
-                  items: (NSArray *) items
-                  dataFields: (NSDictionary *) dataFields)
+- (void)setInAppShowResponse:(NSNumber *)inAppShowResponse {
+  [_swiftAPI setInAppShowResponse:inAppShowResponse];
+}
 
-RCT_EXTERN_METHOD(trackInAppOpen: (NSString *) messageId
-                  location: (nonnull NSNumber *) location)
+- (void)getInAppMessages:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject {
+  [_swiftAPI getInAppMessages:resolve rejecter:reject];
+}
 
-RCT_EXTERN_METHOD(trackInAppClick: (nonnull NSString *) messageId
-                  location: (nonnull NSNumber *) location
-                  clickedUrl: (nonnull NSString *) clickedUrl)
+- (void)getInboxMessages:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject {
+  [_swiftAPI getInboxMessages:resolve rejecter:reject];
+}
 
-RCT_EXTERN_METHOD(trackInAppClose: (nonnull NSString *) messageId
-                  location: (nonnull NSNumber *) location
-                  source: (nonnull NSNumber *) source
-                  clickedUrl: (NSString *) clickedUrl)
+// NOTE: This is not used anywhere on the JS side.
+- (void)getUnreadInboxMessagesCount:(RCTPromiseResolveBlock)resolve
+                             reject:(RCTPromiseRejectBlock)reject {
+  [_swiftAPI getUnreadInboxMessagesCount:resolve rejecter:reject];
+}
 
-RCT_EXTERN_METHOD(inAppConsume: (nonnull NSString *) messageId
-                  location: (nonnull NSNumber *) location
-                  source: (nonnull NSNumber *) source)
+- (void)showMessage:(NSString *)messageId
+            consume:(BOOL)consume
+            resolve:(RCTPromiseResolveBlock)resolve
+             reject:(RCTPromiseRejectBlock)reject {
+  [_swiftAPI showMessage:messageId
+                 consume:consume
+                resolver:resolve
+                rejecter:reject];
+}
 
-RCT_EXTERN_METHOD(trackEvent: (nonnull NSString *) name
-                  dataFields: (NSDictionary *) dataFields)
+- (void)removeMessage:(NSString *)messageId
+             location:(NSNumber *)location
+               source:(NSNumber *)source {
+  [_swiftAPI removeMessage:messageId location:location source:source];
+}
 
-RCT_EXTERN_METHOD(updateUser: (nonnull NSDictionary *) dataFields
-                  mergeNestedObjects: (BOOL) mergeNestedObjects)
+- (void)setReadForMessage:(NSString *)messageId read:(BOOL)read {
+  [_swiftAPI setReadForMessage:messageId read:read];
+}
 
-RCT_EXTERN_METHOD(updateEmail: (nonnull NSString *) email
-                  authToken: (NSString *) authToken)
+- (void)setAutoDisplayPaused:(BOOL)autoDisplayPaused {
+  [_swiftAPI setAutoDisplayPaused:autoDisplayPaused];
+}
 
-RCT_EXTERN_METHOD(handleAppLink: (nonnull NSString *) appLink
-                  resolver: (RCTPromiseResolveBlock) resolve
-                  rejecter: (RCTPromiseRejectBlock) reject)
+- (void)trackEvent:(NSString *)name dataFields:(NSDictionary *)dataFields {
+  [_swiftAPI trackEvent:name dataFields:dataFields];
+}
 
-RCT_EXTERN_METHOD(updateSubscriptions: (NSArray *) emailListIds
-                  unsubscribedChannelIds: (NSArray *) unsubscribedChannelIds
-                  unsubscribedMessageTypeIds: (NSArray *) unsubscribedMessageTypeIds
-                  subscribedMessageTypeIds: (NSArray *) subscribedMessageTypeIds
-                  campaignId: (nonnull NSNumber *) campaignId
-                  templateId: (nonnull NSNumber *) templateId)
+- (void)trackPushOpenWithCampaignId:(NSNumber *)campaignId
+                         templateId:(NSNumber *)templateId
+                          messageId:(NSString *)messageId
+                  appAlreadyRunning:(BOOL)appAlreadyRunning
+                         dataFields:(NSDictionary *)dataFields {
+  [_swiftAPI trackPushOpenWithCampaignId:campaignId
+                              templateId:templateId
+                               messageId:messageId
+                       appAlreadyRunning:appAlreadyRunning
+                              dataFields:dataFields];
+}
 
-// MARK: - SDK In-App Manager Functions
+- (void)trackInAppOpen:(NSString *)messageId location:(NSNumber *)location {
+  [_swiftAPI trackInAppOpen:messageId location:location];
+}
 
-RCT_EXTERN_METHOD(getInAppMessages: (RCTPromiseResolveBlock) resolve
-                  rejecter: (RCTPromiseRejectBlock) reject)
+- (void)trackInAppClick:(NSString *)messageId
+               location:(NSNumber *)location
+             clickedUrl:(NSString *)clickedUrl {
+  [_swiftAPI trackInAppClick:messageId location:location clickedUrl:clickedUrl];
+}
 
-RCT_EXTERN_METHOD(getHtmlInAppContentForMessage: (nonnull NSString *) messageId
-                  resolver: (RCTPromiseResolveBlock) resolve
-                  rejecter: (RCTPromiseRejectBlock) reject)
+- (void)trackInAppClose:(NSString *)messageId
+               location:(NSNumber *)location
+                 source:(NSNumber *)source
+             clickedUrl:(NSString *)clickedUrl {
+  [_swiftAPI trackInAppClose:messageId
+                    location:location
+                      source:source
+                  clickedUrl:clickedUrl];
+}
 
-RCT_EXTERN_METHOD(getInboxMessages: (RCTPromiseResolveBlock) resolve
-                  rejecter: (RCTPromiseRejectBlock) reject)
+- (void)inAppConsume:(NSString *)messageId
+            location:(NSNumber *)location
+              source:(NSNumber *)source {
+  [_swiftAPI inAppConsume:messageId location:location source:source];
+}
 
-RCT_EXTERN_METHOD(getUnreadInboxMessagesCount: (RCTPromiseResolveBlock) resolve
-                  rejecter: (RCTPromiseRejectBlock) reject)
+- (void)updateCart:(NSArray *)items {
+  [_swiftAPI updateCart:items];
+}
 
-RCT_EXTERN_METHOD(showMessage: (nonnull NSString *) messageId
-                  consume: (nonnull BOOL) consume
-                  resolver: (RCTPromiseResolveBlock) resolve
-                  rejecter: (RCTPromiseRejectBlock) reject)
+- (void)trackPurchase:(NSNumber *)total
+                items:(NSArray *)items
+           dataFields:(NSDictionary *)dataFields {
+  [_swiftAPI trackPurchase:total items:items dataFields:dataFields];
+}
 
-RCT_EXTERN_METHOD(removeMessage: (nonnull NSString *) messageId
-                  location: (nonnull NSNumber *) location
-                  source: (nonnull NSNumber *) source)
+- (void)updateUser:(NSDictionary *)dataFields
+    mergeNestedObjects:(BOOL)mergeNestedObjects {
+  [_swiftAPI updateUser:dataFields mergeNestedObjects:mergeNestedObjects];
+}
 
-RCT_EXTERN_METHOD(setReadForMessage: (nonnull NSString *) messageId
-                  read: (BOOL) read)
+- (void)updateEmail:(NSString *)email authToken:(NSString *)authToken {
+  [_swiftAPI updateEmail:email authToken:authToken];
+}
 
-RCT_EXTERN_METHOD(setAutoDisplayPaused: (BOOL) paused)
+- (void)getAttributionInfo:(RCTPromiseResolveBlock)resolve
+                    reject:(RCTPromiseRejectBlock)reject {
+  [_swiftAPI getAttributionInfo:resolve rejecter:reject];
+}
 
-// MARK: - SDK Inbox Session Tracking Functions
+- (void)setAttributionInfo:(NSDictionary *)attributionInfo {
+  [_swiftAPI setAttributionInfo:attributionInfo];
+}
 
-RCT_EXTERN_METHOD(startSession: (nonnull NSArray *) visibleRows)
+- (void)disableDeviceForCurrentUser {
+  [_swiftAPI disableDeviceForCurrentUser];
+}
 
-RCT_EXTERN_METHOD(endSession)
+- (void)getLastPushPayload:(RCTPromiseResolveBlock)resolve
+                    reject:(RCTPromiseRejectBlock)reject {
+  [_swiftAPI getLastPushPayload:resolve rejecter:reject];
+}
 
-RCT_EXTERN_METHOD(updateVisibleRows: (nonnull NSArray *) visibleRows)
+- (void)getHtmlInAppContentForMessage:(NSString *)messageId
+                              resolve:(RCTPromiseResolveBlock)resolve
+                               reject:(RCTPromiseRejectBlock)reject {
+  [_swiftAPI getHtmlInAppContentForMessage:messageId
+                                  resolver:resolve
+                                  rejecter:reject];
+}
 
-// MARK: - SDK Auth Manager Functions
+- (void)handleAppLink:(NSString *)appLink
+              resolve:(RCTPromiseResolveBlock)resolve
+               reject:(RCTPromiseRejectBlock)reject {
+  [_swiftAPI handleAppLink:appLink resolver:resolve rejecter:reject];
+}
 
-RCT_EXTERN_METHOD(passAlongAuthToken: (NSString *) authToken)
+- (void)updateSubscriptions:(NSArray *)emailListIds
+        unsubscribedChannelIds:(NSArray *)unsubscribedChannelIds
+    unsubscribedMessageTypeIds:(NSArray *)unsubscribedMessageTypeIds
+      subscribedMessageTypeIds:(NSArray *)subscribedMessageTypeIds
+                    campaignId:(NSNumber *)campaignId
+                    templateId:(NSNumber *)templateId {
+  [_swiftAPI updateSubscriptions:emailListIds
+          unsubscribedChannelIds:unsubscribedChannelIds
+      unsubscribedMessageTypeIds:unsubscribedMessageTypeIds
+        subscribedMessageTypeIds:subscribedMessageTypeIds
+                      campaignId:campaignId
+                      templateId:templateId];
+}
+
+- (void)startSession:(NSArray *)visibleRows {
+  [_swiftAPI startSession:visibleRows];
+}
+
+- (void)endSession {
+  [_swiftAPI endSession];
+}
+
+- (void)updateVisibleRows:(NSArray *)visibleRows {
+  [_swiftAPI updateVisibleRows:visibleRows];
+}
+
+- (void)passAlongAuthToken:(NSString *)authToken {
+  [_swiftAPI passAlongAuthToken:authToken];
+}
+
+- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
+    (const facebook::react::ObjCTurboModule::InitParams &)params {
+  return std::make_shared<facebook::react::NativeRNIterableAPISpecJSI>(params);
+}
 
 @end

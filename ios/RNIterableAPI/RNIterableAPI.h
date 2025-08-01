@@ -1,9 +1,14 @@
-//
-//  RNIterableAPI.h
-//  RNIterableAPI
-//
-//  Created by Loren Posen on 6/11/25.
-//  Copyright © 2025 Iterable. All rights reserved.
-//
-#import <React/RCTBridgeModule.h>
+#import <Foundation/Foundation.h>
+#import <React/RCTEventEmitter.h>
 
+#if RCT_NEW_ARCH_ENABLED
+
+#import <React/RCTUtils.h>
+#import <React/RCTConvert.h>
+#import <React/RCTTurboModuleRegistry.h>
+#import <RNIterableAPISpec/RNIterableAPISpec.h>
+@interface RNIterableAPI : RCTEventEmitter <NativeRNIterableAPISpec>
+
+#endif
+
+@end
