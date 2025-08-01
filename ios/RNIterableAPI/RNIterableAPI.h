@@ -9,10 +9,9 @@
 #import <RNIterableAPISpec/RNIterableAPISpec.h>
 @interface RNIterableAPI : RCTEventEmitter <NativeRNIterableAPISpec>
 
-// #else
-// #import <React/RCTEventEmitter.h>
-// #import <React/RCTBridgeModule.h>
-// @interface RNIterableAPI : RCTEventEmitter <RCTBridgeModule>
+#else
+#import <React/RCTBridgeModule.h>
+@interface RNIterableAPI : RCTEventEmitter <RCTBridgeModule>
 
 #endif
 
