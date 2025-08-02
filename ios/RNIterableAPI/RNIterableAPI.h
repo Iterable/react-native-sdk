@@ -7,7 +7,13 @@
   #import <React/RCTConvert.h>
   #import <React/RCTTurboModuleRegistry.h>
   #import <RNIterableAPISpec/RNIterableAPISpec.h>
+
 @interface RNIterableAPI : RCTEventEmitter <NativeRNIterableAPISpec>
+
+#else
+
+  #import <React/RCTBridgeModule.h>
+@interface RNIterableAPI : RCTEventEmitter <RCTBridgeModule>
 
 #endif
 
