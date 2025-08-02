@@ -33,7 +33,6 @@ import React
     case receivedIterableInboxChanged
     case handleAuthSuccessCalled
     case handleAuthFailureCalled
-    case onTestEventDispatch
   }
 
   @objc public static var supportedEvents: [String] {
@@ -54,10 +53,6 @@ import React
 
   // MARK: - Native SDK Functions
 
-  @objc public func hello() {
-    print("Hello from Swift Again")
-  }
-
   @objc(initializeWithApiKey:config:version:resolver:rejecter:)
   public func initializeWithApiKey(
     apiKey: String,
@@ -66,7 +61,6 @@ import React
     resolver: @escaping RCTPromiseResolveBlock,
     rejecter: @escaping RCTPromiseRejectBlock
   ) {
-    NSLog("initializeWithApiKey called from swift")
     ITBInfo()
 
     initialize(
@@ -476,13 +470,6 @@ import React
   public func updateVisibleRows(visibleRows: [[AnyHashable: Any]]) {
     let serializedRows = InboxImpressionTracker.RowInfo.rowInfos(from: visibleRows)
     inboxSessionManager.updateVisibleRows(visibleRows: serializedRows)
-  }
-
-  @objc(testEventDispatch)
-  public func testEventDispatch() {
-    NSLog("***ITBL SWIFT*** shouldEmit: \(shouldEmit)")
-    NSLog("***ITBL SWIFT*** testEventDispatch", EventName.onTestEventDispatch.rawValue)
-    delegate?.sendEvent(withName: EventName.onTestEventDispatch.rawValue, body: 0)
   }
 
   // MARK: - SDK Auth Manager Functions
