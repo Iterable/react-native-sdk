@@ -23,7 +23,7 @@ typedef NS_ENUM(NSInteger, InAppShowResponse) {
 
 - (instancetype)init {
   self = [super init];
-  if (self) {
+  if(self) {
     _swiftAPI = [ReactIterableAPI new];
     _swiftAPI.delegate = self;
   }
