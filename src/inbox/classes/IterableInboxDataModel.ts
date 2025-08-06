@@ -99,8 +99,8 @@ export class IterableInboxDataModel {
     );
 
     return RNIterableAPI.getHtmlInAppContentForMessage(id).then(
-      (content) => {
-        return IterableHtmlInAppContent.fromDict(content as unknown as IterableHtmlInAppContentRaw);
+      (content: IterableHtmlInAppContentRaw) => {
+        return IterableHtmlInAppContent.fromDict(content);
       }
     );
   }
@@ -136,8 +136,8 @@ export class IterableInboxDataModel {
    */
   async refresh(): Promise<IterableInboxRowViewModel[]> {
     return RNIterableAPI.getInboxMessages().then(
-      (messages) => {
-        return this.processMessages(messages as unknown as IterableInAppMessage[]);
+      (messages: IterableInAppMessage[]) => {
+        return this.processMessages(messages);
       },
       () => {
         return [];
