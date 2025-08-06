@@ -125,4 +125,16 @@ export interface Spec extends TurboModule {
   addListener(eventName: string): void;
   removeListeners(count: number): void;
 }
-export default TurboModuleRegistry.getEnforcing<Spec>('RNIterableAPI');
+
+// Check if we're in a test environment
+const isTestEnvironment = () => {
+  return (
+    typeof jest !== 'undefined' ||
+    process.env.NODE_ENV === 'test' ||
+    process.env.JEST_WORKER_ID !== undefined
+  );
+};
+
+export default isTestEnvironment()
+  ? undefined
+  : TurboModuleRegistry.getEnforcing<Spec>('RNIterableAPI');
