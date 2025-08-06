@@ -324,7 +324,7 @@ export class Iterable {
     Iterable?.logger?.log('getAttributionInfo');
 
     return RNIterableAPI.getAttributionInfo().then(
-      (dict) => {
+      (dict: { campaignId: number; templateId: number; messageId: string } | null) => {
         if (dict) {
           return new IterableAttributionInfo(
             dict.campaignId as number,
