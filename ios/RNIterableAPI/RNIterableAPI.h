@@ -6,4 +6,3 @@
 //  Copyright © 2025 Iterable. All rights reserved.
 //
 #import <React/RCTBridgeModule.h>
-
