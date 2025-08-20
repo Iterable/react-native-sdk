@@ -182,6 +182,12 @@
     "jsSrcsDir": "src/api/",
     "android": {
       "javaPackageName": "com.iterable.reactnative"
+    },
+    "ios": {
+      "modules": {
+        "RNIterableAPI": "RNIterableAPI",
+        "ReactIterableAPI": "ReactIterableAPI"
+      }
     }
   },
   "create-react-native-library": {
