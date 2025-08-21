@@ -1,21 +1,29 @@
 package com.iterable.reactnative;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableMap;
 import java.util.Map;
 import java.util.HashMap;
 
 public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   private final ReactApplicationContext reactContext;
+  private static RNIterableAPIModuleImpl moduleImpl;
 
   RNIterableAPIModule(ReactApplicationContext context) {
       super(context);
       this.reactContext = context;
+      if (moduleImpl == null) {
+          moduleImpl = new RNIterableAPIModuleImpl(reactContext);
+      }
   }
 
   @Override
@@ -26,206 +34,203 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
 
   @Override
   public void initializeWithApiKey(String apiKey, ReadableMap configReadableMap, String version, Promise promise) {
-    RNIterableAPIModuleImpl.initializeWithApiKey(apiKey, configReadableMap, version, promise);
+    moduleImpl.initializeWithApiKey(apiKey, configReadableMap, version, promise);
   }
 
   @Override
   public void initialize2WithApiKey(String apiKey, ReadableMap configReadableMap, String apiEndPointOverride, String version, Promise promise) {
-    RNIterableAPIModuleImpl.initialize2WithApiKey(apiKey, configReadableMap, apiEndPointOverride, version, promise);
+    moduleImpl.initialize2WithApiKey(apiKey, configReadableMap, apiEndPointOverride, version, promise);
   }
 
   @Override
   public void setEmail(@Nullable String email, @Nullable String authToken) {
-    RNIterableAPIModuleImpl.setEmail(email, authToken);
+    moduleImpl.setEmail(email, authToken);
   }
 
   @Override
   public void updateEmail(String email, @Nullable String authToken) {
-    RNIterableAPIModuleImpl.updateEmail(email, authToken);
+    moduleImpl.updateEmail(email, authToken);
   }
 
   @Override
   public void getEmail(Promise promise) {
-    RNIterableAPIModuleImpl.getEmail(promise);
+    moduleImpl.getEmail(promise);
   }
 
-  @Override
   public void sampleMethod(String stringArgument, int numberArgument, Callback callback) {
-    RNIterableAPIModuleImpl.sampleMethod(stringArgument, numberArgument, callback);
+    moduleImpl.sampleMethod(stringArgument, numberArgument, callback);
   }
 
   @Override
   public void setUserId(@Nullable String userId, @Nullable String authToken) {
-    RNIterableAPIModuleImpl.setUserId(userId, authToken);
+    moduleImpl.setUserId(userId, authToken);
   }
 
   @Override
   public void updateUser(ReadableMap dataFields, boolean mergeNestedObjects) {
-    RNIterableAPIModuleImpl.updateUser(dataFields, mergeNestedObjects);
+    moduleImpl.updateUser(dataFields, mergeNestedObjects);
   }
 
   @Override
   public void getUserId(Promise promise) {
-    RNIterableAPIModuleImpl.getUserId(promise);
+    moduleImpl.getUserId(promise);
   }
 
   @Override
   public void trackEvent(String name, ReadableMap dataFields) {
-    RNIterableAPIModuleImpl.trackEvent(name, dataFields);
+    moduleImpl.trackEvent(name, dataFields);
   }
 
   @Override
   public void updateCart(ReadableArray items) {
-    RNIterableAPIModuleImpl.updateCart(items);
+    moduleImpl.updateCart(items);
   }
 
   @Override
   public void trackPurchase(double total, ReadableArray items, ReadableMap dataFields) {
-    RNIterableAPIModuleImpl.trackPurchase(total, items, dataFields);
+    moduleImpl.trackPurchase(total, items, dataFields);
   }
 
   @Override
   public void trackPushOpenWithCampaignId(double campaignId, Double templateId, String messageId, boolean appAlreadyRunning, ReadableMap dataFields) {
-    RNIterableAPIModuleImpl.trackPushOpenWithCampaignId(campaignId, templateId, messageId, appAlreadyRunning, dataFields);
+    moduleImpl.trackPushOpenWithCampaignId(campaignId, templateId, messageId, appAlreadyRunning, dataFields);
   }
 
   @Override
   public void updateSubscriptions(ReadableArray emailListIds, ReadableArray unsubscribedChannelIds, ReadableArray unsubscribedMessageTypeIds, ReadableArray subscribedMessageTypeIds, double campaignId, double templateId) {
-    RNIterableAPIModuleImpl.updateSubscriptions(emailListIds, unsubscribedChannelIds, unsubscribedMessageTypeIds, subscribedMessageTypeIds, campaignId, templateId);
+    moduleImpl.updateSubscriptions(emailListIds, unsubscribedChannelIds, unsubscribedMessageTypeIds, subscribedMessageTypeIds, campaignId, templateId);
   }
 
   @Override
   public void showMessage(String messageId, boolean consume, final Promise promise) {
-    RNIterableAPIModuleImpl.showMessage(messageId, consume, promise);
+    moduleImpl.showMessage(messageId, consume, promise);
   }
 
   @Override
   public void setReadForMessage(String messageId, boolean read) {
-    RNIterableAPIModuleImpl.setReadForMessage(messageId, read);
+    moduleImpl.setReadForMessage(messageId, read);
   }
 
   @Override
   public void removeMessage(String messageId, double location, double deleteSource) {
-    RNIterableAPIModuleImpl.removeMessage(messageId, location, deleteSource);
+    moduleImpl.removeMessage(messageId, location, deleteSource);
   }
 
   @Override
   public void getHtmlInAppContentForMessage(String messageId, final Promise promise) {
-    RNIterableAPIModuleImpl.getHtmlInAppContentForMessage(messageId, promise);
+    moduleImpl.getHtmlInAppContentForMessage(messageId, promise);
   }
 
   @Override
   public void getAttributionInfo(Promise promise) {
-    RNIterableAPIModuleImpl.getAttributionInfo(promise);
+    moduleImpl.getAttributionInfo(promise);
   }
 
   @Override
   public void setAttributionInfo(ReadableMap attributionInfoReadableMap) {
-    RNIterableAPIModuleImpl.setAttributionInfo(attributionInfoReadableMap);
+    moduleImpl.setAttributionInfo(attributionInfoReadableMap);
   }
 
   @Override
   public void getLastPushPayload(Promise promise) {
-    RNIterableAPIModuleImpl.getLastPushPayload(promise);
+    moduleImpl.getLastPushPayload(promise);
   }
 
   @Override
   public void disableDeviceForCurrentUser() {
-    RNIterableAPIModuleImpl.disableDeviceForCurrentUser();
+    moduleImpl.disableDeviceForCurrentUser();
   }
 
   @Override
   public void handleAppLink(String uri, Promise promise) {
-    RNIterableAPIModuleImpl.handleAppLink(uri, promise);
+    moduleImpl.handleAppLink(uri, promise);
   }
 
   @Override
   public void trackInAppOpen(String messageId, double location) {
-    RNIterableAPIModuleImpl.trackInAppOpen(messageId, location);
+    moduleImpl.trackInAppOpen(messageId, location);
   }
 
   @Override
   public void trackInAppClick(String messageId, double location, String clickedUrl) {
-    RNIterableAPIModuleImpl.trackInAppClick(messageId, location, clickedUrl);
+    moduleImpl.trackInAppClick(messageId, location, clickedUrl);
   }
 
   @Override
   public void trackInAppClose(String messageId, double location, double source, @Nullable String clickedUrl) {
-    RNIterableAPIModuleImpl.trackInAppClose(messageId, location, source, clickedUrl);
+    moduleImpl.trackInAppClose(messageId, location, source, clickedUrl);
   }
 
   @Override
   public void inAppConsume(String messageId, double location, double source) {
-    RNIterableAPIModuleImpl.inAppConsume(messageId, location, source);
+    moduleImpl.inAppConsume(messageId, location, source);
   }
 
   @Override
   public void getInAppMessages(Promise promise) {
-    RNIterableAPIModuleImpl.getInAppMessages(promise);
+    moduleImpl.getInAppMessages(promise);
   }
 
   @Override
   public void getInboxMessages(Promise promise) {
-    RNIterableAPIModuleImpl.getInboxMessages(promise);
+    moduleImpl.getInboxMessages(promise);
   }
 
   @Override
   public void getUnreadInboxMessagesCount(Promise promise) {
-    RNIterableAPIModuleImpl.getUnreadInboxMessagesCount(promise);
+    moduleImpl.getUnreadInboxMessagesCount(promise);
   }
 
   @Override
   public void setInAppShowResponse(double number) {
-    RNIterableAPIModuleImpl.setInAppShowResponse(number);
+    moduleImpl.setInAppShowResponse(number);
   }
 
   @Override
   public void setAutoDisplayPaused(final boolean paused) {
-    RNIterableAPIModuleImpl.setAutoDisplayPaused(paused);
+    moduleImpl.setAutoDisplayPaused(paused);
   }
 
   @Override
   public void wakeApp() {
-    RNIterableAPIModuleImpl.wakeApp();
+    moduleImpl.wakeApp();
   }
 
   @Override
   public void startSession(ReadableArray visibleRows) {
-    RNIterableAPIModuleImpl.startSession(visibleRows);
+    moduleImpl.startSession(visibleRows);
   }
 
   @Override
   public void endSession() {
-    RNIterableAPIModuleImpl.endSession();
+    moduleImpl.endSession();
   }
 
   @Override
   public void updateVisibleRows(ReadableArray visibleRows) {
-    RNIterableAPIModuleImpl.updateVisibleRows(visibleRows);
+    moduleImpl.updateVisibleRows(visibleRows);
   }
 
   @Override
   public void addListener(String eventName) {
-    RNIterableAPIModuleImpl.addListener(eventName);
+    moduleImpl.addListener(eventName);
   }
 
   @Override
   public void removeListeners(double count) {
-    RNIterableAPIModuleImpl.removeListeners(count);
+    moduleImpl.removeListeners(count);
   }
 
   @Override
   public void passAlongAuthToken(String authToken) {
-    RNIterableAPIModuleImpl.passAlongAuthToken(authToken);
+    moduleImpl.passAlongAuthToken(authToken);
   }
 
-  @Override
   public void sendEvent(@NonNull String eventName, @Nullable Object eventData) {
-    RNIterableAPIModuleImpl.sendEvent(eventName, eventData);
+    moduleImpl.sendEvent(eventName, eventData);
   }
 
-  @Override
   public void onInboxUpdated() {
-    RNIterableAPIModuleImpl.onInboxUpdated();
+    moduleImpl.onInboxUpdated();
   }
 }

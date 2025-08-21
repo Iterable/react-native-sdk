@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
-import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -43,16 +42,21 @@ import com.iterable.iterableapi.IterableUrlHandler;
 import com.iterable.iterableapi.RNIterableInternal;
 import com.iterable.reactnative.Serialization;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-public class RNIterableAPIModuleImpl {
+public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCustomActionHandler, IterableInAppHandler, IterableAuthHandler, IterableInAppManager.Listener {
     public static final String NAME = "RNIterableAPI";
 
     private static String TAG = "RNIterableAPIModule";
+    private final ReactApplicationContext reactContext;
 
     private IterableInAppHandler.InAppResponse inAppResponse = IterableInAppHandler.InAppResponse.SHOW;
 
@@ -64,6 +68,9 @@ public class RNIterableAPIModuleImpl {
 
     private final InboxSessionManager sessionManager = new InboxSessionManager();
 
+    public RNIterableAPIModuleImpl(ReactApplicationContext reactContext) {
+        this.reactContext = reactContext;
+    }
 
     public void initializeWithApiKey(String apiKey, ReadableMap configReadableMap, String version, Promise promise) {
         IterableLogger.d(TAG, "initializeWithApiKey: " + apiKey);
@@ -591,12 +598,6 @@ public class RNIterableAPIModuleImpl {
     public void removeListeners(double count) {
         // Keep: Required for RN built in Event Emitter Calls.
     }
-
-    // ---------------------------------------------------------------------------------------
-    // endregion
-
-    // ---------------------------------------------------------------------------------------
-    // region Misc Bridge Functions
 
     public void passAlongAuthToken(String authToken) {
         passedAuthToken = authToken;
