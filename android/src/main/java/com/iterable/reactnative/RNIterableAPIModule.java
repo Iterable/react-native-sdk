@@ -74,7 +74,7 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec implements Iter
     return NAME;
   }
 
-  public static final String NAME = "ReactNativeSdk";
+  public static final String NAME = "RNIterableAPI";
 
   @ReactMethod
   public void initializeWithApiKey(String apiKey, ReadableMap configReadableMap, String version, Promise promise) {
