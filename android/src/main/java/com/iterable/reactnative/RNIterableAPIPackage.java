@@ -42,7 +42,8 @@ public class RNIterableAPIPackage extends TurboReactPackage {
                   true, // hasConstants
                   false, // isCxxModule
                   isTurboModule // isTurboModule
-            ));
+              )
+            );
             return moduleInfos;
         };
     }
