@@ -99,6 +99,9 @@
 //     // api project(":iterableapi") // links to local android SDK repo rather than by release
 // }
 
+def isNewArchitectureEnabled() {
+  return project.hasProperty("newArchEnabled") && project.newArchEnabled == "true"
+}
 
 buildscript {
   ext.getExtOrDefault = {name ->
@@ -121,7 +124,9 @@ buildscript {
 apply plugin: "com.android.library"
 apply plugin: "kotlin-android"
 
-apply plugin: "com.facebook.react"
+if (isNewArchitectureEnabled()) {
+  apply plugin: "com.facebook.react"
+}
 
 def getExtOrIntegerDefault(name) {
   return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties["RNIterable_" + name]).toInteger()
@@ -135,6 +140,7 @@ android {
   defaultConfig {
     minSdkVersion getExtOrIntegerDefault("minSdkVersion")
     targetSdkVersion getExtOrIntegerDefault("targetSdkVersion")
+    buildConfigField("boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString())
   }
 
   buildFeatures {
@@ -158,10 +164,15 @@ android {
 
   sourceSets {
     main {
-      java.srcDirs += [
-        "generated/java",
-        "generated/jni"
-      ]
+      // java.srcDirs += [
+      //   "generated/java",
+      //   "generated/jni"
+      // ]
+      if (isNewArchitectureEnabled()) {
+        java.srcDirs += ['src/newarch']
+      } else {
+        java.srcDirs += ['src/oldarch']
+      }
     }
   }
 }
@@ -179,9 +190,11 @@ dependencies {
   api "com.iterable:iterableapi:3.5.2"
 }
 
-react {
-  jsRootDir = file("../src/api/")
-  libraryName = "RNIterableAPISpec"
-  codegenJavaPackageName = "com.iterable.reactnative"
-}
+// if (isNewArchitectureEnabled()) {
+//   react {
+//     jsRootDir = file("../src/api/")
+//     libraryName = "RNIterableAPISpec"
+//     codegenJavaPackageName = "com.iterable.reactnative"
+//   }
+// }
 
