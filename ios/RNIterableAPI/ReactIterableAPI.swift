@@ -164,7 +164,12 @@ import React
       return
     }
     IterableAPI.attributionInfo = SerializationUtil.dictionaryToDecodable(
-      dict: dict as! [AnyHashable: Any])
+    guard let swiftDict = dict as? [AnyHashable: Any] else {
+      IterableAPI.attributionInfo = nil
+      return
+    }
+    IterableAPI.attributionInfo = SerializationUtil.dictionaryToDecodable(
+      dict: swiftDict)
   }
 
   @objc(trackPushOpenWithCampaignId:templateId:messageId:appAlreadyRunning:dataFields:)
