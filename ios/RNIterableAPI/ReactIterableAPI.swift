@@ -505,7 +505,12 @@ import React
     ITBInfo()
     let launchOptions = createLaunchOptions()
     let iterableConfig = IterableConfig.from(
-      dict: configDict as? [AnyHashable: Any]
+    guard let configDictTyped = configDict as? [AnyHashable: Any] else {
+      rejecter("E_INVALID_CONFIG", "configDict could not be cast to [AnyHashable: Any]", nil)
+      return
+    }
+    let iterableConfig = IterableConfig.from(
+      dict: configDictTyped
     )
 
     if let urlHandlerPresent = configDict["urlHandlerPresent"] as? Bool, urlHandlerPresent == true {
