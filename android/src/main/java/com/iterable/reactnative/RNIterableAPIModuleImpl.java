@@ -122,10 +122,9 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
             configBuilder.setAuthHandler(this);
         }
 
-        // Set the API endpoint override if provided
-        // if (apiEndPointOverride != null && !apiEndPointOverride.isEmpty()) {
-        //     configBuilder.setApiEndpoint(apiEndPointOverride);
-        // }
+        // NOTE: There does not seem to be a way to set the API endpoint
+        // override in the Android SDK.  Check with @Ayyanchira and @evantk91 to
+        // see what the best approach is.
 
         IterableApi.initialize(reactContext, apiKey, configBuilder.build());
         IterableApi.getInstance().setDeviceAttribute("reactNativeSDKVersion", version);
