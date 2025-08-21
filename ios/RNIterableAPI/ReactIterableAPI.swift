@@ -315,7 +315,11 @@ import React
   public func updateUser(dataFields: NSDictionary, mergeNestedObjects: Bool) {
     ITBInfo()
     IterableAPI.updateUser(
-      (dataFields as? [AnyHashable: Any])!, mergeNestedObjects: mergeNestedObjects)
+    guard let fields = dataFields as? [AnyHashable: Any] else {
+      ITBError("Could not cast dataFields to [AnyHashable: Any]")
+      return
+    }
+    IterableAPI.updateUser(fields, mergeNestedObjects: mergeNestedObjects)
   }
 
   @objc(updateEmail:authToken:)
