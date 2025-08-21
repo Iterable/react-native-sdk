@@ -226,12 +226,12 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
       moduleImpl.passAlongAuthToken(authToken);
     }
 
-    @ReactMethod
+
     public void sendEvent(@NonNull String eventName, @Nullable Object eventData) {
       moduleImpl.sendEvent(eventName, eventData);
     }
 
-    public void onInboxUpdated() {
+    void onInboxUpdated() {
       moduleImpl.onInboxUpdated();
     }
 }
