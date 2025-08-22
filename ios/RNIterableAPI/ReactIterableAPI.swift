@@ -163,7 +163,6 @@ import React
       IterableAPI.attributionInfo = nil
       return
     }
-    IterableAPI.attributionInfo = SerializationUtil.dictionaryToDecodable(
     guard let swiftDict = dict as? [AnyHashable: Any] else {
       IterableAPI.attributionInfo = nil
       return
@@ -319,7 +318,6 @@ import React
   @objc(updateUser:mergeNestedObjects:)
   public func updateUser(dataFields: NSDictionary, mergeNestedObjects: Bool) {
     ITBInfo()
-    IterableAPI.updateUser(
     guard let fields = dataFields as? [AnyHashable: Any] else {
       ITBError("Could not cast dataFields to [AnyHashable: Any]")
       return
@@ -513,7 +511,6 @@ import React
   ) {
     ITBInfo()
     let launchOptions = createLaunchOptions()
-    let iterableConfig = IterableConfig.from(
     guard let configDictTyped = configDict as? [AnyHashable: Any] else {
       rejecter("E_INVALID_CONFIG", "configDict could not be cast to [AnyHashable: Any]", nil)
       return
