@@ -130,9 +130,9 @@ import React
   // MARK: - Iterable API Request Functions
 
   @objc(setInAppShowResponse:)
-  public func setInAppShowResponse(inAppShowResponse number: NSNumber) {
+  public func setInAppShowResponse(inAppShowResponse number: Double) {
     ITBInfo()
-    self.inAppShowResponse = InAppShowResponse.from(number: number)
+    self.inAppShowResponse = InAppShowResponse.from(number: number as NSNumber)
     inAppHandlerSemaphore.signal()
   }
 
@@ -173,7 +173,7 @@ import React
 
   @objc(trackPushOpenWithCampaignId:templateId:messageId:appAlreadyRunning:dataFields:)
   public func trackPushOpenWithCampaignId(
-    campaignId: NSNumber,
+    campaignId: Double,
     templateId: NSNumber?,
     messageId: String,
     appAlreadyRunning: Bool,
@@ -183,7 +183,7 @@ import React
     let swiftDict = dataFields as? [AnyHashable: Any]
 
     IterableAPI.track(
-      pushOpen: campaignId,
+      pushOpen: campaignId as NSNumber,
       templateId: templateId,
       messageId: messageId,
       appAlreadyRunning: appAlreadyRunning,
@@ -198,13 +198,13 @@ import React
 
   @objc(trackPurchase:items:dataFields:)
   public func trackPurchase(
-    total: NSNumber,
+    total: Double,
     items: [[AnyHashable: Any]],
     dataFields: [AnyHashable: Any]?
   ) {
     ITBInfo()
     IterableAPI.track(
-      purchase: total,
+      purchase: total as NSNumber,
       items: items.compactMap(CommerceItem.from(dict:)),
       dataFields: dataFields)
   }
@@ -212,20 +212,20 @@ import React
   @objc(trackInAppOpen:location:)
   public func trackInAppOpen(
     messageId: String,
-    location locationNumber: NSNumber
+    location locationNumber: Double
   ) {
     ITBInfo()
     guard let message = IterableAPI.inAppManager.getMessage(withId: messageId) else {
       ITBError("Could not find message with id: \(messageId)")
       return
     }
-    IterableAPI.track(inAppOpen: message, location: InAppLocation.from(number: locationNumber))
+    IterableAPI.track(inAppOpen: message, location: InAppLocation.from(number: locationNumber as NSNumber))
   }
 
   @objc(trackInAppClick:location:clickedUrl:)
   public func trackInAppClick(
     messageId: String,
-    location locationNumber: NSNumber,
+    location locationNumber: Double,
     clickedUrl: String
   ) {
     ITBInfo()
@@ -234,15 +234,15 @@ import React
       return
     }
     IterableAPI.track(
-      inAppClick: message, location: InAppLocation.from(number: locationNumber),
+      inAppClick: message, location: InAppLocation.from(number: locationNumber as NSNumber),
       clickedUrl: clickedUrl)
   }
 
   @objc(trackInAppClose:location:source:clickedUrl:)
   public func trackInAppClose(
     messageId: String,
-    location locationNumber: NSNumber,
-    source sourceNumber: NSNumber,
+    location locationNumber: Double,
+    source sourceNumber: Double,
     clickedUrl: String?
   ) {
     ITBInfo()
@@ -250,16 +250,16 @@ import React
       ITBError("Could not find message with id: \(messageId)")
       return
     }
-    if let inAppCloseSource = InAppCloseSource.from(number: sourceNumber) {
+    if let inAppCloseSource = InAppCloseSource.from(number: sourceNumber as NSNumber) {
       IterableAPI.track(
         inAppClose: message,
-        location: InAppLocation.from(number: locationNumber),
+        location: InAppLocation.from(number: locationNumber as NSNumber),
         source: inAppCloseSource,
         clickedUrl: clickedUrl)
     } else {
       IterableAPI.track(
         inAppClose: message,
-        location: InAppLocation.from(number: locationNumber),
+        location: InAppLocation.from(number: locationNumber as NSNumber),
         clickedUrl: clickedUrl)
     }
   }
@@ -267,23 +267,23 @@ import React
   @objc(inAppConsume:location:source:)
   public func inAppConsume(
     messageId: String,
-    location locationNumber: NSNumber,
-    source sourceNumber: NSNumber
+    location locationNumber: Double,
+    source sourceNumber: Double
   ) {
     ITBInfo()
     guard let message = IterableAPI.inAppManager.getMessage(withId: messageId) else {
       ITBError("Could not find message with id: \(messageId)")
       return
     }
-    if let inAppDeleteSource = InAppDeleteSource.from(number: sourceNumber) {
+    if let inAppDeleteSource = InAppDeleteSource.from(number: sourceNumber as NSNumber) {
       IterableAPI.inAppConsume(
         message: message,
-        location: InAppLocation.from(number: locationNumber),
+        location: InAppLocation.from(number: locationNumber as NSNumber),
         source: inAppDeleteSource)
     } else {
       IterableAPI.inAppConsume(
         message: message,
-        location: InAppLocation.from(number: locationNumber))
+        location: InAppLocation.from(number: locationNumber as NSNumber))
     }
   }
 
@@ -386,22 +386,22 @@ import React
 
   @objc(removeMessage:location:source:)
   public func removeMessage(
-    messageId: String, location locationNumber: NSNumber, source sourceNumber: NSNumber
+    messageId: String, location locationNumber: Double, source sourceNumber: Double
   ) {
     ITBInfo()
     guard let message = IterableAPI.inAppManager.getMessage(withId: messageId) else {
       ITBError("Could not find message with id: \(messageId)")
       return
     }
-    if let inAppDeleteSource = InAppDeleteSource.from(number: sourceNumber) {
+    if let inAppDeleteSource = InAppDeleteSource.from(number: sourceNumber as NSNumber) {
       IterableAPI.inAppManager.remove(
         message: message,
-        location: InAppLocation.from(number: locationNumber),
-        source: inAppDeleteSource)
+        location: InAppLocation.from(number: locationNumber as NSNumber),
+        source: inAppDeleteSource as InAppDeleteSource)
     } else {
       IterableAPI.inAppManager.remove(
         message: message,
-        location: InAppLocation.from(number: locationNumber))
+        location: InAppLocation.from(number: locationNumber as NSNumber))
     }
   }
 
@@ -414,12 +414,12 @@ import React
     unsubscribedChannelIds: [NSNumber]?,
     unsubscribedMessageTypeIds: [NSNumber]?,
     subscribedMessageTypeIds: [NSNumber]?,
-    campaignId: NSNumber,
-    templateId: NSNumber
+    campaignId: Double,
+    templateId: Double
   ) {
     ITBInfo()
-    let finalCampaignId: NSNumber? = campaignId.intValue <= 0 ? nil : campaignId
-    let finalTemplateId: NSNumber? = templateId.intValue <= 0 ? nil : templateId
+    let finalCampaignId: NSNumber? = campaignId <= 0 ? nil : campaignId as NSNumber
+    let finalTemplateId: NSNumber? = templateId <= 0 ? nil : templateId as NSNumber
     IterableAPI.updateSubscriptions(
       emailListIds,
       unsubscribedChannelIds: unsubscribedChannelIds,
