@@ -155,7 +155,7 @@ RCT_EXPORT_MODULE()
 }
 
 - (void)trackPushOpenWithCampaignId:(double)campaignId
-                         templateId:(NSNumber *)templateId
+                         templateId:(NSNumber *_Nullable)templateId
                           messageId:(NSString *)messageId
                   appAlreadyRunning:(BOOL)appAlreadyRunning
                          dataFields:(NSDictionary *)dataFields {
@@ -335,8 +335,7 @@ RCT_EXPORT_METHOD(getUserId : (RCTPromiseResolveBlock)
   [_swiftAPI getUserId:resolve rejecter:reject];
 }
 
-RCT_EXPORT_METHOD(setInAppShowResponse : (NSNumber *_Nonnull)
-                      inAppShowResponse) {
+RCT_EXPORT_METHOD(setInAppShowResponse : (double)inAppShowResponse) {
   [_swiftAPI setInAppShowResponse:inAppShowResponse];
 }
 
@@ -364,8 +363,8 @@ RCT_EXPORT_METHOD(showMessage : (NSString *)messageId consume : (BOOL)
                 rejecter:reject];
 }
 
-RCT_EXPORT_METHOD(removeMessage : (NSString *)messageId location : (
-    NSNumber *_Nonnull)location source : (NSNumber *_Nonnull)source) {
+RCT_EXPORT_METHOD(removeMessage : (NSString *)messageId location : (double)
+                      location source : (double)source) {
   [_swiftAPI removeMessage:messageId location:location source:source];
 }
 
@@ -383,8 +382,8 @@ RCT_EXPORT_METHOD(trackEvent : (NSString *)name dataFields : (NSDictionary *)
 }
 
 RCT_EXPORT_METHOD(
-    trackPushOpenWithCampaignId : (NSNumber *_Nonnull)campaignId templateId : (
-        NSNumber *_Nonnull)templateId messageId : (NSString *)
+    trackPushOpenWithCampaignId : (double)campaignId templateId : (
+        NSNumber *_Nullable)templateId messageId : (NSString *)
         messageId appAlreadyRunning : (BOOL)
             appAlreadyRunning dataFields : (NSDictionary *)dataFields) {
   [_swiftAPI trackPushOpenWithCampaignId:campaignId
@@ -394,27 +393,27 @@ RCT_EXPORT_METHOD(
                               dataFields:dataFields];
 }
 
-RCT_EXPORT_METHOD(trackInAppOpen : (NSString *)
-                      messageId location : (NSNumber *_Nonnull)location) {
+RCT_EXPORT_METHOD(trackInAppOpen : (NSString *)messageId location : (double)
+                      location) {
   [_swiftAPI trackInAppOpen:messageId location:location];
 }
 
-RCT_EXPORT_METHOD(trackInAppClick : (NSString *)messageId location : (
-    NSNumber *_Nonnull)location clickedUrl : (NSString *)clickedUrl) {
+RCT_EXPORT_METHOD(trackInAppClick : (NSString *)messageId location : (double)
+                      location clickedUrl : (NSString *)clickedUrl) {
   [_swiftAPI trackInAppClick:messageId location:location clickedUrl:clickedUrl];
 }
 
-RCT_EXPORT_METHOD(trackInAppClose : (NSString *)messageId location : (
-    NSNumber *_Nonnull)location source : (NSNumber *_Nonnull)
-                      source clickedUrl : (NSString *)clickedUrl) {
+RCT_EXPORT_METHOD(trackInAppClose : (NSString *)messageId location : (double)
+                      location source : (double)source clickedUrl : (NSString *)
+                          clickedUrl) {
   [_swiftAPI trackInAppClose:messageId
                     location:location
                       source:source
                   clickedUrl:clickedUrl];
 }
 
-RCT_EXPORT_METHOD(inAppConsume : (NSString *)messageId location : (
-    NSNumber *_Nonnull)location source : (NSNumber *_Nonnull)source) {
+RCT_EXPORT_METHOD(inAppConsume : (NSString *)messageId location : (double)
+                      location source : (double)source) {
   [_swiftAPI inAppConsume:messageId location:location source:source];
 }
 
@@ -422,7 +421,7 @@ RCT_EXPORT_METHOD(updateCart : (NSArray *)items) {
   [_swiftAPI updateCart:items];
 }
 
-RCT_EXPORT_METHOD(trackPurchase : (NSNumber *_Nonnull)total items : (NSArray *)
+RCT_EXPORT_METHOD(trackPurchase : (double)total items : (NSArray *)
                       items dataFields : (NSDictionary *)dataFields) {
   [_swiftAPI trackPurchase:total items:items dataFields:dataFields];
 }
@@ -431,6 +430,7 @@ RCT_EXPORT_METHOD(updateUser : (NSDictionary *)dataFields mergeNestedObjects : (
     BOOL)mergeNestedObjects) {
   [_swiftAPI updateUser:dataFields mergeNestedObjects:mergeNestedObjects];
 }
+
 RCT_EXPORT_METHOD(updateEmail : (NSString *)email authToken : (NSString *)
                       authToken) {
   [_swiftAPI updateEmail:email authToken:authToken];
@@ -472,8 +472,8 @@ RCT_EXPORT_METHOD(
         NSArray *)
         unsubscribedChannelIds unsubscribedMessageTypeIds : (NSArray *)
             unsubscribedMessageTypeIds subscribedMessageTypeIds : (NSArray *)
-                subscribedMessageTypeIds campaignId : (NSNumber *_Nonnull)
-                    campaignId templateId : (NSNumber *_Nonnull)templateId) {
+                subscribedMessageTypeIds campaignId : (double)
+                    campaignId templateId : (double)templateId) {
   [_swiftAPI updateSubscriptions:emailListIds
           unsubscribedChannelIds:unsubscribedChannelIds
       unsubscribedMessageTypeIds:unsubscribedMessageTypeIds
@@ -492,7 +492,7 @@ RCT_EXPORT_METHOD(updateVisibleRows : (NSArray *)visibleRows) {
   [_swiftAPI updateVisibleRows:visibleRows];
 }
 
-RCT_EXPORT_METHOD(passAlongAuthToken : (NSString *)authToken) {
+RCT_EXPORT_METHOD(passAlongAuthToken : (NSString *_Nullable)authToken) {
   [_swiftAPI passAlongAuthToken:authToken];
 }
 
