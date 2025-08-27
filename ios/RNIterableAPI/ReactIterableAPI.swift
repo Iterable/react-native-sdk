@@ -397,7 +397,7 @@ import React
       IterableAPI.inAppManager.remove(
         message: message,
         location: InAppLocation.from(number: locationNumber as NSNumber),
-        source: inAppDeleteSource as InAppDeleteSource)
+        source: inAppDeleteSource)
     } else {
       IterableAPI.inAppManager.remove(
         message: message,
