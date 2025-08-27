@@ -170,7 +170,7 @@ import React
   @objc(trackPushOpenWithCampaignId:templateId:messageId:appAlreadyRunning:dataFields:)
   public func trackPushOpenWithCampaignId(
     campaignId: Double,
-    templateId: NSNumber?,
+    templateId: Double,
     messageId: String,
     appAlreadyRunning: Bool,
     dataFields: NSDictionary?
@@ -180,7 +180,7 @@ import React
 
     IterableAPI.track(
       pushOpen: campaignId as NSNumber,
-      templateId: templateId,
+      templateId: templateId as NSNumber,
       messageId: messageId,
       appAlreadyRunning: appAlreadyRunning,
       dataFields: swiftDict)
@@ -388,7 +388,6 @@ import React
     ITBInfo()
     guard let message = IterableAPI.inAppManager.getMessage(withId: messageId) else {
       ITBError("Could not find message with id: \(messageId)")
-      rejecter("", "Could not find message with id: \(messageId)", NSError(domain: "", code: 0, userInfo: nil))
       return
     }
     if let inAppDeleteSource = InAppDeleteSource.from(number: sourceNumber as NSNumber) {
@@ -416,8 +415,8 @@ import React
     templateId: Double
   ) {
     ITBInfo()
-    let finalCampaignId: NSNumber? = campaignId <= 0 ? nil : campaignId as NSNumber
-    let finalTemplateId: NSNumber? = templateId <= 0 ? nil : templateId as NSNumber
+    let finalCampaignId: NSNumber? = (campaignId as NSNumber).intValue <= 0 ? nil : campaignId as NSNumber
+    let finalTemplateId: NSNumber? = (templateId as NSNumber).intValue <= 0 ? nil : templateId as NSNumber
     IterableAPI.updateSubscriptions(
       emailListIds,
       unsubscribedChannelIds: unsubscribedChannelIds,

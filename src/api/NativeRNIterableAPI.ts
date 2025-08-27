@@ -39,7 +39,7 @@ export interface Spec extends TurboModule {
   ): void;
   trackPushOpenWithCampaignId(
     campaignId: number,
-    templateId: number | null,
+    templateId: number,
     messageId: string,
     appAlreadyRunning: boolean,
     dataFields?: { [key: string]: string | number | boolean }

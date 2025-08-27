@@ -155,7 +155,7 @@ RCT_EXPORT_MODULE()
 }
 
 - (void)trackPushOpenWithCampaignId:(double)campaignId
-                         templateId:(NSNumber *_Nullable)templateId
+                         templateId:(double)templateId
                           messageId:(NSString *)messageId
                   appAlreadyRunning:(BOOL)appAlreadyRunning
                          dataFields:(NSDictionary *)dataFields {
@@ -382,9 +382,8 @@ RCT_EXPORT_METHOD(trackEvent : (NSString *)name dataFields : (NSDictionary *)
 }
 
 RCT_EXPORT_METHOD(
-    trackPushOpenWithCampaignId : (double)campaignId templateId : (
-        NSNumber *_Nullable)templateId messageId : (NSString *)
-        messageId appAlreadyRunning : (BOOL)
+    trackPushOpenWithCampaignId : (double)campaignId templateId : (NSNumber *)
+        templateId messageId : (double)messageId appAlreadyRunning : (BOOL)
             appAlreadyRunning dataFields : (NSDictionary *)dataFields) {
   [_swiftAPI trackPushOpenWithCampaignId:campaignId
                               templateId:templateId
