@@ -77,7 +77,7 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   }
 
   @Override
-  public void trackEvent(String name, ReadableMap dataFields) {
+  public void trackEvent(String name, @Nullable ReadableMap dataFields) {
     moduleImpl.trackEvent(name, dataFields);
   }
 
@@ -87,7 +87,7 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   }
 
   @Override
-  public void trackPurchase(double total, ReadableArray items, ReadableMap dataFields) {
+  public void trackPurchase(double total, ReadableArray items, @Nullable ReadableMap dataFields) {
     moduleImpl.trackPurchase(total, items, dataFields);
   }
 
@@ -97,7 +97,7 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   }
 
   @Override
-  public void updateSubscriptions(ReadableArray emailListIds, ReadableArray unsubscribedChannelIds, ReadableArray unsubscribedMessageTypeIds, ReadableArray subscribedMessageTypeIds, double campaignId, double templateId) {
+  public void updateSubscriptions(@Nullable ReadableArray emailListIds, @Nullable ReadableArray unsubscribedChannelIds, @Nullable ReadableArray unsubscribedMessageTypeIds, @Nullable ReadableArray subscribedMessageTypeIds, double campaignId, double templateId) {
     moduleImpl.updateSubscriptions(emailListIds, unsubscribedChannelIds, unsubscribedMessageTypeIds, subscribedMessageTypeIds, campaignId, templateId);
   }
 
@@ -127,7 +127,7 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   }
 
   @Override
-  public void setAttributionInfo(ReadableMap attributionInfoReadableMap) {
+  public void setAttributionInfo(@Nullable ReadableMap attributionInfoReadableMap) {
     moduleImpl.setAttributionInfo(attributionInfoReadableMap);
   }
 
@@ -219,7 +219,7 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
     moduleImpl.removeListeners(count);
   }
 
-  public void passAlongAuthToken(String authToken) {
+  public void passAlongAuthToken(@Nullable String authToken) {
     moduleImpl.passAlongAuthToken(authToken);
   }
 
