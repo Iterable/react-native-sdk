@@ -273,6 +273,10 @@ RCT_EXPORT_MODULE()
   [_swiftAPI passAlongAuthToken:authToken];
 }
 
+- (void)wakeApp {
+  // Placeholder function -- this method is only used in Android
+}
+
 // MARK: - TurboModule integration
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
     (const facebook::react::ObjCTurboModule::InitParams &)params {
@@ -493,6 +497,10 @@ RCT_EXPORT_METHOD(updateVisibleRows : (NSArray *)visibleRows) {
 
 RCT_EXPORT_METHOD(passAlongAuthToken : (NSString *_Nullable)authToken) {
   [_swiftAPI passAlongAuthToken:authToken];
+}
+
+RCT_EXPORT_METHOD(wakeApp) {
+  // Placeholder function -- this method is only used in Android
 }
 
 #endif
