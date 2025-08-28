@@ -92,7 +92,7 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   }
 
   @Override
-  public void trackPushOpenWithCampaignId(double campaignId, double templateId, String messageId, boolean appAlreadyRunning, ReadableMap dataFields) {
+  public void trackPushOpenWithCampaignId(double campaignId, @Nullable Double templateId, String messageId, boolean appAlreadyRunning, @Nullable ReadableMap dataFields) {
     moduleImpl.trackPushOpenWithCampaignId(campaignId, templateId, messageId, appAlreadyRunning, dataFields);
   }
 

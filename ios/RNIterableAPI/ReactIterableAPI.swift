@@ -170,7 +170,7 @@ import React
   @objc(trackPushOpenWithCampaignId:templateId:messageId:appAlreadyRunning:dataFields:)
   public func trackPushOpenWithCampaignId(
     campaignId: Double,
-    templateId: Double,
+    templateId: NSNumber?,
     messageId: String,
     appAlreadyRunning: Bool,
     dataFields: NSDictionary?
@@ -180,7 +180,7 @@ import React
 
     IterableAPI.track(
       pushOpen: campaignId as NSNumber,
-      templateId: templateId as NSNumber,
+      templateId: templateId,
       messageId: messageId,
       appAlreadyRunning: appAlreadyRunning,
       dataFields: swiftDict)

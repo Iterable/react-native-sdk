@@ -187,8 +187,8 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         IterableApi.getInstance().trackPurchase(total, Serialization.commerceItemsFromReadableArray(items), optSerializedDataFields(dataFields));
     }
 
-    public void trackPushOpenWithCampaignId(double campaignId, double templateId, String messageId, boolean appAlreadyRunning, ReadableMap dataFields) {
-        RNIterableInternal.trackPushOpenWithCampaignId((int) campaignId, (int) templateId, messageId, optSerializedDataFields(dataFields));
+    public void trackPushOpenWithCampaignId(double campaignId, @Nullable Double templateId, String messageId, boolean appAlreadyRunning, @Nullable ReadableMap dataFields) {
+        RNIterableInternal.trackPushOpenWithCampaignId((int) campaignId, templateId != null ? (int) templateId : null, messageId, optSerializedDataFields(dataFields));
     }
 
     public void updateSubscriptions(ReadableArray emailListIds, ReadableArray unsubscribedChannelIds, ReadableArray unsubscribedMessageTypeIds, ReadableArray subscribedMessageTypeIds, double campaignId, double templateId) {
