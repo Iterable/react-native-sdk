@@ -92,7 +92,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void trackPushOpenWithCampaignId(double campaignId, Double templateId, String messageId, boolean appAlreadyRunning, ReadableMap dataFields) {
+    public void trackPushOpenWithCampaignId(double campaignId, double templateId, String messageId, boolean appAlreadyRunning, ReadableMap dataFields) {
       moduleImpl.trackPushOpenWithCampaignId(campaignId, templateId, messageId, appAlreadyRunning, dataFields);
     }
 

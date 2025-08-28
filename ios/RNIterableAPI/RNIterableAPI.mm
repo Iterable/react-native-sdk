@@ -382,7 +382,7 @@ RCT_EXPORT_METHOD(trackEvent : (NSString *)name dataFields : (NSDictionary *)
 }
 
 RCT_EXPORT_METHOD(
-    trackPushOpenWithCampaignId : (double)campaignId templateId : (NSNumber *)
+    trackPushOpenWithCampaignId : (double)campaignId templateId : (double)
         templateId messageId : (double)messageId appAlreadyRunning : (BOOL)
             appAlreadyRunning dataFields : (NSDictionary *)dataFields) {
   [_swiftAPI trackPushOpenWithCampaignId:campaignId

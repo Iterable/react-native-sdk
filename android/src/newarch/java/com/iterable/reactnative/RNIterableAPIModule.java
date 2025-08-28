@@ -92,7 +92,7 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   }
 
   @Override
-  public void trackPushOpenWithCampaignId(double campaignId, Double templateId, String messageId, boolean appAlreadyRunning, ReadableMap dataFields) {
+  public void trackPushOpenWithCampaignId(double campaignId, double templateId, String messageId, boolean appAlreadyRunning, ReadableMap dataFields) {
     moduleImpl.trackPushOpenWithCampaignId(campaignId, templateId, messageId, appAlreadyRunning, dataFields);
   }
 
@@ -191,7 +191,6 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
     moduleImpl.setAutoDisplayPaused(paused);
   }
 
-  @Override
   public void wakeApp() {
     moduleImpl.wakeApp();
   }
@@ -206,7 +205,6 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
     moduleImpl.endSession();
   }
 
-  @Override
   public void updateVisibleRows(ReadableArray visibleRows) {
     moduleImpl.updateVisibleRows(visibleRows);
   }
@@ -221,7 +219,6 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
     moduleImpl.removeListeners(count);
   }
 
-  @Override
   public void passAlongAuthToken(String authToken) {
     moduleImpl.passAlongAuthToken(authToken);
   }
