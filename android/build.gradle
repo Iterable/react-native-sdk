@@ -90,6 +90,9 @@ android {
       }
     }
   }
+
+  // Add this to match the Iterable SDK group ID
+  group = "com.iterable"
 }
 
 repositories {
