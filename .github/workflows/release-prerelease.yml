@@ -1,0 +1,47 @@
+name: Release Prerelease
+
+on:
+  push:
+    branches:
+      - master # publish @next
+      - alpha # publish @alpha
+      - beta # publish @beta
+      - rc # publish @rc
+
+jobs:
+  release-prerelease:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org/
+
+      - run: npm ci
+
+      - name: Configure git user
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run release-it prerelease
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [[ "${GITHUB_REF##*/}" == "master" ]]; then
+            npx release-it prerelease --preRelease=next --npm.tag=next --ci
+          elif [[ "${GITHUB_REF##*/}" == "alpha" ]]; then
+            npx release-it prerelease --preRelease=alpha --npm.tag=alpha --ci
+          elif [[ "${GITHUB_REF##*/}" == "beta" ]]; then
+            npx release-it prerelease --preRelease=beta --npm.tag=beta --ci
+          elif [[ "${GITHUB_REF##*/}" == "rc" ]]; then
+            npx release-it prerelease --preRelease=rc --npm.tag=rc --ci
+          fi
