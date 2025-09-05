@@ -2,8 +2,19 @@ import Foundation
 import IterableSDK
 import React
 
+@objc public protocol LaunchOptionsProvider {
+  func getLaunchOptions() -> [UIApplication.LaunchOptionsKey: Any]?
+}
+
 @objc public protocol ReactIterableAPIDelegate {
   func sendEvent(withName: String, body: Any?)
+}
+
+// Extension for legacy bridge support
+extension RCTBridge: LaunchOptionsProvider {
+  public func getLaunchOptions() -> [UIApplication.LaunchOptionsKey: Any]? {
+    return self.launchOptions as? [UIApplication.LaunchOptionsKey: Any]
+  }
 }
 
 @objc public class ReactIterableAPI: RCTEventEmitter {
@@ -12,6 +23,17 @@ import React
   }
 
   @objc public weak var delegate: ReactIterableAPIDelegate? = nil
+
+  // Add a shared instance for new architecture communication
+  @objc public static var shared: ReactIterableAPI?
+
+  // Add a property to hold the launch options provider
+  private var launchOptionsProvider: LaunchOptionsProvider?
+
+  // Add a method to set the launch options provider
+  @objc public func setLaunchOptionsProvider(_ provider: LaunchOptionsProvider?) {
+    self.launchOptionsProvider = provider
+  }
 
   @objc override public class func moduleName() -> String! {
     return "RNIterableAPI"
@@ -41,14 +63,23 @@ import React
 
   override public func startObserving() {
     ITBInfo()
-
     shouldEmit = true
+
+    // Set the shared instance
+    ReactIterableAPI.shared = self
+
+    // Automatically set the bridge as the launch options provider for legacy architecture
+    if let bridge = self.bridge {
+      setLaunchOptionsProvider(bridge)
+    }
   }
 
   override public func stopObserving() {
     ITBInfo()
-
     shouldEmit = false
+
+    // Clear the shared instance
+    ReactIterableAPI.shared = nil
   }
 
   // MARK: - Native SDK Functions
@@ -71,7 +102,7 @@ import React
       rejecter: rejecter)
   }
 
-  @objc(initialize2WithApiKey:config:apiEndPointOverride:version:resolver:rejecter:)
+  @objc(initialize2WithApiKey:config:version:apiEndPointOverride:resolver:rejecter:)
   public func initialize2WithApiKey(
     apiKey: String,
     config configDict: NSDictionary,
@@ -497,7 +528,7 @@ import React
 
   private let inboxSessionManager = InboxSessionManager()
 
-  @objc func initialize(
+  @objc public func initialize(
     withApiKey apiKey: String,
     config configDict: NSDictionary,
     version: String,
@@ -564,9 +595,22 @@ import React
   }
 
   private func createLaunchOptions() -> [UIApplication.LaunchOptionsKey: Any]? {
+    // First try to use the provider (for new architecture)
+    if let provider = launchOptionsProvider {
+      NSLog("createLaunchOptions: NEW ARCH")
+      return ReactIterableAPI.createLaunchOptions(bridgeLaunchOptions: provider.getLaunchOptions())
+    }
+
+
+
+    // Fallback to bridge (for legacy architecture)
     guard let bridge = self.bridge else {
+      NSLog("createLaunchOptions: NO LAUNCH OPTIONS")
       return nil
     }
+
+    NSLog("createLaunchOptions: LEGACY ARCH")
+
     return ReactIterableAPI.createLaunchOptions(bridgeLaunchOptions: bridge.launchOptions)
   }
 
@@ -577,8 +621,11 @@ import React
       let remoteNotification = bridgeLaunchOptions[
         UIApplication.LaunchOptionsKey.remoteNotification.rawValue]
     else {
+      NSLog("remoteNotification: NO REMOTE NOTIFICATION")
       return nil
     }
+
+    NSLog("remoteNotification: \(remoteNotification)")
     var result = [UIApplication.LaunchOptionsKey: Any]()
     result[UIApplication.LaunchOptionsKey.remoteNotification] = remoteNotification
     return result
@@ -692,3 +739,5 @@ extension ReactIterableAPI: IterableAuthDelegate {
   public func onTokenRegistrationFailed(_ reason: String?) {
   }
 }
+
+

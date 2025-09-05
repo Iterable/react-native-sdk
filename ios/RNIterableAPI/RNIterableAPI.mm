@@ -72,16 +72,16 @@ RCT_EXPORT_MODULE()
                          rejecter:reject];
 }
 
-- (void)initialize2WithApiKey:(NSString *)apiKey
-                       config:(NSDictionary *)config
-                      version:(NSString *)version
-          apiEndPointOverride:(NSString *)apiEndPointOverride
-                      resolve:(RCTPromiseResolveBlock)resolve
-                       reject:(RCTPromiseRejectBlock)reject {
+- (void)initialize2WithApiKey:(nonnull NSString *)apiKey
+                       config:(nonnull NSDictionary *)config
+                      version:(nonnull NSString *)version
+          apiEndPointOverride:(nonnull NSString *)apiEndPointOverride
+                      resolve:(nonnull RCTPromiseResolveBlock)resolve
+                       reject:(nonnull RCTPromiseRejectBlock)reject {
   [_swiftAPI initialize2WithApiKey:apiKey
                             config:config
-               apiEndPointOverride:apiEndPointOverride
                            version:version
+               apiEndPointOverride:apiEndPointOverride
                           resolver:resolve
                           rejecter:reject];
 }
@@ -313,8 +313,8 @@ RCT_EXPORT_METHOD(
                 resolve reject : (RCTPromiseRejectBlock)reject) {
   [_swiftAPI initialize2WithApiKey:apiKey
                             config:config
-               apiEndPointOverride:apiEndPointOverride
                            version:version
+               apiEndPointOverride:apiEndPointOverride
                           resolver:resolve
                           rejecter:reject];
 }

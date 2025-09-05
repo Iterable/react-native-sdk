@@ -38,8 +38,8 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   }
 
   @Override
-  public void initialize2WithApiKey(String apiKey, ReadableMap configReadableMap, String apiEndPointOverride, String version, Promise promise) {
-    moduleImpl.initialize2WithApiKey(apiKey, configReadableMap, apiEndPointOverride, version, promise);
+  public void initialize2WithApiKey(String apiKey, ReadableMap configReadableMap, String version, String apiEndPointOverride, Promise promise) {
+    moduleImpl.initialize2WithApiKey(apiKey, configReadableMap, version, apiEndPointOverride, promise);
   }
 
   @Override

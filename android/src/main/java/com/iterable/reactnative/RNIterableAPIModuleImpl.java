@@ -102,7 +102,7 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         promise.resolve(true);
     }
 
-    public void initialize2WithApiKey(String apiKey, ReadableMap configReadableMap, String apiEndPointOverride, String version, Promise promise) {
+    public void initialize2WithApiKey(String apiKey, ReadableMap configReadableMap, String version, String apiEndPointOverride, Promise promise) {
         IterableLogger.d(TAG, "initialize2WithApiKey: " + apiKey);
         IterableConfig.Builder configBuilder = Serialization.getConfigFromReadableMap(configReadableMap);
 
