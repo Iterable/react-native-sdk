@@ -10,17 +10,17 @@
     "build:ios": "react-native build-ios --scheme ReactNativeSdkExample --mode Debug --extra-params \"-sdk iphonesimulator CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ GCC_OPTIMIZATION_LEVEL=0 GCC_PRECOMPILE_PREFIX_HEADER=YES ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO\""
   },
   "dependencies": {
-    "@react-navigation/bottom-tabs": "^6.6.1",
-    "@react-navigation/native": "^6.0.8",
-    "@react-navigation/native-stack": "^6.11.0",
-    "@react-navigation/stack": "^6.3.21",
+    "@react-navigation/bottom-tabs": "^7.0.0",
+    "@react-navigation/native": "^7.1.14",
+    "@react-navigation/native-stack": "^7.0.0",
+    "@react-navigation/stack": "^7.4.2",
     "react": "19.0.0",
     "react-native": "0.79.3",
-    "react-native-gesture-handler": "^2.24.0",
-    "react-native-safe-area-context": "^5.1.0",
-    "react-native-screens": "^4.9.1",
+    "react-native-gesture-handler": "^2.26.0",
+    "react-native-safe-area-context": "^5.4.0",
+    "react-native-screens": "^4.10.0",
     "react-native-vector-icons": "^10.2.0",
-    "react-native-webview": "^13.13.1"
+    "react-native-webview": "^13.14.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
