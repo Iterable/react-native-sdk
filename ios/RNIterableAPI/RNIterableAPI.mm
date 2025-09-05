@@ -80,8 +80,8 @@ RCT_EXPORT_MODULE()
                        reject:(RCTPromiseRejectBlock)reject {
   [_swiftAPI initialize2WithApiKey:apiKey
                             config:config
-               apiEndPointOverride:apiEndPointOverride
                            version:version
+               apiEndPointOverride:apiEndPointOverride
                           resolver:resolve
                           rejecter:reject];
 }
@@ -313,8 +313,8 @@ RCT_EXPORT_METHOD(
                 resolve reject : (RCTPromiseRejectBlock)reject) {
   [_swiftAPI initialize2WithApiKey:apiKey
                             config:config
-               apiEndPointOverride:apiEndPointOverride
                            version:version
+               apiEndPointOverride:apiEndPointOverride
                           resolver:resolve
                           rejecter:reject];
 }

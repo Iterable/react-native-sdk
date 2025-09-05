@@ -71,7 +71,7 @@ import React
       rejecter: rejecter)
   }
 
-  @objc(initialize2WithApiKey:config:apiEndPointOverride:version:resolver:rejecter:)
+  @objc(initialize2WithApiKey:config:version:apiEndPointOverride:resolver:rejecter:)
   public func initialize2WithApiKey(
     apiKey: String,
     config configDict: NSDictionary,

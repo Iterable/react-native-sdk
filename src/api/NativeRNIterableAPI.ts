@@ -12,8 +12,8 @@ export interface Spec extends TurboModule {
   initialize2WithApiKey(
     apiKey: string,
     config: { [key: string]: string | number | boolean | undefined | string[] },
-    apiEndPointOverride: string,
-    version: string
+    version: string,
+    apiEndPointOverride: string
   ): Promise<boolean>;
 
   // User management
