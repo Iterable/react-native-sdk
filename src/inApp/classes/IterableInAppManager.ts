@@ -77,7 +77,7 @@ export class IterableInAppManager {
    * });
    * ```
    *
-   * @param message - The message to show (an {@link_IterableInAppMessage} object)
+   * @param message - The message to show (an {@link IterableInAppMessage} object)
    * @param consume - Whether or not the message should be consumed from the user's message queue after being shown. This should be defaulted to true.
    *
    * @returns A Promise that resolves to the URL of the button or link the user tapped to close the in-app message.
