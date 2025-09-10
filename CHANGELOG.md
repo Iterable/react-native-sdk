@@ -1,3 +1,7 @@
+## 2.0.3
+### Fixes
+- Add back in-app message manager with lazy initialization to avoid circular dependency ([6feec35](https://github.com/Iterable/react-native-sdk/commit/6feec35))
+
 ## 2.0.2
 ### Fixes
 - Migrate AppDelegate to Swift and remove Objective-C files
