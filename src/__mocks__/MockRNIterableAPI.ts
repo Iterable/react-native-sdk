@@ -66,7 +66,11 @@ export class MockRNIterableAPI {
     MockRNIterableAPI.attributionInfo = attributionInfo;
   }
 
-  static initializeWithApiKey = jest.fn();
+  static initializeWithApiKey = jest.fn().mockResolvedValue(true);
+
+  static initialize2WithApiKey = jest.fn().mockResolvedValue(true);
+
+  static wakeApp = jest.fn();
 
   static setInAppShowResponse = jest.fn();
 
