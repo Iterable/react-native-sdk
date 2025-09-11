@@ -325,9 +325,7 @@ export const IterableInbox = ({
   }, [returnToInboxTrigger]);
 
   function addInboxChangedListener() {
-    RNEventEmitter.addListener('receivedIterableInboxChanged', () => {
-      fetchInboxMessages();
-    });
+    RNEventEmitter.addListener('receivedIterableInboxChanged', fetchInboxMessages);
   }
 
   function removeInboxChangedListener() {
@@ -410,7 +408,7 @@ export const IterableInbox = ({
           selectedRowViewModel.inAppMessage.messageId
         )}
         returnToInbox={returnToInbox}
-        deleteRow={(messageId: string) => deleteRow(messageId)}
+        deleteRow={deleteRow}
         contentWidth={width}
         isPortrait={isPortrait}
       />
@@ -433,13 +431,11 @@ export const IterableInbox = ({
             rowViewModels={rowViewModels}
             customizations={customizations}
             messageListItemLayout={messageListItemLayout}
-            deleteRow={(messageId: string) => deleteRow(messageId)}
+            deleteRow={deleteRow}
             handleMessageSelect={(messageId: string, index: number) =>
               handleMessageSelect(messageId, index, rowViewModels)
             }
-            updateVisibleMessageImpressions={(
-              messageImpressions: IterableInboxImpressionRowInfo[]
-            ) => updateVisibleMessageImpressions(messageImpressions)}
+            updateVisibleMessageImpressions={updateVisibleMessageImpressions}
             contentWidth={width}
             isPortrait={isPortrait}
           />
