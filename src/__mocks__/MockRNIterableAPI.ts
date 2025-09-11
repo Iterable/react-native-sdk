@@ -74,6 +74,8 @@ export class MockRNIterableAPI {
 
   static setInAppShowResponse = jest.fn();
 
+  static passAlongAuthToken = jest.fn();
+
   static async getInAppMessages(): Promise<IterableInAppMessage[] | undefined> {
     return await new Promise((resolve) => {
       resolve(MockRNIterableAPI.messages);
