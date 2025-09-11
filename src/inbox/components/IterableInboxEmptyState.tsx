@@ -42,6 +42,7 @@ export const IterableInboxEmptyState = ({
 
   return (
     <View
+      testID="inbox-empty-state"
       style={[
         styles.container,
         {

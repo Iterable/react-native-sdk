@@ -219,7 +219,7 @@ export const IterableInboxMessageDisplay = ({
   }
 
   return (
-    <View style={styles.messageDisplayContainer}>
+    <View testID="inbox-message-display" style={styles.messageDisplayContainer}>
       <View style={styles.header}>
         <View style={styles.returnButtonContainer}>
           <TouchableWithoutFeedback

@@ -126,6 +126,7 @@ export const IterableInboxMessageList = ({
 
   return (
     <FlatList
+      testID="inbox-message-list"
       ref={flatListRef}
       scrollEnabled={!swiping}
       data={rowViewModels}
