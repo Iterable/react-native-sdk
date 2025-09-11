@@ -14,6 +14,10 @@ import {
   type IterableInboxMessageCellProps,
 } from './IterableInboxMessageCell';
 
+export const inboxMessageListTestIDs = {
+  container: 'inbox-message-list',
+} as const;
+
 /**
  * Props for the IterableInboxMessageList component.
  */
@@ -126,7 +130,7 @@ export const IterableInboxMessageList = ({
 
   return (
     <FlatList
-      testID="inbox-message-list"
+      testID={inboxMessageListTestIDs.container}
       ref={flatListRef}
       scrollEnabled={!swiping}
       data={rowViewModels}

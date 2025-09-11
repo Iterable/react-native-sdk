@@ -27,6 +27,13 @@ import {
 import { ITERABLE_INBOX_COLORS } from '../constants';
 import { type IterableInboxRowViewModel } from '../types';
 
+export const inboxMessageDisplayTestIDs = {
+  container: 'inbox-message-display',
+  returnToInboxButton: 'inbox-message-display-return-to-inbox-button',
+  title: 'inbox-message-display-title',
+  webview: 'inbox-message-display-webview',
+} as const;
+
 /**
  * Props for the IterableInboxMessageDisplay component.
  */
@@ -219,10 +226,11 @@ export const IterableInboxMessageDisplay = ({
   }
 
   return (
-    <View testID="inbox-message-display" style={styles.messageDisplayContainer}>
+    <View testID={inboxMessageDisplayTestIDs.container} style={styles.messageDisplayContainer}>
       <View style={styles.header}>
         <View style={styles.returnButtonContainer}>
           <TouchableWithoutFeedback
+            testID={inboxMessageDisplayTestIDs.returnToInboxButton}
             onPress={() => {
               returnToInbox();
               Iterable.trackInAppClose(
@@ -244,6 +252,7 @@ export const IterableInboxMessageDisplay = ({
         <View style={styles.messageTitleContainer}>
           <View style={styles.messageTitle}>
             <Text
+              testID={inboxMessageDisplayTestIDs.title}
               numberOfLines={1}
               ellipsizeMode="tail"
               style={styles.messageTitleText}
@@ -256,6 +265,7 @@ export const IterableInboxMessageDisplay = ({
       {inAppContent && (
         <ScrollView contentContainerStyle={styles.contentContainer}>
           <WebView
+            testID={inboxMessageDisplayTestIDs.webview}
             originWhiteList={['*']}
             source={{ html: inAppContent.html }}
             style={{ width: contentWidth }}

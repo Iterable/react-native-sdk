@@ -23,6 +23,12 @@ export interface IterableInboxEmptyStateProps {
   isPortrait: boolean;
 }
 
+export const inboxEmptyStateTestIDs = {
+  container: 'inbox-empty-state',
+  title: 'inbox-empty-state-title',
+  body: 'inbox-empty-state-body',
+} as const;
+
 /**
  * A functional component that renders an empty state for the inbox when there are no messages.
  */
@@ -42,7 +48,7 @@ export const IterableInboxEmptyState = ({
 
   return (
     <View
-      testID="inbox-empty-state"
+      testID={inboxEmptyStateTestIDs.container}
       style={[
         styles.container,
         {
@@ -52,10 +58,10 @@ export const IterableInboxEmptyState = ({
         },
       ]}
     >
-      <Text style={styles.title}>
+      <Text testID={inboxEmptyStateTestIDs.title} style={styles.title}>
         {emptyStateTitle ? emptyStateTitle : defaultTitle}
       </Text>
-      <Text style={styles.body}>
+      <Text testID={inboxEmptyStateTestIDs.body}  style={styles.body}>
         {emptyStateBody ? emptyStateBody : defaultBody}
       </Text>
     </View>
