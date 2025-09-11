@@ -12,8 +12,8 @@ export interface Spec extends TurboModule {
   initialize2WithApiKey(
     apiKey: string,
     config: { [key: string]: string | number | boolean | undefined | string[] },
-    apiEndPointOverride: string,
-    version: string
+    version: string,
+    apiEndPointOverride: string
   ): Promise<boolean>;
 
   // User management
@@ -54,7 +54,7 @@ export interface Spec extends TurboModule {
     messageId: string,
     location: number,
     source: number,
-    clickedUrl?: string
+    clickedUrl?: string | null
   ): void;
   inAppConsume(messageId: string, location: number, source: number): void;
 

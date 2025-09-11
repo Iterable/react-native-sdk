@@ -97,7 +97,7 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         promise.resolve(true);
     }
 
-    public void initialize2WithApiKey(String apiKey, ReadableMap configReadableMap, String apiEndPointOverride, String version, Promise promise) {
+    public void initialize2WithApiKey(String apiKey, ReadableMap configReadableMap, String version, String apiEndPointOverride, Promise promise) {
         IterableLogger.d(TAG, "initialize2WithApiKey: " + apiKey);
         IterableConfig.Builder configBuilder = Serialization.getConfigFromReadableMap(configReadableMap);
 
@@ -167,7 +167,7 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         promise.resolve(RNIterableInternal.getUserId());
     }
 
-    public void trackEvent(String name, ReadableMap dataFields) {
+    public void trackEvent(String name, @Nullable ReadableMap dataFields) {
         IterableLogger.v(TAG, "trackEvent");
         IterableApi.getInstance().track(name, optSerializedDataFields(dataFields));
     }
@@ -177,16 +177,16 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         IterableApi.getInstance().updateCart(Serialization.commerceItemsFromReadableArray(items));
     }
 
-    public void trackPurchase(double total, ReadableArray items, ReadableMap dataFields) {
+    public void trackPurchase(double total, ReadableArray items, @Nullable ReadableMap dataFields) {
         IterableLogger.v(TAG, "trackPurchase");
         IterableApi.getInstance().trackPurchase(total, Serialization.commerceItemsFromReadableArray(items), optSerializedDataFields(dataFields));
     }
 
-    public void trackPushOpenWithCampaignId(double campaignId, Double templateId, String messageId, boolean appAlreadyRunning, ReadableMap dataFields) {
+    public void trackPushOpenWithCampaignId(double campaignId, @Nullable Double templateId, String messageId, boolean appAlreadyRunning, @Nullable ReadableMap dataFields) {
         RNIterableInternal.trackPushOpenWithCampaignId((int) campaignId, templateId != null ? templateId.intValue() : null, messageId, optSerializedDataFields(dataFields));
     }
 
-    public void updateSubscriptions(ReadableArray emailListIds, ReadableArray unsubscribedChannelIds, ReadableArray unsubscribedMessageTypeIds, ReadableArray subscribedMessageTypeIds, double campaignId, double templateId) {
+    public void updateSubscriptions(@Nullable ReadableArray emailListIds, @Nullable ReadableArray unsubscribedChannelIds, @Nullable ReadableArray unsubscribedMessageTypeIds, @Nullable ReadableArray subscribedMessageTypeIds, double campaignId, double templateId) {
         IterableLogger.v(TAG, "updateSubscriptions");
         Integer finalCampaignId = null, finalTemplateId = null;
         if (campaignId > 0) {
@@ -265,7 +265,7 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         }
     }
 
-    public void setAttributionInfo(ReadableMap attributionInfoReadableMap) {
+    public void setAttributionInfo(@Nullable ReadableMap attributionInfoReadableMap) {
         IterableLogger.printInfo();
         try {
             JSONObject attributionInfoJson = Serialization.convertMapToJson(attributionInfoReadableMap);
@@ -593,7 +593,7 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         // Keep: Required for RN built in Event Emitter Calls.
     }
 
-    public void passAlongAuthToken(String authToken) {
+    public void passAlongAuthToken(@Nullable String authToken) {
         passedAuthToken = authToken;
 
         if (authHandlerCallbackLatch != null) {

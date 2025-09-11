@@ -80,8 +80,8 @@ RCT_EXPORT_MODULE()
                        reject:(RCTPromiseRejectBlock)reject {
   [_swiftAPI initialize2WithApiKey:apiKey
                             config:config
-               apiEndPointOverride:apiEndPointOverride
                            version:version
+               apiEndPointOverride:apiEndPointOverride
                           resolver:resolve
                           rejecter:reject];
 }
@@ -106,7 +106,7 @@ RCT_EXPORT_MODULE()
   [_swiftAPI getUserId:resolve rejecter:reject];
 }
 
-- (void)setInAppShowResponse:(NSNumber *)inAppShowResponse {
+- (void)setInAppShowResponse:(double)inAppShowResponse {
   [_swiftAPI setInAppShowResponse:inAppShowResponse];
 }
 
@@ -137,8 +137,8 @@ RCT_EXPORT_MODULE()
 }
 
 - (void)removeMessage:(NSString *)messageId
-             location:(NSNumber *)location
-               source:(NSNumber *)source {
+             location:(double)location
+               source:(double)source {
   [_swiftAPI removeMessage:messageId location:location source:source];
 }
 
@@ -154,7 +154,7 @@ RCT_EXPORT_MODULE()
   [_swiftAPI trackEvent:name dataFields:dataFields];
 }
 
-- (void)trackPushOpenWithCampaignId:(NSNumber *)campaignId
+- (void)trackPushOpenWithCampaignId:(double)campaignId
                          templateId:(NSNumber *)templateId
                           messageId:(NSString *)messageId
                   appAlreadyRunning:(BOOL)appAlreadyRunning
@@ -166,20 +166,20 @@ RCT_EXPORT_MODULE()
                               dataFields:dataFields];
 }
 
-- (void)trackInAppOpen:(NSString *)messageId location:(NSNumber *)location {
+- (void)trackInAppOpen:(NSString *)messageId location:(double)location {
   [_swiftAPI trackInAppOpen:messageId location:location];
 }
 
 - (void)trackInAppClick:(NSString *)messageId
-               location:(NSNumber *)location
+               location:(double)location
              clickedUrl:(NSString *)clickedUrl {
   [_swiftAPI trackInAppClick:messageId location:location clickedUrl:clickedUrl];
 }
 
 - (void)trackInAppClose:(NSString *)messageId
-               location:(NSNumber *)location
-                 source:(NSNumber *)source
-             clickedUrl:(NSString *)clickedUrl {
+               location:(double)location
+                 source:(double)source
+             clickedUrl:(NSString *_Nullable)clickedUrl {
   [_swiftAPI trackInAppClose:messageId
                     location:location
                       source:source
@@ -187,8 +187,8 @@ RCT_EXPORT_MODULE()
 }
 
 - (void)inAppConsume:(NSString *)messageId
-            location:(NSNumber *)location
-              source:(NSNumber *)source {
+            location:(double)location
+              source:(double)source {
   [_swiftAPI inAppConsume:messageId location:location source:source];
 }
 
@@ -196,7 +196,7 @@ RCT_EXPORT_MODULE()
   [_swiftAPI updateCart:items];
 }
 
-- (void)trackPurchase:(NSNumber *)total
+- (void)trackPurchase:(double)total
                 items:(NSArray *)items
            dataFields:(NSDictionary *)dataFields {
   [_swiftAPI trackPurchase:total items:items dataFields:dataFields];
@@ -216,7 +216,7 @@ RCT_EXPORT_MODULE()
   [_swiftAPI getAttributionInfo:resolve rejecter:reject];
 }
 
-- (void)setAttributionInfo:(NSDictionary *)attributionInfo {
+- (void)setAttributionInfo:(NSDictionary *_Nullable)attributionInfo {
   [_swiftAPI setAttributionInfo:attributionInfo];
 }
 
@@ -243,12 +243,12 @@ RCT_EXPORT_MODULE()
   [_swiftAPI handleAppLink:appLink resolver:resolve rejecter:reject];
 }
 
-- (void)updateSubscriptions:(NSArray *)emailListIds
-        unsubscribedChannelIds:(NSArray *)unsubscribedChannelIds
-    unsubscribedMessageTypeIds:(NSArray *)unsubscribedMessageTypeIds
-      subscribedMessageTypeIds:(NSArray *)subscribedMessageTypeIds
-                    campaignId:(NSNumber *)campaignId
-                    templateId:(NSNumber *)templateId {
+- (void)updateSubscriptions:(NSArray *_Nullable)emailListIds
+        unsubscribedChannelIds:(NSArray *_Nullable)unsubscribedChannelIds
+    unsubscribedMessageTypeIds:(NSArray *_Nullable)unsubscribedMessageTypeIds
+      subscribedMessageTypeIds:(NSArray *_Nullable)subscribedMessageTypeIds
+                    campaignId:(double)campaignId
+                    templateId:(double)templateId {
   [_swiftAPI updateSubscriptions:emailListIds
           unsubscribedChannelIds:unsubscribedChannelIds
       unsubscribedMessageTypeIds:unsubscribedMessageTypeIds
@@ -269,8 +269,12 @@ RCT_EXPORT_MODULE()
   [_swiftAPI updateVisibleRows:visibleRows];
 }
 
-- (void)passAlongAuthToken:(NSString *)authToken {
+- (void)passAlongAuthToken:(NSString *_Nullable)authToken {
   [_swiftAPI passAlongAuthToken:authToken];
+}
+
+- (void)wakeApp {
+  // Placeholder function -- this method is only used in Android
 }
 
 // MARK: - TurboModule integration
@@ -309,8 +313,8 @@ RCT_EXPORT_METHOD(
                 resolve reject : (RCTPromiseRejectBlock)reject) {
   [_swiftAPI initialize2WithApiKey:apiKey
                             config:config
-               apiEndPointOverride:apiEndPointOverride
                            version:version
+               apiEndPointOverride:apiEndPointOverride
                           resolver:resolve
                           rejecter:reject];
 }
@@ -335,7 +339,7 @@ RCT_EXPORT_METHOD(getUserId : (RCTPromiseResolveBlock)
   [_swiftAPI getUserId:resolve rejecter:reject];
 }
 
-RCT_EXPORT_METHOD(setInAppShowResponse : (NSNumber *)inAppShowResponse) {
+RCT_EXPORT_METHOD(setInAppShowResponse : (double)inAppShowResponse) {
   [_swiftAPI setInAppShowResponse:inAppShowResponse];
 }
 
@@ -363,8 +367,8 @@ RCT_EXPORT_METHOD(showMessage : (NSString *)messageId consume : (BOOL)
                 rejecter:reject];
 }
 
-RCT_EXPORT_METHOD(removeMessage : (NSString *)messageId location : (NSNumber *)
-                      location source : (NSNumber *)source) {
+RCT_EXPORT_METHOD(removeMessage : (NSString *)messageId location : (double)
+                      location source : (double)source) {
   [_swiftAPI removeMessage:messageId location:location source:source];
 }
 
@@ -382,10 +386,9 @@ RCT_EXPORT_METHOD(trackEvent : (NSString *)name dataFields : (NSDictionary *)
 }
 
 RCT_EXPORT_METHOD(
-    trackPushOpenWithCampaignId : (NSNumber *)
-        campaignId templateId : (NSNumber *)templateId messageId : (NSString *)
-            messageId appAlreadyRunning : (BOOL)
-                appAlreadyRunning dataFields : (NSDictionary *)dataFields) {
+    trackPushOpenWithCampaignId : (double)campaignId templateId : (NSNumber *)
+        templateId messageId : (NSString *)messageId appAlreadyRunning : (BOOL)
+            appAlreadyRunning dataFields : (NSDictionary *)dataFields) {
   [_swiftAPI trackPushOpenWithCampaignId:campaignId
                               templateId:templateId
                                messageId:messageId
@@ -393,27 +396,27 @@ RCT_EXPORT_METHOD(
                               dataFields:dataFields];
 }
 
-RCT_EXPORT_METHOD(trackInAppOpen : (NSString *)messageId location : (NSNumber *)
+RCT_EXPORT_METHOD(trackInAppOpen : (NSString *)messageId location : (double)
                       location) {
   [_swiftAPI trackInAppOpen:messageId location:location];
 }
 
-RCT_EXPORT_METHOD(trackInAppClick : (NSString *)messageId location : (
-    NSNumber *)location clickedUrl : (NSString *)clickedUrl) {
+RCT_EXPORT_METHOD(trackInAppClick : (NSString *)messageId location : (double)
+                      location clickedUrl : (NSString *)clickedUrl) {
   [_swiftAPI trackInAppClick:messageId location:location clickedUrl:clickedUrl];
 }
 
-RCT_EXPORT_METHOD(trackInAppClose : (NSString *)messageId location : (
-    NSNumber *)location source : (NSNumber *)source clickedUrl : (NSString *)
-                      clickedUrl) {
+RCT_EXPORT_METHOD(trackInAppClose : (NSString *)messageId location : (double)
+                      location source : (double)source clickedUrl : (NSString *)
+                          clickedUrl) {
   [_swiftAPI trackInAppClose:messageId
                     location:location
                       source:source
                   clickedUrl:clickedUrl];
 }
 
-RCT_EXPORT_METHOD(inAppConsume : (NSString *)messageId location : (NSNumber *)
-                      location source : (NSNumber *)source) {
+RCT_EXPORT_METHOD(inAppConsume : (NSString *)messageId location : (double)
+                      location source : (double)source) {
   [_swiftAPI inAppConsume:messageId location:location source:source];
 }
 
@@ -421,7 +424,7 @@ RCT_EXPORT_METHOD(updateCart : (NSArray *)items) {
   [_swiftAPI updateCart:items];
 }
 
-RCT_EXPORT_METHOD(trackPurchase : (NSNumber *)total items : (NSArray *)
+RCT_EXPORT_METHOD(trackPurchase : (double)total items : (NSArray *)
                       items dataFields : (NSDictionary *)dataFields) {
   [_swiftAPI trackPurchase:total items:items dataFields:dataFields];
 }
@@ -430,6 +433,7 @@ RCT_EXPORT_METHOD(updateUser : (NSDictionary *)dataFields mergeNestedObjects : (
     BOOL)mergeNestedObjects) {
   [_swiftAPI updateUser:dataFields mergeNestedObjects:mergeNestedObjects];
 }
+
 RCT_EXPORT_METHOD(updateEmail : (NSString *)email authToken : (NSString *)
                       authToken) {
   [_swiftAPI updateEmail:email authToken:authToken];
@@ -471,8 +475,8 @@ RCT_EXPORT_METHOD(
         NSArray *)
         unsubscribedChannelIds unsubscribedMessageTypeIds : (NSArray *)
             unsubscribedMessageTypeIds subscribedMessageTypeIds : (NSArray *)
-                subscribedMessageTypeIds campaignId : (NSNumber *)
-                    campaignId templateId : (NSNumber *)templateId) {
+                subscribedMessageTypeIds campaignId : (double)
+                    campaignId templateId : (double)templateId) {
   [_swiftAPI updateSubscriptions:emailListIds
           unsubscribedChannelIds:unsubscribedChannelIds
       unsubscribedMessageTypeIds:unsubscribedMessageTypeIds
@@ -491,8 +495,12 @@ RCT_EXPORT_METHOD(updateVisibleRows : (NSArray *)visibleRows) {
   [_swiftAPI updateVisibleRows:visibleRows];
 }
 
-RCT_EXPORT_METHOD(passAlongAuthToken : (NSString *)authToken) {
+RCT_EXPORT_METHOD(passAlongAuthToken : (NSString *_Nullable)authToken) {
   [_swiftAPI passAlongAuthToken:authToken];
+}
+
+RCT_EXPORT_METHOD(wakeApp) {
+  // Placeholder function -- this method is only used in Android
 }
 
 #endif

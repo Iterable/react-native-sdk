@@ -32,8 +32,8 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   }
 
   @Override
-  public void initialize2WithApiKey(String apiKey, ReadableMap configReadableMap, String apiEndPointOverride, String version, Promise promise) {
-    moduleImpl.initialize2WithApiKey(apiKey, configReadableMap, apiEndPointOverride, version, promise);
+  public void initialize2WithApiKey(String apiKey, ReadableMap configReadableMap, String version, String apiEndPointOverride, Promise promise) {
+    moduleImpl.initialize2WithApiKey(apiKey, configReadableMap, version, apiEndPointOverride, promise);
   }
 
   @Override
@@ -71,7 +71,7 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   }
 
   @Override
-  public void trackEvent(String name, ReadableMap dataFields) {
+  public void trackEvent(String name, @Nullable ReadableMap dataFields) {
     moduleImpl.trackEvent(name, dataFields);
   }
 
@@ -81,17 +81,17 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   }
 
   @Override
-  public void trackPurchase(double total, ReadableArray items, ReadableMap dataFields) {
+  public void trackPurchase(double total, ReadableArray items, @Nullable ReadableMap dataFields) {
     moduleImpl.trackPurchase(total, items, dataFields);
   }
 
   @Override
-  public void trackPushOpenWithCampaignId(double campaignId, Double templateId, String messageId, boolean appAlreadyRunning, ReadableMap dataFields) {
+  public void trackPushOpenWithCampaignId(double campaignId, @Nullable Double templateId, String messageId, boolean appAlreadyRunning, @Nullable ReadableMap dataFields) {
     moduleImpl.trackPushOpenWithCampaignId(campaignId, templateId, messageId, appAlreadyRunning, dataFields);
   }
 
   @Override
-  public void updateSubscriptions(ReadableArray emailListIds, ReadableArray unsubscribedChannelIds, ReadableArray unsubscribedMessageTypeIds, ReadableArray subscribedMessageTypeIds, double campaignId, double templateId) {
+  public void updateSubscriptions(@Nullable ReadableArray emailListIds, @Nullable ReadableArray unsubscribedChannelIds, @Nullable ReadableArray unsubscribedMessageTypeIds, @Nullable ReadableArray subscribedMessageTypeIds, double campaignId, double templateId) {
     moduleImpl.updateSubscriptions(emailListIds, unsubscribedChannelIds, unsubscribedMessageTypeIds, subscribedMessageTypeIds, campaignId, templateId);
   }
 
@@ -121,7 +121,7 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   }
 
   @Override
-  public void setAttributionInfo(ReadableMap attributionInfoReadableMap) {
+  public void setAttributionInfo(@Nullable ReadableMap attributionInfoReadableMap) {
     moduleImpl.setAttributionInfo(attributionInfoReadableMap);
   }
 
@@ -185,7 +185,6 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
     moduleImpl.setAutoDisplayPaused(paused);
   }
 
-  @Override
   public void wakeApp() {
     moduleImpl.wakeApp();
   }
@@ -200,7 +199,6 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
     moduleImpl.endSession();
   }
 
-  @Override
   public void updateVisibleRows(ReadableArray visibleRows) {
     moduleImpl.updateVisibleRows(visibleRows);
   }
@@ -215,8 +213,7 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
     moduleImpl.removeListeners(count);
   }
 
-  @Override
-  public void passAlongAuthToken(String authToken) {
+  public void passAlongAuthToken(@Nullable String authToken) {
     moduleImpl.passAlongAuthToken(authToken);
   }
 
