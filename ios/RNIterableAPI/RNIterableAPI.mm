@@ -179,7 +179,7 @@ RCT_EXPORT_MODULE()
 - (void)trackInAppClose:(NSString *)messageId
                location:(double)location
                  source:(double)source
-             clickedUrl:(NSString *)clickedUrl {
+             clickedUrl:(NSString *_Nullable)clickedUrl {
   [_swiftAPI trackInAppClose:messageId
                     location:location
                       source:source

@@ -54,7 +54,7 @@ export interface Spec extends TurboModule {
     messageId: string,
     location: number,
     source: number,
-    clickedUrl?: string
+    clickedUrl?: string | null
   ): void;
   inAppConsume(messageId: string, location: number, source: number): void;
 
