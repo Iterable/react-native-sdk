@@ -1,139 +1,606 @@
-//
-//  Created by Tapash Majumder on 3/19/20.
-//  Copyright © 2020 Iterable. All rights reserved.
-//
 #import "RNIterableAPI.h"
 
-@interface RCT_EXTERN_REMAP_MODULE(RNIterableAPI, ReactIterableAPI, NSObject)
+#if RCT_NEW_ARCH_ENABLED
+  #import "RNIterableAPISpec.h"
+#endif
 
-// MARK: - Native SDK Functions
+#import <IterableSDK/IterableSDK.h>  // umbrella (Objective-C) header
 
-RCT_EXTERN_METHOD(initializeWithApiKey: (nonnull NSString *) apiKey
-                  config: (nonnull NSDictionary *) config
-                  version: (nonnull NSString *) version
-                  resolver: (RCTPromiseResolveBlock) resolve
-                  rejecter: (RCTPromiseRejectBlock) reject)
+// Forward-declare the Swift protocols/enum used in the Swift header.
+@protocol IterableInAppDelegate;
+@protocol IterableCustomActionDelegate;
+@protocol IterableAuthDelegate;
+@protocol IterableURLDelegate;
+typedef NS_ENUM(NSInteger, InAppShowResponse) {
+  show = 0,
+  skip = 1,
+};
 
-RCT_EXTERN_METHOD(initialize2WithApiKey: (nonnull NSString *) apiKey
-                  config: (nonnull NSDictionary *) config
-                  apiEndPointOverride: (nonnull NSString *) apiEndPoint
-                  version: (nonnull NSString *) version
-                  resolver: (RCTPromiseResolveBlock) resolve
-                  rejecter: (RCTPromiseRejectBlock) reject)
+#import "Iterable_React_Native_SDK-Swift.h"
 
-RCT_EXTERN_METHOD(setEmail: (NSString *) email
-                  authToken: (NSString *) authToken)
+@interface RNIterableAPI () <ReactIterableAPIDelegate>
+@end
 
-RCT_EXTERN_METHOD(getEmail: (RCTPromiseResolveBlock) resolve
-                  rejecter: (RCTPromiseRejectBlock) reject)
+@implementation RNIterableAPI {
+  ReactIterableAPI *_swiftAPI;
+}
 
-RCT_EXTERN_METHOD(setUserId: (NSString *) userId
-                  authToken: (NSString *) authToken)
+- (instancetype)init {
+  self = [super init];
+  if(self) {
+    // Option 2.B - Instantiate the Calculator and set the delegate
+    _swiftAPI = [ReactIterableAPI new];
+    _swiftAPI.delegate = self;
+  }
+  return self;
+}
 
-RCT_EXTERN_METHOD(getUserId: (RCTPromiseResolveBlock) resolve
-                  rejecter: (RCTPromiseRejectBlock) reject)
+RCT_EXPORT_MODULE()
 
-// MARK: - Iterable API Request Functions
+// - (NSArray<NSString *> *)supportedEvents {
+//   return [_swiftAPI supportedEvents];
+// }
 
-RCT_EXTERN_METHOD(disableDeviceForCurrentUser)
 
-RCT_EXTERN_METHOD(setInAppShowResponse: (nonnull NSNumber *) inAppShowResponse)
+- (NSArray<NSString *> *)supportedEvents {
+  return [ReactIterableAPI supportedEvents];
+}
 
-RCT_EXTERN_METHOD(getLastPushPayload: (RCTPromiseResolveBlock) resolve
-                  rejecter: (RCTPromiseRejectBlock) reject)
+- (void)sendEventWithName:(NSString * _Nonnull)name result:(double)result {
+  [self sendEventWithName:name body:@(result)];
+}
 
-RCT_EXTERN_METHOD(getAttributionInfo: (RCTPromiseResolveBlock) resolve
-                  rejecter: (RCTPromiseRejectBlock) reject)
+#if RCT_NEW_ARCH_ENABLED
+- (void)startObserving {
+  NSLog(@"ReactNativeSdk startObserving");
+  [(ReactIterableAPI *)_swiftAPI startObserving];
+}
 
-RCT_EXTERN_METHOD(setAttributionInfo: (NSDictionary *) attributionInfo)
+- (void)stopObserving {
+  NSLog(@"ReactNativeSdk stopObserving");
+  [(ReactIterableAPI *)_swiftAPI stopObserving];
+}
 
-RCT_EXTERN_METHOD(trackPushOpenWithCampaignId: (nonnull NSNumber *) campaignId
-                  templateId: (nonnull NSNumber *) templateId
-                  messageId: (nonnull NSString *) messageId
-                  appAlreadyRunning: (BOOL) appAlreadyRunning
-                  dataFields: (NSDictionary *) dataFields)
+- (void)hello {
+  NSLog(@"Hello from Objective-C");
+  [(ReactIterableAPI *)_swiftAPI hello];
+}
 
-RCT_EXTERN_METHOD(updateCart: (NSArray *) items)
+- (void)testEventDispatch {
+  NSLog(@"***ITBL OBJ-C*** testEventDispatch");
+  [_swiftAPI testEventDispatch];
+}
 
-RCT_EXTERN_METHOD(trackPurchase: (nonnull NSNumber *) total
-                  items: (NSArray *) items
-                  dataFields: (NSDictionary *) dataFields)
+- (void)initializeWithApiKey:(NSString *)apiKey
+                    config:(NSDictionary *)config
+                   version:(NSString *)version
+                   resolve:(RCTPromiseResolveBlock)resolve
+                   reject:(RCTPromiseRejectBlock)reject
+{
+  NSLog(@"ReactNativeSdk initializeWithApiKey");
+  [_swiftAPI initializeWithApiKey:apiKey
+                             config:config
+                            version:version
+                           resolver:resolve
+                          rejecter:reject];
+}
 
-RCT_EXTERN_METHOD(trackInAppOpen: (NSString *) messageId
-                  location: (nonnull NSNumber *) location)
+- (void)initialize2WithApiKey:(NSString *)apiKey
+                    config:(NSDictionary *)config
+                   version:(NSString *)version
+       apiEndPointOverride:(NSString *)apiEndPointOverride
+                   resolve:(RCTPromiseResolveBlock)resolve
+                   reject:(RCTPromiseRejectBlock)reject
+{
+  NSLog(@"ReactNativeSdk initialize2WithApiKey");
+  [_swiftAPI initialize2WithApiKey:apiKey
+                            config:config
+               apiEndPointOverride:apiEndPointOverride
+                           version:version
+                          resolver:resolve
+                          rejecter:reject];
+}
 
-RCT_EXTERN_METHOD(trackInAppClick: (nonnull NSString *) messageId
-                  location: (nonnull NSNumber *) location
-                  clickedUrl: (nonnull NSString *) clickedUrl)
+- (void)setEmail:(NSString * _Nullable)email
+       authToken:(NSString * _Nullable)authToken
+{
+  NSLog(@"ReactNativeSdk setEmail");
+  [_swiftAPI setEmail:email authToken:authToken];
+}
 
-RCT_EXTERN_METHOD(trackInAppClose: (nonnull NSString *) messageId
-                  location: (nonnull NSNumber *) location
-                  source: (nonnull NSNumber *) source
-                  clickedUrl: (NSString *) clickedUrl)
+- (void)getEmail:(RCTPromiseResolveBlock)resolve
+          reject:(RCTPromiseRejectBlock)reject
+{
+  NSLog(@"ReactNativeSdk getEmail");
+  [_swiftAPI getEmail:resolve rejecter:reject];
+}
 
-RCT_EXTERN_METHOD(inAppConsume: (nonnull NSString *) messageId
-                  location: (nonnull NSNumber *) location
-                  source: (nonnull NSNumber *) source)
+- (void)setUserId:(NSString * _Nullable)userId
+       authToken:(NSString * _Nullable)authToken
+{
+  NSLog(@"ReactNativeSdk setUserId");
+  [_swiftAPI setUserId:userId authToken:authToken];
+}
 
-RCT_EXTERN_METHOD(trackEvent: (nonnull NSString *) name
-                  dataFields: (NSDictionary *) dataFields)
+- (void)getUserId:(RCTPromiseResolveBlock)resolve
+          reject:(RCTPromiseRejectBlock)reject
+{
+  NSLog(@"ReactNativeSdk getUserId");
+  [_swiftAPI getUserId:resolve rejecter:reject];
+}
 
-RCT_EXTERN_METHOD(updateUser: (nonnull NSDictionary *) dataFields
-                  mergeNestedObjects: (BOOL) mergeNestedObjects)
+- (void)setInAppShowResponse:(NSNumber *)inAppShowResponse
+{
+  NSLog(@"ReactNativeSdk setInAppShowResponse");
+  [_swiftAPI setInAppShowResponse:inAppShowResponse];
+}
 
-RCT_EXTERN_METHOD(updateEmail: (nonnull NSString *) email
-                  authToken: (NSString *) authToken)
+- (void)getInAppMessages:(RCTPromiseResolveBlock)resolve
+          reject:(RCTPromiseRejectBlock)reject
+{
+  NSLog(@"ReactNativeSdk getInAppMessages");
+  [_swiftAPI getInAppMessages:resolve rejecter:reject];
+}
 
-RCT_EXTERN_METHOD(handleAppLink: (nonnull NSString *) appLink
-                  resolver: (RCTPromiseResolveBlock) resolve
-                  rejecter: (RCTPromiseRejectBlock) reject)
+- (void)getInboxMessages:(RCTPromiseResolveBlock)resolve
+          reject:(RCTPromiseRejectBlock)reject
+{
+  NSLog(@"ReactNativeSdk getInboxMessages");
+  [_swiftAPI getInboxMessages:resolve rejecter:reject];
+}
 
-RCT_EXTERN_METHOD(updateSubscriptions: (NSArray *) emailListIds
-                  unsubscribedChannelIds: (NSArray *) unsubscribedChannelIds
-                  unsubscribedMessageTypeIds: (NSArray *) unsubscribedMessageTypeIds
-                  subscribedMessageTypeIds: (NSArray *) subscribedMessageTypeIds
-                  campaignId: (nonnull NSNumber *) campaignId
-                  templateId: (nonnull NSNumber *) templateId)
+// NOTE: This is not used anywhere on the JS side.
+- (void)getUnreadInboxMessagesCount:(RCTPromiseResolveBlock)resolve
+          reject:(RCTPromiseRejectBlock)reject
+{
+  NSLog(@"ReactNativeSdk getUnreadInboxMessagesCount");
+  [_swiftAPI getUnreadInboxMessagesCount:resolve rejecter:reject];
+}
 
-// MARK: - SDK In-App Manager Functions
+- (void)showMessage:(NSString *)messageId
+       consume:(BOOL)consume
+       resolve:(RCTPromiseResolveBlock)resolve
+       reject:(RCTPromiseRejectBlock)reject
+{
+  NSLog(@"ReactNativeSdk showMessage");
+  [_swiftAPI showMessage:messageId consume:consume resolver:resolve rejecter:reject];
+}
 
-RCT_EXTERN_METHOD(getInAppMessages: (RCTPromiseResolveBlock) resolve
-                  rejecter: (RCTPromiseRejectBlock) reject)
+- (void)removeMessage:(NSString *)messageId
+       location:(NSNumber *)location
+       source:(NSNumber *)source
+{
+  NSLog(@"ReactNativeSdk removeMessage");
+  [_swiftAPI removeMessage:messageId location:location source:source];
+}
 
-RCT_EXTERN_METHOD(getHtmlInAppContentForMessage: (nonnull NSString *) messageId
-                  resolver: (RCTPromiseResolveBlock) resolve
-                  rejecter: (RCTPromiseRejectBlock) reject)
+- (void)setReadForMessage:(NSString *)messageId
+       read:(BOOL)read
+{
+  NSLog(@"ReactNativeSdk setReadForMessage");
+  [_swiftAPI setReadForMessage:messageId read:read];
+}
 
-RCT_EXTERN_METHOD(getInboxMessages: (RCTPromiseResolveBlock) resolve
-                  rejecter: (RCTPromiseRejectBlock) reject)
+- (void)setAutoDisplayPaused:(BOOL)autoDisplayPaused
+{
+  NSLog(@"ReactNativeSdk setAutoDisplayPaused");
+  [_swiftAPI setAutoDisplayPaused:autoDisplayPaused];
+}
 
-RCT_EXTERN_METHOD(getUnreadInboxMessagesCount: (RCTPromiseResolveBlock) resolve
-                  rejecter: (RCTPromiseRejectBlock) reject)
+- (void)trackEvent:(NSString *)name
+       dataFields:(NSDictionary *)dataFields
+{
+  NSLog(@"ReactNativeSdk trackEvent");
+  [_swiftAPI trackEvent:name dataFields:dataFields];
+}
 
-RCT_EXTERN_METHOD(showMessage: (nonnull NSString *) messageId
-                  consume: (nonnull BOOL) consume
-                  resolver: (RCTPromiseResolveBlock) resolve
-                  rejecter: (RCTPromiseRejectBlock) reject)
+- (void)trackPushOpenWithCampaignId:(NSNumber *)campaignId
+       templateId:(NSNumber *)templateId
+       messageId:(NSString *)messageId
+       appAlreadyRunning:(BOOL)appAlreadyRunning
+       dataFields:(NSDictionary *)dataFields
+{
+  NSLog(@"ReactNativeSdk trackPushOpenWithCampaignId");
+  [_swiftAPI trackPushOpenWithCampaignId:campaignId templateId:templateId messageId:messageId appAlreadyRunning:appAlreadyRunning dataFields:dataFields];
+}
 
-RCT_EXTERN_METHOD(removeMessage: (nonnull NSString *) messageId
-                  location: (nonnull NSNumber *) location
-                  source: (nonnull NSNumber *) source)
+- (void)trackInAppOpen:(NSString *)messageId
+       location:(NSNumber *)location
+{
+  NSLog(@"ReactNativeSdk trackInAppOpen");
+  [_swiftAPI trackInAppOpen:messageId location:location];
+}
 
-RCT_EXTERN_METHOD(setReadForMessage: (nonnull NSString *) messageId
-                  read: (BOOL) read)
+- (void)trackInAppClick:(NSString *)messageId
+       location:(NSNumber *)location
+       clickedUrl:(NSString *)clickedUrl
+{
+  NSLog(@"ReactNativeSdk trackInAppClick");
+  [_swiftAPI trackInAppClick:messageId location:location clickedUrl:clickedUrl];
+}
 
-RCT_EXTERN_METHOD(setAutoDisplayPaused: (BOOL) paused)
+- (void)trackInAppClose:(NSString *)messageId
+       location:(NSNumber *)location
+       source:(NSNumber *)source
+       clickedUrl:(NSString *)clickedUrl
+{
+  NSLog(@"ReactNativeSdk trackInAppClose");
+  [_swiftAPI trackInAppClose:messageId location:location source:source clickedUrl:clickedUrl];
+}
 
-// MARK: - SDK Inbox Session Tracking Functions
+- (void)inAppConsume:(NSString *)messageId
+       location:(NSNumber *)location
+       source:(NSNumber *)source
+{
+  NSLog(@"ReactNativeSdk inAppConsume");
+  [_swiftAPI inAppConsume:messageId location:location source:source];
+}
 
-RCT_EXTERN_METHOD(startSession: (nonnull NSArray *) visibleRows)
+- (void)updateCart:(NSArray *)items
+{
+  NSLog(@"ReactNativeSdk updateCart");
+  [_swiftAPI updateCart:items];
+}
 
-RCT_EXTERN_METHOD(endSession)
+- (void)trackPurchase:(NSNumber *)total
+       items:(NSArray *)items
+       dataFields:(NSDictionary *)dataFields
+{
+  NSLog(@"ReactNativeSdk trackPurchase");
+  [_swiftAPI trackPurchase:total items:items dataFields:dataFields];
+}
 
-RCT_EXTERN_METHOD(updateVisibleRows: (nonnull NSArray *) visibleRows)
+- (void)updateUser:(NSDictionary *)dataFields
+       mergeNestedObjects:(BOOL)mergeNestedObjects
+{
+  NSLog(@"ReactNativeSdk updateUser");
+  [_swiftAPI updateUser:dataFields mergeNestedObjects:mergeNestedObjects];
+}
 
-// MARK: - SDK Auth Manager Functions
+- (void)updateEmail:(NSString *)email
+       authToken:(NSString *)authToken
+{
+  NSLog(@"ReactNativeSdk updateEmail");
+  [_swiftAPI updateEmail:email authToken:authToken];
+}
 
-RCT_EXTERN_METHOD(passAlongAuthToken: (NSString *) authToken)
+- (void)getAttributionInfo:(RCTPromiseResolveBlock)resolve
+          reject:(RCTPromiseRejectBlock)reject
+{
+  NSLog(@"ReactNativeSdk getAttributionInfo");
+  [_swiftAPI getAttributionInfo:resolve rejecter:reject];
+}
+
+- (void)setAttributionInfo:(NSDictionary *)attributionInfo
+{
+  NSLog(@"ReactNativeSdk setAttributionInfo");
+  [_swiftAPI setAttributionInfo:attributionInfo];
+}
+
+- (void)disableDeviceForCurrentUser
+{
+  NSLog(@"ReactNativeSdk disableDeviceForCurrentUser");
+  [_swiftAPI disableDeviceForCurrentUser];
+}
+
+- (void)getLastPushPayload:(RCTPromiseResolveBlock)resolve
+          reject:(RCTPromiseRejectBlock)reject
+{
+  NSLog(@"ReactNativeSdk getLastPushPayload");
+  [_swiftAPI getLastPushPayload:resolve rejecter:reject];
+}
+
+- (void)getHtmlInAppContentForMessage:(NSString *)messageId
+       resolve:(RCTPromiseResolveBlock)resolve
+       reject:(RCTPromiseRejectBlock)reject
+{
+  NSLog(@"ReactNativeSdk getHtmlInAppContentForMessage");
+  [_swiftAPI getHtmlInAppContentForMessage:messageId resolver:resolve rejecter:reject];
+}
+
+- (void)handleAppLink:(NSString *)appLink
+       resolve:(RCTPromiseResolveBlock)resolve
+       reject:(RCTPromiseRejectBlock)reject
+{
+  NSLog(@"ReactNativeSdk handleAppLink");
+  [_swiftAPI handleAppLink:appLink resolver:resolve rejecter:reject];
+}
+
+- (void)updateSubscriptions:(NSArray *)emailListIds
+       unsubscribedChannelIds:(NSArray *)unsubscribedChannelIds
+       unsubscribedMessageTypeIds:(NSArray *)unsubscribedMessageTypeIds
+       subscribedMessageTypeIds:(NSArray *)subscribedMessageTypeIds
+       campaignId:(NSNumber *)campaignId
+       templateId:(NSNumber *)templateId
+{
+  NSLog(@"ReactNativeSdk updateSubscriptions");
+  [_swiftAPI updateSubscriptions:emailListIds unsubscribedChannelIds:unsubscribedChannelIds unsubscribedMessageTypeIds:unsubscribedMessageTypeIds subscribedMessageTypeIds:subscribedMessageTypeIds campaignId:campaignId templateId:templateId];
+}
+
+- (void)startSession:(NSArray *)visibleRows
+{
+  NSLog(@"ReactNativeSdk startSession");
+  [_swiftAPI startSession:visibleRows];
+}
+
+- (void)endSession
+{
+  NSLog(@"ReactNativeSdk endSession");
+  [_swiftAPI endSession];
+}
+
+- (void)updateVisibleRows:(NSArray *)visibleRows
+{
+  NSLog(@"ReactNativeSdk updateVisibleRows");
+  [_swiftAPI updateVisibleRows:visibleRows];
+}
+
+- (void)passAlongAuthToken:(NSString *)authToken
+{
+  NSLog(@"ReactNativeSdk passAlongAuthToken");
+  [_swiftAPI passAlongAuthToken:authToken];
+}
+
+- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
+    (const facebook::react::ObjCTurboModule::InitParams &)params
+{
+    return std::make_shared<facebook::react::NativeRNIterableAPISpecJSI>(params);
+}
+#else
+
+RCT_EXPORT_METHOD(startObserving) {
+  NSLog(@"ReactNativeSdk startObserving");
+  [(ReactIterableAPI *)_swiftAPI startObserving];
+}
+
+RCT_EXPORT_METHOD(stopObserving) {
+  NSLog(@"ReactNativeSdk stopObserving");
+  [(ReactIterableAPI *)_swiftAPI stopObserving];
+}
+
+RCT_EXPORT_METHOD(hello) {
+  NSLog(@"***ITBL OBJ-C*** hello");
+  [_swiftAPI hello];
+}
+
+RCT_EXPORT_METHOD(testEventDispatch) {
+  NSLog(@"***ITBL OBJ-C*** testEventDispatch");
+  [_swiftAPI testEventDispatch];
+}
+
+RCT_EXPORT_METHOD(initializeWithApiKey:(NSString *)apiKey
+                    config:(NSDictionary *)config
+                   version:(NSString *)version
+                   resolve:(RCTPromiseResolveBlock)resolve
+                   reject:(RCTPromiseRejectBlock)reject) {
+  NSLog(@"ReactNativeSdk initializeWithApiKey");
+  [_swiftAPI initializeWithApiKey:apiKey
+                             config:config
+                            version:version
+                           resolver:resolve
+                          rejecter:reject];
+}
+
+RCT_EXPORT_METHOD(initialize2WithApiKey:(NSString *)apiKey
+                    config:(NSDictionary *)config
+                   version:(NSString *)version
+       apiEndPointOverride:(NSString *)apiEndPointOverride
+                   resolve:(RCTPromiseResolveBlock)resolve
+                   reject:(RCTPromiseRejectBlock)reject) {
+  NSLog(@"ReactNativeSdk initialize2WithApiKey");
+  [_swiftAPI initialize2WithApiKey:apiKey
+                            config:config
+               apiEndPointOverride:apiEndPointOverride
+                           version:version
+                          resolver:resolve
+                          rejecter:reject];
+}
+
+RCT_EXPORT_METHOD(setEmail:(NSString * _Nullable)email
+       authToken:(NSString * _Nullable)authToken) {
+  NSLog(@"ReactNativeSdk setEmail");
+  [_swiftAPI setEmail:email authToken:authToken];
+}
+
+RCT_EXPORT_METHOD(getEmail:(RCTPromiseResolveBlock)resolve
+          reject:(RCTPromiseRejectBlock)reject) {
+  NSLog(@"ReactNativeSdk getEmail");
+  [_swiftAPI getEmail:resolve rejecter:reject];
+}
+
+RCT_EXPORT_METHOD(setUserId:(NSString * _Nullable)userId
+       authToken:(NSString * _Nullable)authToken) {
+  NSLog(@"ReactNativeSdk setUserId");
+  [_swiftAPI setUserId:userId authToken:authToken];
+}
+
+RCT_EXPORT_METHOD(getUserId:(RCTPromiseResolveBlock)resolve
+          reject:(RCTPromiseRejectBlock)reject) {
+  NSLog(@"ReactNativeSdk getUserId");
+  [_swiftAPI getUserId:resolve rejecter:reject];
+}
+
+RCT_EXPORT_METHOD(setInAppShowResponse:(NSNumber *)inAppShowResponse) {
+  NSLog(@"ReactNativeSdk setInAppShowResponse");
+  [_swiftAPI setInAppShowResponse:inAppShowResponse];
+}
+
+RCT_EXPORT_METHOD(getInAppMessages:(RCTPromiseResolveBlock)resolve
+          reject:(RCTPromiseRejectBlock)reject) {
+  NSLog(@"ReactNativeSdk getInAppMessages");
+  [_swiftAPI getInAppMessages:resolve rejecter:reject];
+}
+
+RCT_EXPORT_METHOD(getInboxMessages:(RCTPromiseResolveBlock)resolve
+          reject:(RCTPromiseRejectBlock)reject) {
+  NSLog(@"ReactNativeSdk getInboxMessages");
+  [_swiftAPI getInboxMessages:resolve rejecter:reject];
+}
+
+RCT_EXPORT_METHOD(getUnreadInboxMessagesCount:(RCTPromiseResolveBlock)resolve
+          reject:(RCTPromiseRejectBlock)reject) {
+  NSLog(@"ReactNativeSdk getUnreadInboxMessagesCount");
+  [_swiftAPI getUnreadInboxMessagesCount:resolve rejecter:reject];
+}
+
+RCT_EXPORT_METHOD(showMessage:(NSString *)messageId
+       consume:(BOOL)consume
+       resolve:(RCTPromiseResolveBlock)resolve
+       reject:(RCTPromiseRejectBlock)reject) {
+  NSLog(@"ReactNativeSdk showMessage");
+  [_swiftAPI showMessage:messageId consume:consume resolver:resolve rejecter:reject];
+}
+
+RCT_EXPORT_METHOD(removeMessage:(NSString *)messageId
+       location:(NSNumber *)location
+       source:(NSNumber *)source) {
+  NSLog(@"ReactNativeSdk removeMessage");
+  [_swiftAPI removeMessage:messageId location:location source:source];
+}
+
+RCT_EXPORT_METHOD(setReadForMessage:(NSString *)messageId
+       read:(BOOL)read) {
+  NSLog(@"ReactNativeSdk setReadForMessage");
+  [_swiftAPI setReadForMessage:messageId read:read];
+}
+
+RCT_EXPORT_METHOD(setAutoDisplayPaused:(BOOL)autoDisplayPaused) {
+  NSLog(@"ReactNativeSdk setAutoDisplayPaused");
+  [_swiftAPI setAutoDisplayPaused:autoDisplayPaused];
+}
+
+RCT_EXPORT_METHOD(trackEvent:(NSString *)name
+       dataFields:(NSDictionary *)dataFields) {
+  NSLog(@"ReactNativeSdk trackEvent");
+  [_swiftAPI trackEvent:name dataFields:dataFields];
+}
+
+RCT_EXPORT_METHOD(trackPushOpenWithCampaignId:(NSNumber *)campaignId
+       templateId:(NSNumber *)templateId
+       messageId:(NSString *)messageId
+       appAlreadyRunning:(BOOL)appAlreadyRunning
+       dataFields:(NSDictionary *)dataFields) {
+  NSLog(@"ReactNativeSdk trackPushOpenWithCampaignId");
+  [_swiftAPI trackPushOpenWithCampaignId:campaignId templateId:templateId messageId:messageId appAlreadyRunning:appAlreadyRunning dataFields:dataFields];
+}
+
+RCT_EXPORT_METHOD(trackInAppOpen:(NSString *)messageId
+       location:(NSNumber *)location) {
+  NSLog(@"ReactNativeSdk trackInAppOpen");
+  [_swiftAPI trackInAppOpen:messageId location:location];
+}
+
+RCT_EXPORT_METHOD(trackInAppClick:(NSString *)messageId
+       location:(NSNumber *)location
+       clickedUrl:(NSString *)clickedUrl) {
+  NSLog(@"ReactNativeSdk trackInAppClick");
+  [_swiftAPI trackInAppClick:messageId location:location clickedUrl:clickedUrl];
+}
+
+RCT_EXPORT_METHOD(trackInAppClose:(NSString *)messageId
+       location:(NSNumber *)location
+       source:(NSNumber *)source
+       clickedUrl:(NSString *)clickedUrl) {
+  NSLog(@"ReactNativeSdk trackInAppClose");
+  [_swiftAPI trackInAppClose:messageId location:location source:source clickedUrl:clickedUrl];
+}
+
+RCT_EXPORT_METHOD(inAppConsume:(NSString *)messageId
+       location:(NSNumber *)location
+       source:(NSNumber *)source) {
+  NSLog(@"ReactNativeSdk inAppConsume");
+  [_swiftAPI inAppConsume:messageId location:location source:source];
+}
+
+RCT_EXPORT_METHOD(updateCart:(NSArray *)items) {
+  NSLog(@"ReactNativeSdk updateCart");
+  [_swiftAPI updateCart:items];
+}
+
+RCT_EXPORT_METHOD(trackPurchase:(NSNumber *)total
+       items:(NSArray *)items
+       dataFields:(NSDictionary *)dataFields) {
+  NSLog(@"ReactNativeSdk trackPurchase");
+  [_swiftAPI trackPurchase:total items:items dataFields:dataFields];
+}
+
+RCT_EXPORT_METHOD(updateUser:(NSDictionary *)dataFields
+       mergeNestedObjects:(BOOL)mergeNestedObjects) {
+  NSLog(@"ReactNativeSdk updateUser");
+  [_swiftAPI updateUser:dataFields mergeNestedObjects:mergeNestedObjects];
+}
+    RCT_EXPORT_METHOD(updateEmail:(NSString *)email
+       authToken:(NSString *)authToken) {
+  NSLog(@"ReactNativeSdk updateEmail");
+  [_swiftAPI updateEmail:email authToken:authToken];
+}
+
+RCT_EXPORT_METHOD(getAttributionInfo:(RCTPromiseResolveBlock)resolve
+          reject:(RCTPromiseRejectBlock)reject) {
+  NSLog(@"ReactNativeSdk getAttributionInfo");
+  [_swiftAPI getAttributionInfo:resolve rejecter:reject];
+}
+
+RCT_EXPORT_METHOD(setAttributionInfo:(NSDictionary *)attributionInfo) {
+  NSLog(@"ReactNativeSdk setAttributionInfo");
+  [_swiftAPI setAttributionInfo:attributionInfo];
+}
+
+RCT_EXPORT_METHOD(disableDeviceForCurrentUser) {
+  NSLog(@"ReactNativeSdk disableDeviceForCurrentUser");
+  [_swiftAPI disableDeviceForCurrentUser];
+}
+
+RCT_EXPORT_METHOD(getLastPushPayload:(RCTPromiseResolveBlock)resolve
+          reject:(RCTPromiseRejectBlock)reject) {
+  NSLog(@"ReactNativeSdk getLastPushPayload");
+  [_swiftAPI getLastPushPayload:resolve rejecter:reject];
+}
+
+RCT_EXPORT_METHOD(getHtmlInAppContentForMessage:(NSString *)messageId
+       resolve:(RCTPromiseResolveBlock)resolve
+       reject:(RCTPromiseRejectBlock)reject) {
+  NSLog(@"ReactNativeSdk getHtmlInAppContentForMessage");
+  [_swiftAPI getHtmlInAppContentForMessage:messageId resolver:resolve rejecter:reject];
+}
+
+RCT_EXPORT_METHOD(handleAppLink:(NSString *)appLink
+       resolve:(RCTPromiseResolveBlock)resolve
+       reject:(RCTPromiseRejectBlock)reject) {
+  NSLog(@"ReactNativeSdk handleAppLink");
+  [_swiftAPI handleAppLink:appLink resolver:resolve rejecter:reject];
+}
+
+RCT_EXPORT_METHOD(updateSubscriptions:(NSArray *)emailListIds
+       unsubscribedChannelIds:(NSArray *)unsubscribedChannelIds
+       unsubscribedMessageTypeIds:(NSArray *)unsubscribedMessageTypeIds
+       subscribedMessageTypeIds:(NSArray *)subscribedMessageTypeIds
+       campaignId:(NSNumber *)campaignId
+       templateId:(NSNumber *)templateId) {
+  NSLog(@"ReactNativeSdk updateSubscriptions");
+  [_swiftAPI updateSubscriptions:emailListIds unsubscribedChannelIds:unsubscribedChannelIds unsubscribedMessageTypeIds:unsubscribedMessageTypeIds subscribedMessageTypeIds:subscribedMessageTypeIds campaignId:campaignId templateId:templateId];
+}
+
+RCT_EXPORT_METHOD(startSession:(NSArray *)visibleRows) {
+  NSLog(@"ReactNativeSdk startSession");
+  [_swiftAPI startSession:visibleRows];
+}
+
+RCT_EXPORT_METHOD(endSession) {
+  NSLog(@"ReactNativeSdk endSession");
+  [_swiftAPI endSession];
+}
+
+RCT_EXPORT_METHOD(updateVisibleRows:(NSArray *)visibleRows) {
+  NSLog(@"ReactNativeSdk updateVisibleRows");
+  [_swiftAPI updateVisibleRows:visibleRows];
+}
+
+RCT_EXPORT_METHOD(passAlongAuthToken:(NSString *)authToken) {
+  NSLog(@"ReactNativeSdk passAlongAuthToken");
+  [_swiftAPI passAlongAuthToken:authToken];
+}
+
+#endif
 
 @end

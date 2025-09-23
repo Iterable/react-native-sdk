@@ -4,6 +4,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useState,
 } from 'react';
 import { Alert } from 'react-native';
@@ -14,10 +15,14 @@ import {
   IterableConfig,
   IterableInAppShowResponse,
   IterableLogLevel,
+  RNIterableAPI,
 } from '@iterable/react-native-sdk';
 
 import { Route } from '../constants/routes';
 import type { RootStackParamList } from '../types/navigation';
+import { NativeEventEmitter } from 'react-native';
+
+const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
 type Navigation = StackNavigationProp<RootStackParamList>;
 
@@ -98,6 +103,13 @@ export const IterableAppProvider: FunctionComponent<
   );
   const [userId, setUserId] = useState<string | undefined>(process.env.ITBL_ID);
   const [loginInProgress, setLoginInProgress] = useState<boolean>(false);
+
+  useEffect(() => {
+    console.log('*** EXAMPLE JS SETTING EVENT LISTENER *** : receivedIterableInboxChanged', RNEventEmitter);
+    RNEventEmitter.addListener('receivedIterableInboxChanged', (event) => {
+      console.log('*** EXAMPLE JS EVENT RECEIVED *** : receivedIterableInboxChanged', event);
+    });
+  }, []);
 
   const getUserId = useCallback(() => userId ?? process.env.ITBL_ID, [userId]);
 

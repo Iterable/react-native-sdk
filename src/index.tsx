@@ -1,6 +1,7 @@
 /**
  * React Native module for Iterable.
  */
+export { RNIterableAPI } from './api';
 export {
   Iterable,
   IterableAction,

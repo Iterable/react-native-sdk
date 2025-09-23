@@ -1,5 +1,5 @@
-import { NativeModules } from 'react-native';
 
+import { RNIterableAPI } from '../../api';
 import { Iterable } from '../../core/classes/Iterable';
 import type {
   IterableInAppDeleteSource,
@@ -8,7 +8,6 @@ import type {
 import { IterableHtmlInAppContent } from './IterableHtmlInAppContent';
 import { IterableInAppMessage } from './IterableInAppMessage';
 
-const RNIterableAPI = NativeModules.RNIterableAPI;
 
 /**
  * Manages in-app messages for the current user.

@@ -66,6 +66,9 @@
   "devDependencies": {
     "@commitlint/config-conventional": "^19.6.0",
     "@evilmartians/lefthook": "^1.5.0",
+    "@react-native-community/cli": "18.0.0",
+    "@react-native-community/cli-platform-android": "18.0.0",
+    "@react-native-community/cli-platform-ios": "18.0.0",
     "@react-native/babel-preset": "0.79.3",
     "@react-native/eslint-config": "0.79.3",
     "@react-native/metro-config": "0.79.3",
@@ -177,11 +180,17 @@
     ]
   },
   "codegenConfig": {
-    "name": "RNIterableSpec",
+    "name": "RNIterableAPISpec",
     "type": "modules",
-    "jsSrcsDir": "src",
+    "jsSrcsDir": "src/api/",
     "android": {
       "javaPackageName": "com.iterable.reactnative"
+    },
+    "ios": {
+      "modules": {
+        "RNIterableAPI": "RNIterableAPI",
+        "ReactIterableAPI": "ReactIterableAPI"
+      }
     }
   },
   "create-react-native-library": {
