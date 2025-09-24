@@ -156,7 +156,7 @@ jobs:
       matrix:
         include:
           - language: swift
-            build-mode: none
+            build-mode: manual
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
