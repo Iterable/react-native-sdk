@@ -412,7 +412,7 @@ export const IterableInboxMessageCell = ({
         swipingCheck(false);
       },
     })
-  ).current;
+  );
 
   return (
     <>
@@ -421,7 +421,7 @@ export const IterableInboxMessageCell = ({
       </View>
       <Animated.View
         style={[styles.textContainer, position.getLayout()]}
-        {...panResponder.panHandlers}
+        {...panResponder.current.panHandlers}
       >
         <TouchableOpacity
         testID={inboxMessageCellTestIDs.selectButton}
