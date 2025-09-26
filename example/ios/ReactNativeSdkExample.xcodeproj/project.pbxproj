@@ -255,6 +255,7 @@
 			);
 			name = "Bundle React Native code and images";
 			outputPaths = (
+			  "$(REACT_NATIVE_PATH)/"
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
