@@ -159,9 +159,13 @@ jobs:
     #            build-mode: autobuild
 
     name: build iOS
+    timeout-minutes: 20
     runs-on: macos-14
     env:
       TURBO_CACHE_DIR: .turbo/ios
+      TURBO_TOKEN: ${{ secrets. TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets. TURBO_TEAM }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -208,7 +212,6 @@ jobs:
         run: |
           yarn turbo run build:ios --cache-dir="${{ env.TURBO_CACHE_DIR }}"
           echo "${{ env.TURBO_CACHE_DIR }}"
-          exit 1
 
         # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
