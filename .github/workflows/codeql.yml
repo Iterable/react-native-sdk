@@ -99,6 +99,7 @@ jobs:
         include:
           - language: java-kotlin
             build-mode: none
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -165,8 +166,8 @@ jobs:
             build-mode: autobuild
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - name: Checkout react-native-sdk
+        uses: actions/checkout@v4
 
       - name: Setup
         uses: ./.github/actions/setup
@@ -174,10 +175,17 @@ jobs:
       - name: Cache turborepo for iOS
         uses: actions/cache@v4
         with:
-          path: ${{ env.TURBO_CACHE_DIR }}
+          # path: ${{ env.TURBO_CACHE_DIR }}
+          path: ~/.cache/yarn
           key: ${{ runner.os }}-turborepo-ios-${{ hashFiles('yarn.lock') }}
           restore-keys: |
               ${{ runner.os }}-turborepo-ios-
+
+      - name: Checkout iterable-swift-sdk
+        uses: actions/checkout@v4
+        with:
+          repository: Iterable/iterable-swift-sdk
+
 
       - name: Debug Cache Key
         run: |
