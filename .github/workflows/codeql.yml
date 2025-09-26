@@ -186,11 +186,6 @@ jobs:
       #   with:
       #     repository: Iterable/iterable-swift-sdk
 
-      - name: setup xcode
-        uses: maxim-lobanov/setup-xcodev@1
-        with:
-          xcode-version: '15.0'
-
       - name: Debug Cache Key
         run: |
           echo "Cache key would be: ${{ runner.os }}-turborepo-ios-${{ hashFiles('yarn.lock') }}"
@@ -221,6 +216,11 @@ jobs:
           pod install
         env:
           NO_FLIPPER: 1
+
+      - name: Setup Xcode version
+        uses: maxim-lobanov/setup-xcode@v1.6.0
+        with:
+          xcode-version: latest-stable
 
       - name: Build example for iOS
         run: |
