@@ -163,7 +163,7 @@ jobs:
       matrix:
         include:
           - language: swift
-            build-mode: manual
+            build-mode: autobuild
 
     steps:
       - name: Checkout react-native-sdk
@@ -218,11 +218,20 @@ jobs:
         env:
           NO_FLIPPER: 1
 
-      # - name: Build example for iOS
-      #   run: |
-      #    yarn add @iterable/react-native-sdk
-      #    yarn turbo run build:ios --cache-dir="${{ env.TURBO_CACHE_DIR }}"
-      #    echo "${{ env.TURBO_CACHE_DIR }}"
+      - name: Build example for iOS
+        run: |
+          yarn add @iterable/react-native-sdk
+          yarn turbo run build:ios --cache-dir="${{ env.TURBO_CACHE_DIR }}"
+          echo "${{ env.TURBO_CACHE_DIR }}"
+
+          xcodebuild clean build \
+          -workspace ReactNativeSdkExample.xcworkspace \ # Replace with your workspace name
+          -scheme ReactNativeSdkExample \ # Replace with your app's scheme name
+          -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \ # Adjust simulator as needed
+          -sdk iphonesimulator \
+          CODE_SIGN_IDENTITY="" \
+          CODE_SIGNING_REQUIRED=NO \
+          CODE_SIGNING_ALLOWED=NO
 
         # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
@@ -242,25 +251,15 @@ jobs:
       - if: matrix.build-mode == 'manual'
         shell: bash
         run: |
-          yarn add @iterable/react-native-sdk
-
-          xcodebuild \
-            -project ReactNativeSdkExample.xcodeproj \
-            -scheme example \
-            -sdk iphonesimulator \
-            -destination "platform=iOS Simulator,name=iPhone 16 Pro" \
-            -resultsBundlePath TestResults.xcresult \
-            test | xcpretty
-
+               echo 'If you are using a "manual" build mode for one or more of the' \
+                 'languages you are analyzing, replace this with the commands to build' \
+                 'your code, for example:'
+               echo '  make bootstrap'
+               echo '  make release'
+               exit 1
+#          yarn add @iterable/react-native-sdk
 #          yarn turbo run build:ios --cache-dir="${{ env.TURBO_CACHE_DIR }}"
 #          echo "${{ env.TURBO_CACHE_DIR }}"
-
-#           echo 'If you are using a "manual" build mode for one or more of the' \
-#            'languages you are analyzing, replace this with the commands to build' \
-#            'your code, for example:'
-#          echo '  make bootstrap'
-#          echo '  make release'
-#          exit 1
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
