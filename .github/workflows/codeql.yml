@@ -181,10 +181,10 @@ jobs:
           restore-keys: |
               ${{ runner.os }}-turborepo-ios-
 
-      - name: Checkout iterable-swift-sdk
-        uses: actions/checkout@v4
-        with:
-          repository: Iterable/iterable-swift-sdk
+      # - name: Checkout iterable-swift-sdk
+      #   uses: actions/checkout@v4
+      #   with:
+      #     repository: Iterable/iterable-swift-sdk
 
 
       - name: Debug Cache Key
