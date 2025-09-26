@@ -220,7 +220,7 @@ jobs:
       - name: Build example for iOS
         run: |
           cd example/ios
-          xcodebuild -workspace ReactNativeSdkExample.xcworkspace -list
+          xcodebuild -list
 
           xcodebuild clean build \
           -workspace ReactNativeSdkExample.xcworkspace \ # Replace with your workspace name
