@@ -186,6 +186,12 @@ jobs:
       #   with:
       #     repository: Iterable/iterable-swift-sdk
 
+      - name: setup xcode
+        runs-on: ${{ (matrix.language == 'swift' && 'macos-15') || 'ubuntu-latest' }}
+        steps:
+          - uses: maxim-lobanov/setup-xcodev@1
+            with:
+              xcode-version: '15.0'
 
       - name: Debug Cache Key
         run: |
