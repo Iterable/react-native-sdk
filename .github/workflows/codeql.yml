@@ -146,7 +146,7 @@ jobs:
       TURBO_CACHE_DIR: .turbo/ios
       TURBO_TOKEN: ${{ secrets. TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets. TURBO_TEAM }}
-    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
+    runs-on: ${{ (matrix.language == 'swift' && 'macos-14') || 'ubuntu-latest' }}
     permissions:
       # required for all workflows
       security-events: write
@@ -228,7 +228,9 @@ jobs:
           -sdk iphoneos \
           CODE_SIGN_IDENTITY="" \
           CODE_SIGNING_REQUIRED=NO \
-          CODE_SIGNING_ALLOWED=NO
+          CODE_SIGNING_ALLOWED=NO \
+          BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
+          SKIP_INSTALL=NO
 
         # yarn add @iterable/react-native-sdk
         # yarn turbo run build:ios --cache-dir="${{ env.TURBO_CACHE_DIR }}"
