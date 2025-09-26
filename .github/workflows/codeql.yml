@@ -222,10 +222,10 @@ jobs:
           cd example/ios
           xcodebuild -list
 
-          xcodebuild build \
-          -project ReactNativeSdkExample.xcproject \ # Replace with your workspace name
-          -scheme ReactNativeSdkExample \ # Replace with your app's scheme name
-          -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \ # Adjust simulator as needed
+          xcodebuild clean build \
+          -project ReactNativeSdkExample.xcproject \
+          -scheme ReactNativeSdkExample \
+          -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \
           -sdk iphonesimulator \
           CODE_SIGN_IDENTITY="" \
           CODE_SIGNING_REQUIRED=NO \
