@@ -223,7 +223,7 @@ jobs:
           xcodebuild -list
 
           xcodebuild clean build \
-          -project ReactNativeSdkExample.xcproject \
+          -project ReactNativeSdkExample.xcodeproj \
           -scheme ReactNativeSdkExample \
           -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \
           -sdk iphonesimulator \
