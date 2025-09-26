@@ -138,7 +138,13 @@ jobs:
 
 
   analyze3:
-    name: Analyze (${{ matrix.language }})
+    name: build iOS
+    timeout-minutes: 60
+#     runs-on: macos-14
+    env:
+      TURBO_CACHE_DIR: .turbo/ios
+      TURBO_TOKEN: ${{ secrets. TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets. TURBO_TEAM }}
     runs-on: ${{ (matrix.language == 'swift' && 'macos-15') || 'ubuntu-latest' }}
     permissions:
       # required for all workflows
@@ -157,14 +163,6 @@ jobs:
         include:
           - language: swift
             build-mode: autobuild
-
-    name: build iOS
-    timeout-minutes: 60
-    runs-on: macos-14
-    env:
-      TURBO_CACHE_DIR: .turbo/ios
-      TURBO_TOKEN: ${{ secrets. TURBO_TOKEN }}
-      TURBO_TEAM: ${{ secrets. TURBO_TEAM }}
 
     steps:
       - name: Checkout
