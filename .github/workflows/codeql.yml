@@ -175,8 +175,8 @@ jobs:
       - name: Cache turborepo for iOS
         uses: actions/cache@v4
         with:
-          # path: ${{ env.TURBO_CACHE_DIR }}
-          path: ~/.cache/yarn
+          path: ${{ env.TURBO_CACHE_DIR }}
+          # path: ~/.cache/yarn
           key: ${{ runner.os }}-turborepo-ios-${{ hashFiles('yarn.lock') }}
           restore-keys: |
               ${{ runner.os }}-turborepo-ios-
