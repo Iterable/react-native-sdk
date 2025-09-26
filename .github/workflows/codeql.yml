@@ -229,8 +229,10 @@ jobs:
           CODE_SIGN_IDENTITY="" \
           CODE_SIGNING_REQUIRED=NO \
           CODE_SIGNING_ALLOWED=NO \
-          BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
-          SKIP_INSTALL=NO
+          BUILD_LIBRARY_FOR_DISTRIBUTION=NO \
+          APPLICATION_EXTENSION_API_ONLY=YES \
+          SKIP_INSTALL=NO \
+          IPHONEOS_DEVELOPMENT_TARGET=13.2
 
         # yarn add @iterable/react-native-sdk
         # yarn turbo run build:ios --cache-dir="${{ env.TURBO_CACHE_DIR }}"
