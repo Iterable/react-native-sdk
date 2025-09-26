@@ -224,7 +224,7 @@ jobs:
 
           xcodebuild clean build \
           -workspace ReactNativeSdkExample.xcworkspace \ # Replace with your workspace name
-          -scheme Pods-ReactNativeSdkExample \ # Replace with your app's scheme name
+          -scheme Iterable-iOS-SDK \ # Replace with your app's scheme name
           -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \ # Adjust simulator as needed
           -sdk iphonesimulator \
           CODE_SIGN_IDENTITY="" \
