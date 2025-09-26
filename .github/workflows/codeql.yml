@@ -138,25 +138,25 @@ jobs:
 
 
   analyze3:
-    #    name: Analyze (${{ matrix.language }})
-    #    runs-on: ${{ (matrix.language == 'swift' && 'macos-15') || 'ubuntu-latest' }}
-    #    permissions:
-    #      # required for all workflows
-    #      security-events: write
-    #
-    #      # required to fetch internal or private CodeQL packs
-    #      packages: read
-    #
-    #      # only required for workflows in private repositories
-    #      actions: read
-    #      contents: read
-    #
-    #    strategy:
-    #      fail-fast: false
-    #      matrix:
-    #        include:
-    #          - language: swift
-    #            build-mode: autobuild
+    name: Analyze (${{ matrix.language }})
+    runs-on: ${{ (matrix.language == 'swift' && 'macos-15') || 'ubuntu-latest' }}
+    permissions:
+      # required for all workflows
+      security-events: write
+
+      # required to fetch internal or private CodeQL packs
+      packages: read
+
+      # only required for workflows in private repositories
+      actions: read
+      contents: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: swift
+            build-mode: autobuild
 
     name: build iOS
     timeout-minutes: 60
@@ -208,7 +208,7 @@ jobs:
         if: env.turbo_cache_hit != 1 && steps.cocoapods-cache.outputs.cache-hit != 'true'
         run: |
           cd example/ios
-          pod install
+          yarn ios
         env:
           NO_FLIPPER: 1
 
@@ -223,9 +223,6 @@ jobs:
         with:
           languages: ${{ matrix.language }}
           build-mode: ${{ matrix.build-mode }}
-          config: |
-            paths-ignore:
-              - '**/android/app/main/java/iterable/reactnativesdk/example/**
 
 
             # If you wish to specify custom queries, you can do so here or in a config file.
