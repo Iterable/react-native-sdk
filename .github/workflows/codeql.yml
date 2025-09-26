@@ -174,12 +174,16 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Cache turborepo for iOS
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ env.TURBO_CACHE_DIR }}
           key: ${{ runner.os }}-turborepo-ios-${{ hashFiles('yarn.lock') }}
           restore-keys: |
               ${{ runner.os }}-turborepo-ios-
+
+      - name: Debug Cache Key
+        run: |
+          echo "Cache key would be: ${{ runner.os }}-turborepo-ios-${{ hashFiles('yarn.lock') }}"
 
       - name: Check turborepo cache for iOS
         run: |
@@ -192,7 +196,7 @@ jobs:
       - name: Cache cocoapods
         if: env.turbo_cache_hit != 1
         id: cocoapods-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             **/ios/Pods
