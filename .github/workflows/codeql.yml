@@ -217,15 +217,10 @@ jobs:
         env:
           NO_FLIPPER: 1
 
-      - name: Setup Xcode version
-        uses: maxim-lobanov/setup-xcode@v1.6.0
-        with:
-          xcode-version: latest-stable
-
       - name: Build example for iOS
         run: |
           cd example/ios
-          xcodebuild -list -workspace ReactNativeSdkExample.xcworkspace
+          xcodebuild -workspace ReactNativeSdkExample.xcworkspace -list
 
           xcodebuild clean build \
           -workspace ReactNativeSdkExample.xcworkspace \ # Replace with your workspace name
