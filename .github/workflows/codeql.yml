@@ -220,16 +220,18 @@ jobs:
 
       - name: Build example for iOS
         run: |
-               xcodebuild -list -workspace ReactNativeSdkExample.xcworkspace
+          cd example/ios
+          xcodebuild -list -workspace ReactNativeSdkExample.xcworkspace
 
-               xcodebuild clean build \
-               -workspace ReactNativeSdkExample.xcworkspace \ # Replace with your workspace name
-               -scheme ReactNativeSdkExample  \ # Replace with your app's scheme name
-               -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \ # Adjust simulator as needed
-               -sdk iphonesimulator \
-               CODE_SIGN_IDENTITY="" \
-               CODE_SIGNING_REQUIRED=NO \
-               CODE_SIGNING_ALLOWED=NO
+          xcodebuild clean build \
+          -workspace ReactNativeSdkExample.xcworkspace \ # Replace with your workspace name
+          -scheme ReactNativeSdkExample  \ # Replace with your app's scheme name
+          -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \ # Adjust simulator as needed
+          -sdk iphonesimulator \
+          CODE_SIGN_IDENTITY="" \
+          CODE_SIGNING_REQUIRED=NO \
+          CODE_SIGNING_ALLOWED=NO
+
         # yarn add @iterable/react-native-sdk
         # yarn turbo run build:ios --cache-dir="${{ env.TURBO_CACHE_DIR }}"
         # echo "${{ env.TURBO_CACHE_DIR }}"
