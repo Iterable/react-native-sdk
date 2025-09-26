@@ -225,7 +225,7 @@ jobs:
           echo "${{ env.TURBO_CACHE_DIR }}"
 
           xcodebuild clean build \
-          -workspace ReactNativeSdkExample.xcworkspace \ # Replace with your workspace name
+          -project ReactNativeSdkExample.xcodeproj \ # Replace with your workspace name
           -scheme ReactNativeSdkExample \ # Replace with your app's scheme name
           -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \ # Adjust simulator as needed
           -sdk iphonesimulator \
