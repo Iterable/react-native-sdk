@@ -243,8 +243,29 @@ jobs:
         shell: bash
         run: |
           yarn add @iterable/react-native-sdk
-          yarn turbo run build:ios --cache-dir="${{ env.TURBO_CACHE_DIR }}"
-          echo "${{ env.TURBO_CACHE_DIR }}"
+
+          echo "Detecting latest available iOS version..."
+
+        # First try to find iOS 18.x that's available
+          LATEST_IOS=$(xcrun simctl list runtimes | grep "iOS 18" | grep -v "watchOS" | grep -v "beta" | grep -v "Beta" | grep -v "unavailable" | tail -1 | sed 's/.*iOS \([0-9]*\.[0-9]*\).*/\1/')
+        # If no iOS 18.x available, fall back to any available iOS version
+          if [ -z "$LATEST_IOS" ]; then
+            echo "No iOS 18.x available, falling back to latest available iOS version..."
+            LATEST_IOS=$(xcrun simctl list runtimes | grep "iOS" | grep -v "watchOS" | grep -v "beta" | grep -v "Beta" | grep -v "unavailable" | tail -1 | sed 's/.*iOS \([0-9]*\.[0-9]*\).*/\1/')
+          fi
+
+          echo "Using iOS version $LATEST_IOS"
+
+          xcodebuild \
+            -project ReactNativeSdkExample.xcodeproj \
+            -scheme example \
+            -sdk iphonesimulator \
+            -destination "platform=iOS Simulator,OS=$LATEST_IOS,name=iPhone 16 Pro" \
+            -resultsBundlePath TestResults.xcresult \
+            test | xcpretty
+
+#          yarn turbo run build:ios --cache-dir="${{ env.TURBO_CACHE_DIR }}"
+#          echo "${{ env.TURBO_CACHE_DIR }}"
 
 #           echo 'If you are using a "manual" build mode for one or more of the' \
 #            'languages you are analyzing, replace this with the commands to build' \
