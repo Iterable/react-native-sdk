@@ -169,6 +169,11 @@ jobs:
       - name: Checkout react-native-sdk
         uses: actions/checkout@v4
 
+      - name: Clean DerivedData folder
+        run: |
+          rm -rf ~/Library/Developer/Xcode/DerivedData/*
+        shell: bash
+
       - name: Setup
         uses: ./.github/actions/setup
 
