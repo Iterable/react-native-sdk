@@ -16,8 +16,10 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
+use_modular_headers!
+
 target 'ReactNativeSdkExample' do
-  config = use_native_modules! && use_modular_headers!
+  config = use_native_modules!
 
   use_react_native!(
     :path => config[:reactNativePath],
