@@ -146,7 +146,7 @@ jobs:
       TURBO_CACHE_DIR: .turbo/ios
       TURBO_TOKEN: ${{ secrets. TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets. TURBO_TEAM }}
-    runs-on: ${{ (matrix.language == 'swift' && 'macos-14') || 'ubuntu-latest' }}
+    runs-on: ${{ (matrix.language == 'swift' && 'macos-13') || 'ubuntu-latest' }}
     permissions:
       # required for all workflows
       security-events: write
@@ -190,24 +190,24 @@ jobs:
         run: |
           echo "Cache key would be: ${{ runner.os }}-turborepo-ios-${{ hashFiles('yarn.lock') }}"
 
-      - name: Check turborepo cache for iOS
-        run: |
-          TURBO_CACHE_STATUS=$(node -p "($(yarn turbo run build:ios --cache-dir="${{ env.TURBO_CACHE_DIR }}" --dry=json)).tasks.find(t => t.task === 'build:ios').cache.status")
-
-          if [[ $TURBO_CACHE_STATUS == "HIT" ]]; then
-            echo "turbo_cache_hit=1" >> $GITHUB_ENV
-          fi
-
-      - name: Cache cocoapods
-        if: env.turbo_cache_hit != 1
-        id: cocoapods-cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            **/ios/Pods
-          key: ${{ runner.os }}-cocoapods-${{ hashFiles('example/ios/Podfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-cocoapods-
+#      - name: Check turborepo cache for iOS
+#        run: |
+#          TURBO_CACHE_STATUS=$(node -p "($(yarn turbo run build:ios --cache-dir="${{ env.TURBO_CACHE_DIR }}" --dry=json)).tasks.find(t => t.task === 'build:ios').cache.status")
+#
+#          if [[ $TURBO_CACHE_STATUS == "HIT" ]]; then
+#            echo "turbo_cache_hit=1" >> $GITHUB_ENV
+#          fi
+#
+#      - name: Cache cocoapods
+#        if: env.turbo_cache_hit != 1
+#        id: cocoapods-cache
+#        uses: actions/cache@v4
+#        with:
+#          path: |
+#            **/ios/Pods
+#          key: ${{ runner.os }}-cocoapods-${{ hashFiles('example/ios/Podfile.lock') }}
+#          restore-keys: |
+#            ${{ runner.os }}-cocoapods-
 
       - name: Install cocoapods
         if: env.turbo_cache_hit != 1 && steps.cocoapods-cache.outputs.cache-hit != 'true'
@@ -232,7 +232,8 @@ jobs:
           BUILD_LIBRARY_FOR_DISTRIBUTION=NO \
           APPLICATION_EXTENSION_API_ONLY=YES \
           SKIP_INSTALL=NO \
-          IPHONEOS_DEVELOPMENT_TARGET=13.2
+          IPHONEOS_DEVELOPMENT_TARGET=13.0
+          ARCHS="arm64 x86_64"
 
         # yarn add @iterable/react-native-sdk
         # yarn turbo run build:ios --cache-dir="${{ env.TURBO_CACHE_DIR }}"
