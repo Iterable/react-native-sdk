@@ -260,6 +260,10 @@ jobs:
         run: |
           cd example/ios
 
+          xcodebuild -list -workspace ReactNativeSdkExample.xcworkspace
+
+          xcodebuild -list -project ReactNativeSdkExample.xcodeproj
+
           xcodebuild clean build \
           -project ReactNativeSdkExample.xcodeproj \
           -scheme ReactNativeSdkExample \
