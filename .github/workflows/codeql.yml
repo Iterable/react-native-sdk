@@ -172,7 +172,6 @@ jobs:
       - name: Clean DerivedData folder
         run: |
           rm -rf ~/Library/Developer/Xcode/DerivedData/*
-        shell: bash
 
       - name: Setup
         uses: ./.github/actions/setup
