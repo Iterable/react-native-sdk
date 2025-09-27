@@ -228,9 +228,7 @@ jobs:
         run: |
           cd example/ios
 
-          xcodebuild clean
-
-          xcodebuild build \
+          xcodebuild clean build \
           -workspace ReactNativeSdkExample.xcworkspace \
           -scheme ReactNativeSdkExample \
           CODE_SIGN_IDENTITY="" \
