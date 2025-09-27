@@ -41,7 +41,9 @@
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "docs": "typedoc",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
-    "prepare": "yarn add_build_info; yarn bob build",
+    "prebuild": "yarn add_build_info",
+    "build": "yarn add_build_info && yarn bob build",
+    "prepare": "yarn build",
     "release": "release-it"
   },
   "keywords": [
