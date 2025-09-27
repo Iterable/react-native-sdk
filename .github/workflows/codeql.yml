@@ -176,26 +176,6 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
-      - name: Install macOS dependencies
-        run: |
-          brew tap wix/brew
-          brew install applesimutils
-        env:
-          HOMEBREW_NO_AUTO_UPDATE: 1
-          HOMEBREW_NO_INSTALL_CLEANUP: 1
-
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-          ruby-version: 2.6.10
-
-      - name: Example App Yarn install
-        run: |
-          cd example
-          yarn install --frozen-lockfile
-          cd ..
-
 #      - name: Cache cocoapods
 #        if: env.turbo_cache_hit != 1
 #        id: cocoapods-cache
@@ -244,23 +224,21 @@ jobs:
 #          yarn turbo run build:ios --cache-dir="${{ env.TURBO_CACHE_DIR }}"
 #          echo "${{ env.TURBO_CACHE_DIR }}"
 
-#      - name: Build example for iOS
-#        run: |
-#          cd example/ios
-#
-#          xcodebuild -list -workspace ReactNativeSdkExample.xcworkspace
-#
-#          xcodebuild -list -project ReactNativeSdkExample.xcodeproj
-#
-#          xcodebuild clean build \
-#          -workspace ReactNativeSdkExample.xcworkspace \
-#          -scheme ReactNativeSdkExample \
-#          CODE_SIGN_IDENTITY="" \
-#          CODE_SIGNING_REQUIRED=NO \
-#          CODE_SIGNING_ALLOWED=NO \
-#          BUILD_LIBRARY_FOR_DISTRIBUTION=NO \
-#          APPLICATION_EXTENSION_API_ONLY=YES \
-#        continue-on-error: true
+      - name: Build example for iOS
+        run: |
+          cd example/ios
+
+          xcodebuild clean
+
+          xcodebuild build \
+          -workspace ReactNativeSdkExample.xcworkspace \
+          -scheme ReactNativeSdkExample \
+          CODE_SIGN_IDENTITY="" \
+          CODE_SIGNING_REQUIRED=NO \
+          CODE_SIGNING_ALLOWED=NO \
+          BUILD_LIBRARY_FOR_DISTRIBUTION=NO \
+          APPLICATION_EXTENSION_API_ONLY=NO \
+        continue-on-error: true
 
 #          ARCHS=arm64
 #
