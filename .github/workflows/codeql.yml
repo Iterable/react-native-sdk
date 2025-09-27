@@ -264,6 +264,7 @@ jobs:
 
       - if: matrix.build-mode == 'manual'
         shell: bash
+        run:
           cd example/ios
           xcodebuild -list
 
