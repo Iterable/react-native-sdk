@@ -229,7 +229,7 @@ jobs:
           xcodebuild clean build \
           -project ReactNativeSdkExample.xcodeproj \
           -scheme ReactNativeSdkExample \
-          -sdk iphoneos \
+          -sdk iphoneos13.2 \
           CODE_SIGN_IDENTITY="" \
           CODE_SIGNING_REQUIRED=NO \
           CODE_SIGNING_ALLOWED=NO \
