@@ -1,5 +1,4 @@
 ENV['RCT_NEW_ARCH_ENABLED'] = '1'
-use_modular_headers!
 
 # Resolve react_native_pods.rb with node to allow for hoisting
 require Pod::Executable.execute_command('node', ['-p',
@@ -18,7 +17,7 @@ if linkage != nil
 end
 
 target 'ReactNativeSdkExample' do
-  config = use_native_modules!
+  config = use_native_modules! && use_modular_headers!
 
   use_react_native!(
     :path => config[:reactNativePath],
