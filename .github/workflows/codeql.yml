@@ -236,6 +236,8 @@ jobs:
           CODE_SIGNING_ALLOWED=NO \
           BUILD_LIBRARY_FOR_DISTRIBUTION=NO \
           APPLICATION_EXTENSION_API_ONLY=NO \
+
+          yarn add -D @react-native-community/cli
         continue-on-error: true
 
 #          ARCHS=arm64
