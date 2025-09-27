@@ -163,7 +163,7 @@ jobs:
       matrix:
         include:
           - language: swift
-            build-mode: autobuild
+            build-mode: manual
 
     steps:
       - name: Checkout react-native-sdk
@@ -246,12 +246,26 @@ jobs:
       - if: matrix.build-mode == 'manual'
         shell: bash
         run: |
-               echo 'If you are using a "manual" build mode for one or more of the' \
-                 'languages you are analyzing, replace this with the commands to build' \
-                 'your code, for example:'
-               echo '  make bootstrap'
-               echo '  make release'
-               exit 1
+          cd example/ios
+
+          xcodebuild clean build \
+          -project ReactNativeSdkExample.xcodeproj \
+          -scheme ReactNativeSdkExample \
+          -sdk iphoneos \
+          CODE_SIGN_IDENTITY="" \
+          CODE_SIGNING_REQUIRED=NO \
+          CODE_SIGNING_ALLOWED=NO \
+          BUILD_LIBRARY_FOR_DISTRIBUTION=NO \
+          APPLICATION_EXTENSION_API_ONLY=YES \
+          IPHONEOS_DEVELOPMENT_TARGET=13.0
+        continue-on-error: true
+
+#          echo 'If you are using a "manual" build mode for one or more of the' \
+#                 'languages you are analyzing, replace this with the commands to build' \
+#                 'your code, for example:'
+#               echo '  make bootstrap'
+#               echo '  make release'
+#               exit 1
 #          yarn add @iterable/react-native-sdk
 #          yarn turbo run build:ios --cache-dir="${{ env.TURBO_CACHE_DIR }}"
 #          echo "${{ env.TURBO_CACHE_DIR }}"
