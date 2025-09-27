@@ -146,7 +146,7 @@ jobs:
       TURBO_CACHE_DIR: .turbo/ios
       TURBO_TOKEN: ${{ secrets. TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets. TURBO_TEAM }}
-    runs-on: ${{ (matrix.language == 'swift' && 'macos-13') || 'ubuntu-latest' }}
+    runs-on: ${{ (matrix.language == 'swift' && 'macos-15') || 'ubuntu-latest' }}
     permissions:
       # required for all workflows
       security-events: write
@@ -215,7 +215,7 @@ jobs:
       - name: setup swift
         uses: swift-actions/setup-swift@v2
         with:
-          swift-version: "5.9"
+          swift-version: "6.0"
 
       - name: verify swift version
         run: swift --version
