@@ -248,8 +248,6 @@ jobs:
         run: |
           cd example/ios
 
-          codeql database trace-command -- \
-
           xcodebuild clean build \
           -project ReactNativeSdkExample.xcodeproj \
           -scheme ReactNativeSdkExample \
