@@ -230,7 +230,7 @@ jobs:
           cd example/ios
 
           xcodebuild clean build \
-          -project ReactNativeSdkExample.xcodeproj \
+          -workspace ReactNativeSdkExample.xcworkspace \
           -scheme ReactNativeSdkExample \
           CODE_SIGN_IDENTITY="" \
           CODE_SIGNING_REQUIRED=NO \
