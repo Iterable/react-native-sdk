@@ -192,7 +192,6 @@ jobs:
         run: |
           cd example/ios
           pod install --repo-update
-          cd -
         env:
           NO_FLIPPER: 1
 
