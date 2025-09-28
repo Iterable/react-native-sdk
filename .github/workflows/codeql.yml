@@ -227,24 +227,16 @@ jobs:
 
       - name: Build example for iOS
         run: |
-          react-native --version
+          cd example/ios
 
-          react-native build-ios --scheme ReactNativeSdkExample --mode Debug --extra-params "-sdk iphonesimulator CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ GCC_OPTIMIZATION_LEVEL=0 GCC_PRECOMPILE_PREFIX_HEADER=YES ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO"
-
-          exit 1
-#        run: |
-#          cd example/ios
-#
-#          xcodebuild clean build \
-#          -workspace ReactNativeSdkExample.xcworkspace \
-#          -scheme ReactNativeSdkExample \
-#          CODE_SIGN_IDENTITY="" \
-#          CODE_SIGNING_REQUIRED=NO \
-#          CODE_SIGNING_ALLOWED=NO \
-#          BUILD_LIBRARY_FOR_DISTRIBUTION=NO \
-#          APPLICATION_EXTENSION_API_ONLY=NO \
-#
-#          yarn add -D @react-native-community/cli
+          xcodebuild clean build \
+          -workspace ReactNativeSdkExample.xcworkspace \
+          -scheme ReactNativeSdkExample \
+          CODE_SIGN_IDENTITY="" \
+          CODE_SIGNING_REQUIRED=NO \
+          CODE_SIGNING_ALLOWED=NO \
+          BUILD_LIBRARY_FOR_DISTRIBUTION=NO \
+          APPLICATION_EXTENSION_API_ONLY=NO \
         continue-on-error: true
 
 #          ARCHS=arm64
