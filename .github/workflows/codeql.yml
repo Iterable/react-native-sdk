@@ -227,7 +227,7 @@ jobs:
 
       - name: Build example for iOS
         run: |
-          nmp install -g react-native-cli
+          npm install -g react-native-cli
 
           react-native --version
 
