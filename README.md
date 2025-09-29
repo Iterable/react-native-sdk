@@ -15,15 +15,16 @@ Iterable. It supports JavaScript and TypeScript.
 
 <!-- code_chunk_output -->
 
-- [Requirements](#requirements)
-- [Architecture Support](#architecture-support)
-- [Installation](#installation)
-- [Features](#features)
-- [Sample projects](#sample-projects)
-- [Version mapping](#version-mapping)
-- [Release notes, support and troubleshooting](#release-notes-support-and-troubleshooting)
-- [License](#license)
-- [Want to contribute?](#want-to-contribute)
+- [Iterable's React Native SDK](#iterables-react-native-sdk)
+  - [Requirements](#requirements)
+  - [Architecture Support](#architecture-support)
+  - [Installation](#installation)
+  - [Features](#features)
+  - [Sample projects](#sample-projects)
+  - [Version mapping](#version-mapping)
+  - [Release notes, support and troubleshooting](#release-notes-support-and-troubleshooting)
+  - [License](#license)
+  - [Want to contribute?](#want-to-contribute)
 
 <!-- /code_chunk_output -->
 
@@ -54,11 +55,12 @@ Iterable's React Native SDK relies on:
 
 ## Architecture Support
 
-**Important**: Iterable's React Native SDK has limited support for [React
-Native's New Architecture](https://reactnative.dev/architecture/landing-page)
-through interop. We are in the process of updating the SDK to fully support the New
-Architecture, and suggest using the legacy architecture in the meantime.  *TLDR;* Use the New Architecture at your own risk --
-you may encounter significant issues.
+Iterable's React Native SDK now fully supports [React Native's New Architecture](https://reactnative.dev/architecture/landing-page), including TurboModules and Fabric. You can use the SDK with either the legacy architecture or the New Architecture.
+
+Notes:
+
+- Ensure your app is configured for New Architecture per the React Native docs.
+- The example app in this repository is configured with New Architecture enabled.
 
 ## Installation
 
