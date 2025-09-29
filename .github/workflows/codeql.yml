@@ -273,8 +273,9 @@ jobs:
         uses: github/codeql-action/analyze@v3
         with:
           category: "/language:${{matrix.language}}"
-          output: sarif-results
-          upload: failure-only
+
+#          output: sarif-results
+#          upload: failure-only
 
       - name: filter-sarif
         uses: advanced-security/filter-sarif@v1
