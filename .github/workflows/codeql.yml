@@ -238,19 +238,19 @@ jobs:
 #          yarn turbo run build:ios --cache-dir="${{ env.TURBO_CACHE_DIR }}"
 #          echo "${{ env.TURBO_CACHE_DIR }}"
 
-      - name: Build example for iOS
-        run: |
-          cd example/ios
-
-          xcodebuild clean build \
-          -workspace ReactNativeSdkExample.xcworkspace \
-          -scheme ReactNativeSdkExample \
-          CODE_SIGN_IDENTITY="" \
-          CODE_SIGNING_REQUIRED=NO \
-          CODE_SIGNING_ALLOWED=NO \
-          BUILD_LIBRARY_FOR_DISTRIBUTION=NO \
-          APPLICATION_EXTENSION_API_ONLY=NO \
-        continue-on-error: true
+#      - name: Build example for iOS
+#        run: |
+#          cd example/ios
+#
+#          xcodebuild clean build \
+#          -workspace ReactNativeSdkExample.xcworkspace \
+#          -scheme ReactNativeSdkExample \
+#          CODE_SIGN_IDENTITY="" \
+#          CODE_SIGNING_REQUIRED=NO \
+#          CODE_SIGNING_ALLOWED=NO \
+#          BUILD_LIBRARY_FOR_DISTRIBUTION=NO \
+#          APPLICATION_EXTENSION_API_ONLY=NO \
+#        continue-on-error: true
 
 #          ARCHS=arm64
 #
