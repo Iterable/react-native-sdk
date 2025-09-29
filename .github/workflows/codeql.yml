@@ -143,6 +143,8 @@ jobs:
     timeout-minutes: 120
     env:
       TURBO_CACHE_DIR: .turbo/ios
+      TURBO_TOKEN: ${{ secrets. TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets. TURBO_TEAM }}
 
     runs-on: ${{ (matrix.language == 'swift' && 'macos-15') || 'ubuntu-latest' }}
     permissions:
@@ -216,7 +218,9 @@ jobs:
           CODE_SIGNING_REQUIRED=NO \
           CODE_SIGNING_ALLOWED=NO \
           BUILD_LIBRARY_FOR_DISTRIBUTION=NO \
-          APPLICATION_EXTENSION_API_ONLY=NO \
+          APPLICATION_EXTENSION_API_ONLY=NO
+
+          yarn add -D @react-native-community/cli
         continue-on-error: true
 
       - name: Perform CodeQL Analysis
