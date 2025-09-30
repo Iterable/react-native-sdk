@@ -188,8 +188,9 @@ jobs:
       - name: Install cocoapods
         if: env.turbo_cache_hit != 1 && steps.cocoapods-cache.outputs.cache-hit != 'true'
         run: |
-          cd example/ios
-          NO_FLIPPER=1 bundle exec pod install --repo-update
+          cd ios &&
+          NO_FLIPPER=1 bundle exec pod install --repo-update &&
+          cd ..
         env:
           NO_FLIPPER: 1
 
