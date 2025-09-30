@@ -15,6 +15,9 @@ import { IterableInAppDeleteSource } from '../../inApp/enums/IterableInAppDelete
 import { IterableInAppLocation } from '../../inApp/enums/IterableInAppLocation';
 import { IterableAuthResponseResult, IterableEventName } from '../enums';
 
+// Add this type-only import to avoid circular dependency
+import type { IterableInAppManager } from '../../inApp/classes/IterableInAppManager';
+
 import { IterableAction } from './IterableAction';
 import { IterableActionContext } from './IterableActionContext';
 import { IterableAttributionInfo } from './IterableAttributionInfo';
@@ -54,6 +57,36 @@ export class Iterable {
    * Current configuration of the Iterable SDK
    */
   static savedConfig: IterableConfig = new IterableConfig();
+
+  /**
+   * In-app message manager for the current user.
+   *
+   * This property provides access to in-app message functionality including
+   * retrieving messages, displaying messages, removing messages, and more.
+   *
+   * @example
+   * ```typescript
+   * // Get all in-app messages
+   * Iterable.inAppManager.getMessages().then(messages => {
+   *   console.log('Messages:', messages);
+   * });
+   *
+   * // Show a specific message
+   * Iterable.inAppManager.showMessage(message, true);
+   * ```
+   */
+  static get inAppManager() {
+    // Lazy initialization to avoid circular dependency
+    if (!this._inAppManager) {
+      // Import here to avoid circular dependency at module level
+      // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports
+      const { IterableInAppManager } = require('../../inApp/classes/IterableInAppManager');
+      this._inAppManager = new IterableInAppManager();
+    }
+    return this._inAppManager;
+  }
+
+  private static _inAppManager: IterableInAppManager | undefined;
 
   /**
    * Initializes the Iterable React Native SDK in your app's Javascript or Typescript code.
