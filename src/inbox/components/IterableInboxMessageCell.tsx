@@ -19,6 +19,18 @@ import type {
 } from '../types';
 import { ITERABLE_INBOX_COLORS } from '../constants';
 
+export const inboxMessageCellTestIDs = {
+  container: 'inbox-message-cell',
+  unreadIndicator: 'inbox-message-cell-unread-indicator',
+  thumbnail: 'inbox-message-cell-thumbnail',
+  textContainer: 'inbox-message-cell-text-container',
+  title: 'inbox-message-cell-title',
+  body: 'inbox-message-cell-body',
+  createdAt: 'inbox-message-cell-created-at',
+  deleteSlider: 'inbox-message-cell-delete-slider',
+  selectButton: 'inbox-message-cell-select-button',
+} as const;
+
 /**
  * Renders a default layout for a message list item in the inbox.
  *
@@ -139,9 +151,9 @@ function defaultMessageListLayout(
   }
 
   return (
-    <View style={messageRowStyle(rowViewModel) as ViewStyle}>
+    <View testID={inboxMessageCellTestIDs.container} style={messageRowStyle(rowViewModel) as ViewStyle}>
       <View style={unreadIndicatorContainer as ViewStyle}>
-        {rowViewModel.read ? null : <View style={unreadIndicator} />}
+        {rowViewModel.read ? null : <View testID={inboxMessageCellTestIDs.unreadIndicator} style={unreadIndicator} />}
       </View>
       <View
         style={
@@ -152,6 +164,7 @@ function defaultMessageListLayout(
       >
         {thumbnailURL ? (
           <Image
+            testID={inboxMessageCellTestIDs.thumbnail}
             // MOB-10429: Use stylesheet according to best practices
             // eslint-disable-next-line react-native/no-inline-styles
             style={{ height: 80, width: 80 }}
@@ -159,14 +172,14 @@ function defaultMessageListLayout(
           />
         ) : null}
       </View>
-      <View style={messageContainer as ViewStyle}>
-        <Text numberOfLines={1} ellipsizeMode="tail" style={title}>
+      <View testID={inboxMessageCellTestIDs.textContainer} style={messageContainer as ViewStyle}>
+        <Text testID={inboxMessageCellTestIDs.title} numberOfLines={1} ellipsizeMode="tail" style={title}>
           {messageTitle}
         </Text>
-        <Text numberOfLines={3} ellipsizeMode="tail" style={body as TextStyle}>
+        <Text testID={inboxMessageCellTestIDs.body} numberOfLines={3} ellipsizeMode="tail" style={body as TextStyle}>
           {messageBody}
         </Text>
-        <Text style={createdAt}>{messageCreatedAt}</Text>
+        <Text testID={inboxMessageCellTestIDs.createdAt} style={createdAt}>{messageCreatedAt}</Text>
       </View>
     </View>
   );
