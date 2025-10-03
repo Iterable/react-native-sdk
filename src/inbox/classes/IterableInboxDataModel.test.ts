@@ -43,6 +43,9 @@ describe('IterableInboxDataModel', () => {
     dataModel = new IterableInboxDataModel();
     mockRNIterableAPI = NativeModules.RNIterableAPI;
 
+    // Reset all mocks
+    jest.clearAllMocks();
+
     // Create mock messages
     const trigger1 = new IterableInAppTrigger(IterableInAppTriggerType.immediate);
     const trigger2 = new IterableInAppTrigger(IterableInAppTriggerType.event);
@@ -413,6 +416,599 @@ describe('IterableInboxDataModel', () => {
       const spaceMessageId = '  test message id  ';
       expect(() => {
         dataModel.getHtmlContentForMessageId(spaceMessageId);
+      }).not.toThrow();
+    });
+  });
+
+  describe('refresh', () => {
+    it('should be a function', () => {
+      expect(typeof dataModel.refresh).toBe('function');
+    });
+
+    it('should return a Promise', () => {
+      const result = dataModel.refresh();
+      expect(result).toBeInstanceOf(Promise);
+    });
+
+    it('should handle successful API response with empty messages', async () => {
+      // Mock the native API to return empty array
+      const mockGetInboxMessages = jest.fn().mockResolvedValue([]);
+      (NativeModules.RNIterableAPI as unknown as { getInboxMessages: jest.Mock }).getInboxMessages = mockGetInboxMessages;
+
+      const result = await dataModel.refresh();
+
+      expect(mockGetInboxMessages).toHaveBeenCalled();
+      expect(result).toEqual([]);
+    });
+
+    it('should handle successful API response with single message', async () => {
+      const mockMessage = new IterableInAppMessage(
+        'single-msg',
+        1,
+        new IterableInAppTrigger(IterableInAppTriggerType.immediate),
+        new Date('2023-01-01T00:00:00Z'),
+        undefined,
+        true,
+        new IterableInboxMetadata('Single Title', 'Single Subtitle', 'single-icon.png'),
+        { single: 'payload' },
+        false,
+        5
+      );
+
+      const mockGetInboxMessages = jest.fn().mockResolvedValue([mockMessage]);
+      (NativeModules.RNIterableAPI as unknown as { getInboxMessages: jest.Mock }).getInboxMessages = mockGetInboxMessages;
+
+      const result = await dataModel.refresh();
+
+      expect(mockGetInboxMessages).toHaveBeenCalled();
+      expect(result).toHaveLength(1);
+      expect(result[0]).toHaveProperty('title', 'Single Title');
+      expect(result[0]).toHaveProperty('subtitle', 'Single Subtitle');
+      expect(result[0]).toHaveProperty('imageUrl', 'single-icon.png');
+      expect(result[0]).toHaveProperty('read', false);
+      expect(result[0]).toHaveProperty('inAppMessage', mockMessage);
+    });
+
+    it('should handle successful API response with multiple messages', async () => {
+      const mockMessages = [mockMessage1, mockMessage2, mockMessage3];
+      const mockGetInboxMessages = jest.fn().mockResolvedValue(mockMessages);
+      (NativeModules.RNIterableAPI as unknown as { getInboxMessages: jest.Mock }).getInboxMessages = mockGetInboxMessages;
+
+      const result = await dataModel.refresh();
+
+      expect(mockGetInboxMessages).toHaveBeenCalled();
+      expect(result).toHaveLength(3);
+      // Should be sorted by creation date (most recent first)
+      expect(result[0]).toHaveProperty('title', 'Title 3'); // Most recent
+      expect(result[1]).toHaveProperty('title', 'Title 2');
+      expect(result[2]).toHaveProperty('title', 'Title 1'); // Oldest
+    });
+
+    it('should handle API failure gracefully', async () => {
+      const mockGetInboxMessages = jest.fn().mockRejectedValue(new Error('API Error'));
+      (NativeModules.RNIterableAPI as unknown as { getInboxMessages: jest.Mock }).getInboxMessages = mockGetInboxMessages;
+
+      const result = await dataModel.refresh();
+
+      expect(mockGetInboxMessages).toHaveBeenCalled();
+      expect(result).toEqual([]);
+    });
+
+    it('should handle network timeout error', async () => {
+      const timeoutError = new Error('Network timeout');
+      timeoutError.name = 'TimeoutError';
+      const mockGetInboxMessages = jest.fn().mockRejectedValue(timeoutError);
+      (NativeModules.RNIterableAPI as unknown as { getInboxMessages: jest.Mock }).getInboxMessages = mockGetInboxMessages;
+
+      const result = await dataModel.refresh();
+
+      expect(mockGetInboxMessages).toHaveBeenCalled();
+      expect(result).toEqual([]);
+    });
+
+    it('should handle undefined API response', async () => {
+      const mockGetInboxMessages = jest.fn().mockRejectedValue(new Error('Undefined response'));
+      (NativeModules.RNIterableAPI as unknown as { getInboxMessages: jest.Mock }).getInboxMessages = mockGetInboxMessages;
+
+      const result = await dataModel.refresh();
+
+      expect(mockGetInboxMessages).toHaveBeenCalled();
+      expect(result).toEqual([]);
+    });
+
+    it('should handle null API response', async () => {
+      const mockGetInboxMessages = jest.fn().mockRejectedValue(new Error('Null response'));
+      (NativeModules.RNIterableAPI as unknown as { getInboxMessages: jest.Mock }).getInboxMessages = mockGetInboxMessages;
+
+      const result = await dataModel.refresh();
+
+      expect(mockGetInboxMessages).toHaveBeenCalled();
+      expect(result).toEqual([]);
+    });
+
+    it('should apply filter function when set', async () => {
+      const filterFn = (message: IterableInAppMessage) => message.campaignId > 1;
+      dataModel.set(filterFn);
+
+      const mockMessages = [mockMessage1, mockMessage2, mockMessage3];
+      const mockGetInboxMessages = jest.fn().mockResolvedValue(mockMessages);
+      (NativeModules.RNIterableAPI as unknown as { getInboxMessages: jest.Mock }).getInboxMessages = mockGetInboxMessages;
+
+      const result = await dataModel.refresh();
+
+      expect(mockGetInboxMessages).toHaveBeenCalled();
+      expect(result).toHaveLength(2); // Only messages with campaignId > 1
+      // Should be sorted by creation date (most recent first)
+      expect(result[0]?.inAppMessage.campaignId).toBe(3); // Most recent
+      expect(result[1]?.inAppMessage.campaignId).toBe(2);
+    });
+
+    it('should apply comparator function when set', async () => {
+      const comparatorFn = (msg1: IterableInAppMessage, msg2: IterableInAppMessage) =>
+        msg1.priorityLevel - msg2.priorityLevel;
+      dataModel.set(undefined, comparatorFn);
+
+      const mockMessages = [mockMessage1, mockMessage2, mockMessage3];
+      const mockGetInboxMessages = jest.fn().mockResolvedValue(mockMessages);
+      (NativeModules.RNIterableAPI as unknown as { getInboxMessages: jest.Mock }).getInboxMessages = mockGetInboxMessages;
+
+      const result = await dataModel.refresh();
+
+      expect(mockGetInboxMessages).toHaveBeenCalled();
+      expect(result).toHaveLength(3);
+      // Should be sorted by priority level (1, 3, 5)
+      expect(result[0]?.inAppMessage.priorityLevel).toBe(1);
+      expect(result[1]?.inAppMessage.priorityLevel).toBe(3);
+      expect(result[2]?.inAppMessage.priorityLevel).toBe(5);
+    });
+
+    it('should use default sorting when no comparator set', async () => {
+      const mockMessages = [mockMessage1, mockMessage2, mockMessage3];
+      const mockGetInboxMessages = jest.fn().mockResolvedValue(mockMessages);
+      (NativeModules.RNIterableAPI as unknown as { getInboxMessages: jest.Mock }).getInboxMessages = mockGetInboxMessages;
+
+      const result = await dataModel.refresh();
+
+      expect(mockGetInboxMessages).toHaveBeenCalled();
+      expect(result).toHaveLength(3);
+      // Should be sorted by creation date (most recent first)
+      expect(result[0]?.inAppMessage.messageId).toBe('msg3'); // Most recent
+      expect(result[1]?.inAppMessage.messageId).toBe('msg2');
+      expect(result[2]?.inAppMessage.messageId).toBe('msg1'); // Oldest
+    });
+
+    it('should apply both filter and comparator functions', async () => {
+      const filterFn = (message: IterableInAppMessage) => message.saveToInbox === true;
+      const comparatorFn = (msg1: IterableInAppMessage, msg2: IterableInAppMessage) =>
+        msg2.priorityLevel - msg1.priorityLevel; // Higher priority first
+      dataModel.set(filterFn, comparatorFn);
+
+      const mockMessages = [mockMessage1, mockMessage2, mockMessage3];
+      const mockGetInboxMessages = jest.fn().mockResolvedValue(mockMessages);
+      (NativeModules.RNIterableAPI as unknown as { getInboxMessages: jest.Mock }).getInboxMessages = mockGetInboxMessages;
+
+      const result = await dataModel.refresh();
+
+      expect(mockGetInboxMessages).toHaveBeenCalled();
+      expect(result).toHaveLength(2); // Only messages with saveToInbox = true
+      // Should be sorted by priority level (higher first: 5, 3)
+      expect(result[0]?.inAppMessage.priorityLevel).toBe(5);
+      expect(result[1]?.inAppMessage.priorityLevel).toBe(3);
+    });
+
+    it('should handle messages without inbox metadata', async () => {
+      const messageWithoutMetadata = new IterableInAppMessage(
+        'no-metadata',
+        1,
+        new IterableInAppTrigger(IterableInAppTriggerType.immediate),
+        new Date(),
+        undefined,
+        true,
+        undefined, // No metadata
+        undefined,
+        false,
+        0
+      );
+
+      const mockGetInboxMessages = jest.fn().mockResolvedValue([messageWithoutMetadata]);
+      (NativeModules.RNIterableAPI as unknown as { getInboxMessages: jest.Mock }).getInboxMessages = mockGetInboxMessages;
+
+      const result = await dataModel.refresh();
+
+      expect(mockGetInboxMessages).toHaveBeenCalled();
+      expect(result).toHaveLength(1);
+      expect(result[0]?.title).toBe('');
+      expect(result[0]?.subtitle).toBeUndefined();
+      expect(result[0]?.imageUrl).toBeUndefined();
+      expect(result[0]?.read).toBe(false);
+      expect(result[0]?.inAppMessage).toBe(messageWithoutMetadata);
+    });
+
+    it('should handle messages with partial metadata', async () => {
+      const partialMetadata = new IterableInboxMetadata('Title Only', undefined, undefined);
+      const messageWithPartialMetadata = new IterableInAppMessage(
+        'partial-metadata',
+        1,
+        new IterableInAppTrigger(IterableInAppTriggerType.immediate),
+        new Date(),
+        undefined,
+        true,
+        partialMetadata,
+        undefined,
+        false,
+        0
+      );
+
+      const mockGetInboxMessages = jest.fn().mockResolvedValue([messageWithPartialMetadata]);
+      (NativeModules.RNIterableAPI as unknown as { getInboxMessages: jest.Mock }).getInboxMessages = mockGetInboxMessages;
+
+      const result = await dataModel.refresh();
+
+      expect(mockGetInboxMessages).toHaveBeenCalled();
+      expect(result).toHaveLength(1);
+      expect(result[0]?.title).toBe('Title Only');
+      expect(result[0]?.subtitle).toBeUndefined();
+      expect(result[0]?.imageUrl).toBeUndefined();
+      expect(result[0]?.read).toBe(false);
+      expect(result[0]?.inAppMessage).toBe(messageWithPartialMetadata);
+    });
+
+    it('should handle filter function that returns false for all messages', async () => {
+      const filterFn = (_message: IterableInAppMessage) => false;
+      dataModel.set(filterFn);
+
+      const mockMessages = [mockMessage1, mockMessage2, mockMessage3];
+      const mockGetInboxMessages = jest.fn().mockResolvedValue(mockMessages);
+      (NativeModules.RNIterableAPI as unknown as { getInboxMessages: jest.Mock }).getInboxMessages = mockGetInboxMessages;
+
+      const result = await dataModel.refresh();
+
+      expect(mockGetInboxMessages).toHaveBeenCalled();
+      expect(result).toEqual([]);
+    });
+
+    it('should handle comparator function that returns 0 for all comparisons', async () => {
+      const comparatorFn = (_msg1: IterableInAppMessage, _msg2: IterableInAppMessage) => 0;
+      dataModel.set(undefined, comparatorFn);
+
+      const mockMessages = [mockMessage1, mockMessage2];
+      const mockGetInboxMessages = jest.fn().mockResolvedValue(mockMessages);
+      (NativeModules.RNIterableAPI as unknown as { getInboxMessages: jest.Mock }).getInboxMessages = mockGetInboxMessages;
+
+      const result = await dataModel.refresh();
+
+      expect(mockGetInboxMessages).toHaveBeenCalled();
+      expect(result).toHaveLength(2);
+      // Order should remain unchanged when comparator returns 0
+    });
+
+    it('should handle very large number of messages', async () => {
+      const largeMessageArray = Array.from({ length: 1000 }, (_, i) =>
+        new IterableInAppMessage(
+          `msg-${i}`,
+          i,
+          new IterableInAppTrigger(IterableInAppTriggerType.immediate),
+          new Date(Date.now() - i * 1000), // Different creation times
+          undefined,
+          true,
+          new IterableInboxMetadata(`Title ${i}`, `Subtitle ${i}`, `icon-${i}.png`),
+          { index: i },
+          false,
+          i
+        )
+      );
+
+      const mockGetInboxMessages = jest.fn().mockResolvedValue(largeMessageArray);
+      (NativeModules.RNIterableAPI as unknown as { getInboxMessages: jest.Mock }).getInboxMessages = mockGetInboxMessages;
+
+      const result = await dataModel.refresh();
+
+      expect(mockGetInboxMessages).toHaveBeenCalled();
+      expect(result).toHaveLength(1000);
+      // Should be sorted by creation date (most recent first)
+      expect(result[0]?.title).toBe('Title 0'); // Most recent
+      expect(result[999]?.title).toBe('Title 999'); // Oldest
+    });
+
+    it('should handle concurrent refresh calls', async () => {
+      const mockGetInboxMessages = jest.fn()
+        .mockResolvedValueOnce([mockMessage1])
+        .mockResolvedValueOnce([mockMessage2])
+        .mockResolvedValueOnce([mockMessage3]);
+      (NativeModules.RNIterableAPI as unknown as { getInboxMessages: jest.Mock }).getInboxMessages = mockGetInboxMessages;
+
+      const [result1, result2, result3] = await Promise.all([
+        dataModel.refresh(),
+        dataModel.refresh(),
+        dataModel.refresh(),
+      ]);
+
+      expect(mockGetInboxMessages).toHaveBeenCalledTimes(3);
+      expect(result1).toHaveLength(1);
+      expect(result2).toHaveLength(1);
+      expect(result3).toHaveLength(1);
+      expect(result1[0]?.inAppMessage.messageId).toBe('msg1');
+      expect(result2[0]?.inAppMessage.messageId).toBe('msg2');
+      expect(result3[0]?.inAppMessage.messageId).toBe('msg3');
+    });
+
+    it('should handle messages with undefined createdAt', async () => {
+      const messageWithoutDate = new IterableInAppMessage(
+        'no-date',
+        1,
+        new IterableInAppTrigger(IterableInAppTriggerType.immediate),
+        undefined,
+        undefined,
+        true,
+        new IterableInboxMetadata('No Date Title', 'No Date Subtitle', 'no-date-icon.png'),
+        undefined,
+        false,
+        0
+      );
+
+      const mockGetInboxMessages = jest.fn().mockResolvedValue([messageWithoutDate]);
+      (NativeModules.RNIterableAPI as unknown as { getInboxMessages: jest.Mock }).getInboxMessages = mockGetInboxMessages;
+
+      const result = await dataModel.refresh();
+
+      expect(mockGetInboxMessages).toHaveBeenCalled();
+      expect(result).toHaveLength(1);
+      expect(result[0]?.title).toBe('No Date Title');
+      expect(result[0]?.createdAt).toBeUndefined();
+    });
+
+    it('should handle messages with string createdAt', async () => {
+      const messageWithStringDate = new IterableInAppMessage(
+        'string-date',
+        1,
+        new IterableInAppTrigger(IterableInAppTriggerType.immediate),
+        '1672531200000' as unknown as Date,
+        undefined,
+        true,
+        new IterableInboxMetadata('String Date Title', 'String Date Subtitle', 'string-date-icon.png'),
+        undefined,
+        false,
+        0
+      );
+
+      const mockGetInboxMessages = jest.fn().mockResolvedValue([messageWithStringDate]);
+      (NativeModules.RNIterableAPI as unknown as { getInboxMessages: jest.Mock }).getInboxMessages = mockGetInboxMessages;
+
+      const result = await dataModel.refresh();
+
+      expect(mockGetInboxMessages).toHaveBeenCalled();
+      expect(result).toHaveLength(1);
+      expect(result[0]?.title).toBe('String Date Title');
+      expect(result[0]?.createdAt).toBe('1672531200000' as unknown as Date);
+    });
+  });
+
+  describe('startSession', () => {
+    it('should be a function', () => {
+      expect(typeof dataModel.startSession).toBe('function');
+    });
+
+    it('should have correct method signature', () => {
+      expect(dataModel.startSession.length).toBe(0); // No required parameters (has default)
+    });
+
+    it('should accept empty array parameter', () => {
+      // Test that the method accepts an empty array without throwing
+      expect(() => {
+        dataModel.startSession([]);
+      }).not.toThrow();
+    });
+
+    it('should accept single visible row', () => {
+      const singleRow = [{ messageId: 'single-msg', silentInbox: false }];
+
+      expect(() => {
+        dataModel.startSession(singleRow);
+      }).not.toThrow();
+    });
+
+    it('should accept multiple visible rows', () => {
+      const multipleRows = [
+        { messageId: 'msg1', silentInbox: false },
+        { messageId: 'msg2', silentInbox: true },
+        { messageId: 'msg3', silentInbox: false },
+        { messageId: 'msg4', silentInbox: true }
+      ];
+
+      expect(() => {
+        dataModel.startSession(multipleRows);
+      }).not.toThrow();
+    });
+
+    it('should handle visible rows with all silentInbox true', () => {
+      const silentRows = [
+        { messageId: 'silent1', silentInbox: true },
+        { messageId: 'silent2', silentInbox: true },
+        { messageId: 'silent3', silentInbox: true }
+      ];
+
+      expect(() => {
+        dataModel.startSession(silentRows);
+      }).not.toThrow();
+    });
+
+    it('should handle visible rows with all silentInbox false', () => {
+      const nonSilentRows = [
+        { messageId: 'normal1', silentInbox: false },
+        { messageId: 'normal2', silentInbox: false },
+        { messageId: 'normal3', silentInbox: false }
+      ];
+
+      expect(() => {
+        dataModel.startSession(nonSilentRows);
+      }).not.toThrow();
+    });
+
+    it('should handle very large number of visible rows', () => {
+      const largeRows = Array.from({ length: 1000 }, (_, i) => ({
+        messageId: `msg-${i}`,
+        silentInbox: i % 2 === 0
+      }));
+
+      expect(() => {
+        dataModel.startSession(largeRows);
+      }).not.toThrow();
+    });
+
+    it('should handle visible rows with special characters in message IDs', () => {
+      const specialRows = [
+        { messageId: 'msg-123_456@test.com#special', silentInbox: false },
+        { messageId: 'msg with spaces', silentInbox: true },
+        { messageId: 'msg\nwith\nnewlines', silentInbox: false },
+        { messageId: 'msg\twith\ttabs', silentInbox: true }
+      ];
+
+      expect(() => {
+        dataModel.startSession(specialRows);
+      }).not.toThrow();
+    });
+
+    it('should handle visible rows with unicode message IDs', () => {
+      const unicodeRows = [
+        { messageId: '测试消息ID_🚀_ñáéíóú', silentInbox: false },
+        { messageId: '消息-123', silentInbox: true },
+        { messageId: 'сообщение-456', silentInbox: false }
+      ];
+
+      expect(() => {
+        dataModel.startSession(unicodeRows);
+      }).not.toThrow();
+    });
+
+    it('should handle visible rows with very long message IDs', () => {
+      const longMessageId = 'a'.repeat(1000);
+      const longRows = [
+        { messageId: longMessageId, silentInbox: false },
+        { messageId: 'normal-msg', silentInbox: true }
+      ];
+
+      expect(() => {
+        dataModel.startSession(longRows);
+      }).not.toThrow();
+    });
+
+    it('should handle visible rows with empty message IDs', () => {
+      const emptyIdRows = [
+        { messageId: '', silentInbox: false },
+        { messageId: 'normal-msg', silentInbox: true }
+      ];
+
+      expect(() => {
+        dataModel.startSession(emptyIdRows);
+      }).not.toThrow();
+    });
+
+    it('should handle visible rows with null/undefined message IDs', () => {
+      const nullIdRows = [
+        { messageId: null as unknown as string, silentInbox: false },
+        { messageId: undefined as unknown as string, silentInbox: true }
+      ];
+
+      expect(() => {
+        dataModel.startSession(nullIdRows);
+      }).not.toThrow();
+    });
+
+    it('should handle visible rows with numeric message IDs', () => {
+      const numericIdRows = [
+        { messageId: 123 as unknown as string, silentInbox: false },
+        { messageId: 456 as unknown as string, silentInbox: true }
+      ];
+
+      expect(() => {
+        dataModel.startSession(numericIdRows);
+      }).not.toThrow();
+    });
+
+    it('should handle visible rows with object message IDs', () => {
+      const objectIdRows = [
+        { messageId: { id: 'test' } as unknown as string, silentInbox: false },
+        { messageId: { messageId: 'msg' } as unknown as string, silentInbox: true }
+      ];
+
+      expect(() => {
+        dataModel.startSession(objectIdRows);
+      }).not.toThrow();
+    });
+
+    it('should handle visible rows with array message IDs', () => {
+      const arrayIdRows = [
+        { messageId: ['test', 'id'] as unknown as string, silentInbox: false },
+        { messageId: ['msg', '123'] as unknown as string, silentInbox: true }
+      ];
+
+      expect(() => {
+        dataModel.startSession(arrayIdRows);
+      }).not.toThrow();
+    });
+
+    it('should handle visible rows with boolean message IDs', () => {
+      const booleanIdRows = [
+        { messageId: true as unknown as string, silentInbox: false },
+        { messageId: false as unknown as string, silentInbox: true }
+      ];
+
+      expect(() => {
+        dataModel.startSession(booleanIdRows);
+      }).not.toThrow();
+    });
+
+    it('should handle visible rows with function message IDs', () => {
+      const functionIdRows = [
+        { messageId: (() => 'test') as unknown as string, silentInbox: false },
+        { messageId: (() => 'msg') as unknown as string, silentInbox: true }
+      ];
+
+      expect(() => {
+        dataModel.startSession(functionIdRows);
+      }).not.toThrow();
+    });
+
+    it('should handle visible rows with mixed data types', () => {
+      const mixedRows = [
+        { messageId: 'string-msg', silentInbox: false },
+        { messageId: 123 as unknown as string, silentInbox: true },
+        { messageId: null as unknown as string, silentInbox: false },
+        { messageId: undefined as unknown as string, silentInbox: true },
+        { messageId: { id: 'test' } as unknown as string, silentInbox: false }
+      ];
+
+      expect(() => {
+        dataModel.startSession(mixedRows);
+      }).not.toThrow();
+    });
+
+    it('should handle concurrent startSession calls', () => {
+      const rows1 = [{ messageId: 'msg1', silentInbox: false }];
+      const rows2 = [{ messageId: 'msg2', silentInbox: true }];
+      const rows3 = [{ messageId: 'msg3', silentInbox: false }];
+
+      expect(() => {
+        dataModel.startSession(rows1);
+        dataModel.startSession(rows2);
+        dataModel.startSession(rows3);
+      }).not.toThrow();
+    });
+
+    it('should handle startSession with no parameters (default empty array)', () => {
+      expect(() => {
+        dataModel.startSession();
+      }).not.toThrow();
+    });
+
+    it('should handle startSession with basic parameters', () => {
+      const basicRows = [
+        { messageId: 'test-msg-1', silentInbox: false },
+        { messageId: 'test-msg-2', silentInbox: true }
+      ];
+
+      expect(() => {
+        dataModel.startSession(basicRows);
       }).not.toThrow();
     });
   });
