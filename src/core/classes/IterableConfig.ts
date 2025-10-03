@@ -4,10 +4,10 @@ import {
   IterableLogLevel,
   IterablePushPlatform,
 } from '../enums';
+import type { IterableRetryPolicy, IterableAuthFailure } from '../types';
 import { IterableAction } from './IterableAction';
 import type { IterableActionContext } from './IterableActionContext';
 import type { IterableAuthResponse } from './IterableAuthResponse';
-import type { IterableAuthFailure } from '../types/IterableAuthFailure';
 /**
  * An IterableConfig object sets various properties of the SDK.
  *
@@ -303,6 +303,12 @@ export class IterableConfig {
   encryptionEnforced = false;
 
   /**
+   * Configuration for JWT refresh retry behavior.
+   * If not specified, the SDK will use default retry behavior.
+   */
+  retryPolicy?: IterableRetryPolicy;
+
+  /**
    * Converts the IterableConfig instance to a dictionary object.
    *
    * @returns An object representing the configuration.
@@ -350,6 +356,7 @@ export class IterableConfig {
       dataRegion: this.dataRegion,
       pushPlatform: this.pushPlatform,
       encryptionEnforced: this.encryptionEnforced,
+      retryPolicy: this.retryPolicy,
     };
   }
 }

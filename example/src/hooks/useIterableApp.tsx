@@ -18,7 +18,7 @@ import {
 
 import { Route } from '../constants/routes';
 import type { RootStackParamList } from '../types/navigation';
-import type { IterableAuthFailure } from '../../../src/core';
+import { type IterableAuthFailure, IterableRetryBackoffType } from '../../../src/core';
 
 type Navigation = StackNavigationProp<RootStackParamList>;
 
@@ -147,6 +147,12 @@ export const IterableAppProvider: FunctionComponent<
       config.allowedProtocols = ['app', 'iterable'];
 
       config.logLevel = IterableLogLevel.debug;
+
+      config.retryPolicy = {
+        maxRetry: 5,
+        retryInterval: 10,
+        retryBackoff: IterableRetryBackoffType.LINEAR
+      }
 
       config.inAppHandler = () => IterableInAppShowResponse.show;
 
