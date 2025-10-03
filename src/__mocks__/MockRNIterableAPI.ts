@@ -126,6 +126,10 @@ export class MockRNIterableAPI {
 
   static updateSubscriptions = jest.fn();
 
+  static startSession = jest.fn();
+  static endSession = jest.fn();
+  static updateVisibleRows = jest.fn();
+
   // set messages function is to set the messages static property
   // this is for testing purposes only
   static setMessages(messages: IterableInAppMessage[]): void {
