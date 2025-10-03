@@ -18,6 +18,7 @@ import {
 
 import { Route } from '../constants/routes';
 import type { RootStackParamList } from '../types/navigation';
+import type { IterableAuthFailure } from '../../../src/core';
 
 type Navigation = StackNavigationProp<RootStackParamList>;
 
@@ -148,6 +149,15 @@ export const IterableAppProvider: FunctionComponent<
       config.logLevel = IterableLogLevel.debug;
 
       config.inAppHandler = () => IterableInAppShowResponse.show;
+
+      config.authHandler = () => {
+        console.log('!!!Auth is being requested!!! and app is going to pass null');
+        return Promise.resolve({authToken:"SomethingNotValid"});
+      }
+
+      config.onJWTError = (err: IterableAuthFailure) => {
+        console.log('!!!JWT Error!!! '+ err.failureReason.toString(), err);
+      }
 
       setItblConfig(config);
 

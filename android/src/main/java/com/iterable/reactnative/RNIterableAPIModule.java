@@ -596,11 +596,10 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         // MOB-10422: Pass successhandler to event listener
         sendEvent(EventName.handleAuthSuccessCalled.name(), null);
     }
-    
+
   @Override
   public void onAuthFailure(AuthFailure authFailure) {
 
-      //Create a JSON object for the authFailure object
     JSONObject messageJson = new JSONObject();
     try {
       messageJson.put("userKey", authFailure.userKey);
@@ -608,12 +607,10 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
       messageJson.put("failedRequestTime", authFailure.failedRequestTime);
       messageJson.put("failureReason", authFailure.failureReason.name());
       WritableMap eventData = Serialization.convertJsonToMap(messageJson);
-      sendEvent(EventName.handleUrlCalled.name(), eventData);
+      sendEvent(EventName.handleAuthFailureCalled.name(), eventData);
     } catch (JSONException e) {
       IterableLogger.v(TAG, "Failed to set authToken");
     }
-
-
 
   }
 
