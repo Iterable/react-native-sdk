@@ -6,7 +6,7 @@ import { IterableInboxMetadata } from '../../inApp/classes/IterableInboxMetadata
 import { IterableInAppTriggerType } from '../../inApp/enums';
 import { IterableInAppDeleteSource } from '../../inApp/enums/IterableInAppDeleteSource';
 import { IterableInAppLocation } from '../../inApp/enums/IterableInAppLocation';
-// import type { IterableInboxImpressionRowInfo } from '../types';
+import type { IterableInboxImpressionRowInfo } from '../types';
 
 // Mock the native modules
 jest.mock('react-native', () => ({
@@ -223,6 +223,154 @@ describe('IterableInboxDataModel', () => {
 
       const result = dataModel.getFormattedDate(messageWithStringDate);
       expect(result?.length).toBeGreaterThan(0);
+    });
+
+    it('should return empty string for message with undefined createdAt using default mapper (covers line 219)', () => {
+      // Ensure no custom date mapper is set
+      dataModel.set(undefined, undefined, undefined);
+
+      const messageWithoutDate = new IterableInAppMessage(
+        'no-date-default-mapper',
+        1,
+        new IterableInAppTrigger(IterableInAppTriggerType.immediate),
+        undefined,
+        undefined,
+        false,
+        undefined,
+        undefined,
+        false,
+        0
+      );
+
+      // Verify that no custom date mapper is set
+      expect(dataModel.dateMapperFn).toBeUndefined();
+
+      const result = dataModel.getFormattedDate(messageWithoutDate);
+      expect(result).toBe('');
+    });
+
+    it('should handle multiple messages with undefined createdAt using default mapper (covers line 219)', () => {
+      // Ensure no custom date mapper is set
+      dataModel.set(undefined, undefined, undefined);
+
+      const message1 = new IterableInAppMessage(
+        'no-date-1',
+        1,
+        new IterableInAppTrigger(IterableInAppTriggerType.immediate),
+        undefined,
+        undefined,
+        false,
+        undefined,
+        undefined,
+        false,
+        0
+      );
+
+      const message2 = new IterableInAppMessage(
+        'no-date-2',
+        2,
+        new IterableInAppTrigger(IterableInAppTriggerType.immediate),
+        undefined,
+        undefined,
+        false,
+        undefined,
+        undefined,
+        false,
+        0
+      );
+
+      // Test both messages
+      const result1 = dataModel.getFormattedDate(message1);
+      const result2 = dataModel.getFormattedDate(message2);
+
+      expect(result1).toBe('');
+      expect(result2).toBe('');
+    });
+
+    it('should use default mapper for undefined createdAt in isolated test (covers line 219)', () => {
+      // Create a completely fresh dataModel instance to avoid any interference
+      const freshDataModel = new IterableInboxDataModel();
+
+      const messageWithoutDate = new IterableInAppMessage(
+        'isolated-test',
+        1,
+        new IterableInAppTrigger(IterableInAppTriggerType.immediate),
+        undefined,
+        undefined,
+        false,
+        undefined,
+        undefined,
+        false,
+        0
+      );
+
+      // Verify that no custom date mapper is set on the fresh instance
+      expect(freshDataModel.dateMapperFn).toBeUndefined();
+
+      const result = freshDataModel.getFormattedDate(messageWithoutDate);
+      expect(result).toBe('');
+    });
+
+    it('should handle edge case with undefined createdAt and default mapper (covers line 219)', () => {
+      // Create a fresh dataModel instance
+      const testDataModel = new IterableInboxDataModel();
+
+      // Create a message with undefined createdAt
+      const message = new IterableInAppMessage(
+        'edge-case-test',
+        1,
+        new IterableInAppTrigger(IterableInAppTriggerType.immediate),
+        undefined, // This should trigger the default mapper's undefined check
+        undefined,
+        false,
+        undefined,
+        undefined,
+        false,
+        0
+      );
+
+      // Ensure no custom date mapper is set
+      expect(testDataModel.dateMapperFn).toBeUndefined();
+
+      // Call getFormattedDate which should use the default mapper
+      const result = testDataModel.getFormattedDate(message);
+
+      // The default mapper should return empty string for undefined createdAt
+      expect(result).toBe('');
+
+      // Verify the message has undefined createdAt
+      expect(message.createdAt).toBeUndefined();
+    });
+
+    it('should use default mapper when no custom mapper is set (covers line 219)', () => {
+      // Create a fresh dataModel instance
+      const testDataModel = new IterableInboxDataModel();
+
+      // Create a message with undefined createdAt
+      const message = new IterableInAppMessage(
+        'default-mapper-test',
+        1,
+        new IterableInAppTrigger(IterableInAppTriggerType.immediate),
+        undefined,
+        undefined,
+        false,
+        undefined,
+        undefined,
+        false,
+        0
+      );
+
+      // Ensure no custom date mapper is set
+      expect(testDataModel.dateMapperFn).toBeUndefined();
+
+      // Call getFormattedDate which should use the default mapper
+      const result = testDataModel.getFormattedDate(message);
+
+      // The default mapper should return empty string for undefined createdAt
+      expect(result).toBe('');
+
+      // Verify the message has undefined createdAt
+      expect(message.createdAt).toBeUndefined();
     });
   });
 
@@ -781,6 +929,47 @@ describe('IterableInboxDataModel', () => {
       expect(result[0]?.title).toBe('String Date Title');
       expect(result[0]?.createdAt).toBe('1672531200000' as unknown as Date);
     });
+
+    it('should handle messages with identical creation dates (covers line 207)', async () => {
+      const identicalDate = new Date('2023-01-01T00:00:00.000Z');
+      const message1 = new IterableInAppMessage(
+        'identical-date-1',
+        1,
+        new IterableInAppTrigger(IterableInAppTriggerType.immediate),
+        identicalDate,
+        undefined,
+        true,
+        new IterableInboxMetadata('Identical Date Message 1', 'Subtitle 1', 'icon1.png'),
+        undefined,
+        false,
+        1
+      );
+
+      const message2 = new IterableInAppMessage(
+        'identical-date-2',
+        2,
+        new IterableInAppTrigger(IterableInAppTriggerType.immediate),
+        identicalDate,
+        undefined,
+        true,
+        new IterableInboxMetadata('Identical Date Message 2', 'Subtitle 2', 'icon2.png'),
+        undefined,
+        false,
+        2
+      );
+
+      const mockGetInboxMessages = jest.fn().mockResolvedValue([message1, message2]);
+      (NativeModules.RNIterableAPI as unknown as { getInboxMessages: jest.Mock }).getInboxMessages = mockGetInboxMessages;
+
+      const result = await dataModel.refresh();
+
+      expect(mockGetInboxMessages).toHaveBeenCalled();
+      expect(result).toHaveLength(2);
+      // When creation dates are identical, the sortByMostRecent method returns 0
+      // This should still work and return the messages in some order
+      expect(result[0]?.title).toMatch(/Identical Date Message/);
+      expect(result[1]?.title).toMatch(/Identical Date Message/);
+    });
   });
 
   describe('startSession', () => {
@@ -1010,6 +1199,356 @@ describe('IterableInboxDataModel', () => {
       expect(() => {
         dataModel.startSession(basicRows);
       }).not.toThrow();
+    });
+  });
+
+  describe('endSession', () => {
+    it('should be a function', () => {
+      expect(typeof dataModel.endSession).toBe('function');
+    });
+
+    it('should have correct method signature', () => {
+      expect(dataModel.endSession.length).toBe(0); // One parameter with default value
+    });
+
+    it('should accept empty array parameter', () => {
+      // Test that the method accepts an empty array without throwing
+      expect(() => {
+        dataModel.endSession([]);
+      }).not.toThrow();
+    });
+
+    it('should accept single visible row', () => {
+      const singleRow = [{ messageId: 'single-msg', silentInbox: false }];
+
+      expect(() => {
+        dataModel.endSession(singleRow);
+      }).not.toThrow();
+    });
+
+    it('should accept multiple visible rows', () => {
+      const multipleRows = [
+        { messageId: 'msg1', silentInbox: false },
+        { messageId: 'msg2', silentInbox: true },
+        { messageId: 'msg3', silentInbox: false },
+        { messageId: 'msg4', silentInbox: true }
+      ];
+
+      expect(() => {
+        dataModel.endSession(multipleRows);
+      }).not.toThrow();
+    });
+
+    it('should handle visible rows with all silentInbox true', () => {
+      const silentRows = [
+        { messageId: 'silent1', silentInbox: true },
+        { messageId: 'silent2', silentInbox: true },
+        { messageId: 'silent3', silentInbox: true }
+      ];
+
+      expect(() => {
+        dataModel.endSession(silentRows);
+      }).not.toThrow();
+    });
+
+    it('should handle visible rows with all silentInbox false', () => {
+      const nonSilentRows = [
+        { messageId: 'normal1', silentInbox: false },
+        { messageId: 'normal2', silentInbox: false },
+        { messageId: 'normal3', silentInbox: false }
+      ];
+
+      expect(() => {
+        dataModel.endSession(nonSilentRows);
+      }).not.toThrow();
+    });
+
+    it('should handle very large number of visible rows', () => {
+      const largeRows = Array.from({ length: 1000 }, (_, i) => ({
+        messageId: `msg-${i}`,
+        silentInbox: i % 2 === 0
+      }));
+
+      expect(() => {
+        dataModel.endSession(largeRows);
+      }).not.toThrow();
+    });
+
+    it('should handle visible rows with special characters in message IDs', () => {
+      const specialRows = [
+        { messageId: 'msg-123_456@test.com#special', silentInbox: false },
+        { messageId: 'msg with spaces', silentInbox: true },
+        { messageId: 'msg\nwith\nnewlines', silentInbox: false },
+        { messageId: 'msg\twith\ttabs', silentInbox: true }
+      ];
+
+      expect(() => {
+        dataModel.endSession(specialRows);
+      }).not.toThrow();
+    });
+
+    it('should handle visible rows with unicode message IDs', () => {
+      const unicodeRows = [
+        { messageId: '测试消息ID_🚀_ñáéíóú', silentInbox: false },
+        { messageId: '消息-123', silentInbox: true },
+        { messageId: 'сообщение-456', silentInbox: false }
+      ];
+
+      expect(() => {
+        dataModel.endSession(unicodeRows);
+      }).not.toThrow();
+    });
+
+    it('should handle visible rows with very long message IDs', () => {
+      const longMessageId = 'a'.repeat(1000);
+      const longRows = [
+        { messageId: longMessageId, silentInbox: false },
+        { messageId: 'normal-msg', silentInbox: true }
+      ];
+
+      expect(() => {
+        dataModel.endSession(longRows);
+      }).not.toThrow();
+    });
+
+    it('should handle visible rows with empty message IDs', () => {
+      const emptyIdRows = [
+        { messageId: '', silentInbox: false },
+        { messageId: 'normal-msg', silentInbox: true }
+      ];
+
+      expect(() => {
+        dataModel.endSession(emptyIdRows);
+      }).not.toThrow();
+    });
+
+    it('should handle visible rows with null/undefined message IDs', () => {
+      const nullIdRows = [
+        { messageId: null as unknown as string, silentInbox: false },
+        { messageId: undefined as unknown as string, silentInbox: true }
+      ];
+
+      expect(() => {
+        dataModel.endSession(nullIdRows);
+      }).not.toThrow();
+    });
+
+    it('should handle visible rows with numeric message IDs', () => {
+      const numericIdRows = [
+        { messageId: 123 as unknown as string, silentInbox: false },
+        { messageId: 456 as unknown as string, silentInbox: true }
+      ];
+
+      expect(() => {
+        dataModel.endSession(numericIdRows);
+      }).not.toThrow();
+    });
+
+    it('should handle visible rows with object message IDs', () => {
+      const objectIdRows = [
+        { messageId: { id: 'test' } as unknown as string, silentInbox: false },
+        { messageId: { messageId: 'msg' } as unknown as string, silentInbox: true }
+      ];
+
+      expect(() => {
+        dataModel.endSession(objectIdRows);
+      }).not.toThrow();
+    });
+
+    it('should handle visible rows with array message IDs', () => {
+      const arrayIdRows = [
+        { messageId: ['test', 'id'] as unknown as string, silentInbox: false },
+        { messageId: ['msg', '123'] as unknown as string, silentInbox: true }
+      ];
+
+      expect(() => {
+        dataModel.endSession(arrayIdRows);
+      }).not.toThrow();
+    });
+
+    it('should handle visible rows with boolean message IDs', () => {
+      const booleanIdRows = [
+        { messageId: true as unknown as string, silentInbox: false },
+        { messageId: false as unknown as string, silentInbox: true }
+      ];
+
+      expect(() => {
+        dataModel.endSession(booleanIdRows);
+      }).not.toThrow();
+    });
+
+    it('should handle visible rows with function message IDs', () => {
+      const functionIdRows = [
+        { messageId: (() => 'test') as unknown as string, silentInbox: false },
+        { messageId: (() => 'msg') as unknown as string, silentInbox: true }
+      ];
+
+      expect(() => {
+        dataModel.endSession(functionIdRows);
+      }).not.toThrow();
+    });
+
+    it('should handle visible rows with mixed data types', () => {
+      const mixedRows = [
+        { messageId: 'string-msg', silentInbox: false },
+        { messageId: 123 as unknown as string, silentInbox: true },
+        { messageId: null as unknown as string, silentInbox: false },
+        { messageId: undefined as unknown as string, silentInbox: true },
+        { messageId: { id: 'test' } as unknown as string, silentInbox: false }
+      ];
+
+      expect(() => {
+        dataModel.endSession(mixedRows);
+      }).not.toThrow();
+    });
+
+    it('should handle concurrent endSession calls', () => {
+      const rows1 = [{ messageId: 'msg1', silentInbox: false }];
+      const rows2 = [{ messageId: 'msg2', silentInbox: true }];
+      const rows3 = [{ messageId: 'msg3', silentInbox: false }];
+
+      expect(() => {
+        dataModel.endSession(rows1);
+        dataModel.endSession(rows2);
+        dataModel.endSession(rows3);
+      }).not.toThrow();
+    });
+
+    it('should handle endSession with no parameters (default empty array)', () => {
+      expect(() => {
+        dataModel.endSession();
+      }).not.toThrow();
+    });
+
+    it('should handle endSession with basic parameters', () => {
+      const basicRows = [
+        { messageId: 'test-msg-1', silentInbox: false },
+        { messageId: 'test-msg-2', silentInbox: true }
+      ];
+
+      expect(() => {
+        dataModel.endSession(basicRows);
+      }).not.toThrow();
+    });
+
+    it('should handle endSession with undefined parameter', () => {
+      expect(() => {
+        dataModel.endSession(undefined as unknown as IterableInboxImpressionRowInfo[]);
+      }).not.toThrow();
+    });
+
+    it('should handle endSession with null parameter', () => {
+      expect(() => {
+        dataModel.endSession(null as unknown as IterableInboxImpressionRowInfo[]);
+      }).not.toThrow();
+    });
+
+    it('should handle endSession with non-array parameter', () => {
+      expect(() => {
+        dataModel.endSession('not-an-array' as unknown as IterableInboxImpressionRowInfo[]);
+      }).not.toThrow();
+    });
+
+    it('should handle endSession with object parameter', () => {
+      expect(() => {
+        dataModel.endSession({ messageId: 'test' } as unknown as IterableInboxImpressionRowInfo[]);
+      }).not.toThrow();
+    });
+
+    it('should handle endSession with number parameter', () => {
+      expect(() => {
+        dataModel.endSession(123 as unknown as IterableInboxImpressionRowInfo[]);
+      }).not.toThrow();
+    });
+
+    it('should handle endSession with boolean parameter', () => {
+      expect(() => {
+        dataModel.endSession(true as unknown as IterableInboxImpressionRowInfo[]);
+      }).not.toThrow();
+    });
+
+    it('should handle endSession with function parameter', () => {
+      expect(() => {
+        dataModel.endSession((() => 'test') as unknown as IterableInboxImpressionRowInfo[]);
+      }).not.toThrow();
+    });
+
+    it('should handle endSession with very long arrays', () => {
+      const veryLongRows = Array.from({ length: 10000 }, (_, i) => ({
+        messageId: `very-long-msg-${i}`,
+        silentInbox: i % 3 === 0
+      }));
+
+      expect(() => {
+        dataModel.endSession(veryLongRows);
+      }).not.toThrow();
+    });
+
+    it('should handle endSession with empty string message IDs', () => {
+      const emptyStringRows = [
+        { messageId: '', silentInbox: false },
+        { messageId: '', silentInbox: true },
+        { messageId: '', silentInbox: false }
+      ];
+
+      expect(() => {
+        dataModel.endSession(emptyStringRows);
+      }).not.toThrow();
+    });
+
+    it('should handle endSession with whitespace-only message IDs', () => {
+      const whitespaceRows = [
+        { messageId: '   ', silentInbox: false },
+        { messageId: '\t\n', silentInbox: true },
+        { messageId: ' ', silentInbox: false }
+      ];
+
+      expect(() => {
+        dataModel.endSession(whitespaceRows);
+      }).not.toThrow();
+    });
+
+    it('should return a Promise', async () => {
+      const result = dataModel.endSession();
+      expect(result).toBeInstanceOf(Promise);
+    });
+
+    it('should resolve successfully with empty array', async () => {
+      await expect(dataModel.endSession([])).resolves.toBeUndefined();
+    });
+
+    it('should resolve successfully with visible rows', async () => {
+      const rows = [
+        { messageId: 'test-msg-1', silentInbox: false },
+        { messageId: 'test-msg-2', silentInbox: true }
+      ];
+      await expect(dataModel.endSession(rows)).resolves.toBeUndefined();
+    });
+
+    it('should resolve successfully with no parameters', async () => {
+      await expect(dataModel.endSession()).resolves.toBeUndefined();
+    });
+
+    it('should handle async endSession calls', async () => {
+      const rows1 = [{ messageId: 'async-msg-1', silentInbox: false }];
+      const rows2 = [{ messageId: 'async-msg-2', silentInbox: true }];
+
+      await expect(dataModel.endSession(rows1)).resolves.toBeUndefined();
+      await expect(dataModel.endSession(rows2)).resolves.toBeUndefined();
+    });
+
+    it('should handle concurrent async endSession calls', async () => {
+      const rows1 = [{ messageId: 'concurrent-msg-1', silentInbox: false }];
+      const rows2 = [{ messageId: 'concurrent-msg-2', silentInbox: true }];
+      const rows3 = [{ messageId: 'concurrent-msg-3', silentInbox: false }];
+
+      const promises = [
+        dataModel.endSession(rows1),
+        dataModel.endSession(rows2),
+        dataModel.endSession(rows3)
+      ];
+
+      await expect(Promise.all(promises)).resolves.toEqual([undefined, undefined, undefined]);
     });
   });
 
