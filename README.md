@@ -48,6 +48,10 @@ Iterable's React Native SDK relies on:
     - Xcode 12+
     - [Deployment target 13.4+](https://help.apple.com/xcode/mac/current/#/deve69552ee5)
     - [Iterable's iOS SDK](https://github.com/Iterable/iterable-swift-sdk)
+    - **Podfile Configuration**: The linkage must be set to dynamic in your Podfile to load Swift modules that the SDK depends on. Add the following to your Podfile:
+      ```ruby
+      use_frameworks! :linkage => :dynamic
+      ```
 
 - **Android**
     - [`minSdkVersion` 21+, `compileSdkVersion` 31+](https://medium.com/androiddevelopers/picking-your-compilesdkversion-minsdkversion-targetsdkversion-a098a0341ebd)
