@@ -98,6 +98,7 @@ describe('IterableUtil', () => {
       expect(result).toBe(false);
     });
 
+    // TODO: Verify that we want this to return a string instead of a boolean
     it('should return truthy string as boolean when key exists', () => {
       // GIVEN a dictionary with truthy string value
       const dict = { testKey: 'true' };
@@ -109,6 +110,7 @@ describe('IterableUtil', () => {
       expect(result).toBe('true');
     });
 
+    // TODO: Verify that we want this to return a number instead of a boolean
     it('should return truthy number as boolean when key exists', () => {
       // GIVEN a dictionary with truthy number value
       const dict = { testKey: 1 };
@@ -120,6 +122,7 @@ describe('IterableUtil', () => {
       expect(result).toBe(1);
     });
 
+    // TODO: Verify that we want this to return an object instead of a boolean
     it('should return truthy object as boolean when key exists', () => {
       // GIVEN a dictionary with truthy object value
       const dict = { testKey: {} };
@@ -131,6 +134,7 @@ describe('IterableUtil', () => {
       expect(result).toEqual({});
     });
 
+    // TODO: Verify that we want this to return an array instead of a boolean
     it('should return truthy array as boolean when key exists', () => {
       // GIVEN a dictionary with truthy array value
       const dict = { testKey: [] };
@@ -142,6 +146,7 @@ describe('IterableUtil', () => {
       expect(result).toEqual([]);
     });
 
+    // TODO: Verify that we want this to return a function instead of a boolean
     it('should return truthy function as boolean when key exists', () => {
       // GIVEN a dictionary with truthy function value
       const dict = { testKey: () => {} };
