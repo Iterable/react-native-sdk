@@ -1,5 +1,4 @@
-import { NativeModules } from 'react-native';
-
+import { RNIterableAPI } from '../../api';
 import { Iterable } from '../../core/classes/Iterable';
 import type {
   IterableInAppDeleteSource,
@@ -7,8 +6,6 @@ import type {
 } from '../enums';
 import { IterableHtmlInAppContent } from './IterableHtmlInAppContent';
 import { IterableInAppMessage } from './IterableInAppMessage';
-
-const RNIterableAPI = NativeModules.RNIterableAPI;
 
 /**
  * Manages in-app messages for the current user.
@@ -38,7 +35,7 @@ export class IterableInAppManager {
   getMessages(): Promise<IterableInAppMessage[]> {
     Iterable?.logger?.log('InAppManager.getMessages');
 
-    return RNIterableAPI.getInAppMessages();
+    return RNIterableAPI.getInAppMessages() as unknown as Promise<IterableInAppMessage[]>;
   }
 
   /**
@@ -61,7 +58,7 @@ export class IterableInAppManager {
   getInboxMessages(): Promise<IterableInAppMessage[]> {
     Iterable?.logger?.log('InAppManager.getInboxMessages');
 
-    return RNIterableAPI.getInboxMessages();
+    return RNIterableAPI.getInboxMessages() as unknown as Promise<IterableInAppMessage[]>;
   }
 
   /**
@@ -85,7 +82,7 @@ export class IterableInAppManager {
   showMessage(
     message: IterableInAppMessage,
     consume: boolean
-  ): Promise<string | undefined> {
+  ): Promise<string | null> {
     Iterable?.logger?.log('InAppManager.show');
 
     return RNIterableAPI.showMessage(message.messageId, consume);
@@ -153,7 +150,7 @@ export class IterableInAppManager {
   ): Promise<IterableHtmlInAppContent> {
     Iterable?.logger?.log('InAppManager.getHtmlContentForMessage');
 
-    return RNIterableAPI.getHtmlInAppContentForMessage(message.messageId);
+    return RNIterableAPI.getHtmlInAppContentForMessage(message.messageId) as unknown as Promise<IterableHtmlInAppContent>;
   }
 
   /**

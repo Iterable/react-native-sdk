@@ -44,7 +44,7 @@ export const Login = ({ navigation }: RootStackScreenProps<Route.Login>) => {
             <TextInput
               style={styles.input}
               onChangeText={setUserId}
-              value={userId}
+              value={userId ?? ''}
               placeholder="eg: my.name@gmail.com or 1234567890"
               autoCapitalize="none"
               autoCorrect={false}

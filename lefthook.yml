@@ -7,6 +7,9 @@ pre-commit:
     types:
       glob: "*.{js,ts,jsx,tsx}"
       run: npx tsc
+    # version-check:
+    #   glob: "package.json"
+    #   run: node scripts/checkVersionAndUpdateBuildInfo.js
 commit-msg:
   parallel: true
   commands:

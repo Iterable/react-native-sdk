@@ -60,7 +60,7 @@ interface IterableAppProps {
   /** Sets the user ID for the user */
   setUserId: (value: string) => void;
   /** The user ID for the user */
-  userId?: string;
+  userId?: string | null;
 }
 
 const IterableAppContext = createContext<IterableAppProps>({
@@ -79,7 +79,7 @@ const IterableAppContext = createContext<IterableAppProps>({
   setLoginInProgress: () => undefined,
   setReturnToInboxTrigger: () => undefined,
   setUserId: () => undefined,
-  userId: undefined,
+  userId: null,
 });
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -96,7 +96,7 @@ export const IterableAppProvider: FunctionComponent<
   const [apiKey, setApiKey] = useState<string | undefined>(
     process.env.ITBL_API_KEY
   );
-  const [userId, setUserId] = useState<string | undefined>(process.env.ITBL_ID);
+  const [userId, setUserId] = useState<string | null>(process.env.ITBL_ID ?? null);
   const [loginInProgress, setLoginInProgress] = useState<boolean>(false);
 
   const getUserId = useCallback(() => userId ?? process.env.ITBL_ID, [userId]);
@@ -196,8 +196,8 @@ export const IterableAppProvider: FunctionComponent<
   );
 
   const logout = useCallback(() => {
-    Iterable.setEmail(undefined);
-    Iterable.setUserId(undefined);
+    Iterable.setEmail(null);
+    Iterable.setUserId(null);
     setIsLoggedIn(false);
   }, []);
 
