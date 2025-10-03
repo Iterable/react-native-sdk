@@ -39,6 +39,6 @@ Pod::Spec.new do |s|
     end
   end
 
-  s.dependency "Iterable-iOS-SDK", "6.5.4"
-  
+  s.dependency "Iterable-iOS-SDK", "6.5.4.1"
+
 end
