@@ -583,7 +583,7 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         messageJson.put("failedRequestTime", authFailure.failedRequestTime);
         messageJson.put("failureReason", authFailure.failureReason.name());
         WritableMap eventData = Serialization.convertJsonToMap(messageJson);
-        sendEvent(EventName.handleUrlCalled.name(), eventData);
+        sendEvent(EventName.handleAuthFailureCalled.name(), eventData);
       } catch (JSONException e) {
         IterableLogger.v(TAG, "Failed to set authToken");
       }

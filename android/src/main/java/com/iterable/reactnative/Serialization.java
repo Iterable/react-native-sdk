@@ -94,7 +94,7 @@ class Serialization {
                 categories[i] = categoriesArray.getString(i);
             }
         }
-        
+
         return new CommerceItem(itemMap.getString("id"),
                 itemMap.getString("name"),
                 itemMap.getDouble("price"),
@@ -216,10 +216,10 @@ class Serialization {
 
                 configBuilder.setDataRegion(iterableDataRegion);
             }
-          
-            if (iterableContextJSON.has("encryptionEnforced")) {
-                configBuilder.setEncryptionEnforced(iterableContextJSON.optBoolean("encryptionEnforced"));
-            }
+
+            // if (iterableContextJSON.has("encryptionEnforced")) {
+            //     configBuilder.setEncryptionEnforced(iterableContextJSON.optBoolean("encryptionEnforced"));
+            // }
 
             return configBuilder;
         } catch (JSONException e) {
@@ -286,7 +286,7 @@ class Serialization {
     // ---------------------------------------------------------------------------------------
     // region React Native JSON conversion methods
     // obtained from https://gist.github.com/viperwarp/2beb6bbefcc268dee7ad
-    
+
     static WritableMap convertJsonToMap(JSONObject jsonObject) throws JSONException {
         WritableMap map = new WritableNativeMap();
 
