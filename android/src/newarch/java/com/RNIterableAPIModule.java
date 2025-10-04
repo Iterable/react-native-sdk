@@ -7,6 +7,8 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.iterable.iterableapi.AuthFailure;
+import com.iterable.iterableapi.IterableLogger;
 
 public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   private final ReactApplicationContext reactContext;
@@ -218,8 +220,26 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   }
 
   @Override
-  public void onAuthFailure(AuthFailure authFailure) {
-    moduleImpl.onAuthFailure(authFailure);
+  public void onAuthFailure(ReadableMap authFailure) {
+    // The implementation expects an AuthFailure object, but we need to create one from the ReadableMap
+    // Since we don't have access to the AuthFailure constructor, we'll need to handle this differently
+    // For now, let's create a simple approach that matches the expected interface
+    try {
+      // Create a mock AuthFailure object with the data from ReadableMap
+      // This is a workaround since we can't directly instantiate AuthFailure
+      String userKey = authFailure.getString("userKey");
+      String failedAuthToken = authFailure.getString("failedAuthToken");
+      long failedRequestTime = (long) authFailure.getDouble("failedRequestTime");
+      String failureReasonStr = authFailure.getString("failureReason");
+
+      // Create a simple AuthFailure-like object or handle the conversion
+      // Since we can't access the AuthFailure constructor, we'll need to modify the implementation
+      // to handle ReadableMap directly or find another approach
+      moduleImpl.onAuthFailureFromReadableMap(authFailure);
+    } catch (Exception e) {
+      // Handle conversion error
+      IterableLogger.e("RNIterableAPIModule", "Failed to process auth failure: " + e.getMessage());
+    }
   }
 
   public void sendEvent(@NonNull String eventName, @Nullable Object eventData) {

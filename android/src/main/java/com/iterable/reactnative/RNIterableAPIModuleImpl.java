@@ -589,6 +589,20 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
       }
     }
 
+    public void onAuthFailureFromReadableMap(ReadableMap authFailure) {
+      // Handle auth failure from ReadableMap (for new architecture)
+      try {
+        WritableMap eventData = Arguments.createMap();
+        eventData.putString("userKey", authFailure.getString("userKey"));
+        eventData.putString("failedAuthToken", authFailure.getString("failedAuthToken"));
+        eventData.putDouble("failedRequestTime", authFailure.getDouble("failedRequestTime"));
+        eventData.putString("failureReason", authFailure.getString("failureReason"));
+        sendEvent(EventName.handleAuthFailureCalled.name(), eventData);
+      } catch (Exception e) {
+        IterableLogger.e(TAG, "Failed to process auth failure from ReadableMap: " + e.getMessage());
+      }
+    }
+
     @Override
     public void onTokenRegistrationSuccessful(String authToken) {
         IterableLogger.v(TAG, "authToken successfully set");
@@ -596,7 +610,6 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         sendEvent(EventName.handleAuthSuccessCalled.name(), null);
     }
 
-    @Override
     public void onTokenRegistrationFailed(Throwable object) {
         IterableLogger.v(TAG, "Failed to set authToken");
         sendEvent(EventName.handleAuthFailureCalled.name(), null);
