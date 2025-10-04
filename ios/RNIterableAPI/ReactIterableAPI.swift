@@ -562,6 +562,12 @@ import React
       withName: EventName.receivedIterableInboxChanged.rawValue, body: nil as Any?)
   }
 
+  @objc(pauseAuthRetries:)
+  public func pauseAuthRetries(pauseRetry: Bool) {
+    ITBInfo()
+    IterableAPI.pauseAuthRetries(pauseRetry)
+  }
+
   private func createLaunchOptions() -> [UIApplication.LaunchOptionsKey: Any]? {
     guard let bridge = self.bridge else {
       return nil
@@ -701,11 +707,6 @@ extension ReactIterableAPI: IterableAuthDelegate {
           body: nil as Any?)
       }
     }
-  }
-
-  public func pauseAuthRetries(_ pauseRetry: Bool) {
-    ITBInfo()
-    IterableAPI.authManager.pauseAuthRetries(pauseRetry)
   }
 
   public func onTokenRegistrationFailed(_ reason: String?) {
