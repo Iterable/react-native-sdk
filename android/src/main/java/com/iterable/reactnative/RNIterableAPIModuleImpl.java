@@ -18,6 +18,7 @@ import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
+import com.iterable.iterableapi.AuthFailure;
 import com.iterable.iterableapi.InboxSessionManager;
 import com.iterable.iterableapi.IterableAction;
 import com.iterable.iterableapi.IterableActionContext;
@@ -570,6 +571,22 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
             IterableLogger.e(TAG, "auth handler module failed");
             return null;
         }
+    }
+
+    @Override
+    public void onAuthFailure(AuthFailure authFailure) {
+      // Create a JSON object for the authFailure object
+      JSONObject messageJson = new JSONObject();
+      try {
+        messageJson.put("userKey", authFailure.userKey);
+        messageJson.put("failedAuthToken", authFailure.failedAuthToken);
+        messageJson.put("failedRequestTime", authFailure.failedRequestTime);
+        messageJson.put("failureReason", authFailure.failureReason.name());
+        WritableMap eventData = Serialization.convertJsonToMap(messageJson);
+        sendEvent(EventName.handleUrlCalled.name(), eventData);
+      } catch (JSONException e) {
+        IterableLogger.v(TAG, "Failed to set authToken");
+      }
     }
 
     @Override
