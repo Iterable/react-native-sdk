@@ -14,6 +14,7 @@ import {
   IterableConfig,
   IterableInAppShowResponse,
   IterableLogLevel,
+  IterableRetryBackoff,
 } from '@iterable/react-native-sdk';
 
 import { Route } from '../constants/routes';
@@ -146,6 +147,12 @@ export const IterableAppProvider: FunctionComponent<
       config.allowedProtocols = ['app', 'iterable'];
 
       config.logLevel = IterableLogLevel.debug;
+
+      config.retryPolicy = {
+        maxRetry: 5,
+        retryInterval: 10,
+        retryBackoff: IterableRetryBackoff.LINEAR
+      };
 
       config.inAppHandler = () => IterableInAppShowResponse.show;
 

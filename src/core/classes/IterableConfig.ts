@@ -5,6 +5,7 @@ import {
   IterableLogLevel,
   IterablePushPlatform,
 } from '../enums';
+import type { IterableRetryPolicy } from '../types/IterableRetryPolicy';
 import type { IterableAuthFailure } from '../types/IterableAuthFailure';
 import { IterableAction } from './IterableAction';
 import type { IterableActionContext } from './IterableActionContext';
@@ -222,7 +223,6 @@ export class IterableConfig {
    *   console.error('Error fetching JWT:', authFailure);
    * };
    * ```
-   * @memberof IterableConfig
    */
   onJWTError?: (authFailure: IterableAuthFailure) => void;
   /**
@@ -231,6 +231,11 @@ export class IterableConfig {
    * By default, you will be able to see info level logs printed in IDE when running the app.
    */
   logLevel: IterableLogLevel = IterableLogLevel.info;
+
+  /**
+   * The retry policy to use when retrying a request.
+   */
+  retryPolicy?: IterableRetryPolicy;
 
   /**
    * Set whether the React Native SDK should print function calls to console.
