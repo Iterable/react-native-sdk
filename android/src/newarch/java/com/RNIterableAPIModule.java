@@ -217,6 +217,11 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
     moduleImpl.passAlongAuthToken(authToken);
   }
 
+  @Override
+  public void onAuthFailure(AuthFailure authFailure) {
+    moduleImpl.onAuthFailure(authFailure);
+  }
+
   public void sendEvent(@NonNull String eventName, @Nullable Object eventData) {
     moduleImpl.sendEvent(eventName, eventData);
   }
