@@ -603,6 +603,10 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
       }
     }
 
+    public void pauseAuthRetries(boolean pauseRetry) {
+        IterableApi.getInstance().pauseAuthRetries(pauseRetry);
+    }
+
     @Override
     public void onTokenRegistrationSuccessful(String authToken) {
         IterableLogger.v(TAG, "authToken successfully set");

@@ -703,6 +703,11 @@ extension ReactIterableAPI: IterableAuthDelegate {
     }
   }
 
+  public func pauseAuthRetries(_ pauseRetry: Bool) {
+    ITBInfo()
+    IterableAPI.authManager.pauseAuthRetries(pauseRetry)
+  }
+
   public func onTokenRegistrationFailed(_ reason: String?) {
   }
 }

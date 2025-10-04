@@ -228,6 +228,11 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
       moduleImpl.onAuthFailure(authFailure);
     }
 
+    @ReactMethod
+    public void pauseAuthRetries(boolean pauseRetry) {
+      moduleImpl.pauseAuthRetries(pauseRetry);
+    }
+
     public void sendEvent(@NonNull String eventName, @Nullable Object eventData) {
       moduleImpl.sendEvent(eventName, eventData);
     }
