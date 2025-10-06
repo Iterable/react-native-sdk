@@ -19,6 +19,7 @@ Iterable. It supports JavaScript and TypeScript.
   - [Requirements](#requirements)
   - [Architecture Support](#architecture-support)
   - [Installation](#installation)
+  - [Beta Versions](#beta-versions)
   - [Features](#features)
   - [Sample projects](#sample-projects)
   - [Version mapping](#version-mapping)
@@ -70,6 +71,23 @@ Notes:
 
 For installation instructions, read [Installing Iterable's React Native SDK](https://support.iterable.com/hc/articles/360045714132).
 
+## Beta Versions
+
+To opt into beta versions of the SDK, you can install the latest beta version by using the `beta` tag:
+
+```bash
+# Install the latest beta version
+npm install @iterable/react-native-sdk@beta
+
+# Or using yarn
+yarn add @iterable/react-native-sdk@beta
+```
+
+**Note:** Beta versions may contain experimental features and could have
+breaking changes. We recommend testing beta versions in development environments
+before using them in production.  Please report any issues found in beta
+releases to [Customer Support](https://support.iterable.com/hc/en-us/requests/new).
+
 ## Features
 
 To learn more about the SDK, read:
@@ -96,6 +114,7 @@ For quick reference, the following table lists the versions of the [Android SDK]
 
 | RN SDK Version                                                              | Android SDK Version                                                          | iOS SDK Version |
 | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | --------------- |
+| [2.1.0-beta.0](https://www.npmjs.com/package/@iterable/react-native-sdk/v/2.1.0-beta.0) | [3.5.2](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.5.2) | [6.5.4](https://github.com/Iterable/swift-sdk/releases/tag/6.5.4)
 | [2.0.3](https://www.npmjs.com/package/@iterable/react-native-sdk/v/2.0.3) | [3.5.2](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.5.2) | [6.5.4](https://github.com/Iterable/swift-sdk/releases/tag/6.5.4)
 | [2.0.2](https://www.npmjs.com/package/@iterable/react-native-sdk/v/2.0.2) | [3.5.2](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.5.2) | [6.5.4](https://github.com/Iterable/swift-sdk/releases/tag/6.5.4)
 | [2.0.1](https://www.npmjs.com/package/@iterable/react-native-sdk/v/2.0.1) | [3.5.2](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.5.2) | [6.5.4](https://github.com/Iterable/swift-sdk/releases/tag/6.5.4)
