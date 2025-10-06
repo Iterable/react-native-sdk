@@ -213,7 +213,7 @@ jobs:
         shell: bash
         run: |
           cd example/ios
-          yarn build
+          yarn prepare
 
         continue-on-error: true
 
