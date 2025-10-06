@@ -82,6 +82,8 @@ jobs:
   analyze2:
     name: Analyze (${{ matrix.language }})
     runs-on: ubuntu-latest
+    env:
+      TURBO_CACHE_DIR: .turbo/android
     permissions:
       # required for all workflows
       security-events: write
@@ -98,7 +100,7 @@ jobs:
       matrix:
         include:
           - language: java-kotlin
-            build-mode: none
+            build-mode: manual
 
     steps:
       - name: Checkout repository
@@ -109,6 +111,48 @@ jobs:
       # or others). This is typically only required for manual builds.
       # - name: Setup runtime (example)
       #   uses: actions/setup-example@v1
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Cache turborepo for Android
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.TURBO_CACHE_DIR }}
+          key: ${{ runner.os }}-turborepo-android-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-turborepo-android-
+
+      - name: Check turborepo cache for Android
+        run: |
+          TURBO_CACHE_STATUS=$(node -p "($yarn turbo run build:android --cache-dir="${{ env.TURBO_CACHE_DIR }}" --dry=json)).tasks.find(t => === 'build:android').ceche.status")
+
+          if [[ $TURBO_CACHE_STATUS == "HIT" ]]; then
+            echo "turbo_cache_hit=1" >> $GITHUB_ENV
+          fi
+
+      - name: Install JDK
+        if: env.turbo_cache_hit != 1
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Finalize Android SDK
+        if: env.turbo_cache_hit !=1
+        run: |
+          /bin/bash -c "yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses > dev/null"
+
+      - name: Cache Gradle
+        if: env.turbo_cache_hit !=1
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/wrapper
+            ~/.gradle/caches
+            key: ${{ runner.os }}-gradle-${{ hashFiles('example/android/gradle/wrapper/gradle-wrapper.properties') }}
+            restore-keys |
+            ${{ runner.os }}-gradle-
 
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
@@ -123,15 +167,22 @@ jobs:
           # For more details on CodeQL's query packs, refer to: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
           queries: ${{ matrix.language && 'security-extended, security-and-quality' }}
 
-      - if: matrix.build-mode == 'manual'
-        shell: bash
+#      - if: matrix.build-mode == 'manual'
+#        shell: bash
+#        run: |
+#          echo 'If you are using a "manual" build mode for one or more of the' \
+#            'languages you are analyzing, replace this with the commands to build' \
+#            'your code, for example:'
+#          echo '  make bootstrap'
+#          echo '  make release'
+#          exit 1
+
+      - name: build example for Android
+        env:
+          JAVA_OPTS: "--XX:MaxHeapSize=6g"
         run: |
-          echo 'If you are using a "manual" build mode for one or more of the' \
-            'languages you are analyzing, replace this with the commands to build' \
-            'your code, for example:'
-          echo '  make bootstrap'
-          echo '  make release'
-          exit 1
+          yarn turbo run build:android --cache-dir"${{ env.TURBO_CACHE_DIR }}"
+
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
         with:
