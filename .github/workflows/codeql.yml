@@ -213,7 +213,8 @@ jobs:
         shell: bash
         run: |
           cd example/ios
-          yarn prepare
+          bundle exec
+          bundle exec pod install
 
         continue-on-error: true
 
