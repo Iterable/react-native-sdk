@@ -206,6 +206,7 @@ jobs:
           cd example/ios
           bundle install
           bundle exec pod install
+          yarn ios
 #          pod install
 #          yarn ios
 
