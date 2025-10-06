@@ -96,6 +96,8 @@ For quick reference, the following table lists the versions of the [Android SDK]
 
 | RN SDK Version                                                              | Android SDK Version                                                          | iOS SDK Version |
 | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | --------------- |
+| [2.0.3](https://www.npmjs.com/package/@iterable/react-native-sdk/v/2.0.3) | [3.5.2](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.5.2) | [6.5.4](https://github.com/Iterable/swift-sdk/releases/tag/6.5.4)
+| [2.0.2](https://www.npmjs.com/package/@iterable/react-native-sdk/v/2.0.2) | [3.5.2](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.5.2) | [6.5.4](https://github.com/Iterable/swift-sdk/releases/tag/6.5.4)
 | [2.0.1](https://www.npmjs.com/package/@iterable/react-native-sdk/v/2.0.1) | [3.5.2](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.5.2) | [6.5.4](https://github.com/Iterable/swift-sdk/releases/tag/6.5.4)
 | [2.0.0](https://www.npmjs.com/package/@iterable/react-native-sdk/v/2.0.0) | [3.5.2](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.5.2) | [6.5.4](https://github.com/Iterable/swift-sdk/releases/tag/6.5.4)
 | [2.0.0-beta.1](https://www.npmjs.com/package/@iterable/react-native-sdk/v/2.0.0-beta.1) | [3.5.2](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.5.2) | [6.5.4](https://github.com/Iterable/swift-sdk/releases/tag/6.5.4)

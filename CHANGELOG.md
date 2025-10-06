@@ -1,4 +1,4 @@
-## 2.1.0-alpha.0 (2025-09-27)
+## 2.1.0-beta.0
 * fix: update clickedUrl parameter type to allow null values in trackInAppClose method per PR comment ([26fa44b](https://github.com/Iterable/react-native-sdk/commit/26fa44b))
 * refactor: add wakeApp placeholder method ([4cc665f](https://github.com/Iterable/react-native-sdk/commit/4cc665f))
 * refactor: remove redundant error handling in RNIterableAPI to streamline message retrieval ([5a946b2](https://github.com/Iterable/react-native-sdk/commit/5a946b2))
@@ -14,6 +14,20 @@
 * chore: downgrade version from 2.0.3-alpha.1 to 2.0.2 ([61ec865](https://github.com/Iterable/react-native-sdk/commit/61ec865))
 * chore: update dependencies for React Navigation and related packages ([95053bb](https://github.com/Iterable/react-native-sdk/commit/95053bb))
 * Update ios/RNIterableAPI/ReactIterableAPI.swift ([3e252ee](https://github.com/Iterable/react-native-sdk/commit/3e252ee))
+
+## 2.0.3
+
+### Updates
+- Add in-app message manager with lazy initialization to avoid circular dependency ([6feec35](https://github.com/Iterable/react-native-sdk/commit/6feec35))
+
+### Fixes
+- Update Iterable-iOS-SDK to 6.5.4.1 to fix issue #701 (performAndWait) ([0bb4a24](https://github.com/Iterable/react-native-sdk/commit/0bb4a24)), closes [#701](https://github.com/Iterable/react-native-sdk/issues/701)
+- Update Xcode project configuration to include CocoaPods build phases and settings ([23a9e79](https://github.com/Iterable/react-native-sdk/commit/23a9e79))
+- Enable CodeQl Advanced Config ([7346e56](https://github.com/Iterable/react-native-sdk/commit/7346e56))
+- Upload coverage report to Qlty ([6872621](https://github.com/Iterable/react-native-sdk/commit/6872621))
+- Simplify IterableInAppManager usage in tests by directly accessing Iterable.inAppManager ([6deeae3](https://github.com/Iterable/react-native-sdk/commit/6deeae3))
+- Correct markdown link syntax in IterableInAppManager documentation ([78e22b2](https://github.com/Iterable/react-native-sdk/commit/78e22b2))
+
 
 ## 2.0.2
 ### Fixes
