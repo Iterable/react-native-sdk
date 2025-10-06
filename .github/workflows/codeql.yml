@@ -202,13 +202,10 @@ jobs:
       - if: matrix.build-mode == 'manual'
         shell: bash
         run: |
-          yarn install
           cd example/ios
           bundle install
           bundle exec pod install
           yarn ios
-#          pod install
-#          yarn ios
 
         continue-on-error: true
 
