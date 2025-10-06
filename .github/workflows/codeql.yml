@@ -184,23 +184,8 @@ jobs:
       - name: Checkout react-native-sdk
         uses: actions/checkout@v4
 
-      - name: Clean DerivedData folder
-        run: |
-          rm -rf ~/Library/Developer/Xcode/DerivedData/*
-
       - name: Setup
         uses: ./.github/actions/setup
-
-      - name: Cache cocoapods
-        if: env.turbo_cache_hit != 1
-        id: cocoapods-cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            **/ios/Pods
-          key: ${{ runner.os }}-cocoapods-${{ hashFiles('example/ios/Podfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-cocoapods-
 
       - name: Install cocoapods
         if: env.turbo_cache_hit != 1 && steps.cocoapods-cache.outputs.cache-hit != 'true'
@@ -228,17 +213,8 @@ jobs:
         shell: bash
         run: |
           cd example/ios
+          yarn build
 
-          xcodebuild clean build \
-          -workspace ReactNativeSdkExample.xcworkspace \
-          -scheme ReactNativeSdkExample \
-          CODE_SIGN_IDENTITY="" \
-          CODE_SIGNING_REQUIRED=NO \
-          CODE_SIGNING_ALLOWED=NO \
-          BUILD_LIBRARY_FOR_DISTRIBUTION=NO \
-          APPLICATION_EXTENSION_API_ONLY=NO
-
-          yarn add -D @react-native-community/cli
         continue-on-error: true
 
       - name: Perform CodeQL Analysis
