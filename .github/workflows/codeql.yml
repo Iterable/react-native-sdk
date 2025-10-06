@@ -187,15 +187,6 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
-      - name: Install cocoapods
-        if: env.turbo_cache_hit != 1 && steps.cocoapods-cache.outputs.cache-hit != 'true'
-        run: |
-          cd example/ios &&
-          NO_FLIPPER=1 pod install --repo-update &&
-          cd ..
-        env:
-          NO_FLIPPER: 1
-
         # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
@@ -212,8 +203,9 @@ jobs:
       - if: matrix.build-mode == 'manual'
         shell: bash
         run: |
+          yarn install
           cd example/ios
-          bundle exec pod install
+          pod install
 
         continue-on-error: true
 
