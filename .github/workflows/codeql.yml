@@ -213,7 +213,6 @@ jobs:
         shell: bash
         run: |
           cd example/ios
-          bundle exec
           bundle exec pod install
 
         continue-on-error: true
