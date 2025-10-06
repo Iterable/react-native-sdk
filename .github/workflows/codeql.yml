@@ -143,10 +143,9 @@ jobs:
       - if: matrix.build-mode == 'manual'
         shell: bash
         run: |
-          cd example/android
           yarn install
-
-#          ./gradlew clean
+          cd example/android
+          ./gradlew clean
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
@@ -206,6 +205,7 @@ jobs:
           yarn install
           cd example/ios
           pod install
+          yarn ios
 
         continue-on-error: true
 
