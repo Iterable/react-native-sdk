@@ -204,8 +204,9 @@ jobs:
         run: |
           yarn install
           cd example/ios
-          pod install
-          yarn ios
+          bundle install
+#          pod install
+#          yarn ios
 
         continue-on-error: true
 
