@@ -220,6 +220,47 @@ export class Iterable {
   }
 
   /**
+   * Set launch options for the new architecture (bridgeless).
+   * This method should be called before initializing the SDK when using the new architecture.
+   *
+   * @param launchOptions - The launch options from the scene delegate
+   *
+   * @example
+   * ```typescript
+   * // Call this in your scene delegate before initializing the SDK
+   * Iterable.setLaunchOptions(launchOptions);
+   * Iterable.initialize(apiKey, config);
+   * ```
+   */
+  static setLaunchOptions(launchOptions?: { [key: string]: unknown } | null) {
+    Iterable?.logger?.log('setLaunchOptions: ' + JSON.stringify(launchOptions));
+
+    RNIterableAPI.setLaunchOptions(launchOptions);
+  }
+
+  /**
+   * Auto-detect launch options from the current app state.
+   * This method attempts to detect launch options automatically without requiring manual setup.
+   *
+   * @returns Promise that resolves to detected launch options or null
+   *
+   * @example
+   * ```typescript
+   * // Auto-detect launch options before initializing
+   * const launchOptions = await Iterable.detectLaunchOptions();
+   * if (launchOptions) {
+   *   Iterable.setLaunchOptions(launchOptions);
+   * }
+   * Iterable.initialize(apiKey, config);
+   * ```
+   */
+  static async detectLaunchOptions(): Promise<{ [key: string]: unknown } | null> {
+    Iterable?.logger?.log('detectLaunchOptions: attempting to auto-detect launch options');
+
+    return await RNIterableAPI.detectLaunchOptions();
+  }
+
+  /**
    * Get the email associated with the current user.
    *
    * @example
@@ -986,6 +1027,7 @@ export class Iterable {
 
         Iterable.savedConfig.authHandler!()
           .then((promiseResult) => {
+            console.log(`🚀 > Iterable > setupEventHandlers > promiseResult:`, promiseResult);
             // Promise result can be either just String OR of type AuthResponse.
             // If type AuthReponse, authToken will be parsed looking for `authToken` within promised object. Two additional listeners will be registered for success and failure callbacks sent by native bridge layer.
             // Else it will be looked for as a String.
@@ -995,6 +1037,7 @@ export class Iterable {
               );
 
               setTimeout(() => {
+                console.log(`🚀 > Iterable > setupEventHandlers > authResponseCallback`, authResponseCallback);
                 if (
                   authResponseCallback === IterableAuthResponseResult.SUCCESS
                 ) {
@@ -1022,7 +1065,10 @@ export class Iterable {
               );
             }
           })
-          .catch((e) => Iterable?.logger?.log(e));
+          .catch((e) => {
+            Iterable?.logger?.log(e);
+            console.log(`🚀 > Iterable > setupEventHandlers > catch`, e);
+          });
       });
 
       RNEventEmitter.addListener(
@@ -1033,7 +1079,8 @@ export class Iterable {
       );
       RNEventEmitter.addListener(
         IterableEventName.handleAuthFailureCalled,
-        () => {
+        (e: unknown) => {
+          console.log(`🚀 > Iterable > setupEventHandlers > handleAuthFailureCalled`, e);
           authResponseCallback = IterableAuthResponseResult.FAILURE;
         }
       );

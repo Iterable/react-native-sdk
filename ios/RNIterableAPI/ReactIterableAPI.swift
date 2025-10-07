@@ -483,7 +483,6 @@ import React
     passedAuthToken = authToken
     authHandlerSemaphore.signal()
   }
-
   // MARK: Private
   private var shouldEmit = false
   private let _methodQueue = DispatchQueue(label: String(describing: ReactIterableAPI.self))
@@ -494,6 +493,9 @@ import React
 
   private var passedAuthToken: String?
   private var authHandlerSemaphore = DispatchSemaphore(value: 0)
+
+  // For new architecture: stored launch options
+  private var storedLaunchOptions: [UIApplication.LaunchOptionsKey: Any]?
 
   private let inboxSessionManager = InboxSessionManager()
 
@@ -506,7 +508,7 @@ import React
     rejecter: @escaping RCTPromiseRejectBlock
   ) {
     ITBInfo()
-    let launchOptions = createLaunchOptions()
+    // let launchOptions = createLaunchOptionsHybrid()
     guard let configDictTyped = configDict as? [AnyHashable: Any] else {
       rejecter("E_INVALID_CONFIG", "configDict could not be cast to [AnyHashable: Any]", nil)
       return
@@ -541,16 +543,14 @@ import React
       name: Notification.Name.iterableInboxChanged, object: nil)
 
     DispatchQueue.main.async {
-      IterableAPI.initialize2(
+      IterableAPI.initialize(
         apiKey: apiKey,
-        launchOptions: launchOptions,
-        config: iterableConfig,
-        apiEndPointOverride: apiEndPointOverride
-      ) { result in
-        resolver(result)
-      }
+        launchOptions: nil,
+        config: iterableConfig
+      )
 
       IterableAPI.setDeviceAttribute(name: "reactNativeSDKVersion", value: version)
+      resolver(true)
     }
   }
 
@@ -563,26 +563,179 @@ import React
       withName: EventName.receivedIterableInboxChanged.rawValue, body: nil as Any?)
   }
 
-  private func createLaunchOptions() -> [UIApplication.LaunchOptionsKey: Any]? {
-    guard let bridge = self.bridge else {
-      return nil
-    }
-    return ReactIterableAPI.createLaunchOptions(bridgeLaunchOptions: bridge.launchOptions)
+  @objc(pauseAuthRetries:)
+  public func pauseAuthRetries(pauseRetry: Bool) {
+    ITBInfo()
+    IterableAPI.pauseAuthRetries(pauseRetry)
   }
 
-  private static func createLaunchOptions(bridgeLaunchOptions: [AnyHashable: Any]?)
-    -> [UIApplication.LaunchOptionsKey: Any]?
-  {
-    guard let bridgeLaunchOptions = bridgeLaunchOptions,
-      let remoteNotification = bridgeLaunchOptions[
-        UIApplication.LaunchOptionsKey.remoteNotification.rawValue]
-    else {
-      return nil
-    }
-    var result = [UIApplication.LaunchOptionsKey: Any]()
-    result[UIApplication.LaunchOptionsKey.remoteNotification] = remoteNotification
-    return result
-  }
+  // @objc(setLaunchOptions:)
+  // public func setLaunchOptions(launchOptions: NSDictionary?) {
+  //   ITBInfo()
+  //   // Store launch options for new architecture
+  //   // This allows the app to explicitly set launch options when using the new architecture
+  //   self.storedLaunchOptions = launchOptions as? [UIApplication.LaunchOptionsKey: Any]
+  // }
+
+  // @objc(detectLaunchOptions:rejecter:)
+  // public func detectLaunchOptions(resolver: @escaping RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
+  //   ITBInfo()
+  //   // Auto-detect launch options from the current app state
+  //   if let detectedOptions = detectLaunchOptionsFromAppState() {
+  //     resolver(detectedOptions)
+  //   } else {
+  //     resolver(nil)
+  //   }
+  // }
+
+  // private func createLaunchOptionsHybrid() -> [UIApplication.LaunchOptionsKey: Any]? {
+  //   // First try: Bridge-based approach (works for old architecture)
+  //   if let bridgeOptions = createLaunchOptions() {
+  //     return bridgeOptions
+  //   }
+
+  //   // Second try: For new architecture (bridgeless), use stored launch options
+  //   if let storedOptions = storedLaunchOptions {
+  //     return storedOptions
+  //   }
+
+  //   // Third try: Auto-detect launch options from the system
+  //   if let autoDetectedOptions = autoDetectLaunchOptions() {
+  //     return autoDetectedOptions
+  //   }
+
+  //   // Fourth try: Detect launch options from current app state
+  //   if let appStateOptions = detectLaunchOptionsFromAppState() {
+  //     return appStateOptions
+  //   }
+
+  //   // Fallback: return nil if no launch options are available
+  //   return nil
+  // }
+
+  // private func createLaunchOptions() -> [UIApplication.LaunchOptionsKey: Any]? {
+  //   // Safely access bridge to avoid null pointer crashes
+  //   guard let bridge = self.bridge, bridge.launchOptions != nil else {
+  //     return nil
+  //   }
+  //   return ReactIterableAPI.createLaunchOptions(bridgeLaunchOptions: bridge.launchOptions)
+  // }
+
+  // private func autoDetectLaunchOptions() -> [UIApplication.LaunchOptionsKey: Any]? {
+  //   var launchOptions: [UIApplication.LaunchOptionsKey: Any] = [:]
+
+  //   // Try to detect launch options from the current app state
+  //   if #available(iOS 13.0, *) {
+  //     // For iOS 13+, try to get launch options from connected scenes
+  //     if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+
+  //       // Check for ongoing user activities
+  //       if let userActivity = UIApplication.shared.userActivity {
+  //         launchOptions[.userActivityType] = userActivity.activityType
+  //         if let userInfo = userActivity.userInfo {
+  //           launchOptions[.userActivityUserInfo] = userInfo
+  //         }
+  //       }
+
+  //       // Try to detect if app was launched from a notification
+  //       if let notificationResponse = getCurrentNotificationResponse() {
+  //         launchOptions[.remoteNotification] = notificationResponse
+  //       }
+  //     }
+  //   } else {
+  //     // For iOS 12 and below, try to get from app delegate
+  //     if let appDelegate = UIApplication.shared.delegate {
+  //       // Check for ongoing user activities
+  //       if let userActivity = UIApplication.shared.userActivity {
+  //         launchOptions[.userActivityType] = userActivity.activityType
+  //         if let userInfo = userActivity.userInfo {
+  //           launchOptions[.userActivityUserInfo] = userInfo
+  //         }
+  //       }
+
+  //       // Try to detect if app was launched from a notification
+  //       if let notificationResponse = getCurrentNotificationResponse() {
+  //         launchOptions[.remoteNotification] = notificationResponse
+  //       }
+  //     }
+  //   }
+
+  //   // Check for recent push notifications from Iterable SDK
+  //   if let lastPushPayload = IterableAPI.lastPushPayload {
+  //     launchOptions[.remoteNotification] = lastPushPayload
+  //   }
+
+  //   // Return launch options if we found any
+  //   return launchOptions.isEmpty ? nil : launchOptions
+  // }
+
+  // private func getCurrentNotificationResponse() -> [AnyHashable: Any]? {
+  //   // Try to get the current notification response from the app's state
+  //   // This is a best-effort approach to detect if the app was launched from a notification
+
+  //   // Check if there's a recent notification in the app's state
+  //   if let appDelegate = UIApplication.shared.delegate {
+  //     // Try to access notification info from the app delegate
+  //     // This is app-specific and may not always be available
+  //     return nil
+  //   }
+
+  //   return nil
+  // }
+
+  // MARK: - Launch Options Detection from App State
+
+  // private func detectLaunchOptionsFromAppState() -> [UIApplication.LaunchOptionsKey: Any]? {
+  //   var launchOptions: [UIApplication.LaunchOptionsKey: Any] = [:]
+
+  //   // Check for ongoing user activities
+  //   if let userActivity = UIApplication.shared.userActivity {
+  //     launchOptions[.userActivityType] = userActivity.activityType
+  //     if let userInfo = userActivity.userInfo {
+  //       launchOptions[.userActivityUserInfo] = userInfo
+  //     }
+  //   }
+
+  //   // Check for recent push notifications from Iterable SDK
+  //   if let lastPushPayload = IterableAPI.lastPushPayload {
+  //     launchOptions[.remoteNotification] = lastPushPayload
+  //   }
+
+  //   // Check for URL schemes that might have launched the app
+  //   if let url = detectCurrentURL() {
+  //     launchOptions[.url] = url
+  //   }
+
+  //   return launchOptions.isEmpty ? nil : launchOptions
+  // }
+
+  // private func detectCurrentURL() -> URL? {
+  //   // Try to detect if the app was launched from a URL
+  //   // This is a best-effort approach
+
+  //   // Check if there's a current URL in the app's state
+  //   if let appDelegate = UIApplication.shared.delegate {
+  //     // Try to access URL info from the app delegate
+  //     // This is app-specific and may not always be available
+  //     return nil
+  //   }
+
+  //   return nil
+  // }
+
+  // private static func createLaunchOptions(bridgeLaunchOptions: [AnyHashable: Any]?)
+  //   -> [UIApplication.LaunchOptionsKey: Any]?
+  // {
+  //   guard let bridgeLaunchOptions = bridgeLaunchOptions,
+  //     let remoteNotification = bridgeLaunchOptions[
+  //       UIApplication.LaunchOptionsKey.remoteNotification.rawValue]
+  //   else {
+  //     return nil
+  //   }
+  //   var result = [UIApplication.LaunchOptionsKey: Any]()
+  //   result[UIApplication.LaunchOptionsKey.remoteNotification] = remoteNotification
+  //   return result
+  // }
 }
 
 extension ReactIterableAPI: IterableURLDelegate {
@@ -662,6 +815,19 @@ extension ReactIterableAPI: IterableInAppDelegate {
 }
 
 extension ReactIterableAPI: IterableAuthDelegate {
+  public func onAuthFailure(_ authFailure: IterableSDK.AuthFailure) {
+    ITBInfo()
+
+    var failureDict: [String: Any] = [:]
+    failureDict["userKey"] = authFailure.userKey
+    failureDict["failedAuthToken"] = authFailure.failedAuthToken
+    failureDict["failedRequestTime"] = authFailure.failedRequestTime
+    failureDict["failureReason"] = authFailure.failureReason.rawValue
+
+    sendEvent(withName: EventName.handleAuthFailureCalled.rawValue,
+              body: failureDict)
+  }
+
   public func onAuthTokenRequested(completion: @escaping AuthTokenRetrievalHandler) {
     ITBInfo()
     DispatchQueue.global(qos: .userInitiated).async {
@@ -682,6 +848,8 @@ extension ReactIterableAPI: IterableAuthDelegate {
         DispatchQueue.main.async {
           completion(nil)
         }
+        // TODO: RN should be able to handle nil case as well. Or we can wrap this up under one of the existing AuthFailure. But again, its not a authFailure in this one. Its a timeout error.
+        // TODO: Create a Dictionary representing AuthFailure object due to `null` auth token and pass it in body instead of passing `nil`
         self.delegate?.sendEvent(
           withName: EventName.handleAuthFailureCalled.rawValue,
           body: nil as Any?)

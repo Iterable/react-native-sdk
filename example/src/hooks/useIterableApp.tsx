@@ -14,6 +14,7 @@ import {
   IterableConfig,
   IterableInAppShowResponse,
   IterableLogLevel,
+  IterableRetryBackoff,
 } from '@iterable/react-native-sdk';
 
 import { Route } from '../constants/routes';
@@ -147,6 +148,15 @@ export const IterableAppProvider: FunctionComponent<
 
       config.logLevel = IterableLogLevel.debug;
 
+      // Add network debugging to help identify the source of socket warnings
+      console.log('Iterable SDK initialized with network debugging enabled');
+
+      config.retryPolicy = {
+        maxRetry: 5,
+        retryInterval: 10,
+        retryBackoff: IterableRetryBackoff.LINEAR
+      };
+
       config.inAppHandler = () => IterableInAppShowResponse.show;
 
       setItblConfig(config);
@@ -161,6 +171,7 @@ export const IterableAppProvider: FunctionComponent<
       // Initialize app
       return Iterable.initialize(key, config)
         .then((isSuccessful) => {
+          console.log('Iterable.initialize success', isSuccessful);
           setIsInitialized(isSuccessful);
 
           if (!isSuccessful)
@@ -180,16 +191,6 @@ export const IterableAppProvider: FunctionComponent<
           setIsInitialized(false);
           setLoginInProgress(false);
           return Promise.reject(err);
-        })
-        .finally(() => {
-          // For some reason, ios is throwing an error on initialize.
-          // To temporarily fix this, we're using the finally block to login.
-          // MOB-10419: Find out why initialize is throwing an error on ios
-          setIsInitialized(true);
-          if (getUserId()) {
-            login();
-          }
-          return Promise.resolve(true);
         });
     },
     [apiKey, getUserId, login]
