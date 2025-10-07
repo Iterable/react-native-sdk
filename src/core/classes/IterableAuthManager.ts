@@ -1,7 +1,17 @@
-import RNIterableAPI from '../../api';
 import { defaultLogger } from '../constants/defaults';
 import { IterableLogger } from './IterableLogger';
+import { IterableApi } from './IterableApi';
 
+/**
+ * Manages the authentication for the Iterable SDK.
+ *
+ * @example
+ * ```typescript
+ * const config = new IterableConfig();
+ * const logger = new IterableLogger(config);
+ * const authManager = new IterableAuthManager(logger);
+ * ```
+ */
 export class IterableAuthManager {
   /**
    * The logger for the Iterable SDK.
@@ -19,11 +29,11 @@ export class IterableAuthManager {
    *
    * @example
    * ```typescript
-   * Iterable.pauseAuthRetries(true);
+   * const authManager = new IterableAuthManager();
+   * authManager.pauseAuthRetries(true);
    * ```
    */
   pauseAuthRetries(pauseRetry: boolean) {
-    IterableAuthManager.logger?.log('pauseAuthRetries');
-    RNIterableAPI.pauseAuthRetries(pauseRetry);
+    return IterableApi.pauseAuthRetries(pauseRetry);
   }
 }

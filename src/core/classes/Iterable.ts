@@ -23,15 +23,16 @@ import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
 import type { IterableAuthFailure } from '../types/IterableAuthFailure';
-import { IterableAuthManager } from './IterableAuthManager';
+import {
+  defaultAuthManager,
+  defaultConfig,
+  defaultInAppManager,
+  defaultLogger,
+} from '../constants/defaults';
 import { IterableApi } from './IterableApi';
+import { IterableAuthManager } from './IterableAuthManager';
 
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
-
-const defaultConfig = new IterableConfig();
-const defaultLogger = new IterableLogger(defaultConfig);
-const defaultAuthManager = new IterableAuthManager(defaultLogger);
-const defaultInAppManager = new IterableInAppManager(defaultLogger);
 
 /* eslint-disable tsdoc/syntax */
 /**
@@ -64,19 +65,6 @@ export class Iterable {
   static savedConfig: IterableConfig = defaultConfig;
 
   /**
-   * Auth manager for the Iterable SDK
-   *
-   * This property is set to an instance of provides access to authentication functionality including
-   * pausing authentication retries.
-   *
-   * @example
-   * ```typescript
-   * Iterable.authManager.pauseAuthRetries(true);
-   * ```
-   */
-  static authManager: IterableAuthManager = defaultAuthManager;
-
-  /**
    * In-app message manager for the current user.
    *
    * This property provides access to in-app message functionality including
@@ -94,6 +82,19 @@ export class Iterable {
    * ```
    */
   static inAppManager: IterableInAppManager = defaultInAppManager;
+
+  /**
+   * Authentication manager for the current user.
+   *
+   * This property provides access to authentication functionality including
+   * pausing the authentication retry mechanism.
+   *
+   * @example
+   * ```typescript
+   * Iterable.authManager.pauseAuthRetries(true);
+   * ```
+   */
+  static authManager: IterableAuthManager = defaultAuthManager;
 
   /**
    * Initializes the Iterable React Native SDK in your app's Javascript or Typescript code.
@@ -161,6 +162,7 @@ export class Iterable {
   }
 
   /**
+   * @internal
    * Does basic setup of the Iterable SDK.
    * @param config - The configuration object for the Iterable SDK
    */
@@ -170,8 +172,8 @@ export class Iterable {
     const logger = new IterableLogger(Iterable.savedConfig);
 
     Iterable.logger = logger;
-    Iterable.authManager = new IterableAuthManager(logger);
     Iterable.inAppManager = new IterableInAppManager(logger);
+    Iterable.authManager = new IterableAuthManager(logger);
     IterableApi.setLogger(logger);
 
     this.setupEventHandlers();
@@ -355,25 +357,7 @@ export class Iterable {
    * ```
    */
   static getAttributionInfo(): Promise<IterableAttributionInfo | undefined> {
-    return IterableApi.getAttributionInfo().then(
-      (
-        dict: {
-          campaignId: number;
-          templateId: number;
-          messageId: string;
-        } | null
-      ) => {
-        if (dict) {
-          return new IterableAttributionInfo(
-            dict.campaignId as number,
-            dict.templateId as number,
-            dict.messageId as string
-          );
-        } else {
-          return undefined;
-        }
-      }
-    );
+    return IterableApi.getAttributionInfo();
   }
 
   /**
@@ -400,10 +384,10 @@ export class Iterable {
    * Iterable.setAttributionInfo(attributionInfo);
    * ```
    */
-  static setAttributionInfo(attributionInfo?: IterableAttributionInfo) {
-    return IterableApi.setAttributionInfo(
-      attributionInfo as IterableAttributionInfo
-    );
+  static setAttributionInfo(attributionInfo: IterableAttributionInfo) {
+    if (attributionInfo) {
+      return IterableApi.setAttributionInfo(attributionInfo);
+    }
   }
 
   /**
@@ -445,9 +429,9 @@ export class Iterable {
     return IterableApi.trackPushOpenWithCampaignId(
       campaignId,
       templateId,
-      messageId as string,
+      messageId,
       appAlreadyRunning,
-      dataFields as { [key: string]: string | number | boolean } | undefined
+      dataFields
     );
   }
 
@@ -883,20 +867,6 @@ export class Iterable {
   }
 
   /**
-   * Pause the authentication retry mechanism.
-   *
-   * @param pauseRetry - Whether to pause the authentication retry mechanism
-   *
-   * @example
-   * ```typescript
-   * Iterable.pauseAuthRetries(true);
-   * ```
-   */
-  static pauseAuthRetries(pauseRetry: boolean) {
-    return IterableApi.pauseAuthRetries(pauseRetry);
-  }
-
-  /**
    * Sets up event handlers for various Iterable events.
    *
    * This method performs the following actions:
@@ -960,7 +930,7 @@ export class Iterable {
           const message = IterableInAppMessage.fromDict(messageDict);
           // MOB-10423: Check if we can use chain operator (?.) here instead
           const result = Iterable.savedConfig.inAppHandler!(message);
-          RNIterableAPI.setInAppShowResponse(result);
+          IterableApi.setInAppShowResponse(result);
         }
       );
     }
@@ -976,7 +946,7 @@ export class Iterable {
             // If type AuthReponse, authToken will be parsed looking for `authToken` within promised object. Two additional listeners will be registered for success and failure callbacks sent by native bridge layer.
             // Else it will be looked for as a String.
             if (typeof promiseResult === typeof new IterableAuthResponse()) {
-              RNIterableAPI.passAlongAuthToken(
+              IterableApi.passAlongAuthToken(
                 (promiseResult as IterableAuthResponse).authToken
               );
 
@@ -1003,7 +973,7 @@ export class Iterable {
               }, 1000);
             } else if (typeof promiseResult === typeof '') {
               //If promise only returns string
-              RNIterableAPI.passAlongAuthToken(promiseResult as string);
+              IterableApi.passAlongAuthToken(promiseResult as string);
             } else {
               Iterable?.logger?.log(
                 'Unexpected promise returned. Auth token expects promise of String or AuthResponse type.'

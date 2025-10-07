@@ -5,6 +5,8 @@ import { IterableConfig } from './IterableConfig';
  *
  * This class is responsible for logging messages based on the configuration provided.
  *
+ * TODO: add a logLevel property to the IterableLogger class to control the level of logging.
+ *
  * @remarks
  * The logging behavior is controlled by the `logReactNativeSdkCalls` property
  * in {@link IterableConfig}.
