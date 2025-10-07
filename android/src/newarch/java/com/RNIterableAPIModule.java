@@ -231,4 +231,9 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   public void onInboxUpdated() {
     moduleImpl.onInboxUpdated();
   }
+
+  @Override
+  public void getEmbeddedMessages(Integer placementId, Promise promise) {
+    moduleImpl.getEmbeddedMessages(placementId, promise);
+  }
 }

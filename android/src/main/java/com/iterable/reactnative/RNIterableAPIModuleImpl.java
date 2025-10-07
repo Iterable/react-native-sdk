@@ -634,6 +634,37 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
     public void onInboxUpdated() {
         sendEvent(EventName.receivedIterableInboxChanged.name(), null);
     }
+
+    // ---------------------------------------------------------------------------------------
+    // endregion
+
+    // ---------------------------------------------------------------------------------------
+    // region Embedded messaging
+
+
+    public void getEmbeddedMessages(Integer placementId, Promise promise) {
+        IterableLogger.d(TAG, "getEmbeddedMessages for placement: " + placementId);
+
+        try {
+            JSONArray embeddedMessageJsonArray = Serialization.serializeEmbeddedMessages(IterableApi.getInstance().getEmbeddedManager().getMessages(placementId));
+            IterableLogger.d(TAG, "Messages for placement: " + embeddedMessageJsonArray);
+
+            promise.resolve(Serialization.convertJsonToArray(embeddedMessageJsonArray));
+        } catch (JSONException e) {
+            IterableLogger.e(TAG, e.getLocalizedMessage());
+            promise.reject("", "Failed to fetch messages with error " + e.getLocalizedMessage());
+        }
+    }
+
+    private JSONObject createTestPlacement(int placementId) throws JSONException {
+        JSONObject placement = new JSONObject();
+        placement.put("placementId", placementId);
+        return placement;
+    }
+
+
+    // ---------------------------------------------------------------------------------------
+    // endregion
 }
 
 enum EventName {
