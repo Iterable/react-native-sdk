@@ -32,7 +32,6 @@ import {
   type IterableInboxMessageListProps,
 } from './IterableInboxMessageList';
 
-
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
 const DEFAULT_HEADLINE_HEIGHT = 60;
@@ -363,7 +362,7 @@ export const IterableInbox = ({
     inboxDataModel.setMessageAsRead(id);
     setSelectedRowViewModelIdx(index);
 
-    Iterable.trackInAppOpen(
+    Iterable.tracker.trackInAppOpen(
       // MOB-10428: Have a safety check for models[index].inAppMessage
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore

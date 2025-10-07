@@ -13,6 +13,7 @@ import type { IterableInAppDeleteSource } from '../../inApp/enums/IterableInAppD
 import type { IterableHtmlInAppContent } from '../../inApp/classes/IterableHtmlInAppContent';
 import type { IterableInAppShowResponse } from '../../inApp/enums/IterableInAppShowResponse';
 import type { IterableInboxImpressionRowInfo } from '../../inbox/types/IterableInboxImpressionRowInfo';
+import type { IterableEmbeddedSession } from '../../embedded/classes/IterableEmbeddedSession';
 
 export class IterableApi {
   static logger: IterableLogger = defaultLogger;
@@ -105,8 +106,8 @@ export class IterableApi {
   /**
    * Associate the current user with the passed in `userId` parameter.
    *
-   * WARNING: specify a user by calling `Iterable.setEmail` or
-   * `Iterable.setUserId`, but **NOT** both.
+   * WARNING: specify a user by calling `IterableApi.setEmail` or
+   * `IterableApi.setUserId`, but **NOT** both.
    *
    * @param userId - User ID to associate with the current user
    * @param authToken - Valid, pre-fetched JWT the SDK
@@ -296,6 +297,16 @@ export class IterableApi {
   static trackEvent(name: string, dataFields?: unknown) {
     IterableApi.logger.log('trackEvent: ', name, dataFields);
     return RNIterableAPI.trackEvent(name, dataFields);
+  }
+
+  /**
+   * Track an embedded session.
+   *
+   * @param session - The session to track
+   */
+  static trackEmbeddedSession(session: IterableEmbeddedSession) {
+    IterableApi.logger.log('trackEmbeddedSession: ', session);
+    return RNIterableAPI.trackEmbeddedSession(session);
   }
 
   // ---- End TRACKING ---- //

@@ -1,6 +1,6 @@
 import { IterableConfig } from '../../core/classes/IterableConfig';
 import { IterableLogger } from '../../core/classes/IterableLogger';
-import { IterableTracking } from '../../core/classes/IterableTracking';
+import { trackEmbeddedSession } from '../../core/utils/trackingUtils';
 import { IterableEmbeddedImpression } from './IterableEmbeddedImpression';
 import { IterableEmbeddedImpressionData } from './IterableEmbeddedImpressionData';
 import { IterableEmbeddedSession } from './IterableEmbeddedSession';
@@ -48,7 +48,7 @@ export class IterableEmbeddedSessionManager {
         impressions: this.getImpressionList(),
       });
 
-      IterableTracking.trackEmbeddedSession(sessionToTrack);
+      trackEmbeddedSession(sessionToTrack);
 
       //reset session for next session start
       this.session = new IterableEmbeddedSession({
