@@ -1017,7 +1017,7 @@ export class Iterable {
       let authResponseCallback: IterableAuthResponseResult;
       RNEventEmitter.addListener(IterableEventName.handleAuthCalled, () => {
         // MOB-10423: Check if we can use chain operator (?.) here instead
-
+        // Asks frontend of the client/app to pass authToken
         Iterable.savedConfig.authHandler!()
           .then((promiseResult) => {
             // Promise result can be either just String OR of type AuthResponse.
@@ -1038,6 +1038,8 @@ export class Iterable {
                 } else if (
                   authResponseCallback === IterableAuthResponseResult.FAILURE
                 ) {
+                  // We are currently only reporting JWT related errors.  In
+                  // the future, we should handle other types of errors as well.
                   if ((promiseResult as IterableAuthResponse).failureCallback) {
                     (promiseResult as IterableAuthResponse).failureCallback?.();
                   }
@@ -1067,8 +1069,14 @@ export class Iterable {
       );
       RNEventEmitter.addListener(
         IterableEventName.handleAuthFailureCalled,
-        () => {
+        (authFailureResponse: IterableAuthFailure) => {
+          // Mark the flag for above listener to indicate something failed.
+          // `catch(err)` will only indicate failure on high level. No actions
+          // should be taken inside `catch(err)`.
           authResponseCallback = IterableAuthResponseResult.FAILURE;
+
+          // Call the actual JWT error with `authFailure` object.
+          Iterable.savedConfig?.onJWTError?.(authFailureResponse);
         }
       );
     }

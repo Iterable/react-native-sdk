@@ -209,7 +209,8 @@ export class IterableConfig {
   >;
 
   /**
-   * A callback function which is called when an error occurs while validating a JWT.
+   * A callback function that is called when the SDK encounters an error while
+   * validing the JWT.
    *
    * The retry for JWT should be automatically handled by the native SDK, so
    * this is just for logging/transparency purposes.
@@ -234,7 +235,8 @@ export class IterableConfig {
   logLevel: IterableLogLevel = IterableLogLevel.info;
 
   /**
-   * The retry policy to use when retrying a request.
+   * Configuration for JWT refresh retry behavior.
+   * If not specified, the SDK will use default retry behavior.
    */
   retryPolicy?: IterableRetryPolicy;
 
@@ -357,6 +359,13 @@ export class IterableConfig {
        */
       // eslint-disable-next-line eqeqeq
       authHandlerPresent: this.authHandler != undefined,
+      /**
+       * A boolean indicating if an onJWTError handler is present.
+       *
+       * TODO: Figure out if this is purposeful
+       */
+      // eslint-disable-next-line eqeqeq
+      onJWTErrorPresent: this.onJWTError != undefined,
       /** The log level for the SDK. */
       logLevel: this.logLevel,
       expiringAuthTokenRefreshPeriod: this.expiringAuthTokenRefreshPeriod,
@@ -367,6 +376,7 @@ export class IterableConfig {
       dataRegion: this.dataRegion,
       pushPlatform: this.pushPlatform,
       encryptionEnforced: this.encryptionEnforced,
+      retryPolicy: this.retryPolicy,
     };
   }
 }
