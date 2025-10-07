@@ -135,7 +135,10 @@
   "release-it": {
     "git": {
       "commitMessage": "chore: release ${version}",
-      "tagName": "${version}"
+      "tagName": "${version}",
+      "tag": true,
+      "commit": true,
+      "push": true
     },
     "npm": {
       "publish": true
