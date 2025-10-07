@@ -11,6 +11,7 @@ import type { IterableInAppLocation } from '../../inApp/enums/IterableInAppLocat
 import type { IterableInAppCloseSource } from '../../inApp/enums/IterableInAppCloseSource';
 import type { IterableInAppDeleteSource } from '../../inApp/enums/IterableInAppDeleteSource';
 import type { IterableHtmlInAppContent } from '../../inApp/classes/IterableHtmlInAppContent';
+import type { IterableInAppShowResponse } from '../../inApp/enums/IterableInAppShowResponse';
 
 export class IterableApi {
   static logger: IterableLogger = defaultLogger;
@@ -112,7 +113,7 @@ export class IterableApi {
   static trackPushOpenWithCampaignId(
     campaignId: number,
     templateId: number,
-    messageId: string | null,
+    messageId: string | null | undefined,
     appAlreadyRunning: boolean,
     dataFields?: unknown
   ) {
@@ -324,5 +325,15 @@ export class IterableApi {
   ): void {
     IterableApi.logger.log('deleteItemById: ', messageId, location, source);
     return RNIterableAPI.removeMessage(messageId, location, source);
+  }
+
+  static setInAppShowResponse(inAppShowResponse: IterableInAppShowResponse) {
+    IterableApi.logger.log('setInAppShowResponse: ', inAppShowResponse);
+    return RNIterableAPI.setInAppShowResponse(inAppShowResponse);
+  }
+
+  static passAlongAuthToken(authToken: string | null | undefined) {
+    IterableApi.logger.log('passAlongAuthToken: ', authToken);
+    return RNIterableAPI.passAlongAuthToken(authToken);
   }
 }

@@ -29,11 +29,11 @@ export class IterableAuthManager {
    *
    * @example
    * ```typescript
-   * Iterable.pauseAuthRetries(true);
+   * const authManager = new IterableAuthManager();
+   * authManager.pauseAuthRetries(true);
    * ```
    */
   pauseAuthRetries(pauseRetry: boolean) {
-    IterableAuthManager.logger?.log('pauseAuthRetries', pauseRetry);
     return IterableApi.pauseAuthRetries(pauseRetry);
   }
 }
