@@ -133,9 +133,14 @@ export class IterableInAppMessage {
    *
    * @param viewToken - The `ViewToken` containing the in-app message data.
    * @returns A new instance of `IterableInAppMessage` populated with data from the `viewToken`.
+   * @throws Error if the viewToken or its item or inAppMessage is null/undefined.
    */
   static fromViewToken(viewToken: ViewToken) {
-    const inAppMessage = viewToken.item.inAppMessage as IterableInAppMessage;
+    if (!viewToken?.item?.inAppMessage) {
+      throw new Error('Invalid ViewToken: missing item or inAppMessage');
+    }
+
+    const inAppMessage = viewToken?.item?.inAppMessage as IterableInAppMessage;
 
     return new IterableInAppMessage(
       inAppMessage.messageId,

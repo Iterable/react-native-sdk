@@ -271,7 +271,13 @@ class Serialization {
     }
 
     static IterableInboxSession.Impression inboxImpressionFromMap(JSONObject impressionMap) throws JSONException {
-        return new IterableInboxSession.Impression(impressionMap.getString("messageId"),
+        // Add null check for messageId to prevent NullPointerException
+        String messageId = impressionMap.optString("messageId", null);
+        if (messageId == null || messageId.isEmpty()) {
+            throw new JSONException("messageId is null or empty");
+        }
+
+        return new IterableInboxSession.Impression(messageId,
                 impressionMap.getBoolean("silentInbox"),
                 impressionMap.optInt("displayCount", 0),
                 (float) impressionMap.optDouble("duration", 0)
@@ -285,8 +291,13 @@ class Serialization {
             JSONArray impressionJsonArray = convertArrayToJson(array);
 
             for (int i = 0; i < impressionJsonArray.length(); i++) {
-                JSONObject impressionObj = impressionJsonArray.getJSONObject(i);
-                list.add(inboxImpressionFromMap(impressionObj));
+                try {
+                    JSONObject impressionObj = impressionJsonArray.getJSONObject(i);
+                    list.add(inboxImpressionFromMap(impressionObj));
+                } catch (JSONException e) {
+                    // Skip invalid entries instead of failing completely
+                    IterableLogger.w(TAG, "Skipping invalid impression at index " + i + ": " + e.getLocalizedMessage());
+                }
             }
         } catch (JSONException e) {
             IterableLogger.e(TAG, "Failed converting to JSONObject");
