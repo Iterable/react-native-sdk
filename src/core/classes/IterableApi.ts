@@ -20,6 +20,10 @@ export class IterableApi {
     IterableApi.logger = logger;
   }
 
+  /**
+   * Set the logger for IterableApi.
+   * @param logger - The logger to set
+   */
   static setLogger(logger: IterableLogger) {
     IterableApi.logger = logger;
   }
