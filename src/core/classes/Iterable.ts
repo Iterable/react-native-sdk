@@ -19,6 +19,8 @@ import { IterableAuthResponseResult } from '../enums/IterableAuthResponseResult'
 import { IterableEventName } from '../enums/IterableEventName';
 import type { IterableAuthFailure } from '../types/IterableAuthFailure';
 import {
+  trackEmbeddedClick,
+  trackEmbeddedMessageReceived,
   trackEmbeddedSession,
   trackEvent,
   trackInAppClick,
@@ -113,13 +115,15 @@ export class Iterable {
    * ```
    */
   static tracker = {
-    trackPushOpenWithCampaignId,
-    trackPurchase,
-    trackInAppOpen,
+    trackEmbeddedClick,
+    trackEmbeddedMessageReceived,
+    trackEmbeddedSession,
+    trackEvent,
     trackInAppClick,
     trackInAppClose,
-    trackEvent,
-    trackEmbeddedSession,
+    trackInAppOpen,
+    trackPurchase,
+    trackPushOpenWithCampaignId,
   };
   /**
    * Initializes the Iterable React Native SDK in your app's Javascript or Typescript code.

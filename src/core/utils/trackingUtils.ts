@@ -4,6 +4,7 @@ import type { IterableCommerceItem } from '../classes/IterableCommerceItem';
 import type { IterableInAppMessage } from '../../inApp/classes/IterableInAppMessage';
 import type { IterableInAppLocation } from '../../inApp/enums/IterableInAppLocation';
 import type { IterableInAppCloseSource } from '../../inApp/enums/IterableInAppCloseSource';
+import type { IterableEmbeddedMessage } from '../../embedded/classes/IterableEmbeddedMessage';
 
 /**
  * Create a `pushOpen` event on the current user's Iterable profile, populating
@@ -210,4 +211,18 @@ export const trackEvent = (name: string, dataFields?: unknown) => {
  */
 export const trackEmbeddedSession = (session: IterableEmbeddedSession) => {
   return IterableApi.trackEmbeddedSession(session);
+};
+
+export const trackEmbeddedClick = (
+  message: IterableEmbeddedMessage,
+  buttonId: string,
+  clickedUrl: string
+) => {
+  return IterableApi.trackEmbeddedClick(message, buttonId, clickedUrl);
+};
+
+export const trackEmbeddedMessageReceived = (
+  message: IterableEmbeddedMessage
+) => {
+  return IterableApi.trackEmbeddedMessageReceived(message);
 };
