@@ -88,6 +88,10 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
             configBuilder.setAuthHandler(this);
         }
 
+        if (configReadableMap.hasKey("enableEmbeddedMessaging") && configReadableMap.getBoolean("enableEmbeddedMessaging") == true) {
+          configBuilder.setEnableEmbeddedMessaging(this);
+      }
+
         IterableApi.initialize(reactContext, apiKey, configBuilder.build());
         IterableApi.getInstance().setDeviceAttribute("reactNativeSDKVersion", version);
 

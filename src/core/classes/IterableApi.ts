@@ -14,6 +14,8 @@ import type { IterableHtmlInAppContent } from '../../inApp/classes/IterableHtmlI
 import type { IterableInAppShowResponse } from '../../inApp/enums/IterableInAppShowResponse';
 import type { IterableInboxImpressionRowInfo } from '../../inbox/types/IterableInboxImpressionRowInfo';
 import type { IterableEmbeddedSession } from '../../embedded/classes/IterableEmbeddedSession';
+import type { IterableEmbeddedMessage } from '../../embedded/classes/IterableEmbeddedMessage';
+import type { IterableEmbeddedPlacement } from '../../embedded/classes/IterableEmbeddedPlacement';
 
 export class IterableApi {
   static logger: IterableLogger = defaultLogger;
@@ -494,16 +496,27 @@ export class IterableApi {
   // ======================= EMBEDDED ======================= //
   // ====================================================== //
 
-  // static getEmbeddedMessages(placementIds: number[] = []) {
-  //   IterableApi.logger.log('startEmbeddedSession: ', visibleRows);
-  //   return RNIterableAPI.startEmbeddedSession(visibleRows);
-  // }
-
-  static getEmbeddedMessages(): Promise<IterableInAppMessage[]> {
+  /**
+   * Get the embedded messages.
+   *
+   * @returns A Promise that resolves to an array of embedded messages.
+   */
+  static getEmbeddedMessages(): Promise<IterableEmbeddedPlacement[]> {
     IterableApi.logger.log('getEmbeddedMessages');
     return RNIterableAPI.getEmbeddedMessages() as unknown as Promise<
-      IterableInAppMessage[]
+      IterableEmbeddedPlacement[]
     >;
+  }
+
+  static trackEmbeddedMessageReceived(message: IterableEmbeddedMessage) {
+    IterableApi.logger.log('trackEmbeddedMessageReceived: ', message);
+
+    if (message == null) {
+      IterableApi.logger.log('trackEmbeddedMessageReceived: message is null');
+      return;
+    }
+
+    return RNIterableAPI.trackEmbeddedMessageReceived(message);
   }
 
   // ---- End EMBEDDED ---- //
