@@ -18,7 +18,7 @@ on:
     branches: [ "master" ]
 
 jobs:
-  analyze:
+  Analyze_Ruby_JSandTS:
     name: Analyze (${{ matrix.language }})
     runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
     permissions:
@@ -79,7 +79,7 @@ jobs:
         with:
           category: "/language:${{matrix.language}}"
 
-  analyze2:
+  Build_Analyze_Android_Example:
     name: Analyze (${{ matrix.language }})
     runs-on: ubuntu-latest
     env:
@@ -143,9 +143,10 @@ jobs:
       - if: matrix.build-mode == 'manual'
         shell: bash
         run: |
+          cd example
           yarn install
-          cd example/android
-          ./gradlew clean
+          cd android
+          ./gradlew build
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
@@ -154,7 +155,7 @@ jobs:
 
 
 
-  analyze3:
+  Build_Analyze_iOS_Example:
     name: Analyze (${{ matrix.language }})
     timeout-minutes: 120
     env:
@@ -202,10 +203,10 @@ jobs:
       - if: matrix.build-mode == 'manual'
         shell: bash
         run: |
-          cd example/ios
-          bundle install
-          bundle exec pod install
-          yarn ios
+          cd example
+          yarn install
+          cd ios
+          yarn react-native build-ios --mode-Release
 
         continue-on-error: true
 
