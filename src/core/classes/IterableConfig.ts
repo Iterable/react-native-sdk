@@ -357,13 +357,6 @@ export class IterableConfig {
        */
       // eslint-disable-next-line eqeqeq
       authHandlerPresent: this.authHandler != undefined,
-      /**
-       * A boolean indicating if an onJWTError handler is present.
-       *
-       * TODO: Figure out if this is purposeful
-       */
-      // eslint-disable-next-line eqeqeq
-      onJWTErrorPresent: this.onJWTError != undefined,
       /** The log level for the SDK. */
       logLevel: this.logLevel,
       expiringAuthTokenRefreshPeriod: this.expiringAuthTokenRefreshPeriod,
