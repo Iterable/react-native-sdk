@@ -1,15 +1,15 @@
 import RNIterableAPI from '../../api';
-import { IterableConfig } from './IterableConfig';
+import { defaultLogger } from '../constants/defaults';
 import { IterableLogger } from './IterableLogger';
 
 export class IterableAuthManager {
   /**
    * The logger for the Iterable SDK.
    */
-  private _logger: IterableLogger = new IterableLogger(new IterableConfig());
+  static logger: IterableLogger = defaultLogger;
 
   constructor(logger: IterableLogger) {
-    this._logger = logger;
+    IterableAuthManager.logger = logger;
   }
 
   /**
@@ -23,7 +23,7 @@ export class IterableAuthManager {
    * ```
    */
   pauseAuthRetries(pauseRetry: boolean) {
-    this._logger?.log('pauseAuthRetries');
+    IterableAuthManager.logger?.log('pauseAuthRetries');
     RNIterableAPI.pauseAuthRetries(pauseRetry);
   }
 }

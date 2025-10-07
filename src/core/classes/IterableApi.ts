@@ -1,3 +1,5 @@
+import { Platform } from 'react-native';
+
 import RNIterableAPI from '../../api';
 import { IterableConfig } from './IterableConfig';
 import type { IterableLogger } from './IterableLogger';
@@ -8,36 +10,37 @@ import type { IterableInAppMessage } from '../../inApp/classes/IterableInAppMess
 import type { IterableInAppLocation } from '../../inApp/enums/IterableInAppLocation';
 import type { IterableInAppCloseSource } from '../../inApp/enums/IterableInAppCloseSource';
 import type { IterableInAppDeleteSource } from '../../inApp/enums/IterableInAppDeleteSource';
-import { Platform } from 'react-native';
+import type { IterableHtmlInAppContent } from '../../inApp/classes/IterableHtmlInAppContent';
+import type { IterableEmbeddedSession } from '../../embedded/classes/IterableEmbeddedSession';
 
 export class IterableApi {
-  private logger: IterableLogger = defaultLogger;
+  static logger: IterableLogger = defaultLogger;
 
   constructor(logger: IterableLogger = defaultLogger) {
-    this.logger = logger;
+    IterableApi.logger = logger;
   }
 
-  public static getInstance(): IterableApi {
-    return new IterableApi();
+  static setLogger(logger: IterableLogger) {
+    IterableApi.logger = logger;
   }
 
-  public initializeWithApiKey(
+  static initializeWithApiKey(
     apiKey: string,
     config: IterableConfig = new IterableConfig(),
     version: string
   ) {
-    this.logger.log('initializeWithApiKey: ', apiKey);
+    IterableApi.logger.log('initializeWithApiKey: ', apiKey);
     RNIterableAPI.initializeWithApiKey(apiKey, config.toDict(), version);
   }
 
-  public initialize2WithApiKey(
+  static initialize2WithApiKey(
     apiKey: string,
     config: IterableConfig = new IterableConfig(),
     version: string,
     apiEndPoint: string
   ) {
-    this.logger.log('initialize2WithApiKey: ', apiKey);
-    RNIterableAPI.initialize2WithApiKey(
+    IterableApi.logger.log('initialize2WithApiKey: ', apiKey);
+    return RNIterableAPI.initialize2WithApiKey(
       apiKey,
       config.toDict(),
       version,
@@ -45,38 +48,38 @@ export class IterableApi {
     );
   }
 
-  public setEmail(email: string | null, authToken?: string | null) {
-    this.logger.log('setEmail: ', email);
-    RNIterableAPI.setEmail(email, authToken);
+  static setEmail(email: string | null, authToken?: string | null) {
+    IterableApi.logger.log('setEmail: ', email);
+    return RNIterableAPI.setEmail(email, authToken);
   }
 
-  public getEmail() {
-    this.logger.log('getEmail');
+  static getEmail() {
+    IterableApi.logger.log('getEmail');
     return RNIterableAPI.getEmail();
   }
 
-  public setUserId(userId: string | null, authToken?: string | null) {
-    this.logger.log('setUserId: ', userId);
-    RNIterableAPI.setUserId(userId, authToken);
+  static setUserId(userId: string | null, authToken?: string | null) {
+    IterableApi.logger.log('setUserId: ', userId);
+    return RNIterableAPI.setUserId(userId, authToken);
   }
 
-  public getUserId() {
-    this.logger.log('getUserId');
+  static getUserId() {
+    IterableApi.logger.log('getUserId');
     return RNIterableAPI.getUserId();
   }
 
-  public disableDeviceForCurrentUser() {
-    this.logger.log('disableDeviceForCurrentUser');
-    RNIterableAPI.disableDeviceForCurrentUser();
+  static disableDeviceForCurrentUser() {
+    IterableApi.logger.log('disableDeviceForCurrentUser');
+    return RNIterableAPI.disableDeviceForCurrentUser();
   }
 
-  public getLastPushPayload() {
-    this.logger.log('getLastPushPayload');
+  static getLastPushPayload() {
+    IterableApi.logger.log('getLastPushPayload');
     return RNIterableAPI.getLastPushPayload();
   }
 
-  public getAttributionInfo() {
-    this.logger.log('getAttributionInfo');
+  static getAttributionInfo() {
+    IterableApi.logger.log('getAttributionInfo');
     // FIXME: What if this errors?
     return RNIterableAPI.getAttributionInfo().then(
       (
@@ -99,19 +102,19 @@ export class IterableApi {
     );
   }
 
-  public setAttributionInfo(attributionInfo: IterableAttributionInfo) {
-    this.logger.log('setAttributionInfo: ', attributionInfo);
-    RNIterableAPI.setAttributionInfo(attributionInfo);
+  static setAttributionInfo(attributionInfo: IterableAttributionInfo) {
+    IterableApi.logger.log('setAttributionInfo: ', attributionInfo);
+    return RNIterableAPI.setAttributionInfo(attributionInfo);
   }
 
-  public trackPushOpenWithCampaignId(
+  static trackPushOpenWithCampaignId(
     campaignId: number,
     templateId: number,
     messageId: string | null,
     appAlreadyRunning: boolean,
     dataFields?: unknown
   ) {
-    this.logger.log(
+    IterableApi.logger.log(
       'trackPushOpenWithCampaignId: ',
       campaignId,
       templateId,
@@ -119,7 +122,7 @@ export class IterableApi {
       appAlreadyRunning,
       dataFields
     );
-    RNIterableAPI.trackPushOpenWithCampaignId(
+    return RNIterableAPI.trackPushOpenWithCampaignId(
       campaignId,
       templateId,
       messageId,
@@ -128,52 +131,62 @@ export class IterableApi {
     );
   }
 
-  public updateCart(items: IterableCommerceItem[]) {
-    this.logger.log('updateCart: ', items);
-    RNIterableAPI.updateCart(items);
+  static updateCart(items: IterableCommerceItem[]) {
+    IterableApi.logger.log('updateCart: ', items);
+    return RNIterableAPI.updateCart(items);
   }
 
-  public wakeApp() {
+  static wakeApp() {
     if (Platform.OS === 'android') {
-      this.logger.log('wakeApp');
-      RNIterableAPI.wakeApp();
+      IterableApi.logger.log('wakeApp');
+      return RNIterableAPI.wakeApp();
     }
   }
 
-  public trackPurchase(
+  static trackPurchase(
     total: number,
     items: IterableCommerceItem[],
     dataFields?: unknown
   ) {
-    this.logger.log('trackPurchase: ', total, items, dataFields);
-    RNIterableAPI.trackPurchase(total, items, dataFields);
+    IterableApi.logger.log('trackPurchase: ', total, items, dataFields);
+    return RNIterableAPI.trackPurchase(total, items, dataFields);
   }
 
-  public trackInAppOpen(
+  static trackInAppOpen(
     message: IterableInAppMessage,
     location: IterableInAppLocation
   ) {
-    this.logger.log('trackInAppOpen: ', message, location);
-    RNIterableAPI.trackInAppOpen(message.messageId, location);
+    IterableApi.logger.log('trackInAppOpen: ', message, location);
+    return RNIterableAPI.trackInAppOpen(message.messageId, location);
   }
 
-  public trackInAppClick(
+  static trackInAppClick(
     message: IterableInAppMessage,
     location: IterableInAppLocation,
     clickedUrl: string
   ) {
-    this.logger.log('trackInAppClick: ', message, location, clickedUrl);
-    RNIterableAPI.trackInAppClick(message.messageId, location, clickedUrl);
+    IterableApi.logger.log('trackInAppClick: ', message, location, clickedUrl);
+    return RNIterableAPI.trackInAppClick(
+      message.messageId,
+      location,
+      clickedUrl
+    );
   }
 
-  public trackInAppClose(
+  static trackInAppClose(
     message: IterableInAppMessage,
     location: IterableInAppLocation,
     source: IterableInAppCloseSource,
     clickedUrl?: string
   ) {
-    this.logger.log('trackInAppClose: ', message, location, source, clickedUrl);
-    RNIterableAPI.trackInAppClose(
+    IterableApi.logger.log(
+      'trackInAppClose: ',
+      message,
+      location,
+      source,
+      clickedUrl
+    );
+    return RNIterableAPI.trackInAppClose(
       message.messageId,
       location,
       source,
@@ -181,36 +194,36 @@ export class IterableApi {
     );
   }
 
-  public inAppConsume(
+  static inAppConsume(
     message: IterableInAppMessage,
     location: IterableInAppLocation,
     source: IterableInAppDeleteSource
   ) {
-    this.logger.log('inAppConsume: ', message, location, source);
-    RNIterableAPI.inAppConsume(message.messageId, location, source);
+    IterableApi.logger.log('inAppConsume: ', message, location, source);
+    return RNIterableAPI.inAppConsume(message.messageId, location, source);
   }
 
-  public trackEvent(name: string, dataFields?: unknown) {
-    this.logger.log('trackEvent: ', name, dataFields);
-    RNIterableAPI.trackEvent(name, dataFields);
+  static trackEvent(name: string, dataFields?: unknown) {
+    IterableApi.logger.log('trackEvent: ', name, dataFields);
+    return RNIterableAPI.trackEvent(name, dataFields);
   }
 
-  public updateUser(dataFields: unknown, mergeNestedObjects: boolean) {
-    this.logger.log('updateUser: ', dataFields, mergeNestedObjects);
-    RNIterableAPI.updateUser(dataFields, mergeNestedObjects);
+  static updateUser(dataFields: unknown, mergeNestedObjects: boolean) {
+    IterableApi.logger.log('updateUser: ', dataFields, mergeNestedObjects);
+    return RNIterableAPI.updateUser(dataFields, mergeNestedObjects);
   }
 
-  public updateEmail(email: string, authToken?: string | null) {
-    this.logger.log('updateEmail: ', email, authToken);
-    RNIterableAPI.updateEmail(email, authToken);
+  static updateEmail(email: string, authToken?: string | null) {
+    IterableApi.logger.log('updateEmail: ', email, authToken);
+    return RNIterableAPI.updateEmail(email, authToken);
   }
 
-  public handleAppLink(link: string) {
-    this.logger.log('handleAppLink: ', link);
-    RNIterableAPI.handleAppLink(link);
+  static handleAppLink(link: string) {
+    IterableApi.logger.log('handleAppLink: ', link);
+    return RNIterableAPI.handleAppLink(link);
   }
 
-  public updateSubscriptions(
+  static updateSubscriptions(
     emailListIds: number[] | null,
     unsubscribedChannelIds: number[] | null,
     unsubscribedMessageTypeIds: number[] | null,
@@ -218,7 +231,7 @@ export class IterableApi {
     campaignId: number,
     templateId: number
   ) {
-    this.logger.log(
+    IterableApi.logger.log(
       'updateSubscriptions: ',
       emailListIds,
       unsubscribedChannelIds,
@@ -227,7 +240,7 @@ export class IterableApi {
       campaignId,
       templateId
     );
-    RNIterableAPI.updateSubscriptions(
+    return RNIterableAPI.updateSubscriptions(
       emailListIds,
       unsubscribedChannelIds,
       unsubscribedMessageTypeIds,
@@ -237,8 +250,82 @@ export class IterableApi {
     );
   }
 
-  public pauseAuthRetries(pauseRetry: boolean) {
-    this.logger.log('pauseAuthRetries: ', pauseRetry);
-    RNIterableAPI.pauseAuthRetries(pauseRetry);
+  static pauseAuthRetries(pauseRetry: boolean) {
+    IterableApi.logger.log('pauseAuthRetries: ', pauseRetry);
+    return RNIterableAPI.pauseAuthRetries(pauseRetry);
+  }
+
+  static getInAppMessages(): Promise<IterableInAppMessage[]> {
+    IterableApi.logger.log('getInAppMessages');
+    return RNIterableAPI.getInAppMessages() as unknown as Promise<
+      IterableInAppMessage[]
+    >;
+  }
+
+  static getInboxMessages(): Promise<IterableInAppMessage[]> {
+    IterableApi.logger.log('getInboxMessages');
+    return RNIterableAPI.getInboxMessages() as unknown as Promise<
+      IterableInAppMessage[]
+    >;
+  }
+
+  static showMessage(
+    messageId: string,
+    consume: boolean
+  ): Promise<string | null> {
+    IterableApi.logger.log('showMessage: ', messageId, consume);
+    return RNIterableAPI.showMessage(messageId, consume);
+  }
+
+  static removeMessage(
+    messageId: string,
+    location: number,
+    source: number
+  ): void {
+    IterableApi.logger.log('removeMessage: ', messageId, location, source);
+    return RNIterableAPI.removeMessage(messageId, location, source);
+  }
+
+  static setReadForMessage(messageId: string, read: boolean): void {
+    IterableApi.logger.log('setReadForMessage: ', messageId, read);
+    return RNIterableAPI.setReadForMessage(messageId, read);
+  }
+
+  static setAutoDisplayPaused(autoDisplayPaused: boolean): void {
+    IterableApi.logger.log('setAutoDisplayPaused: ', autoDisplayPaused);
+    return RNIterableAPI.setAutoDisplayPaused(autoDisplayPaused);
+  }
+
+  static getHtmlInAppContentForMessage(
+    messageId: string
+  ): Promise<IterableHtmlInAppContent> {
+    IterableApi.logger.log('getHtmlInAppContentForMessage: ', messageId);
+    return RNIterableAPI.getHtmlInAppContentForMessage(messageId);
+  }
+
+  static trackEmbeddedSession(session: IterableEmbeddedSession): void {
+    IterableApi.logger.log('trackEmbeddedSession: ', session);
+    return RNIterableAPI.trackEmbeddedSession(session);
+  }
+
+  static getHtmlInAppContentForMessageId(
+    messageId: string
+  ): Promise<IterableHtmlInAppContent> {
+    IterableApi.logger.log('getHtmlInAppContentForMessageId: ', messageId);
+    return RNIterableAPI.getHtmlInAppContentForMessage(messageId);
+  }
+
+  static setMessageAsRead(messageId: string, read: boolean): void {
+    IterableApi.logger.log('setMessageAsRead: ', messageId, read);
+    return RNIterableAPI.setReadForMessage(messageId, read);
+  }
+
+  static deleteItemById(
+    messageId: string,
+    location: number,
+    source: number
+  ): void {
+    IterableApi.logger.log('deleteItemById: ', messageId, location, source);
+    return RNIterableAPI.removeMessage(messageId, location, source);
   }
 }

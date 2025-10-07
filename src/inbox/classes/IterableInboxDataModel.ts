@@ -11,6 +11,7 @@ import type {
   IterableInboxImpressionRowInfo,
   IterableInboxRowViewModel,
 } from '../types';
+import { IterableApi } from '../../core/classes/IterableApi';
 
 /**
  * The `IterableInboxDataModel` class provides methods to manage and manipulate
@@ -113,7 +114,7 @@ export class IterableInboxDataModel {
   setMessageAsRead(id: string) {
     Iterable?.logger?.log('IterableInboxDataModel.setMessageAsRead');
 
-    RNIterableAPI.setReadForMessage(id, true);
+    IterableApi.setReadForMessage(id, true);
   }
 
   /**
@@ -151,7 +152,9 @@ export class IterableInboxDataModel {
    * @param visibleRows - An array of `IterableInboxImpressionRowInfo` objects representing the rows that are currently visible.
    */
   startSession(visibleRows: IterableInboxImpressionRowInfo[] = []) {
-    RNIterableAPI.startSession(visibleRows as unknown as { [key: string]: string | number | boolean }[]);
+    RNIterableAPI.startSession(
+      visibleRows as unknown as { [key: string]: string | number | boolean }[]
+    );
   }
 
   /**
@@ -178,7 +181,9 @@ export class IterableInboxDataModel {
    *                      Defaults to an empty array if not provided.
    */
   updateVisibleRows(visibleRows: IterableInboxImpressionRowInfo[] = []) {
-    RNIterableAPI.updateVisibleRows(visibleRows as unknown as { [key: string]: string | number | boolean }[]);
+    RNIterableAPI.updateVisibleRows(
+      visibleRows as unknown as { [key: string]: string | number | boolean }[]
+    );
   }
 
   /**

@@ -1,6 +1,6 @@
 import { RNIterableAPI } from '../../api';
-import { IterableConfig } from '../../core/classes/IterableConfig';
 import { IterableLogger } from '../../core/classes/IterableLogger';
+import { defaultLogger } from '../../core/constants/defaults';
 import type {
   IterableInAppDeleteSource,
   IterableInAppLocation,
@@ -20,10 +20,10 @@ export class IterableInAppManager {
   /**
    * The logger for the Iterable SDK.
    */
-  private _logger: IterableLogger = new IterableLogger(new IterableConfig());
+  static logger: IterableLogger = defaultLogger;
 
   constructor(logger: IterableLogger) {
-    this._logger = logger;
+    IterableInAppManager.logger = logger;
   }
 
   /**
@@ -43,7 +43,7 @@ export class IterableInAppManager {
    * @returns A Promise that resolves to an array of in-app messages.
    */
   getMessages(): Promise<IterableInAppMessage[]> {
-    this._logger?.log('InAppManager.getMessages');
+    IterableInAppManager.logger?.log('InAppManager.getMessages');
 
     return RNIterableAPI.getInAppMessages() as unknown as Promise<
       IterableInAppMessage[]
@@ -68,7 +68,7 @@ export class IterableInAppManager {
    * @returns A Promise that resolves to an array of messages marked as `saveToInbox`.
    */
   getInboxMessages(): Promise<IterableInAppMessage[]> {
-    this?._logger?.log('InAppManager.getInboxMessages');
+    IterableInAppManager.logger?.log('InAppManager.getInboxMessages');
 
     return RNIterableAPI.getInboxMessages() as unknown as Promise<
       IterableInAppMessage[]
@@ -97,7 +97,7 @@ export class IterableInAppManager {
     message: IterableInAppMessage,
     consume: boolean
   ): Promise<string | null> {
-    this?._logger?.log('InAppManager.show');
+    IterableInAppManager.logger?.log('InAppManager.show');
 
     return RNIterableAPI.showMessage(message.messageId, consume);
   }
@@ -125,7 +125,7 @@ export class IterableInAppManager {
     location: IterableInAppLocation,
     source: IterableInAppDeleteSource
   ): void {
-    this?._logger?.log('InAppManager.remove');
+    IterableInAppManager.logger?.log('InAppManager.remove');
 
     return RNIterableAPI.removeMessage(message.messageId, location, source);
   }
@@ -142,7 +142,7 @@ export class IterableInAppManager {
    * ```
    */
   setReadForMessage(message: IterableInAppMessage, read: boolean) {
-    this?._logger?.log('InAppManager.setRead');
+    IterableInAppManager.logger?.log('InAppManager.setRead');
 
     RNIterableAPI.setReadForMessage(message.messageId, read);
   }
@@ -162,7 +162,7 @@ export class IterableInAppManager {
   getHtmlContentForMessage(
     message: IterableInAppMessage
   ): Promise<IterableHtmlInAppContent> {
-    this?._logger?.log('InAppManager.getHtmlContentForMessage');
+    IterableInAppManager.logger?.log('InAppManager.getHtmlContentForMessage');
 
     return RNIterableAPI.getHtmlInAppContentForMessage(
       message.messageId
@@ -184,7 +184,7 @@ export class IterableInAppManager {
    * ```
    */
   setAutoDisplayPaused(paused: boolean) {
-    this?._logger?.log('InAppManager.setAutoDisplayPaused');
+    IterableInAppManager.logger?.log('InAppManager.setAutoDisplayPaused');
 
     RNIterableAPI.setAutoDisplayPaused(paused);
   }

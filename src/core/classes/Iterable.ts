@@ -24,6 +24,7 @@ import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
 import type { IterableAuthFailure } from '../types/IterableAuthFailure';
 import { IterableAuthManager } from './IterableAuthManager';
+import { IterableApi } from './IterableApi';
 
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
@@ -167,6 +168,7 @@ export class Iterable {
     Iterable.logger = logger;
     Iterable.authManager = new IterableAuthManager(logger);
     Iterable.inAppManager = new IterableInAppManager(logger);
+    IterableApi.setLogger(logger);
 
     this.setupEventHandlers();
   }
