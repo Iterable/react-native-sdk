@@ -1,10 +1,10 @@
 import { type IterableInAppMessage } from '../../inApp/classes/IterableInAppMessage';
-import { IterableInAppShowResponse } from '../../inApp/enums';
-import {
-  IterableDataRegion,
-  IterableLogLevel,
-  IterablePushPlatform,
-} from '../enums';
+import { IterableInAppShowResponse } from '../../inApp/enums/IterableInAppShowResponse';
+import { IterableDataRegion } from '../enums/IterableDataRegion';
+import { IterableLogLevel } from '../enums/IterableLogLevel';
+import { IterablePushPlatform } from '../enums/IterablePushPlatform';
+import type { IterableAuthFailure } from '../types/IterableAuthFailure';
+import type { IterableRetryPolicy } from '../types/IterableRetryPolicy';
 import { IterableAction } from './IterableAction';
 import type { IterableActionContext } from './IterableActionContext';
 import type { IterableAuthResponse } from './IterableAuthResponse';
@@ -204,7 +204,27 @@ export class IterableConfig {
    * @returns A promise that resolves to an `IterableAuthResponse`, a `string`,
    * or `undefined`.
    */
-  authHandler?: () => Promise<IterableAuthResponse | string | undefined>;
+  authHandler?: () => Promise<
+    IterableAuthResponse | IterableAuthFailure | string | undefined
+  >;
+
+  /**
+   * A callback function which is called when an error occurs while validating a JWT.
+   *
+   * The retry for JWT should be automatically handled by the native SDK, so
+   * this is just for logging/transparency purposes.
+   *
+   * @param authFailure - The details of the auth failure.
+   *
+   * @example
+   * ```typescript
+   * const config = new IterableConfig();
+   * config.onJWTError = (authFailure) => {
+   *   console.error('Error fetching JWT:', authFailure);
+   * };
+   * ```
+   */
+  onJWTError?: (authFailure: IterableAuthFailure) => void;
 
   /**
    * Set the verbosity of Android and iOS project's log system.
@@ -212,6 +232,11 @@ export class IterableConfig {
    * By default, you will be able to see info level logs printed in IDE when running the app.
    */
   logLevel: IterableLogLevel = IterableLogLevel.info;
+
+  /**
+   * The retry policy to use when retrying a request.
+   */
+  retryPolicy?: IterableRetryPolicy;
 
   /**
    * Set whether the React Native SDK should print function calls to console.
