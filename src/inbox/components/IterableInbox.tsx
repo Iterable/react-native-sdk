@@ -40,6 +40,13 @@ const ANDROID_HEADLINE_HEIGHT = 70;
 const HEADLINE_PADDING_LEFT_PORTRAIT = 30;
 const HEADLINE_PADDING_LEFT_LANDSCAPE = 70;
 
+export const inboxTestIDs = {
+  container: 'inbox',
+  messageListContainer: 'inbox-message-list-container',
+  headline: 'inbox-headline',
+  loadingScreen: 'inbox-loading-screen',
+} as const;
+
 /**
  * Props for the IterableInbox component.
  */
@@ -325,9 +332,7 @@ export const IterableInbox = ({
   }, [returnToInboxTrigger]);
 
   function addInboxChangedListener() {
-    RNEventEmitter.addListener('receivedIterableInboxChanged', () => {
-      fetchInboxMessages();
-    });
+    RNEventEmitter.addListener('receivedIterableInboxChanged', fetchInboxMessages);
   }
 
   function removeInboxChangedListener() {
@@ -410,7 +415,7 @@ export const IterableInbox = ({
           selectedRowViewModel.inAppMessage.messageId
         )}
         returnToInbox={returnToInbox}
-        deleteRow={(messageId: string) => deleteRow(messageId)}
+        deleteRow={deleteRow}
         contentWidth={width}
         isPortrait={isPortrait}
       />
@@ -419,9 +424,9 @@ export const IterableInbox = ({
 
   function showMessageList(_loading: boolean) {
     return (
-      <View style={styles.messageListContainer}>
+      <View testID={inboxTestIDs.messageListContainer} style={styles.messageListContainer}>
         {showNavTitle ? (
-          <Text style={styles.headline}>
+          <Text testID={inboxTestIDs.headline} style={styles.headline}>
             {customizations?.navTitle
               ? customizations?.navTitle
               : defaultInboxTitle}
@@ -433,13 +438,11 @@ export const IterableInbox = ({
             rowViewModels={rowViewModels}
             customizations={customizations}
             messageListItemLayout={messageListItemLayout}
-            deleteRow={(messageId: string) => deleteRow(messageId)}
+            deleteRow={deleteRow}
             handleMessageSelect={(messageId: string, index: number) =>
               handleMessageSelect(messageId, index, rowViewModels)
             }
-            updateVisibleMessageImpressions={(
-              messageImpressions: IterableInboxImpressionRowInfo[]
-            ) => updateVisibleMessageImpressions(messageImpressions)}
+            updateVisibleMessageImpressions={updateVisibleMessageImpressions}
             contentWidth={width}
             isPortrait={isPortrait}
           />
@@ -452,7 +455,7 @@ export const IterableInbox = ({
 
   function renderEmptyState() {
     return loading ? (
-      <View style={styles.loadingScreen} />
+      <View testID={inboxTestIDs.loadingScreen} style={styles.loadingScreen} />
     ) : (
       <IterableInboxEmptyState
         customizations={customizations}
@@ -500,8 +503,8 @@ export const IterableInbox = ({
   );
 
   return safeAreaMode ? (
-    <SafeAreaView style={styles.container}>{inboxAnimatedView}</SafeAreaView>
+    <SafeAreaView testID={inboxTestIDs.container} style={styles.container}>{inboxAnimatedView}</SafeAreaView>
   ) : (
-    <View style={styles.container}>{inboxAnimatedView}</View>
+    <View testID={inboxTestIDs.container} style={styles.container}>{inboxAnimatedView}</View>
   );
 };
