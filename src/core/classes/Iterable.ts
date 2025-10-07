@@ -24,11 +24,13 @@ import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
 import type { IterableAuthFailure } from '../types/IterableAuthFailure';
 import {
+  defaultAuthManager,
   defaultConfig,
   defaultInAppManager,
   defaultLogger,
 } from '../constants/defaults';
 import { IterableApi } from './IterableApi';
+import { IterableAuthManager } from './IterableAuthManager';
 
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
@@ -80,6 +82,19 @@ export class Iterable {
    * ```
    */
   static inAppManager: IterableInAppManager = defaultInAppManager;
+
+  /**
+   * Authentication manager for the current user.
+   *
+   * This property provides access to authentication functionality including
+   * pausing the authentication retry mechanism.
+   *
+   * @example
+   * ```typescript
+   * Iterable.authManager.pauseAuthRetries(true);
+   * ```
+   */
+  static authManager: IterableAuthManager = defaultAuthManager;
 
   /**
    * Initializes the Iterable React Native SDK in your app's Javascript or Typescript code.
@@ -157,6 +172,7 @@ export class Iterable {
 
     Iterable.logger = logger;
     Iterable.inAppManager = new IterableInAppManager(logger);
+    Iterable.authManager = new IterableAuthManager(logger);
     IterableApi.setLogger(logger);
 
     this.setupEventHandlers();
