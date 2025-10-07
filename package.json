@@ -1,6 +1,6 @@
 {
   "name": "@iterable/react-native-sdk",
-  "version": "2.1.0-alpha.0",
+  "version": "2.1.0-beta.0",
   "description": "Iterable SDK for React Native.",
   "source": "./src/index.tsx",
   "main": "./lib/module/index.js",
@@ -135,7 +135,10 @@
   "release-it": {
     "git": {
       "commitMessage": "chore: release ${version}",
-      "tagName": "${version}"
+      "tagName": "${version}",
+      "tag": true,
+      "commit": true,
+      "push": true
     },
     "npm": {
       "publish": true
