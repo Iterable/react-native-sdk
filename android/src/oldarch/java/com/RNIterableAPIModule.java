@@ -224,11 +224,6 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void onAuthFailure(AuthFailure authFailure) {
-      moduleImpl.onAuthFailureFromReadableMap(authFailure);
-    }
-
-    @ReactMethod
     public void pauseAuthRetries(boolean pauseRetry) {
       moduleImpl.pauseAuthRetries(pauseRetry);
     }
