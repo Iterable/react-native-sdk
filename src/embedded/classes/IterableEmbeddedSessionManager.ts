@@ -12,6 +12,7 @@ export class IterableEmbeddedSessionManager {
   private logger: IterableLogger = new IterableLogger(new IterableConfig());
   private impressions: Record<string, IterableEmbeddedImpressionData> = {};
   public session?: IterableEmbeddedSession;
+
   constructor(logger: IterableLogger) {
     this.logger = logger;
     this.impressions = {};

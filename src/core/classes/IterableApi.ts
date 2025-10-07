@@ -491,6 +491,22 @@ export class IterableApi {
   // ---- End IN-APP ---- //
 
   // ====================================================== //
+  // ======================= EMBEDDED ======================= //
+  // ====================================================== //
+
+  /**
+   * Start an embedded session.
+   *
+   * @param visibleRows - The visible rows.
+   */
+  static startEmbeddedSession(visibleRows: IterableInboxImpressionRowInfo[]) {
+    IterableApi.logger.log('startEmbeddedSession: ', visibleRows);
+    return RNIterableAPI.startEmbeddedSession(visibleRows);
+  }
+
+  // ---- End EMBEDDED ---- //
+
+  // ====================================================== //
   // ======================= MOSC ======================= //
   // ====================================================== //
 
