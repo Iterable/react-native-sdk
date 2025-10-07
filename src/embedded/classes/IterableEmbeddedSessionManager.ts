@@ -11,7 +11,11 @@ import { IterableEmbeddedSession } from './IterableEmbeddedSession';
 export class IterableEmbeddedSessionManager {
   private logger: IterableLogger = new IterableLogger(new IterableConfig());
   private impressions: Record<string, IterableEmbeddedImpressionData> = {};
-  public session?: IterableEmbeddedSession;
+  public session: IterableEmbeddedSession = new IterableEmbeddedSession({
+    start: null,
+    end: null,
+    impressions: [],
+  });
 
   constructor(logger: IterableLogger) {
     this.logger = logger;
@@ -31,6 +35,8 @@ export class IterableEmbeddedSessionManager {
     // TODO: figure out how to get a unique ID for the session
     this.session = new IterableEmbeddedSession({
       start: new Date(),
+      end: null,
+      impressions: [],
     });
   }
 
@@ -40,7 +46,7 @@ export class IterableEmbeddedSessionManager {
       return;
     }
 
-    if (this.session?.impressions?.length) {
+    if (Object.keys(this.impressions).length > 0) {
       this.endAllImpressions();
 
       const sessionToTrack = new IterableEmbeddedSession({
@@ -64,6 +70,7 @@ export class IterableEmbeddedSessionManager {
 
   public startImpression(messageId: string, placementId: number) {
     let impressionData = this.impressions[messageId];
+
     if (!impressionData) {
       impressionData = new IterableEmbeddedImpressionData(
         messageId,
@@ -71,22 +78,41 @@ export class IterableEmbeddedSessionManager {
       );
       this.impressions[messageId] = impressionData;
     }
+
     impressionData.start = new Date();
   }
 
   public pauseImpression(messageId: string) {
     const impressionData = this.impressions[messageId];
+
     if (!impressionData) {
       this.logger.log('onMessageImpressionEnded: impressionData not found');
       return;
     }
 
-    if (impressionData.start == null) {
+    if (!impressionData.start) {
       this.logger.log('onMessageImpressionEnded: impressionStarted is null');
       return;
     }
 
     this.updateDisplayCountAndDuration(impressionData);
+  }
+
+  private endAllImpressions() {
+    Object.values(this.impressions).forEach((impressionData) => {
+      this.updateDisplayCountAndDuration(impressionData);
+    });
+  }
+
+  private getImpressionList(): IterableEmbeddedImpression[] {
+    return Object.values(this.impressions).map((impression) => {
+      return new IterableEmbeddedImpression({
+        messageId: impression.messageId || '',
+        placementId: impression.placementId || 0,
+        displayCount: impression.displayCount || 0,
+        duration: impression.duration || 0,
+      });
+    });
   }
 
   private updateDisplayCountAndDuration(
@@ -96,21 +122,9 @@ export class IterableEmbeddedSessionManager {
       impressionData.displayCount = (impressionData.displayCount || 0) + 1;
       impressionData.duration =
         (impressionData.duration || 0) +
-        (new Date().getTime() - impressionData.start.getTime()) / 1000;
+        (new Date().getTime() - impressionData.start.getTime()) / 1000.0;
       impressionData.start = null;
     }
     return impressionData;
-  }
-
-  private endAllImpressions() {
-    Object.values(this.impressions).forEach((impression) => {
-      this.updateDisplayCountAndDuration(impression);
-    });
-  }
-
-  private getImpressionList(): IterableEmbeddedImpressionData[] {
-    return Object.values(this.impressions).map((impression) => {
-      return new IterableEmbeddedImpression(impression);
-    });
   }
 }
