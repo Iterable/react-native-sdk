@@ -146,14 +146,12 @@ jobs:
           cd example
           yarn install
           cd android
-          ./gradlew build
+          ./gradlew clean
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
         with:
           category: "/language:${{matrix.language}}"
-
-
 
   Build_Analyze_iOS_Example:
     name: Analyze (${{ matrix.language }})
@@ -209,8 +207,6 @@ jobs:
           bundle install
           bundle exec pod install
           xcodebuild -workspace ReactNativeSdkExample.xcworkspace -scheme ReactNativeSdkExample -configuration Debug -destination 'platform=iOS Simulator,name=iPhone 16' build
-
-        continue-on-error: true
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
