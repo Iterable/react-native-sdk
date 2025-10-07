@@ -218,11 +218,6 @@ class Serialization {
                 configBuilder.setDataRegion(iterableDataRegion);
             }
 
-            // Note: setEncryptionEnforced method is not available in Android SDK
-            // if (iterableContextJSON.has("encryptionEnforced")) {
-            //     configBuilder.setEncryptionEnforced(iterableContextJSON.optBoolean("encryptionEnforced"));
-            // }
-
             if (iterableContextJSON.has("retryPolicy")) {
                 JSONObject retryPolicyJson = iterableContextJSON.getJSONObject("retryPolicy");
                 int maxRetry = retryPolicyJson.getInt("maxRetry");
