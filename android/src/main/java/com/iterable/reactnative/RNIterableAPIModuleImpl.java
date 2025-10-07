@@ -89,8 +89,8 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
             configBuilder.setAuthHandler(this);
         }
 
-        if (iterableContextJSON.has("enableEmbeddedMessaging")) {
-            configBuilder.setEnableEmbeddedMessaging(iterableContextJSON.optBoolean("enableEmbeddedMessaging"));
+        if (configReadableMap.hasKey("enableEmbeddedMessaging")) {
+            configBuilder.setEnableEmbeddedMessaging(configReadableMap.getBoolean("enableEmbeddedMessaging"));
         }
 
         IterableApi.initialize(reactContext, apiKey, configBuilder.build());
@@ -122,6 +122,10 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         if (configReadableMap.hasKey("authHandlerPresent") && configReadableMap.getBoolean("authHandlerPresent") == true) {
             configBuilder.setAuthHandler(this);
         }
+
+        if (configReadableMap.hasKey("enableEmbeddedMessaging")) {
+          configBuilder.setEnableEmbeddedMessaging(configReadableMap.getBoolean("enableEmbeddedMessaging"));
+      }
 
         // NOTE: There does not seem to be a way to set the API endpoint
         // override in the Android SDK.  Check with @Ayyanchira and @evantk91 to
