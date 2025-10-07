@@ -39,13 +39,13 @@ export class IterableLogger {
    *
    * @param message - The message to be logged.
    */
-  log(message: string) {
+  log(message?: unknown, ...optionalParams: unknown[]) {
     // default to `true` in the case of unit testing where `Iterable` is not initialized
     // which is most likely in a debug environment anyways
     const loggingEnabled = this.config.logReactNativeSdkCalls ?? true;
 
     if (loggingEnabled) {
-      console.log(message);
+      console.log(message, ...optionalParams);
     }
   }
 }
