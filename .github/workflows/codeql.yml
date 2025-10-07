@@ -146,7 +146,7 @@ jobs:
           cd example
           yarn install
           cd android
-          ./gradlew clean
+          ./gradlew build
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
@@ -206,6 +206,8 @@ jobs:
           cd example
           yarn install
           cd ios
+          bundle install
+          bundle exec pod install
           xcodebuild -workspace ReactNativeSdkExample.xcworkspace -scheme ReactNativeSdkExample -configuration Debug -destination 'platform=iOS Simulator,name=iPhone 16' build
 
         continue-on-error: true
