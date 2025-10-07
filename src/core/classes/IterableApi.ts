@@ -28,9 +28,9 @@ export class IterableApi {
     apiKey: string,
     config: IterableConfig = new IterableConfig(),
     version: string
-  ) {
+  ): Promise<boolean> {
     IterableApi.logger.log('initializeWithApiKey: ', apiKey);
-    RNIterableAPI.initializeWithApiKey(apiKey, config.toDict(), version);
+    return RNIterableAPI.initializeWithApiKey(apiKey, config.toDict(), version);
   }
 
   static initialize2WithApiKey(
@@ -38,7 +38,7 @@ export class IterableApi {
     config: IterableConfig = new IterableConfig(),
     version: string,
     apiEndPoint: string
-  ) {
+  ): Promise<boolean> {
     IterableApi.logger.log('initialize2WithApiKey: ', apiKey);
     return RNIterableAPI.initialize2WithApiKey(
       apiKey,
@@ -58,7 +58,10 @@ export class IterableApi {
     return RNIterableAPI.getEmail();
   }
 
-  static setUserId(userId: string | null, authToken?: string | null) {
+  static setUserId(
+    userId: string | null | undefined,
+    authToken?: string | null
+  ) {
     IterableApi.logger.log('setUserId: ', userId);
     return RNIterableAPI.setUserId(userId, authToken);
   }
