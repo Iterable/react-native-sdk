@@ -1,7 +1,7 @@
 /**
  * The view type for an embedded message.
  */
-export enum IterableEmbeddedView {
+export enum IterableEmbeddedViewType {
   /** The embedded view is a banner */
   Banner = 0,
   /** The embedded view is a card */
