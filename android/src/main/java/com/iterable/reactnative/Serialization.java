@@ -16,6 +16,7 @@ import com.iterable.iterableapi.IterableAction;
 import com.iterable.iterableapi.IterableActionContext;
 import com.iterable.iterableapi.IterableConfig;
 import com.iterable.iterableapi.IterableDataRegion;
+import com.iterable.iterableapi.IterableEmbeddedMessage;
 import com.iterable.iterableapi.IterableInAppCloseAction;
 import com.iterable.iterableapi.IterableInAppDeleteActionType;
 import com.iterable.iterableapi.IterableInAppHandler;
@@ -23,8 +24,8 @@ import com.iterable.iterableapi.IterableInAppLocation;
 import com.iterable.iterableapi.IterableInAppMessage;
 import com.iterable.iterableapi.IterableInboxSession;
 import com.iterable.iterableapi.IterableLogger;
-import com.iterable.iterableapi.RNIterableInternal;
 import com.iterable.iterableapi.RetryPolicy;
+import com.iterable.iterableapi.RNIterableInternal;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -137,6 +138,17 @@ class Serialization {
         return inAppMessagesJson;
     }
 
+    static JSONArray serializeEmbeddedMessages(List<IterableEmbeddedMessage> embeddedMessages) {
+        JSONArray embeddedMessagesJson = new JSONArray();
+        if (embeddedMessages != null) {
+            for (IterableEmbeddedMessage message : embeddedMessages) {
+                JSONObject messageJson = IterableEmbeddedMessage.Companion.toJSONObject(message);
+                embeddedMessagesJson.put(messageJson);
+            }
+        }
+        return embeddedMessagesJson;
+    }
+
     static IterableConfig.Builder getConfigFromReadableMap(ReadableMap iterableContextMap) {
         try {
             JSONObject iterableContextJSON = convertMapToJson(iterableContextMap);
@@ -216,6 +228,10 @@ class Serialization {
                 }
 
                 configBuilder.setDataRegion(iterableDataRegion);
+            }
+
+            if (iterableContextJSON.has("enableEmbeddedMessaging")) {
+                configBuilder.setEnableEmbeddedMessaging(iterableContextJSON.optBoolean("enableEmbeddedMessaging"));
             }
 
             if (iterableContextJSON.has("retryPolicy")) {

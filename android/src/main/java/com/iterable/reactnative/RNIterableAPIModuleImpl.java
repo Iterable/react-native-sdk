@@ -23,10 +23,11 @@ import com.iterable.iterableapi.InboxSessionManager;
 import com.iterable.iterableapi.IterableAction;
 import com.iterable.iterableapi.IterableActionContext;
 import com.iterable.iterableapi.IterableApi;
+import com.iterable.iterableapi.IterableAttributionInfo;
 import com.iterable.iterableapi.IterableAuthHandler;
 import com.iterable.iterableapi.IterableConfig;
 import com.iterable.iterableapi.IterableCustomActionHandler;
-import com.iterable.iterableapi.IterableAttributionInfo;
+import com.iterable.iterableapi.IterableEmbeddedMessage;
 import com.iterable.iterableapi.IterableHelper;
 import com.iterable.iterableapi.IterableInAppCloseAction;
 import com.iterable.iterableapi.IterableInAppHandler;
@@ -88,9 +89,9 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
             configBuilder.setAuthHandler(this);
         }
 
-        if (configReadableMap.hasKey("enableEmbeddedMessaging") && configReadableMap.getBoolean("enableEmbeddedMessaging") == true) {
-          configBuilder.setEnableEmbeddedMessaging(this);
-      }
+        if (iterableContextJSON.has("enableEmbeddedMessaging")) {
+            configBuilder.setEnableEmbeddedMessaging(iterableContextJSON.optBoolean("enableEmbeddedMessaging"));
+        }
 
         IterableApi.initialize(reactContext, apiKey, configBuilder.build());
         IterableApi.getInstance().setDeviceAttribute("reactNativeSDKVersion", version);
