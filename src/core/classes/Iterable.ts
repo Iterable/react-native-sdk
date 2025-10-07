@@ -918,6 +918,10 @@ export class Iterable {
     );
   }
 
+  static getEmbeddedMessages(placementIds?: number[] | null) {
+    return IterableApi.getEmbeddedMessages(placementIds ?? null);
+  }
+
   /**
    * Sets up event handlers for various Iterable events.
    *

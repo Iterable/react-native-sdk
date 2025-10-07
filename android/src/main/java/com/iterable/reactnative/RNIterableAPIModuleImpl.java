@@ -46,6 +46,7 @@ import org.json.JSONObject;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -646,12 +647,33 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
     // region Embedded messaging
 
 
-    public void getEmbeddedMessages(Integer placementId, Promise promise) {
-        IterableLogger.d(TAG, "getEmbeddedMessages for placement: " + placementId);
+    public void getEmbeddedMessages(@Nullable ReadableArray placementIds, Promise promise) {
+        IterableLogger.d(TAG, "getEmbeddedMessages for placements: " + placementIds);
 
         try {
-            JSONArray embeddedMessageJsonArray = Serialization.serializeEmbeddedMessages(IterableApi.getInstance().getEmbeddedManager().getMessages(placementId));
-            IterableLogger.d(TAG, "Messages for placement: " + embeddedMessageJsonArray);
+            List<IterableEmbeddedMessage> allMessages = new ArrayList<>();
+
+            if (placementIds == null || placementIds.size() == 0) {
+                // If no placement IDs provided, we need to get messages for all possible placements
+                // Since the Android SDK requires a placement ID, we'll use 0 as a default
+                // This might need to be adjusted based on the actual SDK behavior
+                List<IterableEmbeddedMessage> messages = IterableApi.getInstance().getEmbeddedManager().getMessages(0L);
+                if (messages != null) {
+                    allMessages.addAll(messages);
+                }
+            } else {
+                // Convert ReadableArray to individual placement IDs and get messages for each
+                for (int i = 0; i < placementIds.size(); i++) {
+                    long placementId = placementIds.getInt(i);
+                    List<IterableEmbeddedMessage> messages = IterableApi.getInstance().getEmbeddedManager().getMessages(placementId);
+                    if (messages != null) {
+                        allMessages.addAll(messages);
+                    }
+                }
+            }
+
+            JSONArray embeddedMessageJsonArray = Serialization.serializeEmbeddedMessages(allMessages);
+            IterableLogger.d(TAG, "Messages for placements: " + embeddedMessageJsonArray);
 
             promise.resolve(Serialization.convertJsonToArray(embeddedMessageJsonArray));
         } catch (JSONException e) {

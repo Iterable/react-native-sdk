@@ -229,8 +229,8 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void getEmbeddedMessages(Integer placementId, Promise promise) {
-      moduleImpl.getEmbeddedMessages(placementId, promise);
+    public void getEmbeddedMessages(@Nullable ReadableArray placementIds, Promise promise) {
+      moduleImpl.getEmbeddedMessages(placementIds, promise);
     }
 
     public void sendEvent(@NonNull String eventName, @Nullable Object eventData) {

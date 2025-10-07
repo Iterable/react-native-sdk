@@ -1,5 +1,5 @@
 import { Iterable } from '@iterable/react-native-sdk';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
 import { useIterableApp } from '../../hooks';
@@ -17,12 +17,21 @@ export const User = () => {
     }
   }, [isLoggedIn]);
 
+  const getEmbeddedMessages = useCallback(() => {
+    Iterable.getEmbeddedMessages().then((messages: unknown) => {
+      console.log(messages);
+    });
+  }, []);
+
   return (
     <View style={styles.container}>
       <Text style={styles.appName}>Welcome Iterator</Text>
       <Text style={styles.text}>Logged in as {loggedInAs}</Text>
       <TouchableOpacity style={styles.button} onPress={logout}>
         <Text style={styles.buttonText}>Logout</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={getEmbeddedMessages}>
+        <Text style={styles.buttonText}>Get embedded messages</Text>
       </TouchableOpacity>
     </View>
   );
