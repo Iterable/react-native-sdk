@@ -13,7 +13,7 @@ import { IterableAuthResponseResult } from '../enums/IterableAuthResponseResult'
 import { IterableEventName } from '../enums/IterableEventName';
 
 // Add this type-only import to avoid circular dependency
-import type { IterableInAppManager } from '../../inApp/classes/IterableInAppManager';
+import { IterableInAppManager } from '../../inApp/classes/IterableInAppManager';
 
 import { IterableAction } from './IterableAction';
 import { IterableActionContext } from './IterableActionContext';
@@ -23,6 +23,12 @@ import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
 import type { IterableAuthFailure } from '../types/IterableAuthFailure';
+import {
+  defaultConfig,
+  defaultInAppManager,
+  defaultLogger,
+} from '../constants/defaults';
+import { IterableApi } from './IterableApi';
 
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
@@ -49,12 +55,12 @@ export class Iterable {
    * Logger for the Iterable SDK
    * Log level is set with {@link IterableLogLevel}
    */
-  static logger: IterableLogger = new IterableLogger(new IterableConfig());
+  static logger: IterableLogger = defaultLogger;
 
   /**
    * Current configuration of the Iterable SDK
    */
-  static savedConfig: IterableConfig = new IterableConfig();
+  static savedConfig: IterableConfig = defaultConfig;
 
   /**
    * In-app message manager for the current user.
@@ -73,21 +79,7 @@ export class Iterable {
    * Iterable.inAppManager.showMessage(message, true);
    * ```
    */
-  static get inAppManager() {
-    // Lazy initialization to avoid circular dependency
-    if (!this._inAppManager) {
-      // Import here to avoid circular dependency at module level
-
-      const {
-        IterableInAppManager,
-        // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports
-      } = require('../../inApp/classes/IterableInAppManager');
-      this._inAppManager = new IterableInAppManager();
-    }
-    return this._inAppManager;
-  }
-
-  private static _inAppManager: IterableInAppManager | undefined;
+  static inAppManager: IterableInAppManager = defaultInAppManager;
 
   /**
    * Initializes the Iterable React Native SDK in your app's Javascript or Typescript code.
@@ -124,13 +116,7 @@ export class Iterable {
     apiKey: string,
     config: IterableConfig = new IterableConfig()
   ): Promise<boolean> {
-    Iterable.savedConfig = config;
-
-    Iterable.logger = new IterableLogger(Iterable.savedConfig);
-
-    Iterable?.logger?.log('initialize: ' + apiKey);
-
-    this.setupEventHandlers();
+    this.setupIterable(config);
 
     const version = this.getVersionFromPackageJson();
 
@@ -148,13 +134,8 @@ export class Iterable {
     config: IterableConfig = new IterableConfig(),
     apiEndPoint: string
   ): Promise<boolean> {
-    Iterable.savedConfig = config;
+    this.setupIterable(config);
 
-    Iterable.logger = new IterableLogger(Iterable.savedConfig);
-
-    Iterable?.logger?.log('initialize2: ' + apiKey);
-
-    this.setupEventHandlers();
     const version = this.getVersionFromPackageJson();
 
     return RNIterableAPI.initialize2WithApiKey(
@@ -163,6 +144,22 @@ export class Iterable {
       version,
       apiEndPoint
     );
+  }
+
+  /**
+   * Does basic setup of the Iterable SDK.
+   * @param config - The configuration object for the Iterable SDK
+   */
+  private static setupIterable(config: IterableConfig = new IterableConfig()) {
+    Iterable.savedConfig = config;
+
+    const logger = new IterableLogger(Iterable.savedConfig);
+
+    Iterable.logger = logger;
+    Iterable.inAppManager = new IterableInAppManager(logger);
+    IterableApi.setLogger(logger);
+
+    this.setupEventHandlers();
   }
 
   /**
