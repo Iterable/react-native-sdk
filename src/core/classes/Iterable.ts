@@ -1,8 +1,4 @@
-import {
-  Linking,
-  NativeEventEmitter,
-  Platform,
-} from 'react-native';
+import { Linking, NativeEventEmitter, Platform } from 'react-native';
 
 import { buildInfo } from '../../itblBuildInfo';
 
@@ -13,7 +9,8 @@ import { IterableInAppMessage } from '../../inApp/classes/IterableInAppMessage';
 import { IterableInAppCloseSource } from '../../inApp/enums/IterableInAppCloseSource';
 import { IterableInAppDeleteSource } from '../../inApp/enums/IterableInAppDeleteSource';
 import { IterableInAppLocation } from '../../inApp/enums/IterableInAppLocation';
-import { IterableAuthResponseResult, IterableEventName } from '../enums';
+import { IterableAuthResponseResult } from '../enums/IterableAuthResponseResult';
+import { IterableEventName } from '../enums/IterableEventName';
 
 // Add this type-only import to avoid circular dependency
 import type { IterableInAppManager } from '../../inApp/classes/IterableInAppManager';
@@ -25,6 +22,7 @@ import { IterableAuthResponse } from './IterableAuthResponse';
 import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
+import type { IterableAuthFailure } from '../types/IterableAuthFailure';
 
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
@@ -79,8 +77,11 @@ export class Iterable {
     // Lazy initialization to avoid circular dependency
     if (!this._inAppManager) {
       // Import here to avoid circular dependency at module level
-      // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports
-      const { IterableInAppManager } = require('../../inApp/classes/IterableInAppManager');
+
+      const {
+        IterableInAppManager,
+        // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports
+      } = require('../../inApp/classes/IterableInAppManager');
       this._inAppManager = new IterableInAppManager();
     }
     return this._inAppManager;
@@ -357,7 +358,13 @@ export class Iterable {
     Iterable?.logger?.log('getAttributionInfo');
 
     return RNIterableAPI.getAttributionInfo().then(
-      (dict: { campaignId: number; templateId: number; messageId: string } | null) => {
+      (
+        dict: {
+          campaignId: number;
+          templateId: number;
+          messageId: string;
+        } | null
+      ) => {
         if (dict) {
           return new IterableAttributionInfo(
             dict.campaignId as number,
@@ -398,7 +405,11 @@ export class Iterable {
   static setAttributionInfo(attributionInfo?: IterableAttributionInfo) {
     Iterable?.logger?.log('setAttributionInfo');
 
-    RNIterableAPI.setAttributionInfo(attributionInfo as unknown as { [key: string]: string | number | boolean; } | null);
+    RNIterableAPI.setAttributionInfo(
+      attributionInfo as unknown as {
+        [key: string]: string | number | boolean;
+      } | null
+    );
   }
 
   /**
@@ -477,7 +488,9 @@ export class Iterable {
   static updateCart(items: IterableCommerceItem[]) {
     Iterable?.logger?.log('updateCart');
 
-    RNIterableAPI.updateCart(items as unknown as { [key: string]: string | number | boolean }[]);
+    RNIterableAPI.updateCart(
+      items as unknown as { [key: string]: string | number | boolean }[]
+    );
   }
 
   /**
@@ -529,7 +542,11 @@ export class Iterable {
   ) {
     Iterable?.logger?.log('trackPurchase');
 
-    RNIterableAPI.trackPurchase(total, items as unknown as { [key: string]: string | number | boolean }[], dataFields as { [key: string]: string | number | boolean } | undefined);
+    RNIterableAPI.trackPurchase(
+      total,
+      items as unknown as { [key: string]: string | number | boolean }[],
+      dataFields as { [key: string]: string | number | boolean } | undefined
+    );
   }
 
   /**
@@ -698,7 +715,10 @@ export class Iterable {
   static trackEvent(name: string, dataFields?: unknown) {
     Iterable?.logger?.log('trackEvent');
 
-    RNIterableAPI.trackEvent(name, dataFields as { [key: string]: string | number | boolean } | undefined);
+    RNIterableAPI.trackEvent(
+      name,
+      dataFields as { [key: string]: string | number | boolean } | undefined
+    );
   }
 
   /**
@@ -746,7 +766,10 @@ export class Iterable {
   ) {
     Iterable?.logger?.log('updateUser');
 
-    RNIterableAPI.updateUser(dataFields as { [key: string]: string | number | boolean }, mergeNestedObjects);
+    RNIterableAPI.updateUser(
+      dataFields as { [key: string]: string | number | boolean },
+      mergeNestedObjects
+    );
   }
 
   /**
@@ -911,34 +934,45 @@ export class Iterable {
   }
 
   /**
-   * Sets up event handlers for various Iterable events.
+   * A callback function that is called when an authentication failure occurs.
    *
-   * This method performs the following actions:
-   * - Removes all existing listeners to avoid duplicate listeners.
-   * - Adds listeners for URL handling, custom actions, in-app messages, and authentication.
+   * @param authFailure - The auth failure details
    *
-   * Event Handlers:
-   * - `handleUrlCalled`: Invokes the URL handler if configured, with a delay on Android to allow the activity to wake up.
-   * - `handleCustomActionCalled`: Invokes the custom action handler if configured.
-   * - `handleInAppCalled`: Invokes the in-app handler if configured and sets the in-app show response.
-   * - `handleAuthCalled`: Invokes the authentication handler if configured and handles the promise result.
-   * - `handleAuthSuccessCalled`: Sets the authentication response callback to success.
-   * - `handleAuthFailureCalled`: Sets the authentication response callback to failure.
+   * @example
+   * ```typescript
+   * Iterable.onAuthFailure({
+   *  userKey: '1234567890',
+   *  failedAuthToken: '1234567890',
+   *  failedRequestTime: 1234567890,
+   *  failureReason: IterableAuthFailureReason.AUTH_TOKEN_EXPIRED,
+   * });
+   * ```
+   */
+  static onAuthFailure(authFailure: IterableAuthFailure) {
+    Iterable?.logger?.log('onAuthFailure');
+
+    RNIterableAPI.onAuthFailure(authFailure);
+  }
+
+  /**
+   * Pause the authentication retry mechanism.
    *
-   * Helper Functions:
-   * - `callUrlHandler`: Calls the URL handler and attempts to open the URL if the handler returns false.
+   * @param pauseRetry - Whether to pause the authentication retry mechanism
    *
-   * @internal
+   * @example
+   * ```typescript
+   * Iterable.pauseAuthRetries(true);
+   * ```
+   */
+  static pauseAuthRetries(pauseRetry: boolean) {
+    Iterable?.logger?.log('pauseAuthRetries');
+
+    RNIterableAPI.pauseAuthRetries(pauseRetry);
+  }
+
+  /** * @internal
    */
   private static setupEventHandlers() {
-    //Remove all listeners to avoid duplicate listeners
-    RNEventEmitter.removeAllListeners(IterableEventName.handleUrlCalled);
-    RNEventEmitter.removeAllListeners(IterableEventName.handleInAppCalled);
-    RNEventEmitter.removeAllListeners(
-      IterableEventName.handleCustomActionCalled
-    );
-    RNEventEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
-
     if (Iterable.savedConfig.urlHandler) {
       RNEventEmitter.addListener(IterableEventName.handleUrlCalled, (dict) => {
         const url = dict.url;
