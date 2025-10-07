@@ -494,14 +494,16 @@ export class IterableApi {
   // ======================= EMBEDDED ======================= //
   // ====================================================== //
 
-  /**
-   * Start an embedded session.
-   *
-   * @param visibleRows - The visible rows.
-   */
-  static startEmbeddedSession(visibleRows: IterableInboxImpressionRowInfo[]) {
-    IterableApi.logger.log('startEmbeddedSession: ', visibleRows);
-    return RNIterableAPI.startEmbeddedSession(visibleRows);
+  // static getEmbeddedMessages(placementIds: number[] = []) {
+  //   IterableApi.logger.log('startEmbeddedSession: ', visibleRows);
+  //   return RNIterableAPI.startEmbeddedSession(visibleRows);
+  // }
+
+  static getEmbeddedMessages(): Promise<IterableInAppMessage[]> {
+    IterableApi.logger.log('getEmbeddedMessages');
+    return RNIterableAPI.getEmbeddedMessages() as unknown as Promise<
+      IterableInAppMessage[]
+    >;
   }
 
   // ---- End EMBEDDED ---- //
