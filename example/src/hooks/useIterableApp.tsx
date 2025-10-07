@@ -128,6 +128,8 @@ export const IterableAppProvider: FunctionComponent<
 
       config.inAppDisplayInterval = 1.0; // Min gap between in-apps. No need to set this in production.
 
+      config.enableEmbeddedMessaging = true;
+
       config.retryPolicy = {
         maxRetry: 5,
         retryInterval: 10,

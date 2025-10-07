@@ -18,7 +18,7 @@ export const User = () => {
   }, [isLoggedIn]);
 
   const getEmbeddedMessages = useCallback(() => {
-    Iterable.getEmbeddedMessages().then((messages: unknown) => {
+    Iterable.getEmbeddedMessages([1641]).then((messages: unknown) => {
       console.log(messages);
     });
   }, []);

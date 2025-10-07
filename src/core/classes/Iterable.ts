@@ -918,8 +918,10 @@ export class Iterable {
     );
   }
 
-  static getEmbeddedMessages(placementIds?: number[] | null) {
-    return IterableApi.getEmbeddedMessages(placementIds ?? null);
+  static getEmbeddedMessages(placementIds?: number[] | null): Promise<unknown> {
+    return IterableApi.getEmbeddedMessages(
+      placementIds ?? null
+    ) as unknown as Promise<unknown>;
   }
 
   /**
