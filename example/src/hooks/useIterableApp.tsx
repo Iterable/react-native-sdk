@@ -14,6 +14,7 @@ import {
   IterableConfig,
   IterableInAppShowResponse,
   IterableLogLevel,
+  IterableRetryBackoff,
 } from '@iterable/react-native-sdk';
 
 import { Route } from '../constants/routes';
@@ -96,7 +97,9 @@ export const IterableAppProvider: FunctionComponent<
   const [apiKey, setApiKey] = useState<string | undefined>(
     process.env.ITBL_API_KEY
   );
-  const [userId, setUserId] = useState<string | null>(process.env.ITBL_ID ?? null);
+  const [userId, setUserId] = useState<string | null>(
+    process.env.ITBL_ID ?? null
+  );
   const [loginInProgress, setLoginInProgress] = useState<boolean>(false);
 
   const getUserId = useCallback(() => userId ?? process.env.ITBL_ID, [userId]);
@@ -123,6 +126,16 @@ export const IterableAppProvider: FunctionComponent<
       const config = new IterableConfig();
 
       config.inAppDisplayInterval = 1.0; // Min gap between in-apps. No need to set this in production.
+
+      config.retryPolicy = {
+        maxRetry: 5,
+        retryInterval: 10,
+        retryBackoff: IterableRetryBackoff.LINEAR,
+      };
+
+      config.onJWTError = (authFailure) => {
+        console.error('Error fetching JWT:', authFailure);
+      };
 
       config.urlHandler = (url: string) => {
         const routeNames = [Route.Commerce, Route.Inbox, Route.User];
