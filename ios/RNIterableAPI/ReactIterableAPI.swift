@@ -677,8 +677,9 @@ extension ReactIterableAPI: IterableAuthDelegate {
     failureDict["failedRequestTime"] = authFailure.failedRequestTime
     failureDict["failureReason"] = authFailure.failureReason.rawValue
 
-    sendEvent(withName: EventName.handleAuthFailureCalled.rawValue,
-              body: failureDict)
+    delegate?.sendEvent(
+      withName: EventName.handleAuthFailureCalled.rawValue,
+      body: failureDict)
   }
 
   public func onAuthTokenRequested(completion: @escaping AuthTokenRetrievalHandler) {
