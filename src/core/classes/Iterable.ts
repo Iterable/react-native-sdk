@@ -934,27 +934,6 @@ export class Iterable {
   }
 
   /**
-   * A callback function that is called when an authentication failure occurs.
-   *
-   * @param authFailure - The auth failure details
-   *
-   * @example
-   * ```typescript
-   * Iterable.onAuthFailure({
-   *  userKey: '1234567890',
-   *  failedAuthToken: '1234567890',
-   *  failedRequestTime: 1234567890,
-   *  failureReason: IterableAuthFailureReason.AUTH_TOKEN_EXPIRED,
-   * });
-   * ```
-   */
-  static onAuthFailure(authFailure: IterableAuthFailure) {
-    Iterable?.logger?.log('onAuthFailure');
-
-    RNIterableAPI.onAuthFailure(authFailure);
-  }
-
-  /**
    * Pause the authentication retry mechanism.
    *
    * @param pauseRetry - Whether to pause the authentication retry mechanism
@@ -970,9 +949,35 @@ export class Iterable {
     RNIterableAPI.pauseAuthRetries(pauseRetry);
   }
 
-  /** * @internal
+  /**
+   * Sets up event handlers for various Iterable events.
+   *
+   * This method performs the following actions:
+   * - Removes all existing listeners to avoid duplicate listeners.
+   * - Adds listeners for URL handling, custom actions, in-app messages, and authentication.
+   *
+   * Event Handlers:
+   * - `handleUrlCalled`: Invokes the URL handler if configured, with a delay on Android to allow the activity to wake up.
+   * - `handleCustomActionCalled`: Invokes the custom action handler if configured.
+   * - `handleInAppCalled`: Invokes the in-app handler if configured and sets the in-app show response.
+   * - `handleAuthCalled`: Invokes the authentication handler if configured and handles the promise result.
+   * - `handleAuthSuccessCalled`: Sets the authentication response callback to success.
+   * - `handleAuthFailureCalled`: Sets the authentication response callback to failure.
+   *
+   * Helper Functions:
+   * - `callUrlHandler`: Calls the URL handler and attempts to open the URL if the handler returns false.
+   *
+   * @internal
    */
   private static setupEventHandlers() {
+    // Remove all listeners to avoid duplicate listeners
+    RNEventEmitter.removeAllListeners(IterableEventName.handleUrlCalled);
+    RNEventEmitter.removeAllListeners(IterableEventName.handleInAppCalled);
+    RNEventEmitter.removeAllListeners(
+      IterableEventName.handleCustomActionCalled
+    );
+    RNEventEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
+
     if (Iterable.savedConfig.urlHandler) {
       RNEventEmitter.addListener(IterableEventName.handleUrlCalled, (dict) => {
         const url = dict.url;
