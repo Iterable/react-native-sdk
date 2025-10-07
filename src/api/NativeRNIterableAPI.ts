@@ -119,6 +119,10 @@ export interface Spec extends TurboModule {
   onAuthFailure(authFailure: { userKey: string; failedAuthToken: string; failedRequestTime: number; failureReason: string }): void;
   pauseAuthRetries(pauseRetry: boolean): void;
 
+  // Launch options for new architecture
+  setLaunchOptions(launchOptions?: { [key: string]: unknown } | null): void;
+  detectLaunchOptions(): Promise<{ [key: string]: unknown } | null>;
+
   // Wake app -- android only
   wakeApp(): void;
 
