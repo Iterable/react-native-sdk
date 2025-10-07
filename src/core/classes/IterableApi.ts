@@ -12,6 +12,7 @@ import type { IterableInAppCloseSource } from '../../inApp/enums/IterableInAppCl
 import type { IterableInAppDeleteSource } from '../../inApp/enums/IterableInAppDeleteSource';
 import type { IterableHtmlInAppContent } from '../../inApp/classes/IterableHtmlInAppContent';
 import type { IterableInAppShowResponse } from '../../inApp/enums/IterableInAppShowResponse';
+import type { IterableInboxImpressionRowInfo } from '../../inbox/types/IterableInboxImpressionRowInfo';
 
 export class IterableApi {
   static logger: IterableLogger = defaultLogger;
@@ -339,5 +340,20 @@ export class IterableApi {
   static passAlongAuthToken(authToken: string | null | undefined) {
     IterableApi.logger.log('passAlongAuthToken: ', authToken);
     return RNIterableAPI.passAlongAuthToken(authToken);
+  }
+
+  static startSession(visibleRows: IterableInboxImpressionRowInfo[]) {
+    IterableApi.logger.log('startSession: ', visibleRows);
+    return RNIterableAPI.startSession(visibleRows);
+  }
+
+  static endSession() {
+    IterableApi.logger.log('endSession');
+    return RNIterableAPI.endSession();
+  }
+
+  static updateVisibleRows(visibleRows: IterableInboxImpressionRowInfo[] = []) {
+    IterableApi.logger.log('updateVisibleRows: ', visibleRows);
+    return RNIterableAPI.updateVisibleRows(visibleRows);
   }
 }
