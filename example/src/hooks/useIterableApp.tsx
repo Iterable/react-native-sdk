@@ -167,20 +167,20 @@ export const IterableAppProvider: FunctionComponent<
       config.inAppHandler = () => IterableInAppShowResponse.show;
 
       // NOTE: Uncomment to test authHandler failure
-      // config.authHandler = () => {
-      //   console.log(`authHandler`);
+      config.authHandler = () => {
+        console.log(`authHandler`);
 
-      //   return Promise.resolve({
-      //     authToken: 'SomethingNotValid',
-      //     successCallback: () => {
-      //       console.log(`authHandler > success`);
-      //     },
-      //     // This is not firing
-      //     failureCallback: () => {
-      //       console.log(`authHandler > failure`);
-      //     },
-      //   });
-      // };
+        return Promise.resolve({
+          authToken: 'SomethingNotValid',
+          successCallback: () => {
+            console.log(`authHandler > success`);
+          },
+          // This is not firing
+          failureCallback: () => {
+            console.log(`authHandler > failure`);
+          },
+        });
+      };
 
       setItblConfig(config);
 
