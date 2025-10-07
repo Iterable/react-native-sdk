@@ -18,8 +18,14 @@ export const User = () => {
   }, [isLoggedIn]);
 
   const getEmbeddedMessages = useCallback(() => {
-    Iterable.getEmbeddedMessages([1641]).then((messages: unknown) => {
+    Iterable.embeddedManager.getMessages([1641]).then((messages: unknown) => {
       console.log(messages);
+    });
+  }, []);
+
+  const getPlacementIds = useCallback(() => {
+    Iterable.embeddedManager.getPlacementIds().then((ids: unknown) => {
+      console.log(ids);
     });
   }, []);
 
@@ -32,6 +38,9 @@ export const User = () => {
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={getEmbeddedMessages}>
         <Text style={styles.buttonText}>Get embedded messages</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={getPlacementIds}>
+        <Text style={styles.buttonText}>Get placement ids</Text>
       </TouchableOpacity>
     </View>
   );

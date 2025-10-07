@@ -236,4 +236,12 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   public void getEmbeddedMessages(@Nullable ReadableArray placementIds, Promise promise) {
     moduleImpl.getEmbeddedMessages(placementIds, promise);
   }
+
+  public void syncEmbeddedMessages() {
+    moduleImpl.syncEmbeddedMessages();
+  }
+
+  public void getEmbeddedPlacementIds(Promise promise) {
+    moduleImpl.getEmbeddedPlacementIds(promise);
+  }
 }

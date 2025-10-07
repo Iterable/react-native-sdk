@@ -12,6 +12,7 @@ import { IterableInAppLocation } from '../../inApp/enums/IterableInAppLocation';
 import {
   defaultAuthManager,
   defaultConfig,
+  defaultEmbeddedManager,
   defaultInAppManager,
   defaultLogger,
 } from '../constants/defaults';
@@ -38,6 +39,7 @@ import { IterableAuthResponse } from './IterableAuthResponse';
 import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
+import { IterableEmbeddedManager } from '../../embedded/classes/IterableEmbeddedManager';
 
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
@@ -102,6 +104,8 @@ export class Iterable {
    * ```
    */
   static authManager: IterableAuthManager = defaultAuthManager;
+
+  static embeddedManager: IterableEmbeddedManager = defaultEmbeddedManager;
 
   /**
    * Tracking manager for the current user.
@@ -203,6 +207,7 @@ export class Iterable {
     Iterable.logger = logger;
     Iterable.inAppManager = new IterableInAppManager(logger);
     Iterable.authManager = new IterableAuthManager(logger);
+    Iterable.embeddedManager = new IterableEmbeddedManager(logger);
     IterableApi.setLogger(logger);
 
     this.setupEventHandlers();

@@ -1,5 +1,5 @@
 import { IterableApi } from '../../core/classes/IterableApi';
-import { IterableLogger } from '../../core/classes/IterableLogger';
+import type { IterableLogger } from '../../core/classes/IterableLogger';
 import { defaultLogger } from '../../core/constants/defaults';
 import type { IterableInAppDeleteSource } from '../enums/IterableInAppDeleteSource';
 import type { IterableInAppLocation } from '../enums/IterableInAppLocation';

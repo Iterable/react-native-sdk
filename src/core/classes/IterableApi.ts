@@ -544,6 +544,16 @@ export class IterableApi {
     return RNIterableAPI.getEmbeddedMessages(placementIds);
   }
 
+  static syncEmbeddedMessages() {
+    IterableApi.logger.log('syncEmbeddedMessages');
+    return RNIterableAPI.syncEmbeddedMessages();
+  }
+
+  static getEmbeddedPlacementIds() {
+    IterableApi.logger.log('getEmbeddedPlacementIds');
+    return RNIterableAPI.getEmbeddedPlacementIds();
+  }
+
   // ---- End EMBEDDED ---- //
 
   // ====================================================== //

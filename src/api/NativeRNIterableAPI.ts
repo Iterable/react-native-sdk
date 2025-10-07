@@ -141,6 +141,10 @@ export interface Spec extends TurboModule {
     placementIds: number[] | null
   ): Promise<EmbeddedMessage[]>;
 
+  syncEmbeddedMessages(): void;
+
+  getEmbeddedPlacementIds(): Promise<number[]>;
+
   // Wake app -- android only
   wakeApp(): void;
 

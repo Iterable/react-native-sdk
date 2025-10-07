@@ -1,5 +1,5 @@
 import type { IterableEmbeddedImpressionData } from './IterableEmbeddedImpressionData';
-import { IterableUtil } from '../../core/classes/IterableUtil';
+import { generateUUID } from '../../core/utils/generateUUID';
 
 export interface IterableEmbeddedSessionDict {
   /** The ID of the session. */
@@ -19,13 +19,8 @@ export class IterableEmbeddedSession {
   public impressions: IterableEmbeddedSessionDict['impressions'] = [];
 
   constructor(options: Partial<IterableEmbeddedSessionDict> = {}) {
-    const {
-      id = IterableUtil.generateUUID(),
-      start = new Date(),
-      end = null,
-      impressions = [],
-    } = options;
-    this.id = id;
+    const { start = null, end = null, impressions = [] } = options;
+    this.id = generateUUID();
     this.start = start;
     this.end = end;
     this.impressions = impressions;
