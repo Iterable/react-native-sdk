@@ -24,6 +24,7 @@ import com.iterable.iterableapi.IterableInAppMessage;
 import com.iterable.iterableapi.IterableInboxSession;
 import com.iterable.iterableapi.IterableLogger;
 import com.iterable.iterableapi.RNIterableInternal;
+import com.iterable.iterableapi.RetryPolicy;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -94,7 +95,7 @@ class Serialization {
                 categories[i] = categoriesArray.getString(i);
             }
         }
-        
+
         return new CommerceItem(itemMap.getString("id"),
                 itemMap.getString("name"),
                 itemMap.getDouble("price"),
@@ -216,9 +217,22 @@ class Serialization {
 
                 configBuilder.setDataRegion(iterableDataRegion);
             }
-          
-            if (iterableContextJSON.has("encryptionEnforced")) {
-                configBuilder.setEncryptionEnforced(iterableContextJSON.optBoolean("encryptionEnforced"));
+
+            // Note: setEncryptionEnforced method is not available in Android SDK
+            // if (iterableContextJSON.has("encryptionEnforced")) {
+            //     configBuilder.setEncryptionEnforced(iterableContextJSON.optBoolean("encryptionEnforced"));
+            // }
+
+            if (iterableContextJSON.has("retryPolicy")) {
+                JSONObject retryPolicyJson = iterableContextJSON.getJSONObject("retryPolicy");
+                int maxRetry = retryPolicyJson.getInt("maxRetry");
+                long retryInterval = retryPolicyJson.getLong("retryInterval");
+                String retryBackoff = retryPolicyJson.getString("retryBackoff");
+                RetryPolicy.Type retryPolicyType = RetryPolicy.Type.LINEAR;
+                if (retryBackoff.equals("EXPONENTIAL")) {
+                    retryPolicyType = RetryPolicy.Type.EXPONENTIAL;
+                }
+                configBuilder.setAuthRetryPolicy(new RetryPolicy(maxRetry, retryInterval, retryPolicyType));
             }
 
             return configBuilder;
@@ -286,7 +300,7 @@ class Serialization {
     // ---------------------------------------------------------------------------------------
     // region React Native JSON conversion methods
     // obtained from https://gist.github.com/viperwarp/2beb6bbefcc268dee7ad
-    
+
     static WritableMap convertJsonToMap(JSONObject jsonObject) throws JSONException {
         WritableMap map = new WritableNativeMap();
 
