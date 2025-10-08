@@ -563,6 +563,17 @@ export class IterableApi {
     IterableApi.logger.log('removeEmbeddedUpdateListener');
     return RNIterableAPI.removeEmbeddedUpdateListener(handler);
   }
+
+  static startEmbeddedSession() {
+    IterableApi.logger.log('startEmbeddedSession');
+    return RNIterableAPI.startEmbeddedSession();
+  }
+
+  static endEmbeddedSession() {
+    IterableApi.logger.log('endEmbeddedSession');
+    return RNIterableAPI.endEmbeddedSession();
+  }
+
   // ---- End EMBEDDED ---- //
 
   // ====================================================== //

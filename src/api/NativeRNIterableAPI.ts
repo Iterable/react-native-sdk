@@ -149,6 +149,10 @@ export interface Spec extends TurboModule {
 
   removeEmbeddedUpdateListener(handler?: unknown): void;
 
+  startEmbeddedSession(): void;
+
+  endEmbeddedSession(): void;
+
   // Wake app -- android only
   wakeApp(): void;
 

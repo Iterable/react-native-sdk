@@ -83,4 +83,12 @@ export class IterableEmbeddedManager {
       );
     }
   }
+
+  startSession() {
+    IterableApi.startEmbeddedSession();
+  }
+
+  endSession() {
+    IterableApi.endEmbeddedSession();
+  }
 }

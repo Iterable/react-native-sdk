@@ -1,4 +1,5 @@
 import { Iterable, IterableEmbeddedMessage } from '@iterable/react-native-sdk';
+import { useIsFocused } from '@react-navigation/native';
 import { useCallback, useEffect, useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
@@ -7,30 +8,41 @@ import styles from './User.styles';
 
 export const User = () => {
   const { logout, isLoggedIn } = useIterableApp();
+  const isFocused = useIsFocused();
   const [loggedInAs, setLoggedInAs] = useState<string>('');
   const [hasListener, setHasListener] = useState<boolean>(false);
+  const [hasSession, setHasSession] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log(`🚀 > User > isLoggedIn:`, isLoggedIn);
     const embeddedUpdateListener = (messages: IterableEmbeddedMessage[]) => {
       console.log('UPDATE', messages);
     };
 
-    if (isLoggedIn) {
-      Iterable.getEmail().then((email) => setLoggedInAs(email || ''));
-
+    if (isFocused) {
       Iterable.embeddedManager.addUpdateListener(embeddedUpdateListener);
       setHasListener(true);
+
+      Iterable.embeddedManager.startSession();
+      setHasSession(true);
+    } else {
+      if (hasListener) {
+        Iterable.embeddedManager.removeUpdateListener(embeddedUpdateListener);
+        setHasListener(false);
+      }
+      if (hasSession) {
+        Iterable.embeddedManager.endSession();
+        setHasSession(false);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFocused]);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      Iterable.getEmail().then((email) => setLoggedInAs(email || ''));
     } else {
       setLoggedInAs('');
     }
-
-    return () => {
-      if (hasListener) {
-        Iterable.embeddedManager.removeUpdateListener(embeddedUpdateListener);
-      }
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoggedIn]);
 
   const getEmbeddedMessages = useCallback(() => {

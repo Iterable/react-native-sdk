@@ -258,4 +258,14 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
     // For now, we'll use null to remove the current handler
     moduleImpl.removeEmbeddedUpdateListener(null);
   }
+
+  @Override
+  public void startEmbeddedSession() {
+    moduleImpl.startEmbeddedSession();
+  }
+
+  @Override
+  public void endEmbeddedSession() {
+    moduleImpl.endEmbeddedSession();
+  }
 }
