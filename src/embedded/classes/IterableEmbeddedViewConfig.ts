@@ -1,24 +1,26 @@
+import type { ColorValue } from 'react-native';
+
 export interface IterableEmbeddedViewConfigDict {
   /** Background color hex (e.g., 0xFF0000) */
-  backgroundColor?: number | null;
+  backgroundColor?: ColorValue;
   /** Border color hex */
-  borderColor?: number | null;
+  borderColor?: ColorValue;
   /** Border width in pixels */
-  borderWidth?: number | null;
+  borderWidth?: number;
   /** Corner radius in points */
-  borderCornerRadius?: number | null;
+  borderCornerRadius?: number;
   /** Primary button background color hex */
-  primaryBtnBackgroundColor?: number | null;
+  primaryBtnBackgroundColor?: ColorValue;
   /** Primary button text color hex */
-  primaryBtnTextColor?: number | null;
+  primaryBtnTextColor?: ColorValue;
   /** Secondary button background color hex */
-  secondaryBtnBackgroundColor?: number | null;
+  secondaryBtnBackgroundColor?: ColorValue;
   /** Secondary button text color hex */
-  secondaryBtnTextColor?: number | null;
+  secondaryBtnTextColor?: ColorValue;
   /** Title text color hex */
-  titleTextColor?: number | null;
+  titleTextColor?: ColorValue;
   /** Body text color hex */
-  bodyTextColor?: number | null;
+  bodyTextColor?: ColorValue;
 }
 
 /**
@@ -38,16 +40,16 @@ export class IterableEmbeddedViewConfig {
 
   constructor(options: IterableEmbeddedViewConfigDict = {}) {
     const {
-      backgroundColor = null,
-      borderColor = null,
-      borderWidth = null,
-      borderCornerRadius = null,
-      primaryBtnBackgroundColor = null,
-      primaryBtnTextColor = null,
-      secondaryBtnBackgroundColor = null,
-      secondaryBtnTextColor = null,
-      titleTextColor = null,
-      bodyTextColor = null,
+      backgroundColor,
+      borderColor,
+      borderWidth,
+      borderCornerRadius,
+      primaryBtnBackgroundColor,
+      primaryBtnTextColor,
+      secondaryBtnBackgroundColor,
+      secondaryBtnTextColor,
+      titleTextColor,
+      bodyTextColor,
     } = options;
 
     this.backgroundColor = backgroundColor;

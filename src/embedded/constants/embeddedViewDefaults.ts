@@ -1,19 +1,19 @@
 export const embeddedBackgroundColors = {
   notification: '#ff121212',
-  card: '#ffffffff',
-  banner: '#ffffffff',
+  card: '#ffffff',
+  banner: '#ffffff',
 };
 
 export const embeddedBorderColors = {
   notification: '#ff2a2a2a',
   card: '#ffe0e0e0',
-  banner: '#ffe0e0e0',
+  banner: '#E0DEDF',
 };
 
 export const embeddedPrimaryBtnBackgroundColors = {
   notification: '#ffffffff',
   card: '#ffffffff',
-  banner: '#ff1a73e8',
+  banner: '#6A266D',
 };
 
 export const embeddedPrimaryBtnTextColors = {
@@ -25,25 +25,25 @@ export const embeddedPrimaryBtnTextColors = {
 export const embeddedSecondaryBtnBackgroundColors = {
   notification: '#ff121212',
   card: '#ffffffff',
-  banner: '#ffffffff',
+  banner: 'transparent',
 };
 
 export const embeddedSecondaryBtnTextColors = {
   notification: '#ff121212',
   card: '#ff1a73e8',
-  banner: '#ff1a73e8',
+  banner: '#79347F',
 };
 
 export const embeddedTitleTextColors = {
   notification: '#ffffffff',
   card: '#ff111111',
-  banner: '#ff111111',
+  banner: '#3D3A3B',
 };
 
 export const embeddedBodyTextColors = {
   notification: '#ffffffff',
   card: '#ff444444',
-  banner: '#ff444444',
+  banner: '#787174',
 };
 
 export const defaultBorderWidth = 1;

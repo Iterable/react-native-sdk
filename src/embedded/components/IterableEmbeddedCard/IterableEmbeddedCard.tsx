@@ -1,4 +1,4 @@
-import { Text, View } from 'react-native';
+import { Text, View, type ViewStyle } from 'react-native';
 import { useMemo } from 'react';
 
 import type { IterableEmbeddedComponentProps } from '../IterableEmbeddedViewProps';
@@ -22,7 +22,15 @@ export const IterableEmbeddedCard = ({
 
   return (
     <View
-      style={styles.container}
+      style={[
+        styles.container,
+        {
+          backgroundColor: parsedStyles.backgroundColor,
+          borderColor: parsedStyles.borderColor,
+          borderRadius: parsedStyles.borderCornerRadius,
+          borderWidth: parsedStyles.borderWidth,
+        } as ViewStyle,
+      ]}
     >
       <Text>IterableEmbeddedCard</Text>
     </View>
