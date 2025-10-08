@@ -9,6 +9,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.iterable.iterableapi.IterableEmbeddedMessage;
 
 public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     private final ReactApplicationContext reactContext;

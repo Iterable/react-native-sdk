@@ -8,6 +8,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.iterable.iterableapi.AuthFailure;
+import com.iterable.iterableapi.IterableEmbeddedMessage;
 import com.iterable.iterableapi.IterableLogger;
 
 public class RNIterableAPIModule extends NativeRNIterableAPISpec {
