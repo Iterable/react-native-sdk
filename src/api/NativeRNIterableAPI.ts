@@ -153,6 +153,10 @@ export interface Spec extends TurboModule {
 
   endEmbeddedSession(): void;
 
+  startEmbeddedImpression(messageId: string, placementId: number): void;
+
+  pauseEmbeddedImpression(messageId: string): void;
+
   // Wake app -- android only
   wakeApp(): void;
 

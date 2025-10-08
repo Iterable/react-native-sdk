@@ -260,6 +260,16 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   }
 
   @Override
+  public void startEmbeddedImpression(String messageId, int placementId) {
+    moduleImpl.startEmbeddedImpression(messageId, placementId);
+  }
+
+  @Override
+  public void pauseEmbeddedImpression(String messageId) {
+    moduleImpl.pauseEmbeddedImpression(messageId);
+  }
+
+  @Override
   public void startEmbeddedSession() {
     moduleImpl.startEmbeddedSession();
   }

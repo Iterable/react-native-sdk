@@ -574,6 +574,16 @@ export class IterableApi {
     return RNIterableAPI.endEmbeddedSession();
   }
 
+  static startEmbeddedImpression(messageId: string, placementId: number) {
+    IterableApi.logger.log('startEmbeddedImpression: ', messageId, placementId);
+    return RNIterableAPI.startEmbeddedImpression(messageId, placementId);
+  }
+
+  static pauseEmbeddedImpression(messageId: string) {
+    IterableApi.logger.log('pauseEmbeddedImpression: ', messageId);
+    return RNIterableAPI.pauseEmbeddedImpression(messageId);
+  }
+
   // ---- End EMBEDDED ---- //
 
   // ====================================================== //

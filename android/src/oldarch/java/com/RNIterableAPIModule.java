@@ -267,6 +267,16 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
       moduleImpl.endEmbeddedSession();
     }
 
+    @ReactMethod
+    public void startEmbeddedImpression(String messageId, int placementId) {
+      moduleImpl.startEmbeddedImpression(messageId, placementId);
+    }
+
+    @ReactMethod
+    public void pauseEmbeddedImpression(String messageId) {
+      moduleImpl.pauseEmbeddedImpression(messageId);
+    }
+
     public void sendEvent(@NonNull String eventName, @Nullable Object eventData) {
       moduleImpl.sendEvent(eventName, eventData);
     }
