@@ -1,4 +1,4 @@
-import { Iterable, IterableEmbeddedMessage } from '@iterable/react-native-sdk';
+import { Iterable } from '@iterable/react-native-sdk';
 import { useIsFocused } from '@react-navigation/native';
 import { useCallback, useEffect, useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
@@ -12,10 +12,16 @@ export const User = () => {
   const [loggedInAs, setLoggedInAs] = useState<string>('');
   const [hasListener, setHasListener] = useState<boolean>(false);
   const [hasSession, setHasSession] = useState<boolean>(false);
+  const [placementIds, setPlacementIds] = useState<number[]>([]);
 
   useEffect(() => {
-    const embeddedUpdateListener = (messages: IterableEmbeddedMessage[]) => {
-      console.log('UPDATE', messages);
+    const embeddedUpdateListener = {
+      onMessagesUpdated: () => {
+        console.log('UPDATE');
+      },
+      onEmbeddedMessagingDisabled: () => {
+        console.log('DISABLED');
+      },
     };
 
     if (isFocused) {
@@ -40,16 +46,22 @@ export const User = () => {
   useEffect(() => {
     if (isLoggedIn) {
       Iterable.getEmail().then((email) => setLoggedInAs(email || ''));
+      Iterable.embeddedManager.getPlacementIds().then((ids: unknown) => {
+        console.log(`🚀 > User > ids:`, ids);
+        setPlacementIds(ids as number[]);
+      });
     } else {
       setLoggedInAs('');
     }
   }, [isLoggedIn]);
 
   const getEmbeddedMessages = useCallback(() => {
-    Iterable.embeddedManager.getMessages([1641]).then((messages: unknown) => {
-      console.log(messages);
-    });
-  }, []);
+    Iterable.embeddedManager
+      .getMessages(placementIds)
+      .then((messages: unknown) => {
+        console.log(messages);
+      });
+  }, [placementIds]);
 
   const getPlacementIds = useCallback(() => {
     Iterable.embeddedManager.getPlacementIds().then((ids: unknown) => {
@@ -61,6 +73,11 @@ export const User = () => {
     <View style={styles.container}>
       <Text style={styles.appName}>Welcome Iterator</Text>
       <Text style={styles.text}>Logged in as {loggedInAs}</Text>
+      <Text style={styles.text}>Has listener: {hasListener.toString()}</Text>
+      <Text style={styles.text}>Has session: {hasSession.toString()}</Text>
+      <Text style={styles.text}>
+        Placement ids: [{placementIds.join(', ')}]
+      </Text>
       <TouchableOpacity style={styles.button} onPress={logout}>
         <Text style={styles.buttonText}>Logout</Text>
       </TouchableOpacity>

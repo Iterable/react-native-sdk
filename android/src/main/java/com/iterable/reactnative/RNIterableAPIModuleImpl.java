@@ -42,6 +42,7 @@ import com.iterable.iterableapi.IterableInboxSession;
 import com.iterable.iterableapi.IterableLogger;
 import com.iterable.iterableapi.IterableUrlHandler;
 import com.iterable.iterableapi.RNIterableInternal;
+
 import com.iterable.iterableapi.IterableEmbeddedUpdateHandler;
 
 import org.json.JSONArray;
@@ -55,6 +56,7 @@ import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+
 public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCustomActionHandler, IterableInAppHandler, IterableAuthHandler, IterableInAppManager.Listener, IterableEmbeddedUpdateHandler {
     public static final String NAME = "RNIterableAPI";
 
@@ -62,7 +64,6 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
     private final ReactApplicationContext reactContext;
 
     private IterableInAppHandler.InAppResponse inAppResponse = IterableInAppHandler.InAppResponse.SHOW;
-    private IterableEmbeddedUpdateHandler embeddedUpdateHandler;
 
     //A CountDownLatch. This helps decide whether to handle the in-app in Default way by waiting for JS to respond in runtime.
     private CountDownLatch jsCallBackLatch;
@@ -714,22 +715,14 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
     }
 
     public void addEmbeddedUpdateListener(@Nullable IterableEmbeddedUpdateHandler handler) {
-        if (embeddedUpdateHandler == null) {
-            // If handler is null, use this (the module implementation) as the default handler
-            embeddedUpdateHandler = (handler != null) ? handler : this;
-            IterableApi.getInstance().getEmbeddedManager().addUpdateListener(embeddedUpdateHandler);
-        }
+        // For React Native bridge, we'll use this module as the handler
+        // The JavaScript side will receive events through the event emitter
+        IterableApi.getInstance().getEmbeddedManager().addUpdateListener(handler);
     }
 
     public void removeEmbeddedUpdateListener(@Nullable IterableEmbeddedUpdateHandler handler) {
-        if (embeddedUpdateHandler != null) {
-            // If handler is null, remove the current handler regardless of what it is
-            // If handler is provided, only remove if it matches
-            if (handler == null || embeddedUpdateHandler.equals(handler)) {
-                IterableApi.getInstance().getEmbeddedManager().removeUpdateListener(embeddedUpdateHandler);
-                embeddedUpdateHandler = null;
-            }
-        }
+        // Remove this module as the handler
+        IterableApi.getInstance().getEmbeddedManager().removeUpdateListener(handler);
     }
 
     public void startEmbeddedSession() {

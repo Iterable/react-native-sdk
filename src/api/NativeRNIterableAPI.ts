@@ -19,6 +19,11 @@ interface EmbeddedMessage {
   payload: { [key: string]: string | number | boolean };
 }
 
+export interface EmbeddedUpdateListener {
+  onMessagesUpdated: () => void;
+  onEmbeddedMessagingDisabled: () => void;
+}
+
 export interface Spec extends TurboModule {
   // Initialization
   initializeWithApiKey(
@@ -145,9 +150,9 @@ export interface Spec extends TurboModule {
 
   getEmbeddedPlacementIds(): Promise<number[]>;
 
-  addEmbeddedUpdateListener(handler?: unknown): void;
+  addEmbeddedUpdateListener(handler: EmbeddedUpdateListener | null): void;
 
-  removeEmbeddedUpdateListener(handler?: unknown): void;
+  removeEmbeddedUpdateListener(handler: EmbeddedUpdateListener | null): void;
 
   startEmbeddedSession(): void;
 

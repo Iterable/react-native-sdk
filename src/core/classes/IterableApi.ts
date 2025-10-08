@@ -15,6 +15,7 @@ import { IterableAttributionInfo } from './IterableAttributionInfo';
 import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 import type { IterableLogger } from './IterableLogger';
+import type { IterableEmbeddedUpdateHandler } from '../../inApp/types/IterableEmbeddedUpdateHandler';
 
 export class IterableApi {
   static logger: IterableLogger = defaultLogger;
@@ -554,13 +555,19 @@ export class IterableApi {
     return RNIterableAPI.getEmbeddedPlacementIds();
   }
 
-  static addEmbeddedUpdateListener(handler?: unknown) {
+  static addEmbeddedUpdateListener(handler?: IterableEmbeddedUpdateHandler) {
     IterableApi.logger.log('addEmbeddedUpdateListener');
+    // Note: The native implementation uses the module itself as the handler
+    // The handler parameter is kept for API compatibility
+    void handler; // Suppress unused parameter warning
     return RNIterableAPI.addEmbeddedUpdateListener(handler);
   }
 
-  static removeEmbeddedUpdateListener(handler?: unknown) {
+  static removeEmbeddedUpdateListener(handler?: IterableEmbeddedUpdateHandler) {
     IterableApi.logger.log('removeEmbeddedUpdateListener');
+    // Note: The native implementation uses the module itself as the handler
+    // The handler parameter is kept for API compatibility
+    void handler; // Suppress unused parameter warning
     return RNIterableAPI.removeEmbeddedUpdateListener(handler);
   }
 

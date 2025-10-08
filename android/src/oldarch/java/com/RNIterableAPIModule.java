@@ -10,6 +10,10 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.iterable.iterableapi.IterableEmbeddedMessage;
+import com.iterable.iterableapi.IterableEmbeddedManager;
+
+import com.iterable.iterableapi.IterableEmbeddedUpdateHandler;
+
 
 public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     private final ReactApplicationContext reactContext;
@@ -245,17 +249,13 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void addEmbeddedUpdateListener(@Nullable ReadableMap handler) {
-      // Convert ReadableMap to IterableEmbeddedUpdateHandler if needed
-      // For now, we'll use null to use the default handler
-      moduleImpl.addEmbeddedUpdateListener(null);
+    public void addEmbeddedUpdateListener(@Nullable IterableEmbeddedUpdateHandler handler) {
+      moduleImpl.addEmbeddedUpdateListener(handler);
     }
 
     @ReactMethod
-    public void removeEmbeddedUpdateListener(@Nullable ReadableMap handler) {
-      // Convert ReadableMap to IterableEmbeddedUpdateHandler if needed
-      // For now, we'll use null to remove the current handler
-      moduleImpl.removeEmbeddedUpdateListener(null);
+    public void removeEmbeddedUpdateListener(@Nullable IterableEmbeddedUpdateHandler handler) {
+      moduleImpl.removeEmbeddedUpdateListener(handler);
     }
 
     @ReactMethod
