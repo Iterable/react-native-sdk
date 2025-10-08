@@ -157,6 +157,26 @@ export interface Spec extends TurboModule {
 
   pauseEmbeddedImpression(messageId: string): void;
 
+  handleEmbeddedClick(
+    message: EmbeddedMessage,
+    buttonId: string | null,
+    clickedUrl: string | null
+  ): void;
+
+  trackEmbeddedClick(
+    message: EmbeddedMessage,
+    buttonId: string | null,
+    clickedUrl: string | null
+  ): void;
+
+  trackEmbeddedSession(session: {
+    [key: string]: string | number | boolean;
+  }): void;
+
+  trackEmbeddedMessageReceived(message: {
+    [key: string]: string | number | boolean;
+  }): void;
+
   // Wake app -- android only
   wakeApp(): void;
 

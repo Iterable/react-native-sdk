@@ -277,6 +277,16 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
       moduleImpl.pauseEmbeddedImpression(messageId);
     }
 
+    @ReactMethod
+    public void handleEmbeddedClick(IterableEmbeddedMessage message, String buttonId, String clickedUrl) {
+      moduleImpl.handleEmbeddedClick(message, buttonId, clickedUrl);
+    }
+
+    @ReactMethod
+    public void trackEmbeddedClick(IterableEmbeddedMessage message, String buttonId, String clickedUrl) {
+      moduleImpl.trackEmbeddedClick(message, buttonId, clickedUrl);
+    }
+
     public void sendEvent(@NonNull String eventName, @Nullable Object eventData) {
       moduleImpl.sendEvent(eventName, eventData);
     }

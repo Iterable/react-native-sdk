@@ -326,8 +326,8 @@ export class IterableApi {
 
   static trackEmbeddedClick(
     message: IterableEmbeddedMessage,
-    buttonId: string | null | undefined,
-    clickedUrl: string | null | undefined
+    buttonId: string | null,
+    clickedUrl: string | null
   ) {
     IterableApi.logger.log(
       'trackEmbeddedClick: ',
@@ -582,6 +582,20 @@ export class IterableApi {
   static pauseEmbeddedImpression(messageId: string) {
     IterableApi.logger.log('pauseEmbeddedImpression: ', messageId);
     return RNIterableAPI.pauseEmbeddedImpression(messageId);
+  }
+
+  static handleEmbeddedClick(
+    message: IterableEmbeddedMessage,
+    buttonId: string | null,
+    clickedUrl: string | null
+  ) {
+    IterableApi.logger.log(
+      'handleEmbeddedClick: ',
+      message,
+      buttonId,
+      clickedUrl
+    );
+    return RNIterableAPI.handleEmbeddedClick(message, buttonId, clickedUrl);
   }
 
   // ---- End EMBEDDED ---- //
