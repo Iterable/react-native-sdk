@@ -21,6 +21,11 @@ export const Embedded = () => {
   useEffect(() => {
     if (isFocused) {
       Iterable.embeddedManager.startSession();
+      Iterable.embeddedManager.syncMessages();
+      Iterable.embeddedManager.getMessages(placementIds).then((messageList) => {
+        console.log(messageList);
+        setMessages(messageList as IterableEmbeddedMessage[]);
+      });
       setHasSession(true);
     } else {
       if (hasSession) {
@@ -77,7 +82,7 @@ export const Embedded = () => {
         return (
           <IterableEmbeddedView
             key={message.metadata.messageId}
-            viewType={IterableEmbeddedViewType.Card}
+            viewType={IterableEmbeddedViewType.Banner}
             message={message}
           />
         );
