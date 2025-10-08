@@ -1,4 +1,5 @@
 export * from './IterableActionSource';
+export * from './IterableActionType';
 export * from './IterableAuthFailureReason';
 export * from './IterableAuthResponseResult';
 export * from './IterableDataRegion';

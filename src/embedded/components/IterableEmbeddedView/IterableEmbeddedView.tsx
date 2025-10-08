@@ -13,11 +13,8 @@ interface IterableEmbeddedViewProps extends IterableEmbeddedComponentProps {
 
 export const IterableEmbeddedView = ({
   viewType,
-  message,
-  config,
+  ...props
 }: IterableEmbeddedViewProps) => {
-  console.log(`🚀 > IterableEmbeddedView > config:`, config);
-  console.log(`🚀 > IterableEmbeddedView > message:`, message);
   console.log(`🚀 > IterableEmbeddedView > viewType:`, viewType);
 
   const Cmp = useMemo(() => {
@@ -33,5 +30,5 @@ export const IterableEmbeddedView = ({
     }
   }, [viewType]);
 
-  return Cmp ? <Cmp config={config} message={message} /> : null;
+  return Cmp ? <Cmp {...props} /> : null;
 };

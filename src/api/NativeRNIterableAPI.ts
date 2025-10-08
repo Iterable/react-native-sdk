@@ -2,21 +2,28 @@ import type { TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
 
 interface EmbeddedMessage {
-  metadata: { [key: string]: string | number | boolean };
-  elements: {
-    buttons: {
-      id: string;
-      title: string | null;
-      action: { [key: string]: string | number | boolean } | null;
-    }[];
-    body: string | null;
-    mediaURL: string | null;
-    mediaUrlCaption: string | null;
-    defaultAction: { [key: string]: string | number | boolean } | null;
-    text: { [key: string]: string | number | boolean }[] | null;
-    title: string | null;
+  metadata: {
+    messageId: string;
+    placementId: number;
+    campaignId?: number | null;
+    isProof?: boolean;
   };
-  payload: { [key: string]: string | number | boolean };
+  elements: {
+    buttons?:
+      | {
+          id: string;
+          title?: string | null;
+          action: { type: string; data?: string } | null;
+        }[]
+      | null;
+    body?: string | null;
+    mediaURL?: string | null;
+    mediaUrlCaption?: string | null;
+    defaultAction?: { type: string; data?: string } | null;
+    text?: { id: string; text?: string | null; label?: string | null }[] | null;
+    title?: string | null;
+  } | null;
+  payload?: { [key: string]: string | number | boolean | null } | null;
 }
 
 export interface EmbeddedUpdateListener {

@@ -13,10 +13,12 @@ import type { IterableEmbeddedComponentProps } from '../IterableEmbeddedViewProp
 import { getMedia } from '../utils/getMedia';
 import { getStyles } from '../utils/getStyles';
 import { styles } from './IterableEmbeddedBanner.styles';
+import { runButtonClick } from '../utils/runButtonClick';
 
 export const IterableEmbeddedBanner = ({
   config,
   message,
+  onButtonClick = () => {},
 }: IterableEmbeddedComponentProps) => {
   const parsedStyles = useMemo(() => {
     return getStyles(IterableEmbeddedViewType.Banner, config);
@@ -25,11 +27,18 @@ export const IterableEmbeddedBanner = ({
     return getMedia(IterableEmbeddedViewType.Banner, message);
   }, [message]);
   console.log(`🚀 > IterableEmbeddedView > media:`, media);
-  const onButtonPress = useCallback(
+  const handleButtonClick = useCallback(
     (button: IterableEmbeddedMessageElementsButton) => {
-      console.log('CLICK', button);
+      console.group('handleButtonClick');
+      console.log('message', message);
+      console.log('button', button);
+      console.log('button.action', button.action);
+
+      onButtonClick(button);
+      runButtonClick(button, message);
+      console.groupEnd();
     },
-    []
+    [onButtonClick, message]
   );
 
   const buttons = message.elements?.buttons ?? [];
@@ -83,7 +92,7 @@ export const IterableEmbeddedBanner = ({
             return (
               <TouchableOpacity
                 style={[styles.button, { backgroundColor } as ViewStyle]}
-                onPress={() => onButtonPress(button)}
+                onPress={() => handleButtonClick(button)}
                 key={button.id}
               >
                 <Text

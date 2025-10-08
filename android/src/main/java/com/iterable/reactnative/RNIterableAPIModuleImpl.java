@@ -735,6 +735,7 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
     }
 
     public void trackEmbeddedClick(IterableEmbeddedMessage message, String buttonId, String clickedUrl) {
+        IterableLogger.d(TAG, "trackEmbeddedClick: buttonId: " + buttonId + " clickedUrl: " + clickedUrl);
         IterableApi.getInstance().trackEmbeddedClick(message, buttonId, clickedUrl);
     }
 

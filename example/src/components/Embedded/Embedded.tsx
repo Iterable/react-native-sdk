@@ -2,7 +2,7 @@ import {
   Iterable,
   IterableEmbeddedView,
   IterableEmbeddedViewType,
-  IterableEmbeddedMessage,
+  type IterableEmbeddedMessage,
 } from '@iterable/react-native-sdk';
 import { useIsFocused } from '@react-navigation/native';
 import { useCallback, useEffect, useState } from 'react';

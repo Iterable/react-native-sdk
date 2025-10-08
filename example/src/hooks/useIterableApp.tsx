@@ -151,6 +151,7 @@ export const IterableAppProvider: FunctionComponent<
       };
 
       config.urlHandler = (url: string) => {
+        console.log('urlHandler', url);
         const routeNames = [Route.Commerce, Route.Inbox, Route.User];
         for (const route of routeNames) {
           if (url.includes(route.toLowerCase())) {

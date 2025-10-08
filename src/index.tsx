@@ -14,6 +14,7 @@ export {
 } from './core/classes';
 export {
   IterableActionSource,
+  IterableActionType,
   IterableAuthFailureReason,
   IterableAuthResponseResult,
   IterableDataRegion,
@@ -59,7 +60,7 @@ export {
   type IterableInboxProps,
   type IterableInboxRowViewModel,
 } from './inbox';
-export { IterableEmbeddedMessage } from './embedded/classes/IterableEmbeddedMessage';
+export { type IterableEmbeddedMessage } from './embedded/classes/IterableEmbeddedMessage';
 export { IterableEmbeddedView } from './embedded/components';
 export { IterableEmbeddedViewType } from './embedded/enums';
 export { IterableEmbeddedViewConfig } from './embedded/classes/IterableEmbeddedViewConfig';
