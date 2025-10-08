@@ -4,10 +4,10 @@ import { useCallback, useEffect, useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
 import { useIterableApp } from '../../hooks';
-import styles from './User.styles';
+import styles from './Embedded.styles';
 
-export const User = () => {
-  const { logout, isLoggedIn } = useIterableApp();
+export const Embedded = () => {
+  const { isLoggedIn } = useIterableApp();
   const isFocused = useIsFocused();
   const [loggedInAs, setLoggedInAs] = useState<string>('');
   const [hasSession, setHasSession] = useState<boolean>(false);
@@ -52,6 +52,10 @@ export const User = () => {
     });
   }, []);
 
+  const sync = useCallback(() => {
+    Iterable.embeddedManager.syncMessages();
+  }, []);
+
   return (
     <View style={styles.container}>
       <Text style={styles.appName}>Welcome Iterator</Text>
@@ -60,17 +64,17 @@ export const User = () => {
       <Text style={styles.text}>
         Placement ids: [{placementIds.join(', ')}]
       </Text>
-      <TouchableOpacity style={styles.button} onPress={logout}>
-        <Text style={styles.buttonText}>Logout</Text>
-      </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={getEmbeddedMessages}>
         <Text style={styles.buttonText}>Get embedded messages</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={getPlacementIds}>
         <Text style={styles.buttonText}>Get placement ids</Text>
       </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={sync}>
+        <Text style={styles.buttonText}>Sync</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
-export default User;
+export default Embedded;
