@@ -1,0 +1,915 @@
+import { NativeEventEmitter, Platform } from "react-native";
+
+import { MockLinking } from "../../__mocks__/MockLinking";
+import { MockRNIterableAPI } from "../../__mocks__/MockRNIterableAPI";
+import { IterableLogger } from "..";
+// import from the same location that consumers import from
+import {
+  Iterable,
+  IterableAction,
+  IterableActionContext,
+  IterableActionSource,
+  IterableAttributionInfo,
+  IterableCommerceItem,
+  IterableConfig,
+  IterableDataRegion,
+  IterableEventName,
+  IterableLogLevel,
+  IterableInAppMessage,
+  IterableInAppCloseSource,
+  IterableInAppDeleteSource,
+  IterableInAppLocation,
+  IterableInAppTrigger,
+  IterableInAppTriggerType,
+  IterableAuthResponse,
+  IterableInAppShowResponse,
+} from "../..";
+import { TestHelper } from "../../__tests__/TestHelper";
+
+const getDefaultConfig = () => {
+  const config = new IterableConfig();
+  config.logReactNativeSdkCalls = false;
+  return config;
+};
+
+describe("Iterable", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    const config = getDefaultConfig();
+    Iterable.logger = new IterableLogger(config);
+  });
+
+  afterEach(() => {
+    // Clean up all event listeners to prevent Jest worker process hanging
+    const nativeEmitter = new NativeEventEmitter();
+    nativeEmitter.removeAllListeners(IterableEventName.handleUrlCalled);
+    nativeEmitter.removeAllListeners(IterableEventName.handleInAppCalled);
+    nativeEmitter.removeAllListeners(
+      IterableEventName.handleCustomActionCalled
+    );
+    nativeEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
+    nativeEmitter.removeAllListeners(IterableEventName.handleAuthSuccessCalled);
+    nativeEmitter.removeAllListeners(IterableEventName.handleAuthFailureCalled);
+
+    // Clear any pending timers
+    jest.clearAllTimers();
+  });
+
+  describe("setEmail", () => {
+    it("should set the email", async () => {
+      const result = "user@example.com";
+      // GIVEN an email
+      const email = "user@example.com";
+      // WHEN Iterable.setEmail is called with the given email
+      Iterable.setEmail(email);
+      // THEN Iterable.getEmail returns the given email
+      return await Iterable.getEmail().then((mail) => {
+        expect(mail).toBe(result);
+      });
+    });
+  });
+
+  describe("setUserId", () => {
+    it("should set the userId", async () => {
+      const result = "user1";
+      // GIVEN an userId
+      const userId = "user1";
+      // WHEN Iterable.setUserId is called with the given userId
+      Iterable.setUserId(userId);
+      // THEN Iterable.getUserId returns the given userId
+      return await Iterable.getUserId().then((id) => {
+        expect(id).toBe(result);
+      });
+    });
+  });
+
+  describe("disableDeviceForCurrentUser", () => {
+    it("should disable the device for the current user", () => {
+      // GIVEN no parameters
+      // WHEN Iterable.disableDeviceForCurrentUser is called
+      Iterable.disableDeviceForCurrentUser();
+      // THEN corresponding method is called on RNITerableAPI
+      expect(MockRNIterableAPI.disableDeviceForCurrentUser).toBeCalled();
+    });
+  });
+
+  describe("getLastPushPayload", () => {
+    it("should return the last push payload", async () => {
+      const result = { var1: "val1", var2: true };
+      // GIVEN no parameters
+      // WHEN the lastPushPayload is set
+      MockRNIterableAPI.lastPushPayload = { var1: "val1", var2: true };
+      // THEN the lastPushPayload is returned when getLastPushPayload is called
+      return await Iterable.getLastPushPayload().then((payload) => {
+        expect(payload).toEqual(result);
+      });
+    });
+  });
+
+  describe("trackPushOpenWithCampaignId", () => {
+    it("should track the push open with the campaign id", () => {
+      // GIVEN the following parameters
+      const campaignId = 123;
+      const templateId = 234;
+      const messageId = "someMessageId";
+      const appAlreadyRunning = false;
+      const dataFields = { dataFieldKey: "dataFieldValue" };
+      // WHEN Iterable.trackPushOpenWithCampaignId is called
+      Iterable.trackPushOpenWithCampaignId(
+        campaignId,
+        templateId,
+        messageId,
+        appAlreadyRunning,
+        dataFields
+      );
+      // THEN corresponding function is called on RNIterableAPI
+      expect(MockRNIterableAPI.trackPushOpenWithCampaignId).toBeCalledWith(
+        campaignId,
+        templateId,
+        messageId,
+        appAlreadyRunning,
+        dataFields
+      );
+    });
+  });
+
+  describe("updateCart", () => {
+    it("should call IterableAPI.updateCart with the correct items", () => {
+      // GIVEN list of items
+      const items = [new IterableCommerceItem("id1", "Boba Tea", 18, 26)];
+      // WHEN Iterable.updateCart is called
+      Iterable.updateCart(items);
+      // THEN corresponding function is called on RNIterableAPI
+      expect(MockRNIterableAPI.updateCart).toBeCalledWith(items);
+    });
+  });
+
+  describe("trackPurchase", () => {
+    it("should track the purchase", () => {
+      // GIVEN the following parameters
+      const total = 10;
+      const items = [new IterableCommerceItem("id1", "Boba Tea", 18, 26)];
+      const dataFields = { dataFieldKey: "dataFieldValue" };
+      // WHEN Iterable.trackPurchase is called
+      Iterable.trackPurchase(total, items, dataFields);
+      // THEN corresponding function is called on RNIterableAPI
+      expect(MockRNIterableAPI.trackPurchase).toBeCalledWith(
+        total,
+        items,
+        dataFields
+      );
+    });
+
+    it("should track the purchase when called with optional fields", () => {
+      // GIVEN the following parameters
+      const total = 5;
+      const items = [
+        new IterableCommerceItem(
+          "id",
+          "swordfish",
+          64,
+          1,
+          "SKU",
+          "description",
+          "url",
+          "imageUrl",
+          ["sword", "shield"]
+        ),
+      ];
+      const dataFields = { key: "value" };
+      // WHEN Iterable.trackPurchase is called
+      Iterable.trackPurchase(total, items, dataFields);
+      // THEN corresponding function is called on RNIterableAPI
+      expect(MockRNIterableAPI.trackPurchase).toBeCalledWith(
+        total,
+        items,
+        dataFields
+      );
+    });
+  });
+
+  describe("trackEvent", () => {
+    it("should call IterableAPI.trackEvent with the correct name and dataFields", () => {
+      // GIVEN the following parameters
+      const name = "EventName";
+      const dataFields = { DatafieldKey: "DatafieldValue" };
+      // WHEN Iterable.trackEvent is called
+      Iterable.trackEvent(name, dataFields);
+      // THEN corresponding function is called on RNIterableAPI
+      expect(MockRNIterableAPI.trackEvent).toBeCalledWith(name, dataFields);
+    });
+  });
+
+  describe("setAttributionInfo", () => {
+    it("should set the attribution info", async () => {
+      // GIVEN attribution info
+      const campaignId = 1234;
+      const templateId = 5678;
+      const messageId = "qwer";
+      // WHEN Iterable.setAttributionInfo is called with the given attribution info
+      Iterable.setAttributionInfo(
+        new IterableAttributionInfo(campaignId, templateId, messageId)
+      );
+      // THEN Iterable.getAttrbutionInfo returns the given attribution info
+      return await Iterable.getAttributionInfo().then((attributionInfo) => {
+        expect(attributionInfo?.campaignId).toBe(campaignId);
+        expect(attributionInfo?.templateId).toBe(templateId);
+        expect(attributionInfo?.messageId).toBe(messageId);
+      });
+    });
+  });
+
+  describe("updateUser", () => {
+    it("should update the user", () => {
+      // GIVEN the following parameters
+      const dataFields = { field: "value1" };
+      // WHEN Iterable.updateUser is called
+      Iterable.updateUser(dataFields, false);
+      // THEN corresponding function is called on RNIterableAPI
+      expect(MockRNIterableAPI.updateUser).toBeCalledWith(dataFields, false);
+    });
+  });
+
+  describe("updateEmail", () => {
+    it("should call IterableAPI.updateEmail with the correct email", () => {
+      // GIVEN the new email
+      const newEmail = "woo@newemail.com";
+      // WHEN Iterable.updateEmail is called
+      Iterable.updateEmail(newEmail);
+      // THEN corresponding function is called on RNIterableAPI
+      expect(MockRNIterableAPI.updateEmail).toBeCalledWith(newEmail, undefined);
+    });
+
+    it("should call IterableAPI.updateEmail with the correct email and token", () => {
+      // GIVEN the new email and a token
+      const newEmail = "woo@newemail.com";
+      const newToken = "token2";
+      // WHEN Iterable.updateEmail is called
+      Iterable.updateEmail(newEmail, newToken);
+      // THEN corresponding function is called on RNITerableAPI
+      expect(MockRNIterableAPI.updateEmail).toBeCalledWith(newEmail, newToken);
+    });
+  });
+
+  describe("iterableConfig", () => {
+    it("should have default values", () => {
+      // GIVEN no parameters
+      // WHEN config is initialized
+      const config = new IterableConfig();
+      // THEN config has default values
+      expect(config.pushIntegrationName).toBe(undefined);
+      expect(config.autoPushRegistration).toBe(true);
+      expect(config.checkForDeferredDeeplink).toBe(false);
+      expect(config.inAppDisplayInterval).toBe(30.0);
+      expect(config.urlHandler).toBe(undefined);
+      expect(config.customActionHandler).toBe(undefined);
+      expect(config.inAppHandler).toBe(undefined);
+      expect(config.authHandler).toBe(undefined);
+      expect(config.logLevel).toBe(IterableLogLevel.info);
+      expect(config.logReactNativeSdkCalls).toBe(true);
+      expect(config.expiringAuthTokenRefreshPeriod).toBe(60.0);
+      expect(config.allowedProtocols).toEqual([]);
+      expect(config.androidSdkUseInMemoryStorageForInApps).toBe(false);
+      expect(config.useInMemoryStorageForInApps).toBe(false);
+      expect(config.dataRegion).toBe(IterableDataRegion.US);
+      expect(config.encryptionEnforced).toBe(false);
+      const configDict = config.toDict();
+      expect(configDict.pushIntegrationName).toBe(undefined);
+      expect(configDict.autoPushRegistration).toBe(true);
+      expect(configDict.inAppDisplayInterval).toBe(30.0);
+      expect(configDict.urlHandlerPresent).toBe(false);
+      expect(configDict.customActionHandlerPresent).toBe(false);
+      expect(configDict.inAppHandlerPresent).toBe(false);
+      expect(configDict.authHandlerPresent).toBe(false);
+      expect(configDict.logLevel).toBe(IterableLogLevel.info);
+      expect(configDict.expiringAuthTokenRefreshPeriod).toBe(60.0);
+      expect(configDict.allowedProtocols).toEqual([]);
+      expect(configDict.androidSdkUseInMemoryStorageForInApps).toBe(false);
+      expect(configDict.useInMemoryStorageForInApps).toBe(false);
+      expect(configDict.dataRegion).toBe(IterableDataRegion.US);
+      expect(configDict.encryptionEnforced).toBe(false);
+    });
+  });
+
+  describe("urlHandler", () => {
+    it("should open the url when canOpenURL returns true and urlHandler returns false", async () => {
+      // sets up event emitter
+      const nativeEmitter = new NativeEventEmitter();
+      nativeEmitter.removeAllListeners(IterableEventName.handleUrlCalled);
+      // sets up config file and urlHandler function
+      // urlHandler set to return false
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      config.urlHandler = jest.fn((_url: string, _: IterableActionContext) => {
+        return false;
+      });
+      // initialize Iterable object
+      Iterable.initialize("apiKey", config);
+      // GIVEN canOpenUrl set to return a promise that resolves to true
+      MockLinking.canOpenURL = jest.fn(async () => {
+        return await new Promise((resolve) => {
+          resolve(true);
+        });
+      });
+      MockLinking.openURL.mockReset();
+      const expectedUrl = "https://somewhere.com";
+      const actionDict = { type: "openUrl" };
+      const dict = {
+        url: expectedUrl,
+        context: { action: actionDict, source: "inApp" },
+      };
+      // WHEN handleUrlCalled event is emitted
+      nativeEmitter.emit(IterableEventName.handleUrlCalled, dict);
+      // THEN urlHandler and MockLinking is called with expected url
+      return await TestHelper.delayed(0, () => {
+        expect(config.urlHandler).toBeCalledWith(expectedUrl, dict.context);
+        expect(MockLinking.openURL).toBeCalledWith(expectedUrl);
+      });
+    });
+
+    it("should not open the url when canOpenURL returns false and urlHandler returns false", async () => {
+      // sets up event emitter
+      const nativeEmitter = new NativeEventEmitter();
+      nativeEmitter.removeAllListeners(IterableEventName.handleUrlCalled);
+      // sets up config file and urlHandler function
+      // urlHandler set to return false
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      config.urlHandler = jest.fn((_url: string, _: IterableActionContext) => {
+        return false;
+      });
+      // initialize Iterable object
+      Iterable.initialize("apiKey", config);
+      // GIVEN canOpenUrl set to return a promise that resolves to false
+      MockLinking.canOpenURL = jest.fn(async () => {
+        return await new Promise((resolve) => {
+          resolve(false);
+        });
+      });
+      MockLinking.openURL.mockReset();
+      const expectedUrl = "https://somewhere.com";
+      const actionDict = { type: "openUrl" };
+      const dict = {
+        url: expectedUrl,
+        context: { action: actionDict, source: "inApp" },
+      };
+      // WHEN handleUrlCalled event is emitted
+      nativeEmitter.emit(IterableEventName.handleUrlCalled, dict);
+      // THEN urlHandler is called and MockLinking.openURL is not called
+      return await TestHelper.delayed(0, () => {
+        expect(config.urlHandler).toBeCalledWith(expectedUrl, dict.context);
+        expect(MockLinking.openURL).not.toBeCalled();
+      });
+    });
+
+    it("should not open the url when canOpenURL returns true and urlHandler returns true", async () => {
+      // sets up event emitter
+      const nativeEmitter = new NativeEventEmitter();
+      nativeEmitter.removeAllListeners(IterableEventName.handleUrlCalled);
+      // sets up config file and urlHandler function
+      // urlHandler set to return true
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      config.urlHandler = jest.fn((_url: string, _: IterableActionContext) => {
+        return true;
+      });
+      // initialize Iterable object
+      Iterable.initialize("apiKey", config);
+      // GIVEN canOpenUrl set to return a promise that resolves to true
+      MockLinking.canOpenURL = jest.fn(async () => {
+        return await new Promise((resolve) => {
+          resolve(true);
+        });
+      });
+      MockLinking.openURL.mockReset();
+      const expectedUrl = "https://somewhere.com";
+      const actionDict = { type: "openUrl" };
+      const dict = {
+        url: expectedUrl,
+        context: { action: actionDict, source: "inApp" },
+      };
+      // WHEN handleUrlCalled event is emitted
+      nativeEmitter.emit(IterableEventName.handleUrlCalled, dict);
+      // THEN urlHandler is called and MockLinking.openURL is not called
+      return await TestHelper.delayed(0, () => {
+        expect(config.urlHandler).toBeCalledWith(expectedUrl, dict.context);
+        expect(MockLinking.openURL).not.toBeCalled();
+      });
+    });
+  });
+
+  describe("customActionHandler", () => {
+    it("should be called with the correct action and context", () => {
+      // sets up event emitter
+      const nativeEmitter = new NativeEventEmitter();
+      nativeEmitter.removeAllListeners(
+        IterableEventName.handleCustomActionCalled
+      );
+      // sets up config file and customActionHandler function
+      // customActionHandler set to return true
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      config.customActionHandler = jest.fn(
+        (_action: IterableAction, _context: IterableActionContext) => {
+          return true;
+        }
+      );
+      // initialize Iterable object
+      Iterable.initialize("apiKey", config);
+      // GIVEN custom action name and custom action data
+      const actionName = "zeeActionName";
+      const actionData = "zeeActionData";
+      const actionDict = { type: actionName, data: actionData };
+      const actionSource = IterableActionSource.inApp;
+      const dict = {
+        action: actionDict,
+        context: { action: actionDict, source: IterableActionSource.inApp },
+      };
+      // WHEN handleCustomActionCalled event is emitted
+      nativeEmitter.emit(IterableEventName.handleCustomActionCalled, dict);
+      // THEN customActionHandler is called with expected action and expected context
+      const expectedAction = new IterableAction(actionName, actionData);
+      const expectedContext = new IterableActionContext(
+        expectedAction,
+        actionSource
+      );
+      expect(config.customActionHandler).toBeCalledWith(
+        expectedAction,
+        expectedContext
+      );
+    });
+  });
+
+  describe("handleAppLink", () => {
+    it("should call IterableAPI.handleAppLink", () => {
+      // GIVEN a link
+      const link = "https://somewhere.com/link/something";
+      // WHEN Iterable.handleAppLink is called
+      Iterable.handleAppLink(link);
+      // THEN corresponding function is called on RNITerableAPI
+      expect(MockRNIterableAPI.handleAppLink).toBeCalledWith(link);
+    });
+  });
+
+  describe("updateSubscriptions", () => {
+    it("should call IterableAPI.updateSubscriptions with the correct parameters", () => {
+      // GIVEN the following parameters
+      const emailListIds = [1, 2, 3];
+      const unsubscribedChannelIds = [4, 5, 6];
+      const unsubscribedMessageTypeIds = [7, 8];
+      const subscribedMessageTypeIds = [9];
+      const campaignId = 10;
+      const templateId = 11;
+      // WHEN Iterable.updateSubscriptions is called
+      Iterable.updateSubscriptions(
+        emailListIds,
+        unsubscribedChannelIds,
+        unsubscribedMessageTypeIds,
+        subscribedMessageTypeIds,
+        campaignId,
+        templateId
+      );
+      // THEN corresponding function is called on RNIterableAPI
+      expect(MockRNIterableAPI.updateSubscriptions).toBeCalledWith(
+        emailListIds,
+        unsubscribedChannelIds,
+        unsubscribedMessageTypeIds,
+        subscribedMessageTypeIds,
+        campaignId,
+        templateId
+      );
+    });
+  });
+
+  describe("initialize", () => {
+    it("should call IterableAPI.initializeWithApiKey and save the config", async () => {
+      // GIVEN an API key and config
+      const apiKey = "test-api-key";
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      config.logLevel = IterableLogLevel.debug;
+      // WHEN Iterable.initialize is called
+      const result = await Iterable.initialize(apiKey, config);
+      // THEN corresponding function is called on RNIterableAPI and config is saved
+      expect(MockRNIterableAPI.initializeWithApiKey).toBeCalledWith(
+        apiKey,
+        config.toDict(),
+        expect.any(String)
+      );
+      expect(Iterable.savedConfig).toBe(config);
+      expect(result).toBe(true);
+    });
+
+    it("should give the default config if no config is provided", async () => {
+      // GIVEN an API key
+      const apiKey = "test-api-key";
+      // WHEN Iterable.initialize is called
+      const result = await Iterable.initialize(apiKey);
+      // THEN corresponding function is called on RNIterableAPI and config is saved
+      expect(Iterable.savedConfig).toStrictEqual(new IterableConfig());
+      expect(result).toBe(true);
+    });
+  });
+
+  describe("initialize2", () => {
+    it("should call IterableAPI.initialize2WithApiKey with an endpoint and save the config", async () => {
+      // GIVEN an API key, config, and endpoint
+      const apiKey = "test-api-key";
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      const apiEndPoint = "https://api.staging.iterable.com";
+      // WHEN Iterable.initialize2 is called
+      const result = await Iterable.initialize2(apiKey, config, apiEndPoint);
+      // THEN corresponding function is called on RNIterableAPI and config is saved
+      expect(MockRNIterableAPI.initialize2WithApiKey).toBeCalledWith(
+        apiKey,
+        config.toDict(),
+        expect.any(String),
+        apiEndPoint
+      );
+      expect(Iterable.savedConfig).toBe(config);
+      expect(result).toBe(true);
+    });
+
+    it("should give the default config if no config is provided", async () => {
+      // GIVEN an API key
+      const apiKey = "test-api-key";
+      const apiEndPoint = "https://api.staging.iterable.com";
+      // WHEN Iterable.initialize is called
+      const result = await Iterable.initialize2(apiKey, undefined, apiEndPoint);
+      // THEN corresponding function is called on RNIterableAPI and config is saved
+      expect(Iterable.savedConfig).toStrictEqual(new IterableConfig());
+      expect(result).toBe(true);
+    });
+  });
+
+  describe("wakeApp", () => {
+    it("should call IterableAPI.wakeApp on Android", () => {
+      // GIVEN Android platform
+      const originalPlatform = Platform.OS;
+      Object.defineProperty(Platform, "OS", {
+        value: "android",
+        writable: true,
+      });
+      // WHEN Iterable.wakeApp is called
+      Iterable.wakeApp();
+      // THEN corresponding function is called on RNIterableAPI
+      expect(MockRNIterableAPI.wakeApp).toBeCalled();
+      // Restore original platform
+      Object.defineProperty(Platform, "OS", {
+        value: originalPlatform,
+        writable: true,
+      });
+    });
+
+    it("should not call IterableAPI.wakeApp on iOS", () => {
+      // GIVEN iOS platform
+      const originalPlatform = Platform.OS;
+      Object.defineProperty(Platform, "OS", {
+        value: "ios",
+        writable: true,
+      });
+      // WHEN Iterable.wakeApp is called
+      Iterable.wakeApp();
+      // THEN corresponding function is not called on RNIterableAPI
+      expect(MockRNIterableAPI.wakeApp).not.toBeCalled();
+      // Restore original platform
+      Object.defineProperty(Platform, "OS", {
+        value: originalPlatform,
+        writable: true,
+      });
+    });
+  });
+
+  describe("trackInAppOpen", () => {
+    it("should call IterableAPI.trackInAppOpen with the correct parameters", () => {
+      // GIVEN an in-app message and location
+      const message = new IterableInAppMessage(
+        "1234",
+        4567,
+        new IterableInAppTrigger(IterableInAppTriggerType.immediate),
+        new Date(),
+        new Date(),
+        false,
+        undefined,
+        undefined,
+        false,
+        0
+      );
+      const location = IterableInAppLocation.inApp;
+      // WHEN Iterable.trackInAppOpen is called
+      Iterable.trackInAppOpen(message, location);
+      // THEN corresponding function is called on RNIterableAPI
+      expect(MockRNIterableAPI.trackInAppOpen).toBeCalledWith(
+        message.messageId,
+        location
+      );
+    });
+  });
+
+  describe("trackInAppClick", () => {
+    it("should call IterableAPI.trackInAppClick with the correct parameters", () => {
+      // GIVEN an in-app message, location, and clicked URL
+      const message = new IterableInAppMessage(
+        "1234",
+        4567,
+        new IterableInAppTrigger(IterableInAppTriggerType.immediate),
+        new Date(),
+        new Date(),
+        false,
+        undefined,
+        undefined,
+        false,
+        0
+      );
+      const location = IterableInAppLocation.inApp;
+      const clickedUrl = "https://www.example.com";
+      // WHEN Iterable.trackInAppClick is called
+      Iterable.trackInAppClick(message, location, clickedUrl);
+      // THEN corresponding function is called on RNIterableAPI
+      expect(MockRNIterableAPI.trackInAppClick).toBeCalledWith(
+        message.messageId,
+        location,
+        clickedUrl
+      );
+    });
+  });
+
+  describe("trackInAppClose", () => {
+    it("should call IterableAPI.trackInAppClose with the correct parameters", () => {
+      // GIVEN an in-app message, location, and source (no URL)
+      const message = new IterableInAppMessage(
+        "1234",
+        4567,
+        new IterableInAppTrigger(IterableInAppTriggerType.immediate),
+        new Date(),
+        new Date(),
+        false,
+        undefined,
+        undefined,
+        false,
+        0
+      );
+      const location = IterableInAppLocation.inApp;
+      const source = IterableInAppCloseSource.back;
+      // WHEN Iterable.trackInAppClose is called
+      Iterable.trackInAppClose(message, location, source);
+      // THEN corresponding function is called on RNIterableAPI
+      expect(MockRNIterableAPI.trackInAppClose).toBeCalledWith(
+        message.messageId,
+        location,
+        source,
+        undefined
+      );
+    });
+
+    it("should call IterableAPI.trackInAppClose with a clicked URL when provided", () => {
+      // GIVEN an in-app message, location, source, and clicked URL
+      const message = new IterableInAppMessage(
+        "1234",
+        4567,
+        new IterableInAppTrigger(IterableInAppTriggerType.immediate),
+        new Date(),
+        new Date(),
+        false,
+        undefined,
+        undefined,
+        false,
+        0
+      );
+      const location = IterableInAppLocation.inApp;
+      const source = IterableInAppCloseSource.back;
+      const clickedUrl = "https://www.example.com";
+      // WHEN Iterable.trackInAppClose is called
+      Iterable.trackInAppClose(message, location, source, clickedUrl);
+      // THEN corresponding function is called on RNIterableAPI
+      expect(MockRNIterableAPI.trackInAppClose).toBeCalledWith(
+        message.messageId,
+        location,
+        source,
+        clickedUrl
+      );
+    });
+  });
+
+  describe("inAppConsume", () => {
+    it("should call IterableAPI.inAppConsume with the correct parameters", () => {
+      // GIVEN an in-app message, location, and delete source
+      const message = new IterableInAppMessage(
+        "1234",
+        4567,
+        new IterableInAppTrigger(IterableInAppTriggerType.immediate),
+        new Date(),
+        new Date(),
+        false,
+        undefined,
+        undefined,
+        false,
+        0
+      );
+      const location = IterableInAppLocation.inApp;
+      const source = IterableInAppDeleteSource.deleteButton;
+      // WHEN Iterable.inAppConsume is called
+      Iterable.inAppConsume(message, location, source);
+      // THEN corresponding function is called on RNIterableAPI
+      expect(MockRNIterableAPI.inAppConsume).toBeCalledWith(
+        message.messageId,
+        location,
+        source
+      );
+    });
+  });
+
+  describe("getVersionFromPackageJson", () => {
+    it("should return the version from the package.json file", () => {
+      // GIVEN no parameters
+      // WHEN Iterable.getVersionFromPackageJson is called
+      const version = Iterable.getVersionFromPackageJson();
+      // THEN a version string is returned
+      expect(typeof version).toBe("string");
+      expect(version.length).toBeGreaterThan(0);
+    });
+  });
+
+  describe("setupEventHandlers", () => {
+    it("should call inAppHandler when handleInAppCalled event is emitted", () => {
+      // sets up event emitter
+      const nativeEmitter = new NativeEventEmitter();
+      nativeEmitter.removeAllListeners(IterableEventName.handleInAppCalled);
+      // sets up config file and inAppHandler function
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      config.inAppHandler = jest.fn((_message: IterableInAppMessage) => {
+        return IterableInAppShowResponse.show;
+      });
+      // initialize Iterable object
+      Iterable.initialize("apiKey", config);
+      // GIVEN message dictionary
+      const messageDict = {
+        messageId: "1234",
+        campaignId: 4567,
+        trigger: { type: 0 },
+        createdAt: new Date().toISOString(),
+        expiresAt: new Date().toISOString(),
+        saveToInbox: false,
+        inboxMetadata: undefined,
+        customPayload: undefined,
+        read: false,
+        priorityLevel: 0,
+      };
+      // WHEN handleInAppCalled event is emitted
+      nativeEmitter.emit(IterableEventName.handleInAppCalled, messageDict);
+      // THEN inAppHandler is called and setInAppShowResponse is called
+      expect(config.inAppHandler).toBeCalledWith(
+        expect.any(IterableInAppMessage)
+      );
+      expect(MockRNIterableAPI.setInAppShowResponse).toBeCalledWith(
+        IterableInAppShowResponse.show
+      );
+    });
+
+    describe("authHandler", () => {
+      it("should call authHandler when handleAuthCalled event is emitted", async () => {
+        // sets up event emitter
+        const nativeEmitter = new NativeEventEmitter();
+        nativeEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
+        nativeEmitter.removeAllListeners(
+          IterableEventName.handleAuthSuccessCalled
+        );
+        nativeEmitter.removeAllListeners(
+          IterableEventName.handleAuthFailureCalled
+        );
+        // sets up config file and authHandler function
+        const config = new IterableConfig();
+        config.logReactNativeSdkCalls = false;
+        const successCallback = jest.fn();
+        const failureCallback = jest.fn();
+        const authResponse = new IterableAuthResponse();
+        authResponse.authToken = "test-token";
+        authResponse.successCallback = successCallback;
+        authResponse.failureCallback = failureCallback;
+        config.authHandler = jest.fn(() => {
+          return Promise.resolve(authResponse);
+        });
+        // initialize Iterable object
+        Iterable.initialize("apiKey", config);
+        // GIVEN auth handler returns AuthResponse
+        // WHEN handleAuthCalled event is emitted
+        nativeEmitter.emit(IterableEventName.handleAuthCalled);
+        // WHEN handleAuthSuccessCalled event is emitted
+        nativeEmitter.emit(IterableEventName.handleAuthSuccessCalled);
+        // THEN passAlongAuthToken is called with the token and success callback is called after timeout
+        return await TestHelper.delayed(1100, () => {
+          expect(MockRNIterableAPI.passAlongAuthToken).toBeCalledWith(
+            "test-token"
+          );
+          expect(successCallback).toBeCalled();
+          expect(failureCallback).not.toBeCalled();
+        });
+      });
+
+      it("should call authHandler when handleAuthFailureCalled event is emitted", async () => {
+        // sets up event emitter
+        const nativeEmitter = new NativeEventEmitter();
+        nativeEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
+        nativeEmitter.removeAllListeners(
+          IterableEventName.handleAuthSuccessCalled
+        );
+        nativeEmitter.removeAllListeners(
+          IterableEventName.handleAuthFailureCalled
+        );
+        // sets up config file and authHandler function
+        const config = new IterableConfig();
+        config.logReactNativeSdkCalls = false;
+        const successCallback = jest.fn();
+        const failureCallback = jest.fn();
+        const authResponse = new IterableAuthResponse();
+        authResponse.authToken = "test-token";
+        authResponse.successCallback = successCallback;
+        authResponse.failureCallback = failureCallback;
+        config.authHandler = jest.fn(() => {
+          // Why are we resolving when this is a failure?
+          return Promise.resolve(authResponse);
+        });
+        // initialize Iterable object
+        Iterable.initialize("apiKey", config);
+        // GIVEN auth handler returns AuthResponse
+        // WHEN handleAuthCalled event is emitted
+        nativeEmitter.emit(IterableEventName.handleAuthCalled);
+        // WHEN handleAuthFailureCalled event is emitted
+        nativeEmitter.emit(IterableEventName.handleAuthFailureCalled);
+        // THEN passAlongAuthToken is called with the token and failure callback is called after timeout
+        return await TestHelper.delayed(1100, () => {
+          expect(MockRNIterableAPI.passAlongAuthToken).toBeCalledWith(
+            "test-token"
+          );
+          expect(failureCallback).toBeCalled();
+          expect(successCallback).not.toBeCalled();
+        });
+      });
+
+      it("should call authHandler when handleAuthCalled event is emitted and returns a string token", async () => {
+        // sets up event emitter
+        const nativeEmitter = new NativeEventEmitter();
+        nativeEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
+        // sets up config file and authHandler function
+        const config = new IterableConfig();
+        config.logReactNativeSdkCalls = false;
+        config.authHandler = jest.fn(() => {
+          return Promise.resolve("string-token");
+        });
+        // initialize Iterable object
+        Iterable.initialize("apiKey", config);
+        // GIVEN auth handler returns string token
+        // WHEN handleAuthCalled event is emitted
+        nativeEmitter.emit(IterableEventName.handleAuthCalled);
+        // THEN passAlongAuthToken is called with the string token
+        return await TestHelper.delayed(100, () => {
+          expect(MockRNIterableAPI.passAlongAuthToken).toBeCalledWith(
+            "string-token"
+          );
+        });
+      });
+
+      it("should call authHandler when handleAuthCalled event is emitted and returns an unexpected response", () => {
+        // sets up event emitter
+        const nativeEmitter = new NativeEventEmitter();
+        nativeEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
+        // sets up config file and authHandler function
+        const config = new IterableConfig();
+        config.logReactNativeSdkCalls = false;
+        config.authHandler = jest.fn(() => {
+          return Promise.resolve({ unexpected: "object" } as unknown as
+            | string
+            | IterableAuthResponse);
+        });
+        // initialize Iterable object
+        Iterable.initialize("apiKey", config);
+        // GIVEN auth handler returns unexpected response
+        // WHEN handleAuthCalled event is emitted
+        nativeEmitter.emit(IterableEventName.handleAuthCalled);
+        // THEN error is logged (we can't easily test console.log, but we can verify no crash)
+        expect(MockRNIterableAPI.passAlongAuthToken).not.toBeCalled();
+      });
+
+      it("should call authHandler when handleAuthCalled event is emitted and rejects the promise", () => {
+        // sets up event emitter
+        const nativeEmitter = new NativeEventEmitter();
+        nativeEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
+        // sets up config file and authHandler function
+        const config = new IterableConfig();
+        config.logReactNativeSdkCalls = false;
+        config.authHandler = jest.fn(() => {
+          return Promise.reject(new Error("Auth failed"));
+        });
+        // initialize Iterable object
+        Iterable.initialize("apiKey", config);
+        // GIVEN auth handler rejects promise
+        // WHEN handleAuthCalled event is emitted
+        nativeEmitter.emit(IterableEventName.handleAuthCalled);
+        // THEN error is logged (we can't easily test console.log, but we can verify no crash)
+        expect(MockRNIterableAPI.passAlongAuthToken).not.toBeCalled();
+      });
+    });
+  });
+});
