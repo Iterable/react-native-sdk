@@ -244,4 +244,18 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   public void getEmbeddedPlacementIds(Promise promise) {
     moduleImpl.getEmbeddedPlacementIds(promise);
   }
+
+  @Override
+  public void addEmbeddedUpdateListener(@Nullable ReadableMap handler) {
+    // Convert ReadableMap to IterableEmbeddedUpdateHandler if needed
+    // For now, we'll use null to use the default handler
+    moduleImpl.addEmbeddedUpdateListener(null);
+  }
+
+  @Override
+  public void removeEmbeddedUpdateListener(@Nullable ReadableMap handler) {
+    // Convert ReadableMap to IterableEmbeddedUpdateHandler if needed
+    // For now, we'll use null to remove the current handler
+    moduleImpl.removeEmbeddedUpdateListener(null);
+  }
 }

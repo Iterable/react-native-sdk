@@ -243,6 +243,20 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
       moduleImpl.getEmbeddedPlacementIds(promise);
     }
 
+    @ReactMethod
+    public void addEmbeddedUpdateListener(@Nullable ReadableMap handler) {
+      // Convert ReadableMap to IterableEmbeddedUpdateHandler if needed
+      // For now, we'll use null to use the default handler
+      moduleImpl.addEmbeddedUpdateListener(null);
+    }
+
+    @ReactMethod
+    public void removeEmbeddedUpdateListener(@Nullable ReadableMap handler) {
+      // Convert ReadableMap to IterableEmbeddedUpdateHandler if needed
+      // For now, we'll use null to remove the current handler
+      moduleImpl.removeEmbeddedUpdateListener(null);
+    }
+
     public void sendEvent(@NonNull String eventName, @Nullable Object eventData) {
       moduleImpl.sendEvent(eventName, eventData);
     }

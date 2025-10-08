@@ -145,6 +145,10 @@ export interface Spec extends TurboModule {
 
   getEmbeddedPlacementIds(): Promise<number[]>;
 
+  addEmbeddedUpdateListener(handler?: unknown): void;
+
+  removeEmbeddedUpdateListener(handler?: unknown): void;
+
   // Wake app -- android only
   wakeApp(): void;
 

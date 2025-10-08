@@ -1,4 +1,4 @@
-import { Iterable } from '@iterable/react-native-sdk';
+import { Iterable, IterableEmbeddedMessage } from '@iterable/react-native-sdk';
 import { useCallback, useEffect, useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
@@ -8,13 +8,29 @@ import styles from './User.styles';
 export const User = () => {
   const { logout, isLoggedIn } = useIterableApp();
   const [loggedInAs, setLoggedInAs] = useState<string>('');
+  const [hasListener, setHasListener] = useState<boolean>(false);
 
   useEffect(() => {
+    console.log(`🚀 > User > isLoggedIn:`, isLoggedIn);
+    const embeddedUpdateListener = (messages: IterableEmbeddedMessage[]) => {
+      console.log('UPDATE', messages);
+    };
+
     if (isLoggedIn) {
       Iterable.getEmail().then((email) => setLoggedInAs(email || ''));
+
+      Iterable.embeddedManager.addUpdateListener(embeddedUpdateListener);
+      setHasListener(true);
     } else {
       setLoggedInAs('');
     }
+
+    return () => {
+      if (hasListener) {
+        Iterable.embeddedManager.removeUpdateListener(embeddedUpdateListener);
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoggedIn]);
 
   const getEmbeddedMessages = useCallback(() => {

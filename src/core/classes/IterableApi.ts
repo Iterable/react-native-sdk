@@ -554,6 +554,15 @@ export class IterableApi {
     return RNIterableAPI.getEmbeddedPlacementIds();
   }
 
+  static addEmbeddedUpdateListener(handler?: unknown) {
+    IterableApi.logger.log('addEmbeddedUpdateListener');
+    return RNIterableAPI.addEmbeddedUpdateListener(handler);
+  }
+
+  static removeEmbeddedUpdateListener(handler?: unknown) {
+    IterableApi.logger.log('removeEmbeddedUpdateListener');
+    return RNIterableAPI.removeEmbeddedUpdateListener(handler);
+  }
   // ---- End EMBEDDED ---- //
 
   // ====================================================== //

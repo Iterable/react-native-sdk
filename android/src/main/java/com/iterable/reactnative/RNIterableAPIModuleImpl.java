@@ -42,6 +42,7 @@ import com.iterable.iterableapi.IterableInboxSession;
 import com.iterable.iterableapi.IterableLogger;
 import com.iterable.iterableapi.IterableUrlHandler;
 import com.iterable.iterableapi.RNIterableInternal;
+import com.iterable.iterableapi.IterableEmbeddedUpdateHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,13 +55,14 @@ import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCustomActionHandler, IterableInAppHandler, IterableAuthHandler, IterableInAppManager.Listener {
+public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCustomActionHandler, IterableInAppHandler, IterableAuthHandler, IterableInAppManager.Listener, IterableEmbeddedUpdateHandler {
     public static final String NAME = "RNIterableAPI";
 
     private static String TAG = "RNIterableAPIModule";
     private final ReactApplicationContext reactContext;
 
     private IterableInAppHandler.InAppResponse inAppResponse = IterableInAppHandler.InAppResponse.SHOW;
+    private IterableEmbeddedUpdateHandler embeddedUpdateHandler;
 
     //A CountDownLatch. This helps decide whether to handle the in-app in Default way by waiting for JS to respond in runtime.
     private CountDownLatch jsCallBackLatch;
@@ -646,6 +648,7 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         sendEvent(EventName.receivedIterableInboxChanged.name(), null);
     }
 
+
     // ---------------------------------------------------------------------------------------
     // endregion
 
@@ -710,6 +713,37 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         }
     }
 
+    public void addEmbeddedUpdateListener(@Nullable IterableEmbeddedUpdateHandler handler) {
+        if (embeddedUpdateHandler == null) {
+            // If handler is null, use this (the module implementation) as the default handler
+            embeddedUpdateHandler = (handler != null) ? handler : this;
+            IterableApi.getInstance().getEmbeddedManager().addUpdateListener(embeddedUpdateHandler);
+        }
+    }
+
+    public void removeEmbeddedUpdateListener(@Nullable IterableEmbeddedUpdateHandler handler) {
+        if (embeddedUpdateHandler != null) {
+            // If handler is null, remove the current handler regardless of what it is
+            // If handler is provided, only remove if it matches
+            if (handler == null || embeddedUpdateHandler.equals(handler)) {
+                IterableApi.getInstance().getEmbeddedManager().removeUpdateListener(embeddedUpdateHandler);
+                embeddedUpdateHandler = null;
+            }
+        }
+    }
+
+    @Override
+    public void onMessagesUpdated() {
+        IterableLogger.d(TAG, "onMessagesUpdated");
+        sendEvent(EventName.receivedIterableEmbeddedMessagesChanged.name(), null);
+    }
+
+    @Override
+    public void onEmbeddedMessagingDisabled() {
+        IterableLogger.d(TAG, "onEmbeddedMessagingDisabled");
+        sendEvent(EventName.receivedIterableEmbeddedMessagesChanged.name(), null);
+    }
+
     private JSONObject createTestPlacement(int placementId) throws JSONException {
         JSONObject placement = new JSONObject();
         placement.put("placementId", placementId);
@@ -722,11 +756,12 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
 }
 
 enum EventName {
-  handleUrlCalled,
+  handleAuthCalled,
+  handleAuthFailureCalled,
+  handleAuthSuccessCalled,
   handleCustomActionCalled,
   handleInAppCalled,
-  handleAuthCalled,
-  receivedIterableInboxChanged,
-  handleAuthSuccessCalled,
-  handleAuthFailureCalled
+  handleUrlCalled,
+  receivedIterableEmbeddedMessagesChanged,
+  receivedIterableInboxChanged
 }
