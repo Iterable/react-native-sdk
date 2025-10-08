@@ -714,17 +714,6 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         }
     }
 
-    public void addEmbeddedUpdateListener(@Nullable IterableEmbeddedUpdateHandler handler) {
-        // For React Native bridge, we'll use this module as the handler
-        // The JavaScript side will receive events through the event emitter
-        IterableApi.getInstance().getEmbeddedManager().addUpdateListener(handler);
-    }
-
-    public void removeEmbeddedUpdateListener(@Nullable IterableEmbeddedUpdateHandler handler) {
-        // Remove this module as the handler
-        IterableApi.getInstance().getEmbeddedManager().removeUpdateListener(handler);
-    }
-
     public void startEmbeddedSession() {
         IterableApi.getInstance().getEmbeddedManager().getEmbeddedSessionManager().startSession();
     }

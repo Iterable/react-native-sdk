@@ -150,10 +150,6 @@ export interface Spec extends TurboModule {
 
   getEmbeddedPlacementIds(): Promise<number[]>;
 
-  addEmbeddedUpdateListener(handler: EmbeddedUpdateListener | null): void;
-
-  removeEmbeddedUpdateListener(handler: EmbeddedUpdateListener | null): void;
-
   startEmbeddedSession(): void;
 
   endEmbeddedSession(): void;

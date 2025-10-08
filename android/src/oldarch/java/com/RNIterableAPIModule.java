@@ -249,16 +249,6 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void addEmbeddedUpdateListener(@Nullable IterableEmbeddedUpdateHandler handler) {
-      moduleImpl.addEmbeddedUpdateListener(handler);
-    }
-
-    @ReactMethod
-    public void removeEmbeddedUpdateListener(@Nullable IterableEmbeddedUpdateHandler handler) {
-      moduleImpl.removeEmbeddedUpdateListener(handler);
-    }
-
-    @ReactMethod
     public void startEmbeddedSession() {
       moduleImpl.startEmbeddedSession();
     }

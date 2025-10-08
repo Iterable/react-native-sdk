@@ -251,16 +251,6 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   }
 
   @Override
-  public void addEmbeddedUpdateListener(@Nullable IterableEmbeddedUpdateHandler handler) {
-    moduleImpl.addEmbeddedUpdateListener(handler);
-  }
-
-  @Override
-  public void removeEmbeddedUpdateListener(@Nullable IterableEmbeddedUpdateHandler handler) {
-    moduleImpl.removeEmbeddedUpdateListener(handler);
-  }
-
-  @Override
   public void startEmbeddedImpression(String messageId, int placementId) {
     moduleImpl.startEmbeddedImpression(messageId, placementId);
   }
