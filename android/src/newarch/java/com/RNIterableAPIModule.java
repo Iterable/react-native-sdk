@@ -261,12 +261,12 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   }
 
   @Override
-  public void handleEmbeddedClick(IterableEmbeddedMessage message, String buttonId, String clickedUrl) {
+  public void handleEmbeddedClick(ReadableMap message, String buttonId, String clickedUrl) {
     moduleImpl.handleEmbeddedClick(message, buttonId, clickedUrl);
   }
 
   @Override
-  public void trackEmbeddedClick(IterableEmbeddedMessage message, String buttonId, String clickedUrl) {
+  public void trackEmbeddedClick(ReadableMap message, String buttonId, String clickedUrl) {
     moduleImpl.trackEmbeddedClick(message, buttonId, clickedUrl);
   }
 

@@ -149,6 +149,16 @@ class Serialization {
         return embeddedMessagesJson;
     }
 
+    static IterableEmbeddedMessage embeddedMessageFromReadableMap(ReadableMap messageMap) {
+        try {
+            JSONObject messageJson = convertMapToJson(messageMap);
+            return IterableEmbeddedMessage.Companion.fromJSONObject(messageJson);
+        } catch (JSONException e) {
+            IterableLogger.e(TAG, "Failed to convert ReadableMap to IterableEmbeddedMessage: " + e.getLocalizedMessage());
+            return null;
+        }
+    }
+
     static IterableConfig.Builder getConfigFromReadableMap(ReadableMap iterableContextMap) {
         try {
             JSONObject iterableContextJSON = convertMapToJson(iterableContextMap);

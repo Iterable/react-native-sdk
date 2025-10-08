@@ -730,13 +730,23 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         IterableApi.getInstance().getEmbeddedManager().getEmbeddedSessionManager().pauseImpression(messageId);
     }
 
-    public void handleEmbeddedClick(IterableEmbeddedMessage message, String buttonId, String clickedUrl) {
-        IterableApi.getInstance().getEmbeddedManager().handleEmbeddedClick(message, buttonId, clickedUrl);
+    public void handleEmbeddedClick(ReadableMap messageMap, String buttonId, String clickedUrl) {
+        IterableEmbeddedMessage message = Serialization.embeddedMessageFromReadableMap(messageMap);
+        if (message != null) {
+            IterableApi.getInstance().getEmbeddedManager().handleEmbeddedClick(message, buttonId, clickedUrl);
+        } else {
+            IterableLogger.e(TAG, "Failed to convert message map to IterableEmbeddedMessage");
+        }
     }
 
-    public void trackEmbeddedClick(IterableEmbeddedMessage message, String buttonId, String clickedUrl) {
+    public void trackEmbeddedClick(ReadableMap messageMap, String buttonId, String clickedUrl) {
         IterableLogger.d(TAG, "trackEmbeddedClick: buttonId: " + buttonId + " clickedUrl: " + clickedUrl);
-        IterableApi.getInstance().trackEmbeddedClick(message, buttonId, clickedUrl);
+        IterableEmbeddedMessage message = Serialization.embeddedMessageFromReadableMap(messageMap);
+        if (message != null) {
+            IterableApi.getInstance().trackEmbeddedClick(message, buttonId, clickedUrl);
+        } else {
+            IterableLogger.e(TAG, "Failed to convert message map to IterableEmbeddedMessage");
+        }
     }
 
     @Override
