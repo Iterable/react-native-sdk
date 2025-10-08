@@ -1,12 +1,12 @@
 export interface IterableEmbeddedViewStyles {
-  backgroundColor: number;
-  borderColor: number;
+  backgroundColor: number | string;
+  borderColor: number | string;
   borderWidth: number;
   borderCornerRadius: number;
-  primaryBtnBackgroundColor: number;
-  primaryBtnTextColor: number;
-  secondaryBtnBackgroundColor: number;
-  secondaryBtnTextColor: number;
-  titleTextColor: number;
-  bodyTextColor: number;
+  primaryBtnBackgroundColor: number | string;
+  primaryBtnTextColor: number | string;
+  secondaryBtnBackgroundColor: number | string;
+  secondaryBtnTextColor: number | string;
+  titleTextColor: number | string;
+  bodyTextColor: number | string;
 }

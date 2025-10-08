@@ -539,7 +539,9 @@ export class IterableApi {
    *
    * @returns A Promise that resolves to an array of embedded messages.
    */
-  static getEmbeddedMessages(placementIds: number[] | null) {
+  static getEmbeddedMessages(
+    placementIds: number[] | null
+  ): Promise<IterableEmbeddedMessage[]> {
     IterableApi.logger.log('getEmbeddedMessages: ', placementIds);
     return RNIterableAPI.getEmbeddedMessages(placementIds);
   }

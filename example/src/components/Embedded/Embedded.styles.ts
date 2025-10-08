@@ -1,17 +1,12 @@
-import { StyleSheet, type TextStyle } from 'react-native';
-import { appNameSmall, button, buttonText, container } from '../../constants';
-
-const text: TextStyle = {
-  textAlign: 'center',
-  marginBottom: 20,
-};
+import { StyleSheet } from 'react-native';
+import { button, buttonText, container, hr } from '../../constants';
 
 const styles = StyleSheet.create({
-  appName: appNameSmall,
   button,
   buttonText,
   container,
-  text,
+  hr,
+  text: { textAlign: 'center' },
 });
 
 export default styles;

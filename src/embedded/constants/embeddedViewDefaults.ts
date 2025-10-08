@@ -45,3 +45,17 @@ export const embeddedBodyTextColors = {
   card: 0xff444444,
   banner: 0xff444444,
 };
+
+export const defaultBorderWidth = 1;
+export const defaultBorderCornerRadius = 8.0;
+
+export const embeddedColors = {
+  background: embeddedBackgroundColors,
+  border: embeddedBorderColors,
+  primaryBtnBackground: embeddedPrimaryBtnBackgroundColors,
+  primaryBtnText: embeddedPrimaryBtnTextColors,
+  secondaryBtnBackground: embeddedSecondaryBtnBackgroundColors,
+  secondaryBtnText: embeddedSecondaryBtnTextColors,
+  titleText: embeddedTitleTextColors,
+  bodyText: embeddedBodyTextColors,
+};

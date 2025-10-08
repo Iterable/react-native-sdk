@@ -13,7 +13,7 @@ import {
   embeddedSecondaryBtnBackgroundColors,
   embeddedSecondaryBtnTextColors,
   embeddedTitleTextColors,
-} from '../constants/embeddedColors';
+} from '../constants/embeddedViewDefaults';
 
 export class IterableEmbeddedView {
   private viewType: IterableEmbeddedViewType;

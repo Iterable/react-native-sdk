@@ -1,4 +1,9 @@
-import { Iterable } from '@iterable/react-native-sdk';
+import {
+  Iterable,
+  IterableEmbeddedView,
+  IterableEmbeddedViewType,
+  IterableEmbeddedMessage,
+} from '@iterable/react-native-sdk';
 import { useIsFocused } from '@react-navigation/native';
 import { useCallback, useEffect, useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
@@ -9,9 +14,9 @@ import styles from './Embedded.styles';
 export const Embedded = () => {
   const { isLoggedIn } = useIterableApp();
   const isFocused = useIsFocused();
-  const [loggedInAs, setLoggedInAs] = useState<string>('');
   const [hasSession, setHasSession] = useState<boolean>(false);
   const [placementIds, setPlacementIds] = useState<number[]>([]);
+  const [messages, setMessages] = useState<IterableEmbeddedMessage[]>([]);
 
   useEffect(() => {
     if (isFocused) {
@@ -28,22 +33,18 @@ export const Embedded = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      Iterable.getEmail().then((email) => setLoggedInAs(email || ''));
       Iterable.embeddedManager.getPlacementIds().then((ids: unknown) => {
         console.log(`🚀 > User > ids:`, ids);
         setPlacementIds(ids as number[]);
       });
-    } else {
-      setLoggedInAs('');
     }
   }, [isLoggedIn]);
 
   const getEmbeddedMessages = useCallback(() => {
-    Iterable.embeddedManager
-      .getMessages(placementIds)
-      .then((messages: unknown) => {
-        console.log(messages);
-      });
+    Iterable.embeddedManager.getMessages(placementIds).then((messageList) => {
+      console.log(messageList);
+      setMessages(messageList as IterableEmbeddedMessage[]);
+    });
   }, [placementIds]);
 
   const getPlacementIds = useCallback(() => {
@@ -58,8 +59,6 @@ export const Embedded = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.appName}>Welcome Iterator</Text>
-      <Text style={styles.text}>Logged in as {loggedInAs}</Text>
       <Text style={styles.text}>Has session: {hasSession.toString()}</Text>
       <Text style={styles.text}>
         Placement ids: [{placementIds.join(', ')}]
@@ -73,6 +72,16 @@ export const Embedded = () => {
       <TouchableOpacity style={styles.button} onPress={sync}>
         <Text style={styles.buttonText}>Sync</Text>
       </TouchableOpacity>
+      <View style={styles.hr} />
+      {messages.map((message) => {
+        return (
+          <IterableEmbeddedView
+            key={message.metadata.messageId}
+            viewType={IterableEmbeddedViewType.Card}
+            message={message}
+          />
+        );
+      })}
     </View>
   );
 };
