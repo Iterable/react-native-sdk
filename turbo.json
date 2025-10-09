@@ -30,7 +30,7 @@
         "!example/ios/build",
         "!example/ios/Pods"
       ],
-      "outputs": []
+      "outputs": [".turbo/cache"]
     }
   }
 }
