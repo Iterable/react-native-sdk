@@ -1,9 +1,5 @@
 /* eslint-disable eslint-comments/no-unlimited-disable */
-import {
-  Linking,
-  NativeEventEmitter,
-  Platform,
-} from 'react-native';
+import { Linking, NativeEventEmitter, Platform } from 'react-native';
 
 import { buildInfo } from '../../itblBuildInfo';
 
@@ -361,7 +357,13 @@ export class Iterable {
     Iterable?.logger?.log('getAttributionInfo');
 
     return RNIterableAPI.getAttributionInfo().then(
-      (dict: { campaignId: number; templateId: number; messageId: string } | null) => {
+      (
+        dict: {
+          campaignId: number;
+          templateId: number;
+          messageId: string;
+        } | null
+      ) => {
         if (dict) {
           return new IterableAttributionInfo(
             dict.campaignId as number,
@@ -402,7 +404,11 @@ export class Iterable {
   static setAttributionInfo(attributionInfo?: IterableAttributionInfo) {
     Iterable?.logger?.log('setAttributionInfo');
 
-    RNIterableAPI.setAttributionInfo(attributionInfo as unknown as { [key: string]: string | number | boolean; } | null);
+    RNIterableAPI.setAttributionInfo(
+      attributionInfo as unknown as {
+        [key: string]: string | number | boolean;
+      } | null
+    );
   }
 
   /**
@@ -481,7 +487,9 @@ export class Iterable {
   static updateCart(items: IterableCommerceItem[]) {
     Iterable?.logger?.log('updateCart');
 
-    RNIterableAPI.updateCart(items as unknown as { [key: string]: string | number | boolean }[]);
+    RNIterableAPI.updateCart(
+      items as unknown as { [key: string]: string | number | boolean }[]
+    );
   }
 
   /**
@@ -533,7 +541,11 @@ export class Iterable {
   ) {
     Iterable?.logger?.log('trackPurchase');
 
-    RNIterableAPI.trackPurchase(total, items as unknown as { [key: string]: string | number | boolean }[], dataFields as { [key: string]: string | number | boolean } | undefined);
+    RNIterableAPI.trackPurchase(
+      total,
+      items as unknown as { [key: string]: string | number | boolean }[],
+      dataFields as { [key: string]: string | number | boolean } | undefined
+    );
   }
 
   /**
@@ -702,7 +714,10 @@ export class Iterable {
   static trackEvent(name: string, dataFields?: unknown) {
     Iterable?.logger?.log('trackEvent');
 
-    RNIterableAPI.trackEvent(name, dataFields as { [key: string]: string | number | boolean } | undefined);
+    RNIterableAPI.trackEvent(
+      name,
+      dataFields as { [key: string]: string | number | boolean } | undefined
+    );
   }
 
   /**
@@ -750,7 +765,10 @@ export class Iterable {
   ) {
     Iterable?.logger?.log('updateUser');
 
-    RNIterableAPI.updateUser(dataFields as { [key: string]: string | number | boolean }, mergeNestedObjects);
+    RNIterableAPI.updateUser(
+      dataFields as { [key: string]: string | number | boolean },
+      mergeNestedObjects
+    );
   }
 
   /**

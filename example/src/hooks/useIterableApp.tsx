@@ -96,7 +96,9 @@ export const IterableAppProvider: FunctionComponent<
   const [apiKey, setApiKey] = useState<string | undefined>(
     process.env.ITBL_API_KEY
   );
-  const [userId, setUserId] = useState<string | null>(process.env.ITBL_ID ?? null);
+  const [userId, setUserId] = useState<string | null>(
+    process.env.ITBL_ID ?? null
+  );
   const [loginInProgress, setLoginInProgress] = useState<boolean>(false);
 
   const getUserId = useCallback(() => userId ?? process.env.ITBL_ID, [userId]);
