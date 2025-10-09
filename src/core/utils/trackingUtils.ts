@@ -4,7 +4,7 @@ import type { IterableCommerceItem } from '../classes/IterableCommerceItem';
 import type { IterableInAppMessage } from '../../inApp/classes/IterableInAppMessage';
 import type { IterableInAppLocation } from '../../inApp/enums/IterableInAppLocation';
 import type { IterableInAppCloseSource } from '../../inApp/enums/IterableInAppCloseSource';
-import type { IterableEmbeddedMessage } from '../../embedded/classes/IterableEmbeddedMessage';
+import type { IterableEmbeddedMessage } from '../../embedded/types/IterableEmbeddedMessage';
 
 /**
  * Create a `pushOpen` event on the current user's Iterable profile, populating

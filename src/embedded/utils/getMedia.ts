@@ -1,4 +1,4 @@
-import type { IterableEmbeddedMessage } from '../classes/IterableEmbeddedMessage';
+import type { IterableEmbeddedMessage } from '../types/IterableEmbeddedMessage';
 import { IterableEmbeddedViewType } from '../enums';
 
 export const getMedia = (

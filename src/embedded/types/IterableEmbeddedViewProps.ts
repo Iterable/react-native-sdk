@@ -1,6 +1,6 @@
-import type { IterableEmbeddedMessage } from '../classes/IterableEmbeddedMessage';
-import type { IterableEmbeddedMessageElementsButton } from '../classes/IterableEmbeddedMessageElementsButton';
-import type { IterableEmbeddedViewConfig } from '../classes/IterableEmbeddedViewConfig';
+import type { IterableEmbeddedMessage } from './IterableEmbeddedMessage';
+import type { IterableEmbeddedMessageElementsButton } from './IterableEmbeddedMessageElementsButton';
+import type { IterableEmbeddedViewConfig } from './IterableEmbeddedViewConfig';
 
 export interface IterableEmbeddedComponentProps {
   message: IterableEmbeddedMessage;

@@ -1,5 +1,5 @@
-import type { IterableEmbeddedImpressionData } from './IterableEmbeddedImpressionData';
 import { generateUUID } from '../../core/utils/generateUUID';
+import type { IterableEmbeddedImpressionData } from './IterableEmbeddedImpressionData';
 
 export interface IterableEmbeddedSessionDict {
   /** The ID of the session. */

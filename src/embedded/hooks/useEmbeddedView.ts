@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Iterable } from '../../core/classes/Iterable';
-import type { IterableEmbeddedMessageElementsButton } from '../classes/IterableEmbeddedMessageElementsButton';
+import type { IterableEmbeddedMessageElementsButton } from '../types/IterableEmbeddedMessageElementsButton';
 import { IterableEmbeddedViewType } from '../enums';
 import type { IterableEmbeddedComponentProps } from '../types/IterableEmbeddedViewProps';
 import { getMedia } from '../utils/getMedia';

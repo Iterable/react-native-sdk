@@ -1,5 +1,5 @@
-import type { IterableEmbeddedMessage } from '../classes/IterableEmbeddedMessage';
-import type { IterableEmbeddedMessageElementsButton } from '../classes/IterableEmbeddedMessageElementsButton';
+import type { IterableEmbeddedMessage } from '../types/IterableEmbeddedMessage';
+import type { IterableEmbeddedMessageElementsButton } from '../types/IterableEmbeddedMessageElementsButton';
 import type { IterableEmbeddedViewButtonInfo } from '../types/IterableEmbeddedViewButtonInfo';
 
 export const getButtons = (message: IterableEmbeddedMessage) => {

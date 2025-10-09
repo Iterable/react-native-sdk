@@ -1,4 +1,4 @@
-import type { IterableEmbeddedViewConfig } from '../classes/IterableEmbeddedViewConfig';
+import type { IterableEmbeddedViewConfig } from '../types/IterableEmbeddedViewConfig';
 import { embeddedStyles } from '../constants/embeddedViewDefaults';
 import type { IterableEmbeddedViewType } from '../enums';
 import { getDefaultStyle } from './getDefaultStyle';

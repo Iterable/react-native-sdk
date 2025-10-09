@@ -1,4 +1,4 @@
-import type { IterableEmbeddedMessageElementsButton } from '../classes/IterableEmbeddedMessageElementsButton';
+import type { IterableEmbeddedMessageElementsButton } from '../types/IterableEmbeddedMessageElementsButton';
 
 export const getUrlFromButton = (
   button: IterableEmbeddedMessageElementsButton

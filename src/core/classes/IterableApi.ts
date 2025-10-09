@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 
 import RNIterableAPI from '../../api';
-import type { IterableEmbeddedMessage } from '../../embedded/classes/IterableEmbeddedMessage';
+import type { IterableEmbeddedMessage } from '../../embedded/types/IterableEmbeddedMessage';
 import type { IterableEmbeddedSession } from '../../embedded/classes/IterableEmbeddedSession';
 import type { IterableHtmlInAppContent } from '../../inApp/classes/IterableHtmlInAppContent';
 import type { IterableInAppMessage } from '../../inApp/classes/IterableInAppMessage';
