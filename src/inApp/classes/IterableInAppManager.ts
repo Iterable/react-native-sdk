@@ -1,10 +1,13 @@
 import { IterableApi } from '../../core/classes/IterableApi';
+import { IterableConfig } from '../../core/classes/IterableConfig';
 import { IterableLogger } from '../../core/classes/IterableLogger';
-import { defaultLogger } from '../../core/constants/defaults';
 import type { IterableInAppDeleteSource } from '../enums/IterableInAppDeleteSource';
 import type { IterableInAppLocation } from '../enums/IterableInAppLocation';
 import type { IterableHtmlInAppContent } from './IterableHtmlInAppContent';
 import type { IterableInAppMessage } from './IterableInAppMessage';
+
+const defaultConfig = new IterableConfig();
+const defaultLogger = new IterableLogger(defaultConfig);
 
 /**
  * Manages in-app messages for the current user.

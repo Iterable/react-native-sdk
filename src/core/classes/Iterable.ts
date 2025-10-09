@@ -23,16 +23,15 @@ import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
 import type { IterableAuthFailure } from '../types/IterableAuthFailure';
-import {
-  defaultAuthManager,
-  defaultConfig,
-  defaultInAppManager,
-  defaultLogger,
-} from '../constants/defaults';
 import { IterableApi } from './IterableApi';
 import { IterableAuthManager } from './IterableAuthManager';
 
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
+
+const defaultConfig = new IterableConfig();
+const defaultLogger = new IterableLogger(defaultConfig);
+const defaultInAppManager = new IterableInAppManager(defaultLogger);
+const defaultAuthManager = new IterableAuthManager(defaultLogger);
 
 /* eslint-disable tsdoc/syntax */
 /**

@@ -1,6 +1,9 @@
-import { defaultLogger } from '../constants/defaults';
 import { IterableLogger } from './IterableLogger';
 import { IterableApi } from './IterableApi';
+import { IterableConfig } from './IterableConfig';
+
+const defaultConfig = new IterableConfig();
+const defaultLogger = new IterableLogger(defaultConfig);
 
 /**
  * Manages the authentication for the Iterable SDK.

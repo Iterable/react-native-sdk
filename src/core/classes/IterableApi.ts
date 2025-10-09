@@ -2,8 +2,7 @@ import { Platform } from 'react-native';
 
 import RNIterableAPI from '../../api';
 import { IterableConfig } from './IterableConfig';
-import type { IterableLogger } from './IterableLogger';
-import { defaultLogger } from '../constants/defaults';
+import { IterableLogger } from './IterableLogger';
 import { IterableAttributionInfo } from './IterableAttributionInfo';
 import type { IterableCommerceItem } from './IterableCommerceItem';
 import type { IterableInAppMessage } from '../../inApp/classes/IterableInAppMessage';
@@ -13,6 +12,9 @@ import type { IterableInAppDeleteSource } from '../../inApp/enums/IterableInAppD
 import type { IterableHtmlInAppContent } from '../../inApp/classes/IterableHtmlInAppContent';
 import type { IterableInAppShowResponse } from '../../inApp/enums/IterableInAppShowResponse';
 import type { IterableInboxImpressionRowInfo } from '../../inbox/types/IterableInboxImpressionRowInfo';
+
+const defaultConfig = new IterableConfig();
+const defaultLogger = new IterableLogger(defaultConfig);
 
 export class IterableApi {
   static logger: IterableLogger = defaultLogger;
