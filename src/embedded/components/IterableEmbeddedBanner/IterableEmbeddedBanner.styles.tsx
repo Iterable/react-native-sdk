@@ -1,4 +1,8 @@
 import { StyleSheet } from 'react-native';
+import {
+  embeddedMediaImageBorderColors,
+  embeddedMediaImageBackgroundColors,
+} from '../../constants/embeddedViewDefaults';
 
 export const styles = StyleSheet.create({
   body: {
@@ -10,22 +14,17 @@ export const styles = StyleSheet.create({
   bodyContainer: {
     alignItems: 'center',
     alignSelf: 'stretch',
-    // backgroundColor: 'green',
     display: 'flex',
     flexDirection: 'row',
-    // gap: 16,
+    paddingTop: 4,
   },
   button: {
-    // backgroundColor: 'blue',
     borderRadius: 12,
     gap: 8,
-    // height: 32,
-    // display: 'flex',
   },
   buttonContainer: {
     alignItems: 'flex-start',
     alignSelf: 'stretch',
-    // backgroundColor: 'red',
     display: 'flex',
     flexDirection: 'row',
     gap: 12,
@@ -51,14 +50,24 @@ export const styles = StyleSheet.create({
     width: '100%',
   },
   mediaContainer: {
+    alignItems: 'flex-start',
+    alignSelf: 'stretch',
     display: 'flex',
-    flexDirection: 'column',
-    gap: 16,
+    flexDirection: 'row',
+  },
+  mediaImage: {
+    backgroundColor: embeddedMediaImageBackgroundColors.banner,
+    borderColor: embeddedMediaImageBorderColors.banner,
+    borderRadius: 6,
+    borderStyle: 'solid',
+    borderWidth: 1,
+    height: 70,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
+    width: 70,
   },
   textContainer: {
     alignSelf: 'center',
-    // alignItems: 'flex-start',
-    // backgroundColor: 'red',
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 1,
@@ -69,6 +78,7 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '700',
-    lineHeight: 24,
+    lineHeight: 16,
+    paddingBottom: 4,
   },
 });

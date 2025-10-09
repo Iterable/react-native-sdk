@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import {
+  Image,
   Text,
   TouchableOpacity,
   View,
@@ -15,6 +16,10 @@ import { getStyles } from '../utils/getStyles';
 import { styles } from './IterableEmbeddedBanner.styles';
 import { runButtonClick } from '../utils/runButtonClick';
 
+/**
+ * TODO: figure out how default action works.
+ */
+
 export const IterableEmbeddedBanner = ({
   config,
   message,
@@ -26,17 +31,10 @@ export const IterableEmbeddedBanner = ({
   const media = useMemo(() => {
     return getMedia(IterableEmbeddedViewType.Banner, message);
   }, [message]);
-  console.log(`🚀 > IterableEmbeddedView > media:`, media);
   const handleButtonClick = useCallback(
     (button: IterableEmbeddedMessageElementsButton) => {
-      console.group('handleButtonClick');
-      console.log('message', message);
-      console.log('button', button);
-      console.log('button.action', button.action);
-
       onButtonClick(button);
       runButtonClick(button, message);
-      console.groupEnd();
     },
     [onButtonClick, message]
   );
@@ -55,7 +53,8 @@ export const IterableEmbeddedBanner = ({
         } as ViewStyle,
       ]}
     >
-      <View style={styles.bodyContainer}>
+      {/* eslint-disable-next-line react-native/no-inline-styles */}
+      <View style={[styles.bodyContainer, { gap: media.shouldShow ? 16 : 0 }]}>
         <View style={styles.textContainer}>
           <Text
             style={[
@@ -74,9 +73,15 @@ export const IterableEmbeddedBanner = ({
             {message.elements?.body}
           </Text>
         </View>
-        <View style={styles.mediaContainer}>
-          {/* <Image source={{ uri: media.url }} style={styles.mediaImage} /> */}
-        </View>
+        {media.shouldShow && (
+          <View style={styles.mediaContainer}>
+            <Image
+              source={{ uri: media.url as string }}
+              style={styles.mediaImage}
+              alt={media.caption as string}
+            />
+          </View>
+        )}
       </View>
       {buttons.length > 0 && (
         <View style={styles.buttonContainer}>

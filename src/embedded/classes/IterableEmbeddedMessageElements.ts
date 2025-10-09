@@ -5,7 +5,7 @@ import type { IterableEmbeddedMessageElementsText } from './IterableEmbeddedMess
 export interface IterableEmbeddedMessageElementsDict {
   title?: string | null;
   body?: string | null;
-  mediaURL?: string | null;
+  mediaUrl?: string | null;
   mediaUrlCaption?: string | null;
   defaultAction?: IterableEmbeddedMessageElementsDefaultAction | null;
   buttons?: IterableEmbeddedMessageElementsButton[] | null;
@@ -15,7 +15,7 @@ export interface IterableEmbeddedMessageElementsDict {
 export interface IterableEmbeddedMessageElements {
   title?: string | null;
   body?: string | null;
-  mediaURL?: string | null;
+  mediaUrl?: string | null;
   mediaUrlCaption?: string | null;
   defaultAction?: IterableEmbeddedMessageElementsDefaultAction | null;
   buttons?: IterableEmbeddedMessageElementsButton[] | null;

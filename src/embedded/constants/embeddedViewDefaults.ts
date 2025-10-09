@@ -49,6 +49,18 @@ export const embeddedBodyTextColors = {
 export const defaultBorderWidth = 1;
 export const defaultBorderCornerRadius = 8.0;
 
+export const embeddedMediaImageBorderColors = {
+  notification: '#E0DEDF',
+  card: '#E0DEDF',
+  banner: '#E0DEDF',
+};
+
+export const embeddedMediaImageBackgroundColors = {
+  notification: '#F5F4F4',
+  card: '#F5F4F4',
+  banner: '#F5F4F4',
+};
+
 export const embeddedColors = {
   background: embeddedBackgroundColors,
   border: embeddedBorderColors,
@@ -58,4 +70,5 @@ export const embeddedColors = {
   secondaryBtnText: embeddedSecondaryBtnTextColors,
   titleText: embeddedTitleTextColors,
   bodyText: embeddedBodyTextColors,
+  mediaImageBorder: embeddedMediaImageBorderColors,
 };

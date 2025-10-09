@@ -17,7 +17,7 @@ interface EmbeddedMessage {
         }[]
       | null;
     body?: string | null;
-    mediaURL?: string | null;
+    mediaUrl?: string | null;
     mediaUrlCaption?: string | null;
     defaultAction?: { type: string; data?: string } | null;
     text?: { id: string; text?: string | null; label?: string | null }[] | null;

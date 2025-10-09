@@ -18,32 +18,12 @@ export const Embedded = () => {
   const [placementIds, setPlacementIds] = useState<number[]>([]);
   const [messages, setMessages] = useState<IterableEmbeddedMessage[]>([]);
 
-  useEffect(() => {
-    if (isFocused) {
-      Iterable.embeddedManager.startSession();
-      Iterable.embeddedManager.syncMessages();
-      Iterable.embeddedManager.getMessages(placementIds).then((messageList) => {
-        console.log(messageList);
-        setMessages(messageList as IterableEmbeddedMessage[]);
-      });
-      setHasSession(true);
-    } else {
-      if (hasSession) {
-        Iterable.embeddedManager.endSession();
-        setHasSession(false);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFocused]);
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      Iterable.embeddedManager.getPlacementIds().then((ids: unknown) => {
-        console.log(`🚀 > User > ids:`, ids);
-        setPlacementIds(ids as number[]);
-      });
-    }
-  }, [isLoggedIn]);
+  const getPlacementIds = useCallback(() => {
+    Iterable.embeddedManager.getPlacementIds().then((ids: unknown) => {
+      console.log(ids);
+      setPlacementIds(ids as number[]);
+    });
+  }, []);
 
   const getEmbeddedMessages = useCallback(() => {
     Iterable.embeddedManager.getMessages(placementIds).then((messageList) => {
@@ -52,15 +32,39 @@ export const Embedded = () => {
     });
   }, [placementIds]);
 
-  const getPlacementIds = useCallback(() => {
-    Iterable.embeddedManager.getPlacementIds().then((ids: unknown) => {
-      console.log(ids);
-    });
-  }, []);
-
   const sync = useCallback(() => {
     Iterable.embeddedManager.syncMessages();
   }, []);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      getPlacementIds();
+    }
+  }, [isLoggedIn, getPlacementIds]);
+
+  useEffect(() => {
+    if (isFocused) {
+      Iterable.embeddedManager.startSession();
+      Iterable.embeddedManager.syncMessages();
+      Iterable.embeddedManager.getPlacementIds().then((ids: unknown) => {
+        console.log(ids);
+        setPlacementIds(ids as number[]);
+        Iterable.embeddedManager
+          .getMessages(placementIds)
+          .then((messageList) => {
+            console.log(messageList);
+            setMessages(messageList as IterableEmbeddedMessage[]);
+            setHasSession(true);
+          });
+      });
+    } else {
+      if (hasSession) {
+        Iterable.embeddedManager.endSession();
+        setHasSession(false);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFocused]);
 
   return (
     <View style={styles.container}>
