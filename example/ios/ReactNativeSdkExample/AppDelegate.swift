@@ -24,7 +24,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
-    NSLog("FINISHED LAUNCHING WITH OPTIONS")
     ITBInfo()
 
     let delegate = ReactNativeDelegate()
@@ -48,7 +47,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-    NSLog("REGISTERED FOR REMOTE NOTIFICATIONS")
     ITBInfo()
     IterableAPI.register(token: deviceToken)
   }
@@ -56,19 +54,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(_ application: UIApplication,
                  didFailToRegisterForRemoteNotificationsWithError
                  error: Error) {
-    NSLog("FAILED TO REGISTER FOR REMOTE NOTIFICATIONS")
     ITBInfo("error: \(error)")
   }
 
   func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-    NSLog("RECEIVED REMOTE NOTIFICATIONS")
     ITBInfo()
     IterableAppIntegration.application(application, didReceiveRemoteNotification: userInfo, fetchCompletionHandler: completionHandler)
   }
 
   func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-    NSLog("RECEIVED UNIVERSAL LINK")
-    NSLog("userActivity: \(userActivity)")
     ITBInfo()
     guard let url = userActivity.webpageURL else {
         return false
@@ -78,9 +72,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-      NSLog("OPEN URL")
-      NSLog("url: \(url)")
-      NSLog("options: \(options)")
       ITBInfo()
       return RCTLinkingManager.application(app, open: url, options: options)
   }
@@ -128,13 +119,11 @@ class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
 extension AppDelegate: UNUserNotificationCenterDelegate {
   // App is running in the foreground
   public func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-    NSLog("WILL PRESENT NOTIFICATION")
     completionHandler([.alert, .badge, .sound])
   }
 
   // The method will be called on the delegate when the user responded to the notification by opening the application, dismissing the notification or choosing a UNNotificationAction. The delegate must be set before the application returns from applicationDidFinishLaunching:.
   public func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-    NSLog("DID RECEIVE NOTIFICATION RESPONSE")
     IterableAppIntegration.userNotificationCenter(center, didReceive: response, withCompletionHandler: completionHandler)
   }
 }
