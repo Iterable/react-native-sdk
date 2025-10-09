@@ -207,7 +207,7 @@ export class Iterable {
     Iterable.logger = logger;
     Iterable.inAppManager = new IterableInAppManager(logger);
     Iterable.authManager = new IterableAuthManager(logger);
-    Iterable.embeddedManager = new IterableEmbeddedManager(logger);
+    Iterable.embeddedManager = new IterableEmbeddedManager(logger, config);
     IterableApi.setLogger(logger);
 
     this.setupEventHandlers();

@@ -8,13 +8,14 @@ import {
   type ViewStyle,
 } from 'react-native';
 
+import { Iterable } from '../../../core/classes/Iterable';
 import type { IterableEmbeddedMessageElementsButton } from '../../classes/IterableEmbeddedMessageElementsButton';
 import { IterableEmbeddedViewType } from '../../enums';
 import type { IterableEmbeddedComponentProps } from '../IterableEmbeddedViewProps';
 import { getMedia } from '../utils/getMedia';
 import { getStyles } from '../utils/getStyles';
+import { getUrlFromButton } from '../utils/getUrlFromButton';
 import { styles } from './IterableEmbeddedBanner.styles';
-import { runButtonClick } from '../utils/runButtonClick';
 
 /**
  * TODO: figure out how default action works.
@@ -34,7 +35,11 @@ export const IterableEmbeddedBanner = ({
   const handleButtonClick = useCallback(
     (button: IterableEmbeddedMessageElementsButton) => {
       onButtonClick(button);
-      runButtonClick(button, message);
+      Iterable.embeddedManager.handleClick(
+        message,
+        button.id,
+        getUrlFromButton(button) ?? null
+      );
     },
     [onButtonClick, message]
   );

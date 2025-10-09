@@ -165,12 +165,6 @@ export interface Spec extends TurboModule {
 
   pauseEmbeddedImpression(messageId: string): void;
 
-  handleEmbeddedClick(
-    message: EmbeddedMessage,
-    buttonId: string | null,
-    clickedUrl: string | null
-  ): void;
-
   trackEmbeddedClick(
     message: EmbeddedMessage,
     buttonId: string | null,

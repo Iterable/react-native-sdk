@@ -11,7 +11,6 @@ import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.iterable.iterableapi.IterableEmbeddedMessage;
 import com.iterable.iterableapi.IterableEmbeddedManager;
-
 import com.iterable.iterableapi.IterableEmbeddedUpdateHandler;
 
 
@@ -266,11 +265,6 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void pauseEmbeddedImpression(String messageId) {
       moduleImpl.pauseEmbeddedImpression(messageId);
-    }
-
-    @ReactMethod
-    public void handleEmbeddedClick(ReadableMap message, String buttonId, String clickedUrl) {
-      moduleImpl.handleEmbeddedClick(message, buttonId, clickedUrl);
     }
 
     @ReactMethod

@@ -32,6 +32,7 @@ import com.iterable.iterableapi.IterableCustomActionHandler;
 import com.iterable.iterableapi.IterableEmbeddedManager;
 import com.iterable.iterableapi.IterableEmbeddedMessage;
 import com.iterable.iterableapi.IterableEmbeddedSession;
+import com.iterable.iterableapi.IterableEmbeddedUpdateHandler;
 import com.iterable.iterableapi.IterableHelper;
 import com.iterable.iterableapi.IterableInAppCloseAction;
 import com.iterable.iterableapi.IterableInAppHandler;
@@ -42,8 +43,6 @@ import com.iterable.iterableapi.IterableInboxSession;
 import com.iterable.iterableapi.IterableLogger;
 import com.iterable.iterableapi.IterableUrlHandler;
 import com.iterable.iterableapi.RNIterableInternal;
-
-import com.iterable.iterableapi.IterableEmbeddedUpdateHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -728,15 +727,6 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
 
     public void pauseEmbeddedImpression(String messageId) {
         IterableApi.getInstance().getEmbeddedManager().getEmbeddedSessionManager().pauseImpression(messageId);
-    }
-
-    public void handleEmbeddedClick(ReadableMap messageMap, String buttonId, String clickedUrl) {
-        IterableEmbeddedMessage message = Serialization.embeddedMessageFromReadableMap(messageMap);
-        if (message != null) {
-            IterableApi.getInstance().getEmbeddedManager().handleEmbeddedClick(message, buttonId, clickedUrl);
-        } else {
-            IterableLogger.e(TAG, "Failed to convert message map to IterableEmbeddedMessage");
-        }
     }
 
     public void trackEmbeddedClick(ReadableMap messageMap, String buttonId, String clickedUrl) {

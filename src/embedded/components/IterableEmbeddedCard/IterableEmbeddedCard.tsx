@@ -1,3 +1,4 @@
+import { useCallback, useMemo } from 'react';
 import {
   Image,
   Text,
@@ -6,15 +7,15 @@ import {
   type TextStyle,
   type ViewStyle,
 } from 'react-native';
-import { useCallback, useMemo } from 'react';
 
-import type { IterableEmbeddedComponentProps } from '../IterableEmbeddedViewProps';
-import { IterableEmbeddedViewType } from '../../enums';
-import { getStyles } from '../utils/getStyles';
-import { getMedia } from '../utils/getMedia';
-import { styles } from './IterableEmbeddedCard.styles';
+import { Iterable } from '../../../core/classes/Iterable';
 import type { IterableEmbeddedMessageElementsButton } from '../../classes/IterableEmbeddedMessageElementsButton';
-import { runButtonClick } from '../utils/runButtonClick';
+import { IterableEmbeddedViewType } from '../../enums';
+import type { IterableEmbeddedComponentProps } from '../IterableEmbeddedViewProps';
+import { getMedia } from '../utils/getMedia';
+import { getStyles } from '../utils/getStyles';
+import { getUrlFromButton } from '../utils/getUrlFromButton';
+import { styles } from './IterableEmbeddedCard.styles';
 
 export const IterableEmbeddedCard = ({
   config,
@@ -30,7 +31,11 @@ export const IterableEmbeddedCard = ({
   const handleButtonClick = useCallback(
     (button: IterableEmbeddedMessageElementsButton) => {
       onButtonClick(button);
-      runButtonClick(button, message);
+      Iterable.embeddedManager.handleClick(
+        message,
+        button.id,
+        getUrlFromButton(button) ?? null
+      );
     },
     [onButtonClick, message]
   );

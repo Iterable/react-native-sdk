@@ -1,2 +1,5 @@
+import { IterableCustomActionPrefix } from '../enums/IterableCustomActionPrefix';
+
 export const isIterableAction = (str: string = '') =>
-  str.slice(0, 9) === 'action://';
+  str.startsWith(IterableCustomActionPrefix.Action) ||
+  str.startsWith(IterableCustomActionPrefix.Itbl);

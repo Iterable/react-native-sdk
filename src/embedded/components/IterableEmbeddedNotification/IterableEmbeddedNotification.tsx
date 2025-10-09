@@ -7,11 +7,12 @@ import {
 } from 'react-native';
 
 import { useCallback, useMemo } from 'react';
+import { Iterable } from '../../../core/classes/Iterable';
 import type { IterableEmbeddedMessageElementsButton } from '../../classes/IterableEmbeddedMessageElementsButton';
 import { IterableEmbeddedViewType } from '../../enums';
 import type { IterableEmbeddedComponentProps } from '../IterableEmbeddedViewProps';
 import { getStyles } from '../utils/getStyles';
-import { runButtonClick } from '../utils/runButtonClick';
+import { getUrlFromButton } from '../utils/getUrlFromButton';
 import { styles } from './IterableEmbeddedNotification.styles';
 
 export const IterableEmbeddedNotification = ({
@@ -26,7 +27,11 @@ export const IterableEmbeddedNotification = ({
   const handleButtonClick = useCallback(
     (button: IterableEmbeddedMessageElementsButton) => {
       onButtonClick(button);
-      runButtonClick(button, message);
+      Iterable.embeddedManager.handleClick(
+        message,
+        button.id,
+        getUrlFromButton(button) ?? null
+      );
     },
     [onButtonClick, message]
   );

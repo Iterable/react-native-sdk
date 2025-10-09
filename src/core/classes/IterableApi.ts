@@ -576,20 +576,6 @@ export class IterableApi {
     return RNIterableAPI.pauseEmbeddedImpression(messageId);
   }
 
-  static handleEmbeddedClick(
-    message: IterableEmbeddedMessage,
-    buttonId: string | null,
-    clickedUrl: string | null
-  ) {
-    IterableApi.logger.log(
-      'handleEmbeddedClick: ',
-      message,
-      buttonId,
-      clickedUrl
-    );
-    return RNIterableAPI.handleEmbeddedClick(message, buttonId, clickedUrl);
-  }
-
   // ---- End EMBEDDED ---- //
 
   // ====================================================== //

@@ -9,5 +9,6 @@ export const defaultLogger = new IterableLogger(defaultConfig);
 export const defaultInAppManager = new IterableInAppManager(defaultLogger);
 export const defaultAuthManager = new IterableAuthManager(defaultLogger);
 export const defaultEmbeddedManager = new IterableEmbeddedManager(
-  defaultLogger
+  defaultLogger,
+  defaultConfig
 );
