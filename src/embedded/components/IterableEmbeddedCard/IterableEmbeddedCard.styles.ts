@@ -1,7 +1,9 @@
 import { StyleSheet } from 'react-native';
 import { embeddedMediaImageBackgroundColors } from '../../constants/embeddedViewDefaults';
 
-const IMAGE_HEIGHT = 230;
+export const IMAGE_HEIGHT = 230;
+export const PLACEHOLDER_IMAGE_HEIGHT = 56;
+export const PLACEHOLDER_IMAGE_WIDTH = 56;
 
 export const styles = StyleSheet.create({
   body: {
@@ -68,9 +70,9 @@ export const styles = StyleSheet.create({
     width: '100%',
   },
   mediaImagePlaceholder: {
-    height: 56,
+    height: PLACEHOLDER_IMAGE_HEIGHT,
     opacity: 0.25,
-    width: 56,
+    width: PLACEHOLDER_IMAGE_WIDTH,
   },
   textContainer: {
     alignItems: 'flex-start',

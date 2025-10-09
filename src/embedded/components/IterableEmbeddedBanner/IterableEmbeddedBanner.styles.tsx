@@ -1,8 +1,11 @@
 import { StyleSheet } from 'react-native';
 import {
-  embeddedMediaImageBorderColors,
   embeddedMediaImageBackgroundColors,
+  embeddedMediaImageBorderColors,
 } from '../../constants/embeddedViewDefaults';
+
+export const IMAGE_HEIGHT = 70;
+export const IMAGE_WIDTH = 70;
 
 export const styles = StyleSheet.create({
   body: {
@@ -61,10 +64,10 @@ export const styles = StyleSheet.create({
     borderRadius: 6,
     borderStyle: 'solid',
     borderWidth: 1,
-    height: 70,
+    height: IMAGE_HEIGHT,
     paddingHorizontal: 0,
     paddingVertical: 0,
-    width: 70,
+    width: IMAGE_WIDTH,
   },
   textContainer: {
     alignSelf: 'center',

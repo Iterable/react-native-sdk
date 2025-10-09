@@ -5,12 +5,17 @@ import {
   View,
   type TextStyle,
   type ViewStyle,
+  PixelRatio,
 } from 'react-native';
 
 import { IterableEmbeddedViewType } from '../../enums';
 import { useEmbeddedView } from '../../hooks/useEmbeddedView';
 import type { IterableEmbeddedComponentProps } from '../../types/IterableEmbeddedViewProps';
-import { styles } from './IterableEmbeddedBanner.styles';
+import {
+  styles,
+  IMAGE_HEIGHT,
+  IMAGE_WIDTH,
+} from './IterableEmbeddedBanner.styles';
 
 /**
  * TODO: figure out how default action works.
@@ -63,7 +68,11 @@ export const IterableEmbeddedBanner = ({
         {media.shouldShow && (
           <View style={styles.mediaContainer}>
             <Image
-              source={{ uri: media.url as string }}
+              source={{
+                uri: media.url as string,
+                width: PixelRatio.getPixelSizeForLayoutSize(IMAGE_WIDTH),
+                height: PixelRatio.getPixelSizeForLayoutSize(IMAGE_HEIGHT),
+              }}
               style={styles.mediaImage}
               alt={media.caption as string}
             />
