@@ -1,11 +1,7 @@
 import type { IterableEmbeddedViewConfig } from '../../classes/IterableEmbeddedViewConfig';
-import {
-  defaultBorderWidth,
-  defaultBorderCornerRadius,
-  embeddedColors,
-} from '../../constants/embeddedViewDefaults';
+import { embeddedStyles } from '../../constants/embeddedViewDefaults';
 import type { IterableEmbeddedViewType } from '../../enums/IterableEmbeddedViewType';
-import { getDefaultColor } from './getDefaultColor';
+import { getDefaultStyle } from './getDefaultStyle';
 
 export const getStyles = (
   viewType: IterableEmbeddedViewType,
@@ -14,61 +10,29 @@ export const getStyles = (
   return {
     backgroundColor:
       c?.backgroundColor ??
-      getDefaultColor(viewType, {
-        banner: embeddedColors.background.banner,
-        card: embeddedColors.background.card,
-        notification: embeddedColors.background.notification,
-      }),
+      getDefaultStyle(viewType, embeddedStyles.background),
     borderColor:
-      c?.borderColor ??
-      getDefaultColor(viewType, {
-        banner: embeddedColors.border.banner,
-        card: embeddedColors.border.card,
-        notification: embeddedColors.border.notification,
-      }),
-    borderWidth: c?.borderWidth ?? defaultBorderWidth,
-    borderCornerRadius: c?.borderCornerRadius ?? defaultBorderCornerRadius,
+      c?.borderColor ?? getDefaultStyle(viewType, embeddedStyles.border),
+    borderWidth:
+      c?.borderWidth ?? getDefaultStyle(viewType, embeddedStyles.borderWidth),
+    borderCornerRadius:
+      c?.borderCornerRadius ??
+      getDefaultStyle(viewType, embeddedStyles.borderRadius),
     primaryBtnBackgroundColor:
       c?.primaryBtnBackgroundColor ??
-      getDefaultColor(viewType, {
-        banner: embeddedColors.primaryBtnBackground.banner,
-        card: embeddedColors.primaryBtnBackground.card,
-        notification: embeddedColors.primaryBtnBackground.notification,
-      }),
+      getDefaultStyle(viewType, embeddedStyles.primaryBtnBackground),
     primaryBtnTextColor:
       c?.primaryBtnTextColor ??
-      getDefaultColor(viewType, {
-        banner: embeddedColors.primaryBtnText.banner,
-        card: embeddedColors.primaryBtnText.card,
-        notification: embeddedColors.primaryBtnText.notification,
-      }),
+      getDefaultStyle(viewType, embeddedStyles.primaryBtnText),
     secondaryBtnBackgroundColor:
       c?.secondaryBtnBackgroundColor ??
-      getDefaultColor(viewType, {
-        banner: embeddedColors.secondaryBtnBackground.banner,
-        card: embeddedColors.secondaryBtnBackground.card,
-        notification: embeddedColors.secondaryBtnBackground.notification,
-      }),
+      getDefaultStyle(viewType, embeddedStyles.secondaryBtnBackground),
     secondaryBtnTextColor:
       c?.secondaryBtnTextColor ??
-      getDefaultColor(viewType, {
-        banner: embeddedColors.secondaryBtnText.banner,
-        card: embeddedColors.secondaryBtnText.card,
-        notification: embeddedColors.secondaryBtnText.notification,
-      }),
+      getDefaultStyle(viewType, embeddedStyles.secondaryBtnText),
     titleTextColor:
-      c?.titleTextColor ??
-      getDefaultColor(viewType, {
-        banner: embeddedColors.titleText.banner,
-        card: embeddedColors.titleText.card,
-        notification: embeddedColors.titleText.notification,
-      }),
+      c?.titleTextColor ?? getDefaultStyle(viewType, embeddedStyles.titleText),
     bodyTextColor:
-      c?.bodyTextColor ??
-      getDefaultColor(viewType, {
-        banner: embeddedColors.bodyText.banner,
-        card: embeddedColors.bodyText.card,
-        notification: embeddedColors.bodyText.notification,
-      }),
+      c?.bodyTextColor ?? getDefaultStyle(viewType, embeddedStyles.bodyText),
   };
 };

@@ -49,15 +49,25 @@ export const IterableEmbeddedCard = ({
         } as ViewStyle,
       ]}
     >
-      {media.shouldShow && (
-        <View style={styles.mediaContainer}>
-          <Image
-            source={{ uri: media.url as string }}
-            style={styles.mediaImage}
-            alt={media.caption as string}
-          />
-        </View>
-      )}
+      <View
+        style={[
+          styles.mediaContainer,
+          media.shouldShow ? {} : styles.mediaContainerNoImage,
+        ]}
+      >
+        <Image
+          source={
+            media.shouldShow
+              ? { uri: media.url as string }
+              : // eslint-disable-next-line @typescript-eslint/no-require-imports
+                require('../../../core/images/logo-grey.png')
+          }
+          style={
+            media.shouldShow ? styles.mediaImage : styles.mediaImagePlaceholder
+          }
+          alt={media.caption as string}
+        />
+      </View>
       <View style={styles.bodyContainer}>
         <View style={styles.textContainer}>
           <Text

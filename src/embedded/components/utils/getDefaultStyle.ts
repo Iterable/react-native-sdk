@@ -1,6 +1,6 @@
 import { IterableEmbeddedViewType } from '../../enums/IterableEmbeddedViewType';
 
-export const getDefaultColor = (
+export const getDefaultStyle = (
   viewType: IterableEmbeddedViewType,
   colors: {
     banner: number | string;

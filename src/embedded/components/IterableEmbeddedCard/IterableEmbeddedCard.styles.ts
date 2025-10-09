@@ -1,8 +1,7 @@
 import { StyleSheet } from 'react-native';
-import {
-  embeddedMediaImageBorderColors,
-  embeddedMediaImageBackgroundColors,
-} from '../../constants/embeddedViewDefaults';
+import { embeddedMediaImageBackgroundColors } from '../../constants/embeddedViewDefaults';
+
+const IMAGE_HEIGHT = 230;
 
 export const styles = StyleSheet.create({
   body: {
@@ -12,11 +11,14 @@ export const styles = StyleSheet.create({
     lineHeight: 20,
   },
   bodyContainer: {
-    alignItems: 'center',
+    alignItems: 'flex-start',
     alignSelf: 'stretch',
     display: 'flex',
-    flexDirection: 'row',
-    paddingTop: 4,
+    flexDirection: 'column',
+    gap: 24,
+    paddingBottom: 16,
+    paddingHorizontal: 16,
+    paddingTop: 12,
   },
   button: {
     borderRadius: 32,
@@ -32,13 +34,11 @@ export const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 14,
-    fontWeight: '400',
+    fontWeight: '700',
     lineHeight: 20,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
   },
   container: {
-    alignItems: 'flex-start',
+    alignItems: 'center',
     borderStyle: 'solid',
     boxShadow:
       '0 1px 1px 0 rgba(0, 0, 0, 0.06), 0 0 2px 0 rgba(0, 0, 0, 0.06), 0 0 1px 0 rgba(0, 0, 0, 0.08)',
@@ -46,39 +46,41 @@ export const styles = StyleSheet.create({
     flexDirection: 'column',
     gap: 16,
     justifyContent: 'center',
-    padding: 16,
+    overflow: 'hidden',
     width: '100%',
   },
   mediaContainer: {
     alignItems: 'flex-start',
     alignSelf: 'stretch',
+    backgroundColor: embeddedMediaImageBackgroundColors.card,
     display: 'flex',
     flexDirection: 'row',
+    height: IMAGE_HEIGHT,
+  },
+  mediaContainerNoImage: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   mediaImage: {
-    backgroundColor: embeddedMediaImageBackgroundColors.card,
-    borderColor: embeddedMediaImageBorderColors.card,
-    borderRadius: 6,
-    borderStyle: 'solid',
-    borderWidth: 1,
-    height: 70,
+    height: IMAGE_HEIGHT,
     paddingHorizontal: 0,
     paddingVertical: 0,
-    width: 70,
-  },
-  textContainer: {
-    alignSelf: 'center',
-    display: 'flex',
-    flexDirection: 'column',
-    flexGrow: 1,
-    flexShrink: 1,
-    gap: 4,
     width: '100%',
   },
+  mediaImagePlaceholder: {
+    height: 56,
+    opacity: 0.25,
+    width: 56,
+  },
+  textContainer: {
+    alignItems: 'flex-start',
+    alignSelf: 'stretch',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 8,
+  },
   title: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '700',
-    lineHeight: 16,
-    paddingBottom: 4,
   },
 });
