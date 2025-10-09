@@ -6,13 +6,9 @@ import {
   type ViewStyle,
 } from 'react-native';
 
-import { useCallback, useMemo } from 'react';
-import { Iterable } from '../../../core/classes/Iterable';
-import type { IterableEmbeddedMessageElementsButton } from '../../classes/IterableEmbeddedMessageElementsButton';
-import { IterableEmbeddedViewType } from '../../enums';
-import type { IterableEmbeddedComponentProps } from '../IterableEmbeddedViewProps';
-import { getStyles } from '../utils/getStyles';
-import { getUrlFromButton } from '../utils/getUrlFromButton';
+import { IterableEmbeddedViewType } from '../../enums/IterableEmbeddedViewType';
+import { useEmbeddedView } from '../../hooks/useEmbeddedView';
+import type { IterableEmbeddedComponentProps } from '../../types/IterableEmbeddedViewProps';
 import { styles } from './IterableEmbeddedNotification.styles';
 
 export const IterableEmbeddedNotification = ({
@@ -20,20 +16,9 @@ export const IterableEmbeddedNotification = ({
   message,
   onButtonClick = () => {},
 }: IterableEmbeddedComponentProps) => {
-  const parsedStyles = useMemo(() => {
-    return getStyles(IterableEmbeddedViewType.Notification, config);
-  }, [config]);
-
-  const handleButtonClick = useCallback(
-    (button: IterableEmbeddedMessageElementsButton) => {
-      onButtonClick(button);
-      Iterable.embeddedManager.handleClick(
-        message,
-        button.id,
-        getUrlFromButton(button) ?? null
-      );
-    },
-    [onButtonClick, message]
+  const { parsedStyles, handleButtonClick } = useEmbeddedView(
+    IterableEmbeddedViewType.Notification,
+    { message, config, onButtonClick }
   );
 
   const buttons = message.elements?.buttons ?? [];

@@ -5,7 +5,7 @@ import { IterableEmbeddedViewType } from '../../enums';
 import { IterableEmbeddedBanner } from '../IterableEmbeddedBanner';
 import { IterableEmbeddedCard } from '../IterableEmbeddedCard';
 import { IterableEmbeddedNotification } from '../IterableEmbeddedNotification';
-import type { IterableEmbeddedComponentProps } from '../IterableEmbeddedViewProps';
+import type { IterableEmbeddedComponentProps } from '../../types/IterableEmbeddedViewProps';
 
 interface IterableEmbeddedViewProps extends IterableEmbeddedComponentProps {
   viewType: IterableEmbeddedViewType;

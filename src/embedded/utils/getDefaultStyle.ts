@@ -1,4 +1,4 @@
-import { IterableEmbeddedViewType } from '../../enums/IterableEmbeddedViewType';
+import { IterableEmbeddedViewType } from '../enums';
 
 export const getDefaultStyle = (
   viewType: IterableEmbeddedViewType,

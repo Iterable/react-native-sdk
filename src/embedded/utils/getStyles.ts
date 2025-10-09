@@ -1,6 +1,6 @@
-import type { IterableEmbeddedViewConfig } from '../../classes/IterableEmbeddedViewConfig';
-import { embeddedStyles } from '../../constants/embeddedViewDefaults';
-import type { IterableEmbeddedViewType } from '../../enums/IterableEmbeddedViewType';
+import type { IterableEmbeddedViewConfig } from '../classes/IterableEmbeddedViewConfig';
+import { embeddedStyles } from '../constants/embeddedViewDefaults';
+import type { IterableEmbeddedViewType } from '../enums';
 import { getDefaultStyle } from './getDefaultStyle';
 
 export const getStyles = (

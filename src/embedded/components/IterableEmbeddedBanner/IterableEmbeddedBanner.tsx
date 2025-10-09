@@ -1,4 +1,3 @@
-import { useCallback, useMemo } from 'react';
 import {
   Image,
   Text,
@@ -8,13 +7,9 @@ import {
   type ViewStyle,
 } from 'react-native';
 
-import { Iterable } from '../../../core/classes/Iterable';
-import type { IterableEmbeddedMessageElementsButton } from '../../classes/IterableEmbeddedMessageElementsButton';
 import { IterableEmbeddedViewType } from '../../enums';
-import type { IterableEmbeddedComponentProps } from '../IterableEmbeddedViewProps';
-import { getMedia } from '../utils/getMedia';
-import { getStyles } from '../utils/getStyles';
-import { getUrlFromButton } from '../utils/getUrlFromButton';
+import { useEmbeddedView } from '../../hooks/useEmbeddedView';
+import type { IterableEmbeddedComponentProps } from '../../types/IterableEmbeddedViewProps';
 import { styles } from './IterableEmbeddedBanner.styles';
 
 /**
@@ -26,22 +21,9 @@ export const IterableEmbeddedBanner = ({
   message,
   onButtonClick = () => {},
 }: IterableEmbeddedComponentProps) => {
-  const parsedStyles = useMemo(() => {
-    return getStyles(IterableEmbeddedViewType.Banner, config);
-  }, [config]);
-  const media = useMemo(() => {
-    return getMedia(IterableEmbeddedViewType.Banner, message);
-  }, [message]);
-  const handleButtonClick = useCallback(
-    (button: IterableEmbeddedMessageElementsButton) => {
-      onButtonClick(button);
-      Iterable.embeddedManager.handleClick(
-        message,
-        button.id,
-        getUrlFromButton(button) ?? null
-      );
-    },
-    [onButtonClick, message]
+  const { parsedStyles, media, handleButtonClick } = useEmbeddedView(
+    IterableEmbeddedViewType.Banner,
+    { message, config, onButtonClick }
   );
 
   const buttons = message.elements?.buttons ?? [];
