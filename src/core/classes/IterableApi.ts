@@ -1,18 +1,20 @@
 import { Platform } from 'react-native';
 
 import RNIterableAPI from '../../api';
-import { IterableConfig } from './IterableConfig';
-import type { IterableLogger } from './IterableLogger';
+import type { IterableEmbeddedMessage } from '../../embedded/types/IterableEmbeddedMessage';
+import type { IterableEmbeddedSession } from '../../embedded/classes/IterableEmbeddedSession';
+import type { IterableHtmlInAppContent } from '../../inApp/classes/IterableHtmlInAppContent';
+import type { IterableInAppMessage } from '../../inApp/classes/IterableInAppMessage';
+import type { IterableInAppCloseSource } from '../../inApp/enums/IterableInAppCloseSource';
+import type { IterableInAppDeleteSource } from '../../inApp/enums/IterableInAppDeleteSource';
+import type { IterableInAppLocation } from '../../inApp/enums/IterableInAppLocation';
+import type { IterableInAppShowResponse } from '../../inApp/enums/IterableInAppShowResponse';
+import type { IterableInboxImpressionRowInfo } from '../../inbox/types/IterableInboxImpressionRowInfo';
 import { defaultLogger } from '../constants/defaults';
 import { IterableAttributionInfo } from './IterableAttributionInfo';
 import type { IterableCommerceItem } from './IterableCommerceItem';
-import type { IterableInAppMessage } from '../../inApp/classes/IterableInAppMessage';
-import type { IterableInAppLocation } from '../../inApp/enums/IterableInAppLocation';
-import type { IterableInAppCloseSource } from '../../inApp/enums/IterableInAppCloseSource';
-import type { IterableInAppDeleteSource } from '../../inApp/enums/IterableInAppDeleteSource';
-import type { IterableHtmlInAppContent } from '../../inApp/classes/IterableHtmlInAppContent';
-import type { IterableInAppShowResponse } from '../../inApp/enums/IterableInAppShowResponse';
-import type { IterableInboxImpressionRowInfo } from '../../inbox/types/IterableInboxImpressionRowInfo';
+import { IterableConfig } from './IterableConfig';
+import type { IterableLogger } from './IterableLogger';
 
 export class IterableApi {
   static logger: IterableLogger = defaultLogger;
@@ -105,8 +107,8 @@ export class IterableApi {
   /**
    * Associate the current user with the passed in `userId` parameter.
    *
-   * WARNING: specify a user by calling `Iterable.setEmail` or
-   * `Iterable.setUserId`, but **NOT** both.
+   * WARNING: specify a user by calling `IterableApi.setEmail` or
+   * `IterableApi.setUserId`, but **NOT** both.
    *
    * @param userId - User ID to associate with the current user
    * @param authToken - Valid, pre-fetched JWT the SDK
@@ -298,6 +300,55 @@ export class IterableApi {
     return RNIterableAPI.trackEvent(name, dataFields);
   }
 
+  /**
+   * Track an embedded session.
+   *
+   * @param session - The session to track
+   */
+  static trackEmbeddedSession(session: IterableEmbeddedSession) {
+    IterableApi.logger.log('trackEmbeddedSession: ', session);
+
+    if (session == null) {
+      IterableApi.logger.log('trackEmbeddedSession: session is null');
+      return;
+    }
+
+    if (!session.start || !session.end) {
+      IterableApi.logger.log(
+        'trackEmbeddedSession: sessionStartTime and sessionEndTime must be set',
+        session
+      );
+      return;
+    }
+
+    return RNIterableAPI.trackEmbeddedSession(session);
+  }
+
+  static trackEmbeddedClick(
+    message: IterableEmbeddedMessage,
+    buttonId: string | null,
+    clickedUrl: string | null
+  ) {
+    IterableApi.logger.log(
+      'trackEmbeddedClick: ',
+      message,
+      buttonId,
+      clickedUrl
+    );
+    return RNIterableAPI.trackEmbeddedClick(message, buttonId, clickedUrl);
+  }
+
+  static trackEmbeddedMessageReceived(message: IterableEmbeddedMessage) {
+    IterableApi.logger.log('trackEmbeddedMessageReceived: ', message);
+
+    if (message == null) {
+      IterableApi.logger.log('trackEmbeddedMessageReceived: message is null');
+      return;
+    }
+
+    return RNIterableAPI.trackEmbeddedMessageReceived(message);
+  }
+
   // ---- End TRACKING ---- //
 
   // ====================================================== //
@@ -478,6 +529,54 @@ export class IterableApi {
   }
 
   // ---- End IN-APP ---- //
+
+  // ====================================================== //
+  // ======================= EMBEDDED ======================= //
+  // ====================================================== //
+
+  /**
+   * Get the embedded messages.
+   *
+   * @returns A Promise that resolves to an array of embedded messages.
+   */
+  static getEmbeddedMessages(
+    placementIds: number[] | null
+  ): Promise<IterableEmbeddedMessage[]> {
+    IterableApi.logger.log('getEmbeddedMessages: ', placementIds);
+    return RNIterableAPI.getEmbeddedMessages(placementIds);
+  }
+
+  static syncEmbeddedMessages() {
+    IterableApi.logger.log('syncEmbeddedMessages');
+    return RNIterableAPI.syncEmbeddedMessages();
+  }
+
+  static getEmbeddedPlacementIds() {
+    IterableApi.logger.log('getEmbeddedPlacementIds');
+    return RNIterableAPI.getEmbeddedPlacementIds();
+  }
+
+  static startEmbeddedSession() {
+    IterableApi.logger.log('startEmbeddedSession');
+    return RNIterableAPI.startEmbeddedSession();
+  }
+
+  static endEmbeddedSession() {
+    IterableApi.logger.log('endEmbeddedSession');
+    return RNIterableAPI.endEmbeddedSession();
+  }
+
+  static startEmbeddedImpression(messageId: string, placementId: number) {
+    IterableApi.logger.log('startEmbeddedImpression: ', messageId, placementId);
+    return RNIterableAPI.startEmbeddedImpression(messageId, placementId);
+  }
+
+  static pauseEmbeddedImpression(messageId: string) {
+    IterableApi.logger.log('pauseEmbeddedImpression: ', messageId);
+    return RNIterableAPI.pauseEmbeddedImpression(messageId);
+  }
+
+  // ---- End EMBEDDED ---- //
 
   // ====================================================== //
   // ======================= MOSC ======================= //

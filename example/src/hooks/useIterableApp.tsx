@@ -128,6 +128,8 @@ export const IterableAppProvider: FunctionComponent<
 
       config.inAppDisplayInterval = 1.0; // Min gap between in-apps. No need to set this in production.
 
+      config.enableEmbeddedMessaging = true;
+
       config.retryPolicy = {
         maxRetry: 5,
         retryInterval: 10,
@@ -149,6 +151,7 @@ export const IterableAppProvider: FunctionComponent<
       };
 
       config.urlHandler = (url: string) => {
+        console.log('urlHandler', url);
         const routeNames = [Route.Commerce, Route.Inbox, Route.User];
         for (const route of routeNames) {
           if (url.includes(route.toLowerCase())) {

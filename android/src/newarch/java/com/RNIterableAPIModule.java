@@ -8,7 +8,12 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.iterable.iterableapi.AuthFailure;
+import com.iterable.iterableapi.IterableEmbeddedMessage;
 import com.iterable.iterableapi.IterableLogger;
+import com.iterable.iterableapi.IterableEmbeddedManager;
+
+import com.iterable.iterableapi.IterableEmbeddedUpdateHandler;
+
 
 public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   private final ReactApplicationContext reactContext;
@@ -230,5 +235,43 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
 
   public void onInboxUpdated() {
     moduleImpl.onInboxUpdated();
+  }
+
+  @Override
+  public void getEmbeddedMessages(@Nullable ReadableArray placementIds, Promise promise) {
+    moduleImpl.getEmbeddedMessages(placementIds, promise);
+  }
+
+  public void syncEmbeddedMessages() {
+    moduleImpl.syncEmbeddedMessages();
+  }
+
+  public void getEmbeddedPlacementIds(Promise promise) {
+    moduleImpl.getEmbeddedPlacementIds(promise);
+  }
+
+  @Override
+  public void startEmbeddedImpression(String messageId, int placementId) {
+    moduleImpl.startEmbeddedImpression(messageId, placementId);
+  }
+
+  @Override
+  public void pauseEmbeddedImpression(String messageId) {
+    moduleImpl.pauseEmbeddedImpression(messageId);
+  }
+
+  @Override
+  public void trackEmbeddedClick(ReadableMap message, String buttonId, String clickedUrl) {
+    moduleImpl.trackEmbeddedClick(message, buttonId, clickedUrl);
+  }
+
+  @Override
+  public void startEmbeddedSession() {
+    moduleImpl.startEmbeddedSession();
+  }
+
+  @Override
+  public void endEmbeddedSession() {
+    moduleImpl.endEmbeddedSession();
   }
 }

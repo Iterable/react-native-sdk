@@ -3,34 +3,43 @@ import { Linking, NativeEventEmitter, Platform } from 'react-native';
 import { buildInfo } from '../../itblBuildInfo';
 
 import { RNIterableAPI } from '../../api';
-// TODO: Organize these so that there are no circular dependencies
-// See https://github.com/expo/expo/issues/35100
+
+import { IterableInAppManager } from '../../inApp/classes/IterableInAppManager';
 import { IterableInAppMessage } from '../../inApp/classes/IterableInAppMessage';
 import { IterableInAppCloseSource } from '../../inApp/enums/IterableInAppCloseSource';
 import { IterableInAppDeleteSource } from '../../inApp/enums/IterableInAppDeleteSource';
 import { IterableInAppLocation } from '../../inApp/enums/IterableInAppLocation';
+import {
+  defaultAuthManager,
+  defaultConfig,
+  defaultEmbeddedManager,
+  defaultInAppManager,
+  defaultLogger,
+} from '../constants/defaults';
 import { IterableAuthResponseResult } from '../enums/IterableAuthResponseResult';
 import { IterableEventName } from '../enums/IterableEventName';
-
-// Add this type-only import to avoid circular dependency
-import { IterableInAppManager } from '../../inApp/classes/IterableInAppManager';
-
+import type { IterableAuthFailure } from '../types/IterableAuthFailure';
+import {
+  trackEmbeddedClick,
+  trackEmbeddedMessageReceived,
+  trackEmbeddedSession,
+  trackEvent,
+  trackInAppClick,
+  trackInAppClose,
+  trackInAppOpen,
+  trackPurchase,
+  trackPushOpenWithCampaignId,
+} from '../utils';
 import { IterableAction } from './IterableAction';
 import { IterableActionContext } from './IterableActionContext';
+import { IterableApi } from './IterableApi';
 import { IterableAttributionInfo } from './IterableAttributionInfo';
+import { IterableAuthManager } from './IterableAuthManager';
 import { IterableAuthResponse } from './IterableAuthResponse';
 import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
-import type { IterableAuthFailure } from '../types/IterableAuthFailure';
-import {
-  defaultAuthManager,
-  defaultConfig,
-  defaultInAppManager,
-  defaultLogger,
-} from '../constants/defaults';
-import { IterableApi } from './IterableApi';
-import { IterableAuthManager } from './IterableAuthManager';
+import { IterableEmbeddedManager } from '../../embedded/classes/IterableEmbeddedManager';
 
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
@@ -96,6 +105,30 @@ export class Iterable {
    */
   static authManager: IterableAuthManager = defaultAuthManager;
 
+  static embeddedManager: IterableEmbeddedManager = defaultEmbeddedManager;
+
+  /**
+   * Tracking manager for the current user.
+   *
+   * This property provides access to tracking functionality including
+   * tracking purchases, in-app messages, and more.
+   *
+   * @example
+   * ```typescript
+   * Iterable.tracker.trackPurchase(100, [new IterableCommerceItem('item1', 'Item 1', 10.0, 1)], { key: 'value' });
+   * ```
+   */
+  static tracker = {
+    trackEmbeddedClick,
+    trackEmbeddedMessageReceived,
+    trackEmbeddedSession,
+    trackEvent,
+    trackInAppClick,
+    trackInAppClose,
+    trackInAppOpen,
+    trackPurchase,
+    trackPushOpenWithCampaignId,
+  };
   /**
    * Initializes the Iterable React Native SDK in your app's Javascript or Typescript code.
    *
@@ -174,6 +207,7 @@ export class Iterable {
     Iterable.logger = logger;
     Iterable.inAppManager = new IterableInAppManager(logger);
     Iterable.authManager = new IterableAuthManager(logger);
+    Iterable.embeddedManager = new IterableEmbeddedManager(logger, config);
     IterableApi.setLogger(logger);
 
     this.setupEventHandlers();
@@ -391,6 +425,9 @@ export class Iterable {
   }
 
   /**
+   * @deprecated -- This method is deprecated and may be removed in a future
+   * release. Use `Iterable.tracker.trackPushOpenWithCampaignId` instead.
+   *
    * Create a `pushOpen` event on the current user's Iterable profile, populating
    * it with data provided to the method call.
    *
@@ -480,6 +517,9 @@ export class Iterable {
   }
 
   /**
+   * @deprecated -- This method is deprecated and may be removed in a future
+   * release. Use `Iterable.tracker.trackPurchase` instead.
+   *
    * Create a purchase event on the current user's Iterable profile.
    *
    * Represent each item in the purchase event with an {@link IterableCommerceItem} object.
@@ -508,10 +548,13 @@ export class Iterable {
     items: IterableCommerceItem[],
     dataFields?: unknown
   ) {
-    return IterableApi.trackPurchase(total, items, dataFields);
+    return Iterable.tracker.trackPurchase(total, items, dataFields);
   }
 
   /**
+   * @deprecated -- This method is deprecated and may be removed in a future
+   * release. Use `Iterable.tracker.trackInAppOpen` instead.
+   *
    * Create an `inAppOpen` event for the specified message on the current user's profile
    * for manual tracking purposes. Iterable's SDK automatically tracks in-app message opens when you use the
    * SDK's default rendering.
@@ -534,10 +577,13 @@ export class Iterable {
     message: IterableInAppMessage,
     location: IterableInAppLocation
   ) {
-    return IterableApi.trackInAppOpen(message, location);
+    return Iterable.tracker.trackInAppOpen(message, location);
   }
 
   /**
+   * @deprecated -- This method is deprecated and may be removed in a future
+   * release. Use `Iterable.tracker.trackInAppClick` instead.
+   *
    * Create an `inAppClick` event for the specified message on the current user's profile
    * for manual tracking purposes. Iterable's SDK automatically tracks in-app message clicks when you use the
    * SDK's default rendering. Click events refer to click events within the in-app message to distinguish
@@ -563,10 +609,13 @@ export class Iterable {
     location: IterableInAppLocation,
     clickedUrl: string
   ) {
-    return IterableApi.trackInAppClick(message, location, clickedUrl);
+    return Iterable.tracker.trackInAppClick(message, location, clickedUrl);
   }
 
   /**
+   * @deprecated -- This method is deprecated and may be removed in a future
+   * release. Use `Iterable.tracker.trackInAppClose` instead.
+   *
    * Create an `inAppClose` event for the specified message on the current
    * user's profile for manual tracking purposes. Iterable's SDK automatically
    * tracks in-app message close events when you use the SDK's default
@@ -594,7 +643,12 @@ export class Iterable {
     source: IterableInAppCloseSource,
     clickedUrl?: string
   ) {
-    return IterableApi.trackInAppClose(message, location, source, clickedUrl);
+    return Iterable.tracker.trackInAppClose(
+      message,
+      location,
+      source,
+      clickedUrl
+    );
   }
 
   /**
@@ -642,6 +696,9 @@ export class Iterable {
   }
 
   /**
+   * @deprecated -- This method is deprecated and may be removed in a future
+   * release. Use `Iterable.tracker.trackEvent` instead.
+   *
    * Create a custom event to the current user's Iterable profile.
    *
    * Pass in the name of the event stored in eventName key and the data associated with the event.
@@ -662,7 +719,7 @@ export class Iterable {
    * ```
    */
   static trackEvent(name: string, dataFields?: unknown) {
-    return IterableApi.trackEvent(name, dataFields);
+    return Iterable.tracker.trackEvent(name, dataFields);
   }
 
   /**
@@ -864,6 +921,12 @@ export class Iterable {
       campaignId,
       templateId
     );
+  }
+
+  static getEmbeddedMessages(placementIds?: number[] | null): Promise<unknown> {
+    return IterableApi.getEmbeddedMessages(
+      placementIds ?? null
+    ) as unknown as Promise<unknown>;
   }
 
   /**

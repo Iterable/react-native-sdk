@@ -1,6 +1,36 @@
 import type { TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
 
+interface EmbeddedMessage {
+  metadata: {
+    messageId: string;
+    placementId: number;
+    campaignId?: number | null;
+    isProof?: boolean;
+  };
+  elements: {
+    buttons?:
+      | {
+          id: string;
+          title?: string | null;
+          action: { type: string; data?: string } | null;
+        }[]
+      | null;
+    body?: string | null;
+    mediaUrl?: string | null;
+    mediaUrlCaption?: string | null;
+    defaultAction?: { type: string; data?: string } | null;
+    text?: { id: string; text?: string | null; label?: string | null }[] | null;
+    title?: string | null;
+  } | null;
+  payload?: { [key: string]: string | number | boolean | null } | null;
+}
+
+export interface EmbeddedUpdateListener {
+  onMessagesUpdated: () => void;
+  onEmbeddedMessagingDisabled: () => void;
+}
+
 export interface Spec extends TurboModule {
   // Initialization
   initializeWithApiKey(
@@ -117,6 +147,37 @@ export interface Spec extends TurboModule {
   // Auth
   passAlongAuthToken(authToken?: string | null): void;
   pauseAuthRetries(pauseRetry: boolean): void;
+
+  // Embedded messaging
+  getEmbeddedMessages(
+    placementIds: number[] | null
+  ): Promise<EmbeddedMessage[]>;
+
+  syncEmbeddedMessages(): void;
+
+  getEmbeddedPlacementIds(): Promise<number[]>;
+
+  startEmbeddedSession(): void;
+
+  endEmbeddedSession(): void;
+
+  startEmbeddedImpression(messageId: string, placementId: number): void;
+
+  pauseEmbeddedImpression(messageId: string): void;
+
+  trackEmbeddedClick(
+    message: EmbeddedMessage,
+    buttonId: string | null,
+    clickedUrl: string | null
+  ): void;
+
+  trackEmbeddedSession(session: {
+    [key: string]: string | number | boolean;
+  }): void;
+
+  trackEmbeddedMessageReceived(message: {
+    [key: string]: string | number | boolean;
+  }): void;
 
   // Wake app -- android only
   wakeApp(): void;

@@ -9,6 +9,10 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.iterable.iterableapi.IterableEmbeddedMessage;
+import com.iterable.iterableapi.IterableEmbeddedManager;
+import com.iterable.iterableapi.IterableEmbeddedUpdateHandler;
+
 
 public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     private final ReactApplicationContext reactContext;
@@ -228,6 +232,45 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
       moduleImpl.pauseAuthRetries(pauseRetry);
     }
 
+    @ReactMethod
+    public void getEmbeddedMessages(@Nullable ReadableArray placementIds, Promise promise) {
+      moduleImpl.getEmbeddedMessages(placementIds, promise);
+    }
+
+    @ReactMethod
+    public void syncEmbeddedMessages() {
+      moduleImpl.syncEmbeddedMessages();
+    }
+
+    @ReactMethod
+    public void getEmbeddedPlacementIds(Promise promise) {
+      moduleImpl.getEmbeddedPlacementIds(promise);
+    }
+
+    @ReactMethod
+    public void startEmbeddedSession() {
+      moduleImpl.startEmbeddedSession();
+    }
+
+    @ReactMethod
+    public void endEmbeddedSession() {
+      moduleImpl.endEmbeddedSession();
+    }
+
+    @ReactMethod
+    public void startEmbeddedImpression(String messageId, int placementId) {
+      moduleImpl.startEmbeddedImpression(messageId, placementId);
+    }
+
+    @ReactMethod
+    public void pauseEmbeddedImpression(String messageId) {
+      moduleImpl.pauseEmbeddedImpression(messageId);
+    }
+
+    @ReactMethod
+    public void trackEmbeddedClick(ReadableMap message, String buttonId, String clickedUrl) {
+      moduleImpl.trackEmbeddedClick(message, buttonId, clickedUrl);
+    }
 
     public void sendEvent(@NonNull String eventName, @Nullable Object eventData) {
       moduleImpl.sendEvent(eventName, eventData);

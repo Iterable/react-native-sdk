@@ -179,12 +179,12 @@ export const IterableInboxMessageDisplay = ({
     const source = IterableActionSource.inApp;
     const context = new IterableActionContext(action, source);
 
-    Iterable.trackInAppClick(
+    Iterable.tracker.trackInAppClick(
       rowViewModel.inAppMessage,
       IterableInAppLocation.inbox,
       URL
     );
-    Iterable.trackInAppClose(
+    Iterable.tracker.trackInAppClose(
       rowViewModel.inAppMessage,
       IterableInAppLocation.inbox,
       IterableInAppCloseSource.link,
@@ -225,7 +225,7 @@ export const IterableInboxMessageDisplay = ({
           <TouchableWithoutFeedback
             onPress={() => {
               returnToInbox();
-              Iterable.trackInAppClose(
+              Iterable.tracker.trackInAppClose(
                 rowViewModel.inAppMessage,
                 IterableInAppLocation.inbox,
                 IterableInAppCloseSource.back
