@@ -1,5 +1,6 @@
 import { RNIterableAPI } from '../../api';
-import { Iterable } from '../../core/classes/Iterable';
+import { IterableConfig } from '../../core/classes/IterableConfig';
+import { IterableLogger } from '../../core/classes/IterableLogger';
 import type {
   IterableInAppDeleteSource,
   IterableInAppLocation,
@@ -17,6 +18,15 @@ import { IterableInAppMessage } from './IterableInAppMessage';
  */
 export class IterableInAppManager {
   /**
+   * The logger for the Iterable SDK.
+   */
+  private _logger: IterableLogger = new IterableLogger(new IterableConfig());
+
+  constructor(logger: IterableLogger) {
+    this._logger = logger;
+  }
+
+  /**
    * Retrieve the current user's list of in-app messages stored in the local queue.
    *
    * This method does not cause the application to immediately check for new in-app messages on the server, since the SDK keeps the message list in sync.
@@ -33,9 +43,11 @@ export class IterableInAppManager {
    * @returns A Promise that resolves to an array of in-app messages.
    */
   getMessages(): Promise<IterableInAppMessage[]> {
-    Iterable?.logger?.log('InAppManager.getMessages');
+    this._logger?.log('InAppManager.getMessages');
 
-    return RNIterableAPI.getInAppMessages() as unknown as Promise<IterableInAppMessage[]>;
+    return RNIterableAPI.getInAppMessages() as unknown as Promise<
+      IterableInAppMessage[]
+    >;
   }
 
   /**
@@ -56,9 +68,11 @@ export class IterableInAppManager {
    * @returns A Promise that resolves to an array of messages marked as `saveToInbox`.
    */
   getInboxMessages(): Promise<IterableInAppMessage[]> {
-    Iterable?.logger?.log('InAppManager.getInboxMessages');
+    this?._logger?.log('InAppManager.getInboxMessages');
 
-    return RNIterableAPI.getInboxMessages() as unknown as Promise<IterableInAppMessage[]>;
+    return RNIterableAPI.getInboxMessages() as unknown as Promise<
+      IterableInAppMessage[]
+    >;
   }
 
   /**
@@ -83,7 +97,7 @@ export class IterableInAppManager {
     message: IterableInAppMessage,
     consume: boolean
   ): Promise<string | null> {
-    Iterable?.logger?.log('InAppManager.show');
+    this?._logger?.log('InAppManager.show');
 
     return RNIterableAPI.showMessage(message.messageId, consume);
   }
@@ -111,7 +125,7 @@ export class IterableInAppManager {
     location: IterableInAppLocation,
     source: IterableInAppDeleteSource
   ): void {
-    Iterable?.logger?.log('InAppManager.remove');
+    this?._logger?.log('InAppManager.remove');
 
     return RNIterableAPI.removeMessage(message.messageId, location, source);
   }
@@ -128,7 +142,7 @@ export class IterableInAppManager {
    * ```
    */
   setReadForMessage(message: IterableInAppMessage, read: boolean) {
-    Iterable?.logger?.log('InAppManager.setRead');
+    this?._logger?.log('InAppManager.setRead');
 
     RNIterableAPI.setReadForMessage(message.messageId, read);
   }
@@ -148,9 +162,11 @@ export class IterableInAppManager {
   getHtmlContentForMessage(
     message: IterableInAppMessage
   ): Promise<IterableHtmlInAppContent> {
-    Iterable?.logger?.log('InAppManager.getHtmlContentForMessage');
+    this?._logger?.log('InAppManager.getHtmlContentForMessage');
 
-    return RNIterableAPI.getHtmlInAppContentForMessage(message.messageId) as unknown as Promise<IterableHtmlInAppContent>;
+    return RNIterableAPI.getHtmlInAppContentForMessage(
+      message.messageId
+    ) as unknown as Promise<IterableHtmlInAppContent>;
   }
 
   /**
@@ -168,7 +184,7 @@ export class IterableInAppManager {
    * ```
    */
   setAutoDisplayPaused(paused: boolean) {
-    Iterable?.logger?.log('InAppManager.setAutoDisplayPaused');
+    this?._logger?.log('InAppManager.setAutoDisplayPaused');
 
     RNIterableAPI.setAutoDisplayPaused(paused);
   }
