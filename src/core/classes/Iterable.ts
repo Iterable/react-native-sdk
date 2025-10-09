@@ -505,7 +505,7 @@ export class Iterable {
   /**
    * Launch the application from the background in Android devices.
    *
-   * @group Android Only
+   * Android only.
    *
    * @example
    * ```typescript
@@ -1013,7 +1013,7 @@ export class Iterable {
                 (promiseResult as IterableAuthResponse).authToken
               );
 
-              setTimeout(() => {
+              const timeoutId = setTimeout(() => {
                 if (
                   authResponseCallback === IterableAuthResponseResult.SUCCESS
                 ) {
@@ -1034,6 +1034,8 @@ export class Iterable {
                   );
                 }
               }, 1000);
+              // Use unref() to prevent the timeout from keeping the process alive
+              timeoutId.unref();
             } else if (typeof promiseResult === typeof '') {
               //If promise only returns string
               IterableApi.passAlongAuthToken(promiseResult as string);
