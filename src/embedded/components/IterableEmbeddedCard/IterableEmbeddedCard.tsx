@@ -10,10 +10,14 @@ import {
 } from 'react-native';
 
 import { IterableEmbeddedViewType } from '../../enums';
-import { useEmbeddedView } from '../../hooks/useEmbeddedView';
 import { useComponentVisibility } from '../../hooks/useComponentVisibility';
+import { useEmbeddedView } from '../../hooks/useEmbeddedView';
 import type { IterableEmbeddedComponentProps } from '../../types/IterableEmbeddedViewProps';
 import { IMAGE_HEIGHT, styles } from './IterableEmbeddedCard.styles';
+
+/**
+ * TODO: Add default action click handler.  See IterableEmbeddedView for functionality.
+ */
 
 export const IterableEmbeddedCard = ({
   config,
@@ -33,6 +37,9 @@ export const IterableEmbeddedCard = ({
     enablePeriodicCheck: true, // Enable periodic checking for navigation changes
     checkInterval: 500, // Check every 500ms for navigation changes
   });
+
+  // const appVisibility = useAppStateListener();
+  // console.log('appVisibility', appVisibility);
 
   useEffect(() => {
     console.log('RENDERED');

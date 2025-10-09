@@ -4,17 +4,16 @@ import {
   IterableEmbeddedViewType,
   type IterableEmbeddedMessage,
 } from '@iterable/react-native-sdk';
-import { useIsFocused } from '@react-navigation/native';
 import { useCallback, useEffect, useState } from 'react';
-import { Text, TouchableOpacity, View, ScrollView } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 import { useIterableApp } from '../../hooks';
 import styles from './Embedded.styles';
 
 export const Embedded = () => {
   const { isLoggedIn } = useIterableApp();
-  const isFocused = useIsFocused();
-  const [hasSession, setHasSession] = useState<boolean>(false);
+  // const isFocused = useIsFocused();
+  const [hasSession] = useState<boolean>(false);
   const [placementIds, setPlacementIds] = useState<number[]>([]);
   const [messages, setMessages] = useState<IterableEmbeddedMessage[]>([]);
 
@@ -42,29 +41,29 @@ export const Embedded = () => {
     }
   }, [isLoggedIn, getPlacementIds]);
 
-  useEffect(() => {
-    if (isFocused) {
-      Iterable.embeddedManager.startSession();
-      Iterable.embeddedManager.syncMessages();
-      Iterable.embeddedManager.getPlacementIds().then((ids: unknown) => {
-        console.log(ids);
-        setPlacementIds(ids as number[]);
-        Iterable.embeddedManager
-          .getMessages(placementIds)
-          .then((messageList) => {
-            console.log(messageList);
-            setMessages(messageList as IterableEmbeddedMessage[]);
-            setHasSession(true);
-          });
-      });
-    } else {
-      if (hasSession) {
-        Iterable.embeddedManager.endSession();
-        setHasSession(false);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFocused]);
+  // useEffect(() => {
+  //   if (isFocused) {
+  //     Iterable.embeddedManager.startSession();
+  //     Iterable.embeddedManager.syncMessages();
+  //     Iterable.embeddedManager.getPlacementIds().then((ids: unknown) => {
+  //       console.log(ids);
+  //       setPlacementIds(ids as number[]);
+  //       Iterable.embeddedManager
+  //         .getMessages(placementIds)
+  //         .then((messageList) => {
+  //           console.log(messageList);
+  //           setMessages(messageList as IterableEmbeddedMessage[]);
+  //           setHasSession(true);
+  //         });
+  //     });
+  //   } else {
+  //     if (hasSession) {
+  //       Iterable.embeddedManager.endSession();
+  //       setHasSession(false);
+  //     }
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [isFocused]);
 
   return (
     <View style={styles.container}>

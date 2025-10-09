@@ -10,20 +10,19 @@ export const User = () => {
   const { logout, isLoggedIn } = useIterableApp();
   const isFocused = useIsFocused();
   const [loggedInAs, setLoggedInAs] = useState<string>('');
-  const [hasSession, setHasSession] = useState<boolean>(false);
+  const [hasSession] = useState<boolean>(false);
   const [placementIds, setPlacementIds] = useState<number[]>([]);
 
   useEffect(() => {
-    if (isFocused) {
-      Iterable.embeddedManager.startSession();
-      setHasSession(true);
-    } else {
-      if (hasSession) {
-        Iterable.embeddedManager.endSession();
-        setHasSession(false);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // if (isFocused) {
+    //   Iterable.embeddedManager.startSession();
+    //   setHasSession(true);
+    // } else {
+    //   if (hasSession) {
+    //     Iterable.embeddedManager.endSession();
+    //     setHasSession(false);
+    //   }
+    // }
   }, [isFocused]);
 
   useEffect(() => {

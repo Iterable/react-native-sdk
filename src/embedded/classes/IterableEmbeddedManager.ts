@@ -7,19 +7,19 @@ import { defaultConfig, defaultLogger } from '../../core/constants/defaults';
 import { IterableActionSource } from '../../core/enums/IterableActionSource';
 import { getActionPrefix } from '../../core/utils/getActionPrefix';
 import type { IterableEmbeddedMessage } from './IterableEmbeddedMessage';
-import { IterableEmbeddedSessionManager } from './IterableEmbeddedSessionManager';
+// import { IterableEmbeddedSessionManager } from './IterableEmbeddedSessionManager';
 
 export class IterableEmbeddedManager {
   logger: IterableLogger = defaultLogger;
   config: IterableConfig = defaultConfig;
 
-  sessionManager: IterableEmbeddedSessionManager =
-    new IterableEmbeddedSessionManager(defaultLogger);
+  // sessionManager: IterableEmbeddedSessionManager =
+  //   new IterableEmbeddedSessionManager(defaultLogger);
 
   constructor(logger: IterableLogger, config: IterableConfig) {
     this.logger = logger;
     this.config = config;
-    this.sessionManager = new IterableEmbeddedSessionManager(logger);
+    // this.sessionManager = new IterableEmbeddedSessionManager(logger);
   }
 
   syncMessages() {
