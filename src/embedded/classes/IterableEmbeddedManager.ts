@@ -39,11 +39,13 @@ export class IterableEmbeddedManager {
 
   startSession() {
     this.logger.log('IterableEmbeddedManager.startSession');
+    // TODO: Track session start
     IterableApi.startEmbeddedSession();
   }
 
   endSession() {
     this.logger.log('IterableEmbeddedManager.endSession');
+    // TODO: Track session end
     IterableApi.endEmbeddedSession();
   }
 
@@ -53,11 +55,13 @@ export class IterableEmbeddedManager {
       messageId,
       placementId
     );
+    // TODO: Track impression start
     IterableApi.startEmbeddedImpression(messageId, placementId);
   }
 
   pauseImpression(messageId: string) {
     this.logger.log('IterableEmbeddedManager.pauseImpression', messageId);
+    // TODO: Track impression pause
     IterableApi.pauseEmbeddedImpression(messageId);
   }
 
