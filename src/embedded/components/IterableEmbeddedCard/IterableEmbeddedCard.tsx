@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import {
   Image,
   PixelRatio,
@@ -10,7 +9,6 @@ import {
 } from 'react-native';
 
 import { IterableEmbeddedViewType } from '../../enums';
-import { useComponentVisibility } from '../../hooks/useComponentVisibility';
 import { useEmbeddedView } from '../../hooks/useEmbeddedView';
 import type { IterableEmbeddedComponentProps } from '../../types/IterableEmbeddedViewProps';
 import { IMAGE_HEIGHT, styles } from './IterableEmbeddedCard.styles';
@@ -24,34 +22,13 @@ export const IterableEmbeddedCard = ({
   message,
   onButtonClick = () => {},
 }: IterableEmbeddedComponentProps) => {
-  const { parsedStyles, media, handleButtonClick } = useEmbeddedView(
-    IterableEmbeddedViewType.Card,
-    { message, config, onButtonClick }
-  );
+  const { parsedStyles, media, handleButtonClick, componentRef, handleLayout } =
+    useEmbeddedView(IterableEmbeddedViewType.Card, {
+      message,
+      config,
+      onButtonClick,
+    });
   const buttons = message?.elements?.buttons ?? [];
-
-  // Use the visibility hook to track if the component is visible
-  const { isVisible, componentRef, handleLayout } = useComponentVisibility({
-    threshold: 0.1, // Component is considered visible if 10% is on screen
-    checkOnAppState: true, // Consider app state (active/background)
-    enablePeriodicCheck: true, // Enable periodic checking for navigation changes
-    checkInterval: 500, // Check every 500ms for navigation changes
-  });
-
-  // const appVisibility = useAppStateListener();
-  // console.log('appVisibility', appVisibility);
-
-  useEffect(() => {
-    console.log('RENDERED');
-    return () => {
-      console.log('UNMOUNTED');
-    };
-  }, []);
-
-  // Log visibility changes for debugging
-  useEffect(() => {
-    console.log('Card visibility changed:', isVisible);
-  }, [isVisible]);
 
   return (
     <View
