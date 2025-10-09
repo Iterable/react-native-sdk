@@ -1,47 +1,47 @@
 export const embeddedBackgroundColors = {
-  notification: '#ff121212',
+  notification: '#ffffff',
   card: '#ffffff',
   banner: '#ffffff',
 };
 
 export const embeddedBorderColors = {
-  notification: '#ff2a2a2a',
+  notification: '#E0DEDF',
   card: '#ffe0e0e0',
   banner: '#E0DEDF',
 };
 
 export const embeddedPrimaryBtnBackgroundColors = {
-  notification: '#ffffffff',
-  card: '#ffffffff',
+  notification: '#6A266D',
+  card: '#ffffff',
   banner: '#6A266D',
 };
 
 export const embeddedPrimaryBtnTextColors = {
-  notification: '#ff121212',
+  notification: '#ffffff',
   card: '#ff1a73e8',
-  banner: '#ffffffff',
+  banner: '#ffffff',
 };
 
 export const embeddedSecondaryBtnBackgroundColors = {
-  notification: '#ff121212',
-  card: '#ffffffff',
+  notification: 'transparent',
+  card: '#ffffff',
   banner: 'transparent',
 };
 
 export const embeddedSecondaryBtnTextColors = {
-  notification: '#ff121212',
+  notification: '#79347F',
   card: '#ff1a73e8',
   banner: '#79347F',
 };
 
 export const embeddedTitleTextColors = {
-  notification: '#ffffffff',
+  notification: '#3D3A3B',
   card: '#ff111111',
   banner: '#3D3A3B',
 };
 
 export const embeddedBodyTextColors = {
-  notification: '#ffffffff',
+  notification: '#787174',
   card: '#ff444444',
   banner: '#787174',
 };

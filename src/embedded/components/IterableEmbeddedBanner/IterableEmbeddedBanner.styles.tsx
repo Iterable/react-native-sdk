@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     paddingTop: 4,
   },
   button: {
-    borderRadius: 12,
+    borderRadius: 32,
     gap: 8,
   },
   buttonContainer: {

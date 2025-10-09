@@ -86,7 +86,7 @@ export const Embedded = () => {
         return (
           <IterableEmbeddedView
             key={message.metadata.messageId}
-            viewType={IterableEmbeddedViewType.Banner}
+            viewType={IterableEmbeddedViewType.Notification}
             message={message}
           />
         );
