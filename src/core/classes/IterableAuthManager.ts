@@ -39,4 +39,13 @@ export class IterableAuthManager {
   pauseAuthRetries(pauseRetry: boolean) {
     return IterableApi.pauseAuthRetries(pauseRetry);
   }
+
+  /**
+   * Pass along an auth token to the SDK.
+   *
+   * @param authToken - The auth token to pass along
+   */
+  passAlongAuthToken(authToken: string | null | undefined) {
+    return IterableApi.passAlongAuthToken(authToken);
+  }
 }

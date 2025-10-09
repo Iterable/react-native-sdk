@@ -30,8 +30,6 @@ const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
 const defaultConfig = new IterableConfig();
 const defaultLogger = new IterableLogger(defaultConfig);
-const defaultInAppManager = new IterableInAppManager(defaultLogger);
-const defaultAuthManager = new IterableAuthManager(defaultLogger);
 
 /* eslint-disable tsdoc/syntax */
 /**
@@ -80,7 +78,9 @@ export class Iterable {
    * Iterable.inAppManager.showMessage(message, true);
    * ```
    */
-  static inAppManager: IterableInAppManager = defaultInAppManager;
+  static inAppManager: IterableInAppManager = new IterableInAppManager(
+    defaultLogger
+  );
 
   /**
    * Authentication manager for the current user.
@@ -93,7 +93,9 @@ export class Iterable {
    * Iterable.authManager.pauseAuthRetries(true);
    * ```
    */
-  static authManager: IterableAuthManager = defaultAuthManager;
+  static authManager: IterableAuthManager = new IterableAuthManager(
+    defaultLogger
+  );
 
   /**
    * Initializes the Iterable React Native SDK in your app's Javascript or Typescript code.
