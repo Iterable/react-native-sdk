@@ -15,7 +15,7 @@ jobs:
     # Only run on master/main pushes or PRs with "docs" label
     if: |
       github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main') ||
-      github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'docs') ||
+      github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'documentation') ||
       github.event_name == 'workflow_dispatch'
 
     steps:
