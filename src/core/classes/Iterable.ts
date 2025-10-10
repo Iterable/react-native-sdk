@@ -157,9 +157,6 @@ export class Iterable {
       IterableLogger.setLogLevel(config.logLevel);
     }
 
-    Iterable.inAppManager = new IterableInAppManager();
-    Iterable.authManager = new IterableAuthManager();
-
     this.setupEventHandlers();
   }
 
