@@ -12,6 +12,9 @@ import { IterableAttributionInfo } from './IterableAttributionInfo';
 import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 
+/**
+ * Contains functions that directly interact with the native layer.
+ */
 export class IterableApi {
   // ====================================================== //
   // ===================== INITIALIZE ===================== //
