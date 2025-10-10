@@ -24,6 +24,7 @@ import com.iterable.iterableapi.IterableInAppMessage;
 import com.iterable.iterableapi.IterableInboxSession;
 import com.iterable.iterableapi.IterableLogger;
 import com.iterable.iterableapi.RNIterableInternal;
+import com.iterable.iterableapi.RetryPolicy;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -94,7 +95,7 @@ class Serialization {
                 categories[i] = categoriesArray.getString(i);
             }
         }
-        
+
         return new CommerceItem(itemMap.getString("id"),
                 itemMap.getString("name"),
                 itemMap.getDouble("price"),
@@ -216,9 +217,17 @@ class Serialization {
 
                 configBuilder.setDataRegion(iterableDataRegion);
             }
-          
-            if (iterableContextJSON.has("encryptionEnforced")) {
-                configBuilder.setEncryptionEnforced(iterableContextJSON.optBoolean("encryptionEnforced"));
+
+            if (iterableContextJSON.has("retryPolicy")) {
+                JSONObject retryPolicyJson = iterableContextJSON.getJSONObject("retryPolicy");
+                int maxRetry = retryPolicyJson.getInt("maxRetry");
+                long retryInterval = retryPolicyJson.getLong("retryInterval");
+                String retryBackoff = retryPolicyJson.getString("retryBackoff");
+                RetryPolicy.Type retryPolicyType = RetryPolicy.Type.LINEAR;
+                if (retryBackoff.equals("EXPONENTIAL")) {
+                    retryPolicyType = RetryPolicy.Type.EXPONENTIAL;
+                }
+                configBuilder.setAuthRetryPolicy(new RetryPolicy(maxRetry, retryInterval, retryPolicyType));
             }
 
             return configBuilder;
@@ -257,7 +266,13 @@ class Serialization {
     }
 
     static IterableInboxSession.Impression inboxImpressionFromMap(JSONObject impressionMap) throws JSONException {
-        return new IterableInboxSession.Impression(impressionMap.getString("messageId"),
+        // Add null check for messageId to prevent NullPointerException
+        String messageId = impressionMap.optString("messageId", null);
+        if (messageId == null || messageId.isEmpty()) {
+            throw new JSONException("messageId is null or empty");
+        }
+
+        return new IterableInboxSession.Impression(messageId,
                 impressionMap.getBoolean("silentInbox"),
                 impressionMap.optInt("displayCount", 0),
                 (float) impressionMap.optDouble("duration", 0)
@@ -271,8 +286,13 @@ class Serialization {
             JSONArray impressionJsonArray = convertArrayToJson(array);
 
             for (int i = 0; i < impressionJsonArray.length(); i++) {
-                JSONObject impressionObj = impressionJsonArray.getJSONObject(i);
-                list.add(inboxImpressionFromMap(impressionObj));
+                try {
+                    JSONObject impressionObj = impressionJsonArray.getJSONObject(i);
+                    list.add(inboxImpressionFromMap(impressionObj));
+                } catch (JSONException e) {
+                    // Skip invalid entries instead of failing completely
+                    IterableLogger.w(TAG, "Skipping invalid impression at index " + i + ": " + e.getLocalizedMessage());
+                }
             }
         } catch (JSONException e) {
             IterableLogger.e(TAG, "Failed converting to JSONObject");
@@ -286,7 +306,7 @@ class Serialization {
     // ---------------------------------------------------------------------------------------
     // region React Native JSON conversion methods
     // obtained from https://gist.github.com/viperwarp/2beb6bbefcc268dee7ad
-    
+
     static WritableMap convertJsonToMap(JSONObject jsonObject) throws JSONException {
         WritableMap map = new WritableNativeMap();
 
