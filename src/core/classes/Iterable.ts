@@ -23,6 +23,7 @@ import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
 import type { IterableAuthFailure } from '../types/IterableAuthFailure';
+import { IterableAuthManager } from './IterableAuthManager';
 
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
@@ -88,6 +89,19 @@ export class Iterable {
   }
 
   private static _inAppManager: IterableInAppManager | undefined;
+
+  /**
+   * Authentication manager for the current user.
+   *
+   * This property provides access to authentication functionality including
+   * pausing the authentication retry mechanism.
+   *
+   * @example
+   * ```typescript
+   * Iterable.authManager.pauseAuthRetries(true);
+   * ```
+   */
+  static authManager: IterableAuthManager = new IterableAuthManager();
 
   /**
    * Initializes the Iterable React Native SDK in your app's Javascript or Typescript code.
@@ -1029,7 +1043,7 @@ export class Iterable {
             // If type AuthReponse, authToken will be parsed looking for `authToken` within promised object. Two additional listeners will be registered for success and failure callbacks sent by native bridge layer.
             // Else it will be looked for as a String.
             if (typeof promiseResult === typeof new IterableAuthResponse()) {
-              RNIterableAPI.passAlongAuthToken(
+              Iterable.authManager.passAlongAuthToken(
                 (promiseResult as IterableAuthResponse).authToken
               );
 
@@ -1056,9 +1070,9 @@ export class Iterable {
               }, 1000);
               // Use unref() to prevent the timeout from keeping the process alive
               timeoutId.unref();
-            } else if (typeof promiseResult === typeof '') {
+            } else if (typeof promiseResult === 'string') {
               //If promise only returns string
-              RNIterableAPI.passAlongAuthToken(promiseResult as string);
+              Iterable.authManager.passAlongAuthToken(promiseResult as string);
             } else {
               Iterable?.logger?.log(
                 'Unexpected promise returned. Auth token expects promise of String or AuthResponse type.'
