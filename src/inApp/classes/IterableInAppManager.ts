@@ -1,5 +1,5 @@
 import { RNIterableAPI } from '../../api';
-import { Iterable } from '../../core/classes/Iterable';
+import { IterableLogger } from '../../core/classes/IterableLogger';
 import type {
   IterableInAppDeleteSource,
   IterableInAppLocation,
@@ -33,9 +33,11 @@ export class IterableInAppManager {
    * @returns A Promise that resolves to an array of in-app messages.
    */
   getMessages(): Promise<IterableInAppMessage[]> {
-    Iterable?.logger?.log('InAppManager.getMessages');
+    IterableLogger?.log('InAppManager.getMessages');
 
-    return RNIterableAPI.getInAppMessages() as unknown as Promise<IterableInAppMessage[]>;
+    return RNIterableAPI.getInAppMessages() as unknown as Promise<
+      IterableInAppMessage[]
+    >;
   }
 
   /**
@@ -56,9 +58,11 @@ export class IterableInAppManager {
    * @returns A Promise that resolves to an array of messages marked as `saveToInbox`.
    */
   getInboxMessages(): Promise<IterableInAppMessage[]> {
-    Iterable?.logger?.log('InAppManager.getInboxMessages');
+    IterableLogger?.log('InAppManager.getInboxMessages');
 
-    return RNIterableAPI.getInboxMessages() as unknown as Promise<IterableInAppMessage[]>;
+    return RNIterableAPI.getInboxMessages() as unknown as Promise<
+      IterableInAppMessage[]
+    >;
   }
 
   /**
@@ -83,7 +87,7 @@ export class IterableInAppManager {
     message: IterableInAppMessage,
     consume: boolean
   ): Promise<string | null> {
-    Iterable?.logger?.log('InAppManager.show');
+    IterableLogger?.log('InAppManager.show');
 
     return RNIterableAPI.showMessage(message.messageId, consume);
   }
@@ -111,7 +115,7 @@ export class IterableInAppManager {
     location: IterableInAppLocation,
     source: IterableInAppDeleteSource
   ): void {
-    Iterable?.logger?.log('InAppManager.remove');
+    IterableLogger?.log('InAppManager.remove');
 
     return RNIterableAPI.removeMessage(message.messageId, location, source);
   }
@@ -128,7 +132,7 @@ export class IterableInAppManager {
    * ```
    */
   setReadForMessage(message: IterableInAppMessage, read: boolean) {
-    Iterable?.logger?.log('InAppManager.setRead');
+    IterableLogger?.log('InAppManager.setRead');
 
     RNIterableAPI.setReadForMessage(message.messageId, read);
   }
@@ -148,9 +152,11 @@ export class IterableInAppManager {
   getHtmlContentForMessage(
     message: IterableInAppMessage
   ): Promise<IterableHtmlInAppContent> {
-    Iterable?.logger?.log('InAppManager.getHtmlContentForMessage');
+    IterableLogger?.log('InAppManager.getHtmlContentForMessage');
 
-    return RNIterableAPI.getHtmlInAppContentForMessage(message.messageId) as unknown as Promise<IterableHtmlInAppContent>;
+    return RNIterableAPI.getHtmlInAppContentForMessage(
+      message.messageId
+    ) as unknown as Promise<IterableHtmlInAppContent>;
   }
 
   /**
@@ -168,7 +174,7 @@ export class IterableInAppManager {
    * ```
    */
   setAutoDisplayPaused(paused: boolean) {
-    Iterable?.logger?.log('InAppManager.setAutoDisplayPaused');
+    IterableLogger?.log('InAppManager.setAutoDisplayPaused');
 
     RNIterableAPI.setAutoDisplayPaused(paused);
   }

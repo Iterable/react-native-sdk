@@ -1,5 +1,5 @@
 import { RNIterableAPI } from '../../api';
-import { Iterable } from '../../core/classes/Iterable';
+import { IterableLogger } from '../../core/classes/IterableLogger';
 import {
   IterableHtmlInAppContent,
   IterableInAppDeleteSource,
@@ -94,7 +94,7 @@ export class IterableInboxDataModel {
    * @returns  A promise that resolves to the HTML content of the specified message.
    */
   getHtmlContentForMessageId(id: string): Promise<IterableHtmlInAppContent> {
-    Iterable?.logger?.log(
+    IterableLogger?.log(
       'IterableInboxDataModel.getHtmlContentForItem messageId: ' + id
     );
 
@@ -111,7 +111,7 @@ export class IterableInboxDataModel {
    * @param id - The unique identifier of the message to be marked as read.
    */
   setMessageAsRead(id: string) {
-    Iterable?.logger?.log('IterableInboxDataModel.setMessageAsRead');
+    IterableLogger?.log('IterableInboxDataModel.setMessageAsRead');
 
     RNIterableAPI.setReadForMessage(id, true);
   }
@@ -123,7 +123,7 @@ export class IterableInboxDataModel {
    * @param deleteSource - The source from which the delete action is initiated.
    */
   deleteItemById(id: string, deleteSource: IterableInAppDeleteSource) {
-    Iterable?.logger?.log('IterableInboxDataModel.deleteItemById');
+    IterableLogger?.log('IterableInboxDataModel.deleteItemById');
 
     RNIterableAPI.removeMessage(id, IterableInAppLocation.inbox, deleteSource);
   }
@@ -151,7 +151,9 @@ export class IterableInboxDataModel {
    * @param visibleRows - An array of `IterableInboxImpressionRowInfo` objects representing the rows that are currently visible.
    */
   startSession(visibleRows: IterableInboxImpressionRowInfo[] = []) {
-    RNIterableAPI.startSession(visibleRows as unknown as { [key: string]: string | number | boolean }[]);
+    RNIterableAPI.startSession(
+      visibleRows as unknown as { [key: string]: string | number | boolean }[]
+    );
   }
 
   /**
@@ -178,7 +180,9 @@ export class IterableInboxDataModel {
    *                      Defaults to an empty array if not provided.
    */
   updateVisibleRows(visibleRows: IterableInboxImpressionRowInfo[] = []) {
-    RNIterableAPI.updateVisibleRows(visibleRows as unknown as { [key: string]: string | number | boolean }[]);
+    RNIterableAPI.updateVisibleRows(
+      visibleRows as unknown as { [key: string]: string | number | boolean }[]
+    );
   }
 
   /**
