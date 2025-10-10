@@ -1,5 +1,4 @@
-import { RNIterableAPI } from '../../api';
-import { IterableLogger } from '../../core/classes/IterableLogger';
+import { IterableApi } from '../../core/classes/IterableApi';
 import {
   IterableHtmlInAppContent,
   IterableInAppDeleteSource,
@@ -94,11 +93,7 @@ export class IterableInboxDataModel {
    * @returns  A promise that resolves to the HTML content of the specified message.
    */
   getHtmlContentForMessageId(id: string): Promise<IterableHtmlInAppContent> {
-    IterableLogger?.log(
-      'IterableInboxDataModel.getHtmlContentForItem messageId: ' + id
-    );
-
-    return RNIterableAPI.getHtmlInAppContentForMessage(id).then(
+    return IterableApi.getHtmlInAppContentForMessage(id).then(
       (content: IterableHtmlInAppContentRaw) => {
         return IterableHtmlInAppContent.fromDict(content);
       }
@@ -111,9 +106,7 @@ export class IterableInboxDataModel {
    * @param id - The unique identifier of the message to be marked as read.
    */
   setMessageAsRead(id: string) {
-    IterableLogger?.log('IterableInboxDataModel.setMessageAsRead');
-
-    RNIterableAPI.setReadForMessage(id, true);
+    return IterableApi.setReadForMessage(id, true);
   }
 
   /**
@@ -123,9 +116,11 @@ export class IterableInboxDataModel {
    * @param deleteSource - The source from which the delete action is initiated.
    */
   deleteItemById(id: string, deleteSource: IterableInAppDeleteSource) {
-    IterableLogger?.log('IterableInboxDataModel.deleteItemById');
-
-    RNIterableAPI.removeMessage(id, IterableInAppLocation.inbox, deleteSource);
+    return IterableApi.removeMessage(
+      id,
+      IterableInAppLocation.inbox,
+      deleteSource
+    );
   }
 
   /**
@@ -135,7 +130,7 @@ export class IterableInboxDataModel {
    * If the fetch operation fails, the promise resolves to an empty array.
    */
   async refresh(): Promise<IterableInboxRowViewModel[]> {
-    return RNIterableAPI.getInboxMessages().then(
+    return IterableApi.getInboxMessages().then(
       (messages: IterableInAppMessage[]) => {
         return this.processMessages(messages);
       },
@@ -151,9 +146,7 @@ export class IterableInboxDataModel {
    * @param visibleRows - An array of `IterableInboxImpressionRowInfo` objects representing the rows that are currently visible.
    */
   startSession(visibleRows: IterableInboxImpressionRowInfo[] = []) {
-    RNIterableAPI.startSession(
-      visibleRows as unknown as { [key: string]: string | number | boolean }[]
-    );
+    return IterableApi.startSession(visibleRows);
   }
 
   /**
@@ -164,7 +157,7 @@ export class IterableInboxDataModel {
    */
   async endSession(visibleRows: IterableInboxImpressionRowInfo[] = []) {
     await this.updateVisibleRows(visibleRows);
-    RNIterableAPI.endSession();
+    return IterableApi.endSession();
   }
 
   /**
@@ -180,9 +173,7 @@ export class IterableInboxDataModel {
    *                      Defaults to an empty array if not provided.
    */
   updateVisibleRows(visibleRows: IterableInboxImpressionRowInfo[] = []) {
-    RNIterableAPI.updateVisibleRows(
-      visibleRows as unknown as { [key: string]: string | number | boolean }[]
-    );
+    return IterableApi.updateVisibleRows(visibleRows);
   }
 
   /**
