@@ -15,6 +15,7 @@ import {
   IterableInAppShowResponse,
   IterableLogLevel,
   IterableRetryBackoff,
+  IterableAuthFailureReason,
 } from '@iterable/react-native-sdk';
 
 import { Route } from '../constants/routes';
@@ -134,9 +135,15 @@ export const IterableAppProvider: FunctionComponent<
       };
 
       config.onJWTError = (authFailure) => {
-        console.error('Error fetching JWT:', authFailure);
+        console.log('onJWTError', authFailure);
+
+        const failureReason =
+          typeof authFailure.failureReason === 'string'
+            ? authFailure.failureReason
+            : IterableAuthFailureReason[authFailure.failureReason];
+
         Alert.alert(
-          `Error fetching JWT: ${authFailure.failureReason}`,
+          `Error fetching JWT: ${failureReason}`,
           `Token: ${authFailure.failedAuthToken}`
         );
       };
