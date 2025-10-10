@@ -136,23 +136,19 @@ export class IterableInAppMessage {
    * @throws Error if the viewToken or its item or inAppMessage is null/undefined.
    */
   static fromViewToken(viewToken: ViewToken) {
-    if (!viewToken?.item?.inAppMessage) {
-      throw new Error('Invalid ViewToken: missing item or inAppMessage');
-    }
-
     const inAppMessage = viewToken?.item?.inAppMessage as IterableInAppMessage;
 
     return new IterableInAppMessage(
-      inAppMessage.messageId,
-      inAppMessage.campaignId,
-      inAppMessage.trigger,
-      inAppMessage.createdAt,
-      inAppMessage.expiresAt,
-      inAppMessage.saveToInbox,
-      inAppMessage.inboxMetadata,
-      inAppMessage.customPayload,
-      inAppMessage.read,
-      inAppMessage.priorityLevel
+      inAppMessage?.messageId,
+      inAppMessage?.campaignId,
+      inAppMessage?.trigger,
+      inAppMessage?.createdAt,
+      inAppMessage?.expiresAt,
+      inAppMessage?.saveToInbox,
+      inAppMessage?.inboxMetadata,
+      inAppMessage?.customPayload,
+      inAppMessage?.read,
+      inAppMessage?.priorityLevel
     );
   }
 

@@ -3,6 +3,8 @@ import { Linking, NativeEventEmitter, Platform } from 'react-native';
 import { buildInfo } from '../../itblBuildInfo';
 
 import { RNIterableAPI } from '../../api';
+// TODO: Organize these so that there are no circular dependencies
+// See https://github.com/expo/expo/issues/35100
 import { IterableInAppMessage } from '../../inApp/classes/IterableInAppMessage';
 import { IterableInAppCloseSource } from '../../inApp/enums/IterableInAppCloseSource';
 import { IterableInAppDeleteSource } from '../../inApp/enums/IterableInAppDeleteSource';
@@ -11,7 +13,7 @@ import { IterableAuthResponseResult } from '../enums/IterableAuthResponseResult'
 import { IterableEventName } from '../enums/IterableEventName';
 
 // Add this type-only import to avoid circular dependency
-import { IterableInAppManager } from '../../inApp/classes/IterableInAppManager';
+import type { IterableInAppManager } from '../../inApp/classes/IterableInAppManager';
 
 import { IterableAction } from './IterableAction';
 import { IterableActionContext } from './IterableActionContext';
@@ -21,13 +23,10 @@ import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
 import type { IterableAuthFailure } from '../types/IterableAuthFailure';
-import { IterableApi } from './IterableApi';
 import { IterableAuthManager } from './IterableAuthManager';
+import { IterableApi } from './IterableApi';
 
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
-
-const defaultConfig = new IterableConfig();
-const defaultLogger = new IterableLogger(defaultConfig);
 
 /* eslint-disable tsdoc/syntax */
 /**
@@ -52,12 +51,12 @@ export class Iterable {
    * Logger for the Iterable SDK
    * Log level is set with {@link IterableLogLevel}
    */
-  static logger: IterableLogger = defaultLogger;
+  static logger: IterableLogger = new IterableLogger(new IterableConfig());
 
   /**
    * Current configuration of the Iterable SDK
    */
-  static savedConfig: IterableConfig = defaultConfig;
+  static savedConfig: IterableConfig = new IterableConfig();
 
   /**
    * In-app message manager for the current user.
@@ -76,9 +75,21 @@ export class Iterable {
    * Iterable.inAppManager.showMessage(message, true);
    * ```
    */
-  static inAppManager: IterableInAppManager = new IterableInAppManager(
-    defaultLogger
-  );
+  static get inAppManager() {
+    // Lazy initialization to avoid circular dependency
+    if (!this._inAppManager) {
+      // Import here to avoid circular dependency at module level
+
+      const {
+        IterableInAppManager,
+        // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports
+      } = require('../../inApp/classes/IterableInAppManager');
+      this._inAppManager = new IterableInAppManager();
+    }
+    return this._inAppManager;
+  }
+
+  private static _inAppManager: IterableInAppManager | undefined;
 
   /**
    * Authentication manager for the current user.
@@ -91,9 +102,7 @@ export class Iterable {
    * Iterable.authManager.pauseAuthRetries(true);
    * ```
    */
-  static authManager: IterableAuthManager = new IterableAuthManager(
-    defaultLogger
-  );
+  static authManager: IterableAuthManager = new IterableAuthManager();
 
   /**
    * Initializes the Iterable React Native SDK in your app's Javascript or Typescript code.
@@ -130,11 +139,14 @@ export class Iterable {
     apiKey: string,
     config: IterableConfig = new IterableConfig()
   ): Promise<boolean> {
-    this.setupIterable(config);
+    Iterable.savedConfig = config;
+    Iterable.logger = new IterableLogger(Iterable.savedConfig);
+
+    this.setupEventHandlers();
 
     const version = this.getVersionFromPackageJson();
 
-    return IterableApi.initializeWithApiKey(apiKey, config, version);
+    return IterableApi.initializeWithApiKey(apiKey, { config, version });
   }
 
   /**
@@ -148,34 +160,18 @@ export class Iterable {
     config: IterableConfig = new IterableConfig(),
     apiEndPoint: string
   ): Promise<boolean> {
-    this.setupIterable(config);
+    Iterable.savedConfig = config;
+    Iterable.logger = new IterableLogger(Iterable.savedConfig);
+
+    this.setupEventHandlers();
 
     const version = this.getVersionFromPackageJson();
 
-    return IterableApi.initialize2WithApiKey(
-      apiKey,
+    return IterableApi.initialize2WithApiKey(apiKey, {
       config,
       version,
-      apiEndPoint
-    );
-  }
-
-  /**
-   * @internal
-   * Does basic setup of the Iterable SDK.
-   * @param config - The configuration object for the Iterable SDK
-   */
-  private static setupIterable(config: IterableConfig = new IterableConfig()) {
-    Iterable.savedConfig = config;
-
-    const logger = new IterableLogger(Iterable.savedConfig);
-
-    Iterable.logger = logger;
-    Iterable.inAppManager = new IterableInAppManager(logger);
-    Iterable.authManager = new IterableAuthManager(logger);
-    IterableApi.setLogger(logger);
-
-    this.setupEventHandlers();
+      apiEndPoint,
+    });
   }
 
   /**
@@ -228,7 +224,7 @@ export class Iterable {
    * ```
    */
   static setEmail(email: string | null, authToken?: string | null) {
-    return IterableApi.setEmail(email, authToken);
+    IterableApi.setEmail(email, authToken);
   }
 
   /**
@@ -289,7 +285,7 @@ export class Iterable {
    * taken
    */
   static setUserId(userId?: string | null, authToken?: string | null) {
-    return IterableApi.setUserId(userId, authToken);
+    IterableApi.setUserId(userId, authToken);
   }
 
   /**
@@ -315,7 +311,7 @@ export class Iterable {
    * ```
    */
   static disableDeviceForCurrentUser() {
-    return IterableApi.disableDeviceForCurrentUser();
+    IterableApi.disableDeviceForCurrentUser();
   }
 
   /**
@@ -356,7 +352,25 @@ export class Iterable {
    * ```
    */
   static getAttributionInfo(): Promise<IterableAttributionInfo | undefined> {
-    return IterableApi.getAttributionInfo();
+    return IterableApi.getAttributionInfo().then(
+      (
+        dict: {
+          campaignId: number;
+          templateId: number;
+          messageId: string;
+        } | null
+      ) => {
+        if (dict) {
+          return new IterableAttributionInfo(
+            dict.campaignId as number,
+            dict.templateId as number,
+            dict.messageId as string
+          );
+        } else {
+          return undefined;
+        }
+      }
+    );
   }
 
   /**
@@ -383,10 +397,8 @@ export class Iterable {
    * Iterable.setAttributionInfo(attributionInfo);
    * ```
    */
-  static setAttributionInfo(attributionInfo: IterableAttributionInfo) {
-    if (attributionInfo) {
-      return IterableApi.setAttributionInfo(attributionInfo);
-    }
+  static setAttributionInfo(attributionInfo?: IterableAttributionInfo) {
+    IterableApi.setAttributionInfo(attributionInfo);
   }
 
   /**
@@ -425,13 +437,13 @@ export class Iterable {
     appAlreadyRunning: boolean,
     dataFields?: unknown
   ) {
-    return IterableApi.trackPushOpenWithCampaignId(
+    IterableApi.trackPushOpenWithCampaignId({
       campaignId,
       templateId,
       messageId,
       appAlreadyRunning,
-      dataFields
-    );
+      dataFields,
+    });
   }
 
   /**
@@ -461,7 +473,7 @@ export class Iterable {
    * ```
    */
   static updateCart(items: IterableCommerceItem[]) {
-    return IterableApi.updateCart(items);
+    IterableApi.updateCart(items);
   }
 
   /**
@@ -475,7 +487,9 @@ export class Iterable {
    * ```
    */
   static wakeApp() {
-    return IterableApi.wakeApp();
+    if (Platform.OS === 'android') {
+      IterableApi.wakeApp();
+    }
   }
 
   /**
@@ -507,7 +521,9 @@ export class Iterable {
     items: IterableCommerceItem[],
     dataFields?: unknown
   ) {
-    return IterableApi.trackPurchase(total, items, dataFields);
+    Iterable?.logger?.log('trackPurchase');
+
+    IterableApi.trackPurchase({ total, items, dataFields });
   }
 
   /**
@@ -533,7 +549,13 @@ export class Iterable {
     message: IterableInAppMessage,
     location: IterableInAppLocation
   ) {
-    return IterableApi.trackInAppOpen(message, location);
+    if (!message?.messageId) {
+      Iterable?.logger?.log(
+        `Skipping trackInAppOpen because message ID is required, but received ${message}.`
+      );
+      return;
+    }
+    IterableApi.trackInAppOpen({ message, location });
   }
 
   /**
@@ -562,7 +584,7 @@ export class Iterable {
     location: IterableInAppLocation,
     clickedUrl: string
   ) {
-    return IterableApi.trackInAppClick(message, location, clickedUrl);
+    IterableApi.trackInAppClick({ message, location, clickedUrl });
   }
 
   /**
@@ -593,7 +615,7 @@ export class Iterable {
     source: IterableInAppCloseSource,
     clickedUrl?: string
   ) {
-    return IterableApi.trackInAppClose(message, location, source, clickedUrl);
+    IterableApi.trackInAppClose({ message, location, source, clickedUrl });
   }
 
   /**
@@ -637,7 +659,7 @@ export class Iterable {
     location: IterableInAppLocation,
     source: IterableInAppDeleteSource
   ) {
-    return IterableApi.inAppConsume(message, location, source);
+    IterableApi.inAppConsume(message, location, source);
   }
 
   /**
@@ -661,7 +683,7 @@ export class Iterable {
    * ```
    */
   static trackEvent(name: string, dataFields?: unknown) {
-    return IterableApi.trackEvent(name, dataFields);
+    IterableApi.trackEvent({ name, dataFields });
   }
 
   /**
@@ -707,7 +729,7 @@ export class Iterable {
     dataFields: unknown | undefined,
     mergeNestedObjects: boolean
   ) {
-    return IterableApi.updateUser(dataFields, mergeNestedObjects);
+    IterableApi.updateUser(dataFields, mergeNestedObjects);
   }
 
   /**
@@ -728,7 +750,7 @@ export class Iterable {
    * ```
    */
   static updateEmail(email: string, authToken?: string) {
-    return IterableApi.updateEmail(email, authToken);
+    IterableApi.updateEmail(email, authToken);
   }
 
   /**
@@ -855,14 +877,14 @@ export class Iterable {
     campaignId: number,
     templateId: number
   ) {
-    return IterableApi.updateSubscriptions(
+    IterableApi.updateSubscriptions({
       emailListIds,
       unsubscribedChannelIds,
       unsubscribedMessageTypeIds,
       subscribedMessageTypeIds,
       campaignId,
-      templateId
-    );
+      templateId,
+    });
   }
 
   /**
@@ -945,7 +967,7 @@ export class Iterable {
             // If type AuthReponse, authToken will be parsed looking for `authToken` within promised object. Two additional listeners will be registered for success and failure callbacks sent by native bridge layer.
             // Else it will be looked for as a String.
             if (typeof promiseResult === typeof new IterableAuthResponse()) {
-              IterableApi.passAlongAuthToken(
+              Iterable.authManager.passAlongAuthToken(
                 (promiseResult as IterableAuthResponse).authToken
               );
 
@@ -972,9 +994,9 @@ export class Iterable {
               }, 1000);
               // Use unref() to prevent the timeout from keeping the process alive
               timeoutId.unref();
-            } else if (typeof promiseResult === typeof '') {
+            } else if (typeof promiseResult === 'string') {
               //If promise only returns string
-              IterableApi.passAlongAuthToken(promiseResult as string);
+              Iterable.authManager.passAlongAuthToken(promiseResult as string);
             } else {
               Iterable?.logger?.log(
                 'Unexpected promise returned. Auth token expects promise of String or AuthResponse type.'

@@ -1,9 +1,5 @@
-import { IterableLogger } from './IterableLogger';
-import { IterableApi } from './IterableApi';
-import { IterableConfig } from './IterableConfig';
-
-const defaultConfig = new IterableConfig();
-const defaultLogger = new IterableLogger(defaultConfig);
+import RNIterableAPI from '../../api';
+import { IterableAuthResponse } from './IterableAuthResponse';
 
 /**
  * Manages the authentication for the Iterable SDK.
@@ -17,15 +13,6 @@ const defaultLogger = new IterableLogger(defaultConfig);
  */
 export class IterableAuthManager {
   /**
-   * The logger for the Iterable SDK.
-   */
-  static logger: IterableLogger = defaultLogger;
-
-  constructor(logger: IterableLogger) {
-    IterableAuthManager.logger = logger;
-  }
-
-  /**
    * Pause the authentication retry mechanism.
    *
    * @param pauseRetry - Whether to pause the authentication retry mechanism
@@ -37,7 +24,7 @@ export class IterableAuthManager {
    * ```
    */
   pauseAuthRetries(pauseRetry: boolean) {
-    return IterableApi.pauseAuthRetries(pauseRetry);
+    return RNIterableAPI.pauseAuthRetries(pauseRetry);
   }
 
   /**
@@ -45,7 +32,9 @@ export class IterableAuthManager {
    *
    * @param authToken - The auth token to pass along
    */
-  passAlongAuthToken(authToken: string | null | undefined) {
-    return IterableApi.passAlongAuthToken(authToken);
+  passAlongAuthToken(
+    authToken: string | null | undefined
+  ): Promise<IterableAuthResponse | string | undefined> {
+    return RNIterableAPI.passAlongAuthToken(authToken);
   }
 }
