@@ -948,22 +948,6 @@ export class Iterable {
   }
 
   /**
-   * Pause the authentication retry mechanism.
-   *
-   * @param pauseRetry - Whether to pause the authentication retry mechanism
-   *
-   * @example
-   * ```typescript
-   * Iterable.pauseAuthRetries(true);
-   * ```
-   */
-  static pauseAuthRetries(pauseRetry: boolean) {
-    Iterable?.logger?.log('pauseAuthRetries');
-
-    RNIterableAPI.pauseAuthRetries(pauseRetry);
-  }
-
-  /**
    * Sets up event handlers for various Iterable events.
    *
    * This method performs the following actions:
