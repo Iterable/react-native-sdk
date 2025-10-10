@@ -11,6 +11,7 @@ This SDK helps you integrate your React Native-based iOS and Android apps with
 Iterable. It supports JavaScript and TypeScript.
 
 
+
 <!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->
 
 <!-- code_chunk_output -->
@@ -20,7 +21,8 @@ Iterable. It supports JavaScript and TypeScript.
   - [Architecture Support](#architecture-support)
   - [Installation](#installation)
   - [Features](#features)
-  - [Sample projects](#sample-projects)
+  - [📚 API Documentation](#-api-documentation)
+  - [Example project](#example-project)
   - [Version mapping](#version-mapping)
   - [Release notes, support and troubleshooting](#release-notes-support-and-troubleshooting)
   - [License](#license)
@@ -79,7 +81,11 @@ To learn more about the SDK, read:
 - [In-App Messages](https://support.iterable.com/hc/articles/360045714172)
 - [Migrating to Iterable's React Native SDK](https://support.iterable.com/hc/articles/360046134931)
 
-## Sample projects
+## 📚 API Documentation
+
+View the complete API documentation at [https://iterable-react-native-sdk.netlify.app](https://iterable-react-native-sdk.netlify.app)
+
+## Example project
 
 For sample code, take a look at the following project:
 
