@@ -1,3 +1,5 @@
+/* eslint-disable tsdoc/syntax */
+
 /**
  * The type of backoff to use when retrying a request.
  */
