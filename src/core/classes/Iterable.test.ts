@@ -903,4 +903,261 @@ describe('Iterable', () => {
       });
     });
   });
+
+  describe('authManager', () => {
+    describe('pauseAuthRetries', () => {
+      it('should call RNIterableAPI.pauseAuthRetries with true when pauseRetry is true', () => {
+        // GIVEN pauseRetry is true
+        const pauseRetry = true;
+
+        // WHEN pauseAuthRetries is called
+        Iterable.authManager.pauseAuthRetries(pauseRetry);
+
+        // THEN RNIterableAPI.pauseAuthRetries is called with true
+        expect(MockRNIterableAPI.pauseAuthRetries).toBeCalledWith(true);
+      });
+
+      it('should call RNIterableAPI.pauseAuthRetries with false when pauseRetry is false', () => {
+        // GIVEN pauseRetry is false
+        const pauseRetry = false;
+
+        // WHEN pauseAuthRetries is called
+        Iterable.authManager.pauseAuthRetries(pauseRetry);
+
+        // THEN RNIterableAPI.pauseAuthRetries is called with false
+        expect(MockRNIterableAPI.pauseAuthRetries).toBeCalledWith(false);
+      });
+
+      it('should return the result from RNIterableAPI.pauseAuthRetries', () => {
+        // GIVEN RNIterableAPI.pauseAuthRetries returns a value
+        const expectedResult = 'pause-result';
+        MockRNIterableAPI.pauseAuthRetries = jest
+          .fn()
+          .mockReturnValue(expectedResult);
+
+        // WHEN pauseAuthRetries is called
+        const result = Iterable.authManager.pauseAuthRetries(true);
+
+        // THEN the result is returned
+        expect(result).toBe(expectedResult);
+      });
+    });
+
+    describe('passAlongAuthToken', () => {
+      it('should call RNIterableAPI.passAlongAuthToken with a valid string token', async () => {
+        // GIVEN a valid auth token
+        const authToken = 'valid-jwt-token';
+        const expectedResponse = new IterableAuthResponse();
+        expectedResponse.authToken = 'new-token';
+        MockRNIterableAPI.passAlongAuthToken = jest
+          .fn()
+          .mockResolvedValue(expectedResponse);
+
+        // WHEN passAlongAuthToken is called
+        const result = await Iterable.authManager.passAlongAuthToken(authToken);
+
+        // THEN RNIterableAPI.passAlongAuthToken is called with the token
+        expect(MockRNIterableAPI.passAlongAuthToken).toBeCalledWith(authToken);
+        expect(result).toBe(expectedResponse);
+      });
+
+      it('should call RNIterableAPI.passAlongAuthToken with null token', async () => {
+        // GIVEN a null auth token
+        const authToken = null;
+        const expectedResponse = 'success';
+        MockRNIterableAPI.passAlongAuthToken = jest
+          .fn()
+          .mockResolvedValue(expectedResponse);
+
+        // WHEN passAlongAuthToken is called
+        const result = await Iterable.authManager.passAlongAuthToken(authToken);
+
+        // THEN RNIterableAPI.passAlongAuthToken is called with null
+        expect(MockRNIterableAPI.passAlongAuthToken).toBeCalledWith(null);
+        expect(result).toBe(expectedResponse);
+      });
+
+      it('should call RNIterableAPI.passAlongAuthToken with undefined token', async () => {
+        // GIVEN an undefined auth token
+        const authToken = undefined;
+        const expectedResponse = undefined;
+        MockRNIterableAPI.passAlongAuthToken = jest
+          .fn()
+          .mockResolvedValue(expectedResponse);
+
+        // WHEN passAlongAuthToken is called
+        const result = await Iterable.authManager.passAlongAuthToken(authToken);
+
+        // THEN RNIterableAPI.passAlongAuthToken is called with undefined
+        expect(MockRNIterableAPI.passAlongAuthToken).toBeCalledWith(undefined);
+        expect(result).toBe(expectedResponse);
+      });
+
+      it('should call RNIterableAPI.passAlongAuthToken with empty string token', async () => {
+        // GIVEN an empty string auth token
+        const authToken = '';
+        const expectedResponse = new IterableAuthResponse();
+        MockRNIterableAPI.passAlongAuthToken = jest
+          .fn()
+          .mockResolvedValue(expectedResponse);
+
+        // WHEN passAlongAuthToken is called
+        const result = await Iterable.authManager.passAlongAuthToken(authToken);
+
+        // THEN RNIterableAPI.passAlongAuthToken is called with empty string
+        expect(MockRNIterableAPI.passAlongAuthToken).toBeCalledWith('');
+        expect(result).toBe(expectedResponse);
+      });
+
+      it('should return IterableAuthResponse when API returns IterableAuthResponse', async () => {
+        // GIVEN API returns IterableAuthResponse
+        const authToken = 'test-token';
+        const expectedResponse = new IterableAuthResponse();
+        expectedResponse.authToken = 'new-token';
+        expectedResponse.successCallback = jest.fn();
+        expectedResponse.failureCallback = jest.fn();
+        MockRNIterableAPI.passAlongAuthToken = jest
+          .fn()
+          .mockResolvedValue(expectedResponse);
+
+        // WHEN passAlongAuthToken is called
+        const result = await Iterable.authManager.passAlongAuthToken(authToken);
+
+        // THEN the result is the expected IterableAuthResponse
+        expect(result).toBe(expectedResponse);
+        expect(result).toBeInstanceOf(IterableAuthResponse);
+      });
+
+      it('should return string when API returns string', async () => {
+        // GIVEN API returns string
+        const authToken = 'test-token';
+        const expectedResponse = 'success-string';
+        MockRNIterableAPI.passAlongAuthToken = jest
+          .fn()
+          .mockResolvedValue(expectedResponse);
+
+        // WHEN passAlongAuthToken is called
+        const result = await Iterable.authManager.passAlongAuthToken(authToken);
+
+        // THEN the result is the expected string
+        expect(result).toBe(expectedResponse);
+        expect(typeof result).toBe('string');
+      });
+
+      it('should return undefined when API returns undefined', async () => {
+        // GIVEN API returns undefined
+        const authToken = 'test-token';
+        const expectedResponse = undefined;
+        MockRNIterableAPI.passAlongAuthToken = jest
+          .fn()
+          .mockResolvedValue(expectedResponse);
+
+        // WHEN passAlongAuthToken is called
+        const result = await Iterable.authManager.passAlongAuthToken(authToken);
+
+        // THEN the result is undefined
+        expect(result).toBeUndefined();
+      });
+
+      it('should handle API rejection and propagate the error', async () => {
+        // GIVEN API rejects with an error
+        const authToken = 'test-token';
+        const expectedError = new Error('API Error');
+        MockRNIterableAPI.passAlongAuthToken = jest
+          .fn()
+          .mockRejectedValue(expectedError);
+
+        // WHEN passAlongAuthToken is called
+        // THEN the error is propagated
+        await expect(
+          Iterable.authManager.passAlongAuthToken(authToken)
+        ).rejects.toThrow('API Error');
+      });
+
+      it('should handle API rejection with network error', async () => {
+        // GIVEN API rejects with a network error
+        const authToken = 'test-token';
+        const networkError = new Error('Network request failed');
+        MockRNIterableAPI.passAlongAuthToken = jest
+          .fn()
+          .mockRejectedValue(networkError);
+
+        // WHEN passAlongAuthToken is called
+        // THEN the network error is propagated
+        await expect(
+          Iterable.authManager.passAlongAuthToken(authToken)
+        ).rejects.toThrow('Network request failed');
+      });
+
+      it('should handle API rejection with timeout error', async () => {
+        // GIVEN API rejects with a timeout error
+        const authToken = 'test-token';
+        const timeoutError = new Error('Request timeout');
+        MockRNIterableAPI.passAlongAuthToken = jest
+          .fn()
+          .mockRejectedValue(timeoutError);
+
+        // WHEN passAlongAuthToken is called
+        // THEN the timeout error is propagated
+        await expect(
+          Iterable.authManager.passAlongAuthToken(authToken)
+        ).rejects.toThrow('Request timeout');
+      });
+    });
+
+    describe('integration', () => {
+      it('should work with both methods in sequence', async () => {
+        // GIVEN a sequence of operations
+        const authToken = 'test-token';
+        const expectedResponse = new IterableAuthResponse();
+        MockRNIterableAPI.pauseAuthRetries = jest
+          .fn()
+          .mockReturnValue('paused');
+        MockRNIterableAPI.passAlongAuthToken = jest
+          .fn()
+          .mockResolvedValue(expectedResponse);
+
+        // WHEN calling both methods in sequence
+        const pauseResult = Iterable.authManager.pauseAuthRetries(true);
+        const tokenResult =
+          await Iterable.authManager.passAlongAuthToken(authToken);
+
+        // THEN both operations should work correctly
+        expect(pauseResult).toBe('paused');
+        expect(tokenResult).toBe(expectedResponse);
+        expect(MockRNIterableAPI.pauseAuthRetries).toBeCalledWith(true);
+        expect(MockRNIterableAPI.passAlongAuthToken).toBeCalledWith(authToken);
+      });
+
+      it('should handle rapid successive calls', async () => {
+        // GIVEN rapid successive calls
+        const authToken1 = 'token1';
+        const authToken2 = 'token2';
+        const response1 = new IterableAuthResponse();
+        const response2 = 'success';
+        MockRNIterableAPI.passAlongAuthToken = jest
+          .fn()
+          .mockResolvedValueOnce(response1)
+          .mockResolvedValueOnce(response2);
+
+        // WHEN making rapid successive calls
+        const promise1 = Iterable.authManager.passAlongAuthToken(authToken1);
+        const promise2 = Iterable.authManager.passAlongAuthToken(authToken2);
+        const [result1, result2] = await Promise.all([promise1, promise2]);
+
+        // THEN both calls should work correctly
+        expect(result1).toBe(response1);
+        expect(result2).toBe(response2);
+        expect(MockRNIterableAPI.passAlongAuthToken).toHaveBeenCalledTimes(2);
+        expect(MockRNIterableAPI.passAlongAuthToken).toHaveBeenNthCalledWith(
+          1,
+          authToken1
+        );
+        expect(MockRNIterableAPI.passAlongAuthToken).toHaveBeenNthCalledWith(
+          2,
+          authToken2
+        );
+      });
+    });
+  });
 });

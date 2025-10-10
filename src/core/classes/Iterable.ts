@@ -930,7 +930,7 @@ export class Iterable {
             // If type AuthReponse, authToken will be parsed looking for `authToken` within promised object. Two additional listeners will be registered for success and failure callbacks sent by native bridge layer.
             // Else it will be looked for as a String.
             if (typeof promiseResult === typeof new IterableAuthResponse()) {
-              IterableApi.passAlongAuthToken(
+              Iterable.authManager.passAlongAuthToken(
                 (promiseResult as IterableAuthResponse).authToken
               );
 
@@ -955,9 +955,9 @@ export class Iterable {
               }, 1000);
               // Use unref() to prevent the timeout from keeping the process alive
               timeoutId.unref();
-            } else if (typeof promiseResult === typeof '') {
+            } else if (typeof promiseResult === 'string') {
               //If promise only returns string
-              IterableApi.passAlongAuthToken(promiseResult as string);
+              Iterable.authManager.passAlongAuthToken(promiseResult as string);
             } else {
               IterableLogger.log(
                 'Unexpected promise returned. Auth token expects promise of String or AuthResponse type.'

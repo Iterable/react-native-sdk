@@ -5,9 +5,7 @@ import { IterableApi } from './IterableApi';
  *
  * @example
  * ```typescript
- * const config = new IterableConfig();
- * const logger = new IterableLogger(config);
- * const authManager = new IterableAuthManager(logger);
+ * const authManager = new IterableAuthManager();
  * ```
  */
 export class IterableAuthManager {
