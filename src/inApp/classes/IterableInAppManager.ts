@@ -1,13 +1,8 @@
 import { IterableApi } from '../../core/classes/IterableApi';
-import { IterableConfig } from '../../core/classes/IterableConfig';
-import { IterableLogger } from '../../core/classes/IterableLogger';
 import type { IterableInAppDeleteSource } from '../enums/IterableInAppDeleteSource';
 import type { IterableInAppLocation } from '../enums/IterableInAppLocation';
 import type { IterableHtmlInAppContent } from './IterableHtmlInAppContent';
 import type { IterableInAppMessage } from './IterableInAppMessage';
-
-const defaultConfig = new IterableConfig();
-const defaultLogger = new IterableLogger(defaultConfig);
 
 /**
  * Manages in-app messages for the current user.
@@ -19,21 +14,19 @@ const defaultLogger = new IterableLogger(defaultConfig);
  *
  * @example
  * ```typescript
- * const config = new IterableConfig();
- * const logger = new IterableLogger(config);
- * const inAppManager = new IterableInAppManager(logger);
+ * const inAppManager = new IterableInAppManager();
+ *
+ * inAppManager.getMessages().then(messages => {
+ *   console.log('Messages:', messages);
+ * });
+ *
+ * // You can also access an instance on `Iterable.inAppManager.inAppManager`
+ * Iterable.inAppManager.getMessages().then(messages => {
+ *   console.log('Messages:', messages);
+ * });
  * ```
  */
 export class IterableInAppManager {
-  /**
-   * The logger for the Iterable SDK.
-   */
-  static logger: IterableLogger = defaultLogger;
-
-  constructor(logger: IterableLogger) {
-    IterableInAppManager.logger = logger;
-  }
-
   /**
    * Retrieve the current user's list of in-app messages stored in the local queue.
    *

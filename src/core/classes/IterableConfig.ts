@@ -230,7 +230,7 @@ export class IterableConfig {
    *
    * By default, you will be able to see info level logs printed in IDE when running the app.
    */
-  logLevel: IterableLogLevel = IterableLogLevel.info;
+  logLevel?: IterableLogLevel = IterableLogLevel.info;
 
   /**
    * Configuration for JWT refresh retry behavior.
@@ -244,7 +244,7 @@ export class IterableConfig {
    * This is for calls within the React Native layer, and is separate from `logLevel`
    * which affects the Android and iOS native SDKs
    */
-  logReactNativeSdkCalls = true;
+  logReactNativeSdkCalls?: boolean = true;
 
   /**
    * The number of seconds before the current JWT's expiration that the SDK should call the

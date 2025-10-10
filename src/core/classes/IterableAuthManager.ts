@@ -1,9 +1,4 @@
-import { IterableLogger } from './IterableLogger';
 import { IterableApi } from './IterableApi';
-import { IterableConfig } from './IterableConfig';
-
-const defaultConfig = new IterableConfig();
-const defaultLogger = new IterableLogger(defaultConfig);
 
 /**
  * Manages the authentication for the Iterable SDK.
@@ -16,15 +11,6 @@ const defaultLogger = new IterableLogger(defaultConfig);
  * ```
  */
 export class IterableAuthManager {
-  /**
-   * The logger for the Iterable SDK.
-   */
-  static logger: IterableLogger = defaultLogger;
-
-  constructor(logger: IterableLogger) {
-    IterableAuthManager.logger = logger;
-  }
-
   /**
    * Pause the authentication retry mechanism.
    *

@@ -3,28 +3,25 @@ import { Linking, NativeEventEmitter, Platform } from 'react-native';
 import { buildInfo } from '../../itblBuildInfo';
 
 import { RNIterableAPI } from '../../api';
+import { IterableInAppManager } from '../../inApp/classes/IterableInAppManager';
 import { IterableInAppMessage } from '../../inApp/classes/IterableInAppMessage';
 import { IterableInAppCloseSource } from '../../inApp/enums/IterableInAppCloseSource';
 import { IterableInAppDeleteSource } from '../../inApp/enums/IterableInAppDeleteSource';
 import { IterableInAppLocation } from '../../inApp/enums/IterableInAppLocation';
 import { IterableAuthResponseResult } from '../enums/IterableAuthResponseResult';
 import { IterableEventName } from '../enums/IterableEventName';
-import { IterableInAppManager } from '../../inApp/classes/IterableInAppManager';
+import type { IterableAuthFailure } from '../types/IterableAuthFailure';
 import { IterableAction } from './IterableAction';
 import { IterableActionContext } from './IterableActionContext';
+import { IterableApi } from './IterableApi';
 import { IterableAttributionInfo } from './IterableAttributionInfo';
+import { IterableAuthManager } from './IterableAuthManager';
 import { IterableAuthResponse } from './IterableAuthResponse';
 import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
-import type { IterableAuthFailure } from '../types/IterableAuthFailure';
-import { IterableApi } from './IterableApi';
-import { IterableAuthManager } from './IterableAuthManager';
 
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
-
-const defaultConfig = new IterableConfig();
-const defaultLogger = new IterableLogger(defaultConfig);
 
 /* eslint-disable tsdoc/syntax */
 /**
@@ -46,15 +43,9 @@ const defaultLogger = new IterableLogger(defaultConfig);
 /* eslint-enable tsdoc/syntax */
 export class Iterable {
   /**
-   * Logger for the Iterable SDK
-   * Log level is set with {@link IterableLogLevel}
-   */
-  static logger: IterableLogger = defaultLogger;
-
-  /**
    * Current configuration of the Iterable SDK
    */
-  static savedConfig: IterableConfig = defaultConfig;
+  static savedConfig: IterableConfig = new IterableConfig();
 
   /**
    * In-app message manager for the current user.
@@ -73,9 +64,7 @@ export class Iterable {
    * Iterable.inAppManager.showMessage(message, true);
    * ```
    */
-  static inAppManager: IterableInAppManager = new IterableInAppManager(
-    defaultLogger
-  );
+  static inAppManager: IterableInAppManager = new IterableInAppManager();
 
   /**
    * Authentication manager for the current user.
@@ -88,9 +77,7 @@ export class Iterable {
    * Iterable.authManager.pauseAuthRetries(true);
    * ```
    */
-  static authManager: IterableAuthManager = new IterableAuthManager(
-    defaultLogger
-  );
+  static authManager: IterableAuthManager = new IterableAuthManager();
 
   /**
    * Initializes the Iterable React Native SDK in your app's Javascript or Typescript code.
@@ -163,14 +150,15 @@ export class Iterable {
    * @param config - The configuration object for the Iterable SDK
    */
   private static setupIterable(config: IterableConfig = new IterableConfig()) {
-    Iterable.savedConfig = config;
+    if (config) {
+      Iterable.savedConfig = config;
 
-    const logger = new IterableLogger(Iterable.savedConfig);
+      IterableLogger.setLoggingEnabled(config.logReactNativeSdkCalls ?? true);
+      IterableLogger.setLogLevel(config.logLevel);
+    }
 
-    Iterable.logger = logger;
-    Iterable.inAppManager = new IterableInAppManager(logger);
-    Iterable.authManager = new IterableAuthManager(logger);
-    IterableApi.setLogger(logger);
+    Iterable.inAppManager = new IterableInAppManager();
+    Iterable.authManager = new IterableAuthManager();
 
     this.setupEventHandlers();
   }
@@ -962,9 +950,7 @@ export class Iterable {
                     (promiseResult as IterableAuthResponse).failureCallback?.();
                   }
                 } else {
-                  Iterable?.logger?.log(
-                    'No callback received from native layer'
-                  );
+                  IterableLogger.log('No callback received from native layer');
                 }
               }, 1000);
               // Use unref() to prevent the timeout from keeping the process alive
@@ -973,12 +959,12 @@ export class Iterable {
               //If promise only returns string
               IterableApi.passAlongAuthToken(promiseResult as string);
             } else {
-              Iterable?.logger?.log(
+              IterableLogger.log(
                 'Unexpected promise returned. Auth token expects promise of String or AuthResponse type.'
               );
             }
           })
-          .catch((e) => Iterable?.logger?.log(e));
+          .catch((e) => IterableLogger.log(e));
       });
 
       RNEventEmitter.addListener(
@@ -1012,7 +998,7 @@ export class Iterable {
             }
           })
           .catch((reason) => {
-            Iterable?.logger?.log('could not open url: ' + reason);
+            IterableLogger.log('could not open url: ' + reason);
           });
       }
     }
