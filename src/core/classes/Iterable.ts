@@ -9,10 +9,7 @@ import { IterableInAppDeleteSource } from '../../inApp/enums/IterableInAppDelete
 import { IterableInAppLocation } from '../../inApp/enums/IterableInAppLocation';
 import { IterableAuthResponseResult } from '../enums/IterableAuthResponseResult';
 import { IterableEventName } from '../enums/IterableEventName';
-
-// Add this type-only import to avoid circular dependency
 import { IterableInAppManager } from '../../inApp/classes/IterableInAppManager';
-
 import { IterableAction } from './IterableAction';
 import { IterableActionContext } from './IterableActionContext';
 import { IterableAttributionInfo } from './IterableAttributionInfo';
