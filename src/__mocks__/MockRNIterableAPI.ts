@@ -70,11 +70,13 @@ export class MockRNIterableAPI {
 
   static initialize2WithApiKey = jest.fn().mockResolvedValue(true);
 
-  static wakeApp = jest.fn()
+  static wakeApp = jest.fn();
 
   static setInAppShowResponse = jest.fn();
 
   static passAlongAuthToken = jest.fn();
+
+  static pauseAuthRetries = jest.fn();
 
   static async getInAppMessages(): Promise<IterableInAppMessage[] | undefined> {
     return await new Promise((resolve) => {
