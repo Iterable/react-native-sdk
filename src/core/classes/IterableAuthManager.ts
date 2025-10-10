@@ -1,14 +1,12 @@
-import RNIterableAPI from '../../api';
 import { IterableAuthResponse } from './IterableAuthResponse';
+import { IterableApi } from './IterableApi';
 
 /**
  * Manages the authentication for the Iterable SDK.
  *
  * @example
  * ```typescript
- * const config = new IterableConfig();
- * const logger = new IterableLogger(config);
- * const authManager = new IterableAuthManager(logger);
+ * const authManager = new IterableAuthManager();
  * ```
  */
 export class IterableAuthManager {
@@ -24,7 +22,7 @@ export class IterableAuthManager {
    * ```
    */
   pauseAuthRetries(pauseRetry: boolean) {
-    return RNIterableAPI.pauseAuthRetries(pauseRetry);
+    return IterableApi.pauseAuthRetries(pauseRetry);
   }
 
   /**
@@ -35,6 +33,6 @@ export class IterableAuthManager {
   passAlongAuthToken(
     authToken: string | null | undefined
   ): Promise<IterableAuthResponse | string | undefined> {
-    return RNIterableAPI.passAlongAuthToken(authToken);
+    return IterableApi.passAlongAuthToken(authToken);
   }
 }
