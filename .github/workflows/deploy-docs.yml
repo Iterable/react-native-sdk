@@ -1,0 +1,38 @@
+name: Deploy Documentation to Netlify
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  deploy-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch full history for proper git info
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Build documentation
+        run: yarn docs
+
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v3.0
+        with:
+          publish-dir: "./docs"
+          production-branch: master
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "Deploy docs from commit ${{ github.sha }}"
+          enable-pull-request-comment: false
+          enable-commit-comment: true
+          overwrites-pull-request-comment: true
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
