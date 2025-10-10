@@ -3,28 +3,23 @@ import { Linking, NativeEventEmitter, Platform } from 'react-native';
 import { buildInfo } from '../../itblBuildInfo';
 
 import { RNIterableAPI } from '../../api';
-// TODO: Organize these so that there are no circular dependencies
-// See https://github.com/expo/expo/issues/35100
+import { IterableInAppManager } from '../../inApp/classes/IterableInAppManager';
 import { IterableInAppMessage } from '../../inApp/classes/IterableInAppMessage';
 import { IterableInAppCloseSource } from '../../inApp/enums/IterableInAppCloseSource';
 import { IterableInAppDeleteSource } from '../../inApp/enums/IterableInAppDeleteSource';
 import { IterableInAppLocation } from '../../inApp/enums/IterableInAppLocation';
 import { IterableAuthResponseResult } from '../enums/IterableAuthResponseResult';
 import { IterableEventName } from '../enums/IterableEventName';
-
-// Add this type-only import to avoid circular dependency
-import type { IterableInAppManager } from '../../inApp/classes/IterableInAppManager';
-
+import type { IterableAuthFailure } from '../types/IterableAuthFailure';
 import { IterableAction } from './IterableAction';
 import { IterableActionContext } from './IterableActionContext';
+import { IterableApi } from './IterableApi';
 import { IterableAttributionInfo } from './IterableAttributionInfo';
+import { IterableAuthManager } from './IterableAuthManager';
 import { IterableAuthResponse } from './IterableAuthResponse';
 import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
-import type { IterableAuthFailure } from '../types/IterableAuthFailure';
-import { IterableAuthManager } from './IterableAuthManager';
-import { IterableApi } from './IterableApi';
 
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
@@ -75,21 +70,7 @@ export class Iterable {
    * Iterable.inAppManager.showMessage(message, true);
    * ```
    */
-  static get inAppManager() {
-    // Lazy initialization to avoid circular dependency
-    if (!this._inAppManager) {
-      // Import here to avoid circular dependency at module level
-
-      const {
-        IterableInAppManager,
-        // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports
-      } = require('../../inApp/classes/IterableInAppManager');
-      this._inAppManager = new IterableInAppManager();
-    }
-    return this._inAppManager;
-  }
-
-  private static _inAppManager: IterableInAppManager | undefined;
+  static inAppManager: IterableInAppManager = new IterableInAppManager();
 
   /**
    * Authentication manager for the current user.
