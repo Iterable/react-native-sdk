@@ -11,17 +11,19 @@ This SDK helps you integrate your React Native-based iOS and Android apps with
 Iterable. It supports JavaScript and TypeScript.
 
 
+
 <!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->
 
 <!-- code_chunk_output -->
 
 - [Iterable's React Native SDK](#iterables-react-native-sdk)
   - [Requirements](#requirements)
-  - [Architecture Support](#architecture-support)
   - [Installation](#installation)
+  - [📚 API Documentation](#-api-documentation)
+  - [Architecture Support](#architecture-support)
   - [Beta Versions](#beta-versions)
   - [Features](#features)
-  - [Sample projects](#sample-projects)
+  - [Example project](#example-project)
   - [Version mapping](#version-mapping)
   - [Release notes, support and troubleshooting](#release-notes-support-and-troubleshooting)
   - [License](#license)
@@ -58,6 +60,14 @@ Iterable's React Native SDK relies on:
     - [`minSdkVersion` 21+, `compileSdkVersion` 31+](https://medium.com/androiddevelopers/picking-your-compilesdkversion-minsdkversion-targetsdkversion-a098a0341ebd)
     - [Iterable's Android SDK](https://github.com/Iterable/iterable-android-sdk)
 
+## Installation
+
+For installation instructions, read [Installing Iterable's React Native SDK](https://support.iterable.com/hc/articles/360045714132).
+
+## 📚 API Documentation
+
+View the [API documentation](https://iterable-react-native-sdk.netlify.app).
+
 ## Architecture Support
 
 Iterable's React Native SDK now fully supports [React Native's New Architecture](https://reactnative.dev/architecture/landing-page), including TurboModules and Fabric. You can use the SDK with either the legacy architecture or the New Architecture.
@@ -66,10 +76,6 @@ Notes:
 
 - Ensure your app is configured for New Architecture per the React Native docs.
 - The example app in this repository is configured with New Architecture enabled.
-
-## Installation
-
-For installation instructions, read [Installing Iterable's React Native SDK](https://support.iterable.com/hc/articles/360045714132).
 
 ## Beta Versions
 
@@ -102,7 +108,7 @@ To learn more about the SDK, read:
 - [In-App Messages](https://support.iterable.com/hc/articles/360045714172)
 - [Migrating to Iterable's React Native SDK](https://support.iterable.com/hc/articles/360046134931)
 
-## Sample projects
+## Example project
 
 For sample code, take a look at the following project:
 
