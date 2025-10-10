@@ -93,7 +93,9 @@
     "react-native": "0.79.3",
     "react-native-builder-bob": "^0.40.4",
     "react-native-gesture-handler": "^2.26.0",
+    "react-native-safe-area-context": "^5.6.1",
     "react-native-screens": "^4.10.0",
+    "react-native-vector-icons": "^10.3.0",
     "react-native-webview": "^13.14.1",
     "react-test-renderer": "19.0.0",
     "release-it": "^17.10.0",
@@ -109,8 +111,7 @@
   "peerDependencies": {
     "@react-navigation/native": "*",
     "react": "*",
-    "react-native": "*",
-    "react-native-webview": "*"
+    "react-native": "*"
   },
   "peerDependenciesMeta": {
     "expo": {
@@ -120,6 +121,9 @@
       "optional": true
     },
     "react-native-vector-icons": {
+      "optional": true
+    },
+    "react-native-webview": {
       "optional": true
     }
   },

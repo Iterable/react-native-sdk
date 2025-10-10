@@ -8,7 +8,11 @@ import {
   View,
 } from 'react-native';
 import { IterableInboxSmartIcon } from './IterableInboxSmartIcon';
-import { WebView, type WebViewMessageEvent } from 'react-native-webview';
+import {
+  loadWebView,
+  FallbackWebView,
+  WebViewNotAvailableError,
+} from '../../utils/WebViewLoader';
 
 import {
   IterableAction,
@@ -78,6 +82,13 @@ export const IterableInboxMessageDisplay = ({
   const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title;
   const [inAppContent, setInAppContent] =
     useState<IterableHtmlInAppContent | null>(null);
+  const [WebViewComponent, setWebViewComponent] = useState<React.ComponentType<{
+    originWhiteList?: string[];
+    source?: { html: string };
+    style?: object;
+    onMessage?: (event: { nativeEvent: { data: string } }) => void;
+    injectedJavaScript?: string;
+  }> | null>(null);
 
   const styles = StyleSheet.create({
     contentContainer: {
@@ -172,7 +183,21 @@ export const IterableInboxMessageDisplay = ({
     };
   });
 
-  function handleInAppLinkAction(event: WebViewMessageEvent) {
+  // Load WebView component dynamically
+  useEffect(() => {
+    try {
+      const WebView = loadWebView();
+      setWebViewComponent(() => WebView);
+    } catch (error) {
+      if (error instanceof WebViewNotAvailableError) {
+        setWebViewComponent(() => FallbackWebView);
+      } else {
+        setWebViewComponent(() => FallbackWebView);
+      }
+    }
+  }, []);
+
+  function handleInAppLinkAction(event: { nativeEvent: { data: string } }) {
     const URL = event.nativeEvent.data;
 
     const action = new IterableAction('openUrl', URL, '');
@@ -253,13 +278,13 @@ export const IterableInboxMessageDisplay = ({
           </View>
         </View>
       </View>
-      {inAppContent && (
+      {inAppContent && WebViewComponent && (
         <ScrollView contentContainerStyle={styles.contentContainer}>
-          <WebView
+          <WebViewComponent
             originWhiteList={['*']}
             source={{ html: inAppContent.html }}
             style={{ width: contentWidth }}
-            onMessage={(event) => handleInAppLinkAction(event)}
+            onMessage={handleInAppLinkAction}
             injectedJavaScript={JS}
           />
         </ScrollView>

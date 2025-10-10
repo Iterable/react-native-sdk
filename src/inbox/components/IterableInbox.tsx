@@ -9,9 +9,8 @@ import {
   Text,
   View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-
 import { useAppStateListener, useDeviceOrientation } from '../../core';
+import { ConditionalSafeAreaView } from '../../core/utils/SafeAreaContext';
 // expo throws an error if this is not imported directly due to circular
 // dependencies
 // See: https://github.com/expo/expo/issues/35100
@@ -500,7 +499,7 @@ export const IterableInbox = ({
   );
 
   return safeAreaMode ? (
-    <SafeAreaView style={styles.container}>{inboxAnimatedView}</SafeAreaView>
+    <ConditionalSafeAreaView style={styles.container}>{inboxAnimatedView}</ConditionalSafeAreaView>
   ) : (
     <View style={styles.container}>{inboxAnimatedView}</View>
   );
