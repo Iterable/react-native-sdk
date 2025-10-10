@@ -12,7 +12,11 @@ on:
 jobs:
   deploy-docs:
     runs-on: ubuntu-latest
-    # Only run on master/main pushes or PRs with "docs" label
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+    # Only run on master/main pushes or PRs with "documentation" label
     if: |
       github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main') ||
       github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'documentation') ||
