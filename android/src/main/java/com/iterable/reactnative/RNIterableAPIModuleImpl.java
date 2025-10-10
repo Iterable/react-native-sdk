@@ -8,19 +8,16 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
-import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactContextBaseJavaModule;
-import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
-import com.facebook.react.modules.core.RCTNativeAppEventEmitter;
+
 import com.iterable.iterableapi.InboxSessionManager;
 import com.iterable.iterableapi.IterableAction;
 import com.iterable.iterableapi.IterableActionContext;
@@ -44,15 +41,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Map;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-public class RNIterableAPIModule extends ReactContextBaseJavaModule implements IterableUrlHandler, IterableCustomActionHandler, IterableInAppHandler, IterableAuthHandler, IterableInAppManager.Listener {
-    private final ReactApplicationContext reactContext;
-    private static String TAG = "RNIterableAPIModule";
+public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCustomActionHandler, IterableInAppHandler, IterableAuthHandler, IterableInAppManager.Listener {
+    public static final String NAME = "RNIterableAPI";
 
-    private InAppResponse inAppResponse = InAppResponse.SHOW;
+    private static String TAG = "RNIterableAPIModule";
+    private final ReactApplicationContext reactContext;
+
+    private IterableInAppHandler.InAppResponse inAppResponse = IterableInAppHandler.InAppResponse.SHOW;
 
     //A CountDownLatch. This helps decide whether to handle the in-app in Default way by waiting for JS to respond in runtime.
     private CountDownLatch jsCallBackLatch;
@@ -62,20 +63,10 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
 
     private final InboxSessionManager sessionManager = new InboxSessionManager();
 
-    public RNIterableAPIModule(ReactApplicationContext reactContext) {
-        super(reactContext);
+    public RNIterableAPIModuleImpl(ReactApplicationContext reactContext) {
         this.reactContext = reactContext;
     }
 
-    // ---------------------------------------------------------------------------------------
-    // region IterableSDK calls
-
-    @Override
-    public String getName() {
-        return "RNIterableAPI";
-    }
-
-    @ReactMethod
     public void initializeWithApiKey(String apiKey, ReadableMap configReadableMap, String version, Promise promise) {
         IterableLogger.d(TAG, "initializeWithApiKey: " + apiKey);
         IterableConfig.Builder configBuilder = Serialization.getConfigFromReadableMap(configReadableMap);
@@ -106,81 +97,103 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         promise.resolve(true);
     }
 
-    @ReactMethod
+    public void initialize2WithApiKey(String apiKey, ReadableMap configReadableMap, String version, String apiEndPointOverride, Promise promise) {
+        IterableLogger.d(TAG, "initialize2WithApiKey: " + apiKey);
+        IterableConfig.Builder configBuilder = Serialization.getConfigFromReadableMap(configReadableMap);
+
+        if (configReadableMap.hasKey("urlHandlerPresent") && configReadableMap.getBoolean("urlHandlerPresent") == true) {
+            configBuilder.setUrlHandler(this);
+        }
+
+        if (configReadableMap.hasKey("customActionHandlerPresent") && configReadableMap.getBoolean("customActionHandlerPresent") == true) {
+            configBuilder.setCustomActionHandler(this);
+        }
+
+        if (configReadableMap.hasKey("inAppHandlerPresent") && configReadableMap.getBoolean("inAppHandlerPresent") == true) {
+            configBuilder.setInAppHandler(this);
+        }
+
+        if (configReadableMap.hasKey("authHandlerPresent") && configReadableMap.getBoolean("authHandlerPresent") == true) {
+            configBuilder.setAuthHandler(this);
+        }
+
+        // NOTE: There does not seem to be a way to set the API endpoint
+        // override in the Android SDK.  Check with @Ayyanchira and @evantk91 to
+        // see what the best approach is.
+
+        IterableApi.initialize(reactContext, apiKey, configBuilder.build());
+        IterableApi.getInstance().setDeviceAttribute("reactNativeSDKVersion", version);
+
+        IterableApi.getInstance().getInAppManager().addListener(this);
+
+        // MOB-10421: Figure out what the error cases are and handle them appropriately
+        // This is just here to match the TS types and let the JS thread know when we are done initializing
+        promise.resolve(true);
+    }
+
     public void setEmail(@Nullable String email, @Nullable String authToken) {
         IterableLogger.d(TAG, "setEmail: " + email + " authToken: " + authToken);
 
         IterableApi.getInstance().setEmail(email, authToken);
     }
 
-    @ReactMethod
     public void updateEmail(String email, @Nullable String authToken) {
         IterableLogger.d(TAG, "updateEmail: " + email + " authToken: " + authToken);
 
         IterableApi.getInstance().updateEmail(email, authToken);
     }
 
-    @ReactMethod
     public void getEmail(Promise promise) {
         promise.resolve(RNIterableInternal.getEmail());
     }
 
-    @ReactMethod
     public void sampleMethod(String stringArgument, int numberArgument, Callback callback) {
         // TODO: Implement some actually useful functionality
         callback.invoke("Received numberArgument: " + numberArgument + " stringArgument: " + stringArgument);
     }
 
-    @ReactMethod
     public void setUserId(@Nullable String userId, @Nullable String authToken) {
         IterableLogger.d(TAG, "setUserId: " + userId + " authToken: " + authToken);
 
         IterableApi.getInstance().setUserId(userId, authToken);
     }
 
-    @ReactMethod
-    public void updateUser(ReadableMap dataFields, Boolean mergeNestedObjects) {
+    public void updateUser(ReadableMap dataFields, boolean mergeNestedObjects) {
         IterableLogger.v(TAG, "updateUser");
         IterableApi.getInstance().updateUser(optSerializedDataFields(dataFields), mergeNestedObjects);
     }
 
-    @ReactMethod
     public void getUserId(Promise promise) {
         promise.resolve(RNIterableInternal.getUserId());
     }
 
-    @ReactMethod
-    public void trackEvent(String name, ReadableMap dataFields) {
+    public void trackEvent(String name, @Nullable ReadableMap dataFields) {
         IterableLogger.v(TAG, "trackEvent");
         IterableApi.getInstance().track(name, optSerializedDataFields(dataFields));
     }
 
-    @ReactMethod
     public void updateCart(ReadableArray items) {
         IterableLogger.v(TAG, "updateCart");
         IterableApi.getInstance().updateCart(Serialization.commerceItemsFromReadableArray(items));
     }
 
-    @ReactMethod
-    public void trackPurchase(Double total, ReadableArray items, ReadableMap dataFields) {
+    public void trackPurchase(double total, ReadableArray items, @Nullable ReadableMap dataFields) {
         IterableLogger.v(TAG, "trackPurchase");
         IterableApi.getInstance().trackPurchase(total, Serialization.commerceItemsFromReadableArray(items), optSerializedDataFields(dataFields));
     }
 
-    @ReactMethod
-    public void trackPushOpenWithCampaignId(Integer campaignId, Integer templateId, String messageId, Boolean appAlreadyRunning, ReadableMap dataFields) {
-        RNIterableInternal.trackPushOpenWithCampaignId(campaignId, templateId, messageId, optSerializedDataFields(dataFields));
+    public void trackPushOpenWithCampaignId(double campaignId, @Nullable Double templateId, String messageId, boolean appAlreadyRunning, @Nullable ReadableMap dataFields) {
+        RNIterableInternal.trackPushOpenWithCampaignId((int) campaignId, templateId != null ? templateId.intValue() : null, messageId, optSerializedDataFields(dataFields));
     }
 
-    @ReactMethod
-    public void updateSubscriptions(ReadableArray emailListIds, ReadableArray unsubscribedChannelIds, ReadableArray unsubscribedMessageTypeIds, ReadableArray subscribedMessageTypeIds, Integer campaignId, Integer templateId) {
+    public void updateSubscriptions(@Nullable ReadableArray emailListIds, @Nullable ReadableArray unsubscribedChannelIds, @Nullable ReadableArray unsubscribedMessageTypeIds, @Nullable ReadableArray subscribedMessageTypeIds, double campaignId, double templateId) {
         IterableLogger.v(TAG, "updateSubscriptions");
         Integer finalCampaignId = null, finalTemplateId = null;
         if (campaignId > 0) {
-            finalCampaignId = campaignId;
+            finalCampaignId = (int) campaignId;
         }
         if (templateId > 0) {
-            finalTemplateId = templateId;
+            finalTemplateId = (int) templateId;
         }
         IterableApi.getInstance().updateSubscriptions(readableArrayToIntegerArray(emailListIds),
                 readableArrayToIntegerArray(unsubscribedChannelIds),
@@ -191,7 +204,6 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         );
     }
 
-    @ReactMethod
     public void showMessage(String messageId, boolean consume, final Promise promise) {
         if (messageId == null || messageId == "") {
             promise.reject("", "messageId is null or empty");
@@ -205,19 +217,16 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         });
     }
 
-    @ReactMethod
     public void setReadForMessage(String messageId, boolean read) {
         IterableLogger.v(TAG, "setReadForMessage");
         IterableApi.getInstance().getInAppManager().setRead(RNIterableInternal.getMessageById(messageId), read);
     }
 
-    @ReactMethod
-    public void removeMessage(String messageId, Integer location, Integer deleteSource) {
+    public void removeMessage(String messageId, double location, double deleteSource) {
         IterableLogger.v(TAG, "removeMessage");
-        IterableApi.getInstance().getInAppManager().removeMessage(RNIterableInternal.getMessageById(messageId), Serialization.getIterableDeleteActionTypeFromInteger(deleteSource), Serialization.getIterableInAppLocationFromInteger(location));
+        IterableApi.getInstance().getInAppManager().removeMessage(RNIterableInternal.getMessageById(messageId), Serialization.getIterableDeleteActionTypeFromInteger((int) deleteSource), Serialization.getIterableInAppLocationFromInteger((int) location));
     }
 
-    @ReactMethod
     public void getHtmlInAppContentForMessage(String messageId, final Promise promise) {
         IterableLogger.printInfo();
         IterableInAppMessage message = RNIterableInternal.getMessageById(messageId);
@@ -241,7 +250,6 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         }
     }
 
-    @ReactMethod
     public void getAttributionInfo(Promise promise) {
         IterableLogger.printInfo();
         IterableAttributionInfo attributionInfo = IterableApi.getInstance().getAttributionInfo();
@@ -257,8 +265,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         }
     }
 
-    @ReactMethod
-    public void setAttributionInfo(ReadableMap attributionInfoReadableMap) {
+    public void setAttributionInfo(@Nullable ReadableMap attributionInfoReadableMap) {
         IterableLogger.printInfo();
         try {
             JSONObject attributionInfoJson = Serialization.convertMapToJson(attributionInfoReadableMap);
@@ -269,7 +276,6 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         }
     }
 
-    @ReactMethod
     public void getLastPushPayload(Promise promise) {
         Bundle payloadData = IterableApi.getInstance().getPayloadData();
         if (payloadData != null) {
@@ -280,13 +286,11 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         }
     }
 
-    @ReactMethod
     public void disableDeviceForCurrentUser() {
         IterableLogger.v(TAG, "disableDevice");
         IterableApi.getInstance().disablePush();
     }
 
-    @ReactMethod
     public void handleAppLink(String uri, Promise promise) {
         IterableLogger.printInfo();
         promise.resolve(IterableApi.getInstance().handleAppLink(uri));
@@ -297,8 +301,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
 
     // ---------------------------------------------------------------------------------------
     // region Track APIs
-    @ReactMethod
-    public void trackInAppOpen(String messageId, @Nullable Integer location) {
+    public void trackInAppOpen(String messageId, double location) {
         IterableInAppMessage message = RNIterableInternal.getMessageById(messageId);
 
         if (message == null) {
@@ -306,13 +309,12 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
             return;
         }
 
-        IterableApi.getInstance().trackInAppOpen(message, Serialization.getIterableInAppLocationFromInteger(location));
+        IterableApi.getInstance().trackInAppOpen(message, Serialization.getIterableInAppLocationFromInteger((int) location));
     }
 
-    @ReactMethod
-    public void trackInAppClick(String messageId, @Nullable Integer location, String clickedUrl) {
+    public void trackInAppClick(String messageId, double location, String clickedUrl) {
         IterableInAppMessage message = RNIterableInternal.getMessageById(messageId);
-        IterableInAppLocation inAppOpenLocation = Serialization.getIterableInAppLocationFromInteger(location);
+        IterableInAppLocation inAppOpenLocation = Serialization.getIterableInAppLocationFromInteger((int) location);
 
         if (message == null) {
             IterableLogger.d(TAG, "Failed to get in-app for message ID: " + messageId);
@@ -332,11 +334,10 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         IterableApi.getInstance().trackInAppClick(message, clickedUrl, inAppOpenLocation);
     }
 
-    @ReactMethod
-    public void trackInAppClose(String messageId, Integer location, Integer source, @Nullable String clickedUrl) {
+    public void trackInAppClose(String messageId, double location, double source, @Nullable String clickedUrl) {
         IterableInAppMessage inAppMessage = RNIterableInternal.getMessageById(messageId);
-        IterableInAppLocation inAppCloseLocation = Serialization.getIterableInAppLocationFromInteger(location);
-        IterableInAppCloseAction closeAction = Serialization.getIterableInAppCloseSourceFromInteger(source);
+        IterableInAppLocation inAppCloseLocation = Serialization.getIterableInAppLocationFromInteger((int) location);
+        IterableInAppCloseAction closeAction = Serialization.getIterableInAppCloseSourceFromInteger((int) source);
 
         if (inAppMessage == null) {
             IterableLogger.d(TAG, "Failed to get in-app for message ID: " + messageId);
@@ -362,15 +363,13 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     // ---------------------------------------------------------------------------------------
     // region In App APIs
 
-    @ReactMethod
-    public void inAppConsume(String messageId, Integer location, Integer source) {
-        if (messageId == null) {
-            return;
+    public void inAppConsume(String messageId, double location, double source) {
+        if (messageId != null) {
+            IterableLogger.v(TAG, "inAppConsume");
+            IterableApi.getInstance().inAppConsume(RNIterableInternal.getMessageById(messageId), Serialization.getIterableDeleteActionTypeFromInteger((int) source), Serialization.getIterableInAppLocationFromInteger((int) location));
         }
-        IterableApi.getInstance().inAppConsume(RNIterableInternal.getMessageById(messageId), Serialization.getIterableDeleteActionTypeFromInteger(source), Serialization.getIterableInAppLocationFromInteger(location));
     }
 
-    @ReactMethod
     public void getInAppMessages(Promise promise) {
         IterableLogger.d(TAG, "getMessages");
         try {
@@ -382,7 +381,6 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         }
     }
 
-    @ReactMethod
     public void getInboxMessages(Promise promise) {
         IterableLogger.d(TAG, "getInboxMessages");
         try {
@@ -394,16 +392,25 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         }
     }
 
-    @ReactMethod
-    public void setInAppShowResponse(Integer number) {
+    public void getUnreadInboxMessagesCount(Promise promise) {
+        IterableLogger.d(TAG, "getUnreadInboxMessagesCount");
+        try {
+            int unreadCount = IterableApi.getInstance().getInAppManager().getUnreadInboxMessagesCount();
+            promise.resolve(unreadCount);
+        } catch (Exception e) {
+            IterableLogger.e(TAG, e.getLocalizedMessage());
+            promise.reject("", "Failed to get unread inbox messages count with error " + e.getLocalizedMessage());
+        }
+    }
+
+    public void setInAppShowResponse(double number) {
         IterableLogger.printInfo();
-        inAppResponse = Serialization.getInAppResponse(number);
+        inAppResponse = Serialization.getInAppResponse((int) number);
         if (jsCallBackLatch != null) {
             jsCallBackLatch.countDown();
         }
     }
 
-    @ReactMethod
     public void setAutoDisplayPaused(final boolean paused) {
         IterableLogger.printInfo();
         UiThreadUtil.runOnUiThread(new Runnable() {
@@ -414,7 +421,6 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         });
     }
 
-    @ReactMethod
     public void wakeApp() {
         Intent launcherIntent = getMainActivityIntent(reactContext);
         launcherIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -440,19 +446,16 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     // ---------------------------------------------------------------------------------------
     // region Inbox In-App Session Tracking APIs
 
-    @ReactMethod
     public void startSession(ReadableArray visibleRows) {
         List<IterableInboxSession.Impression> serializedRows = Serialization.impressionsFromReadableArray(visibleRows);
 
         sessionManager.startSession(serializedRows);
     }
 
-    @ReactMethod
     public void endSession() {
         sessionManager.endSession();
     }
 
-    @ReactMethod
     public void updateVisibleRows(ReadableArray visibleRows) {
         List<IterableInboxSession.Impression> serializedRows = Serialization.impressionsFromReadableArray(visibleRows);
 
@@ -517,7 +520,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
 
     @NonNull
     @Override
-    public InAppResponse onNewInApp(@NonNull IterableInAppMessage message) {
+    public IterableInAppHandler.InAppResponse onNewInApp(@NonNull IterableInAppMessage message) {
         IterableLogger.printInfo();
 
         JSONObject messageJson = RNIterableInternal.getInAppMessageJson(message);
@@ -531,7 +534,7 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
             return inAppResponse;
         } catch (InterruptedException | JSONException e) {
             IterableLogger.e(TAG, "new in-app module failed");
-            return InAppResponse.SHOW;
+            return IterableInAppHandler.InAppResponse.SHOW;
         }
     }
 
@@ -582,24 +585,15 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
         sendEvent(EventName.handleAuthFailureCalled.name(), null);
     }
 
-    @ReactMethod
     public void addListener(String eventName) {
         // Keep: Required for RN built in Event Emitter Calls.
     }
 
-    @ReactMethod
-    public void removeListeners(Integer count) {
+    public void removeListeners(double count) {
         // Keep: Required for RN built in Event Emitter Calls.
     }
 
-    // ---------------------------------------------------------------------------------------
-    // endregion
-
-    // ---------------------------------------------------------------------------------------
-    // region Misc Bridge Functions
-
-    @ReactMethod
-    public void passAlongAuthToken(String authToken) {
+    public void passAlongAuthToken(@Nullable String authToken) {
         passedAuthToken = authToken;
 
         if (authHandlerCallbackLatch != null) {
@@ -615,17 +609,14 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule implements I
     public void onInboxUpdated() {
         sendEvent(EventName.receivedIterableInboxChanged.name(), null);
     }
-
-    // ---------------------------------------------------------------------------------------
-    // endregion
 }
 
 enum EventName {
-    handleUrlCalled,
-    handleCustomActionCalled,
-    handleInAppCalled,
-    handleAuthCalled,
-    receivedIterableInboxChanged,
-    handleAuthSuccessCalled,
-    handleAuthFailureCalled
+  handleUrlCalled,
+  handleCustomActionCalled,
+  handleInAppCalled,
+  handleAuthCalled,
+  receivedIterableInboxChanged,
+  handleAuthSuccessCalled,
+  handleAuthFailureCalled
 }

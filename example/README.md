@@ -211,14 +211,12 @@ gem install xcodeproj -v '< 1.26.0'
 gem install concurrent-ruby -v '< 1.3.4'
 ```
 
-## Unable to build on Xcode 16.3
+## Xcode 16.3 Issue
 
 There is a [known issue](https://github.com/facebook/react-native/issues/50411)
 with Xcode 16.3 and react-native@0.75.3.
 
-Until New Architecture is supporter by Iterable, we cannot upgrade to 0.76.
-Therefore, to fix it we need to downgrade Xcode to 16.2.
-- [Download Xcode 16.2](https://download.developer.apple.com/Developer_Tools/Xcode_16.2/Xcode_16.2.xip)
+This SDK supports React Native New Architecture. If you encounter this Xcode-specific issue, consider downgrading Xcode to 16.2 or upgrading React Native once a fix is available.
 
 ## Other
 If things are not working and you are stumped as to why, try running the
