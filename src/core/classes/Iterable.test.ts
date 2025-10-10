@@ -2,7 +2,6 @@ import { NativeEventEmitter, Platform } from 'react-native';
 
 import { MockLinking } from '../../__mocks__/MockLinking';
 import { MockRNIterableAPI } from '../../__mocks__/MockRNIterableAPI';
-import { IterableLogger } from '..';
 // import from the same location that consumers import from
 import {
   Iterable,
@@ -10,33 +9,25 @@ import {
   IterableActionContext,
   IterableActionSource,
   IterableAttributionInfo,
+  IterableAuthResponse,
   IterableCommerceItem,
   IterableConfig,
   IterableDataRegion,
   IterableEventName,
-  IterableLogLevel,
-  IterableInAppMessage,
   IterableInAppCloseSource,
   IterableInAppDeleteSource,
   IterableInAppLocation,
+  IterableInAppMessage,
+  IterableInAppShowResponse,
   IterableInAppTrigger,
   IterableInAppTriggerType,
-  IterableAuthResponse,
-  IterableInAppShowResponse,
+  IterableLogLevel,
 } from '../..';
 import { TestHelper } from '../../__tests__/TestHelper';
-
-const getDefaultConfig = () => {
-  const config = new IterableConfig();
-  config.logReactNativeSdkCalls = false;
-  return config;
-};
 
 describe('Iterable', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    const config = getDefaultConfig();
-    Iterable.logger = new IterableLogger(config);
   });
 
   afterEach(() => {

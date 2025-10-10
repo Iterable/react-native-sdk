@@ -11,6 +11,7 @@ import type { IterableInboxImpressionRowInfo } from '../../inbox/types/IterableI
 import { IterableAttributionInfo } from './IterableAttributionInfo';
 import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
+import { IterableLogger } from './IterableLogger';
 
 /**
  * Contains functions that directly interact with the native layer.
@@ -39,7 +40,7 @@ export class IterableApi {
       version: string;
     }
   ): Promise<boolean> {
-    // IterableLogger.log('initializeWithApiKey: ', apiKey);
+    IterableLogger.log('initializeWithApiKey: ', apiKey);
     return RNIterableAPI.initializeWithApiKey(apiKey, config.toDict(), version);
   }
 
@@ -61,7 +62,7 @@ export class IterableApi {
       apiEndPoint: string;
     }
   ): Promise<boolean> {
-    // IterableLogger.log('initialize2WithApiKey: ', apiKey);
+    IterableLogger.log('initialize2WithApiKey: ', apiKey);
     return RNIterableAPI.initialize2WithApiKey(
       apiKey,
       config.toDict(),
@@ -86,7 +87,7 @@ export class IterableApi {
    * related action will be taken
    */
   static setEmail(email: string | null, authToken?: string | null) {
-    // IterableLogger.log('setEmail: ', email);
+    IterableLogger.log('setEmail: ', email);
     return RNIterableAPI.setEmail(email, authToken);
   }
 
@@ -96,7 +97,7 @@ export class IterableApi {
    * @returns The email associated with the current user
    */
   static getEmail() {
-    // IterableLogger.log('getEmail');
+    IterableLogger.log('getEmail');
     return RNIterableAPI.getEmail();
   }
 
@@ -115,7 +116,7 @@ export class IterableApi {
     userId: string | null | undefined,
     authToken?: string | null
   ) {
-    // IterableLogger.log('setUserId: ', userId);
+    IterableLogger.log('setUserId: ', userId);
     return RNIterableAPI.setUserId(userId, authToken);
   }
 
@@ -123,7 +124,7 @@ export class IterableApi {
    * Get the `userId` associated with the current user.
    */
   static getUserId() {
-    // IterableLogger.log('getUserId');
+    IterableLogger.log('getUserId');
     return RNIterableAPI.getUserId();
   }
 
@@ -131,7 +132,7 @@ export class IterableApi {
    * Disable the device for the current user.
    */
   static disableDeviceForCurrentUser() {
-    // IterableLogger.log('disableDeviceForCurrentUser');
+    IterableLogger.log('disableDeviceForCurrentUser');
     return RNIterableAPI.disableDeviceForCurrentUser();
   }
 
@@ -142,7 +143,7 @@ export class IterableApi {
    * @param mergeNestedObjects - Whether to merge nested objects
    */
   static updateUser(dataFields: unknown, mergeNestedObjects: boolean) {
-    // IterableLogger.log('updateUser: ', dataFields, mergeNestedObjects);
+    IterableLogger.log('updateUser: ', dataFields, mergeNestedObjects);
     return RNIterableAPI.updateUser(dataFields, mergeNestedObjects);
   }
 
@@ -153,7 +154,7 @@ export class IterableApi {
    * @param authToken - The new auth token (JWT) to set with the new email, optional - If null/undefined, no JWT-related action will be taken
    */
   static updateEmail(email: string, authToken?: string | null) {
-    // IterableLogger.log('updateEmail: ', email, authToken);
+    IterableLogger.log('updateEmail: ', email, authToken);
     return RNIterableAPI.updateEmail(email, authToken);
   }
 
@@ -186,14 +187,14 @@ export class IterableApi {
     appAlreadyRunning: boolean;
     dataFields?: unknown;
   }) {
-    // IterableLogger.log(
-    //   'trackPushOpenWithCampaignId: ',
-    //   campaignId,
-    //   templateId,
-    //   messageId,
-    //   appAlreadyRunning,
-    //   dataFields
-    // );
+    IterableLogger.log(
+      'trackPushOpenWithCampaignId: ',
+      campaignId,
+      templateId,
+      messageId,
+      appAlreadyRunning,
+      dataFields
+    );
     return RNIterableAPI.trackPushOpenWithCampaignId(
       campaignId,
       templateId,
@@ -220,7 +221,7 @@ export class IterableApi {
     items: IterableCommerceItem[];
     dataFields?: unknown;
   }) {
-    // IterableLogger.log('trackPurchase: ', total, items, dataFields);
+    IterableLogger.log('trackPurchase: ', total, items, dataFields);
     return RNIterableAPI.trackPurchase(total, items, dataFields);
   }
 
@@ -239,7 +240,7 @@ export class IterableApi {
     message: IterableInAppMessage;
     location: IterableInAppLocation;
   }) {
-    // IterableLogger.log('trackInAppOpen: ', message, location);
+    IterableLogger.log('trackInAppOpen: ', message, location);
     return RNIterableAPI.trackInAppOpen(message.messageId, location);
   }
 
@@ -262,7 +263,7 @@ export class IterableApi {
     location: IterableInAppLocation;
     clickedUrl: string;
   }) {
-    // IterableLogger.log('trackInAppClick: ', message, location, clickedUrl);
+    IterableLogger.log('trackInAppClick: ', message, location, clickedUrl);
     return RNIterableAPI.trackInAppClick(
       message.messageId,
       location,
@@ -291,13 +292,13 @@ export class IterableApi {
     source: IterableInAppCloseSource;
     clickedUrl?: string;
   }) {
-    // IterableLogger.log(
-    //   'trackInAppClose: ',
-    //   message,
-    //   location,
-    //   source,
-    //   clickedUrl
-    // );
+    IterableLogger.log(
+      'trackInAppClose: ',
+      message,
+      location,
+      source,
+      clickedUrl
+    );
     return RNIterableAPI.trackInAppClose(
       message.messageId,
       location,
@@ -320,7 +321,7 @@ export class IterableApi {
     name: string;
     dataFields?: unknown;
   }) {
-    // IterableLogger.log('trackEvent: ', name, dataFields);
+    IterableLogger.log('trackEvent: ', name, dataFields);
     return RNIterableAPI.trackEvent(name, dataFields);
   }
 
@@ -336,7 +337,7 @@ export class IterableApi {
    * @param pauseRetry - Whether to pause or resume the automatic retrying of authentication requests
    */
   static pauseAuthRetries(pauseRetry: boolean) {
-    // IterableLogger.log('pauseAuthRetries: ', pauseRetry);
+    IterableLogger.log('pauseAuthRetries: ', pauseRetry);
     return RNIterableAPI.pauseAuthRetries(pauseRetry);
   }
 
@@ -346,7 +347,7 @@ export class IterableApi {
    * @param authToken - The auth token to pass along
    */
   static passAlongAuthToken(authToken: string | null | undefined) {
-    // IterableLogger.log('passAlongAuthToken: ', authToken);
+    IterableLogger.log('passAlongAuthToken: ', authToken);
     return RNIterableAPI.passAlongAuthToken(authToken);
   }
 
@@ -368,7 +369,7 @@ export class IterableApi {
     location: IterableInAppLocation,
     source: IterableInAppDeleteSource
   ) {
-    // IterableLogger.log('inAppConsume: ', message, location, source);
+    IterableLogger.log('inAppConsume: ', message, location, source);
     return RNIterableAPI.inAppConsume(message.messageId, location, source);
   }
 
@@ -378,7 +379,7 @@ export class IterableApi {
    * @returns A Promise that resolves to an array of in-app messages.
    */
   static getInAppMessages(): Promise<IterableInAppMessage[]> {
-    // IterableLogger.log('getInAppMessages');
+    IterableLogger.log('getInAppMessages');
     return RNIterableAPI.getInAppMessages() as unknown as Promise<
       IterableInAppMessage[]
     >;
@@ -391,7 +392,7 @@ export class IterableApi {
    * @returns A Promise that resolves to an array of messages marked as `saveToInbox`.
    */
   static getInboxMessages(): Promise<IterableInAppMessage[]> {
-    // IterableLogger.log('getInboxMessages');
+    IterableLogger.log('getInboxMessages');
     return RNIterableAPI.getInboxMessages() as unknown as Promise<
       IterableInAppMessage[]
     >;
@@ -410,7 +411,7 @@ export class IterableApi {
     messageId: string,
     consume: boolean
   ): Promise<string | null> {
-    // IterableLogger.log('showMessage: ', messageId, consume);
+    IterableLogger.log('showMessage: ', messageId, consume);
     return RNIterableAPI.showMessage(messageId, consume);
   }
 
@@ -426,7 +427,7 @@ export class IterableApi {
     location: number,
     source: number
   ): void {
-    // IterableLogger.log('removeMessage: ', messageId, location, source);
+    IterableLogger.log('removeMessage: ', messageId, location, source);
     return RNIterableAPI.removeMessage(messageId, location, source);
   }
 
@@ -437,7 +438,7 @@ export class IterableApi {
    * @param read - Whether the message is read.
    */
   static setReadForMessage(messageId: string, read: boolean): void {
-    // IterableLogger.log('setReadForMessage: ', messageId, read);
+    IterableLogger.log('setReadForMessage: ', messageId, read);
     return RNIterableAPI.setReadForMessage(messageId, read);
   }
 
@@ -447,7 +448,7 @@ export class IterableApi {
    * @param autoDisplayPaused - Whether to pause or unpause the automatic display of incoming in-app messages
    */
   static setAutoDisplayPaused(autoDisplayPaused: boolean): void {
-    // IterableLogger.log('setAutoDisplayPaused: ', autoDisplayPaused);
+    IterableLogger.log('setAutoDisplayPaused: ', autoDisplayPaused);
     return RNIterableAPI.setAutoDisplayPaused(autoDisplayPaused);
   }
 
@@ -461,7 +462,7 @@ export class IterableApi {
   static getHtmlInAppContentForMessage(
     messageId: string
   ): Promise<IterableHtmlInAppContent> {
-    // IterableLogger.log('getHtmlInAppContentForMessage: ', messageId);
+    IterableLogger.log('getHtmlInAppContentForMessage: ', messageId);
     return RNIterableAPI.getHtmlInAppContentForMessage(messageId);
   }
 
@@ -471,7 +472,7 @@ export class IterableApi {
    * @param inAppShowResponse - The response to an in-app message.
    */
   static setInAppShowResponse(inAppShowResponse: IterableInAppShowResponse) {
-    // IterableLogger.log('setInAppShowResponse: ', inAppShowResponse);
+    IterableLogger.log('setInAppShowResponse: ', inAppShowResponse);
     return RNIterableAPI.setInAppShowResponse(inAppShowResponse);
   }
 
@@ -481,7 +482,7 @@ export class IterableApi {
    * @param visibleRows - The visible rows.
    */
   static startSession(visibleRows: IterableInboxImpressionRowInfo[]) {
-    // IterableLogger.log('startSession: ', visibleRows);
+    IterableLogger.log('startSession: ', visibleRows);
     return RNIterableAPI.startSession(visibleRows);
   }
 
@@ -489,7 +490,7 @@ export class IterableApi {
    * End a session.
    */
   static endSession() {
-    // IterableLogger.log('endSession');
+    IterableLogger.log('endSession');
     return RNIterableAPI.endSession();
   }
 
@@ -499,7 +500,7 @@ export class IterableApi {
    * @param visibleRows - The visible rows.
    */
   static updateVisibleRows(visibleRows: IterableInboxImpressionRowInfo[] = []) {
-    // IterableLogger.log('updateVisibleRows: ', visibleRows);
+    IterableLogger.log('updateVisibleRows: ', visibleRows);
     return RNIterableAPI.updateVisibleRows(visibleRows);
   }
 
@@ -515,7 +516,7 @@ export class IterableApi {
    * @param items - The items.
    */
   static updateCart(items: IterableCommerceItem[]) {
-    // IterableLogger.log('updateCart: ', items);
+    IterableLogger.log('updateCart: ', items);
     return RNIterableAPI.updateCart(items);
   }
 
@@ -525,7 +526,7 @@ export class IterableApi {
    */
   static wakeApp() {
     if (Platform.OS === 'android') {
-      // IterableLogger.log('wakeApp');
+      IterableLogger.log('wakeApp');
       return RNIterableAPI.wakeApp();
     }
   }
@@ -536,7 +537,7 @@ export class IterableApi {
    * @param link - The link.
    */
   static handleAppLink(link: string) {
-    // IterableLogger.log('handleAppLink: ', link);
+    IterableLogger.log('handleAppLink: ', link);
     return RNIterableAPI.handleAppLink(link);
   }
 
@@ -565,15 +566,15 @@ export class IterableApi {
     campaignId: number;
     templateId: number;
   }) {
-    // IterableLogger.log(
-    //   'updateSubscriptions: ',
-    //   emailListIds,
-    //   unsubscribedChannelIds,
-    //   unsubscribedMessageTypeIds,
-    //   subscribedMessageTypeIds,
-    //   campaignId,
-    //   templateId
-    // );
+    IterableLogger.log(
+      'updateSubscriptions: ',
+      emailListIds,
+      unsubscribedChannelIds,
+      unsubscribedMessageTypeIds,
+      subscribedMessageTypeIds,
+      campaignId,
+      templateId
+    );
     return RNIterableAPI.updateSubscriptions(
       emailListIds,
       unsubscribedChannelIds,
@@ -588,7 +589,7 @@ export class IterableApi {
    * Get the last push payload.
    */
   static getLastPushPayload() {
-    // IterableLogger.log('getLastPushPayload');
+    IterableLogger.log('getLastPushPayload');
     return RNIterableAPI.getLastPushPayload();
   }
 
@@ -596,7 +597,7 @@ export class IterableApi {
    * Get the attribution info.
    */
   static getAttributionInfo() {
-    // IterableLogger.log('getAttributionInfo');
+    IterableLogger.log('getAttributionInfo');
     // FIXME: What if this errors?
     return RNIterableAPI.getAttributionInfo().then(
       (
@@ -625,7 +626,7 @@ export class IterableApi {
    * @param attributionInfo - The attribution info.
    */
   static setAttributionInfo(attributionInfo?: IterableAttributionInfo) {
-    // IterableLogger.log('setAttributionInfo: ', attributionInfo);
+    IterableLogger.log('setAttributionInfo: ', attributionInfo);
     return RNIterableAPI.setAttributionInfo(attributionInfo);
   }
 
