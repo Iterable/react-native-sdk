@@ -120,7 +120,6 @@ export interface Spec extends TurboModule {
   // Wake app -- android only
   wakeApp(): void;
 
-
   // REQUIRED for RCTEventEmitter
   addListener(eventName: string): void;
   removeListeners(count: number): void;
