@@ -46,7 +46,7 @@ export class IterableLogger {
    *
    * @param loggingEnabled - Whether logs should show in the developer console.
    */
-  static setLoggingEnabled(loggingEnabled: boolean) {
+  static setLoggingEnabled(loggingEnabled?: boolean) {
     IterableLogger.loggingEnabled =
       typeof loggingEnabled === 'boolean'
         ? loggingEnabled
@@ -75,7 +75,7 @@ export class IterableLogger {
   }
 
   /**
-   * Logs an error message to the console if logging is enabled.
+   * Logs a message to the console if the log level is error.
    *
    * @param message - The message to be logged.
    */
@@ -87,7 +87,7 @@ export class IterableLogger {
   }
 
   /**
-   * Logs a debug message to the console if logging is enabled.
+   * Logs a message to the console if the log level is debug or lower.
    *
    * @param message - The message to be logged.
    */
@@ -104,20 +104,12 @@ export class IterableLogger {
   }
 
   /**
-   * Logs an info message to the console if logging is enabled.
+   * Logs a message to the console if the log level is info or lower.
    *
    * @param message - The message to be logged.
    */
   static info(message?: unknown, ...optionalParams: unknown[]) {
     if (!IterableLogger.loggingEnabled) return;
-
-    const shouldLog = [
-      IterableLogLevel.error,
-      IterableLogLevel.debug,
-      IterableLogLevel.info,
-    ].includes(IterableLogger.logLevel);
-
-    if (!shouldLog) return;
 
     console.log(`INFO:`, message, ...optionalParams);
   }
