@@ -45,10 +45,10 @@ Iterable's React Native SDK relies on:
 
 #### UI Components require additional peer dependencies
   - [React Navigation 6+](https://github.com/react-navigation/react-navigation)
-  - [React Native Safe Area Context 4+](https://github.com/th3rdwave/react-native-safe-area-context)
   - [React Native WebView 13+](https://github.com/react-native-webview/react-native-webview)
 
 #### Optional peer dependencies for enhanced UI
+  - [React Native Safe Area Context 4+](https://github.com/th3rdwave/react-native-safe-area-context) - Provides proper safe area handling for the inbox component. If not installed, the SDK will use fallback View components.
   - [React Native Vector Icons 10+](https://github.com/oblador/react-native-vector-icons) - Provides enhanced icons for the inbox component. If not installed, the SDK will use fallback Unicode symbols.
 
 ### iOS
