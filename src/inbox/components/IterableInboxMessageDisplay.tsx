@@ -7,7 +7,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { IterableInboxSmartIcon } from './IterableInboxSmartIcon';
 import { WebView, type WebViewMessageEvent } from 'react-native-webview';
 
 import {
@@ -233,7 +233,7 @@ export const IterableInboxMessageDisplay = ({
             }}
           >
             <View style={styles.returnButton}>
-              <Icon
+              <IterableInboxSmartIcon
                 name="chevron-back-outline"
                 style={styles.returnButtonIcon}
               />
