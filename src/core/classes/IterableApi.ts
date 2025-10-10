@@ -31,8 +31,13 @@ export class IterableApi {
    */
   static initializeWithApiKey(
     apiKey: string,
-    config: IterableConfig = new IterableConfig(),
-    version: string
+    {
+      config = new IterableConfig(),
+      version,
+    }: {
+      config: IterableConfig;
+      version: string;
+    }
   ): Promise<boolean> {
     // IterableLogger.log('initializeWithApiKey: ', apiKey);
     return RNIterableAPI.initializeWithApiKey(apiKey, config.toDict(), version);
@@ -46,9 +51,15 @@ export class IterableApi {
    */
   static initialize2WithApiKey(
     apiKey: string,
-    config: IterableConfig = new IterableConfig(),
-    version: string,
-    apiEndPoint: string
+    {
+      config = new IterableConfig(),
+      version,
+      apiEndPoint,
+    }: {
+      config: IterableConfig;
+      version: string;
+      apiEndPoint: string;
+    }
   ): Promise<boolean> {
     // IterableLogger.log('initialize2WithApiKey: ', apiKey);
     return RNIterableAPI.initialize2WithApiKey(
@@ -162,13 +173,19 @@ export class IterableApi {
    * @param appAlreadyRunning - Whether the app is already running
    * @param dataFields - The data fields to track
    */
-  static trackPushOpenWithCampaignId(
-    campaignId: number,
-    templateId: number,
-    messageId: string | null | undefined,
-    appAlreadyRunning: boolean,
-    dataFields?: unknown
-  ) {
+  static trackPushOpenWithCampaignId({
+    campaignId,
+    templateId,
+    messageId,
+    appAlreadyRunning,
+    dataFields,
+  }: {
+    campaignId: number;
+    templateId: number;
+    messageId: string | null | undefined;
+    appAlreadyRunning: boolean;
+    dataFields?: unknown;
+  }) {
     // IterableLogger.log(
     //   'trackPushOpenWithCampaignId: ',
     //   campaignId,
@@ -194,11 +211,15 @@ export class IterableApi {
    * @param items - The items included in the purchase
    * @param dataFields - The data fields to track
    */
-  static trackPurchase(
-    total: number,
-    items: IterableCommerceItem[],
-    dataFields?: unknown
-  ) {
+  static trackPurchase({
+    total,
+    items,
+    dataFields,
+  }: {
+    total: number;
+    items: IterableCommerceItem[];
+    dataFields?: unknown;
+  }) {
     // IterableLogger.log('trackPurchase: ', total, items, dataFields);
     return RNIterableAPI.trackPurchase(total, items, dataFields);
   }
@@ -211,10 +232,13 @@ export class IterableApi {
    * @param message - The in-app message (an {@link IterableInAppMessage} object)
    * @param location - The location of the in-app message (an IterableInAppLocation enum)
    */
-  static trackInAppOpen(
-    message: IterableInAppMessage,
-    location: IterableInAppLocation
-  ) {
+  static trackInAppOpen({
+    message,
+    location,
+  }: {
+    message: IterableInAppMessage;
+    location: IterableInAppLocation;
+  }) {
     // IterableLogger.log('trackInAppOpen: ', message, location);
     return RNIterableAPI.trackInAppOpen(message.messageId, location);
   }
@@ -229,11 +253,15 @@ export class IterableApi {
    * @param location - The location of the in-app message.
    * @param clickedUrl - The URL clicked by the user.
    */
-  static trackInAppClick(
-    message: IterableInAppMessage,
-    location: IterableInAppLocation,
-    clickedUrl: string
-  ) {
+  static trackInAppClick({
+    message,
+    location,
+    clickedUrl,
+  }: {
+    message: IterableInAppMessage;
+    location: IterableInAppLocation;
+    clickedUrl: string;
+  }) {
     // IterableLogger.log('trackInAppClick: ', message, location, clickedUrl);
     return RNIterableAPI.trackInAppClick(
       message.messageId,
@@ -252,12 +280,17 @@ export class IterableApi {
    * @param source - The way the in-app was closed.
    * @param clickedUrl - The URL clicked by the user.
    */
-  static trackInAppClose(
-    message: IterableInAppMessage,
-    location: IterableInAppLocation,
-    source: IterableInAppCloseSource,
-    clickedUrl?: string
-  ) {
+  static trackInAppClose({
+    message,
+    location,
+    source,
+    clickedUrl,
+  }: {
+    message: IterableInAppMessage;
+    location: IterableInAppLocation;
+    source: IterableInAppCloseSource;
+    clickedUrl?: string;
+  }) {
     // IterableLogger.log(
     //   'trackInAppClose: ',
     //   message,
@@ -280,7 +313,13 @@ export class IterableApi {
    * @param name - The name of the event
    * @param dataFields - The data fields to track
    */
-  static trackEvent(name: string, dataFields?: unknown) {
+  static trackEvent({
+    name,
+    dataFields,
+  }: {
+    name: string;
+    dataFields?: unknown;
+  }) {
     // IterableLogger.log('trackEvent: ', name, dataFields);
     return RNIterableAPI.trackEvent(name, dataFields);
   }
@@ -511,14 +550,21 @@ export class IterableApi {
    * @param campaignId - The campaign ID.
    * @param templateId - The template ID.
    */
-  static updateSubscriptions(
-    emailListIds: number[] | null,
-    unsubscribedChannelIds: number[] | null,
-    unsubscribedMessageTypeIds: number[] | null,
-    subscribedMessageTypeIds: number[] | null,
-    campaignId: number,
-    templateId: number
-  ) {
+  static updateSubscriptions({
+    emailListIds,
+    unsubscribedChannelIds,
+    unsubscribedMessageTypeIds,
+    subscribedMessageTypeIds,
+    campaignId,
+    templateId,
+  }: {
+    emailListIds: number[] | null;
+    unsubscribedChannelIds: number[] | null;
+    unsubscribedMessageTypeIds: number[] | null;
+    subscribedMessageTypeIds: number[] | null;
+    campaignId: number;
+    templateId: number;
+  }) {
     // IterableLogger.log(
     //   'updateSubscriptions: ',
     //   emailListIds,

@@ -146,7 +146,7 @@ export class Iterable {
 
     const version = this.getVersionFromPackageJson();
 
-    return IterableApi.initializeWithApiKey(apiKey, config, version);
+    return IterableApi.initializeWithApiKey(apiKey, { config, version });
   }
 
   /**
@@ -167,12 +167,11 @@ export class Iterable {
 
     const version = this.getVersionFromPackageJson();
 
-    return IterableApi.initialize2WithApiKey(
-      apiKey,
+    return IterableApi.initialize2WithApiKey(apiKey, {
       config,
       version,
-      apiEndPoint
-    );
+      apiEndPoint,
+    });
   }
 
   /**
@@ -438,13 +437,13 @@ export class Iterable {
     appAlreadyRunning: boolean,
     dataFields?: unknown
   ) {
-    IterableApi.trackPushOpenWithCampaignId(
+    IterableApi.trackPushOpenWithCampaignId({
       campaignId,
       templateId,
-      messageId as string,
+      messageId,
       appAlreadyRunning,
-      dataFields
-    );
+      dataFields,
+    });
   }
 
   /**
@@ -524,7 +523,7 @@ export class Iterable {
   ) {
     Iterable?.logger?.log('trackPurchase');
 
-    IterableApi.trackPurchase(total, items, dataFields);
+    IterableApi.trackPurchase({ total, items, dataFields });
   }
 
   /**
@@ -556,7 +555,7 @@ export class Iterable {
       );
       return;
     }
-    IterableApi.trackInAppOpen(message, location);
+    IterableApi.trackInAppOpen({ message, location });
   }
 
   /**
@@ -585,7 +584,7 @@ export class Iterable {
     location: IterableInAppLocation,
     clickedUrl: string
   ) {
-    IterableApi.trackInAppClick(message, location, clickedUrl);
+    IterableApi.trackInAppClick({ message, location, clickedUrl });
   }
 
   /**
@@ -616,7 +615,7 @@ export class Iterable {
     source: IterableInAppCloseSource,
     clickedUrl?: string
   ) {
-    IterableApi.trackInAppClose(message, location, source, clickedUrl);
+    IterableApi.trackInAppClose({ message, location, source, clickedUrl });
   }
 
   /**
@@ -684,7 +683,7 @@ export class Iterable {
    * ```
    */
   static trackEvent(name: string, dataFields?: unknown) {
-    IterableApi.trackEvent(name, dataFields);
+    IterableApi.trackEvent({ name, dataFields });
   }
 
   /**
@@ -878,14 +877,14 @@ export class Iterable {
     campaignId: number,
     templateId: number
   ) {
-    IterableApi.updateSubscriptions(
+    IterableApi.updateSubscriptions({
       emailListIds,
       unsubscribedChannelIds,
       unsubscribedMessageTypeIds,
       subscribedMessageTypeIds,
       campaignId,
-      templateId
-    );
+      templateId,
+    });
   }
 
   /**
