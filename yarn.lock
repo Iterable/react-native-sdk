@@ -3146,9 +3146,9 @@ __metadata:
     react-native: 0.79.3
     react-native-builder-bob: ^0.40.4
     react-native-gesture-handler: ^2.26.0
-    react-native-safe-area-context: ^5.4.0
+    react-native-safe-area-context: ^5.6.1
     react-native-screens: ^4.10.0
-    react-native-vector-icons: ^10.2.0
+    react-native-vector-icons: ^10.3.0
     react-native-webview: ^13.14.1
     react-test-renderer: 19.0.0
     release-it: ^17.10.0
@@ -3161,11 +3161,14 @@ __metadata:
     "@react-navigation/native": "*"
     react: "*"
     react-native: "*"
-    react-native-safe-area-context: "*"
-    react-native-vector-icons: "*"
-    react-native-webview: "*"
   peerDependenciesMeta:
     expo:
+      optional: true
+    react-native-safe-area-context:
+      optional: true
+    react-native-vector-icons:
+      optional: true
+    react-native-webview:
       optional: true
   languageName: unknown
   linkType: soft
@@ -12544,7 +12547,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-safe-area-context@npm:^5.4.0":
+"react-native-safe-area-context@npm:^5.6.1":
   version: 5.6.1
   resolution: "react-native-safe-area-context@npm:5.6.1"
   peerDependencies:
@@ -12594,6 +12597,21 @@ __metadata:
     fa6-upgrade: bin/fa6-upgrade.sh
     generate-icon: bin/generate-icon.js
   checksum: fda930df4e63f12533268f5b339ebe4c77c691eae43503328466b3087ed868a06a4593fd246e75ac6b5ec955543eec35608c7922191bdcc3b3a94ed7f3575ef0
+  languageName: node
+  linkType: hard
+
+"react-native-vector-icons@npm:^10.3.0":
+  version: 10.3.0
+  resolution: "react-native-vector-icons@npm:10.3.0"
+  dependencies:
+    prop-types: ^15.7.2
+    yargs: ^16.1.1
+  bin:
+    fa-upgrade.sh: bin/fa-upgrade.sh
+    fa5-upgrade: bin/fa5-upgrade.sh
+    fa6-upgrade: bin/fa6-upgrade.sh
+    generate-icon: bin/generate-icon.js
+  checksum: 5c431fd9a8e6efd355e34ed28ca7fa7eed30e89362280cbd1e474e6d16148c6c37f5c950a525ec0b428c79dc74b9fb7a61171fc509b6ab253e111456f3e49b71
   languageName: node
   linkType: hard
 

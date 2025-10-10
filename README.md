@@ -17,6 +17,11 @@ Iterable. It supports JavaScript and TypeScript.
 
 - [Iterable's React Native SDK](#iterables-react-native-sdk)
   - [Requirements](#requirements)
+    - [React Native](#react-native)
+      - [UI Components require additional peer dependencies](#ui-components-require-additional-peer-dependencies)
+      - [Optional peer dependencies for enhanced UI](#optional-peer-dependencies-for-enhanced-ui)
+    - [iOS](#ios)
+    - [Android](#android)
   - [Architecture Support](#architecture-support)
   - [Installation](#installation)
   - [Features](#features)
@@ -34,22 +39,24 @@ Iterable. It supports JavaScript and TypeScript.
 
 Iterable's React Native SDK relies on:
 
-- **React Native**
-    - [React Native 0.75+](https://github.com/facebook/react-native)
-    - [React 18.1+](https://github.com/facebook/react)
+### React Native
+  - [React Native 0.75+](https://github.com/facebook/react-native)
+  - [React 18.1+](https://github.com/facebook/react)
 
-    _UI Components require additional peer dependencies_
-    - [React Navigation 6+](https://github.com/react-navigation/react-navigation)
-    - [React Native Safe Area Context 4+](https://github.com/th3rdwave/react-native-safe-area-context)
-    - [React Native Vector Icons 10+](https://github.com/oblador/react-native-vector-icons)
-    - [React Native WebView 13+](https://github.com/react-native-webview/react-native-webview)
+#### UI Components require additional peer dependencies
+  - [React Navigation 6+](https://github.com/react-navigation/react-navigation)
 
-- **iOS**
+#### Optional peer dependencies for enhanced UI
+  - [React Native WebView 13+](https://github.com/react-native-webview/react-native-webview) - Required only for inbox message display functionality. If not installed, the SDK will show a fallback message.
+  - [React Native Safe Area Context 4+](https://github.com/th3rdwave/react-native-safe-area-context) - Provides proper safe area handling for the inbox component. If not installed, the SDK will use fallback View components.
+  - [React Native Vector Icons 10+](https://github.com/oblador/react-native-vector-icons) - Provides enhanced icons for the inbox component. If not installed, the SDK will use fallback Unicode symbols.
+
+### iOS
     - Xcode 12+
     - [Deployment target 13.4+](https://help.apple.com/xcode/mac/current/#/deve69552ee5)
     - [Iterable's iOS SDK](https://github.com/Iterable/iterable-swift-sdk)
-
-- **Android**
+    - Swift 5
+### Android
     - [`minSdkVersion` 21+, `compileSdkVersion` 31+](https://medium.com/androiddevelopers/picking-your-compilesdkversion-minsdkversion-targetsdkversion-a098a0341ebd)
     - [Iterable's Android SDK](https://github.com/Iterable/iterable-android-sdk)
 

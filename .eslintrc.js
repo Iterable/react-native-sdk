@@ -1,5 +1,6 @@
 module.exports = {
   root: true,
+  ignorePatterns: ['coverage/**/*'],
   extends: [
     '@react-native',
     'plugin:react/recommended',
