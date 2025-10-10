@@ -578,7 +578,7 @@ export class IterableApi {
    *
    * @param attributionInfo - The attribution info.
    */
-  static setAttributionInfo(attributionInfo: IterableAttributionInfo) {
+  static setAttributionInfo(attributionInfo?: IterableAttributionInfo) {
     // IterableLogger.log('setAttributionInfo: ', attributionInfo);
     return RNIterableAPI.setAttributionInfo(attributionInfo);
   }
