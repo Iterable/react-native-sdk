@@ -19,11 +19,11 @@ export const Commerce = () => {
 
     Iterable.trackPurchase(totalPrice, purchaseItems, dataFields);
 
-    console.group('Purchase tracked with the following arguments:');
-    console.log('Total price:', totalPrice);
-    console.log('Purchase items:', [...purchaseItems]);
-    console.log('Data fields:', dataFields);
-    console.groupEnd();
+    // Example of using the new Android-style logging
+    Iterable.logger.log('Purchase tracked with the following arguments:');
+    Iterable.logger.log('Total price:', totalPrice);
+    Iterable.logger.log('Purchase items:', [...purchaseItems]);
+    Iterable.logger.log('Data fields:', dataFields);
 
     Alert.alert(
       `Tracked purchase: ${item.name}, $${item.price}`,

@@ -135,7 +135,7 @@ export const IterableAppProvider: FunctionComponent<
       };
 
       config.onJWTError = (authFailure) => {
-        console.log('onJWTError', authFailure);
+        Iterable.logger.log('onJWTError', authFailure);
 
         const failureReason =
           typeof authFailure.failureReason === 'string'
@@ -171,20 +171,22 @@ export const IterableAppProvider: FunctionComponent<
 
       config.logLevel = IterableLogLevel.debug;
 
+      config.logReactNativeSdkCalls = true;
+
       config.inAppHandler = () => IterableInAppShowResponse.show;
 
       // NOTE: Uncomment to test authHandler failure
       // config.authHandler = () => {
-      //   console.log(`authHandler`);
+      //   Iterable.logger.d(`authHandler`);
 
       //   return Promise.resolve({
       //     authToken: 'SomethingNotValid',
       //     successCallback: () => {
-      //       console.log(`authHandler > success`);
+      //       Iterable.logger.d(`authHandler > success`);
       //     },
       //     // This is not firing
       //     failureCallback: () => {
-      //       console.log(`authHandler > failure`);
+      //       Iterable.logger.d(`authHandler > failure`);
       //     },
       //   });
       // };
@@ -194,7 +196,7 @@ export const IterableAppProvider: FunctionComponent<
       const key = apiKey ?? process.env.ITBL_API_KEY;
 
       if (!key) {
-        console.error('No API key found.');
+        Iterable.logger.log('No API key found.');
         return Promise.resolve(false);
       }
 
@@ -213,7 +215,7 @@ export const IterableAppProvider: FunctionComponent<
           return isSuccessful;
         })
         .catch((err) => {
-          console.error(
+          Iterable.logger.log(
             '`Iterable.initialize` failed with the following error',
             err
           );
