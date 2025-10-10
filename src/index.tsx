@@ -26,17 +26,6 @@ export {
 } from './core/hooks';
 export { type IterableEdgeInsetDetails } from './core/types';
 export {
-  ConditionalSafeAreaView,
-  ConditionalSafeAreaProvider,
-  getSafeAreaView,
-  getSafeAreaProvider,
-  getUseSafeAreaInsets,
-  getUseSafeAreaFrame,
-  SafeAreaContextNotAvailableError,
-  type ConditionalSafeAreaViewProps,
-  type ConditionalSafeAreaProviderProps,
-} from './core/utils/SafeAreaContext';
-export {
   IterableHtmlInAppContent,
   IterableInAppCloseSource,
   IterableInAppContentType,
