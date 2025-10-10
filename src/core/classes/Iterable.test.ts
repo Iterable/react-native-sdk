@@ -1,8 +1,8 @@
-import { NativeEventEmitter, Platform } from "react-native";
+import { NativeEventEmitter, Platform } from 'react-native';
 
-import { MockLinking } from "../../__mocks__/MockLinking";
-import { MockRNIterableAPI } from "../../__mocks__/MockRNIterableAPI";
-import { IterableLogger } from "..";
+import { MockLinking } from '../../__mocks__/MockLinking';
+import { MockRNIterableAPI } from '../../__mocks__/MockRNIterableAPI';
+import { IterableLogger } from '..';
 // import from the same location that consumers import from
 import {
   Iterable,
@@ -23,8 +23,8 @@ import {
   IterableInAppTriggerType,
   IterableAuthResponse,
   IterableInAppShowResponse,
-} from "../..";
-import { TestHelper } from "../../__tests__/TestHelper";
+} from '../..';
+import { TestHelper } from '../../__tests__/TestHelper';
 
 const getDefaultConfig = () => {
   const config = new IterableConfig();
@@ -32,7 +32,7 @@ const getDefaultConfig = () => {
   return config;
 };
 
-describe("Iterable", () => {
+describe('Iterable', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     const config = getDefaultConfig();
@@ -55,11 +55,11 @@ describe("Iterable", () => {
     jest.clearAllTimers();
   });
 
-  describe("setEmail", () => {
-    it("should set the email", async () => {
-      const result = "user@example.com";
+  describe('setEmail', () => {
+    it('should set the email', async () => {
+      const result = 'user@example.com';
       // GIVEN an email
-      const email = "user@example.com";
+      const email = 'user@example.com';
       // WHEN Iterable.setEmail is called with the given email
       Iterable.setEmail(email);
       // THEN Iterable.getEmail returns the given email
@@ -69,11 +69,11 @@ describe("Iterable", () => {
     });
   });
 
-  describe("setUserId", () => {
-    it("should set the userId", async () => {
-      const result = "user1";
+  describe('setUserId', () => {
+    it('should set the userId', async () => {
+      const result = 'user1';
       // GIVEN an userId
-      const userId = "user1";
+      const userId = 'user1';
       // WHEN Iterable.setUserId is called with the given userId
       Iterable.setUserId(userId);
       // THEN Iterable.getUserId returns the given userId
@@ -83,8 +83,8 @@ describe("Iterable", () => {
     });
   });
 
-  describe("disableDeviceForCurrentUser", () => {
-    it("should disable the device for the current user", () => {
+  describe('disableDeviceForCurrentUser', () => {
+    it('should disable the device for the current user', () => {
       // GIVEN no parameters
       // WHEN Iterable.disableDeviceForCurrentUser is called
       Iterable.disableDeviceForCurrentUser();
@@ -93,12 +93,12 @@ describe("Iterable", () => {
     });
   });
 
-  describe("getLastPushPayload", () => {
-    it("should return the last push payload", async () => {
-      const result = { var1: "val1", var2: true };
+  describe('getLastPushPayload', () => {
+    it('should return the last push payload', async () => {
+      const result = { var1: 'val1', var2: true };
       // GIVEN no parameters
       // WHEN the lastPushPayload is set
-      MockRNIterableAPI.lastPushPayload = { var1: "val1", var2: true };
+      MockRNIterableAPI.lastPushPayload = { var1: 'val1', var2: true };
       // THEN the lastPushPayload is returned when getLastPushPayload is called
       return await Iterable.getLastPushPayload().then((payload) => {
         expect(payload).toEqual(result);
@@ -106,14 +106,14 @@ describe("Iterable", () => {
     });
   });
 
-  describe("trackPushOpenWithCampaignId", () => {
-    it("should track the push open with the campaign id", () => {
+  describe('trackPushOpenWithCampaignId', () => {
+    it('should track the push open with the campaign id', () => {
       // GIVEN the following parameters
       const campaignId = 123;
       const templateId = 234;
-      const messageId = "someMessageId";
+      const messageId = 'someMessageId';
       const appAlreadyRunning = false;
-      const dataFields = { dataFieldKey: "dataFieldValue" };
+      const dataFields = { dataFieldKey: 'dataFieldValue' };
       // WHEN Iterable.trackPushOpenWithCampaignId is called
       Iterable.trackPushOpenWithCampaignId(
         campaignId,
@@ -133,10 +133,10 @@ describe("Iterable", () => {
     });
   });
 
-  describe("updateCart", () => {
-    it("should call IterableAPI.updateCart with the correct items", () => {
+  describe('updateCart', () => {
+    it('should call IterableAPI.updateCart with the correct items', () => {
       // GIVEN list of items
-      const items = [new IterableCommerceItem("id1", "Boba Tea", 18, 26)];
+      const items = [new IterableCommerceItem('id1', 'Boba Tea', 18, 26)];
       // WHEN Iterable.updateCart is called
       Iterable.updateCart(items);
       // THEN corresponding function is called on RNIterableAPI
@@ -144,12 +144,12 @@ describe("Iterable", () => {
     });
   });
 
-  describe("trackPurchase", () => {
-    it("should track the purchase", () => {
+  describe('trackPurchase', () => {
+    it('should track the purchase', () => {
       // GIVEN the following parameters
       const total = 10;
-      const items = [new IterableCommerceItem("id1", "Boba Tea", 18, 26)];
-      const dataFields = { dataFieldKey: "dataFieldValue" };
+      const items = [new IterableCommerceItem('id1', 'Boba Tea', 18, 26)];
+      const dataFields = { dataFieldKey: 'dataFieldValue' };
       // WHEN Iterable.trackPurchase is called
       Iterable.trackPurchase(total, items, dataFields);
       // THEN corresponding function is called on RNIterableAPI
@@ -160,23 +160,23 @@ describe("Iterable", () => {
       );
     });
 
-    it("should track the purchase when called with optional fields", () => {
+    it('should track the purchase when called with optional fields', () => {
       // GIVEN the following parameters
       const total = 5;
       const items = [
         new IterableCommerceItem(
-          "id",
-          "swordfish",
+          'id',
+          'swordfish',
           64,
           1,
-          "SKU",
-          "description",
-          "url",
-          "imageUrl",
-          ["sword", "shield"]
+          'SKU',
+          'description',
+          'url',
+          'imageUrl',
+          ['sword', 'shield']
         ),
       ];
-      const dataFields = { key: "value" };
+      const dataFields = { key: 'value' };
       // WHEN Iterable.trackPurchase is called
       Iterable.trackPurchase(total, items, dataFields);
       // THEN corresponding function is called on RNIterableAPI
@@ -188,11 +188,11 @@ describe("Iterable", () => {
     });
   });
 
-  describe("trackEvent", () => {
-    it("should call IterableAPI.trackEvent with the correct name and dataFields", () => {
+  describe('trackEvent', () => {
+    it('should call IterableAPI.trackEvent with the correct name and dataFields', () => {
       // GIVEN the following parameters
-      const name = "EventName";
-      const dataFields = { DatafieldKey: "DatafieldValue" };
+      const name = 'EventName';
+      const dataFields = { DatafieldKey: 'DatafieldValue' };
       // WHEN Iterable.trackEvent is called
       Iterable.trackEvent(name, dataFields);
       // THEN corresponding function is called on RNIterableAPI
@@ -200,12 +200,12 @@ describe("Iterable", () => {
     });
   });
 
-  describe("setAttributionInfo", () => {
-    it("should set the attribution info", async () => {
+  describe('setAttributionInfo', () => {
+    it('should set the attribution info', async () => {
       // GIVEN attribution info
       const campaignId = 1234;
       const templateId = 5678;
-      const messageId = "qwer";
+      const messageId = 'qwer';
       // WHEN Iterable.setAttributionInfo is called with the given attribution info
       Iterable.setAttributionInfo(
         new IterableAttributionInfo(campaignId, templateId, messageId)
@@ -219,10 +219,10 @@ describe("Iterable", () => {
     });
   });
 
-  describe("updateUser", () => {
-    it("should update the user", () => {
+  describe('updateUser', () => {
+    it('should update the user', () => {
       // GIVEN the following parameters
-      const dataFields = { field: "value1" };
+      const dataFields = { field: 'value1' };
       // WHEN Iterable.updateUser is called
       Iterable.updateUser(dataFields, false);
       // THEN corresponding function is called on RNIterableAPI
@@ -230,20 +230,20 @@ describe("Iterable", () => {
     });
   });
 
-  describe("updateEmail", () => {
-    it("should call IterableAPI.updateEmail with the correct email", () => {
+  describe('updateEmail', () => {
+    it('should call IterableAPI.updateEmail with the correct email', () => {
       // GIVEN the new email
-      const newEmail = "woo@newemail.com";
+      const newEmail = 'woo@newemail.com';
       // WHEN Iterable.updateEmail is called
       Iterable.updateEmail(newEmail);
       // THEN corresponding function is called on RNIterableAPI
       expect(MockRNIterableAPI.updateEmail).toBeCalledWith(newEmail, undefined);
     });
 
-    it("should call IterableAPI.updateEmail with the correct email and token", () => {
+    it('should call IterableAPI.updateEmail with the correct email and token', () => {
       // GIVEN the new email and a token
-      const newEmail = "woo@newemail.com";
-      const newToken = "token2";
+      const newEmail = 'woo@newemail.com';
+      const newToken = 'token2';
       // WHEN Iterable.updateEmail is called
       Iterable.updateEmail(newEmail, newToken);
       // THEN corresponding function is called on RNITerableAPI
@@ -251,8 +251,8 @@ describe("Iterable", () => {
     });
   });
 
-  describe("iterableConfig", () => {
-    it("should have default values", () => {
+  describe('iterableConfig', () => {
+    it('should have default values', () => {
       // GIVEN no parameters
       // WHEN config is initialized
       const config = new IterableConfig();
@@ -291,8 +291,8 @@ describe("Iterable", () => {
     });
   });
 
-  describe("urlHandler", () => {
-    it("should open the url when canOpenURL returns true and urlHandler returns false", async () => {
+  describe('urlHandler', () => {
+    it('should open the url when canOpenURL returns true and urlHandler returns false', async () => {
       // sets up event emitter
       const nativeEmitter = new NativeEventEmitter();
       nativeEmitter.removeAllListeners(IterableEventName.handleUrlCalled);
@@ -304,7 +304,7 @@ describe("Iterable", () => {
         return false;
       });
       // initialize Iterable object
-      Iterable.initialize("apiKey", config);
+      Iterable.initialize('apiKey', config);
       // GIVEN canOpenUrl set to return a promise that resolves to true
       MockLinking.canOpenURL = jest.fn(async () => {
         return await new Promise((resolve) => {
@@ -312,11 +312,11 @@ describe("Iterable", () => {
         });
       });
       MockLinking.openURL.mockReset();
-      const expectedUrl = "https://somewhere.com";
-      const actionDict = { type: "openUrl" };
+      const expectedUrl = 'https://somewhere.com';
+      const actionDict = { type: 'openUrl' };
       const dict = {
         url: expectedUrl,
-        context: { action: actionDict, source: "inApp" },
+        context: { action: actionDict, source: 'inApp' },
       };
       // WHEN handleUrlCalled event is emitted
       nativeEmitter.emit(IterableEventName.handleUrlCalled, dict);
@@ -327,7 +327,7 @@ describe("Iterable", () => {
       });
     });
 
-    it("should not open the url when canOpenURL returns false and urlHandler returns false", async () => {
+    it('should not open the url when canOpenURL returns false and urlHandler returns false', async () => {
       // sets up event emitter
       const nativeEmitter = new NativeEventEmitter();
       nativeEmitter.removeAllListeners(IterableEventName.handleUrlCalled);
@@ -339,7 +339,7 @@ describe("Iterable", () => {
         return false;
       });
       // initialize Iterable object
-      Iterable.initialize("apiKey", config);
+      Iterable.initialize('apiKey', config);
       // GIVEN canOpenUrl set to return a promise that resolves to false
       MockLinking.canOpenURL = jest.fn(async () => {
         return await new Promise((resolve) => {
@@ -347,11 +347,11 @@ describe("Iterable", () => {
         });
       });
       MockLinking.openURL.mockReset();
-      const expectedUrl = "https://somewhere.com";
-      const actionDict = { type: "openUrl" };
+      const expectedUrl = 'https://somewhere.com';
+      const actionDict = { type: 'openUrl' };
       const dict = {
         url: expectedUrl,
-        context: { action: actionDict, source: "inApp" },
+        context: { action: actionDict, source: 'inApp' },
       };
       // WHEN handleUrlCalled event is emitted
       nativeEmitter.emit(IterableEventName.handleUrlCalled, dict);
@@ -362,7 +362,7 @@ describe("Iterable", () => {
       });
     });
 
-    it("should not open the url when canOpenURL returns true and urlHandler returns true", async () => {
+    it('should not open the url when canOpenURL returns true and urlHandler returns true', async () => {
       // sets up event emitter
       const nativeEmitter = new NativeEventEmitter();
       nativeEmitter.removeAllListeners(IterableEventName.handleUrlCalled);
@@ -374,7 +374,7 @@ describe("Iterable", () => {
         return true;
       });
       // initialize Iterable object
-      Iterable.initialize("apiKey", config);
+      Iterable.initialize('apiKey', config);
       // GIVEN canOpenUrl set to return a promise that resolves to true
       MockLinking.canOpenURL = jest.fn(async () => {
         return await new Promise((resolve) => {
@@ -382,11 +382,11 @@ describe("Iterable", () => {
         });
       });
       MockLinking.openURL.mockReset();
-      const expectedUrl = "https://somewhere.com";
-      const actionDict = { type: "openUrl" };
+      const expectedUrl = 'https://somewhere.com';
+      const actionDict = { type: 'openUrl' };
       const dict = {
         url: expectedUrl,
-        context: { action: actionDict, source: "inApp" },
+        context: { action: actionDict, source: 'inApp' },
       };
       // WHEN handleUrlCalled event is emitted
       nativeEmitter.emit(IterableEventName.handleUrlCalled, dict);
@@ -398,8 +398,8 @@ describe("Iterable", () => {
     });
   });
 
-  describe("customActionHandler", () => {
-    it("should be called with the correct action and context", () => {
+  describe('customActionHandler', () => {
+    it('should be called with the correct action and context', () => {
       // sets up event emitter
       const nativeEmitter = new NativeEventEmitter();
       nativeEmitter.removeAllListeners(
@@ -415,10 +415,10 @@ describe("Iterable", () => {
         }
       );
       // initialize Iterable object
-      Iterable.initialize("apiKey", config);
+      Iterable.initialize('apiKey', config);
       // GIVEN custom action name and custom action data
-      const actionName = "zeeActionName";
-      const actionData = "zeeActionData";
+      const actionName = 'zeeActionName';
+      const actionData = 'zeeActionData';
       const actionDict = { type: actionName, data: actionData };
       const actionSource = IterableActionSource.inApp;
       const dict = {
@@ -440,10 +440,10 @@ describe("Iterable", () => {
     });
   });
 
-  describe("handleAppLink", () => {
-    it("should call IterableAPI.handleAppLink", () => {
+  describe('handleAppLink', () => {
+    it('should call IterableAPI.handleAppLink', () => {
       // GIVEN a link
-      const link = "https://somewhere.com/link/something";
+      const link = 'https://somewhere.com/link/something';
       // WHEN Iterable.handleAppLink is called
       Iterable.handleAppLink(link);
       // THEN corresponding function is called on RNITerableAPI
@@ -451,8 +451,8 @@ describe("Iterable", () => {
     });
   });
 
-  describe("updateSubscriptions", () => {
-    it("should call IterableAPI.updateSubscriptions with the correct parameters", () => {
+  describe('updateSubscriptions', () => {
+    it('should call IterableAPI.updateSubscriptions with the correct parameters', () => {
       // GIVEN the following parameters
       const emailListIds = [1, 2, 3];
       const unsubscribedChannelIds = [4, 5, 6];
@@ -481,10 +481,10 @@ describe("Iterable", () => {
     });
   });
 
-  describe("initialize", () => {
-    it("should call IterableAPI.initializeWithApiKey and save the config", async () => {
+  describe('initialize', () => {
+    it('should call IterableAPI.initializeWithApiKey and save the config', async () => {
       // GIVEN an API key and config
-      const apiKey = "test-api-key";
+      const apiKey = 'test-api-key';
       const config = new IterableConfig();
       config.logReactNativeSdkCalls = false;
       config.logLevel = IterableLogLevel.debug;
@@ -500,9 +500,9 @@ describe("Iterable", () => {
       expect(result).toBe(true);
     });
 
-    it("should give the default config if no config is provided", async () => {
+    it('should give the default config if no config is provided', async () => {
       // GIVEN an API key
-      const apiKey = "test-api-key";
+      const apiKey = 'test-api-key';
       // WHEN Iterable.initialize is called
       const result = await Iterable.initialize(apiKey);
       // THEN corresponding function is called on RNIterableAPI and config is saved
@@ -511,13 +511,13 @@ describe("Iterable", () => {
     });
   });
 
-  describe("initialize2", () => {
-    it("should call IterableAPI.initialize2WithApiKey with an endpoint and save the config", async () => {
+  describe('initialize2', () => {
+    it('should call IterableAPI.initialize2WithApiKey with an endpoint and save the config', async () => {
       // GIVEN an API key, config, and endpoint
-      const apiKey = "test-api-key";
+      const apiKey = 'test-api-key';
       const config = new IterableConfig();
       config.logReactNativeSdkCalls = false;
-      const apiEndPoint = "https://api.staging.iterable.com";
+      const apiEndPoint = 'https://api.staging.iterable.com';
       // WHEN Iterable.initialize2 is called
       const result = await Iterable.initialize2(apiKey, config, apiEndPoint);
       // THEN corresponding function is called on RNIterableAPI and config is saved
@@ -531,10 +531,10 @@ describe("Iterable", () => {
       expect(result).toBe(true);
     });
 
-    it("should give the default config if no config is provided", async () => {
+    it('should give the default config if no config is provided', async () => {
       // GIVEN an API key
-      const apiKey = "test-api-key";
-      const apiEndPoint = "https://api.staging.iterable.com";
+      const apiKey = 'test-api-key';
+      const apiEndPoint = 'https://api.staging.iterable.com';
       // WHEN Iterable.initialize is called
       const result = await Iterable.initialize2(apiKey, undefined, apiEndPoint);
       // THEN corresponding function is called on RNIterableAPI and config is saved
@@ -543,12 +543,12 @@ describe("Iterable", () => {
     });
   });
 
-  describe("wakeApp", () => {
-    it("should call IterableAPI.wakeApp on Android", () => {
+  describe('wakeApp', () => {
+    it('should call IterableAPI.wakeApp on Android', () => {
       // GIVEN Android platform
       const originalPlatform = Platform.OS;
-      Object.defineProperty(Platform, "OS", {
-        value: "android",
+      Object.defineProperty(Platform, 'OS', {
+        value: 'android',
         writable: true,
       });
       // WHEN Iterable.wakeApp is called
@@ -556,17 +556,17 @@ describe("Iterable", () => {
       // THEN corresponding function is called on RNIterableAPI
       expect(MockRNIterableAPI.wakeApp).toBeCalled();
       // Restore original platform
-      Object.defineProperty(Platform, "OS", {
+      Object.defineProperty(Platform, 'OS', {
         value: originalPlatform,
         writable: true,
       });
     });
 
-    it("should not call IterableAPI.wakeApp on iOS", () => {
+    it('should not call IterableAPI.wakeApp on iOS', () => {
       // GIVEN iOS platform
       const originalPlatform = Platform.OS;
-      Object.defineProperty(Platform, "OS", {
-        value: "ios",
+      Object.defineProperty(Platform, 'OS', {
+        value: 'ios',
         writable: true,
       });
       // WHEN Iterable.wakeApp is called
@@ -574,18 +574,18 @@ describe("Iterable", () => {
       // THEN corresponding function is not called on RNIterableAPI
       expect(MockRNIterableAPI.wakeApp).not.toBeCalled();
       // Restore original platform
-      Object.defineProperty(Platform, "OS", {
+      Object.defineProperty(Platform, 'OS', {
         value: originalPlatform,
         writable: true,
       });
     });
   });
 
-  describe("trackInAppOpen", () => {
-    it("should call IterableAPI.trackInAppOpen with the correct parameters", () => {
+  describe('trackInAppOpen', () => {
+    it('should call IterableAPI.trackInAppOpen with the correct parameters', () => {
       // GIVEN an in-app message and location
       const message = new IterableInAppMessage(
-        "1234",
+        '1234',
         4567,
         new IterableInAppTrigger(IterableInAppTriggerType.immediate),
         new Date(),
@@ -607,11 +607,11 @@ describe("Iterable", () => {
     });
   });
 
-  describe("trackInAppClick", () => {
-    it("should call IterableAPI.trackInAppClick with the correct parameters", () => {
+  describe('trackInAppClick', () => {
+    it('should call IterableAPI.trackInAppClick with the correct parameters', () => {
       // GIVEN an in-app message, location, and clicked URL
       const message = new IterableInAppMessage(
-        "1234",
+        '1234',
         4567,
         new IterableInAppTrigger(IterableInAppTriggerType.immediate),
         new Date(),
@@ -623,7 +623,7 @@ describe("Iterable", () => {
         0
       );
       const location = IterableInAppLocation.inApp;
-      const clickedUrl = "https://www.example.com";
+      const clickedUrl = 'https://www.example.com';
       // WHEN Iterable.trackInAppClick is called
       Iterable.trackInAppClick(message, location, clickedUrl);
       // THEN corresponding function is called on RNIterableAPI
@@ -635,11 +635,11 @@ describe("Iterable", () => {
     });
   });
 
-  describe("trackInAppClose", () => {
-    it("should call IterableAPI.trackInAppClose with the correct parameters", () => {
+  describe('trackInAppClose', () => {
+    it('should call IterableAPI.trackInAppClose with the correct parameters', () => {
       // GIVEN an in-app message, location, and source (no URL)
       const message = new IterableInAppMessage(
-        "1234",
+        '1234',
         4567,
         new IterableInAppTrigger(IterableInAppTriggerType.immediate),
         new Date(),
@@ -663,10 +663,10 @@ describe("Iterable", () => {
       );
     });
 
-    it("should call IterableAPI.trackInAppClose with a clicked URL when provided", () => {
+    it('should call IterableAPI.trackInAppClose with a clicked URL when provided', () => {
       // GIVEN an in-app message, location, source, and clicked URL
       const message = new IterableInAppMessage(
-        "1234",
+        '1234',
         4567,
         new IterableInAppTrigger(IterableInAppTriggerType.immediate),
         new Date(),
@@ -679,7 +679,7 @@ describe("Iterable", () => {
       );
       const location = IterableInAppLocation.inApp;
       const source = IterableInAppCloseSource.back;
-      const clickedUrl = "https://www.example.com";
+      const clickedUrl = 'https://www.example.com';
       // WHEN Iterable.trackInAppClose is called
       Iterable.trackInAppClose(message, location, source, clickedUrl);
       // THEN corresponding function is called on RNIterableAPI
@@ -692,11 +692,11 @@ describe("Iterable", () => {
     });
   });
 
-  describe("inAppConsume", () => {
-    it("should call IterableAPI.inAppConsume with the correct parameters", () => {
+  describe('inAppConsume', () => {
+    it('should call IterableAPI.inAppConsume with the correct parameters', () => {
       // GIVEN an in-app message, location, and delete source
       const message = new IterableInAppMessage(
-        "1234",
+        '1234',
         4567,
         new IterableInAppTrigger(IterableInAppTriggerType.immediate),
         new Date(),
@@ -720,19 +720,19 @@ describe("Iterable", () => {
     });
   });
 
-  describe("getVersionFromPackageJson", () => {
-    it("should return the version from the package.json file", () => {
+  describe('getVersionFromPackageJson', () => {
+    it('should return the version from the package.json file', () => {
       // GIVEN no parameters
       // WHEN Iterable.getVersionFromPackageJson is called
       const version = Iterable.getVersionFromPackageJson();
       // THEN a version string is returned
-      expect(typeof version).toBe("string");
+      expect(typeof version).toBe('string');
       expect(version.length).toBeGreaterThan(0);
     });
   });
 
-  describe("setupEventHandlers", () => {
-    it("should call inAppHandler when handleInAppCalled event is emitted", () => {
+  describe('setupEventHandlers', () => {
+    it('should call inAppHandler when handleInAppCalled event is emitted', () => {
       // sets up event emitter
       const nativeEmitter = new NativeEventEmitter();
       nativeEmitter.removeAllListeners(IterableEventName.handleInAppCalled);
@@ -743,10 +743,10 @@ describe("Iterable", () => {
         return IterableInAppShowResponse.show;
       });
       // initialize Iterable object
-      Iterable.initialize("apiKey", config);
+      Iterable.initialize('apiKey', config);
       // GIVEN message dictionary
       const messageDict = {
-        messageId: "1234",
+        messageId: '1234',
         campaignId: 4567,
         trigger: { type: 0 },
         createdAt: new Date().toISOString(),
@@ -768,8 +768,8 @@ describe("Iterable", () => {
       );
     });
 
-    describe("authHandler", () => {
-      it("should call authHandler when handleAuthCalled event is emitted", async () => {
+    describe('authHandler', () => {
+      it('should call authHandler when handleAuthCalled event is emitted', async () => {
         // sets up event emitter
         const nativeEmitter = new NativeEventEmitter();
         nativeEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
@@ -785,14 +785,14 @@ describe("Iterable", () => {
         const successCallback = jest.fn();
         const failureCallback = jest.fn();
         const authResponse = new IterableAuthResponse();
-        authResponse.authToken = "test-token";
+        authResponse.authToken = 'test-token';
         authResponse.successCallback = successCallback;
         authResponse.failureCallback = failureCallback;
         config.authHandler = jest.fn(() => {
           return Promise.resolve(authResponse);
         });
         // initialize Iterable object
-        Iterable.initialize("apiKey", config);
+        Iterable.initialize('apiKey', config);
         // GIVEN auth handler returns AuthResponse
         // WHEN handleAuthCalled event is emitted
         nativeEmitter.emit(IterableEventName.handleAuthCalled);
@@ -801,14 +801,14 @@ describe("Iterable", () => {
         // THEN passAlongAuthToken is called with the token and success callback is called after timeout
         return await TestHelper.delayed(1100, () => {
           expect(MockRNIterableAPI.passAlongAuthToken).toBeCalledWith(
-            "test-token"
+            'test-token'
           );
           expect(successCallback).toBeCalled();
           expect(failureCallback).not.toBeCalled();
         });
       });
 
-      it("should call authHandler when handleAuthFailureCalled event is emitted", async () => {
+      it('should call authHandler when handleAuthFailureCalled event is emitted', async () => {
         // sets up event emitter
         const nativeEmitter = new NativeEventEmitter();
         nativeEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
@@ -824,7 +824,7 @@ describe("Iterable", () => {
         const successCallback = jest.fn();
         const failureCallback = jest.fn();
         const authResponse = new IterableAuthResponse();
-        authResponse.authToken = "test-token";
+        authResponse.authToken = 'test-token';
         authResponse.successCallback = successCallback;
         authResponse.failureCallback = failureCallback;
         config.authHandler = jest.fn(() => {
@@ -832,7 +832,7 @@ describe("Iterable", () => {
           return Promise.resolve(authResponse);
         });
         // initialize Iterable object
-        Iterable.initialize("apiKey", config);
+        Iterable.initialize('apiKey', config);
         // GIVEN auth handler returns AuthResponse
         // WHEN handleAuthCalled event is emitted
         nativeEmitter.emit(IterableEventName.handleAuthCalled);
@@ -841,14 +841,14 @@ describe("Iterable", () => {
         // THEN passAlongAuthToken is called with the token and failure callback is called after timeout
         return await TestHelper.delayed(1100, () => {
           expect(MockRNIterableAPI.passAlongAuthToken).toBeCalledWith(
-            "test-token"
+            'test-token'
           );
           expect(failureCallback).toBeCalled();
           expect(successCallback).not.toBeCalled();
         });
       });
 
-      it("should call authHandler when handleAuthCalled event is emitted and returns a string token", async () => {
+      it('should call authHandler when handleAuthCalled event is emitted and returns a string token', async () => {
         // sets up event emitter
         const nativeEmitter = new NativeEventEmitter();
         nativeEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
@@ -856,22 +856,22 @@ describe("Iterable", () => {
         const config = new IterableConfig();
         config.logReactNativeSdkCalls = false;
         config.authHandler = jest.fn(() => {
-          return Promise.resolve("string-token");
+          return Promise.resolve('string-token');
         });
         // initialize Iterable object
-        Iterable.initialize("apiKey", config);
+        Iterable.initialize('apiKey', config);
         // GIVEN auth handler returns string token
         // WHEN handleAuthCalled event is emitted
         nativeEmitter.emit(IterableEventName.handleAuthCalled);
         // THEN passAlongAuthToken is called with the string token
         return await TestHelper.delayed(100, () => {
           expect(MockRNIterableAPI.passAlongAuthToken).toBeCalledWith(
-            "string-token"
+            'string-token'
           );
         });
       });
 
-      it("should call authHandler when handleAuthCalled event is emitted and returns an unexpected response", () => {
+      it('should call authHandler when handleAuthCalled event is emitted and returns an unexpected response', () => {
         // sets up event emitter
         const nativeEmitter = new NativeEventEmitter();
         nativeEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
@@ -879,12 +879,12 @@ describe("Iterable", () => {
         const config = new IterableConfig();
         config.logReactNativeSdkCalls = false;
         config.authHandler = jest.fn(() => {
-          return Promise.resolve({ unexpected: "object" } as unknown as
+          return Promise.resolve({ unexpected: 'object' } as unknown as
             | string
             | IterableAuthResponse);
         });
         // initialize Iterable object
-        Iterable.initialize("apiKey", config);
+        Iterable.initialize('apiKey', config);
         // GIVEN auth handler returns unexpected response
         // WHEN handleAuthCalled event is emitted
         nativeEmitter.emit(IterableEventName.handleAuthCalled);
@@ -892,7 +892,7 @@ describe("Iterable", () => {
         expect(MockRNIterableAPI.passAlongAuthToken).not.toBeCalled();
       });
 
-      it("should call authHandler when handleAuthCalled event is emitted and rejects the promise", () => {
+      it('should call authHandler when handleAuthCalled event is emitted and rejects the promise', () => {
         // sets up event emitter
         const nativeEmitter = new NativeEventEmitter();
         nativeEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
@@ -900,15 +900,272 @@ describe("Iterable", () => {
         const config = new IterableConfig();
         config.logReactNativeSdkCalls = false;
         config.authHandler = jest.fn(() => {
-          return Promise.reject(new Error("Auth failed"));
+          return Promise.reject(new Error('Auth failed'));
         });
         // initialize Iterable object
-        Iterable.initialize("apiKey", config);
+        Iterable.initialize('apiKey', config);
         // GIVEN auth handler rejects promise
         // WHEN handleAuthCalled event is emitted
         nativeEmitter.emit(IterableEventName.handleAuthCalled);
         // THEN error is logged (we can't easily test console.log, but we can verify no crash)
         expect(MockRNIterableAPI.passAlongAuthToken).not.toBeCalled();
+      });
+    });
+  });
+
+  describe('authManager', () => {
+    describe('pauseAuthRetries', () => {
+      it('should call RNIterableAPI.pauseAuthRetries with true when pauseRetry is true', () => {
+        // GIVEN pauseRetry is true
+        const pauseRetry = true;
+
+        // WHEN pauseAuthRetries is called
+        Iterable.authManager.pauseAuthRetries(pauseRetry);
+
+        // THEN RNIterableAPI.pauseAuthRetries is called with true
+        expect(MockRNIterableAPI.pauseAuthRetries).toBeCalledWith(true);
+      });
+
+      it('should call RNIterableAPI.pauseAuthRetries with false when pauseRetry is false', () => {
+        // GIVEN pauseRetry is false
+        const pauseRetry = false;
+
+        // WHEN pauseAuthRetries is called
+        Iterable.authManager.pauseAuthRetries(pauseRetry);
+
+        // THEN RNIterableAPI.pauseAuthRetries is called with false
+        expect(MockRNIterableAPI.pauseAuthRetries).toBeCalledWith(false);
+      });
+
+      it('should return the result from RNIterableAPI.pauseAuthRetries', () => {
+        // GIVEN RNIterableAPI.pauseAuthRetries returns a value
+        const expectedResult = 'pause-result';
+        MockRNIterableAPI.pauseAuthRetries = jest
+          .fn()
+          .mockReturnValue(expectedResult);
+
+        // WHEN pauseAuthRetries is called
+        const result = Iterable.authManager.pauseAuthRetries(true);
+
+        // THEN the result is returned
+        expect(result).toBe(expectedResult);
+      });
+    });
+
+    describe('passAlongAuthToken', () => {
+      it('should call RNIterableAPI.passAlongAuthToken with a valid string token', async () => {
+        // GIVEN a valid auth token
+        const authToken = 'valid-jwt-token';
+        const expectedResponse = new IterableAuthResponse();
+        expectedResponse.authToken = 'new-token';
+        MockRNIterableAPI.passAlongAuthToken = jest
+          .fn()
+          .mockResolvedValue(expectedResponse);
+
+        // WHEN passAlongAuthToken is called
+        const result = await Iterable.authManager.passAlongAuthToken(authToken);
+
+        // THEN RNIterableAPI.passAlongAuthToken is called with the token
+        expect(MockRNIterableAPI.passAlongAuthToken).toBeCalledWith(authToken);
+        expect(result).toBe(expectedResponse);
+      });
+
+      it('should call RNIterableAPI.passAlongAuthToken with null token', async () => {
+        // GIVEN a null auth token
+        const authToken = null;
+        const expectedResponse = 'success';
+        MockRNIterableAPI.passAlongAuthToken = jest
+          .fn()
+          .mockResolvedValue(expectedResponse);
+
+        // WHEN passAlongAuthToken is called
+        const result = await Iterable.authManager.passAlongAuthToken(authToken);
+
+        // THEN RNIterableAPI.passAlongAuthToken is called with null
+        expect(MockRNIterableAPI.passAlongAuthToken).toBeCalledWith(null);
+        expect(result).toBe(expectedResponse);
+      });
+
+      it('should call RNIterableAPI.passAlongAuthToken with undefined token', async () => {
+        // GIVEN an undefined auth token
+        const authToken = undefined;
+        const expectedResponse = undefined;
+        MockRNIterableAPI.passAlongAuthToken = jest
+          .fn()
+          .mockResolvedValue(expectedResponse);
+
+        // WHEN passAlongAuthToken is called
+        const result = await Iterable.authManager.passAlongAuthToken(authToken);
+
+        // THEN RNIterableAPI.passAlongAuthToken is called with undefined
+        expect(MockRNIterableAPI.passAlongAuthToken).toBeCalledWith(undefined);
+        expect(result).toBe(expectedResponse);
+      });
+
+      it('should call RNIterableAPI.passAlongAuthToken with empty string token', async () => {
+        // GIVEN an empty string auth token
+        const authToken = '';
+        const expectedResponse = new IterableAuthResponse();
+        MockRNIterableAPI.passAlongAuthToken = jest
+          .fn()
+          .mockResolvedValue(expectedResponse);
+
+        // WHEN passAlongAuthToken is called
+        const result = await Iterable.authManager.passAlongAuthToken(authToken);
+
+        // THEN RNIterableAPI.passAlongAuthToken is called with empty string
+        expect(MockRNIterableAPI.passAlongAuthToken).toBeCalledWith('');
+        expect(result).toBe(expectedResponse);
+      });
+
+      it('should return IterableAuthResponse when API returns IterableAuthResponse', async () => {
+        // GIVEN API returns IterableAuthResponse
+        const authToken = 'test-token';
+        const expectedResponse = new IterableAuthResponse();
+        expectedResponse.authToken = 'new-token';
+        expectedResponse.successCallback = jest.fn();
+        expectedResponse.failureCallback = jest.fn();
+        MockRNIterableAPI.passAlongAuthToken = jest
+          .fn()
+          .mockResolvedValue(expectedResponse);
+
+        // WHEN passAlongAuthToken is called
+        const result = await Iterable.authManager.passAlongAuthToken(authToken);
+
+        // THEN the result is the expected IterableAuthResponse
+        expect(result).toBe(expectedResponse);
+        expect(result).toBeInstanceOf(IterableAuthResponse);
+      });
+
+      it('should return string when API returns string', async () => {
+        // GIVEN API returns string
+        const authToken = 'test-token';
+        const expectedResponse = 'success-string';
+        MockRNIterableAPI.passAlongAuthToken = jest
+          .fn()
+          .mockResolvedValue(expectedResponse);
+
+        // WHEN passAlongAuthToken is called
+        const result = await Iterable.authManager.passAlongAuthToken(authToken);
+
+        // THEN the result is the expected string
+        expect(result).toBe(expectedResponse);
+        expect(typeof result).toBe('string');
+      });
+
+      it('should return undefined when API returns undefined', async () => {
+        // GIVEN API returns undefined
+        const authToken = 'test-token';
+        const expectedResponse = undefined;
+        MockRNIterableAPI.passAlongAuthToken = jest
+          .fn()
+          .mockResolvedValue(expectedResponse);
+
+        // WHEN passAlongAuthToken is called
+        const result = await Iterable.authManager.passAlongAuthToken(authToken);
+
+        // THEN the result is undefined
+        expect(result).toBeUndefined();
+      });
+
+      it('should handle API rejection and propagate the error', async () => {
+        // GIVEN API rejects with an error
+        const authToken = 'test-token';
+        const expectedError = new Error('API Error');
+        MockRNIterableAPI.passAlongAuthToken = jest
+          .fn()
+          .mockRejectedValue(expectedError);
+
+        // WHEN passAlongAuthToken is called
+        // THEN the error is propagated
+        await expect(
+          Iterable.authManager.passAlongAuthToken(authToken)
+        ).rejects.toThrow('API Error');
+      });
+
+      it('should handle API rejection with network error', async () => {
+        // GIVEN API rejects with a network error
+        const authToken = 'test-token';
+        const networkError = new Error('Network request failed');
+        MockRNIterableAPI.passAlongAuthToken = jest
+          .fn()
+          .mockRejectedValue(networkError);
+
+        // WHEN passAlongAuthToken is called
+        // THEN the network error is propagated
+        await expect(
+          Iterable.authManager.passAlongAuthToken(authToken)
+        ).rejects.toThrow('Network request failed');
+      });
+
+      it('should handle API rejection with timeout error', async () => {
+        // GIVEN API rejects with a timeout error
+        const authToken = 'test-token';
+        const timeoutError = new Error('Request timeout');
+        MockRNIterableAPI.passAlongAuthToken = jest
+          .fn()
+          .mockRejectedValue(timeoutError);
+
+        // WHEN passAlongAuthToken is called
+        // THEN the timeout error is propagated
+        await expect(
+          Iterable.authManager.passAlongAuthToken(authToken)
+        ).rejects.toThrow('Request timeout');
+      });
+    });
+
+    describe('integration', () => {
+      it('should work with both methods in sequence', async () => {
+        // GIVEN a sequence of operations
+        const authToken = 'test-token';
+        const expectedResponse = new IterableAuthResponse();
+        MockRNIterableAPI.pauseAuthRetries = jest
+          .fn()
+          .mockReturnValue('paused');
+        MockRNIterableAPI.passAlongAuthToken = jest
+          .fn()
+          .mockResolvedValue(expectedResponse);
+
+        // WHEN calling both methods in sequence
+        const pauseResult = Iterable.authManager.pauseAuthRetries(true);
+        const tokenResult =
+          await Iterable.authManager.passAlongAuthToken(authToken);
+
+        // THEN both operations should work correctly
+        expect(pauseResult).toBe('paused');
+        expect(tokenResult).toBe(expectedResponse);
+        expect(MockRNIterableAPI.pauseAuthRetries).toBeCalledWith(true);
+        expect(MockRNIterableAPI.passAlongAuthToken).toBeCalledWith(authToken);
+      });
+
+      it('should handle rapid successive calls', async () => {
+        // GIVEN rapid successive calls
+        const authToken1 = 'token1';
+        const authToken2 = 'token2';
+        const response1 = new IterableAuthResponse();
+        const response2 = 'success';
+        MockRNIterableAPI.passAlongAuthToken = jest
+          .fn()
+          .mockResolvedValueOnce(response1)
+          .mockResolvedValueOnce(response2);
+
+        // WHEN making rapid successive calls
+        const promise1 = Iterable.authManager.passAlongAuthToken(authToken1);
+        const promise2 = Iterable.authManager.passAlongAuthToken(authToken2);
+        const [result1, result2] = await Promise.all([promise1, promise2]);
+
+        // THEN both calls should work correctly
+        expect(result1).toBe(response1);
+        expect(result2).toBe(response2);
+        expect(MockRNIterableAPI.passAlongAuthToken).toHaveBeenCalledTimes(2);
+        expect(MockRNIterableAPI.passAlongAuthToken).toHaveBeenNthCalledWith(
+          1,
+          authToken1
+        );
+        expect(MockRNIterableAPI.passAlongAuthToken).toHaveBeenNthCalledWith(
+          2,
+          authToken2
+        );
       });
     });
   });

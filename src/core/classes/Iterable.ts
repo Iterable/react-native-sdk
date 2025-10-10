@@ -1,4 +1,3 @@
-/* eslint-disable eslint-comments/no-unlimited-disable */
 import { Linking, NativeEventEmitter, Platform } from 'react-native';
 
 import { buildInfo } from '../../itblBuildInfo';
@@ -10,7 +9,8 @@ import { IterableInAppMessage } from '../../inApp/classes/IterableInAppMessage';
 import { IterableInAppCloseSource } from '../../inApp/enums/IterableInAppCloseSource';
 import { IterableInAppDeleteSource } from '../../inApp/enums/IterableInAppDeleteSource';
 import { IterableInAppLocation } from '../../inApp/enums/IterableInAppLocation';
-import { IterableAuthResponseResult, IterableEventName } from '../enums';
+import { IterableAuthResponseResult } from '../enums/IterableAuthResponseResult';
+import { IterableEventName } from '../enums/IterableEventName';
 
 // Add this type-only import to avoid circular dependency
 import type { IterableInAppManager } from '../../inApp/classes/IterableInAppManager';
@@ -22,6 +22,8 @@ import { IterableAuthResponse } from './IterableAuthResponse';
 import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
+import type { IterableAuthFailure } from '../types/IterableAuthFailure';
+import { IterableAuthManager } from './IterableAuthManager';
 
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
@@ -79,7 +81,7 @@ export class Iterable {
 
       const {
         IterableInAppManager,
-        // eslint-disable-next-line
+        // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports
       } = require('../../inApp/classes/IterableInAppManager');
       this._inAppManager = new IterableInAppManager();
     }
@@ -87,6 +89,19 @@ export class Iterable {
   }
 
   private static _inAppManager: IterableInAppManager | undefined;
+
+  /**
+   * Authentication manager for the current user.
+   *
+   * This property provides access to authentication functionality including
+   * pausing the authentication retry mechanism.
+   *
+   * @example
+   * ```typescript
+   * Iterable.authManager.pauseAuthRetries(true);
+   * ```
+   */
+  static authManager: IterableAuthManager = new IterableAuthManager();
 
   /**
    * Initializes the Iterable React Native SDK in your app's Javascript or Typescript code.
@@ -953,7 +968,7 @@ export class Iterable {
    * @internal
    */
   private static setupEventHandlers() {
-    //Remove all listeners to avoid duplicate listeners
+    // Remove all listeners to avoid duplicate listeners
     RNEventEmitter.removeAllListeners(IterableEventName.handleUrlCalled);
     RNEventEmitter.removeAllListeners(IterableEventName.handleInAppCalled);
     RNEventEmitter.removeAllListeners(
@@ -1005,14 +1020,14 @@ export class Iterable {
       let authResponseCallback: IterableAuthResponseResult;
       RNEventEmitter.addListener(IterableEventName.handleAuthCalled, () => {
         // MOB-10423: Check if we can use chain operator (?.) here instead
-
+        // Asks frontend of the client/app to pass authToken
         Iterable.savedConfig.authHandler!()
           .then((promiseResult) => {
             // Promise result can be either just String OR of type AuthResponse.
             // If type AuthReponse, authToken will be parsed looking for `authToken` within promised object. Two additional listeners will be registered for success and failure callbacks sent by native bridge layer.
             // Else it will be looked for as a String.
             if (typeof promiseResult === typeof new IterableAuthResponse()) {
-              RNIterableAPI.passAlongAuthToken(
+              Iterable.authManager.passAlongAuthToken(
                 (promiseResult as IterableAuthResponse).authToken
               );
 
@@ -1026,6 +1041,8 @@ export class Iterable {
                 } else if (
                   authResponseCallback === IterableAuthResponseResult.FAILURE
                 ) {
+                  // We are currently only reporting JWT related errors.  In
+                  // the future, we should handle other types of errors as well.
                   if ((promiseResult as IterableAuthResponse).failureCallback) {
                     (promiseResult as IterableAuthResponse).failureCallback?.();
                   }
@@ -1037,9 +1054,9 @@ export class Iterable {
               }, 1000);
               // Use unref() to prevent the timeout from keeping the process alive
               timeoutId.unref();
-            } else if (typeof promiseResult === typeof '') {
+            } else if (typeof promiseResult === 'string') {
               //If promise only returns string
-              RNIterableAPI.passAlongAuthToken(promiseResult as string);
+              Iterable.authManager.passAlongAuthToken(promiseResult as string);
             } else {
               Iterable?.logger?.log(
                 'Unexpected promise returned. Auth token expects promise of String or AuthResponse type.'
@@ -1057,8 +1074,14 @@ export class Iterable {
       );
       RNEventEmitter.addListener(
         IterableEventName.handleAuthFailureCalled,
-        () => {
+        (authFailureResponse: IterableAuthFailure) => {
+          // Mark the flag for above listener to indicate something failed.
+          // `catch(err)` will only indicate failure on high level. No actions
+          // should be taken inside `catch(err)`.
           authResponseCallback = IterableAuthResponseResult.FAILURE;
+
+          // Call the actual JWT error with `authFailure` object.
+          Iterable.savedConfig?.onJWTError?.(authFailureResponse);
         }
       );
     }

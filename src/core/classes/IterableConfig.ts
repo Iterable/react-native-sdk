@@ -1,10 +1,10 @@
 import { type IterableInAppMessage } from '../../inApp/classes/IterableInAppMessage';
-import { IterableInAppShowResponse } from '../../inApp/enums';
-import {
-  IterableDataRegion,
-  IterableLogLevel,
-  IterablePushPlatform,
-} from '../enums';
+import { IterableInAppShowResponse } from '../../inApp/enums/IterableInAppShowResponse';
+import { IterableDataRegion } from '../enums/IterableDataRegion';
+import { IterableLogLevel } from '../enums/IterableLogLevel';
+import { IterablePushPlatform } from '../enums/IterablePushPlatform';
+import type { IterableAuthFailure } from '../types/IterableAuthFailure';
+import type { IterableRetryPolicy } from '../types/IterableRetryPolicy';
 import { IterableAction } from './IterableAction';
 import type { IterableActionContext } from './IterableActionContext';
 import type { IterableAuthResponse } from './IterableAuthResponse';
@@ -207,11 +207,36 @@ export class IterableConfig {
   authHandler?: () => Promise<IterableAuthResponse | string | undefined>;
 
   /**
+   * A callback function that is called when the SDK encounters an error while
+   * validing the JWT.
+   *
+   * The retry for JWT should be automatically handled by the native SDK, so
+   * this is just for logging/transparency purposes.
+   *
+   * @param authFailure - The details of the auth failure.
+   *
+   * @example
+   * ```typescript
+   * const config = new IterableConfig();
+   * config.onJWTError = (authFailure) => {
+   *   console.error('Error fetching JWT:', authFailure);
+   * };
+   * ```
+   */
+  onJWTError?: (authFailure: IterableAuthFailure) => void;
+
+  /**
    * Set the verbosity of Android and iOS project's log system.
    *
    * By default, you will be able to see info level logs printed in IDE when running the app.
    */
   logLevel: IterableLogLevel = IterableLogLevel.info;
+
+  /**
+   * Configuration for JWT refresh retry behavior.
+   * If not specified, the SDK will use default retry behavior.
+   */
+  retryPolicy?: IterableRetryPolicy;
 
   /**
    * Set whether the React Native SDK should print function calls to console.
@@ -342,6 +367,7 @@ export class IterableConfig {
       dataRegion: this.dataRegion,
       pushPlatform: this.pushPlatform,
       encryptionEnforced: this.encryptionEnforced,
+      retryPolicy: this.retryPolicy,
     };
   }
 }
