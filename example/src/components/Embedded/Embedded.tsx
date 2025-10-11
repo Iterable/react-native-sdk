@@ -11,9 +11,6 @@ export const Embedded = () => {
       console.log(ids);
       setPlacementIds(ids as number[]);
     });
-    // .catch((error) => {
-    //   console.error(error);
-    // });
   }, []);
 
   return (
