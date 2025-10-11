@@ -373,6 +373,7 @@ export class IterableConfig {
       pushPlatform: this.pushPlatform,
       encryptionEnforced: this.encryptionEnforced,
       retryPolicy: this.retryPolicy,
+      embeddedMessagingEnabled: this.embeddedMessagingEnabled,
     };
   }
 }
