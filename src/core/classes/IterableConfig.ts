@@ -320,6 +320,11 @@ export class IterableConfig {
   encryptionEnforced = false;
 
   /**
+   * This specifies whether the SDK should enable and use embedded messaging.
+   */
+  embeddedMessagingEnabled = false;
+
+  /**
    * Converts the IterableConfig instance to a dictionary object.
    *
    * @returns An object representing the configuration.
