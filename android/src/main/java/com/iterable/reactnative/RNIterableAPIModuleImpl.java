@@ -15,6 +15,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.UiThreadUtil;
+import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
@@ -507,6 +508,27 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
     // endregion
 
     // ---------------------------------------------------------------------------------------
+    // region Embedded Messaging
+
+    public void getEmbeddedPlacementIds(Promise promise) {
+        IterableLogger.d(TAG, "getEmbeddedPlacementIds");
+        try {
+            List<Long> placementIds = IterableApi.getInstance().getEmbeddedManager().getPlacementIds();
+            WritableArray writableArray = Arguments.createArray();
+            if (placementIds != null) {
+                for (Long placementId : placementIds) {
+                    writableArray.pushDouble(placementId.doubleValue());
+                }
+            }
+            promise.resolve(writableArray);
+        } catch (Exception e) {
+            IterableLogger.e(TAG, "Error getting placement IDs: " + e.getLocalizedMessage());
+            promise.reject("", "Failed to get placement IDs: " + e.getLocalizedMessage());
+        }
+    }
+
+    // ---------------------------------------------------------------------------------------
+    // endregion
     // region IterableSDK callbacks
 
     @Override
