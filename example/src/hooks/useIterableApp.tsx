@@ -134,6 +134,8 @@ export const IterableAppProvider: FunctionComponent<
         retryBackoff: IterableRetryBackoff.LINEAR,
       };
 
+      config.enableEmbeddedMessaging = true;
+
       config.onJWTError = (authFailure) => {
         console.log('onJWTError', authFailure);
 

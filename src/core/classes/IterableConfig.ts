@@ -327,7 +327,7 @@ export class IterableConfig {
    * - [Android Embedded Messaging](https://support.iterable.com/hc/en-us/articles/23061877893652-Embedded-Messages-with-Iterable-s-Android-SDK)
    * - [iOS Embedded Messaging](https://support.iterable.com/hc/en-us/articles/23061840746900-Embedded-Messages-with-Iterable-s-iOS-SDK)
    */
-  embeddedMessagingEnabled = false;
+  enableEmbeddedMessaging = false;
 
   /**
    * Converts the IterableConfig instance to a dictionary object.
@@ -378,7 +378,7 @@ export class IterableConfig {
       pushPlatform: this.pushPlatform,
       encryptionEnforced: this.encryptionEnforced,
       retryPolicy: this.retryPolicy,
-      embeddedMessagingEnabled: this.embeddedMessagingEnabled,
+      enableEmbeddedMessaging: this.enableEmbeddedMessaging,
     };
   }
 }
