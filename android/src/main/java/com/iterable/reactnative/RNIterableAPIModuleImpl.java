@@ -15,6 +15,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.UiThreadUtil;
+import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
@@ -23,10 +24,14 @@ import com.iterable.iterableapi.InboxSessionManager;
 import com.iterable.iterableapi.IterableAction;
 import com.iterable.iterableapi.IterableActionContext;
 import com.iterable.iterableapi.IterableApi;
+import com.iterable.iterableapi.IterableAttributionInfo;
 import com.iterable.iterableapi.IterableAuthHandler;
 import com.iterable.iterableapi.IterableConfig;
 import com.iterable.iterableapi.IterableCustomActionHandler;
-import com.iterable.iterableapi.IterableAttributionInfo;
+// import com.iterable.iterableapi.IterableEmbeddedManager;
+import com.iterable.iterableapi.IterableEmbeddedMessage;
+// import com.iterable.iterableapi.IterableEmbeddedSession;
+// import com.iterable.iterableapi.IterableEmbeddedUpdateHandler;
 import com.iterable.iterableapi.IterableHelper;
 import com.iterable.iterableapi.IterableInAppCloseAction;
 import com.iterable.iterableapi.IterableInAppHandler;
@@ -45,6 +50,7 @@ import org.json.JSONObject;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -88,10 +94,15 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
             configBuilder.setAuthHandler(this);
         }
 
+        if (configReadableMap.hasKey("enableEmbeddedMessaging")) {
+            configBuilder.setEnableEmbeddedMessaging(configReadableMap.getBoolean("enableEmbeddedMessaging"));
+        }
+
         IterableApi.initialize(reactContext, apiKey, configBuilder.build());
         IterableApi.getInstance().setDeviceAttribute("reactNativeSDKVersion", version);
 
         IterableApi.getInstance().getInAppManager().addListener(this);
+        IterableApi.getInstance().getEmbeddedManager().syncMessages();
 
         // MOB-10421: Figure out what the error cases are and handle them appropriately
         // This is just here to match the TS types and let the JS thread know when we are done initializing
@@ -118,6 +129,10 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
             configBuilder.setAuthHandler(this);
         }
 
+        if (configReadableMap.hasKey("enableEmbeddedMessaging")) {
+          configBuilder.setEnableEmbeddedMessaging(configReadableMap.getBoolean("enableEmbeddedMessaging"));
+      }
+
         // NOTE: There does not seem to be a way to set the API endpoint
         // override in the Android SDK.  Check with @Ayyanchira and @evantk91 to
         // see what the best approach is.
@@ -126,6 +141,7 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         IterableApi.getInstance().setDeviceAttribute("reactNativeSDKVersion", version);
 
         IterableApi.getInstance().getInAppManager().addListener(this);
+        IterableApi.getInstance().getEmbeddedManager().syncMessages();
 
         // MOB-10421: Figure out what the error cases are and handle them appropriately
         // This is just here to match the TS types and let the JS thread know when we are done initializing
@@ -629,14 +645,39 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
     public void onInboxUpdated() {
         sendEvent(EventName.receivedIterableInboxChanged.name(), null);
     }
+    // ---------------------------------------------------------------------------------------
+    // endregion
+
+    // ---------------------------------------------------------------------------------------
+    // region Embedded messaging
+    public void getEmbeddedPlacementIds(Promise promise) {
+        IterableLogger.d(TAG, "getEmbeddedPlacementIds");
+        try {
+            List<Long> placementIds = IterableApi.getInstance().getEmbeddedManager().getPlacementIds();
+            WritableArray writableArray = Arguments.createArray();
+            if (placementIds != null) {
+                for (Long placementId : placementIds) {
+                    writableArray.pushDouble(placementId.doubleValue());
+                }
+            }
+            promise.resolve(writableArray);
+        } catch (Exception e) {
+            IterableLogger.e(TAG, "Error getting placement IDs: " + e.getLocalizedMessage());
+            promise.reject("", "Failed to get placement IDs: " + e.getLocalizedMessage());
+        }
+    }
+
+    // ---------------------------------------------------------------------------------------
+    // endregion
 }
 
 enum EventName {
-  handleUrlCalled,
+  handleAuthCalled,
+  handleAuthFailureCalled,
+  handleAuthSuccessCalled,
   handleCustomActionCalled,
   handleInAppCalled,
-  handleAuthCalled,
-  receivedIterableInboxChanged,
-  handleAuthSuccessCalled,
-  handleAuthFailureCalled
+  handleUrlCalled,
+  receivedIterableEmbeddedMessagesChanged,
+  receivedIterableInboxChanged
 }

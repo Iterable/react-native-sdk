@@ -228,6 +228,10 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
       moduleImpl.pauseAuthRetries(pauseRetry);
     }
 
+    @ReactMethod
+    public void getEmbeddedPlacementIds(Promise promise) {
+      moduleImpl.getEmbeddedPlacementIds(promise);
+    }
 
     public void sendEvent(@NonNull String eventName, @Nullable Object eventData) {
       moduleImpl.sendEvent(eventName, eventData);

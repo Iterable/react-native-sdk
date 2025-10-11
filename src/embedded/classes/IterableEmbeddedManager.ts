@@ -1,3 +1,5 @@
+import { IterableApi } from '../../core/classes/IterableApi';
+
 /**
  * Manages embedded messages from Iterable.
  *
@@ -14,4 +16,13 @@ export class IterableEmbeddedManager {
    * Whether the embedded manager is enabled.
    */
   isEnabled = false;
+
+  /**
+   * Retrieves a list of placement IDs for the embedded manager.
+   *
+   * [Placement Documentation](https://support.iterable.com/hc/en-us/articles/23060529977364-Embedded-Messaging-Overview#placements-and-prioritization)
+   */
+  getPlacementIds() {
+    return IterableApi.getEmbeddedPlacementIds();
+  }
 }
