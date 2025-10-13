@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { useCallback, useState } from 'react';
 import {
   Iterable,
@@ -79,17 +79,29 @@ export const Embedded = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.hr} />
-      <View style={styles.embeddedSection}>
-        {embeddedMessages.map((message) => (
-          <View key={message.metadata.messageId}>
-            <Text>Embedded message</Text>
-            <Text>metadata.messageId: {message.metadata.messageId}</Text>
-            <Text>metadata.placementId: {message.metadata.placementId}</Text>
-            <Text>elements.title: {message.elements?.title}</Text>
-            <Text>elements.body: {message.elements?.body}</Text>
-          </View>
-        ))}
-      </View>
+      <ScrollView>
+        <View style={styles.embeddedSection}>
+          {embeddedMessages.map((message) => (
+            <View key={message.metadata.messageId}>
+              <Text>Embedded message</Text>
+              <Text>metadata.messageId: {message.metadata.messageId}</Text>
+              <Text>metadata.placementId: {message.metadata.placementId}</Text>
+              <Text>elements.title: {message.elements?.title}</Text>
+              <Text>elements.body: {message.elements?.body}</Text>
+              {(message.elements?.buttons ?? []).map((button, buttonIndex) => (
+                <View key={`${button.id}-${buttonIndex}`}>
+                  <Text>Button {buttonIndex + 1}</Text>
+                  <Text>button.id: {button.id}</Text>
+                  <Text>button.title: {button.title}</Text>
+                  <Text>button.action?.data: {button.action?.data}</Text>
+                  <Text>button.action?.type: {button.action?.type}</Text>
+                </View>
+              ))}
+              <Text>payload: {JSON.stringify(message.payload)}</Text>
+            </View>
+          ))}
+        </View>
+      </ScrollView>
     </View>
   );
 };
