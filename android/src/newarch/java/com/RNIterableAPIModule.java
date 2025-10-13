@@ -225,6 +225,11 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   }
 
   @Override
+  public void syncEmbeddedMessages() {
+    moduleImpl.syncEmbeddedMessages();
+  }
+
+  @Override
   public void startEmbeddedSession() {
     moduleImpl.startEmbeddedSession();
   }
@@ -237,6 +242,11 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   @Override
   public void getEmbeddedPlacementIds(Promise promise) {
     moduleImpl.getEmbeddedPlacementIds(promise);
+  }
+
+  @Override
+  public void getEmbeddedMessages(@Nullable ReadableArray placementIds, Promise promise) {
+    moduleImpl.getEmbeddedMessages(placementIds, promise);
   }
 
   public void sendEvent(@NonNull String eventName, @Nullable Object eventData) {
