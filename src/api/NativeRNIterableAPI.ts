@@ -120,6 +120,7 @@ export interface Spec extends TurboModule {
 
   // Embedded Messaging
   startEmbeddedSession(): void;
+  endEmbeddedSession(): void;
   getEmbeddedPlacementIds(): Promise<number[]>;
 
   // Wake app -- android only

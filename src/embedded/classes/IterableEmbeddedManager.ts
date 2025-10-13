@@ -58,7 +58,7 @@ export class IterableEmbeddedManager {
    * ```
    */
   endSession() {
-    IterableLogger.log('IterableEmbeddedManager.endSession');
+    return IterableApi.endEmbeddedSession();
   }
 
   /**

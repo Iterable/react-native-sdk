@@ -652,7 +652,13 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
     // region Embedded messaging
 
     public void startEmbeddedSession() {
+        IterableLogger.d(TAG, "startEmbeddedSession");
         IterableApi.getInstance().getEmbeddedManager().getEmbeddedSessionManager().startSession();
+    }
+
+    public void endEmbeddedSession() {
+        IterableLogger.d(TAG, "endEmbeddedSession");
+        IterableApi.getInstance().getEmbeddedManager().getEmbeddedSessionManager().endSession();
     }
 
     public void getEmbeddedPlacementIds(Promise promise) {
