@@ -229,6 +229,11 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void startEmbeddedSession() {
+      moduleImpl.startEmbeddedSession();
+    }
+
+    @ReactMethod
     public void getEmbeddedPlacementIds(Promise promise) {
       moduleImpl.getEmbeddedPlacementIds(promise);
     }

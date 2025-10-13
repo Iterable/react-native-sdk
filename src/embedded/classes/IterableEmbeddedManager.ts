@@ -42,7 +42,7 @@ export class IterableEmbeddedManager {
    * ```
    */
   startSession() {
-    IterableLogger.log('IterableEmbeddedManager.startSession');
+    return IterableApi.startEmbeddedSession();
   }
 
   /**

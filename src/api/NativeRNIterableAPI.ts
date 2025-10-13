@@ -119,6 +119,7 @@ export interface Spec extends TurboModule {
   pauseAuthRetries(pauseRetry: boolean): void;
 
   // Embedded Messaging
+  startEmbeddedSession(): void;
   getEmbeddedPlacementIds(): Promise<number[]>;
 
   // Wake app -- android only

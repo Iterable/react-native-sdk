@@ -511,6 +511,14 @@ export class IterableApi {
   // ====================================================== //
 
   /**
+   * Starts an embedded session.
+   */
+  static startEmbeddedSession() {
+    IterableLogger.log('startEmbeddedSession');
+    return RNIterableAPI.startEmbeddedSession();
+  }
+
+  /**
    * Get the embedded placement IDs.
    */
   static getEmbeddedPlacementIds() {
