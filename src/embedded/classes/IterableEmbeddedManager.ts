@@ -1,4 +1,5 @@
 import { IterableApi } from '../../core/classes/IterableApi';
+import { IterableLogger } from '../../core/classes/IterableLogger';
 
 /**
  * Manages embedded messages from Iterable.
@@ -24,5 +25,27 @@ export class IterableEmbeddedManager {
    */
   getPlacementIds() {
     return IterableApi.getEmbeddedPlacementIds();
+  }
+
+  /**
+   * Starts a session, or a period of time when a user is on a screen or page
+   * that can display embedded messages.
+   */
+  startSession() {
+    IterableLogger.log('IterableEmbeddedManager.startSession');
+  }
+
+  /**
+   * Ends a session.
+   */
+  endSession() {
+    IterableLogger.log('IterableEmbeddedManager.endSession');
+  }
+
+  /**
+   * Tracks an embedded session.
+   */
+  trackSession() {
+    IterableLogger.log('IterableEmbeddedManager.trackSession');
   }
 }
