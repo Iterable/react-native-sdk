@@ -536,6 +536,14 @@ export class IterableApi {
   }
 
   /**
+   * Starts an embedded impression.
+   */
+  static startEmbeddedImpression(messageId: string, placementId: number) {
+    IterableLogger.log('startEmbeddedImpression: ', messageId, placementId);
+    return RNIterableAPI.startEmbeddedImpression(messageId, placementId);
+  }
+
+  /**
    * Get the embedded placement IDs.
    */
   static getEmbeddedPlacementIds() {

@@ -153,6 +153,7 @@ export interface Spec extends TurboModule {
   getEmbeddedMessages(
     placementIds: number[] | null
   ): Promise<EmbeddedMessage[]>;
+  startEmbeddedImpression(messageId: string, placementId: number): void;
 
   // Wake app -- android only
   wakeApp(): void;

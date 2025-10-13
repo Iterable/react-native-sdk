@@ -666,6 +666,10 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         IterableApi.getInstance().getEmbeddedManager().getEmbeddedSessionManager().endSession();
     }
 
+    public void startEmbeddedImpression(String messageId, int placementId) {
+        IterableApi.getInstance().getEmbeddedManager().getEmbeddedSessionManager().startImpression(messageId, placementId);
+    }
+
     public void getEmbeddedPlacementIds(Promise promise) {
         IterableLogger.d(TAG, "getEmbeddedPlacementIds");
         try {

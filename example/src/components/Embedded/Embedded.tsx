@@ -48,6 +48,18 @@ export const Embedded = () => {
       });
   }, [getPlacementIds]);
 
+  const startEmbeddedImpression = useCallback(
+    (message: IterableEmbeddedMessage) => {
+      console.log(`🚀 > Embedded > message:`, message);
+      Iterable.embeddedManager.startImpression(
+        message.metadata.messageId,
+        // TODO: check if this should be changed to a number, as per the type
+        Number(message.metadata.placementId)
+      );
+    },
+    []
+  );
+
   return (
     <View style={styles.container}>
       <Text style={styles.text}>EMBEDDED</Text>
@@ -63,19 +75,19 @@ export const Embedded = () => {
           Placement ids: [{placementIds.join(', ')}]
         </Text>
         <TouchableOpacity style={styles.button} onPress={syncEmbeddedMessages}>
-          <Text style={styles.buttonText}>Sync embedded messages</Text>
+          <Text style={styles.buttonText}>Sync messages</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={getPlacementIds}>
           <Text style={styles.buttonText}>Get placement ids</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={startEmbeddedSession}>
-          <Text style={styles.buttonText}>Start embedded session</Text>
+          <Text style={styles.buttonText}>Start session</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={endEmbeddedSession}>
-          <Text style={styles.buttonText}>End embedded session</Text>
+          <Text style={styles.buttonText}>End session</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={getEmbeddedMessages}>
-          <Text style={styles.buttonText}>Get embedded messages</Text>
+          <Text style={styles.buttonText}>Get messages</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.hr} />
@@ -83,7 +95,15 @@ export const Embedded = () => {
         <View style={styles.embeddedSection}>
           {embeddedMessages.map((message) => (
             <View key={message.metadata.messageId}>
-              <Text>Embedded message</Text>
+              <View style={styles.embeddedTitleContainer}>
+                <Text style={styles.embeddedTitle}>Embedded message | </Text>
+                <TouchableOpacity
+                  onPress={() => startEmbeddedImpression(message)}
+                >
+                  <Text style={styles.link}>Start impression</Text>
+                </TouchableOpacity>
+              </View>
+
               <Text>metadata.messageId: {message.metadata.messageId}</Text>
               <Text>metadata.placementId: {message.metadata.placementId}</Text>
               <Text>elements.title: {message.elements?.title}</Text>

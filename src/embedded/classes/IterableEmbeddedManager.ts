@@ -101,4 +101,26 @@ export class IterableEmbeddedManager {
   endSession() {
     return IterableApi.endEmbeddedSession();
   }
+  /**
+   * Starts an embedded impression.
+   *
+   * An impression represents the on-screen appearances of a given embedded message,
+   * in context of a session.
+   *
+   * Each impression tracks:
+   * - The total number of times a message appears during a session.
+   * - The total amount of time that message was visible, across all its
+   *   appearances in the session.
+   *
+   * Be sure to start and pause impressions when your app goes to and from the
+   * background, too.
+   *
+   * @example
+   * ```typescript
+   * IterableEmbeddedManager.startImpression(messageId, placementId);
+   * ```
+   */
+  startImpression(messageId: string, placementId: number) {
+    return IterableApi.startEmbeddedImpression(messageId, placementId);
+  }
 }

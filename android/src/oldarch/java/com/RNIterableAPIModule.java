@@ -244,6 +244,11 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void startEmbeddedImpression(String messageId, double placementId) {
+      moduleImpl.startEmbeddedImpression(messageId, (int) placementId);
+    }
+
+    @ReactMethod
     public void getEmbeddedPlacementIds(Promise promise) {
       moduleImpl.getEmbeddedPlacementIds(promise);
     }

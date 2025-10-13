@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { button, buttonText, container, hr } from '../../constants';
+import { button, buttonText, container, hr, link } from '../../constants';
 
 const styles = StyleSheet.create({
   button,
@@ -11,7 +11,17 @@ const styles = StyleSheet.create({
     gap: 16,
     paddingHorizontal: 16,
   },
+  embeddedTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    lineHeight: 20,
+  },
+  embeddedTitleContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
   hr,
+  link,
   text: { textAlign: 'center' },
   utilitySection: {
     paddingHorizontal: 16,
