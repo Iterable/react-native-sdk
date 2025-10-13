@@ -1,4 +1,11 @@
+import { IterableAction } from '../../core/classes/IterableAction';
+import { IterableActionContext } from '../../core/classes/IterableActionContext';
 import { IterableApi } from '../../core/classes/IterableApi';
+import { IterableConfig } from '../../core/classes/IterableConfig';
+import { IterableLogger } from '../../core/classes/IterableLogger';
+import { IterableActionSource } from '../../core/enums/IterableActionSource';
+import { callUrlHandler } from '../../core/utils/callUrlHandler';
+import { getActionPrefix } from '../../core/utils/getActionPrefix';
 import type { IterableEmbeddedMessage } from '../types/IterableEmbeddedMessage';
 
 /**
@@ -20,6 +27,15 @@ export class IterableEmbeddedManager {
    * `IterableConfig` class.
    */
   isEnabled = false;
+
+  /**
+   * The config for the Iterable SDK.
+   */
+  config: IterableConfig = new IterableConfig();
+
+  constructor(config: IterableConfig) {
+    this.config = config;
+  }
 
   /**
    * Syncs embedded local cache with the server.
@@ -164,5 +180,63 @@ export class IterableEmbeddedManager {
     clickedUrl: string | null
   ) {
     return IterableApi.trackEmbeddedClick(message, buttonId, clickedUrl);
+  }
+
+  /**
+   * Handles a click on an embedded message.
+   *
+   * This will fire the correct handers set in the config, and will track the
+   * click.  It should be use on either a button click or a click on the message itself.
+   *
+   * @param message - The embedded message.
+   * @param buttonId - The button ID.
+   * @param clickedUrl - The clicked URL.
+   *
+   * @example
+   * ```typescript
+   * IterableEmbeddedManager.handleClick(message, buttonId, clickedUrl);
+   * ```
+   */
+  handleClick(
+    message: IterableEmbeddedMessage,
+    buttonId: string | null,
+    action?: IterableAction | null
+  ) {
+    const { data, type: actionType } = action ?? {};
+    const clickedUrl = data && data?.length > 0 ? data : actionType;
+
+    IterableLogger.log(
+      'IterableEmbeddedManager.handleClick',
+      message,
+      buttonId,
+      clickedUrl
+    );
+
+    if (!clickedUrl) {
+      IterableLogger.log(
+        'IterableEmbeddedManager.handleClick:',
+        'A url or action is required to handle an embedded click',
+        clickedUrl
+      );
+      return;
+    }
+
+    const actionPrefix = getActionPrefix(clickedUrl);
+    const source = IterableActionSource.embedded;
+
+    this.trackClick(message, buttonId, clickedUrl);
+
+    if (actionPrefix) {
+      const actionName = clickedUrl?.replace(actionPrefix, '');
+      const actionDetails = new IterableAction(actionName, '', '');
+      const context = new IterableActionContext(actionDetails, source);
+      if (this.config.customActionHandler) {
+        this.config.customActionHandler(actionDetails, context);
+      }
+    } else {
+      const actionDetails = new IterableAction('openUrl', clickedUrl, '');
+      const context = new IterableActionContext(actionDetails, source);
+      callUrlHandler(this.config, clickedUrl, context);
+    }
   }
 }
