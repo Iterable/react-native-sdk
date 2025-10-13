@@ -149,11 +149,12 @@ export interface Spec extends TurboModule {
   syncEmbeddedMessages(): void;
   startEmbeddedSession(): void;
   endEmbeddedSession(): void;
+  startEmbeddedImpression(messageId: string, placementId: number): void;
+  pauseEmbeddedImpression(messageId: string): void;
   getEmbeddedPlacementIds(): Promise<number[]>;
   getEmbeddedMessages(
     placementIds: number[] | null
   ): Promise<EmbeddedMessage[]>;
-  startEmbeddedImpression(messageId: string, placementId: number): void;
 
   // Wake app -- android only
   wakeApp(): void;

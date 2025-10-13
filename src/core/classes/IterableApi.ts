@@ -544,6 +544,14 @@ export class IterableApi {
   }
 
   /**
+   * Pauses an embedded impression.
+   */
+  static pauseEmbeddedImpression(messageId: string) {
+    IterableLogger.log('pauseEmbeddedImpression: ', messageId);
+    return RNIterableAPI.pauseEmbeddedImpression(messageId);
+  }
+
+  /**
    * Get the embedded placement IDs.
    */
   static getEmbeddedPlacementIds() {

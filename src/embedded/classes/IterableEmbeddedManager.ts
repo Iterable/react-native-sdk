@@ -123,4 +123,22 @@ export class IterableEmbeddedManager {
   startImpression(messageId: string, placementId: number) {
     return IterableApi.startEmbeddedImpression(messageId, placementId);
   }
+
+  /**
+   * Pauses an embedded impression.
+   *
+   * An impression represents the on-screen appearances of a given embedded message,
+   * in context of a session.
+   *
+   * And impression should be paused when the message is no longer visible,
+   * including when your app goes to the background.
+   *
+   * @example
+   * ```typescript
+   * IterableEmbeddedManager.pauseImpression(messageId);
+   * ```
+   */
+  pauseImpression(messageId: string) {
+    return IterableApi.pauseEmbeddedImpression(messageId);
+  }
 }

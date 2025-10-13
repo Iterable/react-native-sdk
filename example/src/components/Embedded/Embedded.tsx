@@ -50,12 +50,20 @@ export const Embedded = () => {
 
   const startEmbeddedImpression = useCallback(
     (message: IterableEmbeddedMessage) => {
-      console.log(`🚀 > Embedded > message:`, message);
+      console.log(`startEmbeddedImpression`, message);
       Iterable.embeddedManager.startImpression(
         message.metadata.messageId,
         // TODO: check if this should be changed to a number, as per the type
         Number(message.metadata.placementId)
       );
+    },
+    []
+  );
+
+  const pauseEmbeddedImpression = useCallback(
+    (message: IterableEmbeddedMessage) => {
+      console.log(`pauseEmbeddedImpression:`, message);
+      Iterable.embeddedManager.pauseImpression(message.metadata.messageId);
     },
     []
   );
@@ -101,6 +109,12 @@ export const Embedded = () => {
                   onPress={() => startEmbeddedImpression(message)}
                 >
                   <Text style={styles.link}>Start impression</Text>
+                </TouchableOpacity>
+                <Text style={styles.embeddedTitle}> | </Text>
+                <TouchableOpacity
+                  onPress={() => pauseEmbeddedImpression(message)}
+                >
+                  <Text style={styles.link}>Pause impression</Text>
                 </TouchableOpacity>
               </View>
 

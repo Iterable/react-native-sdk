@@ -249,6 +249,11 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void pauseEmbeddedImpression(String messageId) {
+      moduleImpl.pauseEmbeddedImpression(messageId);
+    }
+
+    @ReactMethod
     public void getEmbeddedPlacementIds(Promise promise) {
       moduleImpl.getEmbeddedPlacementIds(promise);
     }
