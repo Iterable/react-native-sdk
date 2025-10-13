@@ -277,6 +277,10 @@ RCT_EXPORT_MODULE()
   [_swiftAPI pauseAuthRetries:pauseRetry];
 }
 
+- (void)syncEmbeddedMessages {
+  [_swiftAPI syncEmbeddedMessages];
+}
+
 - (void)wakeApp {
   // Placeholder function -- this method is only used in Android
 }
@@ -505,6 +509,10 @@ RCT_EXPORT_METHOD(passAlongAuthToken : (NSString *_Nullable)authToken) {
 
 RCT_EXPORT_METHOD(pauseAuthRetries : (BOOL)pauseRetry) {
   [_swiftAPI pauseAuthRetries:pauseRetry];
+}
+
+RCT_EXPORT_METHOD(syncEmbeddedMessages) {
+  [_swiftAPI syncEmbeddedMessages];
 }
 
 RCT_EXPORT_METHOD(wakeApp) {

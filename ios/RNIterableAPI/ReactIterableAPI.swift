@@ -490,6 +490,12 @@ import React
     IterableAPI.pauseAuthRetries(pauseRetry)
   }
 
+  @objc(syncEmbeddedMessages)
+  public func syncEmbeddedMessages() {
+    ITBInfo()
+    IterableAPI.embeddedManager.syncMessages(completion: {})
+  }
+
   // MARK: Private
   private var shouldEmit = false
   private let _methodQueue = DispatchQueue(label: String(describing: ReactIterableAPI.self))
@@ -554,6 +560,7 @@ import React
         apiEndPointOverride: apiEndPointOverride
       ) { result in
         resolver(result)
+        IterableAPI.embeddedManager.syncMessages(completion: {})
       }
 
       IterableAPI.setDeviceAttribute(name: "reactNativeSDKVersion", value: version)

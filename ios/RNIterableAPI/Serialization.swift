@@ -94,8 +94,14 @@ extension IterableConfig {
       }
     }
 
+    if let enableEmbeddedMessaging = dict["enableEmbeddedMesssaging"] as? Bool {
+      config.enableEmbeddedMessaging = enableEmbeddedMessaging
+    }
+
     return config
   }
+
+
 
   private static func createLogDelegate(logLevelNumber: NSNumber) -> IterableLogDelegate {
     DefaultLogDelegate(minLogLevel: LogLevel.from(number: logLevelNumber))
