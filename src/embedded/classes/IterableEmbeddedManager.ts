@@ -1,5 +1,4 @@
 import { IterableApi } from '../../core/classes/IterableApi';
-import { IterableLogger } from '../../core/classes/IterableLogger';
 
 /**
  * Manages embedded messages from Iterable.
@@ -15,6 +14,9 @@ import { IterableLogger } from '../../core/classes/IterableLogger';
 export class IterableEmbeddedManager {
   /**
    * Whether the embedded manager is enabled.
+   *
+   * This is set through the `enableEmbeddedMessaging` flag in the
+   * `IterableConfig` class.
    */
   isEnabled = false;
 
@@ -52,6 +54,9 @@ export class IterableEmbeddedManager {
    * displayed, the session should be ended.  This causes the SDK to send
    * session and impression data back to the server.
    *
+   * A session is tracked when it is ended, so you should be able to find
+   * tracking data after this method is called.
+   *
    * @example
    * ```typescript
    * IterableEmbeddedManager.endSession();
@@ -59,17 +64,5 @@ export class IterableEmbeddedManager {
    */
   endSession() {
     return IterableApi.endEmbeddedSession();
-  }
-
-  /**
-   * Tracks an embedded session.
-   *
-   * @example
-   * ```typescript
-   * IterableEmbeddedManager.trackSession();
-   * ```
-   */
-  trackSession() {
-    IterableLogger.log('IterableEmbeddedManager.trackSession');
   }
 }
