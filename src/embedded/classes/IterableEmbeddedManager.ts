@@ -141,4 +141,28 @@ export class IterableEmbeddedManager {
   pauseImpression(messageId: string) {
     return IterableApi.pauseEmbeddedImpression(messageId);
   }
+
+  /**
+   * Tracks a click on an embedded message.
+   *
+   * This is called internally when `Iterable.embeddedManager.handleClick` is
+   * called.  However, if you want to implement your own click handling, you can
+   * use this method to track the click you implement.
+   *
+   * @param message - The embedded message.
+   * @param buttonId - The button ID.
+   * @param clickedUrl - The clicked URL.
+   *
+   * @example
+   * ```typescript
+   * IterableEmbeddedManager.trackClick(message, buttonId, clickedUrl);
+   * ```
+   */
+  trackClick(
+    message: IterableEmbeddedMessage,
+    buttonId: string | null,
+    clickedUrl: string | null
+  ) {
+    return IterableApi.trackEmbeddedClick(message, buttonId, clickedUrl);
+  }
 }
