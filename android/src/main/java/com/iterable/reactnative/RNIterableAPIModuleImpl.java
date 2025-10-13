@@ -683,6 +683,41 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         }
     }
 
+    public void getEmbeddedMessages(@Nullable ReadableArray placementIds, Promise promise) {
+        IterableLogger.d(TAG, "getEmbeddedMessages for placements: " + placementIds);
+
+        try {
+            List<IterableEmbeddedMessage> allMessages = new ArrayList<>();
+
+            if (placementIds == null || placementIds.size() == 0) {
+                // If no placement IDs provided, we need to get messages for all possible placements
+                // Since the Android SDK requires a placement ID, we'll use 0 as a default
+                // This might need to be adjusted based on the actual SDK behavior
+                List<IterableEmbeddedMessage> messages = IterableApi.getInstance().getEmbeddedManager().getMessages(0L);
+                if (messages != null) {
+                    allMessages.addAll(messages);
+                }
+            } else {
+                // Convert ReadableArray to individual placement IDs and get messages for each
+                for (int i = 0; i < placementIds.size(); i++) {
+                    long placementId = placementIds.getInt(i);
+                    List<IterableEmbeddedMessage> messages = IterableApi.getInstance().getEmbeddedManager().getMessages(placementId);
+                    if (messages != null) {
+                        allMessages.addAll(messages);
+                    }
+                }
+            }
+
+            JSONArray embeddedMessageJsonArray = Serialization.serializeEmbeddedMessages(allMessages);
+            IterableLogger.d(TAG, "Messages for placements: " + embeddedMessageJsonArray);
+
+            promise.resolve(Serialization.convertJsonToArray(embeddedMessageJsonArray));
+        } catch (JSONException e) {
+            IterableLogger.e(TAG, e.getLocalizedMessage());
+            promise.reject("", "Failed to fetch messages with error " + e.getLocalizedMessage());
+        }
+    }
+
     // ---------------------------------------------------------------------------------------
     // endregion
 }

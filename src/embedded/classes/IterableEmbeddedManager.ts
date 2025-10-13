@@ -1,4 +1,5 @@
 import { IterableApi } from '../../core/classes/IterableApi';
+import type { IterableEmbeddedMessage } from '../types/IterableEmbeddedMessage';
 
 /**
  * Manages embedded messages from Iterable.
@@ -50,6 +51,18 @@ export class IterableEmbeddedManager {
    */
   getPlacementIds() {
     return IterableApi.getEmbeddedPlacementIds();
+  }
+
+  /**
+   * Retrieves a list of embedded messages the user is eligible to see.
+   *
+   * @param placementIds - The placement IDs to retrieve messages for.
+   * @returns A Promise that resolves to an array of embedded messages.
+   */
+  getMessages(
+    placementIds: number[] | null
+  ): Promise<IterableEmbeddedMessage[]> {
+    return IterableApi.getEmbeddedMessages(placementIds);
   }
 
   /**

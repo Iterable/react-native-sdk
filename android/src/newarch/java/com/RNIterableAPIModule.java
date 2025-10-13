@@ -244,6 +244,11 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
     moduleImpl.getEmbeddedPlacementIds(promise);
   }
 
+  @Override
+  public void getEmbeddedMessages(@Nullable ReadableArray placementIds, Promise promise) {
+    moduleImpl.getEmbeddedMessages(placementIds, promise);
+  }
+
   public void sendEvent(@NonNull String eventName, @Nullable Object eventData) {
     moduleImpl.sendEvent(eventName, eventData);
   }

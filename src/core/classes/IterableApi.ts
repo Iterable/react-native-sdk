@@ -12,6 +12,7 @@ import { IterableAttributionInfo } from './IterableAttributionInfo';
 import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
+import type { IterableEmbeddedMessage } from '../../embedded/types/IterableEmbeddedMessage';
 
 /**
  * Contains functions that directly interact with the native layer.
@@ -540,6 +541,18 @@ export class IterableApi {
   static getEmbeddedPlacementIds() {
     IterableLogger.log('getEmbeddedPlacementIds');
     return RNIterableAPI.getEmbeddedPlacementIds();
+  }
+
+  /**
+   * Get the embedded messages.
+   *
+   * @returns A Promise that resolves to an array of embedded messages.
+   */
+  static getEmbeddedMessages(
+    placementIds: number[] | null
+  ): Promise<IterableEmbeddedMessage[]> {
+    IterableLogger.log('getEmbeddedMessages: ', placementIds);
+    return RNIterableAPI.getEmbeddedMessages(placementIds);
   }
 
   // ---- End EMBEDDED ---- //
