@@ -1,5 +1,12 @@
 import { StyleSheet } from 'react-native';
-import { button, buttonText, container, hr, link } from '../../constants';
+import {
+  button,
+  buttonText,
+  container,
+  hr,
+  link,
+  colors,
+} from '../../constants';
 
 const styles = StyleSheet.create({
   button,
@@ -25,6 +32,35 @@ const styles = StyleSheet.create({
   text: { textAlign: 'center' },
   utilitySection: {
     paddingHorizontal: 16,
+  },
+  viewTypeButton: {
+    alignItems: 'center',
+    borderColor: colors.brandCyan,
+    borderRadius: 8,
+    borderWidth: 2,
+    flex: 1,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+  },
+  viewTypeButtonSelected: {
+    backgroundColor: colors.brandCyan,
+  },
+  viewTypeButtonText: {
+    color: colors.brandCyan,
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  viewTypeButtonTextSelected: {
+    color: colors.backgroundPrimary,
+  },
+  viewTypeButtons: {
+    flexDirection: 'row',
+    gap: 8,
+    justifyContent: 'space-around',
+    marginTop: 8,
+  },
+  viewTypeSelector: {
+    marginVertical: 12,
   },
 });
 
