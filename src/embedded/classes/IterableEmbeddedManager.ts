@@ -28,8 +28,18 @@ export class IterableEmbeddedManager {
   }
 
   /**
-   * Starts a session, or a period of time when a user is on a screen or page
-   * that can display embedded messages.
+   * Starts a session.
+   *
+   * As session is a period of time when a user is on a screen or page that can
+   * display embedded messages.
+   *
+   * When a user comes to a screen or page in your app where embedded messages
+   * are displayed (in one or more placements), a session should be started.
+   *
+   * @example
+   * ```typescript
+   * IterableEmbeddedManager.startSession();
+   * ```
    */
   startSession() {
     IterableLogger.log('IterableEmbeddedManager.startSession');
@@ -37,6 +47,15 @@ export class IterableEmbeddedManager {
 
   /**
    * Ends a session.
+   *
+   * When a user leaves a screen in your app where embedded messages are
+   * displayed, the session should be ended.  This causes the SDK to send
+   * session and impression data back to the server.
+   *
+   * @example
+   * ```typescript
+   * IterableEmbeddedManager.endSession();
+   * ```
    */
   endSession() {
     IterableLogger.log('IterableEmbeddedManager.endSession');
@@ -44,6 +63,11 @@ export class IterableEmbeddedManager {
 
   /**
    * Tracks an embedded session.
+   *
+   * @example
+   * ```typescript
+   * IterableEmbeddedManager.trackSession();
+   * ```
    */
   trackSession() {
     IterableLogger.log('IterableEmbeddedManager.trackSession');
