@@ -496,6 +496,37 @@ import React
     IterableAPI.embeddedManager.syncMessages(completion: {})
   }
 
+  @objc(getEmbeddedMessages:resolver:rejecter:)
+  public func getEmbeddedMessages(
+    placementIds: [NSNumber]?,
+    resolver: RCTPromiseResolveBlock,
+    rejecter: RCTPromiseRejectBlock
+  ) {
+    ITBInfo()
+    ITBInfo("getEmbeddedMessages called with placementIds: \(String(describing: placementIds))")
+    var allMessages: [IterableEmbeddedMessage] = []
+
+    if let placementIds = placementIds, !placementIds.isEmpty {
+      // Get messages for each specified placement ID
+      ITBInfo("Getting messages for \(placementIds.count) placement IDs")
+      for placementId in placementIds {
+        ITBInfo("Getting messages for placement ID: \(placementId.intValue)")
+        let messages = IterableAPI.embeddedManager.getMessages(for: placementId.intValue)
+        ITBInfo("Found \(messages.count) messages for placement ID: \(placementId.intValue)")
+        allMessages.append(contentsOf: messages)
+      }
+    } else {
+      // Get messages for all placements by getting placement IDs first
+      ITBInfo("Getting all messages (no placement IDs specified)")
+      let messages = IterableAPI.embeddedManager.getMessages()
+      ITBInfo("Found \(messages.count) total messages")
+      allMessages.append(contentsOf: messages)
+    }
+
+    ITBInfo("Returning \(allMessages.count) total embedded messages")
+    resolver(allMessages.map { $0.toDict() })
+  }
+
   // MARK: Private
   private var shouldEmit = false
   private let _methodQueue = DispatchQueue(label: String(describing: ReactIterableAPI.self))
