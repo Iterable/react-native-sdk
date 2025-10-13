@@ -263,6 +263,11 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
       moduleImpl.getEmbeddedMessages(placementIds, promise);
     }
 
+    @ReactMethod
+    public void trackEmbeddedClick(ReadableMap message, String buttonId, String clickedUrl) {
+      moduleImpl.trackEmbeddedClick(message, buttonId, clickedUrl);
+    }
+
     public void sendEvent(@NonNull String eventName, @Nullable Object eventData) {
       moduleImpl.sendEvent(eventName, eventData);
     }

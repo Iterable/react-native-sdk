@@ -1,8 +1,9 @@
-import { Linking, NativeEventEmitter, Platform } from 'react-native';
+import { NativeEventEmitter, Platform } from 'react-native';
 
 import { buildInfo } from '../../itblBuildInfo';
 
 import { RNIterableAPI } from '../../api';
+import { IterableEmbeddedManager } from '../../embedded/classes/IterableEmbeddedManager';
 import { IterableInAppManager } from '../../inApp/classes/IterableInAppManager';
 import { IterableInAppMessage } from '../../inApp/classes/IterableInAppMessage';
 import { IterableInAppCloseSource } from '../../inApp/enums/IterableInAppCloseSource';
@@ -11,6 +12,7 @@ import { IterableInAppLocation } from '../../inApp/enums/IterableInAppLocation';
 import { IterableAuthResponseResult } from '../enums/IterableAuthResponseResult';
 import { IterableEventName } from '../enums/IterableEventName';
 import type { IterableAuthFailure } from '../types/IterableAuthFailure';
+import { callUrlHandler } from '../utils/callUrlHandler';
 import { IterableAction } from './IterableAction';
 import { IterableActionContext } from './IterableActionContext';
 import { IterableApi } from './IterableApi';
@@ -20,9 +22,10 @@ import { IterableAuthResponse } from './IterableAuthResponse';
 import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
-import { IterableEmbeddedManager } from '../../embedded/classes/IterableEmbeddedManager';
 
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
+
+const defaultConfig = new IterableConfig();
 
 /* eslint-disable tsdoc/syntax */
 /**
@@ -46,7 +49,7 @@ export class Iterable {
   /**
    * Current configuration of the Iterable SDK
    */
-  static savedConfig: IterableConfig = new IterableConfig();
+  static savedConfig: IterableConfig = defaultConfig;
 
   /**
    * In-app message manager for the current user.
@@ -98,8 +101,9 @@ export class Iterable {
    * });
    * ```
    */
-  static embeddedManager: IterableEmbeddedManager =
-    new IterableEmbeddedManager();
+  static embeddedManager: IterableEmbeddedManager = new IterableEmbeddedManager(
+    defaultConfig
+  );
 
   /**
    * Initializes the Iterable React Native SDK in your app's Javascript or Typescript code.
@@ -177,6 +181,8 @@ export class Iterable {
 
       IterableLogger.setLoggingEnabled(config.logReactNativeSdkCalls ?? true);
       IterableLogger.setLogLevel(config.logLevel);
+
+      Iterable.embeddedManager = new IterableEmbeddedManager(config);
     }
 
     this.setupEventHandlers();
@@ -933,10 +939,10 @@ export class Iterable {
         if (Platform.OS === 'android') {
           //Give enough time for Activity to wake up.
           setTimeout(() => {
-            callUrlHandler(url, context);
+            callUrlHandler(Iterable.savedConfig, url, context);
           }, 1000);
         } else {
-          callUrlHandler(url, context);
+          callUrlHandler(Iterable.savedConfig, url, context);
         }
       });
     }
@@ -1030,22 +1036,6 @@ export class Iterable {
           Iterable.savedConfig?.onJWTError?.(authFailureResponse);
         }
       );
-    }
-
-    function callUrlHandler(url: string, context: IterableActionContext) {
-      // MOB-10424: Figure out if this is purposeful
-      // eslint-disable-next-line eqeqeq
-      if (Iterable.savedConfig.urlHandler?.(url, context) == false) {
-        Linking.canOpenURL(url)
-          .then((canOpen) => {
-            if (canOpen) {
-              Linking.openURL(url);
-            }
-          })
-          .catch((reason) => {
-            IterableLogger?.log('could not open url: ' + reason);
-          });
-      }
     }
   }
 

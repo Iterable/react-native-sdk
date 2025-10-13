@@ -726,6 +726,16 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         }
     }
 
+    public void trackEmbeddedClick(ReadableMap messageMap, String buttonId, String clickedUrl) {
+        IterableLogger.d(TAG, "trackEmbeddedClick: buttonId: " + buttonId + " clickedUrl: " + clickedUrl);
+        IterableEmbeddedMessage message = Serialization.embeddedMessageFromReadableMap(messageMap);
+        if (message != null) {
+            IterableApi.getInstance().trackEmbeddedClick(message, buttonId, clickedUrl);
+        } else {
+            IterableLogger.e(TAG, "Failed to convert message map to IterableEmbeddedMessage");
+        }
+    }
+
     // ---------------------------------------------------------------------------------------
     // endregion
 }
