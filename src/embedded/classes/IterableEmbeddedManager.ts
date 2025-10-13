@@ -14,6 +14,9 @@ import { IterableApi } from '../../core/classes/IterableApi';
 export class IterableEmbeddedManager {
   /**
    * Whether the embedded manager is enabled.
+   *
+   * This is set through the `enableEmbeddedMessaging` flag in the
+   * `IterableConfig` class.
    */
   isEnabled = false;
 
@@ -24,5 +27,42 @@ export class IterableEmbeddedManager {
    */
   getPlacementIds() {
     return IterableApi.getEmbeddedPlacementIds();
+  }
+
+  /**
+   * Starts a session.
+   *
+   * As session is a period of time when a user is on a screen or page that can
+   * display embedded messages.
+   *
+   * When a user comes to a screen or page in your app where embedded messages
+   * are displayed (in one or more placements), a session should be started.
+   *
+   * @example
+   * ```typescript
+   * IterableEmbeddedManager.startSession();
+   * ```
+   */
+  startSession() {
+    return IterableApi.startEmbeddedSession();
+  }
+
+  /**
+   * Ends a session.
+   *
+   * When a user leaves a screen in your app where embedded messages are
+   * displayed, the session should be ended.  This causes the SDK to send
+   * session and impression data back to the server.
+   *
+   * A session is tracked when it is ended, so you should be able to find
+   * tracking data after this method is called.
+   *
+   * @example
+   * ```typescript
+   * IterableEmbeddedManager.endSession();
+   * ```
+   */
+  endSession() {
+    return IterableApi.endEmbeddedSession();
   }
 }

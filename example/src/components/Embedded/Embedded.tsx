@@ -13,6 +13,20 @@ export const Embedded = () => {
     });
   }, []);
 
+  const startEmbeddedSession = useCallback(() => {
+    console.log(
+      'startEmbeddedSession --> check android/ios logs to check if it worked'
+    );
+    Iterable.embeddedManager.startSession();
+  }, []);
+
+  const endEmbeddedSession = useCallback(() => {
+    console.log(
+      'endEmbeddedSession --> check android/ios logs to check if it worked'
+    );
+    Iterable.embeddedManager.endSession();
+  }, []);
+
   return (
     <View style={styles.container}>
       <Text style={styles.text}>EMBEDDED</Text>
@@ -28,6 +42,12 @@ export const Embedded = () => {
       </Text>
       <TouchableOpacity style={styles.button} onPress={getPlacementIds}>
         <Text style={styles.buttonText}>Get placement ids</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={startEmbeddedSession}>
+        <Text style={styles.buttonText}>Start embedded session</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={endEmbeddedSession}>
+        <Text style={styles.buttonText}>End embedded session</Text>
       </TouchableOpacity>
     </View>
   );
