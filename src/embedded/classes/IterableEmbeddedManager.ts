@@ -21,6 +21,29 @@ export class IterableEmbeddedManager {
   isEnabled = false;
 
   /**
+   * Syncs embedded local cache with the server.
+   *
+   * When your app first launches, and each time it comes to the foreground,
+   * Iterable's iOS SDK automatically refresh a local, on-device cache of
+   * embedded messages for the signed-in user. These are the messages the
+   * signed-in user is eligible to see.
+   *
+   * At key points during your app's lifecycle, you may want to manually refresh
+   * your app's local cache of embedded messages. For example, as users navigate
+   * around, on pull-to-refresh, etc.
+   *
+   * However, do not poll for new embedded messages at a regular interval.
+   *
+   * @example
+   * ```typescript
+   * IterableEmbeddedManager.syncMessages();
+   * ```
+   */
+  syncMessages() {
+    return IterableApi.syncEmbeddedMessages();
+  }
+
+  /**
    * Retrieves a list of placement IDs for the embedded manager.
    *
    * [Placement Documentation](https://support.iterable.com/hc/en-us/articles/23060529977364-Embedded-Messaging-Overview#placements-and-prioritization)

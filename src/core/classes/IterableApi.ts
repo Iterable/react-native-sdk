@@ -511,6 +511,14 @@ export class IterableApi {
   // ====================================================== //
 
   /**
+   * Syncs embedded local cache with the server.
+   */
+  static syncEmbeddedMessages() {
+    IterableLogger.log('syncEmbeddedMessages');
+    return RNIterableAPI.syncEmbeddedMessages();
+  }
+
+  /**
    * Starts an embedded session.
    */
   static startEmbeddedSession() {

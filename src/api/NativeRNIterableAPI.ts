@@ -119,6 +119,7 @@ export interface Spec extends TurboModule {
   pauseAuthRetries(pauseRetry: boolean): void;
 
   // Embedded Messaging
+  syncEmbeddedMessages(): void;
   startEmbeddedSession(): void;
   endEmbeddedSession(): void;
   getEmbeddedPlacementIds(): Promise<number[]>;

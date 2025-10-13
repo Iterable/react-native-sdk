@@ -6,6 +6,11 @@ import styles from './Embedded.styles';
 
 export const Embedded = () => {
   const [placementIds, setPlacementIds] = useState<number[]>([]);
+
+  const syncEmbeddedMessages = useCallback(() => {
+    Iterable.embeddedManager.syncMessages();
+  }, []);
+
   const getPlacementIds = useCallback(() => {
     Iterable.embeddedManager.getPlacementIds().then((ids: unknown) => {
       console.log(ids);
@@ -40,6 +45,9 @@ export const Embedded = () => {
       <Text style={styles.text}>
         Placement ids: [{placementIds.join(', ')}]
       </Text>
+      <TouchableOpacity style={styles.button} onPress={syncEmbeddedMessages}>
+        <Text style={styles.buttonText}>Sync embedded messages</Text>
+      </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={getPlacementIds}>
         <Text style={styles.buttonText}>Get placement ids</Text>
       </TouchableOpacity>

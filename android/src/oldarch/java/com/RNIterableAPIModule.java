@@ -229,6 +229,11 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void syncEmbeddedMessages() {
+      moduleImpl.syncEmbeddedMessages();
+    }
+
+    @ReactMethod
     public void startEmbeddedSession() {
       moduleImpl.startEmbeddedSession();
     }

@@ -225,6 +225,11 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   }
 
   @Override
+  public void syncEmbeddedMessages() {
+    moduleImpl.syncEmbeddedMessages();
+  }
+
+  @Override
   public void startEmbeddedSession() {
     moduleImpl.startEmbeddedSession();
   }
