@@ -6,9 +6,7 @@ import { IterableAuthResponse } from './IterableAuthResponse';
  *
  * @example
  * ```typescript
- * const config = new IterableConfig();
- * const logger = new IterableLogger(config);
- * const authManager = new IterableAuthManager(logger);
+ * const authManager = new IterableAuthManager();
  * ```
  */
 export class IterableAuthManager {
@@ -31,6 +29,12 @@ export class IterableAuthManager {
    * Pass along an auth token to the SDK.
    *
    * @param authToken - The auth token to pass along
+   *
+   * @example
+   * ```typescript
+   * const authManager = new IterableAuthManager();
+   * authManager.passAlongAuthToken(MY_AUTH_TOKEN);
+   * ```
    */
   passAlongAuthToken(
     authToken: string | null | undefined
