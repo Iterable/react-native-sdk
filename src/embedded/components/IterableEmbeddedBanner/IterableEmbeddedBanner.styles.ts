@@ -1,11 +1,12 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import {
   embeddedMediaImageBackgroundColors,
   embeddedMediaImageBorderColors,
 } from '../../constants/embeddedViewDefaults';
 
-export const IMAGE_HEIGHT = 70;
-export const IMAGE_WIDTH = 70;
+// See https://support.iterable.com/hc/en-us/articles/23230946708244-Out-of-the-Box-Views-for-Embedded-Messages#banners
+export const IMAGE_HEIGHT = Platform.OS === 'android' ? 80 : 100;
+export const IMAGE_WIDTH = Platform.OS === 'android' ? 80 : 100;
 
 export const styles = StyleSheet.create({
   body: {
