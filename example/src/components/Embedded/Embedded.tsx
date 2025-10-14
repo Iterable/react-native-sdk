@@ -1,5 +1,5 @@
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import {
   Iterable,
   // type IterableAction,
@@ -38,6 +38,10 @@ export const Embedded = () => {
         console.log(messages);
       });
   }, [getPlacementIds]);
+
+  useEffect(() => {
+    getEmbeddedMessages();
+  }, [getEmbeddedMessages]);
 
   return (
     <View style={styles.container}>

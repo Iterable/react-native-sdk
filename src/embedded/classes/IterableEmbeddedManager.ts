@@ -239,4 +239,15 @@ export class IterableEmbeddedManager {
       callUrlHandler(this.config, clickedUrl, context);
     }
   }
+
+  /**
+   * TODO: Implement below
+   */
+  trackEmbeddedMessageReceived(message: IterableEmbeddedMessage) {
+    console.log(
+      'IterableEmbeddedManager.trackEmbeddedMessageReceived',
+      message
+    );
+    // return IterableApi.trackEmbeddedMessageReceived(message);
+  }
 }
