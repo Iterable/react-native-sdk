@@ -16,7 +16,7 @@ export const Embedded = () => {
     IterableEmbeddedMessage[]
   >([]);
   const [selectedViewType, setSelectedViewType] =
-    useState<IterableEmbeddedViewType>(IterableEmbeddedViewType.Banner);
+    useState<IterableEmbeddedViewType>(IterableEmbeddedViewType.Card);
 
   const syncEmbeddedMessages = useCallback(() => {
     Iterable.embeddedManager.syncMessages();
