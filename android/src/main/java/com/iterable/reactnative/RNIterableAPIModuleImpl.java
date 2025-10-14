@@ -28,10 +28,10 @@ import com.iterable.iterableapi.IterableAttributionInfo;
 import com.iterable.iterableapi.IterableAuthHandler;
 import com.iterable.iterableapi.IterableConfig;
 import com.iterable.iterableapi.IterableCustomActionHandler;
-// import com.iterable.iterableapi.IterableEmbeddedManager;
+import com.iterable.iterableapi.IterableEmbeddedManager;
 import com.iterable.iterableapi.IterableEmbeddedMessage;
-// import com.iterable.iterableapi.IterableEmbeddedSession;
-// import com.iterable.iterableapi.IterableEmbeddedUpdateHandler;
+import com.iterable.iterableapi.IterableEmbeddedSession;
+import com.iterable.iterableapi.IterableEmbeddedUpdateHandler;
 import com.iterable.iterableapi.IterableHelper;
 import com.iterable.iterableapi.IterableInAppCloseAction;
 import com.iterable.iterableapi.IterableInAppHandler;
@@ -41,6 +41,7 @@ import com.iterable.iterableapi.IterableInAppMessage;
 import com.iterable.iterableapi.IterableInboxSession;
 import com.iterable.iterableapi.IterableLogger;
 import com.iterable.iterableapi.IterableUrlHandler;
+import com.iterable.iterableapi.EmbeddedSessionManager;
 import com.iterable.iterableapi.RNIterableInternal;
 
 import org.json.JSONArray;
@@ -54,7 +55,7 @@ import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCustomActionHandler, IterableInAppHandler, IterableAuthHandler, IterableInAppManager.Listener {
+public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCustomActionHandler, IterableInAppHandler, IterableAuthHandler, IterableInAppManager.Listener, IterableEmbeddedUpdateHandler {
     public static final String NAME = "RNIterableAPI";
 
     private static String TAG = "RNIterableAPIModule";
@@ -102,6 +103,7 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         IterableApi.getInstance().setDeviceAttribute("reactNativeSDKVersion", version);
 
         IterableApi.getInstance().getInAppManager().addListener(this);
+        IterableApi.getInstance().getEmbeddedManager().addUpdateListener(this);
         IterableApi.getInstance().getEmbeddedManager().syncMessages();
 
         // MOB-10421: Figure out what the error cases are and handle them appropriately
@@ -130,8 +132,8 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         }
 
         if (configReadableMap.hasKey("enableEmbeddedMessaging")) {
-          configBuilder.setEnableEmbeddedMessaging(configReadableMap.getBoolean("enableEmbeddedMessaging"));
-      }
+            configBuilder.setEnableEmbeddedMessaging(configReadableMap.getBoolean("enableEmbeddedMessaging"));
+        }
 
         // NOTE: There does not seem to be a way to set the API endpoint
         // override in the Android SDK.  Check with @Ayyanchira and @evantk91 to
@@ -141,6 +143,7 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         IterableApi.getInstance().setDeviceAttribute("reactNativeSDKVersion", version);
 
         IterableApi.getInstance().getInAppManager().addListener(this);
+        IterableApi.getInstance().getEmbeddedManager().addUpdateListener(this);
         IterableApi.getInstance().getEmbeddedManager().syncMessages();
 
         // MOB-10421: Figure out what the error cases are and handle them appropriately
@@ -652,8 +655,9 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
     // region Embedded messaging
 
     public void syncEmbeddedMessages() {
-        IterableLogger.d(TAG, "syncEmbeddedMessages");
+        IterableLogger.d(TAG, "syncEmbeddedMessages - Starting sync");
         IterableApi.getInstance().getEmbeddedManager().syncMessages();
+        IterableLogger.d(TAG, "syncEmbeddedMessages - Sync call completed");
     }
 
     public void startEmbeddedSession() {
@@ -734,6 +738,17 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         } else {
             IterableLogger.e(TAG, "Failed to convert message map to IterableEmbeddedMessage");
         }
+    }
+
+    @Override
+    public void onMessagesUpdated() {
+        IterableLogger.d(TAG, "onMessagesUpdated - Embedded messages changed, sending event to React Native");
+        sendEvent(EventName.receivedIterableEmbeddedMessagesChanged.name(), null);
+    }
+
+    @Override
+    public void onEmbeddedMessagingDisabled() {
+        IterableLogger.d(TAG, "onEmbeddedMessagingDisabled - Embedded messaging has been disabled");
     }
 
     // ---------------------------------------------------------------------------------------

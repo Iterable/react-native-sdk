@@ -56,8 +56,10 @@ export const useEmbeddedView = (
       setLastState(appVisibility);
       if (appVisibility === 'active') {
         // App is active, start the session
-        // TODO: figure out how to only do this once, even if there are multiple embedded views
+        // TODO: figure out how to only do this once, even if there are multiple
+        // embedded views
         Iterable.embeddedManager.startSession();
+        Iterable.embeddedManager.syncMessages();
       } else if (
         appVisibility === 'background' ||
         appVisibility === 'inactive'

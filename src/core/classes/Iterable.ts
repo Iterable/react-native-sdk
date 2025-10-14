@@ -929,8 +929,13 @@ export class Iterable {
       IterableEventName.handleCustomActionCalled
     );
     RNEventEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
+    RNEventEmitter.removeAllListeners(
+      IterableEventName.receivedIterableEmbeddedMessagesChanged
+    );
 
     if (Iterable.savedConfig.urlHandler) {
+      // TODO: Check if this is why urls aren't always handled.  Seems like this
+      // is not always being called.
       RNEventEmitter.addListener(IterableEventName.handleUrlCalled, (dict) => {
         const url = dict.url;
         const context = IterableActionContext.fromDict(dict.context);
@@ -947,6 +952,7 @@ export class Iterable {
       });
     }
 
+    // TODO: See if this should be called when doing action handling from RN
     if (Iterable.savedConfig.customActionHandler) {
       RNEventEmitter.addListener(
         IterableEventName.handleCustomActionCalled,
@@ -1037,6 +1043,14 @@ export class Iterable {
         }
       );
     }
+
+    RNEventEmitter.addListener(
+      IterableEventName.receivedIterableEmbeddedMessagesChanged,
+      () => {
+        console.log('RECEIVED MESSAGE!!!!');
+        // Iterable.embeddedManager.updateMessages();
+      }
+    );
   }
 
   /**
