@@ -18,6 +18,7 @@ import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
+import com.iterable.iterableapi.AuthFailure;
 import com.iterable.iterableapi.InboxSessionManager;
 import com.iterable.iterableapi.IterableAction;
 import com.iterable.iterableapi.IterableActionContext;
@@ -573,16 +574,30 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
     }
 
     @Override
+    public void onAuthFailure(AuthFailure authFailure) {
+      // Create a JSON object for the authFailure object
+      JSONObject messageJson = new JSONObject();
+      try {
+        messageJson.put("userKey", authFailure.userKey);
+        messageJson.put("failedAuthToken", authFailure.failedAuthToken);
+        messageJson.put("failedRequestTime", authFailure.failedRequestTime);
+        messageJson.put("failureReason", authFailure.failureReason.name());
+        WritableMap eventData = Serialization.convertJsonToMap(messageJson);
+        sendEvent(EventName.handleAuthFailureCalled.name(), eventData);
+      } catch (JSONException e) {
+        IterableLogger.v(TAG, "Failed to set authToken");
+      }
+    }
+
+    public void pauseAuthRetries(boolean pauseRetry) {
+        IterableApi.getInstance().pauseAuthRetries(pauseRetry);
+    }
+
+    @Override
     public void onTokenRegistrationSuccessful(String authToken) {
         IterableLogger.v(TAG, "authToken successfully set");
         // MOB-10422: Pass successhandler to event listener
         sendEvent(EventName.handleAuthSuccessCalled.name(), null);
-    }
-
-    @Override
-    public void onTokenRegistrationFailed(Throwable object) {
-        IterableLogger.v(TAG, "Failed to set authToken");
-        sendEvent(EventName.handleAuthFailureCalled.name(), null);
     }
 
     public void addListener(String eventName) {

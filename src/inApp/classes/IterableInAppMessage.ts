@@ -135,19 +135,19 @@ export class IterableInAppMessage {
    * @returns A new instance of `IterableInAppMessage` populated with data from the `viewToken`.
    */
   static fromViewToken(viewToken: ViewToken) {
-    const inAppMessage = viewToken.item.inAppMessage as IterableInAppMessage;
+    const inAppMessage = viewToken?.item?.inAppMessage as IterableInAppMessage;
 
     return new IterableInAppMessage(
-      inAppMessage.messageId,
-      inAppMessage.campaignId,
-      inAppMessage.trigger,
-      inAppMessage.createdAt,
-      inAppMessage.expiresAt,
-      inAppMessage.saveToInbox,
-      inAppMessage.inboxMetadata,
-      inAppMessage.customPayload,
-      inAppMessage.read,
-      inAppMessage.priorityLevel
+      inAppMessage?.messageId,
+      inAppMessage?.campaignId,
+      inAppMessage?.trigger,
+      inAppMessage?.createdAt,
+      inAppMessage?.expiresAt,
+      inAppMessage?.saveToInbox,
+      inAppMessage?.inboxMetadata,
+      inAppMessage?.customPayload,
+      inAppMessage?.read,
+      inAppMessage?.priorityLevel
     );
   }
 

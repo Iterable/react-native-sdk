@@ -1,10 +1,10 @@
 import type { StackNavigationProp } from '@react-navigation/stack';
 import {
-  type FunctionComponent,
   createContext,
   useCallback,
   useContext,
   useState,
+  type FunctionComponent,
 } from 'react';
 import { Alert } from 'react-native';
 
@@ -135,6 +135,10 @@ export const IterableAppProvider: FunctionComponent<
 
       config.onJWTError = (authFailure) => {
         console.error('Error fetching JWT:', authFailure);
+        Alert.alert(
+          `Error fetching JWT: ${authFailure.failureReason}`,
+          `Token: ${authFailure.failedAuthToken}`
+        );
       };
 
       config.urlHandler = (url: string) => {
@@ -161,6 +165,22 @@ export const IterableAppProvider: FunctionComponent<
       config.logLevel = IterableLogLevel.debug;
 
       config.inAppHandler = () => IterableInAppShowResponse.show;
+
+      // NOTE: Uncomment to test authHandler failure
+      // config.authHandler = () => {
+      //   console.log(`authHandler`);
+
+      //   return Promise.resolve({
+      //     authToken: 'SomethingNotValid',
+      //     successCallback: () => {
+      //       console.log(`authHandler > success`);
+      //     },
+      //     // This is not firing
+      //     failureCallback: () => {
+      //       console.log(`authHandler > failure`);
+      //     },
+      //   });
+      // };
 
       setItblConfig(config);
 

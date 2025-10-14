@@ -95,16 +95,30 @@ export const IterableInboxMessageList = ({
   function getRowInfosFromViewTokens(
     viewTokens: Array<ViewToken>
   ): Array<IterableInboxImpressionRowInfo> {
-    return viewTokens.map(function (viewToken) {
-      const inAppMessage = IterableInAppMessage.fromViewToken(viewToken);
+    return viewTokens
+      .filter((viewToken) => {
+        // Filter out viewTokens that don't have valid items or inAppMessage
+        return viewToken?.item?.inAppMessage?.messageId;
+      })
+      .map(function (viewToken) {
+        try {
+          const inAppMessage = IterableInAppMessage.fromViewToken(viewToken);
 
-      const impression = {
-        messageId: inAppMessage.messageId,
-        silentInbox: inAppMessage.isSilentInbox(),
-      } as IterableInboxImpressionRowInfo;
+          const impression = {
+            messageId: inAppMessage?.messageId,
+            silentInbox: inAppMessage?.isSilentInbox(),
+          } as IterableInboxImpressionRowInfo;
 
-      return impression;
-    });
+          return impression;
+        } catch (error) {
+          // Log the error and return null to be filtered out
+          console.warn('Failed to create impression from ViewToken:', error);
+          return null;
+        }
+      })
+      .filter(
+        (impression) => impression !== null
+      ) as Array<IterableInboxImpressionRowInfo>;
   }
 
   const inboxSessionViewabilityConfig: ViewabilityConfig = {
