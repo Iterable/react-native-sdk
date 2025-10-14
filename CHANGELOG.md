@@ -1,3 +1,17 @@
+## 2.0.3
+
+### Updates
+- Add in-app message manager with lazy initialization to avoid circular dependency ([6feec35](https://github.com/Iterable/react-native-sdk/commit/6feec35))
+
+### Fixes
+- Update Iterable-iOS-SDK to 6.5.4.1 to fix issue #701 (performAndWait) ([0bb4a24](https://github.com/Iterable/react-native-sdk/commit/0bb4a24)), closes [#701](https://github.com/Iterable/react-native-sdk/issues/701)
+- Update Xcode project configuration to include CocoaPods build phases and settings ([23a9e79](https://github.com/Iterable/react-native-sdk/commit/23a9e79))
+- Enable CodeQl Advanced Config ([7346e56](https://github.com/Iterable/react-native-sdk/commit/7346e56))
+- Upload coverage report to Qlty ([6872621](https://github.com/Iterable/react-native-sdk/commit/6872621))
+- Simplify IterableInAppManager usage in tests by directly accessing Iterable.inAppManager ([6deeae3](https://github.com/Iterable/react-native-sdk/commit/6deeae3))
+- Correct markdown link syntax in IterableInAppManager documentation ([78e22b2](https://github.com/Iterable/react-native-sdk/commit/78e22b2))
+
+
 ## 2.0.2
 ### Fixes
 - Migrate AppDelegate to Swift and remove Objective-C files
