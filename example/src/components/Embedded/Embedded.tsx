@@ -16,7 +16,7 @@ export const Embedded = () => {
     IterableEmbeddedMessage[]
   >([]);
   const [selectedViewType, setSelectedViewType] =
-    useState<IterableEmbeddedViewType>(IterableEmbeddedViewType.Notification);
+    useState<IterableEmbeddedViewType>(IterableEmbeddedViewType.Banner);
 
   const syncEmbeddedMessages = useCallback(() => {
     Iterable.embeddedManager.syncMessages();
@@ -30,20 +30,6 @@ export const Embedded = () => {
     });
   }, []);
 
-  const startEmbeddedSession = useCallback(() => {
-    console.log(
-      'startEmbeddedSession --> check android/ios logs to check if it worked'
-    );
-    Iterable.embeddedManager.startSession();
-  }, []);
-
-  const endEmbeddedSession = useCallback(() => {
-    console.log(
-      'endEmbeddedSession --> check android/ios logs to check if it worked'
-    );
-    Iterable.embeddedManager.endSession();
-  }, []);
-
   const getEmbeddedMessages = useCallback(() => {
     getPlacementIds()
       .then((ids: number[]) => Iterable.embeddedManager.getMessages(ids))
@@ -52,38 +38,6 @@ export const Embedded = () => {
         console.log(messages);
       });
   }, [getPlacementIds]);
-
-  // const startEmbeddedImpression = useCallback(
-  //   (message: IterableEmbeddedMessage) => {
-  //     console.log(`startEmbeddedImpression`, message);
-  //     Iterable.embeddedManager.startImpression(
-  //       message.metadata.messageId,
-  //       // TODO: check if this should be changed to a number, as per the type
-  //       Number(message.metadata.placementId)
-  //     );
-  //   },
-  //   []
-  // );
-
-  // const pauseEmbeddedImpression = useCallback(
-  //   (message: IterableEmbeddedMessage) => {
-  //     console.log(`pauseEmbeddedImpression:`, message);
-  //     Iterable.embeddedManager.pauseImpression(message.metadata.messageId);
-  //   },
-  //   []
-  // );
-
-  // const handleClick = useCallback(
-  //   (
-  //     message: IterableEmbeddedMessage,
-  //     buttonId: string | null,
-  //     action?: IterableAction | null
-  //   ) => {
-  //     console.log(`handleClick:`, message);
-  //     Iterable.embeddedManager.handleClick(message, buttonId, action);
-  //   },
-  //   []
-  // );
 
   return (
     <View style={styles.container}>
@@ -160,12 +114,6 @@ export const Embedded = () => {
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={getPlacementIds}>
           <Text style={styles.buttonText}>Get placement ids</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={startEmbeddedSession}>
-          <Text style={styles.buttonText}>Start session</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={endEmbeddedSession}>
-          <Text style={styles.buttonText}>End session</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={getEmbeddedMessages}>
           <Text style={styles.buttonText}>Get messages</Text>
