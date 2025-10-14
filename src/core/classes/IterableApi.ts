@@ -540,7 +540,10 @@ export class IterableApi {
    */
   static startEmbeddedImpression(messageId: string, placementId: number) {
     IterableLogger.log('startEmbeddedImpression: ', messageId, placementId);
-    return RNIterableAPI.startEmbeddedImpression(messageId, placementId);
+    return RNIterableAPI.startEmbeddedImpression(
+      messageId,
+      Number(placementId)
+    );
   }
 
   /**
