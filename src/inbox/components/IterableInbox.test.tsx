@@ -48,7 +48,7 @@ import type {
 import { IterableInbox, iterableInboxTestIds } from './IterableInbox';
 import { iterableInboxEmptyStateTestIds } from './IterableInboxEmptyState';
 import { inboxMessageCellTestIDs } from './IterableInboxMessageCell';
-import { iterableMessageDisplayTestIds } from './IterableInboxMessageDisplay';
+import { iterableMessageDisplayTestIds } from './IterableInboxMessageDisplay/IterableInboxMessageDisplay';
 
 // Suppress act() warnings for this test suite since they're expected from the component's useEffect
 const originalError = console.error;

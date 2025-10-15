@@ -2,10 +2,9 @@ import { useEffect, useState } from 'react';
 import {
   Linking,
   ScrollView,
-  StyleSheet,
   Text,
   TouchableWithoutFeedback,
-  View,
+  View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { WebView, type WebViewMessageEvent } from 'react-native-webview';
@@ -14,18 +13,17 @@ import {
   IterableAction,
   IterableActionContext,
   IterableActionSource,
-} from '../../core';
+} from '../../../core';
 // expo throws an error if this is not imported directly due to circular
 // dependencies
-import { Iterable } from '../../core/classes/Iterable';
+import { Iterable } from '../../../core/classes/Iterable';
 import {
   IterableHtmlInAppContent,
   IterableInAppCloseSource,
   IterableInAppLocation,
-} from '../../inApp';
-
-import { ITERABLE_INBOX_COLORS } from '../constants';
-import { type IterableInboxRowViewModel } from '../types';
+} from '../../../inApp';
+import { type IterableInboxRowViewModel } from '../../types';
+import { styles } from './IterableInboxMessageDisplay.styles';
 
 export const iterableMessageDisplayTestIds = {
   container: 'iterable-message-display-container',
@@ -85,73 +83,6 @@ export const IterableInboxMessageDisplay = ({
   const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title;
   const [inAppContent, setInAppContent] =
     useState<IterableHtmlInAppContent | null>(null);
-
-  const styles = StyleSheet.create({
-    contentContainer: {
-      flex: 1,
-    },
-
-    header: {
-      flexDirection: 'row',
-      justifyContent: 'center',
-      width: '100%',
-    },
-
-    messageDisplayContainer: {
-      backgroundColor: ITERABLE_INBOX_COLORS.CONTAINER_BACKGROUND,
-      flexDirection: 'column',
-      height: '100%',
-      justifyContent: 'flex-start',
-      width: contentWidth,
-    },
-
-    messageTitle: {
-      alignItems: 'center',
-      flexDirection: 'row',
-      justifyContent: 'center',
-      width: 0.5 * contentWidth,
-    },
-
-    messageTitleContainer: {
-      alignItems: 'center',
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
-      marginTop: 0,
-      width: '75%',
-    },
-
-    messageTitleText: {
-      backgroundColor: ITERABLE_INBOX_COLORS.CONTAINER_BACKGROUND,
-      fontSize: 20,
-      fontWeight: 'bold',
-    },
-
-    returnButton: {
-      alignItems: 'center',
-      flexDirection: 'row',
-    },
-
-    returnButtonContainer: {
-      alignItems: 'center',
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
-      marginLeft: 0,
-      marginTop: 0,
-      width: '25%',
-      ...(isPortrait ? {} : { marginLeft: 80 }),
-    },
-
-    returnButtonIcon: {
-      color: ITERABLE_INBOX_COLORS.BUTTON_PRIMARY_TEXT,
-      fontSize: 40,
-      paddingLeft: 0,
-    },
-
-    returnButtonText: {
-      color: ITERABLE_INBOX_COLORS.BUTTON_PRIMARY_TEXT,
-      fontSize: 20,
-    },
-  });
 
   const JS = `
       const links = document.querySelectorAll('a')
@@ -228,10 +159,11 @@ export const IterableInboxMessageDisplay = ({
   return (
     <View
       testID={iterableMessageDisplayTestIds.container}
-      style={styles.messageDisplayContainer}
+      style={[styles.messageDisplayContainer, {width: contentWidth}]}
     >
       <View style={styles.header}>
-        <View style={styles.returnButtonContainer}>
+       {/* eslint-disable-next-line react-native/no-inline-styles */}
+        <View style={[styles.returnButtonContainer, isPortrait ? {} : {marginLeft: 80}]}>
           <TouchableWithoutFeedback
             onPress={() => {
               returnToInbox();
@@ -252,7 +184,7 @@ export const IterableInboxMessageDisplay = ({
           </TouchableWithoutFeedback>
         </View>
         <View style={styles.messageTitleContainer}>
-          <View style={styles.messageTitle}>
+          <View style={[styles.messageTitle, {width: 0.5 * contentWidth}]}>
             <Text
               numberOfLines={1}
               ellipsizeMode="tail"

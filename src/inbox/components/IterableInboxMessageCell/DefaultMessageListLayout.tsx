@@ -89,8 +89,6 @@ export const DefaultMessageListLayout = ({
         {thumbnailURL ? (
           <Image
             testID={inboxMessageCellTestIDs.thumbnail}
-            // MOB-10429: Use stylesheet according to best practices
-
             style={resolvedStyles.thumbnail as ImageStyle}
             source={{ uri: thumbnailURL }}
           />

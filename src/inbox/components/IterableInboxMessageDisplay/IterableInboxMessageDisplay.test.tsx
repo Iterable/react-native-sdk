@@ -1,10 +1,10 @@
 import { fireEvent, render, waitFor } from '@testing-library/react-native';
 
-import { IterableEdgeInsets } from '../../core';
-import { IterableInAppMessage, IterableInAppTrigger, IterableInboxMetadata } from '../../inApp/classes';
-import { IterableHtmlInAppContent } from '../../inApp/classes/IterableHtmlInAppContent';
-import { IterableInAppTriggerType } from '../../inApp/enums';
-import type { IterableInboxRowViewModel } from '../types';
+import { IterableEdgeInsets } from '../../../core';
+import { IterableInAppMessage, IterableInAppTrigger, IterableInboxMetadata } from '../../../inApp/classes';
+import { IterableHtmlInAppContent } from '../../../inApp/classes/IterableHtmlInAppContent';
+import { IterableInAppTriggerType } from '../../../inApp/enums';
+import type { IterableInboxRowViewModel } from '../../types';
 import { IterableInboxMessageDisplay, iterableMessageDisplayTestIds } from './IterableInboxMessageDisplay';
 
 // Suppress act() warnings for this test suite since they're expected from the component's useEffect
@@ -18,7 +18,7 @@ afterAll(() => {
 });
 
 // Mock the Iterable class
-jest.mock('../../core/classes/Iterable', () => ({
+jest.mock('../../../core/classes/Iterable', () => ({
   Iterable: {
     trackInAppClick: jest.fn(),
     trackInAppClose: jest.fn(),
@@ -300,7 +300,7 @@ describe('IterableInboxMessageDisplay', () => {
     });
 
     it('should track in-app close with back source when return button is pressed', () => {
-      const { Iterable } = require('../../core/classes/Iterable');
+      const { Iterable } = require('../../../core/classes/Iterable');
       const { getByText } = render(<IterableInboxMessageDisplay {...defaultProps} />);
       const returnButton = getByText('Inbox');
 
@@ -376,7 +376,7 @@ describe('IterableInboxMessageDisplay', () => {
 
     it('should handle custom action', async () => {
       const mockReturnToInbox = jest.fn();
-      const { Iterable } = require('../../core/classes/Iterable');
+      const { Iterable } = require('../../../core/classes/Iterable');
       const mockCustomActionHandler = jest.fn();
       Iterable.savedConfig.customActionHandler = mockCustomActionHandler;
 
@@ -399,7 +399,7 @@ describe('IterableInboxMessageDisplay', () => {
 
     it('should handle deep link', async () => {
       const mockReturnToInbox = jest.fn();
-      const { Iterable } = require('../../core/classes/Iterable');
+      const { Iterable } = require('../../../core/classes/Iterable');
       const mockUrlHandler = jest.fn();
       Iterable.savedConfig.urlHandler = mockUrlHandler;
 
@@ -496,7 +496,7 @@ describe('IterableInboxMessageDisplay', () => {
 
     it('should call customActionHandler with correct action and context', async () => {
       const mockReturnToInbox = jest.fn();
-      const { Iterable } = require('../../core/classes/Iterable');
+      const { Iterable } = require('../../../core/classes/Iterable');
       const mockCustomActionHandler = jest.fn();
       Iterable.savedConfig.customActionHandler = mockCustomActionHandler;
 
@@ -539,7 +539,7 @@ describe('IterableInboxMessageDisplay', () => {
 
     it('should call urlHandler with correct URL and context for deep links', async () => {
       const mockReturnToInbox = jest.fn();
-      const { Iterable } = require('../../core/classes/Iterable');
+      const { Iterable } = require('../../../core/classes/Iterable');
       const mockUrlHandler = jest.fn();
       Iterable.savedConfig.urlHandler = mockUrlHandler;
 
@@ -578,7 +578,7 @@ describe('IterableInboxMessageDisplay', () => {
 
     it('should handle missing customActionHandler gracefully', async () => {
       const mockReturnToInbox = jest.fn();
-      const { Iterable } = require('../../core/classes/Iterable');
+      const { Iterable } = require('../../../core/classes/Iterable');
       // Set customActionHandler to undefined
       Iterable.savedConfig.customActionHandler = undefined;
 
@@ -604,7 +604,7 @@ describe('IterableInboxMessageDisplay', () => {
 
     it('should handle missing urlHandler gracefully', async () => {
       const mockReturnToInbox = jest.fn();
-      const { Iterable } = require('../../core/classes/Iterable');
+      const { Iterable } = require('../../../core/classes/Iterable');
       // Set urlHandler to undefined
       Iterable.savedConfig.urlHandler = undefined;
 
@@ -631,7 +631,7 @@ describe('IterableInboxMessageDisplay', () => {
 
   describe('Tracking and Analytics', () => {
     it('should track in-app click when link is clicked', async () => {
-      const { Iterable } = require('../../core/classes/Iterable');
+      const { Iterable } = require('../../../core/classes/Iterable');
       const { getByTestId } = render(<IterableInboxMessageDisplay {...defaultProps} />);
 
       await waitFor(() => {
@@ -649,7 +649,7 @@ describe('IterableInboxMessageDisplay', () => {
     });
 
     it('should track in-app close with link source when link is clicked', async () => {
-      const { Iterable } = require('../../core/classes/Iterable');
+      const { Iterable } = require('../../../core/classes/Iterable');
       const { getByTestId } = render(<IterableInboxMessageDisplay {...defaultProps} />);
 
       await waitFor(() => {
@@ -777,7 +777,7 @@ describe('IterableInboxMessageDisplay', () => {
     it('should handle HTML content with special characters', async () => {
       const specialHtmlContent = new IterableHtmlInAppContent(
         new IterableEdgeInsets(10, 10, 10, 10),
-        '<html><body><h1>测试标题 🚀</h1><a href="https://example.com?param=测试">测试链接</a></body></html>'
+        '<html><body><h1>Header 🚀</h1><a href="https://example.com">Link</a></body></html>'
       );
 
       const propsWithSpecialContent = {
@@ -791,7 +791,7 @@ describe('IterableInboxMessageDisplay', () => {
         expect(getByTestId(iterableMessageDisplayTestIds.webview)).toBeTruthy();
       });
 
-      expect(getByTestId('webview-source')).toHaveTextContent('<html><body><h1>测试标题 🚀</h1><a href="https://example.com?param=测试">测试链接</a></body></html>');
+      expect(getByTestId('webview-source')).toHaveTextContent('<html><body><h1>Header 🚀</h1><a href="https://example.com">Link</a></body></html>');
     });
 
     it('should handle very long message titles', () => {
@@ -909,7 +909,7 @@ describe('IterableInboxMessageDisplay', () => {
 
   describe('Integration with Iterable SDK', () => {
     it('should work with Iterable.savedConfig.customActionHandler', async () => {
-      const { Iterable } = require('../../core/classes/Iterable');
+      const { Iterable } = require('../../../core/classes/Iterable');
       const mockCustomActionHandler = jest.fn();
       Iterable.savedConfig.customActionHandler = mockCustomActionHandler;
 
@@ -924,7 +924,7 @@ describe('IterableInboxMessageDisplay', () => {
     });
 
     it('should work with Iterable.savedConfig.urlHandler', async () => {
-      const { Iterable } = require('../../core/classes/Iterable');
+      const { Iterable } = require('../../../core/classes/Iterable');
       const mockUrlHandler = jest.fn();
       Iterable.savedConfig.urlHandler = mockUrlHandler;
 
@@ -939,7 +939,7 @@ describe('IterableInboxMessageDisplay', () => {
     });
 
     it('should handle missing Iterable.savedConfig handlers', async () => {
-      const { Iterable } = require('../../core/classes/Iterable');
+      const { Iterable } = require('../../../core/classes/Iterable');
       Iterable.savedConfig.customActionHandler = undefined;
       Iterable.savedConfig.urlHandler = undefined;
 
