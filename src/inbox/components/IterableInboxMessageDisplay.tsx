@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 import {
   Linking,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
-  TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
 import { WebView, type WebViewMessageEvent } from 'react-native-webview';
 
 import {
@@ -86,6 +85,7 @@ export const IterableInboxMessageDisplay = ({
 
     header: {
       flexDirection: 'row',
+      height:  Platform.OS === 'ios' ? 44 : 56,
       justifyContent: 'center',
       width: '100%',
     },
@@ -119,11 +119,6 @@ export const IterableInboxMessageDisplay = ({
       fontWeight: 'bold',
     },
 
-    returnButton: {
-      alignItems: 'center',
-      flexDirection: 'row',
-    },
-
     returnButtonContainer: {
       alignItems: 'center',
       flexDirection: 'row',
@@ -132,17 +127,6 @@ export const IterableInboxMessageDisplay = ({
       marginTop: 0,
       width: '25%',
       ...(isPortrait ? {} : { marginLeft: 80 }),
-    },
-
-    returnButtonIcon: {
-      color: ITERABLE_INBOX_COLORS.BUTTON_PRIMARY_TEXT,
-      fontSize: 40,
-      paddingLeft: 0,
-    },
-
-    returnButtonText: {
-      color: ITERABLE_INBOX_COLORS.BUTTON_PRIMARY_TEXT,
-      fontSize: 20,
     },
   });
 
@@ -223,6 +207,7 @@ export const IterableInboxMessageDisplay = ({
       <View style={styles.header}>
         <View style={styles.returnButtonContainer}>
           <HeaderBackButton
+            label="Inbox"
             onPress={() => {
               returnToInbox();
               Iterable.trackInAppClose(
@@ -232,24 +217,6 @@ export const IterableInboxMessageDisplay = ({
               );
             }}
           />
-          <TouchableWithoutFeedback
-            onPress={() => {
-              returnToInbox();
-              Iterable.trackInAppClose(
-                rowViewModel.inAppMessage,
-                IterableInAppLocation.inbox,
-                IterableInAppCloseSource.back
-              );
-            }}
-          >
-            <View style={styles.returnButton}>
-              <Icon
-                name="chevron-back-outline"
-                style={styles.returnButtonIcon}
-              />
-              <Text style={styles.returnButtonText}>Inbox</Text>
-            </View>
-          </TouchableWithoutFeedback>
         </View>
         <View style={styles.messageTitleContainer}>
           <View style={styles.messageTitle}>
