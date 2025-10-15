@@ -1,10 +1,9 @@
 import { useIsFocused } from '@react-navigation/native';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   Animated,
   NativeEventEmitter,
   NativeModules,
-  Platform,
   Text,
   View
 } from 'react-native';
@@ -210,7 +209,7 @@ export const IterableInbox = ({
   showNavTitle = true,
 }: IterableInboxProps) => {
   const defaultInboxTitle = 'Inbox';
-  const inboxDataModel = new IterableInboxDataModel();
+  const inboxDataModel = useMemo(() => new IterableInboxDataModel(), []);
 
   const { height, width, isPortrait } = useDeviceOrientation();
   const appState = useAppStateListener();
@@ -231,11 +230,6 @@ export const IterableInbox = ({
 
   const containerStyle = [styles.container, { width: 2 * width }];
 
-  const navTitleHeight =
-    DEFAULT_HEADLINE_HEIGHT +
-    styles.headline.paddingTop +
-    styles.headline.paddingBottom;
-
   //fetches inbox messages and adds listener for inbox changes on mount
   useEffect(() => {
     fetchInboxMessages();
@@ -253,43 +247,21 @@ export const IterableInbox = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  //starts session when user is on inbox and app is active
-  //ends session when app is in background or app is closed
-  useEffect(() => {
-    if (isFocused) {
-      if (appState === 'active') {
-        inboxDataModel.startSession(visibleMessageImpressions);
-      } else if (
-        (appState === 'background' && Platform.OS === 'android') ||
-        appState === 'inactive'
-      ) {
-        inboxDataModel.endSession(visibleMessageImpressions);
-      }
-    }
-    //  MOB-10427: figure out if missing dependency is a bug
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [appState]);
-
   //starts session when user is on inbox
   //ends session when user navigates away from inbox
   useEffect(() => {
-    if (appState === 'active') {
-      if (isFocused) {
-        inboxDataModel.startSession(visibleMessageImpressions);
-      } else {
-        inboxDataModel.endSession(visibleMessageImpressions);
-      }
+    if (isFocused && appState === 'active') {
+      inboxDataModel.startSession(visibleMessageImpressions);
     }
-    //  MOB-10427: figure out if missing dependency is a bug
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFocused]);
+    if (isFocused && ['background', 'inactive'].includes(appState)) {
+      inboxDataModel.endSession(visibleMessageImpressions);
+    }
+  }, [appState, inboxDataModel, isFocused, visibleMessageImpressions]);
 
   //updates the visible rows when visible messages changes
   useEffect(() => {
     inboxDataModel.updateVisibleRows(visibleMessageImpressions);
-    //  MOB-10427: figure out if missing dependency is a bug
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visibleMessageImpressions]);
+  }, [inboxDataModel, visibleMessageImpressions]);
 
   //if return to inbox trigger is provided, runs the return to inbox animation whenever the trigger is toggled
   useEffect(() => {
@@ -311,10 +283,6 @@ export const IterableInbox = ({
     setLoading(false);
   }
 
-  function getHtmlContentForRow(id: string) {
-    return inboxDataModel.getHtmlContentForMessageId(id);
-  }
-
   function handleMessageSelect(
     id: string,
     index: number,
@@ -329,13 +297,11 @@ export const IterableInbox = ({
     inboxDataModel.setMessageAsRead(id);
     setSelectedRowViewModelIdx(index);
 
-    Iterable.trackInAppOpen(
-      // MOB-10428: Have a safety check for models[index].inAppMessage
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      models[index].inAppMessage,
-      IterableInAppLocation.inbox
-    );
+    const inAppMessage = models?.[index]?.inAppMessage;
+
+    if (inAppMessage) {
+      Iterable.trackInAppOpen(inAppMessage, IterableInAppLocation.inbox);
+    }
 
     slideLeft();
   }
@@ -357,12 +323,6 @@ export const IterableInbox = ({
     setIsMessageDisplay(false);
   }
 
-  function updateVisibleMessageImpressions(
-    messageImpressions: IterableInboxImpressionRowInfo[]
-  ) {
-    setVisibleMessageImpressions(messageImpressions);
-  }
-
   function showMessageDisplay(
     rowViewModelList: IterableInboxRowViewModel[],
     index: number
@@ -372,11 +332,11 @@ export const IterableInbox = ({
     return selectedRowViewModel ? (
       <IterableInboxMessageDisplay
         rowViewModel={selectedRowViewModel}
-        inAppContentPromise={getHtmlContentForRow(
+        inAppContentPromise={inboxDataModel.getHtmlContentForMessageId(
           selectedRowViewModel.inAppMessage.messageId
         )}
         returnToInbox={returnToInbox}
-        deleteRow={(messageId: string) => deleteRow(messageId)}
+        deleteRow={deleteRow}
         contentWidth={width}
         isPortrait={isPortrait}
       />
@@ -412,7 +372,7 @@ export const IterableInbox = ({
             handleMessageSelect={(messageId: string, index: number) =>
               handleMessageSelect(messageId, index, rowViewModels)
             }
-            updateVisibleMessageImpressions={updateVisibleMessageImpressions}
+            updateVisibleMessageImpressions={setVisibleMessageImpressions}
             contentWidth={width}
             isPortrait={isPortrait}
           />
@@ -434,7 +394,11 @@ export const IterableInbox = ({
         customizations={customizations}
         tabBarHeight={tabBarHeight}
         tabBarPadding={tabBarPadding}
-        navTitleHeight={navTitleHeight}
+        navTitleHeight={
+          DEFAULT_HEADLINE_HEIGHT +
+          styles.headline.paddingTop +
+          styles.headline.paddingBottom
+        }
         contentWidth={width}
         height={height}
         isPortrait={isPortrait}
