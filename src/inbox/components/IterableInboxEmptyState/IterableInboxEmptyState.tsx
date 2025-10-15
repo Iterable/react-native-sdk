@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import { type IterableInboxCustomizations } from '../types';
-import { ITERABLE_INBOX_COLORS } from '../constants';
+import { type IterableInboxCustomizations } from '../../types';
+import { ITERABLE_INBOX_COLORS } from '../../constants';
 
 export const iterableInboxEmptyStateTestIds = {
   container: 'iterable-inbox-empty-state-container',
