@@ -3,6 +3,11 @@ import { ITERABLE_INBOX_COLORS } from "../../constants";
 import { ANDROID_HEADLINE_HEIGHT, DEFAULT_HEADLINE_HEIGHT } from "./constants";
 
 export const styles = StyleSheet.create({
+  animatedView: {
+    flexDirection: 'row',
+    height: '100%',
+    justifyContent: 'flex-start',
+  },
   container: {
     alignItems: 'center',
     flex: 1,

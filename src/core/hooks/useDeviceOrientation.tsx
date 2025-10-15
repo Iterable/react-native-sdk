@@ -37,9 +37,7 @@ export function useDeviceOrientation(): IterableDeviceOrientation {
 
   useEffect(() => {
     setIsPortrait(height >= width);
-    // MOB-10425: why is height not included in the dependency array?
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [width]);
+  }, [width, height]);
 
   return { height, width, isPortrait };
 }

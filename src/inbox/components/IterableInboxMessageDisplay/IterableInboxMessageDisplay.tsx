@@ -24,6 +24,7 @@ import {
 } from '../../../inApp';
 import { type IterableInboxRowViewModel } from '../../types';
 import { styles } from './IterableInboxMessageDisplay.styles';
+import { useDeviceOrientation } from '../../../../lib/typescript/src/core/hooks/useDeviceOrientation';
 
 export const iterableMessageDisplayTestIds = {
   container: 'iterable-message-display-container',
@@ -57,17 +58,21 @@ export interface IterableInboxMessageDisplayProps {
    * @param id - The ID of the row to be deleted.
    */
   deleteRow: (id: string) => void;
-
-  /**
-   * The width of the content.
-   */
-  contentWidth: number;
-
-  /**
-   * Boolean indicating if the device is in portrait mode.
-   */
-  isPortrait: boolean;
 }
+
+const JS = `
+const links = document.querySelectorAll('a')
+
+links.forEach(link => {
+   link.class = link.href
+
+   link.href = "javascript:void(0)"
+
+   link.addEventListener("click", () => {
+      window.ReactNativeWebView.postMessage(link.class)
+   })
+})
+`;
 
 /**
  * Component to display an Iterable inbox message.
@@ -77,26 +82,13 @@ export const IterableInboxMessageDisplay = ({
   inAppContentPromise,
   returnToInbox,
   deleteRow,
-  contentWidth,
-  isPortrait,
 }: IterableInboxMessageDisplayProps) => {
   const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title;
+  const { width:contentWidth, isPortrait } = useDeviceOrientation();
   const [inAppContent, setInAppContent] =
     useState<IterableHtmlInAppContent | null>(null);
 
-  const JS = `
-      const links = document.querySelectorAll('a')
 
-      links.forEach(link => {
-         link.class = link.href
-
-         link.href = "javascript:void(0)"
-
-         link.addEventListener("click", () => {
-            window.ReactNativeWebView.postMessage(link.class)
-         })
-      })
-   `;
 
   useEffect(() => {
     let mounted = true;

@@ -13,6 +13,7 @@ import {
   IterableInboxMessageCell,
   type IterableInboxMessageCellProps,
 } from '../IterableInboxMessageCell';
+import { useDeviceOrientation } from '../../../core/hooks/useDeviceOrientation';
 
 /**
  * Props for the IterableInboxMessageList component.
@@ -42,14 +43,6 @@ export interface IterableInboxMessageListProps
     /** Impression details for the rows to be updated */
     rowInfos: IterableInboxImpressionRowInfo[]
   ) => void;
-  /**
-   * The width of the content.
-   */
-  contentWidth: number;
-  /**
-   * Indicates if the device is in portrait mode.
-   */
-  isPortrait: boolean;
 }
 
 const inboxSessionViewabilityConfig: ViewabilityConfig = {
@@ -80,6 +73,7 @@ export const IterableInboxMessageList = (
   props: IterableInboxMessageListProps
 ) => {
   const { rowViewModels, updateVisibleMessageImpressions } = props;
+  const { width, isPortrait } = useDeviceOrientation();
   const [swiping, setSwiping] = useState<boolean>(false);
   const flatListRef = useRef<FlatList>(null);
 
@@ -109,6 +103,8 @@ export const IterableInboxMessageList = (
           last={index === rowViewModels.length - 1}
           rowViewModel={item}
           swipingCheck={setSwiping}
+          contentWidth={width}
+          isPortrait={isPortrait}
           {...props}
         />
       )}

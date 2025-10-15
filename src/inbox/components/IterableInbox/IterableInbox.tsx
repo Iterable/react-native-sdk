@@ -92,7 +92,7 @@ export const IterableInbox = (props: IterableInboxProps) => {
   } = props;
   const inboxDataModel = useMemo(() => new IterableInboxDataModel(), []);
 
-  const { height, width, isPortrait } = useDeviceOrientation();
+  const { width, isPortrait } = useDeviceOrientation();
   const appState = useAppStateListener();
   const isFocused = useIsFocused();
 
@@ -111,6 +111,7 @@ export const IterableInbox = (props: IterableInboxProps) => {
 
   const containerStyle = [styles.container, { width: 2 * width }];
 
+  // Fetch inbox messages
   const fetchInboxMessages = useCallback(async () => {
     let newMessages = await inboxDataModel.refresh();
 
@@ -122,6 +123,7 @@ export const IterableInbox = (props: IterableInboxProps) => {
     setLoading(false);
   }, [inboxDataModel, setRowViewModels, setLoading]);
 
+  // Slide the message list to the left and show a single selected message
   const slideLeft = useCallback(() => {
     Animated.timing(animatedValue, {
       toValue: 1,
@@ -131,6 +133,7 @@ export const IterableInbox = (props: IterableInboxProps) => {
     setIsMessageDisplay(true);
   }, [animatedValue, setIsMessageDisplay]);
 
+  // Select a message
   const handleMessageSelect = useCallback(
     (id: string, index: number, models: IterableInboxRowViewModel[]) => {
       const newRowViewModels = models.map((rowViewModel) => {
@@ -153,6 +156,7 @@ export const IterableInbox = (props: IterableInboxProps) => {
     [inboxDataModel, setRowViewModels, setSelectedRowViewModelIdx, slideLeft]
   );
 
+  // Delete a message
   const deleteRow = useCallback(
     (messageId: string) => {
       inboxDataModel.deleteItemById(
@@ -164,6 +168,7 @@ export const IterableInbox = (props: IterableInboxProps) => {
     [inboxDataModel, fetchInboxMessages]
   );
 
+  // Returm to the message list
   const returnToInbox = useCallback(
     (callback?: () => void) => {
       Animated.timing(animatedValue, {
@@ -176,31 +181,8 @@ export const IterableInbox = (props: IterableInboxProps) => {
     [animatedValue]
   );
 
-  const messageDisplay = useMemo(() => {
-    const selectedRowViewModel = rowViewModels[selectedRowViewModelIdx];
 
-    return selectedRowViewModel ? (
-      <IterableInboxMessageDisplay
-        rowViewModel={selectedRowViewModel}
-        inAppContentPromise={inboxDataModel.getHtmlContentForMessageId(
-          selectedRowViewModel.inAppMessage.messageId
-        )}
-        returnToInbox={returnToInbox}
-        deleteRow={deleteRow}
-        contentWidth={width}
-        isPortrait={isPortrait}
-      />
-    ) : null;
-  }, [
-    deleteRow,
-    inboxDataModel,
-    isPortrait,
-    returnToInbox,
-    rowViewModels,
-    selectedRowViewModelIdx,
-    width,
-  ]);
-
+  // The empty state -- the display when there are no messages
   const emptyState = useMemo(() => {
     return loading ? (
       <View
@@ -215,31 +197,46 @@ export const IterableInbox = (props: IterableInboxProps) => {
           styles.headline.paddingTop +
           styles.headline.paddingBottom
         }
-        contentWidth={width}
-        height={height}
-        isPortrait={isPortrait}
       />
     );
-  }, [loading, width, height, isPortrait, props]);
+  }, [loading, props]);
 
+  // A single message -- the display when a message is selected
+  const messageDisplay = useMemo(() => {
+    const selectedRowViewModel = rowViewModels[selectedRowViewModelIdx];
+
+    return selectedRowViewModel ? (
+      <IterableInboxMessageDisplay
+        rowViewModel={selectedRowViewModel}
+        inAppContentPromise={inboxDataModel.getHtmlContentForMessageId(
+          selectedRowViewModel.inAppMessage.messageId
+        )}
+        returnToInbox={returnToInbox}
+        deleteRow={deleteRow}
+      />
+    ) : null;
+  }, [
+    deleteRow,
+    inboxDataModel,
+    returnToInbox,
+    rowViewModels,
+    selectedRowViewModelIdx,
+  ]);
+
+  // The list of messages
   const messageList = useMemo(() => {
+    const title = customizations?.navTitle
+      ? customizations?.navTitle
+      : defaultInboxTitle;
+
+    const paddingLeft = isPortrait
+      ? HEADLINE_PADDING_LEFT_PORTRAIT
+      : HEADLINE_PADDING_LEFT_LANDSCAPE;
+
     return (
       <View style={[styles.messageListContainer, { width: width }]}>
         {showNavTitle ? (
-          <Text
-            style={[
-              styles.headline,
-              {
-                paddingLeft: isPortrait
-                  ? HEADLINE_PADDING_LEFT_PORTRAIT
-                  : HEADLINE_PADDING_LEFT_LANDSCAPE,
-              },
-            ]}
-          >
-            {customizations?.navTitle
-              ? customizations?.navTitle
-              : defaultInboxTitle}
-          </Text>
+          <Text style={[styles.headline, { paddingLeft }]}>{title}</Text>
         ) : null}
         {rowViewModels.length ? (
           <IterableInboxMessageList
@@ -251,8 +248,6 @@ export const IterableInbox = (props: IterableInboxProps) => {
               handleMessageSelect(messageId, index, rowViewModels)
             }
             updateVisibleMessageImpressions={setVisibleMessageImpressions}
-            contentWidth={width}
-            isPortrait={isPortrait}
           />
         ) : (
           emptyState
@@ -272,25 +267,25 @@ export const IterableInbox = (props: IterableInboxProps) => {
     handleMessageSelect,
   ]);
 
+  // Animated view that contains the message list and message display
   const inboxAnimatedView = useMemo(
     () => (
       <Animated.View
         testID="inbox-animated-view"
-        // eslint-disable-next-line react-native/no-inline-styles
-        style={{
-          transform: [
-            {
-              translateX: animatedValue.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0, -width],
-              }),
-            },
-          ],
-          height: '100%',
-          flexDirection: 'row',
-          width: 2 * width,
-          justifyContent: 'flex-start',
-        }}
+        style={[
+          styles.animatedView,
+          {
+            transform: [
+              {
+                translateX: animatedValue.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0, -width],
+                }),
+              },
+            ],
+            width: 2 * width,
+          },
+        ]}
       >
         {messageList}
         {messageDisplay}
@@ -299,7 +294,7 @@ export const IterableInbox = (props: IterableInboxProps) => {
     [animatedValue, width, messageList, messageDisplay]
   );
 
-  //fetches inbox messages and adds listener for inbox changes on mount
+  // Fetches inbox messages and adds listener for inbox changes on mount
   useEffect(() => {
     fetchInboxMessages();
     RNEventEmitter.addListener(
@@ -316,8 +311,8 @@ export const IterableInbox = (props: IterableInboxProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  //starts session when user is on inbox
-  //ends session when user navigates away from inbox
+  // Starts session when user is on inbox
+  // Ends session when user navigates away from inbox
   useEffect(() => {
     if (isFocused && appState === 'active') {
       inboxDataModel.startSession(visibleMessageImpressions);
@@ -327,12 +322,13 @@ export const IterableInbox = (props: IterableInboxProps) => {
     }
   }, [appState, inboxDataModel, isFocused, visibleMessageImpressions]);
 
-  //updates the visible rows when visible messages changes
+  // Updates the visible rows when visible messages changes
   useEffect(() => {
     inboxDataModel.updateVisibleRows(visibleMessageImpressions);
   }, [inboxDataModel, visibleMessageImpressions]);
 
-  //if return to inbox trigger is provided, runs the return to inbox animation whenever the trigger is toggled
+  // If return to inbox trigger is provided, runs the return to inbox animation
+  // whenever the trigger is toggled
   useEffect(() => {
     if (isMessageDisplay) {
       returnToInbox();

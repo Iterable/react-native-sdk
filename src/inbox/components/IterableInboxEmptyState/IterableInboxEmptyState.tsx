@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 
 import { type IterableInboxCustomizations } from '../../types';
 import { styles } from './IterableInboxEmptyState.styles';
+import { useDeviceOrientation } from '../../../core/hooks/useDeviceOrientation';
 
 export const iterableInboxEmptyStateTestIds = {
   container: 'iterable-inbox-empty-state-container',
@@ -22,12 +23,6 @@ export interface IterableInboxEmptyStateProps {
   tabBarPadding?: number;
   /** Height of the navigation title. */
   navTitleHeight: number;
-  /** Width of the content area. */
-  contentWidth: number;
-  /** Height of the component. */
-  height: number;
-  /** Indicates if the device is in portrait mode. */
-  isPortrait: boolean;
 }
 
 const defaultTitle = 'No saved messages';
@@ -41,9 +36,8 @@ export const IterableInboxEmptyState = ({
   tabBarHeight = 80,
   tabBarPadding = 20,
   navTitleHeight,
-  height,
-  isPortrait,
 }: IterableInboxEmptyStateProps) => {
+  const { height, isPortrait } = useDeviceOrientation();
   const containerHeight = useMemo(() => {
     return isPortrait
       ? height - navTitleHeight - tabBarHeight - tabBarPadding
