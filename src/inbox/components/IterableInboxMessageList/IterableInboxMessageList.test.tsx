@@ -1,12 +1,12 @@
 import { render } from '@testing-library/react-native';
-import { IterableInAppMessage, IterableInAppTrigger, IterableInboxMetadata } from '../../inApp/classes';
-import { IterableInAppTriggerType } from '../../inApp/enums';
-import { IterableInboxDataModel } from '../classes';
-import type { IterableInboxCustomizations, IterableInboxImpressionRowInfo, IterableInboxRowViewModel } from '../types';
-import { IterableInboxMessageList } from './IterableInboxMessageList';
+import { IterableInAppMessage, IterableInAppTrigger, IterableInboxMetadata } from '../../../inApp/classes';
+import { IterableInAppTriggerType } from '../../../inApp/enums';
+import { IterableInboxDataModel } from '../../classes';
+import type { IterableInboxCustomizations, IterableInboxImpressionRowInfo, IterableInboxRowViewModel } from '../../types';
+import { IterableInboxMessageList } from '.';
 
 // Mock the IterableInboxMessageCell component
-jest.mock('./IterableInboxMessageCell', () => ({
+jest.mock('../IterableInboxMessageCell', () => ({
   IterableInboxMessageCell: ({ rowViewModel, index, last }: { rowViewModel: IterableInboxRowViewModel; index: number; last: boolean }) => {
     const { View, Text } = require('react-native');
     return (
