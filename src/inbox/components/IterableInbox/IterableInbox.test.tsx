@@ -30,25 +30,25 @@ import {
 } from '@testing-library/react-native';
 import { Animated, Text } from 'react-native';
 
-import { useAppStateListener, useDeviceOrientation } from '../../core';
-import { Iterable } from '../../core/classes/Iterable';
-import { IterableEdgeInsets } from '../../core/classes/IterableEdgeInsets';
+import { useAppStateListener, useDeviceOrientation } from '../../../core';
+import { Iterable } from '../../../core/classes/Iterable';
+import { IterableEdgeInsets } from '../../../core/classes/IterableEdgeInsets';
 import {
   IterableHtmlInAppContent,
   IterableInAppMessage,
   IterableInAppTrigger,
   IterableInboxMetadata,
-} from '../../inApp/classes';
-import { IterableInAppTriggerType } from '../../inApp/enums';
-import { IterableInboxDataModel } from '../classes';
+} from '../../../inApp/classes';
+import { IterableInAppTriggerType } from '../../../inApp/enums';
+import { IterableInboxDataModel } from '../../classes';
 import type {
   IterableInboxCustomizations,
   IterableInboxRowViewModel,
-} from '../types';
+} from '../../types';
 import { IterableInbox, iterableInboxTestIds } from './IterableInbox';
-import { iterableInboxEmptyStateTestIds } from './IterableInboxEmptyState';
-import { inboxMessageCellTestIDs } from './IterableInboxMessageCell';
-import { iterableMessageDisplayTestIds } from './IterableInboxMessageDisplay/IterableInboxMessageDisplay';
+import { iterableInboxEmptyStateTestIds } from '../IterableInboxEmptyState';
+import { inboxMessageCellTestIDs } from '../IterableInboxMessageCell';
+import { iterableMessageDisplayTestIds } from '../IterableInboxMessageDisplay';
 
 // Suppress act() warnings for this test suite since they're expected from the component's useEffect
 const originalError = console.error;
@@ -61,7 +61,7 @@ afterAll(() => {
 });
 
 // Mock the Iterable class
-jest.mock('../../core/classes/Iterable', () => ({
+jest.mock('../../../core/classes/Iterable', () => ({
   Iterable: {
     trackInAppOpen: jest.fn(),
     trackInAppClick: jest.fn(),
@@ -79,8 +79,8 @@ jest.mock('@react-navigation/native', () => ({
 }));
 
 // Mock core hooks
-jest.mock('../../core', () => ({
-  ...jest.requireActual('../../core'),
+jest.mock('../../../core', () => ({
+  ...jest.requireActual('../../../core'),
   useAppStateListener: jest.fn(),
   useDeviceOrientation: jest.fn(),
 }));
@@ -160,7 +160,7 @@ const mockHtmlContent = {
 };
 
 // Mock IterableInboxDataModel
-jest.mock('../classes', () => ({
+jest.mock('../../classes', () => ({
   IterableInboxDataModel: jest.fn().mockImplementation(() => ({
     refresh: jest.fn().mockResolvedValue(mockMessages),
     startSession: jest.fn(),

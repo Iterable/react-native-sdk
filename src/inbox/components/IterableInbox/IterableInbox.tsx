@@ -11,26 +11,26 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { useAppStateListener, useDeviceOrientation } from '../../core';
+import { useAppStateListener, useDeviceOrientation } from '../../../core';
 // expo throws an error if this is not imported directly due to circular
 // dependencies
 // See: https://github.com/expo/expo/issues/35100
-import { Iterable } from '../../core/classes/Iterable';
-import { IterableInAppDeleteSource, IterableInAppLocation } from '../../inApp';
+import { Iterable } from '../../../core/classes/Iterable';
+import { IterableInAppDeleteSource, IterableInAppLocation } from '../../../inApp';
 
-import { IterableInboxDataModel } from '../classes';
-import { ITERABLE_INBOX_COLORS } from '../constants';
+import { IterableInboxDataModel } from '../../classes';
+import { ITERABLE_INBOX_COLORS } from '../../constants';
 import type {
   IterableInboxCustomizations,
   IterableInboxImpressionRowInfo,
   IterableInboxRowViewModel,
-} from '../types';
-import { IterableInboxEmptyState } from './IterableInboxEmptyState';
-import { IterableInboxMessageDisplay } from './IterableInboxMessageDisplay';
+} from '../../types';
+import { IterableInboxEmptyState } from '../IterableInboxEmptyState';
+import { IterableInboxMessageDisplay } from '../IterableInboxMessageDisplay';
 import {
   IterableInboxMessageList,
   type IterableInboxMessageListProps,
-} from './IterableInboxMessageList';
+} from '../IterableInboxMessageList';
 
 const RNIterableAPI = NativeModules.RNIterableAPI;
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
