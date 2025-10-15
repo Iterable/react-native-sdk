@@ -33,7 +33,7 @@ export interface IterableInboxMessageListProps
   /**
    * Customizations for the inbox.
    */
-  customizations: IterableInboxCustomizations;
+  customizations?: IterableInboxCustomizations;
   /**
    * Function to update the visible message impressions.
    * @param rowInfos - Impression details for the rows to be updated.

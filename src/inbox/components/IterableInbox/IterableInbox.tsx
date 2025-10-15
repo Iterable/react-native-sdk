@@ -1,11 +1,11 @@
 import { useIsFocused } from '@react-navigation/native';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Animated,
   NativeEventEmitter,
   NativeModules,
   Text,
-  View
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -199,15 +199,15 @@ export interface IterableInboxProps
  * )
  * ```
  */
-export const IterableInbox = ({
-  returnToInboxTrigger = true,
-  messageListItemLayout = () => null,
-  customizations = {} as IterableInboxCustomizations,
-  tabBarHeight = 80,
-  tabBarPadding = 20,
-  safeAreaMode = true,
-  showNavTitle = true,
-}: IterableInboxProps) => {
+export const IterableInbox = (props: IterableInboxProps) => {
+  const {
+    customizations = {} as IterableInboxCustomizations,
+    returnToInboxTrigger = true,
+    safeAreaMode = true,
+    showNavTitle = true,
+    tabBarHeight = 80,
+    tabBarPadding = 20,
+  } = props;
   const defaultInboxTitle = 'Inbox';
   const inboxDataModel = useMemo(() => new IterableInboxDataModel(), []);
 
@@ -272,7 +272,16 @@ export const IterableInbox = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [returnToInboxTrigger]);
 
-  async function fetchInboxMessages() {
+  const slideLeft = useCallback(() => {
+    Animated.timing(animatedValue, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: false,
+    }).start();
+    setIsMessageDisplay(true);
+  }, [animatedValue, setIsMessageDisplay]);
+
+  const fetchInboxMessages = useCallback(async () => {
     let newMessages = await inboxDataModel.refresh();
 
     newMessages = newMessages.map((message, index) => {
@@ -281,109 +290,74 @@ export const IterableInbox = ({
 
     setRowViewModels(newMessages);
     setLoading(false);
-  }
+  }, [inboxDataModel, setRowViewModels, setLoading]);
 
-  function handleMessageSelect(
-    id: string,
-    index: number,
-    models: IterableInboxRowViewModel[]
-  ) {
-    const newRowViewModels = models.map((rowViewModel) => {
-      return rowViewModel.inAppMessage.messageId === id
-        ? { ...rowViewModel, read: true }
-        : rowViewModel;
-    });
-    setRowViewModels(newRowViewModels);
-    inboxDataModel.setMessageAsRead(id);
-    setSelectedRowViewModelIdx(index);
+  const handleMessageSelect = useCallback(
+    (id: string, index: number, models: IterableInboxRowViewModel[]) => {
+      const newRowViewModels = models.map((rowViewModel) => {
+        return rowViewModel.inAppMessage.messageId === id
+          ? { ...rowViewModel, read: true }
+          : rowViewModel;
+      });
+      setRowViewModels(newRowViewModels);
+      inboxDataModel.setMessageAsRead(id);
+      setSelectedRowViewModelIdx(index);
 
-    const inAppMessage = models?.[index]?.inAppMessage;
+      const inAppMessage = models?.[index]?.inAppMessage;
 
-    if (inAppMessage) {
-      Iterable.trackInAppOpen(inAppMessage, IterableInAppLocation.inbox);
-    }
+      if (inAppMessage) {
+        Iterable.trackInAppOpen(inAppMessage, IterableInAppLocation.inbox);
+      }
 
-    slideLeft();
-  }
+      slideLeft();
+    },
+    [inboxDataModel, setRowViewModels, setSelectedRowViewModelIdx, slideLeft]
+  );
 
-  function deleteRow(messageId: string) {
-    inboxDataModel.deleteItemById(
-      messageId,
-      IterableInAppDeleteSource.inboxSwipe
-    );
-    fetchInboxMessages();
-  }
+  const deleteRow = useCallback(
+    (messageId: string) => {
+      inboxDataModel.deleteItemById(
+        messageId,
+        IterableInAppDeleteSource.inboxSwipe
+      );
+      fetchInboxMessages();
+    },
+    [inboxDataModel, fetchInboxMessages]
+  );
 
-  function returnToInbox(callback?: () => void) {
-    Animated.timing(animatedValue, {
-      toValue: 0,
-      duration: 300,
-      useNativeDriver: false,
-    }).start(() => typeof callback === 'function' && callback());
-    setIsMessageDisplay(false);
-  }
+  const returnToInbox = useCallback(
+    (callback?: () => void) => {
+      Animated.timing(animatedValue, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: false,
+      }).start(() => typeof callback === 'function' && callback());
+      setIsMessageDisplay(false);
+    },
+    [animatedValue]
+  );
 
-  function showMessageDisplay(
-    rowViewModelList: IterableInboxRowViewModel[],
-    index: number
-  ) {
-    const selectedRowViewModel = rowViewModelList[index];
+  const showMessageDisplay = useCallback(
+    (rowViewModelList: IterableInboxRowViewModel[], index: number) => {
+      const selectedRowViewModel = rowViewModelList[index];
 
-    return selectedRowViewModel ? (
-      <IterableInboxMessageDisplay
-        rowViewModel={selectedRowViewModel}
-        inAppContentPromise={inboxDataModel.getHtmlContentForMessageId(
-          selectedRowViewModel.inAppMessage.messageId
-        )}
-        returnToInbox={returnToInbox}
-        deleteRow={deleteRow}
-        contentWidth={width}
-        isPortrait={isPortrait}
-      />
-    ) : null;
-  }
+      return selectedRowViewModel ? (
+        <IterableInboxMessageDisplay
+          rowViewModel={selectedRowViewModel}
+          inAppContentPromise={inboxDataModel.getHtmlContentForMessageId(
+            selectedRowViewModel.inAppMessage.messageId
+          )}
+          returnToInbox={returnToInbox}
+          deleteRow={deleteRow}
+          contentWidth={width}
+          isPortrait={isPortrait}
+        />
+      ) : null;
+    },
+    [inboxDataModel, returnToInbox, deleteRow, width, isPortrait]
+  );
 
-  function showMessageList(_loading: boolean) {
-    return (
-      <View style={[styles.messageListContainer, { width: width }]}>
-        {showNavTitle ? (
-          <Text
-            style={[
-              styles.headline,
-              {
-                paddingLeft: isPortrait
-                  ? HEADLINE_PADDING_LEFT_PORTRAIT
-                  : HEADLINE_PADDING_LEFT_LANDSCAPE,
-              },
-            ]}
-          >
-            {customizations?.navTitle
-              ? customizations?.navTitle
-              : defaultInboxTitle}
-          </Text>
-        ) : null}
-        {rowViewModels.length ? (
-          <IterableInboxMessageList
-            dataModel={inboxDataModel}
-            rowViewModels={rowViewModels}
-            customizations={customizations}
-            messageListItemLayout={messageListItemLayout}
-            deleteRow={deleteRow}
-            handleMessageSelect={(messageId: string, index: number) =>
-              handleMessageSelect(messageId, index, rowViewModels)
-            }
-            updateVisibleMessageImpressions={setVisibleMessageImpressions}
-            contentWidth={width}
-            isPortrait={isPortrait}
-          />
-        ) : (
-          renderEmptyState()
-        )}
-      </View>
-    );
-  }
-
-  function renderEmptyState() {
+  const renderEmptyState = useCallback(() => {
     return loading ? (
       <View
         testID={iterableInboxTestIds.loadingScreen}
@@ -404,40 +378,104 @@ export const IterableInbox = ({
         isPortrait={isPortrait}
       />
     );
-  }
+  }, [
+    loading,
+    customizations,
+    tabBarHeight,
+    tabBarPadding,
+    width,
+    height,
+    isPortrait,
+  ]);
 
-  function slideLeft() {
-    Animated.timing(animatedValue, {
-      toValue: 1,
-      duration: 300,
-      useNativeDriver: false,
-    }).start();
-    setIsMessageDisplay(true);
-  }
+  const showMessageList = useCallback(
+    (_loading: boolean) => {
+      return (
+        <View style={[styles.messageListContainer, { width: width }]}>
+          {showNavTitle ? (
+            <Text
+              style={[
+                styles.headline,
+                {
+                  paddingLeft: isPortrait
+                    ? HEADLINE_PADDING_LEFT_PORTRAIT
+                    : HEADLINE_PADDING_LEFT_LANDSCAPE,
+                },
+              ]}
+            >
+              {customizations?.navTitle
+                ? customizations?.navTitle
+                : defaultInboxTitle}
+            </Text>
+          ) : null}
+          {rowViewModels.length ? (
+            <IterableInboxMessageList
+              {...props}
+              dataModel={inboxDataModel}
+              rowViewModels={rowViewModels}
+              deleteRow={deleteRow}
+              handleMessageSelect={(messageId: string, index: number) =>
+                handleMessageSelect(messageId, index, rowViewModels)
+              }
+              updateVisibleMessageImpressions={setVisibleMessageImpressions}
+              contentWidth={width}
+              isPortrait={isPortrait}
+            />
+          ) : (
+            renderEmptyState()
+          )}
+        </View>
+      );
+    },
+    [
+      width,
+      showNavTitle,
+      isPortrait,
+      customizations?.navTitle,
+      rowViewModels,
+      props,
+      inboxDataModel,
+      deleteRow,
+      handleMessageSelect,
+      renderEmptyState,
+    ]
+  );
 
-  const inboxAnimatedView = (
-    <Animated.View
-      testID="inbox-animated-view"
-      // MOB-10429: Change to use `StyleSheet.create` for styles, per best practices
-      // eslint-disable-next-line react-native/no-inline-styles
-      style={{
-        transform: [
-          {
-            translateX: animatedValue.interpolate({
-              inputRange: [0, 1],
-              outputRange: [0, -width],
-            }),
-          },
-        ],
-        height: '100%',
-        flexDirection: 'row',
-        width: 2 * width,
-        justifyContent: 'flex-start',
-      }}
-    >
-      {showMessageList(loading)}
-      {showMessageDisplay(rowViewModels, selectedRowViewModelIdx)}
-    </Animated.View>
+
+
+  const inboxAnimatedView = useMemo(
+    () => (
+      <Animated.View
+        testID="inbox-animated-view"
+        // eslint-disable-next-line react-native/no-inline-styles
+        style={{
+          transform: [
+            {
+              translateX: animatedValue.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, -width],
+              }),
+            },
+          ],
+          height: '100%',
+          flexDirection: 'row',
+          width: 2 * width,
+          justifyContent: 'flex-start',
+        }}
+      >
+        {showMessageList(loading)}
+        {showMessageDisplay(rowViewModels, selectedRowViewModelIdx)}
+      </Animated.View>
+    ),
+    [
+      animatedValue,
+      width,
+      showMessageList,
+      loading,
+      showMessageDisplay,
+      rowViewModels,
+      selectedRowViewModelIdx,
+    ]
   );
 
   return safeAreaMode ? (

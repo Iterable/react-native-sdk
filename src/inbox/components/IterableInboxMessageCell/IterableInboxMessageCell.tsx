@@ -44,7 +44,7 @@ export interface IterableInboxMessageCellProps {
   /**
    * Customizations for the inbox message cell.
    */
-  customizations: IterableInboxCustomizations;
+  customizations?: IterableInboxCustomizations;
 
   /**
    * Function to check if swiping should be enabled.
@@ -93,7 +93,7 @@ export interface IterableInboxMessageCellProps {
    *  <IterableInbox messageListItemLayout={renderCustomLayout} />
    * ```
    */
-  messageListItemLayout: (
+  messageListItemLayout?: (
     isLast: boolean,
     rowViewModel: IterableInboxRowViewModel
   ) => [React.ReactNode, number] | undefined | null;
@@ -132,9 +132,9 @@ export const IterableInboxMessageCell = ({
   last,
   dataModel,
   rowViewModel,
-  customizations,
+  customizations = {} as IterableInboxCustomizations,
   swipingCheck,
-  messageListItemLayout,
+  messageListItemLayout = () => null,
   deleteRow,
   handleMessageSelect,
   contentWidth,
