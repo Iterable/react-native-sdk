@@ -419,6 +419,214 @@ describe('IterableInboxMessageDisplay', () => {
 
       expect(mockReturnToInbox).toHaveBeenCalledWith(expect.any(Function));
     });
+
+    // Additional comprehensive tests for the specific lines highlighted
+    it('should execute deleteRow callback when delete action is triggered', async () => {
+      const mockReturnToInbox = jest.fn();
+      const mockDeleteRow = jest.fn();
+      const propsWithMocks = {
+        ...defaultProps,
+        returnToInbox: mockReturnToInbox,
+        deleteRow: mockDeleteRow,
+      };
+
+      const { getByTestId } = render(<IterableInboxMessageDisplay {...propsWithMocks} />);
+
+      await waitFor(() => {
+        expect(getByTestId('webview')).toBeTruthy();
+      });
+
+      const deleteTrigger = getByTestId('webview-delete-trigger');
+      fireEvent.press(deleteTrigger);
+
+      // Verify returnToInbox is called with a callback
+      expect(mockReturnToInbox).toHaveBeenCalledWith(expect.any(Function));
+
+      // Execute the callback to verify deleteRow is called with correct messageId
+      const callback = mockReturnToInbox.mock.calls[0][0];
+      callback();
+      expect(mockDeleteRow).toHaveBeenCalledWith('test-message-id');
+    });
+
+    it('should call returnToInbox without callback for dismiss action', async () => {
+      const mockReturnToInbox = jest.fn();
+      const propsWithMockReturn = {
+        ...defaultProps,
+        returnToInbox: mockReturnToInbox,
+      };
+
+      const { getByTestId } = render(<IterableInboxMessageDisplay {...propsWithMockReturn} />);
+
+      await waitFor(() => {
+        expect(getByTestId('webview')).toBeTruthy();
+      });
+
+      const dismissTrigger = getByTestId('webview-dismiss-trigger');
+      fireEvent.press(dismissTrigger);
+
+      // Verify returnToInbox is called without any arguments (no callback)
+      expect(mockReturnToInbox).toHaveBeenCalledWith();
+    });
+
+    it('should call Linking.openURL for HTTP URLs', async () => {
+      const mockReturnToInbox = jest.fn();
+      const { Linking } = require('react-native');
+      const propsWithMockReturn = {
+        ...defaultProps,
+        returnToInbox: mockReturnToInbox,
+      };
+
+      const { getByTestId } = render(<IterableInboxMessageDisplay {...propsWithMockReturn} />);
+
+      await waitFor(() => {
+        expect(getByTestId('webview')).toBeTruthy();
+      });
+
+      const messageTrigger = getByTestId('webview-message-trigger');
+      fireEvent.press(messageTrigger);
+
+      // Verify returnToInbox is called with a callback
+      expect(mockReturnToInbox).toHaveBeenCalledWith(expect.any(Function));
+
+      // Execute the callback to verify Linking.openURL is called
+      const callback = mockReturnToInbox.mock.calls[0][0];
+      callback();
+      expect(Linking.openURL).toHaveBeenCalledWith('https://example.com');
+    });
+
+    it('should call customActionHandler with correct action and context', async () => {
+      const mockReturnToInbox = jest.fn();
+      const { Iterable } = require('../../core/classes/Iterable');
+      const mockCustomActionHandler = jest.fn();
+      Iterable.savedConfig.customActionHandler = mockCustomActionHandler;
+
+      const propsWithMockReturn = {
+        ...defaultProps,
+        returnToInbox: mockReturnToInbox,
+      };
+
+      const { getByTestId } = render(<IterableInboxMessageDisplay {...propsWithMockReturn} />);
+
+      await waitFor(() => {
+        expect(getByTestId('webview')).toBeTruthy();
+      });
+
+      const customActionTrigger = getByTestId('webview-custom-action-trigger');
+      fireEvent.press(customActionTrigger);
+
+      // Verify returnToInbox is called with a callback
+      expect(mockReturnToInbox).toHaveBeenCalledWith(expect.any(Function));
+
+      // Execute the callback to verify customActionHandler is called
+      const callback = mockReturnToInbox.mock.calls[0][0];
+      callback();
+      expect(mockCustomActionHandler).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: 'customAction',
+          data: 'action://customAction',
+          userInput: '',
+        }),
+        expect.objectContaining({
+          action: expect.objectContaining({
+            type: 'customAction',
+            data: 'action://customAction',
+            userInput: '',
+          }),
+          source: 2, // IterableActionSource.inApp
+        })
+      );
+    });
+
+    it('should call urlHandler with correct URL and context for deep links', async () => {
+      const mockReturnToInbox = jest.fn();
+      const { Iterable } = require('../../core/classes/Iterable');
+      const mockUrlHandler = jest.fn();
+      Iterable.savedConfig.urlHandler = mockUrlHandler;
+
+      const propsWithMockReturn = {
+        ...defaultProps,
+        returnToInbox: mockReturnToInbox,
+      };
+
+      const { getByTestId } = render(<IterableInboxMessageDisplay {...propsWithMockReturn} />);
+
+      await waitFor(() => {
+        expect(getByTestId('webview')).toBeTruthy();
+      });
+
+      const deepLinkTrigger = getByTestId('webview-deep-link-trigger');
+      fireEvent.press(deepLinkTrigger);
+
+      // Verify returnToInbox is called with a callback
+      expect(mockReturnToInbox).toHaveBeenCalledWith(expect.any(Function));
+
+      // Execute the callback to verify urlHandler is called
+      const callback = mockReturnToInbox.mock.calls[0][0];
+      callback();
+      expect(mockUrlHandler).toHaveBeenCalledWith(
+        'myapp://deep-link',
+        expect.objectContaining({
+          action: expect.objectContaining({
+            type: 'openUrl',
+            data: 'myapp://deep-link',
+            userInput: '',
+          }),
+          source: 2, // IterableActionSource.inApp
+        })
+      );
+    });
+
+    it('should handle missing customActionHandler gracefully', async () => {
+      const mockReturnToInbox = jest.fn();
+      const { Iterable } = require('../../core/classes/Iterable');
+      // Set customActionHandler to undefined
+      Iterable.savedConfig.customActionHandler = undefined;
+
+      const propsWithMockReturn = {
+        ...defaultProps,
+        returnToInbox: mockReturnToInbox,
+      };
+
+      const { getByTestId } = render(<IterableInboxMessageDisplay {...propsWithMockReturn} />);
+
+      await waitFor(() => {
+        expect(getByTestId('webview')).toBeTruthy();
+      });
+
+      const customActionTrigger = getByTestId('webview-custom-action-trigger');
+
+      // Should not throw an error even when customActionHandler is undefined
+      expect(() => fireEvent.press(customActionTrigger)).not.toThrow();
+
+      // Verify returnToInbox is still called
+      expect(mockReturnToInbox).toHaveBeenCalledWith(expect.any(Function));
+    });
+
+    it('should handle missing urlHandler gracefully', async () => {
+      const mockReturnToInbox = jest.fn();
+      const { Iterable } = require('../../core/classes/Iterable');
+      // Set urlHandler to undefined
+      Iterable.savedConfig.urlHandler = undefined;
+
+      const propsWithMockReturn = {
+        ...defaultProps,
+        returnToInbox: mockReturnToInbox,
+      };
+
+      const { getByTestId } = render(<IterableInboxMessageDisplay {...propsWithMockReturn} />);
+
+      await waitFor(() => {
+        expect(getByTestId('webview')).toBeTruthy();
+      });
+
+      const deepLinkTrigger = getByTestId('webview-deep-link-trigger');
+
+      // Should not throw an error even when urlHandler is undefined
+      expect(() => fireEvent.press(deepLinkTrigger)).not.toThrow();
+
+      // Verify returnToInbox is still called
+      expect(mockReturnToInbox).toHaveBeenCalledWith(expect.any(Function));
+    });
   });
 
   describe('Tracking and Analytics', () => {
