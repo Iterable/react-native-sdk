@@ -3,6 +3,12 @@ import { StyleSheet, Text, View } from 'react-native';
 import { type IterableInboxCustomizations } from '../types';
 import { ITERABLE_INBOX_COLORS } from '../constants';
 
+export const iterableInboxEmptyStateTestIds = {
+  container: 'iterable-inbox-empty-state-container',
+  title: 'iterable-inbox-empty-state-title',
+  body: 'iterable-inbox-empty-state-body',
+} as const;
+
 /**
  * Props for the IterableInboxEmptyState component.
  */
@@ -42,6 +48,7 @@ export const IterableInboxEmptyState = ({
 
   return (
     <View
+      testID={iterableInboxEmptyStateTestIds.container}
       style={[
         styles.container,
         {
@@ -51,10 +58,10 @@ export const IterableInboxEmptyState = ({
         },
       ]}
     >
-      <Text style={styles.title}>
+      <Text testID={iterableInboxEmptyStateTestIds.title} style={styles.title}>
         {emptyStateTitle ? emptyStateTitle : defaultTitle}
       </Text>
-      <Text style={styles.body}>
+      <Text testID={iterableInboxEmptyStateTestIds.body} style={styles.body}>
         {emptyStateBody ? emptyStateBody : defaultBody}
       </Text>
     </View>

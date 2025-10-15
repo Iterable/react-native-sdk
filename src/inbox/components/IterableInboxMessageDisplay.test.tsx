@@ -5,7 +5,7 @@ import { IterableInAppMessage, IterableInAppTrigger, IterableInboxMetadata } fro
 import { IterableHtmlInAppContent } from '../../inApp/classes/IterableHtmlInAppContent';
 import { IterableInAppTriggerType } from '../../inApp/enums';
 import type { IterableInboxRowViewModel } from '../types';
-import { IterableInboxMessageDisplay } from './IterableInboxMessageDisplay';
+import { IterableInboxMessageDisplay, iterableMessageDisplayTestIds } from './IterableInboxMessageDisplay';
 
 // Suppress act() warnings for this test suite since they're expected from the component's useEffect
 const originalError = console.error;
@@ -234,7 +234,7 @@ describe('IterableInboxMessageDisplay', () => {
       const { getByTestId } = render(<IterableInboxMessageDisplay {...defaultProps} />);
 
       await waitFor(() => {
-        expect(getByTestId('webview')).toBeTruthy();
+        expect(getByTestId(iterableMessageDisplayTestIds.webview)).toBeTruthy();
       });
 
       expect(getByTestId('webview-source')).toHaveTextContent('<html><body><h1>Test HTML Content</h1><a href="https://example.com">Test Link</a></body></html>');
@@ -257,7 +257,7 @@ describe('IterableInboxMessageDisplay', () => {
     // Component should render without crashing
     // The component always renders the header, so we can check that the WebView is not shown
     // since the promise never resolves and inAppContent remains undefined
-    expect(queryByTestId('webview')).toBeFalsy();
+    expect(queryByTestId(iterableMessageDisplayTestIds.webview)).toBeFalsy();
   });
 
     it('should handle component unmounting before promise resolves', async () => {
@@ -325,7 +325,7 @@ describe('IterableInboxMessageDisplay', () => {
       const { getByTestId } = render(<IterableInboxMessageDisplay {...propsWithMockReturn} />);
 
       await waitFor(() => {
-        expect(getByTestId('webview')).toBeTruthy();
+        expect(getByTestId(iterableMessageDisplayTestIds.webview)).toBeTruthy();
       });
 
       const messageTrigger = getByTestId('webview-message-trigger');
@@ -346,7 +346,7 @@ describe('IterableInboxMessageDisplay', () => {
       const { getByTestId } = render(<IterableInboxMessageDisplay {...propsWithMocks} />);
 
       await waitFor(() => {
-        expect(getByTestId('webview')).toBeTruthy();
+        expect(getByTestId(iterableMessageDisplayTestIds.webview)).toBeTruthy();
       });
 
       const deleteTrigger = getByTestId('webview-delete-trigger');
@@ -365,7 +365,7 @@ describe('IterableInboxMessageDisplay', () => {
       const { getByTestId } = render(<IterableInboxMessageDisplay {...propsWithMockReturn} />);
 
       await waitFor(() => {
-        expect(getByTestId('webview')).toBeTruthy();
+        expect(getByTestId(iterableMessageDisplayTestIds.webview)).toBeTruthy();
       });
 
       const dismissTrigger = getByTestId('webview-dismiss-trigger');
@@ -388,7 +388,7 @@ describe('IterableInboxMessageDisplay', () => {
       const { getByTestId } = render(<IterableInboxMessageDisplay {...propsWithMockReturn} />);
 
       await waitFor(() => {
-        expect(getByTestId('webview')).toBeTruthy();
+        expect(getByTestId(iterableMessageDisplayTestIds.webview)).toBeTruthy();
       });
 
       const customActionTrigger = getByTestId('webview-custom-action-trigger');
@@ -411,7 +411,7 @@ describe('IterableInboxMessageDisplay', () => {
       const { getByTestId } = render(<IterableInboxMessageDisplay {...propsWithMockReturn} />);
 
       await waitFor(() => {
-        expect(getByTestId('webview')).toBeTruthy();
+        expect(getByTestId(iterableMessageDisplayTestIds.webview)).toBeTruthy();
       });
 
       const deepLinkTrigger = getByTestId('webview-deep-link-trigger');
@@ -433,7 +433,7 @@ describe('IterableInboxMessageDisplay', () => {
       const { getByTestId } = render(<IterableInboxMessageDisplay {...propsWithMocks} />);
 
       await waitFor(() => {
-        expect(getByTestId('webview')).toBeTruthy();
+        expect(getByTestId(iterableMessageDisplayTestIds.webview)).toBeTruthy();
       });
 
       const deleteTrigger = getByTestId('webview-delete-trigger');
@@ -458,7 +458,7 @@ describe('IterableInboxMessageDisplay', () => {
       const { getByTestId } = render(<IterableInboxMessageDisplay {...propsWithMockReturn} />);
 
       await waitFor(() => {
-        expect(getByTestId('webview')).toBeTruthy();
+        expect(getByTestId(iterableMessageDisplayTestIds.webview)).toBeTruthy();
       });
 
       const dismissTrigger = getByTestId('webview-dismiss-trigger');
@@ -479,7 +479,7 @@ describe('IterableInboxMessageDisplay', () => {
       const { getByTestId } = render(<IterableInboxMessageDisplay {...propsWithMockReturn} />);
 
       await waitFor(() => {
-        expect(getByTestId('webview')).toBeTruthy();
+        expect(getByTestId(iterableMessageDisplayTestIds.webview)).toBeTruthy();
       });
 
       const messageTrigger = getByTestId('webview-message-trigger');
@@ -508,7 +508,7 @@ describe('IterableInboxMessageDisplay', () => {
       const { getByTestId } = render(<IterableInboxMessageDisplay {...propsWithMockReturn} />);
 
       await waitFor(() => {
-        expect(getByTestId('webview')).toBeTruthy();
+        expect(getByTestId(iterableMessageDisplayTestIds.webview)).toBeTruthy();
       });
 
       const customActionTrigger = getByTestId('webview-custom-action-trigger');
@@ -551,7 +551,7 @@ describe('IterableInboxMessageDisplay', () => {
       const { getByTestId } = render(<IterableInboxMessageDisplay {...propsWithMockReturn} />);
 
       await waitFor(() => {
-        expect(getByTestId('webview')).toBeTruthy();
+        expect(getByTestId(iterableMessageDisplayTestIds.webview)).toBeTruthy();
       });
 
       const deepLinkTrigger = getByTestId('webview-deep-link-trigger');
@@ -590,7 +590,7 @@ describe('IterableInboxMessageDisplay', () => {
       const { getByTestId } = render(<IterableInboxMessageDisplay {...propsWithMockReturn} />);
 
       await waitFor(() => {
-        expect(getByTestId('webview')).toBeTruthy();
+        expect(getByTestId(iterableMessageDisplayTestIds.webview)).toBeTruthy();
       });
 
       const customActionTrigger = getByTestId('webview-custom-action-trigger');
@@ -616,7 +616,7 @@ describe('IterableInboxMessageDisplay', () => {
       const { getByTestId } = render(<IterableInboxMessageDisplay {...propsWithMockReturn} />);
 
       await waitFor(() => {
-        expect(getByTestId('webview')).toBeTruthy();
+        expect(getByTestId(iterableMessageDisplayTestIds.webview)).toBeTruthy();
       });
 
       const deepLinkTrigger = getByTestId('webview-deep-link-trigger');
@@ -635,7 +635,7 @@ describe('IterableInboxMessageDisplay', () => {
       const { getByTestId } = render(<IterableInboxMessageDisplay {...defaultProps} />);
 
       await waitFor(() => {
-        expect(getByTestId('webview')).toBeTruthy();
+        expect(getByTestId(iterableMessageDisplayTestIds.webview)).toBeTruthy();
       });
 
       const messageTrigger = getByTestId('webview-message-trigger');
@@ -653,7 +653,7 @@ describe('IterableInboxMessageDisplay', () => {
       const { getByTestId } = render(<IterableInboxMessageDisplay {...defaultProps} />);
 
       await waitFor(() => {
-        expect(getByTestId('webview')).toBeTruthy();
+        expect(getByTestId(iterableMessageDisplayTestIds.webview)).toBeTruthy();
       });
 
       const messageTrigger = getByTestId('webview-message-trigger');
@@ -731,7 +731,7 @@ describe('IterableInboxMessageDisplay', () => {
       const { getByTestId } = render(<IterableInboxMessageDisplay {...defaultProps} />);
 
       await waitFor(() => {
-        expect(getByTestId('webview')).toBeTruthy();
+        expect(getByTestId(iterableMessageDisplayTestIds.webview)).toBeTruthy();
       });
 
       // Check that injected JavaScript is present
@@ -745,11 +745,11 @@ describe('IterableInboxMessageDisplay', () => {
       const { getByTestId } = render(<IterableInboxMessageDisplay {...defaultProps} />);
 
       await waitFor(() => {
-        expect(getByTestId('webview')).toBeTruthy();
+        expect(getByTestId(iterableMessageDisplayTestIds.webview)).toBeTruthy();
       });
 
       // The WebView should be rendered with the correct configuration
-      expect(getByTestId('webview')).toBeTruthy();
+      expect(getByTestId(iterableMessageDisplayTestIds.webview)).toBeTruthy();
     });
   });
 
@@ -768,7 +768,7 @@ describe('IterableInboxMessageDisplay', () => {
       const { getByTestId } = render(<IterableInboxMessageDisplay {...propsWithEmptyContent} />);
 
       await waitFor(() => {
-        expect(getByTestId('webview')).toBeTruthy();
+        expect(getByTestId(iterableMessageDisplayTestIds.webview)).toBeTruthy();
       });
 
       expect(getByTestId('webview-source')).toHaveTextContent('');
@@ -788,7 +788,7 @@ describe('IterableInboxMessageDisplay', () => {
       const { getByTestId } = render(<IterableInboxMessageDisplay {...propsWithSpecialContent} />);
 
       await waitFor(() => {
-        expect(getByTestId('webview')).toBeTruthy();
+        expect(getByTestId(iterableMessageDisplayTestIds.webview)).toBeTruthy();
       });
 
       expect(getByTestId('webview-source')).toHaveTextContent('<html><body><h1>测试标题 🚀</h1><a href="https://example.com?param=测试">测试链接</a></body></html>');
@@ -856,7 +856,7 @@ describe('IterableInboxMessageDisplay', () => {
       const { rerender, getByTestId } = render(<IterableInboxMessageDisplay {...defaultProps} />);
 
       await waitFor(() => {
-        expect(getByTestId('webview')).toBeTruthy();
+        expect(getByTestId(iterableMessageDisplayTestIds.webview)).toBeTruthy();
       });
 
       // Change props rapidly
@@ -916,11 +916,11 @@ describe('IterableInboxMessageDisplay', () => {
       const { getByTestId } = render(<IterableInboxMessageDisplay {...defaultProps} />);
 
       await waitFor(() => {
-        expect(getByTestId('webview')).toBeTruthy();
+        expect(getByTestId(iterableMessageDisplayTestIds.webview)).toBeTruthy();
       });
 
       // The component should render without errors when customActionHandler is set
-      expect(getByTestId('webview')).toBeTruthy();
+      expect(getByTestId(iterableMessageDisplayTestIds.webview)).toBeTruthy();
     });
 
     it('should work with Iterable.savedConfig.urlHandler', async () => {
@@ -931,11 +931,11 @@ describe('IterableInboxMessageDisplay', () => {
       const { getByTestId } = render(<IterableInboxMessageDisplay {...defaultProps} />);
 
       await waitFor(() => {
-        expect(getByTestId('webview')).toBeTruthy();
+        expect(getByTestId(iterableMessageDisplayTestIds.webview)).toBeTruthy();
       });
 
       // The component should render without errors when urlHandler is set
-      expect(getByTestId('webview')).toBeTruthy();
+      expect(getByTestId(iterableMessageDisplayTestIds.webview)).toBeTruthy();
     });
 
     it('should handle missing Iterable.savedConfig handlers', async () => {
@@ -946,11 +946,11 @@ describe('IterableInboxMessageDisplay', () => {
       const { getByTestId } = render(<IterableInboxMessageDisplay {...defaultProps} />);
 
       await waitFor(() => {
-        expect(getByTestId('webview')).toBeTruthy();
+        expect(getByTestId(iterableMessageDisplayTestIds.webview)).toBeTruthy();
       });
 
       // The component should render without errors when handlers are undefined
-      expect(getByTestId('webview')).toBeTruthy();
+      expect(getByTestId(iterableMessageDisplayTestIds.webview)).toBeTruthy();
     });
   });
 });

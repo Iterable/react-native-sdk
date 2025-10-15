@@ -27,6 +27,13 @@ import {
 import { ITERABLE_INBOX_COLORS } from '../constants';
 import { type IterableInboxRowViewModel } from '../types';
 
+export const iterableMessageDisplayTestIds = {
+  container: 'iterable-message-display-container',
+  returnButton: 'iterable-message-display-return-button',
+  messageTitle: 'iterable-message-display-message-title',
+  webview: 'iterable-message-display-webview',
+};
+
 /**
  * Props for the IterableInboxMessageDisplay component.
  */
@@ -219,7 +226,10 @@ export const IterableInboxMessageDisplay = ({
   }
 
   return (
-    <View style={styles.messageDisplayContainer}>
+    <View
+      testID={iterableMessageDisplayTestIds.container}
+      style={styles.messageDisplayContainer}
+    >
       <View style={styles.header}>
         <View style={styles.returnButtonContainer}>
           <TouchableWithoutFeedback
@@ -256,6 +266,7 @@ export const IterableInboxMessageDisplay = ({
       {inAppContent && (
         <ScrollView contentContainerStyle={styles.contentContainer}>
           <WebView
+            testID={iterableMessageDisplayTestIds.webview}
             originWhiteList={['*']}
             source={{ html: inAppContent.html }}
             style={{ width: contentWidth }}

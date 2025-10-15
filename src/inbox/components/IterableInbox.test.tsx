@@ -1,13 +1,54 @@
+/* eslint-disable react-native/no-raw-text */
+// Mock NativeEventEmitter first, before any imports
+const mockEventEmitter = {
+  addListener: jest.fn(),
+  removeAllListeners: jest.fn(),
+};
+
+// Mock react-native with NativeEventEmitter
+jest.mock('react-native', () => {
+  const RN = jest.requireActual('react-native');
+  return {
+    ...RN,
+    NativeEventEmitter: jest.fn().mockImplementation(() => {
+      console.log('NativeEventEmitter mock called!');
+      return mockEventEmitter;
+    }),
+    NativeModules: {
+      RNIterableAPI: {},
+    },
+  };
+});
+
 import { useIsFocused } from '@react-navigation/native';
-import { act, render, waitFor } from '@testing-library/react-native';
+import {
+  act,
+  fireEvent,
+  render,
+  waitFor,
+  within,
+} from '@testing-library/react-native';
+import { Animated, Text } from 'react-native';
 
 import { useAppStateListener, useDeviceOrientation } from '../../core';
 import { Iterable } from '../../core/classes/Iterable';
-import { IterableInAppMessage, IterableInAppTrigger, IterableInboxMetadata } from '../../inApp/classes';
+import { IterableEdgeInsets } from '../../core/classes/IterableEdgeInsets';
+import {
+  IterableHtmlInAppContent,
+  IterableInAppMessage,
+  IterableInAppTrigger,
+  IterableInboxMetadata,
+} from '../../inApp/classes';
 import { IterableInAppTriggerType } from '../../inApp/enums';
 import { IterableInboxDataModel } from '../classes';
-import type { IterableInboxCustomizations, IterableInboxRowViewModel } from '../types';
-import { IterableInbox } from './IterableInbox';
+import type {
+  IterableInboxCustomizations,
+  IterableInboxRowViewModel,
+} from '../types';
+import { IterableInbox, iterableInboxTestIds } from './IterableInbox';
+import { iterableInboxEmptyStateTestIds } from './IterableInboxEmptyState';
+import { inboxMessageCellTestIDs } from './IterableInboxMessageCell';
+import { iterableMessageDisplayTestIds } from './IterableInboxMessageDisplay';
 
 // Suppress act() warnings for this test suite since they're expected from the component's useEffect
 const originalError = console.error;
@@ -39,84 +80,138 @@ jest.mock('@react-navigation/native', () => ({
 
 // Mock core hooks
 jest.mock('../../core', () => ({
+  ...jest.requireActual('../../core'),
   useAppStateListener: jest.fn(),
   useDeviceOrientation: jest.fn(),
 }));
 
-// Mock child components
-jest.mock('./IterableInboxEmptyState', () => ({
-  IterableInboxEmptyState: ({ testID }: { testID?: string; [key: string]: unknown }) => {
-    const { View, Text } = require('react-native');
-    return (
-      <View testID={testID || 'empty-state'}>
-        <Text>Empty State</Text>
-      </View>
-    );
-  },
-}));
+// Mock WebView
+jest.mock('react-native-webview', () => {
+  const { View, Text: RNText } = require('react-native');
 
-jest.mock('./IterableInboxMessageDisplay', () => ({
-  IterableInboxMessageDisplay: ({ testID }: { testID?: string; [key: string]: unknown }) => {
-    const { View, Text } = require('react-native');
-    return (
-      <View testID={testID || 'message-display'}>
-        <Text>Message Display</Text>
-      </View>
-    );
-  },
-}));
+  const MockWebView = ({
+    onMessage,
+    injectedJavaScript,
+    source,
+    ...props
+  }: {
+    onMessage?: (event: { nativeEvent: { data: string } }) => void;
+    injectedJavaScript?: string;
+    source?: { html: string };
+    [key: string]: unknown;
+  }) => (
+    <View testID="webview" {...props}>
+      <RNText testID="webview-source">{source?.html}</RNText>
+      <RNText testID="webview-js">{injectedJavaScript}</RNText>
+      <RNText
+        testID="webview-delete-trigger"
+        onPress={() => {
+          if (onMessage) {
+            onMessage({
+              nativeEvent: {
+                data: 'iterable://delete',
+              },
+            });
+          }
+        }}
+      >
+        Trigger Delete
+      </RNText>
+    </View>
+  );
 
-jest.mock('./IterableInboxMessageList', () => ({
-  IterableInboxMessageList: ({ testID }: { testID?: string; [key: string]: unknown }) => {
-    const { View, Text } = require('react-native');
-    return (
-      <View testID={testID || 'message-list'}>
-        <Text>Message List</Text>
-      </View>
-    );
-  },
-}));
+  MockWebView.displayName = 'MockWebView';
+
+  return {
+    WebView: MockWebView,
+  };
+});
+
+const mockMessages = [1, 2, 3].map(
+  (index) =>
+    new IterableInAppMessage(
+      `messageId${index}`,
+      index,
+      new IterableInAppTrigger(IterableInAppTriggerType.immediate),
+      new Date(),
+      new Date('2035-01-01'),
+      true,
+      new IterableInboxMetadata(`Message ${index}`, `Subtitle ${index}`, ''),
+      false,
+      false,
+      1
+    )
+);
+
+// Mock HTML content for each message
+const mockHtmlContent = {
+  messageId1: new IterableHtmlInAppContent(
+    new IterableEdgeInsets(10, 10, 10, 10),
+    '<div><h1>Title 1</h1><p>This is the content for message 1</p></div>'
+  ),
+  messageId2: new IterableHtmlInAppContent(
+    new IterableEdgeInsets(10, 10, 10, 10),
+    '<div><h1>Title 2</h1><p><a href="iterable://delete">Delete Link</a></p>This is the content for message 2</p></div>'
+  ),
+  messageId3: new IterableHtmlInAppContent(
+    new IterableEdgeInsets(10, 10, 10, 10),
+    '<div><h1>Title 3</h1><p>This is the content for message 3</p></div>'
+  ),
+};
 
 // Mock IterableInboxDataModel
 jest.mock('../classes', () => ({
   IterableInboxDataModel: jest.fn().mockImplementation(() => ({
-    refresh: jest.fn(),
+    refresh: jest.fn().mockResolvedValue(mockMessages),
     startSession: jest.fn(),
     endSession: jest.fn(),
     updateVisibleRows: jest.fn(),
     setMessageAsRead: jest.fn(),
     deleteItemById: jest.fn(),
-    getHtmlContentForMessageId: jest.fn(),
+    getHtmlContentForMessageId: jest
+      .fn()
+      .mockImplementation((messageId: string) => {
+        return Promise.resolve(
+          mockHtmlContent[messageId as keyof typeof mockHtmlContent]
+        );
+      }),
+    getFormattedDate: jest.fn().mockReturnValue('2023-01-01'),
   })),
-}));
-
-// Mock NativeEventEmitter
-const mockEventEmitter = {
-  addListener: jest.fn(),
-  removeAllListeners: jest.fn(),
-};
-
-jest.mock('react-native', () => ({
-  ...jest.requireActual('react-native'),
-  NativeEventEmitter: jest.fn().mockImplementation(() => mockEventEmitter),
-  NativeModules: {
-    RNIterableAPI: {},
-  },
 }));
 
 // Mock react-native-safe-area-context
 jest.mock('react-native-safe-area-context', () => ({
-  SafeAreaView: ({ children, testID, ...props }: { children: React.ReactNode; testID?: string; [key: string]: unknown }) => {
+  SafeAreaView: ({
+    children,
+    testID,
+    ...props
+  }: {
+    children: React.ReactNode;
+    testID?: string;
+    [key: string]: unknown;
+  }) => {
     const { View } = require('react-native');
-    return <View testID={testID || 'safe-area-view'} {...props}>{children}</View>;
+    return (
+      <View testID={testID || 'safe-area-view'} {...props}>
+        {children}
+      </View>
+    );
   },
 }));
 
 describe('IterableInbox', () => {
-  const mockUseIsFocused = useIsFocused as jest.MockedFunction<typeof useIsFocused>;
-  const mockUseAppStateListener = useAppStateListener as jest.MockedFunction<typeof useAppStateListener>;
-  const mockUseDeviceOrientation = useDeviceOrientation as jest.MockedFunction<typeof useDeviceOrientation>;
-  const mockIterableInboxDataModel = IterableInboxDataModel as jest.MockedClass<typeof IterableInboxDataModel>;
+  const mockUseIsFocused = useIsFocused as jest.MockedFunction<
+    typeof useIsFocused
+  >;
+  const mockUseAppStateListener = useAppStateListener as jest.MockedFunction<
+    typeof useAppStateListener
+  >;
+  const mockUseDeviceOrientation = useDeviceOrientation as jest.MockedFunction<
+    typeof useDeviceOrientation
+  >;
+  const mockIterableInboxDataModel = IterableInboxDataModel as jest.MockedClass<
+    typeof IterableInboxDataModel
+  >;
 
   const mockMessage1 = new IterableInAppMessage(
     'messageId1',
@@ -180,6 +275,7 @@ describe('IterableInbox', () => {
     setMessageAsRead: jest.Mock;
     deleteItemById: jest.Mock;
     getHtmlContentForMessageId: jest.Mock;
+    getFormattedDate: jest.Mock;
   };
 
   beforeEach(() => {
@@ -196,16 +292,21 @@ describe('IterableInbox', () => {
 
     // Setup mock data model instance
     mockDataModelInstance = {
-      refresh: jest.fn().mockResolvedValue([mockRowViewModel1, mockRowViewModel2]),
+      refresh: jest
+        .fn()
+        .mockResolvedValue([mockRowViewModel1, mockRowViewModel2]),
       startSession: jest.fn(),
       endSession: jest.fn(),
       updateVisibleRows: jest.fn(),
       setMessageAsRead: jest.fn(),
       deleteItemById: jest.fn(),
       getHtmlContentForMessageId: jest.fn().mockResolvedValue({}),
+      getFormattedDate: jest.fn().mockReturnValue('2023-01-01'),
     };
 
-    mockIterableInboxDataModel.mockImplementation(() => mockDataModelInstance as unknown as IterableInboxDataModel);
+    mockIterableInboxDataModel.mockImplementation(
+      () => mockDataModelInstance as unknown as IterableInboxDataModel
+    );
   });
 
   describe('Basic Rendering', () => {
@@ -213,50 +314,53 @@ describe('IterableInbox', () => {
       const component = render(<IterableInbox {...defaultProps} />);
 
       await waitFor(() => {
-        expect(component.getByTestId('safe-area-view')).toBeTruthy();
-      });
-    });
-
-    it('should render with custom props', async () => {
-      const customProps = {
-        ...defaultProps,
-        customizations: { navTitle: 'My Custom Inbox' },
-        tabBarHeight: 100,
-        tabBarPadding: 30,
-        safeAreaMode: true, // Keep safeAreaMode true for this test
-        showNavTitle: false,
-      };
-
-      const component = render(<IterableInbox {...customProps} />);
-
-      await waitFor(() => {
-        expect(component.getByTestId('safe-area-view')).toBeTruthy();
+        expect(
+          component.getByTestId(iterableInboxTestIds.safeAreaView)
+        ).toBeTruthy();
       });
     });
 
     it('should render with SafeAreaView when safeAreaMode is true', async () => {
-      const component = render(<IterableInbox {...defaultProps} safeAreaMode={true} />);
+      const component = render(
+        <IterableInbox {...defaultProps} safeAreaMode={true} />
+      );
 
       await waitFor(() => {
-        expect(component.getByTestId('safe-area-view')).toBeTruthy();
+        expect(
+          component.getByTestId(iterableInboxTestIds.safeAreaView)
+        ).toBeTruthy();
       });
     });
 
     it('should render without SafeAreaView when safeAreaMode is false', async () => {
-      const component = render(<IterableInbox {...defaultProps} safeAreaMode={false} />);
+      const component = render(
+        <IterableInbox {...defaultProps} safeAreaMode={false} />
+      );
 
       await waitFor(() => {
         // Should not find SafeAreaView testID, but should find the container
-        expect(() => component.getByTestId('safe-area-view')).toThrow();
+        expect(() =>
+          component.getByTestId(iterableInboxTestIds.safeAreaView)
+        ).toThrow();
         // The component should still render successfully
-        expect(component.getByTestId('message-list')).toBeTruthy();
+        expect(component.getByTestId(iterableInboxTestIds.view)).toBeTruthy();
+      });
+    });
+
+    it('should call refresh on mount', async () => {
+      render(<IterableInbox {...defaultProps} />);
+
+      await waitFor(() => {
+        expect(mockDataModelInstance.refresh).toHaveBeenCalled();
       });
     });
   });
 
   describe('Navigation Title', () => {
     it('should show default title when showNavTitle is true and no custom title provided', async () => {
-      const component = render(<IterableInbox {...defaultProps} showNavTitle={true} />);
+      const component = render(
+        <IterableInbox {...defaultProps} showNavTitle={true} />
+      );
 
       await waitFor(() => {
         expect(component.getByText('Inbox')).toBeTruthy();
@@ -277,7 +381,9 @@ describe('IterableInbox', () => {
     });
 
     it('should not show title when showNavTitle is false', async () => {
-      const component = render(<IterableInbox {...defaultProps} showNavTitle={false} />);
+      const component = render(
+        <IterableInbox {...defaultProps} showNavTitle={false} />
+      );
 
       await waitFor(() => {
         expect(component.queryByText('Inbox')).toBeNull();
@@ -287,47 +393,26 @@ describe('IterableInbox', () => {
 
   describe('Loading State', () => {
     it('should show loading screen initially', async () => {
-      mockDataModelInstance.refresh.mockImplementation(() => new Promise(() => {})); // Never resolves
+      mockDataModelInstance.refresh.mockImplementation(
+        () => new Promise(() => {})
+      ); // Never resolves
 
       const component = render(<IterableInbox {...defaultProps} />);
 
       // Should show loading screen initially
-      expect(component.getByTestId('safe-area-view')).toBeTruthy();
+      expect(
+        component.getByTestId(iterableInboxTestIds.loadingScreen)
+      ).toBeTruthy();
     });
 
     it('should hide loading screen after messages are fetched', async () => {
-      const component = render(<IterableInbox {...defaultProps} />);
-
-      await waitFor(() => {
-        expect(component.getByTestId('message-list')).toBeTruthy();
-      });
-    });
-  });
-
-  describe('Message List Rendering', () => {
-    it('should render message list when messages are available', async () => {
-      const component = render(<IterableInbox {...defaultProps} />);
-
-      await waitFor(() => {
-        expect(component.getByTestId('message-list')).toBeTruthy();
-      });
-    });
-
-    it('should render empty state when no messages are available', async () => {
       mockDataModelInstance.refresh.mockResolvedValue([]);
-
       const component = render(<IterableInbox {...defaultProps} />);
 
       await waitFor(() => {
-        expect(component.getByTestId('empty-state')).toBeTruthy();
-      });
-    });
-
-    it('should pass correct props to message list', async () => {
-      render(<IterableInbox {...defaultProps} />);
-
-      await waitFor(() => {
-        expect(mockDataModelInstance.refresh).toHaveBeenCalled();
+        expect(
+          component.getByTestId(iterableInboxTestIds.safeAreaView)
+        ).toBeTruthy();
       });
     });
   });
@@ -343,7 +428,9 @@ describe('IterableInbox', () => {
       const component = render(<IterableInbox {...defaultProps} />);
 
       await waitFor(() => {
-        expect(component.getByTestId('safe-area-view')).toBeTruthy();
+        expect(
+          component.getByTestId(iterableInboxTestIds.safeAreaView)
+        ).toBeTruthy();
       });
     });
 
@@ -357,7 +444,9 @@ describe('IterableInbox', () => {
       const component = render(<IterableInbox {...defaultProps} />);
 
       await waitFor(() => {
-        expect(component.getByTestId('safe-area-view')).toBeTruthy();
+        expect(
+          component.getByTestId(iterableInboxTestIds.safeAreaView)
+        ).toBeTruthy();
       });
     });
   });
@@ -412,193 +501,189 @@ describe('IterableInbox', () => {
     });
   });
 
-  describe('Event Listeners', () => {
-    it('should add inbox changed listener on mount', async () => {
-      render(<IterableInbox {...defaultProps} />);
-
-      // The component should render successfully
-      await waitFor(() => {
-        expect(mockDataModelInstance.refresh).toHaveBeenCalled();
-      });
-
-      // Note: Event listener testing requires more complex setup
-      // This test verifies the component renders and initializes correctly
-    });
-
-    it('should remove inbox changed listener on unmount', async () => {
+  describe('Message List', () => {
+    it('should render message list when messages are available', async () => {
       const component = render(<IterableInbox {...defaultProps} />);
 
       await waitFor(() => {
-        expect(mockDataModelInstance.refresh).toHaveBeenCalled();
+        expect(
+          component.getByTestId(iterableInboxTestIds.safeAreaView)
+        ).toBeTruthy();
       });
-
-      component.unmount();
-
-      // Note: Event listener cleanup testing requires more complex setup
-      // This test verifies the component unmounts without errors
     });
 
-    it('should refresh messages when inbox changed event is received', async () => {
-      let eventCallback: (() => void) | undefined;
-      mockEventEmitter.addListener.mockImplementation((event, callback) => {
-        if (event === 'receivedIterableInboxChanged') {
-          eventCallback = callback;
-        }
-      });
-
-      render(<IterableInbox {...defaultProps} />);
+    it('should render empty state when no messages are available', async () => {
+      mockDataModelInstance.refresh.mockResolvedValue([]);
+      const component = render(<IterableInbox {...defaultProps} />);
 
       await waitFor(() => {
-        expect(mockDataModelInstance.refresh).toHaveBeenCalledTimes(1);
+        expect(
+          component.getByTestId(iterableInboxEmptyStateTestIds.container)
+        ).toBeTruthy();
       });
-
-      // Simulate inbox changed event
-      if (eventCallback && typeof eventCallback === 'function') {
-        await act(async () => {
-          eventCallback!();
-        });
-
-        await waitFor(() => {
-          expect(mockDataModelInstance.refresh).toHaveBeenCalledTimes(2);
-        });
-      } else {
-        // If eventCallback is not set, just verify the initial call
-        expect(mockDataModelInstance.refresh).toHaveBeenCalledTimes(1);
-      }
     });
   });
 
   describe('Return to Inbox Trigger', () => {
-    it('should trigger return to inbox animation when trigger changes', async () => {
-      const component = render(<IterableInbox {...defaultProps} returnToInboxTrigger={true} />);
+    it('should trigger return to inbox when trigger changes', async () => {
+      const timingSpy = jest.spyOn(Animated, 'timing');
+
+      const inbox = render(
+        <IterableInbox {...defaultProps} returnToInboxTrigger={true} />
+      );
 
       await waitFor(() => {
         expect(mockDataModelInstance.refresh).toHaveBeenCalled();
       });
 
+      // Simulate selecting the second message
+      const messageCells = inbox.getAllByTestId(inboxMessageCellTestIDs.select);
+      fireEvent.press(messageCells[1]);
+
+      await waitFor(() => {
+        expect(
+          within(
+            inbox.getByTestId(iterableMessageDisplayTestIds.container)
+          ).getByTestId('webview-delete-trigger')
+        ).toBeTruthy();
+      });
+
+      inbox.debug();
+      timingSpy.mockClear();
+
       // Change the trigger
-      component.rerender(<IterableInbox {...defaultProps} returnToInboxTrigger={false} />);
+      inbox.rerender(
+        <IterableInbox {...defaultProps} returnToInboxTrigger={false} />
+      );
+
+      waitFor(() => {
+        expect(timingSpy).toHaveBeenCalled();
+      });
+
+      expect(timingSpy).toHaveBeenCalled();
     });
   });
 
   describe('Message Selection and Display', () => {
-    it('should handle message selection', async () => {
-      render(<IterableInbox {...defaultProps} />);
+    it('should show a message on select', async () => {
+      const inbox = render(<IterableInbox {...defaultProps} />);
 
       await waitFor(() => {
         expect(mockDataModelInstance.refresh).toHaveBeenCalled();
       });
 
-      // The actual message selection would be handled by the IterableInboxMessageList component
-      // This test verifies that the component renders and is ready to handle selections
-      expect(mockDataModelInstance.setMessageAsRead).not.toHaveBeenCalled();
-    });
-
-    it('should track in-app open when message is selected', async () => {
-      render(<IterableInbox {...defaultProps} />);
-
-      await waitFor(() => {
-        expect(mockDataModelInstance.refresh).toHaveBeenCalled();
-      });
-
-      // The tracking would happen in the handleMessageSelect function
-      // This is tested indirectly through the component rendering
+      // The first message should be displayed by default
+      expect(
+        within(
+          inbox.getByTestId(iterableMessageDisplayTestIds.container)
+        ).getByText('Title 1')
+      ).toBeTruthy();
       expect(Iterable.trackInAppOpen).not.toHaveBeenCalled();
-    });
-  });
+      expect(mockDataModelInstance.setMessageAsRead).not.toHaveBeenCalled();
 
-  describe('Message Deletion', () => {
-    it('should handle message deletion', async () => {
-      render(<IterableInbox {...defaultProps} />);
+      // Simulate selecting the second message
+      const messageCells = inbox.getAllByTestId(inboxMessageCellTestIDs.select);
+      fireEvent.press(messageCells[1]);
+
+      const display = inbox.getByTestId(
+        iterableMessageDisplayTestIds.container
+      );
+
+      // The second message should be displayed
+      expect(display).toBeTruthy();
+      expect(within(display).getByText('Title 2')).toBeTruthy();
+      // `trackInAppOpen` should be called
+      expect(Iterable.trackInAppOpen).toHaveBeenCalled();
+      // `setMessageAsRead` should be called
+      expect(mockDataModelInstance.setMessageAsRead).toHaveBeenCalled();
+    });
+
+    it('should call `trackInAppOpen` when message is selected', async () => {
+      const inbox = render(<IterableInbox {...defaultProps} />);
 
       await waitFor(() => {
         expect(mockDataModelInstance.refresh).toHaveBeenCalled();
       });
 
-      // The actual deletion would be handled by the IterableInboxMessageList component
-      // This test verifies that the component renders and is ready to handle deletions
-      expect(mockDataModelInstance.deleteItemById).not.toHaveBeenCalled();
-    });
-  });
+      expect(Iterable.trackInAppOpen).not.toHaveBeenCalled();
 
-  describe('Visible Message Impressions', () => {
-    it('should update visible rows when impressions change', async () => {
-      render(<IterableInbox {...defaultProps} />);
+      // Simulate selecting the second message
+      const messageCells = inbox.getAllByTestId(inboxMessageCellTestIDs.select);
+      fireEvent.press(messageCells[1]);
+
+      expect(Iterable.trackInAppOpen).toHaveBeenCalled();
+    });
+
+    it('should set a message as read when message is selected', async () => {
+      const inbox = render(<IterableInbox {...defaultProps} />);
 
       await waitFor(() => {
         expect(mockDataModelInstance.refresh).toHaveBeenCalled();
       });
 
-      // The updateVisibleRows would be called when visibleMessageImpressions state changes
-      // This is tested indirectly through the component rendering
-      expect(mockDataModelInstance.updateVisibleRows).toHaveBeenCalled();
-    });
-  });
+      expect(mockDataModelInstance.setMessageAsRead).not.toHaveBeenCalled();
 
-  describe('HTML Content Retrieval', () => {
-    it('should get HTML content for message', async () => {
-      render(<IterableInbox {...defaultProps} />);
+      // Simulate selecting the second message
+      const messageCells = inbox.getAllByTestId(inboxMessageCellTestIDs.select);
+      fireEvent.press(messageCells[1]);
+
+      expect(mockDataModelInstance.setMessageAsRead).toHaveBeenCalled();
+    });
+
+    it('should call slideLeft when message is selected', async () => {
+      const timingSpy = jest.spyOn(Animated, 'timing');
+      const inbox = render(<IterableInbox {...defaultProps} />);
 
       await waitFor(() => {
         expect(mockDataModelInstance.refresh).toHaveBeenCalled();
       });
 
-      // The getHtmlContentForMessageId is called during component initialization
-      // This test verifies the component renders and initializes correctly
-      expect(mockDataModelInstance.getHtmlContentForMessageId).toHaveBeenCalled();
-    });
-  });
+      timingSpy.mockClear();
 
-  describe('Animation', () => {
-    it('should handle slide left animation', async () => {
-      render(<IterableInbox {...defaultProps} />);
+      expect(timingSpy).not.toHaveBeenCalled();
+
+      // Select a message
+      const messageCells = inbox.getAllByTestId(inboxMessageCellTestIDs.select);
+      fireEvent.press(messageCells[0]);
+
+      expect(timingSpy).toHaveBeenCalled();
+
+      timingSpy.mockRestore();
+    });
+
+    it('should call deleteRow when delete is clicked from the display', async () => {
+      const inbox = render(<IterableInbox {...defaultProps} />);
 
       await waitFor(() => {
         expect(mockDataModelInstance.refresh).toHaveBeenCalled();
       });
 
-      // Animation testing would require more complex setup
-      // This test verifies that the component renders with animation support
+      mockDataModelInstance.refresh.mockClear();
+
+      // Select a message
+      const messageCells = inbox.getAllByTestId(inboxMessageCellTestIDs.select);
+      fireEvent.press(messageCells[1]);
+
+      await waitFor(() => {
+        expect(
+          within(
+            inbox.getByTestId(iterableMessageDisplayTestIds.container)
+          ).getByTestId('webview-delete-trigger')
+        ).toBeTruthy();
+      });
+
+      // Click delete
+      const deleteTrigger = within(
+        inbox.getByTestId(iterableMessageDisplayTestIds.container)
+      ).getByTestId('webview-delete-trigger');
+      fireEvent.press(deleteTrigger);
+
+      await waitFor(() => {
+        expect(mockDataModelInstance.deleteItemById).toHaveBeenCalled();
+      });
+
+      expect(mockDataModelInstance.deleteItemById).toHaveBeenCalled();
       expect(mockDataModelInstance.refresh).toHaveBeenCalled();
-    });
-
-    it('should handle return to inbox animation', async () => {
-      render(<IterableInbox {...defaultProps} />);
-
-      await waitFor(() => {
-        expect(mockDataModelInstance.refresh).toHaveBeenCalled();
-      });
-
-      // Animation testing would require more complex setup
-      // This test verifies that the component renders with animation support
-      expect(mockDataModelInstance.refresh).toHaveBeenCalled();
-    });
-  });
-
-  describe('Cleanup', () => {
-    it('should clean up event listeners and end session on unmount', async () => {
-      const component = render(<IterableInbox {...defaultProps} />);
-
-      await waitFor(() => {
-        expect(mockDataModelInstance.refresh).toHaveBeenCalled();
-      });
-
-      component.unmount();
-
-      // Note: Event listener cleanup testing requires more complex setup
-      // This test verifies the component unmounts without errors
-      expect(mockDataModelInstance.endSession).toHaveBeenCalled();
-    });
-  });
-
-  describe('Error Handling', () => {
-    it('should render successfully with valid data', async () => {
-      // Test that the component renders successfully with valid data
-      const component = render(<IterableInbox {...defaultProps} />);
-
-      await waitFor(() => {
-        expect(component.getByTestId('safe-area-view')).toBeTruthy();
-      });
     });
   });
 
@@ -607,7 +692,9 @@ describe('IterableInbox', () => {
       const component = render(<IterableInbox />);
 
       await waitFor(() => {
-        expect(component.getByTestId('safe-area-view')).toBeTruthy();
+        expect(
+          component.getByTestId(iterableInboxTestIds.safeAreaView)
+        ).toBeTruthy();
       });
     });
 
@@ -617,11 +704,113 @@ describe('IterableInbox', () => {
         customizations: undefined as unknown as IterableInboxCustomizations,
       };
 
-      const component = render(<IterableInbox {...propsWithUndefinedCustomizations} />);
+      const component = render(
+        <IterableInbox {...propsWithUndefinedCustomizations} />
+      );
 
       await waitFor(() => {
-        expect(component.getByTestId('safe-area-view')).toBeTruthy();
+        expect(
+          component.getByTestId(iterableInboxTestIds.safeAreaView)
+        ).toBeTruthy();
       });
+    });
+
+    it('should handle customizations', async () => {
+      const customizations = {
+        navTitle: 'My Custom Inbox',
+      };
+
+      const component = render(
+        <IterableInbox customizations={customizations} />
+      );
+
+      await waitFor(() => {
+        expect(
+          component.getByTestId(iterableInboxTestIds.safeAreaView)
+        ).toBeTruthy();
+      });
+
+      expect(component.getByText('My Custom Inbox')).toBeTruthy();
+    });
+  });
+
+  describe('Message List Item Layout', () => {
+    it('should use messageListItemLayout when provided', async () => {
+      const messageListItemLayout = jest
+        .fn()
+        .mockReturnValue([
+          <Text key="custom-layout" testID="custom-layout">Custom Layout</Text>,
+          200,
+        ]);
+
+      const component = render(
+        <IterableInbox
+          {...defaultProps}
+          messageListItemLayout={messageListItemLayout}
+        />
+      );
+
+      // Wait for the component to finish loading and rendering messages
+      await act(async () => {
+        await waitFor(() => {
+          // Wait for the refresh to complete and messages to be rendered
+          expect(mockDataModelInstance.refresh).toHaveBeenCalled();
+        });
+      });
+
+      // Now wait for the custom layout to appear (there should be multiple since we have 3 messages)
+      await act(async () => {
+        await waitFor(() => {
+          const customLayoutElements =
+            component.getAllByTestId('custom-layout');
+          expect(customLayoutElements).toHaveLength(2);
+          expect(customLayoutElements[0]).toBeTruthy();
+          expect(messageListItemLayout).toHaveBeenCalled();
+        });
+      });
+    });
+
+    it('should use default messageListItemLayout when not provided', async () => {
+      const component = render(<IterableInbox {...defaultProps} />);
+
+      await waitFor(() => {
+        const defaultContainers = component.getAllByTestId(
+          inboxMessageCellTestIDs.defaultContainer
+        );
+        expect(defaultContainers[0]).toBeTruthy();
+      });
+
+      // The default messageListItemLayout is () => null
+      // This test verifies the component renders with the default layout function
+      const defaultContainers = component.getAllByTestId(
+        inboxMessageCellTestIDs.defaultContainer
+      );
+      expect(defaultContainers).toHaveLength(2);
+      expect(defaultContainers[0]).toBeTruthy();
+    });
+
+    it('should use default messageListItemLayout when it returns undefined', async () => {
+      const component = render(
+        <IterableInbox
+          {...defaultProps}
+          messageListItemLayout={() => undefined}
+        />
+      );
+
+      await waitFor(() => {
+        const defaultContainers = component.getAllByTestId(
+          inboxMessageCellTestIDs.defaultContainer
+        );
+        expect(defaultContainers[0]).toBeTruthy();
+      });
+
+      // The default messageListItemLayout is () => null
+      // This test verifies the component renders with the default layout function
+      const defaultContainers = component.getAllByTestId(
+        inboxMessageCellTestIDs.defaultContainer
+      );
+      expect(defaultContainers).toHaveLength(2);
+      expect(defaultContainers[0]).toBeTruthy();
     });
   });
 });

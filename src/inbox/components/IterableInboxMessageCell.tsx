@@ -29,6 +29,9 @@ export const inboxMessageCellTestIDs = {
   createdAt: 'inbox-message-cell-created-at',
   deleteSlider: 'inbox-message-cell-delete-slider',
   selectButton: 'inbox-message-cell-select-button',
+  cellContainer: 'inbox-message-cell-container',
+  defaultContainer: 'inbox-message-cell-default-container',
+  select: 'inbox-message-cell-select',
 } as const;
 
 /**
@@ -151,7 +154,7 @@ function defaultMessageListLayout(
   }
 
   return (
-    <View testID={inboxMessageCellTestIDs.container} style={messageRowStyle(rowViewModel) as ViewStyle}>
+    <View testID={inboxMessageCellTestIDs.defaultContainer} style={messageRowStyle(rowViewModel) as ViewStyle}>
       <View style={unreadIndicatorContainer as ViewStyle}>
         {rowViewModel.read ? null : <View testID={inboxMessageCellTestIDs.unreadIndicator} style={unreadIndicator} />}
       </View>
@@ -413,20 +416,22 @@ export const IterableInboxMessageCell = ({
 
   return (
     <>
-      <View style={styles.deleteSlider}>
+      <View testID={inboxMessageCellTestIDs.deleteSlider} style={styles.deleteSlider}>
         <Text style={styles.textStyle}>DELETE</Text>
       </View>
       <Animated.View
+        testID={inboxMessageCellTestIDs.container}
         style={[styles.textContainer, position.getLayout()]}
         {...panResponder.panHandlers}
       >
         <TouchableOpacity
+          testID={inboxMessageCellTestIDs.select}
           activeOpacity={1}
           onPress={() => {
             handleMessageSelect(rowViewModel.inAppMessage.messageId, index);
           }}
         >
-          {messageListItemLayout(last, rowViewModel)
+          {messageListItemLayout?.(last, rowViewModel)
             ? messageListItemLayout(last, rowViewModel)?.[0]
             : defaultMessageListLayout(
                 last,
