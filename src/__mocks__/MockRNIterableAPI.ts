@@ -70,7 +70,7 @@ export class MockRNIterableAPI {
 
   static initialize2WithApiKey = jest.fn().mockResolvedValue(true);
 
-  static wakeApp = jest.fn()
+  static wakeApp = jest.fn();
 
   static setInAppShowResponse = jest.fn();
 

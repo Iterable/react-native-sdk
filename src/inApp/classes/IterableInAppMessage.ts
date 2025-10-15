@@ -204,7 +204,7 @@ export class IterableInAppMessage {
       trigger,
       // MOB-10426: Speak to the team about `IterableInAppMessage` requiring a date
       // object, but being passed a number in this case
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
       //  @ts-ignore
       createdAt,
       expiresAt,

@@ -175,7 +175,7 @@ describe('IterableUtil', () => {
         key1: true,
         key2: false,
         key3: 'string',
-        key4: 123
+        key4: 123,
       };
 
       // WHEN reading different keys
@@ -197,7 +197,7 @@ describe('IterableUtil', () => {
       // GIVEN a dictionary with special boolean values
       const dict = {
         trueValue: true,
-        falseValue: false
+        falseValue: false,
       };
 
       // WHEN reading boolean values
