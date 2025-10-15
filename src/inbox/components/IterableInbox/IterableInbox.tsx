@@ -5,9 +5,8 @@ import {
   NativeEventEmitter,
   NativeModules,
   Platform,
-  StyleSheet,
   Text,
-  View,
+  View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -16,10 +15,12 @@ import { useAppStateListener, useDeviceOrientation } from '../../../core';
 // dependencies
 // See: https://github.com/expo/expo/issues/35100
 import { Iterable } from '../../../core/classes/Iterable';
-import { IterableInAppDeleteSource, IterableInAppLocation } from '../../../inApp';
+import {
+  IterableInAppDeleteSource,
+  IterableInAppLocation,
+} from '../../../inApp';
 
 import { IterableInboxDataModel } from '../../classes';
-import { ITERABLE_INBOX_COLORS } from '../../constants';
 import type {
   IterableInboxCustomizations,
   IterableInboxImpressionRowInfo,
@@ -31,14 +32,15 @@ import {
   IterableInboxMessageList,
   type IterableInboxMessageListProps,
 } from '../IterableInboxMessageList';
+import {
+  DEFAULT_HEADLINE_HEIGHT,
+  HEADLINE_PADDING_LEFT_LANDSCAPE,
+  HEADLINE_PADDING_LEFT_PORTRAIT,
+} from './constants';
+import { styles } from './IterableInbox.styles';
 
 const RNIterableAPI = NativeModules.RNIterableAPI;
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
-
-const DEFAULT_HEADLINE_HEIGHT = 60;
-const ANDROID_HEADLINE_HEIGHT = 70;
-const HEADLINE_PADDING_LEFT_PORTRAIT = 30;
-const HEADLINE_PADDING_LEFT_LANDSCAPE = 70;
 
 export const iterableInboxTestIds = {
   wrapper: 'inbox-wrapper',
@@ -227,48 +229,7 @@ export const IterableInbox = ({
     IterableInboxImpressionRowInfo[]
   >([]);
 
-  const styles = StyleSheet.create({
-    container: {
-      alignItems: 'center',
-      flex: 1,
-      flexDirection: 'row',
-      height: '100%',
-      justifyContent: 'flex-start',
-      paddingBottom: 0,
-      paddingLeft: 0,
-      paddingRight: 0,
-      width: 2 * width,
-    },
-
-    headline: {
-      backgroundColor: ITERABLE_INBOX_COLORS.CONTAINER_BACKGROUND,
-      fontSize: 40,
-      fontWeight: 'bold',
-      height:
-        Platform.OS === 'android'
-          ? ANDROID_HEADLINE_HEIGHT
-          : DEFAULT_HEADLINE_HEIGHT,
-      marginTop: 0,
-      paddingBottom: 10,
-      paddingLeft: isPortrait
-        ? HEADLINE_PADDING_LEFT_PORTRAIT
-        : HEADLINE_PADDING_LEFT_LANDSCAPE,
-      paddingTop: 10,
-      width: '100%',
-    },
-
-    loadingScreen: {
-      backgroundColor: ITERABLE_INBOX_COLORS.CONTAINER_BACKGROUND,
-      height: '100%',
-    },
-
-    messageListContainer: {
-      flexDirection: 'column',
-      height: '100%',
-      justifyContent: 'flex-start',
-      width: width,
-    },
-  });
+  const containerStyle = [styles.container, { width: 2 * width }];
 
   const navTitleHeight =
     DEFAULT_HEADLINE_HEIGHT +
@@ -424,9 +385,18 @@ export const IterableInbox = ({
 
   function showMessageList(_loading: boolean) {
     return (
-      <View style={styles.messageListContainer}>
+      <View style={[styles.messageListContainer, { width: width }]}>
         {showNavTitle ? (
-          <Text style={styles.headline}>
+          <Text
+            style={[
+              styles.headline,
+              {
+                paddingLeft: isPortrait
+                  ? HEADLINE_PADDING_LEFT_PORTRAIT
+                  : HEADLINE_PADDING_LEFT_LANDSCAPE,
+              },
+            ]}
+          >
             {customizations?.navTitle
               ? customizations?.navTitle
               : defaultInboxTitle}
@@ -509,12 +479,12 @@ export const IterableInbox = ({
   return safeAreaMode ? (
     <SafeAreaView
       testID={iterableInboxTestIds.safeAreaView}
-      style={styles.container}
+      style={containerStyle}
     >
       {inboxAnimatedView}
     </SafeAreaView>
   ) : (
-    <View testID={iterableInboxTestIds.view} style={styles.container}>
+    <View testID={iterableInboxTestIds.view} style={containerStyle}>
       {inboxAnimatedView}
     </View>
   );
