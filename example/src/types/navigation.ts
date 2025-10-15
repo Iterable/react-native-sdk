@@ -10,6 +10,7 @@ import { Route } from '../constants/routes';
 export type MainScreenParamList = {
   [Route.Commerce]: undefined;
   [Route.Inbox]: undefined;
+  [Route.Embedded]: undefined;
   [Route.User]: undefined;
 };
 
