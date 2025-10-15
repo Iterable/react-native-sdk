@@ -15,11 +15,11 @@ export const iterableInboxEmptyStateTestIds = {
  */
 export interface IterableInboxEmptyStateProps {
   /** Customizations for the inbox. */
-  customizations: IterableInboxCustomizations;
+  customizations?: IterableInboxCustomizations;
   /** Height of the tab bar. */
-  tabBarHeight: number;
+  tabBarHeight?: number;
   /** Padding of the tab bar. */
-  tabBarPadding: number;
+  tabBarPadding?: number;
   /** Height of the navigation title. */
   navTitleHeight: number;
   /** Width of the content area. */
@@ -37,9 +37,9 @@ const defaultBody = 'Check again later!';
  * A functional component that renders an empty state for the inbox when there are no messages.
  */
 export const IterableInboxEmptyState = ({
-  customizations,
-  tabBarHeight,
-  tabBarPadding,
+  customizations = {} as IterableInboxCustomizations,
+  tabBarHeight = 80,
+  tabBarPadding = 20,
   navTitleHeight,
   height,
   isPortrait,
