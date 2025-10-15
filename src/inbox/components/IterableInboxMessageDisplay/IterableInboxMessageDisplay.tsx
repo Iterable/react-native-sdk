@@ -13,6 +13,7 @@ import {
   IterableAction,
   IterableActionContext,
   IterableActionSource,
+  useDeviceOrientation,
 } from '../../../core';
 // expo throws an error if this is not imported directly due to circular
 // dependencies
@@ -24,7 +25,6 @@ import {
 } from '../../../inApp';
 import { type IterableInboxRowViewModel } from '../../types';
 import { styles } from './IterableInboxMessageDisplay.styles';
-import { useDeviceOrientation } from '../../../../lib/typescript/src/core/hooks/useDeviceOrientation';
 
 export const iterableMessageDisplayTestIds = {
   container: 'iterable-message-display-container',
