@@ -23,9 +23,9 @@ import {
   IterableInAppCloseSource,
   IterableInAppLocation,
 } from '../../inApp';
-
 import { ITERABLE_INBOX_COLORS } from '../constants';
 import { type IterableInboxRowViewModel } from '../types';
+import { HeaderBackButton } from './HeaderBackButton';
 
 /**
  * Props for the IterableInboxMessageDisplay component.
@@ -222,6 +222,16 @@ export const IterableInboxMessageDisplay = ({
     <View style={styles.messageDisplayContainer}>
       <View style={styles.header}>
         <View style={styles.returnButtonContainer}>
+          <HeaderBackButton
+            onPress={() => {
+              returnToInbox();
+              Iterable.trackInAppClose(
+                rowViewModel.inAppMessage,
+                IterableInAppLocation.inbox,
+                IterableInAppCloseSource.back
+              );
+            }}
+          />
           <TouchableWithoutFeedback
             onPress={() => {
               returnToInbox();
