@@ -1,7 +1,8 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
+import { useMemo } from 'react';
 
 import { type IterableInboxCustomizations } from '../../types';
-import { ITERABLE_INBOX_COLORS } from '../../constants';
+import { styles } from './IterableInboxEmptyState.styles';
 
 export const iterableInboxEmptyStateTestIds = {
   container: 'iterable-inbox-empty-state-container',
@@ -29,6 +30,9 @@ export interface IterableInboxEmptyStateProps {
   isPortrait: boolean;
 }
 
+const defaultTitle = 'No saved messages';
+const defaultBody = 'Check again later!';
+
 /**
  * A functional component that renders an empty state for the inbox when there are no messages.
  */
@@ -40,51 +44,23 @@ export const IterableInboxEmptyState = ({
   height,
   isPortrait,
 }: IterableInboxEmptyStateProps) => {
-  const defaultTitle = 'No saved messages';
-  const defaultBody = 'Check again later!';
-
-  const emptyStateTitle = customizations.noMessagesTitle;
-  const emptyStateBody = customizations.noMessagesBody;
+  const containerHeight = useMemo(() => {
+    return isPortrait
+      ? height - navTitleHeight - tabBarHeight - tabBarPadding
+      : height - navTitleHeight;
+  }, [height, navTitleHeight, tabBarHeight, tabBarPadding, isPortrait]);
 
   return (
     <View
       testID={iterableInboxEmptyStateTestIds.container}
-      style={[
-        styles.container,
-        {
-          height: isPortrait
-            ? height - navTitleHeight - tabBarHeight - tabBarPadding
-            : height - navTitleHeight,
-        },
-      ]}
+      style={[styles.container, { height: containerHeight }]}
     >
       <Text testID={iterableInboxEmptyStateTestIds.title} style={styles.title}>
-        {emptyStateTitle ? emptyStateTitle : defaultTitle}
+        {customizations.noMessagesTitle ? customizations.noMessagesTitle : defaultTitle}
       </Text>
       <Text testID={iterableInboxEmptyStateTestIds.body} style={styles.body}>
-        {emptyStateBody ? emptyStateBody : defaultBody}
+        {customizations.noMessagesBody ? customizations.noMessagesBody : defaultBody}
       </Text>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  body: {
-    color: ITERABLE_INBOX_COLORS.TEXT,
-    fontSize: 15,
-  },
-
-  container: {
-    alignItems: 'center',
-    backgroundColor: ITERABLE_INBOX_COLORS.CONTAINER_BACKGROUND,
-    flexDirection: 'column',
-    height: 0,
-    justifyContent: 'center',
-  },
-
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    paddingBottom: 25,
-  },
-});

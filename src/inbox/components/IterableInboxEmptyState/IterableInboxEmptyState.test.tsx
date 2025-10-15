@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react-native';
 
-import type { IterableInboxCustomizations } from '../types';
-import { IterableInboxEmptyState } from './IterableInboxEmptyState';
+import type { IterableInboxCustomizations } from '../../types';
+import { IterableInboxEmptyState } from '.';
 
 describe('IterableInboxEmptyState', () => {
   const defaultCustomizations: IterableInboxCustomizations = {};
