@@ -1,10 +1,11 @@
 import { render, fireEvent } from '@testing-library/react-native';
 import { Text } from 'react-native';
-import { IterableInboxMessageCell, inboxMessageCellTestIDs } from './IterableInboxMessageCell';
-import { IterableInboxDataModel } from '../classes';
-import { IterableInAppMessage, IterableInAppTrigger, IterableInboxMetadata } from '../../inApp/classes';
-import { IterableInAppTriggerType } from '../../inApp/enums';
-import type { IterableInboxRowViewModel } from '../types';
+import { IterableInboxMessageCell } from './IterableInboxMessageCell';
+import { IterableInboxDataModel } from '../../classes';
+import { IterableInAppMessage, IterableInAppTrigger, IterableInboxMetadata } from '../../../inApp/classes';
+import { IterableInAppTriggerType } from '../../../inApp/enums';
+import type { IterableInboxRowViewModel } from '../../types';
+import { inboxMessageCellTestIDs } from './constants';
 
 // Mock the Animated module to prevent actual animations during tests
 jest.mock('react-native', () => {
