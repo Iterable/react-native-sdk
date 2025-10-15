@@ -9,32 +9,23 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { useAppStateListener, useDeviceOrientation } from '../../../core';
-// expo throws an error if this is not imported directly due to circular
-// dependencies
-// See: https://github.com/expo/expo/issues/35100
 import { Iterable } from '../../../core/classes/Iterable';
-import {
-  IterableInAppDeleteSource,
-  IterableInAppLocation,
-} from '../../../inApp';
-
-import { IterableInboxDataModel } from '../../classes';
-import type {
-  IterableInboxCustomizations,
-  IterableInboxImpressionRowInfo,
-  IterableInboxRowViewModel,
-} from '../../types';
+import { useAppStateListener } from '../../../core/hooks/useAppStateListener';
+import { useDeviceOrientation } from '../../../core/hooks/useDeviceOrientation';
+import { IterableInAppDeleteSource } from '../../../inApp/enums/IterableInAppDeleteSource';
+import { IterableInAppLocation } from '../../../inApp/enums/IterableInAppLocation';
+import { IterableInboxDataModel } from '../../classes/IterableInboxDataModel';
+import type { IterableInboxCustomizations } from '../../types/IterableInboxCustomizations';
+import type { IterableInboxImpressionRowInfo } from '../../types/IterableInboxImpressionRowInfo';
+import type { IterableInboxRowViewModel } from '../../types/IterableInboxRowViewModel';
 import { IterableInboxEmptyState } from '../IterableInboxEmptyState';
 import { IterableInboxMessageDisplay } from '../IterableInboxMessageDisplay';
 import { IterableInboxMessageList } from '../IterableInboxMessageList';
-import {
-  DEFAULT_HEADLINE_HEIGHT,
-  HEADLINE_PADDING_LEFT_LANDSCAPE,
-  HEADLINE_PADDING_LEFT_PORTRAIT,
-} from './constants';
+import { DEFAULT_HEADLINE_HEIGHT, HEADLINE_PADDING_LEFT_LANDSCAPE, HEADLINE_PADDING_LEFT_PORTRAIT } from './constants';
 import { styles } from './IterableInbox.styles';
 import type { IterableInboxProps } from './IterableInbox.types';
+
+
 
 const RNIterableAPI = NativeModules.RNIterableAPI;
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
