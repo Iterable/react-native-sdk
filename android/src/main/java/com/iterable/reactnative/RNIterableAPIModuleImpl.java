@@ -600,11 +600,6 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         sendEvent(EventName.handleAuthSuccessCalled.name(), null);
     }
 
-    public void onTokenRegistrationFailed(Throwable object) {
-        IterableLogger.v(TAG, "Failed to set authToken");
-        sendEvent(EventName.handleAuthFailureCalled.name(), null);
-    }
-
     public void addListener(String eventName) {
         // Keep: Required for RN built in Event Emitter Calls.
     }
