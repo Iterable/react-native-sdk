@@ -80,8 +80,11 @@ export class Iterable {
     // Lazy initialization to avoid circular dependency
     if (!this._inAppManager) {
       // Import here to avoid circular dependency at module level
-      // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports
-      const { IterableInAppManager } = require('../../inApp/classes/IterableInAppManager');
+      /* eslint-disable @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports */
+      const {
+        IterableInAppManager,
+      } = require('../../inApp/classes/IterableInAppManager');
+      /* eslint-enable @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports */
       this._inAppManager = new IterableInAppManager();
     }
     return this._inAppManager;
@@ -483,8 +486,6 @@ export class Iterable {
 
   /**
    * Launch the application from the background in Android devices.
-   *
-   * @group Android Only
    *
    * @example
    * ```typescript
