@@ -13,7 +13,9 @@ describe('useAppStateListener', () => {
     mockListener = { remove: jest.fn() };
 
     // Spy on AppState methods
-    addEventListenerSpy = jest.spyOn(AppState, 'addEventListener').mockReturnValue(mockListener);
+    addEventListenerSpy = jest
+      .spyOn(AppState, 'addEventListener')
+      .mockReturnValue(mockListener);
 
     // Mock the currentState property
     Object.defineProperty(AppState, 'currentState', {

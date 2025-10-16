@@ -365,7 +365,7 @@ export const IterableInbox = ({
 
     Iterable.trackInAppOpen(
       // MOB-10428: Have a safety check for models[index].inAppMessage
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
       // @ts-ignore
       models[index].inAppMessage,
       IterableInAppLocation.inbox

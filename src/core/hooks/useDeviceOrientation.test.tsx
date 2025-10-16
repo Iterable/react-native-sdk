@@ -1,6 +1,9 @@
 import { renderHook, act } from '@testing-library/react-native';
 
-import { useDeviceOrientation, type IterableDeviceOrientation } from './useDeviceOrientation';
+import {
+  useDeviceOrientation,
+  type IterableDeviceOrientation,
+} from './useDeviceOrientation';
 
 describe('useDeviceOrientation', () => {
   let useWindowDimensionsSpy: jest.SpyInstance;
@@ -9,7 +12,10 @@ describe('useDeviceOrientation', () => {
     jest.clearAllMocks();
 
     // Spy on useWindowDimensions
-    useWindowDimensionsSpy = jest.spyOn(require('react-native'), 'useWindowDimensions');
+    useWindowDimensionsSpy = jest.spyOn(
+      require('react-native'),
+      'useWindowDimensions'
+    );
   });
 
   afterEach(() => {
