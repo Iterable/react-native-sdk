@@ -8,7 +8,6 @@
  [#675](https://github.com/Iterable/react-native-sdk/issues/675)
  ([6ece6e0](https://github.com/Iterable/react-native-sdk/commit/6ece6e0))
 - Updated dependencies
-- Added unit tests
 
 ## 2.0.3
 
