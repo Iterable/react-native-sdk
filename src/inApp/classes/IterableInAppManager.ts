@@ -22,7 +22,7 @@ import { IterableInAppMessage } from './IterableInAppMessage';
  *   console.log('Messages:', messages);
  * });
  *
- * // You can also access an instance on `Iterable.inAppManager.inAppManager`
+ * // You can also access an instance on `Iterable.inAppManager`
  * Iterable.inAppManager.getMessages().then(messages => {
  *   console.log('Messages:', messages);
  * });
