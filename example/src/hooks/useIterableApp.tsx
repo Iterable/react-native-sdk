@@ -129,7 +129,7 @@ export const IterableAppProvider: FunctionComponent<
         for (const route of routeNames) {
           if (url.includes(route.toLowerCase())) {
             // [MOB-10418](https://iterable.atlassian.net/browse/MOB-10418): Figure out typing for this
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
             // @ts-ignore
             navigation.navigate(route);
             return true;
