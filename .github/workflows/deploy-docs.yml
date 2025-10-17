@@ -1,0 +1,83 @@
+name: Deploy Documentation to Netlify
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+    types: [opened, synchronize, labeled, unlabeled]
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  deploy-docs:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+    # Only run on master/main pushes or PRs with "documentation" label
+    if: |
+      github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main') ||
+      github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'documentation') ||
+      github.event_name == 'workflow_dispatch'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch full history for proper git info
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Build documentation
+        run: yarn docs
+
+      - name: Determine deployment type
+        id: deployment-type
+        run: |
+          if [[ "${{ github.event_name }}" == "push" ]]; then
+            echo "type=production" >> $GITHUB_OUTPUT
+            echo "message=Deploying to production site" >> $GITHUB_OUTPUT
+          else
+            echo "type=preview" >> $GITHUB_OUTPUT
+            echo "message=Deploying preview for PR #${{ github.event.number }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Show deployment info
+        run: |
+          echo "🚀 ${{ steps.deployment-type.outputs.message }}"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Commit: ${{ github.sha }}"
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "Deployment alias: ${{ github.head_ref }}"
+          fi
+
+      - name: Deploy to Netlify (Production)
+        if: github.event_name == 'push'
+        uses: nwtgck/actions-netlify@4cbaf4c08f1a7bfa537d6113472ef4424e4eb654
+        with:
+          publish-dir: "./docs"
+          production-branch: master
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "${{ steps.deployment-type.outputs.message }}"
+          enable-commit-comment: true
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
+      - name: Deploy to Netlify (Preview)
+        if: github.event_name == 'pull_request'
+        uses: nwtgck/actions-netlify@4cbaf4c08f1a7bfa537d6113472ef4424e4eb654 # v3.0
+        with:
+          publish-dir: "./docs"
+          production-branch: master
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "${{ steps.deployment-type.outputs.message }}"
+          alias: ${{ github.head_ref }}
+          enable-pull-request-comment: true
+          overwrites-pull-request-comment: true
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
