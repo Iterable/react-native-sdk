@@ -105,7 +105,7 @@ def kotlin_version = getExtOrDefault("kotlinVersion")
 dependencies {
   implementation "com.facebook.react:react-android"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-  api "com.iterable:iterableapi:3.5.2"
+  api "com.iterable:iterableapi:3.5.10"
     // api project(":iterableapi") // links to local android SDK repo rather than by release
 }
 
