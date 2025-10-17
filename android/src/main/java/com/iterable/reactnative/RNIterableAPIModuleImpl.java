@@ -6,6 +6,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
+import java.util.Date;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.facebook.react.bridge.Promise;
@@ -37,6 +39,7 @@ import com.iterable.iterableapi.IterableInboxSession;
 import com.iterable.iterableapi.IterableLogger;
 import com.iterable.iterableapi.IterableUrlHandler;
 import com.iterable.iterableapi.RNIterableInternal;
+import com.iterable.iterableapi.util.IterableJwtGenerator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -593,6 +596,53 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         IterableApi.getInstance().pauseAuthRetries(pauseRetry);
     }
 
+    public void generateJwtForUserId(String secret, double iat, double exp, String userId, String email, Promise promise) {
+        try {
+            // Validate that exactly one of userId or email is provided
+            if ((userId != null && email != null) || (userId == null && email == null)) {
+                promise.reject("E_INVALID_ARGS", "The token must include a userId or email, but not both.", (Throwable) null);
+                return;
+            }
+
+            // Build the JSON payload
+            String payload;
+            long iatLong = (long) iat;
+            long expLong = (long) exp;
+
+            if (userId != null) {
+                payload = String.format(
+                    "{ \"userId\": \"%s\", \"iat\": %d, \"exp\": %d }",
+                    userId, iatLong, expLong
+                );
+            } else {
+                payload = String.format(
+                    "{ \"email\": \"%s\", \"iat\": %d, \"exp\": %d }",
+                    email, iatLong, expLong
+                );
+            }
+
+            // Generate the JWT token
+            String token = IterableJwtGenerator.generateToken(secret, payload);
+            promise.resolve(token);
+        } catch (Exception e) {
+            promise.reject("E_JWT_GENERATION_FAILED", "Failed to generate JWT: " + e.getMessage(), e);
+        }
+    }
+
+
+  //   private static JSONObject optSerializedDataFields(ReadableMap dataFields) {
+  //     JSONObject dataFieldsJson = null;
+
+  //     if (dataFields != null) {
+  //         try {
+  //             dataFieldsJson = Serialization.convertMapToJson(dataFields);
+  //         } catch (JSONException e) {
+  //             IterableLogger.d(TAG, "Failed to convert dataFields to JSON");
+  //         }
+  //     }
+
+  //     return dataFieldsJson;
+  // }
     @Override
     public void onTokenRegistrationSuccessful(String authToken) {
         IterableLogger.v(TAG, "authToken successfully set");

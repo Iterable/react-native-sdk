@@ -228,6 +228,20 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
       moduleImpl.pauseAuthRetries(pauseRetry);
     }
 
+    @ReactMethod
+    public void generateJwtForUserId(ReadableMap opts, Promise promise) {
+      try {
+        String secret = opts.getString("secret");
+        double iat = opts.getDouble("iat");
+        double exp = opts.getDouble("exp");
+        String userId = opts.hasKey("userId") && !opts.isNull("userId") ? opts.getString("userId") : null;
+        String email = opts.hasKey("email") && !opts.isNull("email") ? opts.getString("email") : null;
+
+        moduleImpl.generateJwtForUserId(secret, iat, exp, userId, email, promise);
+      } catch (Exception e) {
+        promise.reject("E_JWT_GENERATION_FAILED", "Failed to generate JWT: " + e.getMessage(), e);
+      }
+    }
 
     public void sendEvent(@NonNull String eventName, @Nullable Object eventData) {
       moduleImpl.sendEvent(eventName, eventData);

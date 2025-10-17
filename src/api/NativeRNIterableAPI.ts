@@ -117,6 +117,13 @@ export interface Spec extends TurboModule {
   // Auth
   passAlongAuthToken(authToken?: string | null): void;
   pauseAuthRetries(pauseRetry: boolean): void;
+  generateJwtForUserId(opts: {
+    secret: string;
+    iat: Date;
+    exp: Date;
+    userId: string | null;
+    email: string | null;
+  }): Promise<string>;
 
   // Wake app -- android only
   wakeApp(): void;
