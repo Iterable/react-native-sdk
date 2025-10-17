@@ -548,7 +548,6 @@ describe('IterableInbox', () => {
         ).toBeTruthy();
       });
 
-      inbox.debug();
       timingSpy.mockClear();
 
       // Change the trigger
@@ -736,12 +735,12 @@ describe('IterableInbox', () => {
 
   describe('Message List Item Layout', () => {
     it('should use messageListItemLayout when provided', async () => {
-      const messageListItemLayout = jest
-        .fn()
-        .mockReturnValue([
-          <Text key="custom-layout" testID="custom-layout">Custom Layout</Text>,
-          200,
-        ]);
+      const messageListItemLayout = jest.fn().mockReturnValue([
+        <Text key="custom-layout" testID="custom-layout">
+          Custom Layout
+        </Text>,
+        200,
+      ]);
 
       const component = render(
         <IterableInbox
