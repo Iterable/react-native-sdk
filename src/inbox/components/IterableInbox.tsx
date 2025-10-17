@@ -40,6 +40,18 @@ const ANDROID_HEADLINE_HEIGHT = 70;
 const HEADLINE_PADDING_LEFT_PORTRAIT = 30;
 const HEADLINE_PADDING_LEFT_LANDSCAPE = 70;
 
+export const iterableInboxTestIds = {
+  wrapper: 'inbox-wrapper',
+  safeAreaView: 'inbox-safe-area-view',
+  messageList: 'inbox-message-list',
+  messageDisplay: 'inbox-message-display',
+  headline: 'inbox-headline',
+  loadingScreen: 'inbox-loading-screen',
+  emptyState: 'inbox-empty-state',
+  animatedView: 'inbox-animated-view',
+  view: 'inbox-view',
+};
+
 /**
  * Props for the IterableInbox component.
  */
@@ -266,11 +278,14 @@ export const IterableInbox = ({
   //fetches inbox messages and adds listener for inbox changes on mount
   useEffect(() => {
     fetchInboxMessages();
-    addInboxChangedListener();
+    RNEventEmitter.addListener(
+      'receivedIterableInboxChanged',
+      fetchInboxMessages
+    );
 
     //removes listener for inbox changes on unmount and ends inbox session
     return () => {
-      removeInboxChangedListener();
+      RNEventEmitter.removeAllListeners('receivedIterableInboxChanged');
       inboxDataModel.endSession(visibleMessageImpressions);
     };
     //  MOB-10427: figure out if missing dependency is a bug
@@ -323,16 +338,6 @@ export const IterableInbox = ({
     //  MOB-10427: figure out if missing dependency is a bug
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [returnToInboxTrigger]);
-
-  function addInboxChangedListener() {
-    RNEventEmitter.addListener('receivedIterableInboxChanged', () => {
-      fetchInboxMessages();
-    });
-  }
-
-  function removeInboxChangedListener() {
-    RNEventEmitter.removeAllListeners('receivedIterableInboxChanged');
-  }
 
   async function fetchInboxMessages() {
     let newMessages = await inboxDataModel.refresh();
@@ -433,13 +438,11 @@ export const IterableInbox = ({
             rowViewModels={rowViewModels}
             customizations={customizations}
             messageListItemLayout={messageListItemLayout}
-            deleteRow={(messageId: string) => deleteRow(messageId)}
+            deleteRow={deleteRow}
             handleMessageSelect={(messageId: string, index: number) =>
               handleMessageSelect(messageId, index, rowViewModels)
             }
-            updateVisibleMessageImpressions={(
-              messageImpressions: IterableInboxImpressionRowInfo[]
-            ) => updateVisibleMessageImpressions(messageImpressions)}
+            updateVisibleMessageImpressions={updateVisibleMessageImpressions}
             contentWidth={width}
             isPortrait={isPortrait}
           />
@@ -452,7 +455,10 @@ export const IterableInbox = ({
 
   function renderEmptyState() {
     return loading ? (
-      <View style={styles.loadingScreen} />
+      <View
+        testID={iterableInboxTestIds.loadingScreen}
+        style={styles.loadingScreen}
+      />
     ) : (
       <IterableInboxEmptyState
         customizations={customizations}
@@ -477,6 +483,7 @@ export const IterableInbox = ({
 
   const inboxAnimatedView = (
     <Animated.View
+      testID="inbox-animated-view"
       // MOB-10429: Change to use `StyleSheet.create` for styles, per best practices
       // eslint-disable-next-line react-native/no-inline-styles
       style={{
@@ -500,8 +507,15 @@ export const IterableInbox = ({
   );
 
   return safeAreaMode ? (
-    <SafeAreaView style={styles.container}>{inboxAnimatedView}</SafeAreaView>
+    <SafeAreaView
+      testID={iterableInboxTestIds.safeAreaView}
+      style={styles.container}
+    >
+      {inboxAnimatedView}
+    </SafeAreaView>
   ) : (
-    <View style={styles.container}>{inboxAnimatedView}</View>
+    <View testID={iterableInboxTestIds.view} style={styles.container}>
+      {inboxAnimatedView}
+    </View>
   );
 };
