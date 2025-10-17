@@ -596,7 +596,14 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         IterableApi.getInstance().pauseAuthRetries(pauseRetry);
     }
 
-    public void generateJwtForUserId(String secret, double iat, double exp, String userId, String email, Promise promise) {
+    // public void generateJwtForUserId(String secret, double iat, double exp, String userId, String email, Promise promise) {
+      public void generateJwtForUserId(ReadableMap opts, Promise promise) {
+        String secret = opts.getString("secret");
+        double iat = opts.getDouble("iat");
+        double exp = opts.getDouble("exp");
+        String userId = opts.hasKey("userId") && !opts.isNull("userId") ? opts.getString("userId") : null;
+        String email = opts.hasKey("email") && !opts.isNull("email") ? opts.getString("email") : null;
+
         try {
             // Validate that exactly one of userId or email is provided
             if ((userId != null && email != null) || (userId == null && email == null)) {
