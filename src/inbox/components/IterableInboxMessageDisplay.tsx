@@ -26,6 +26,13 @@ import { ITERABLE_INBOX_COLORS } from '../constants';
 import { type IterableInboxRowViewModel } from '../types';
 import { HeaderBackButton } from './HeaderBackButton';
 
+export const iterableMessageDisplayTestIds = {
+  container: 'iterable-message-display-container',
+  returnButton: 'iterable-message-display-return-button',
+  messageTitle: 'iterable-message-display-message-title',
+  webview: 'iterable-message-display-webview',
+};
+
 /**
  * Props for the IterableInboxMessageDisplay component.
  */
@@ -85,7 +92,7 @@ export const IterableInboxMessageDisplay = ({
 
     header: {
       flexDirection: 'row',
-      height:  Platform.OS === 'ios' ? 44 : 56,
+      height: Platform.OS === 'ios' ? 44 : 56,
       justifyContent: 'center',
       width: '100%',
     },
@@ -203,10 +210,14 @@ export const IterableInboxMessageDisplay = ({
   }
 
   return (
-    <View style={styles.messageDisplayContainer}>
+    <View
+      testID={iterableMessageDisplayTestIds.container}
+      style={styles.messageDisplayContainer}
+    >
       <View style={styles.header}>
         <View style={styles.returnButtonContainer}>
           <HeaderBackButton
+            testID={iterableMessageDisplayTestIds.returnButton}
             label="Inbox"
             onPress={() => {
               returnToInbox();
@@ -224,6 +235,7 @@ export const IterableInboxMessageDisplay = ({
               numberOfLines={1}
               ellipsizeMode="tail"
               style={styles.messageTitleText}
+              testID={iterableMessageDisplayTestIds.messageTitle}
             >
               {messageTitle}
             </Text>
@@ -233,6 +245,7 @@ export const IterableInboxMessageDisplay = ({
       {inAppContent && (
         <ScrollView contentContainerStyle={styles.contentContainer}>
           <WebView
+            testID={iterableMessageDisplayTestIds.webview}
             originWhiteList={['*']}
             source={{ html: inAppContent.html }}
             style={{ width: contentWidth }}
