@@ -256,7 +256,7 @@ describe('Iterable', () => {
       expect(config.customActionHandler).toBe(undefined);
       expect(config.inAppHandler).toBe(undefined);
       expect(config.authHandler).toBe(undefined);
-      expect(config.logLevel).toBe(IterableLogLevel.info);
+      expect(config.logLevel).toBe(IterableLogLevel.debug);
       expect(config.logReactNativeSdkCalls).toBe(true);
       expect(config.expiringAuthTokenRefreshPeriod).toBe(60.0);
       expect(config.allowedProtocols).toEqual([]);
@@ -272,7 +272,7 @@ describe('Iterable', () => {
       expect(configDict.customActionHandlerPresent).toBe(false);
       expect(configDict.inAppHandlerPresent).toBe(false);
       expect(configDict.authHandlerPresent).toBe(false);
-      expect(configDict.logLevel).toBe(IterableLogLevel.info);
+      expect(configDict.logLevel).toBe(IterableLogLevel.debug);
       expect(configDict.expiringAuthTokenRefreshPeriod).toBe(60.0);
       expect(configDict.allowedProtocols).toEqual([]);
       expect(configDict.androidSdkUseInMemoryStorageForInApps).toBe(false);

@@ -1,7 +1,7 @@
 import { IterableLogLevel } from '../enums/IterableLogLevel';
 
-const DEFAULT_LOG_LEVEL = IterableLogLevel.info;
-const DEFAULT_LOGGING_ENABLED = true;
+export const DEFAULT_LOG_LEVEL = IterableLogLevel.debug;
+export const DEFAULT_LOGGING_ENABLED = true;
 
 /**
  * A logger class for the Iterable SDK.
