@@ -230,7 +230,7 @@ export class IterableConfig {
    *
    * By default, you will be able to see info level logs printed in IDE when running the app.
    */
-  logLevel: IterableLogLevel = IterableLogLevel.info;
+  logLevel: IterableLogLevel = IterableLogLevel.debug;
 
   /**
    * Configuration for JWT refresh retry behavior.
