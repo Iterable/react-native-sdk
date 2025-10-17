@@ -12,6 +12,17 @@
 - Update dependencies for React Navigation and related packages ([95053bb](https://github.com/Iterable/react-native-sdk/commit/95053bb))
 
 
+## 2.0.4
+
+## Updates
+- Added API documentation via Netlify([1087275](https://github.com/Iterable/react-native-sdk/commit/1087275))
+- Removed dependency on `react-native-vector-icons`, per issues
+  [#513](https://github.com/Iterable/react-native-sdk/issues/513),
+ [#683](https://github.com/Iterable/react-native-sdk/issues/683) and
+ [#675](https://github.com/Iterable/react-native-sdk/issues/675)
+ ([6ece6e0](https://github.com/Iterable/react-native-sdk/commit/6ece6e0))
+- Updated dependencies
+
 ## 2.0.3
 
 ### Updates

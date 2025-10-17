@@ -44,7 +44,6 @@ Iterable's React Native SDK relies on:
     _UI Components require additional peer dependencies_
     - [React Navigation 6+](https://github.com/react-navigation/react-navigation)
     - [React Native Safe Area Context 4+](https://github.com/th3rdwave/react-native-safe-area-context)
-    - [React Native Vector Icons 10+](https://github.com/oblador/react-native-vector-icons)
     - [React Native WebView 13+](https://github.com/react-native-webview/react-native-webview)
 
 - **iOS**
