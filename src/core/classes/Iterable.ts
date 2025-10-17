@@ -1,4 +1,4 @@
-/* eslint-disable eslint-comments/no-unlimited-disable */
+
 import {
   Linking,
   NativeEventEmitter,
@@ -81,11 +81,11 @@ export class Iterable {
     // Lazy initialization to avoid circular dependency
     if (!this._inAppManager) {
       // Import here to avoid circular dependency at module level
-
+      /* eslint-disable @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports */
       const {
         IterableInAppManager,
-        // eslint-disable-next-line
       } = require('../../inApp/classes/IterableInAppManager');
+      /* eslint-enable @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports */
       this._inAppManager = new IterableInAppManager();
     }
     return this._inAppManager;
