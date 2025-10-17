@@ -19,6 +19,19 @@ import type {
 } from '../types';
 import { ITERABLE_INBOX_COLORS } from '../constants';
 
+export const inboxMessageCellTestIDs = {
+  body: 'inbox-message-cell-body',
+  container: 'inbox-message-cell',
+  createdAt: 'inbox-message-cell-created-at',
+  defaultContainer: 'inbox-message-cell-default-container',
+  deleteSlider: 'inbox-message-cell-delete-slider',
+  select: 'inbox-message-cell-select',
+  textContainer: 'inbox-message-cell-text-container',
+  thumbnail: 'inbox-message-cell-thumbnail',
+  title: 'inbox-message-cell-title',
+  unreadIndicator: 'inbox-message-cell-unread-indicator',
+} as const;
+
 /**
  * Renders a default layout for a message list item in the inbox.
  *
@@ -139,9 +152,17 @@ function defaultMessageListLayout(
   }
 
   return (
-    <View style={messageRowStyle(rowViewModel) as ViewStyle}>
+    <View
+      testID={inboxMessageCellTestIDs.defaultContainer}
+      style={messageRowStyle(rowViewModel) as ViewStyle}
+    >
       <View style={unreadIndicatorContainer as ViewStyle}>
-        {rowViewModel.read ? null : <View style={unreadIndicator} />}
+        {rowViewModel.read ? null : (
+          <View
+            testID={inboxMessageCellTestIDs.unreadIndicator}
+            style={unreadIndicator}
+          />
+        )}
       </View>
       <View
         style={
@@ -152,6 +173,7 @@ function defaultMessageListLayout(
       >
         {thumbnailURL ? (
           <Image
+            testID={inboxMessageCellTestIDs.thumbnail}
             // MOB-10429: Use stylesheet according to best practices
             // eslint-disable-next-line react-native/no-inline-styles
             style={{ height: 80, width: 80 }}
@@ -159,14 +181,29 @@ function defaultMessageListLayout(
           />
         ) : null}
       </View>
-      <View style={messageContainer as ViewStyle}>
-        <Text numberOfLines={1} ellipsizeMode="tail" style={title}>
+      <View
+        testID={inboxMessageCellTestIDs.textContainer}
+        style={messageContainer as ViewStyle}
+      >
+        <Text
+          testID={inboxMessageCellTestIDs.title}
+          numberOfLines={1}
+          ellipsizeMode="tail"
+          style={title}
+        >
           {messageTitle}
         </Text>
-        <Text numberOfLines={3} ellipsizeMode="tail" style={body as TextStyle}>
+        <Text
+          testID={inboxMessageCellTestIDs.body}
+          numberOfLines={3}
+          ellipsizeMode="tail"
+          style={body as TextStyle}
+        >
           {messageBody}
         </Text>
-        <Text style={createdAt}>{messageCreatedAt}</Text>
+        <Text testID={inboxMessageCellTestIDs.createdAt} style={createdAt}>
+          {messageCreatedAt}
+        </Text>
       </View>
     </View>
   );
@@ -400,20 +437,25 @@ export const IterableInboxMessageCell = ({
 
   return (
     <>
-      <View style={styles.deleteSlider}>
+      <View
+        testID={inboxMessageCellTestIDs.deleteSlider}
+        style={styles.deleteSlider}
+      >
         <Text style={styles.textStyle}>DELETE</Text>
       </View>
       <Animated.View
+        testID={inboxMessageCellTestIDs.container}
         style={[styles.textContainer, position.getLayout()]}
         {...panResponder.panHandlers}
       >
         <TouchableOpacity
+          testID={inboxMessageCellTestIDs.select}
           activeOpacity={1}
           onPress={() => {
             handleMessageSelect(rowViewModel.inAppMessage.messageId, index);
           }}
         >
-          {messageListItemLayout(last, rowViewModel)
+          {messageListItemLayout?.(last, rowViewModel)
             ? messageListItemLayout(last, rowViewModel)?.[0]
             : defaultMessageListLayout(
                 last,
