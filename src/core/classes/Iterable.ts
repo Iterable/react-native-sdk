@@ -1,3 +1,4 @@
+/* eslint-disable eslint-comments/no-unlimited-disable */
 import {
   Linking,
   NativeEventEmitter,
@@ -80,8 +81,11 @@ export class Iterable {
     // Lazy initialization to avoid circular dependency
     if (!this._inAppManager) {
       // Import here to avoid circular dependency at module level
-      // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports
-      const { IterableInAppManager } = require('../../inApp/classes/IterableInAppManager');
+
+      const {
+        IterableInAppManager,
+        // eslint-disable-next-line
+      } = require('../../inApp/classes/IterableInAppManager');
       this._inAppManager = new IterableInAppManager();
     }
     return this._inAppManager;
@@ -484,7 +488,7 @@ export class Iterable {
   /**
    * Launch the application from the background in Android devices.
    *
-   * @group Android Only
+   * Android only.
    *
    * @example
    * ```typescript
@@ -948,11 +952,9 @@ export class Iterable {
 
         if (Platform.OS === 'android') {
           //Give enough time for Activity to wake up.
-          const timeoutId = setTimeout(() => {
+          setTimeout(() => {
             callUrlHandler(url, context);
           }, 1000);
-          // Use unref() to prevent the timeout from keeping the process alive
-          timeoutId.unref();
         } else {
           callUrlHandler(url, context);
         }
