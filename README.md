@@ -21,6 +21,7 @@ Iterable. It supports JavaScript and TypeScript.
   - [Installation](#installation)
   - [📚 API Documentation](#-api-documentation)
   - [Architecture Support](#architecture-support)
+  - [Beta Versions](#beta-versions)
   - [Features](#features)
   - [Example project](#example-project)
   - [Version mapping](#version-mapping)
@@ -49,6 +50,10 @@ Iterable's React Native SDK relies on:
     - Xcode 12+
     - [Deployment target 13.4+](https://help.apple.com/xcode/mac/current/#/deve69552ee5)
     - [Iterable's iOS SDK](https://github.com/Iterable/iterable-swift-sdk)
+    - **Podfile Configuration**: The linkage must be set to dynamic in your Podfile to load Swift modules that the SDK depends on. Add the following to your Podfile:
+      ```ruby
+      use_frameworks! :linkage => :dynamic
+      ```
 
 - **Android**
     - [`minSdkVersion` 21+, `compileSdkVersion` 31+](https://medium.com/androiddevelopers/picking-your-compilesdkversion-minsdkversion-targetsdkversion-a098a0341ebd)
@@ -64,11 +69,29 @@ View the [API documentation](https://iterable-react-native-sdk.netlify.app).
 
 ## Architecture Support
 
-**Important**: Iterable's React Native SDK has limited support for [React
-Native's New Architecture](https://reactnative.dev/architecture/landing-page)
-through interop. We are in the process of updating the SDK to fully support the New
-Architecture, and suggest using the legacy architecture in the meantime.  *TLDR;* Use the New Architecture at your own risk --
-you may encounter significant issues.
+Iterable's React Native SDK now fully supports [React Native's New Architecture](https://reactnative.dev/architecture/landing-page), including TurboModules and Fabric. You can use the SDK with either the legacy architecture or the New Architecture.
+
+Notes:
+
+- Ensure your app is configured for New Architecture per the React Native docs.
+- The example app in this repository is configured with New Architecture enabled.
+
+## Beta Versions
+
+To opt into beta versions of the SDK, you can install the latest beta version by using the `beta` tag:
+
+```bash
+# Install the latest beta version
+npm install @iterable/react-native-sdk@beta
+
+# Or using yarn
+yarn add @iterable/react-native-sdk@beta
+```
+
+**Note:** Beta versions may contain experimental features and could have
+breaking changes. We recommend testing beta versions in development environments
+before using them in production.  Please report any issues found in beta
+releases to [Customer Support](https://support.iterable.com/hc/en-us/requests/new).
 
 ## Features
 
@@ -96,6 +119,7 @@ For quick reference, the following table lists the versions of the [Android SDK]
 
 | RN SDK Version                                                              | Android SDK Version                                                          | iOS SDK Version |
 | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | --------------- |
+| [2.1.0-beta.0](https://www.npmjs.com/package/@iterable/react-native-sdk/v/2.1.0-beta.0) | [3.5.2](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.5.2) | [6.5.4](https://github.com/Iterable/swift-sdk/releases/tag/6.5.4)
 | [2.0.3](https://www.npmjs.com/package/@iterable/react-native-sdk/v/2.0.3) | [3.5.2](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.5.2) | [6.5.4](https://github.com/Iterable/swift-sdk/releases/tag/6.5.4)
 | [2.0.2](https://www.npmjs.com/package/@iterable/react-native-sdk/v/2.0.2) | [3.5.2](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.5.2) | [6.5.4](https://github.com/Iterable/swift-sdk/releases/tag/6.5.4)
 | [2.0.1](https://www.npmjs.com/package/@iterable/react-native-sdk/v/2.0.1) | [3.5.2](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.5.2) | [6.5.4](https://github.com/Iterable/swift-sdk/releases/tag/6.5.4)

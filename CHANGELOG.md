@@ -1,3 +1,17 @@
+## 2.1.0-beta.1
+
+## Fixes
+- Add Temporary fix for circular paths, which break expo ([9c09743](https://github.com/Iterable/react-native-sdk/commit/9c09743))
+
+## 2.1.0-beta.0
+
+### Updates
+- Update SDK so that it has full support for [React Native New Architecture](https://reactnative.dev/architecture/landing-page)
+
+### Chores
+- Update dependencies for React Navigation and related packages ([95053bb](https://github.com/Iterable/react-native-sdk/commit/95053bb))
+
+
 ## 2.0.4
 
 ## Updates

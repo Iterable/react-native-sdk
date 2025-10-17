@@ -2,12 +2,12 @@
 import {
   Linking,
   NativeEventEmitter,
-  NativeModules,
   Platform,
 } from 'react-native';
 
 import { buildInfo } from '../../itblBuildInfo';
 
+import { RNIterableAPI } from '../../api';
 // TODO: Organize these so that there are no circular dependencies
 // See https://github.com/expo/expo/issues/35100
 import { IterableInAppMessage } from '../../inApp/classes/IterableInAppMessage';
@@ -27,7 +27,6 @@ import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
 
-const RNIterableAPI = NativeModules.RNIterableAPI;
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
 /* eslint-disable tsdoc/syntax */
@@ -218,7 +217,7 @@ export class Iterable {
    * Iterable.setEmail('my.user.name@gmail.com');
    * ```
    */
-  static setEmail(email?: string | null, authToken?: string | null) {
+  static setEmail(email: string | null, authToken?: string | null) {
     Iterable?.logger?.log('setEmail: ' + email);
 
     RNIterableAPI.setEmail(email, authToken);
@@ -234,7 +233,7 @@ export class Iterable {
    * });
    * ```
    */
-  static getEmail(): Promise<string | undefined> {
+  static getEmail(): Promise<string | null> {
     Iterable?.logger?.log('getEmail');
 
     return RNIterableAPI.getEmail();
@@ -299,7 +298,7 @@ export class Iterable {
    * });
    * ```
    */
-  static getUserId(): Promise<string | undefined> {
+  static getUserId(): Promise<string | null | undefined> {
     Iterable?.logger?.log('getUserId');
 
     return RNIterableAPI.getUserId();
@@ -362,12 +361,12 @@ export class Iterable {
     Iterable?.logger?.log('getAttributionInfo');
 
     return RNIterableAPI.getAttributionInfo().then(
-      (dict?: IterableAttributionInfo) => {
+      (dict: { campaignId: number; templateId: number; messageId: string } | null) => {
         if (dict) {
           return new IterableAttributionInfo(
-            dict.campaignId,
-            dict.templateId,
-            dict.messageId
+            dict.campaignId as number,
+            dict.templateId as number,
+            dict.messageId as string
           );
         } else {
           return undefined;
@@ -403,7 +402,7 @@ export class Iterable {
   static setAttributionInfo(attributionInfo?: IterableAttributionInfo) {
     Iterable?.logger?.log('setAttributionInfo');
 
-    RNIterableAPI.setAttributionInfo(attributionInfo);
+    RNIterableAPI.setAttributionInfo(attributionInfo as unknown as { [key: string]: string | number | boolean; } | null);
   }
 
   /**
@@ -447,9 +446,9 @@ export class Iterable {
     RNIterableAPI.trackPushOpenWithCampaignId(
       campaignId,
       templateId,
-      messageId,
+      messageId as string,
       appAlreadyRunning,
-      dataFields
+      dataFields as { [key: string]: string | number | boolean } | undefined
     );
   }
 
@@ -482,7 +481,7 @@ export class Iterable {
   static updateCart(items: IterableCommerceItem[]) {
     Iterable?.logger?.log('updateCart');
 
-    RNIterableAPI.updateCart(items);
+    RNIterableAPI.updateCart(items as unknown as { [key: string]: string | number | boolean }[]);
   }
 
   /**
@@ -534,7 +533,7 @@ export class Iterable {
   ) {
     Iterable?.logger?.log('trackPurchase');
 
-    RNIterableAPI.trackPurchase(total, items, dataFields);
+    RNIterableAPI.trackPurchase(total, items as unknown as { [key: string]: string | number | boolean }[], dataFields as { [key: string]: string | number | boolean } | undefined);
   }
 
   /**
@@ -703,7 +702,7 @@ export class Iterable {
   static trackEvent(name: string, dataFields?: unknown) {
     Iterable?.logger?.log('trackEvent');
 
-    RNIterableAPI.trackEvent(name, dataFields);
+    RNIterableAPI.trackEvent(name, dataFields as { [key: string]: string | number | boolean } | undefined);
   }
 
   /**
@@ -751,7 +750,7 @@ export class Iterable {
   ) {
     Iterable?.logger?.log('updateUser');
 
-    RNIterableAPI.updateUser(dataFields, mergeNestedObjects);
+    RNIterableAPI.updateUser(dataFields as { [key: string]: string | number | boolean }, mergeNestedObjects);
   }
 
   /**
@@ -896,10 +895,10 @@ export class Iterable {
    * ```
    */
   static updateSubscriptions(
-    emailListIds: number[] | undefined,
-    unsubscribedChannelIds: number[] | undefined,
-    unsubscribedMessageTypeIds: number[] | undefined,
-    subscribedMessageTypeIds: number[] | undefined,
+    emailListIds: number[] | null,
+    unsubscribedChannelIds: number[] | null,
+    unsubscribedMessageTypeIds: number[] | null,
+    subscribedMessageTypeIds: number[] | null,
     campaignId: number,
     templateId: number
   ) {
