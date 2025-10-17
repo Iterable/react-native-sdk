@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 import {
   Linking,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
-  TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
 import { WebView, type WebViewMessageEvent } from 'react-native-webview';
 
 import {
@@ -23,15 +22,16 @@ import {
   IterableInAppCloseSource,
   IterableInAppLocation,
 } from '../../inApp';
-
 import { ITERABLE_INBOX_COLORS } from '../constants';
 import { type IterableInboxRowViewModel } from '../types';
+import { HeaderBackButton } from './HeaderBackButton';
 
 export const iterableMessageDisplayTestIds = {
   container: 'iterable-message-display-container',
   returnButton: 'iterable-message-display-return-button',
   messageTitle: 'iterable-message-display-message-title',
   webview: 'iterable-message-display-webview',
+  icon: 'iterable-message-display-icon',
 };
 
 /**
@@ -93,6 +93,7 @@ export const IterableInboxMessageDisplay = ({
 
     header: {
       flexDirection: 'row',
+      height: Platform.OS === 'ios' ? 44 : 56,
       justifyContent: 'center',
       width: '100%',
     },
@@ -126,11 +127,6 @@ export const IterableInboxMessageDisplay = ({
       fontWeight: 'bold',
     },
 
-    returnButton: {
-      alignItems: 'center',
-      flexDirection: 'row',
-    },
-
     returnButtonContainer: {
       alignItems: 'center',
       flexDirection: 'row',
@@ -139,17 +135,6 @@ export const IterableInboxMessageDisplay = ({
       marginTop: 0,
       width: '25%',
       ...(isPortrait ? {} : { marginLeft: 80 }),
-    },
-
-    returnButtonIcon: {
-      color: ITERABLE_INBOX_COLORS.BUTTON_PRIMARY_TEXT,
-      fontSize: 40,
-      paddingLeft: 0,
-    },
-
-    returnButtonText: {
-      color: ITERABLE_INBOX_COLORS.BUTTON_PRIMARY_TEXT,
-      fontSize: 20,
     },
   });
 
@@ -232,7 +217,9 @@ export const IterableInboxMessageDisplay = ({
     >
       <View style={styles.header}>
         <View style={styles.returnButtonContainer}>
-          <TouchableWithoutFeedback
+          <HeaderBackButton
+            testID={iterableMessageDisplayTestIds.icon}
+            label="Inbox"
             onPress={() => {
               returnToInbox();
               Iterable.trackInAppClose(
@@ -241,15 +228,7 @@ export const IterableInboxMessageDisplay = ({
                 IterableInAppCloseSource.back
               );
             }}
-          >
-            <View style={styles.returnButton}>
-              <Icon
-                name="chevron-back-outline"
-                style={styles.returnButtonIcon}
-              />
-              <Text style={styles.returnButtonText}>Inbox</Text>
-            </View>
-          </TouchableWithoutFeedback>
+          />
         </View>
         <View style={styles.messageTitleContainer}>
           <View style={styles.messageTitle}>

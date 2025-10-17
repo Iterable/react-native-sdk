@@ -107,9 +107,9 @@ describe('IterableHtmlInAppContent', () => {
           top: 10,
           left: 20,
           bottom: 30,
-          right: 40
+          right: 40,
         },
-        html: '<div>Hello World</div>'
+        html: '<div>Hello World</div>',
       };
 
       // WHEN creating from dictionary
@@ -131,9 +131,9 @@ describe('IterableHtmlInAppContent', () => {
           top: 0,
           left: 0,
           bottom: 0,
-          right: 0
+          right: 0,
         },
-        html: ''
+        html: '',
       };
 
       // WHEN creating from dictionary
@@ -155,7 +155,7 @@ describe('IterableHtmlInAppContent', () => {
           top: 5,
           left: 10,
           bottom: 15,
-          right: 20
+          right: 20,
         },
         html: `
           <html>
@@ -167,7 +167,7 @@ describe('IterableHtmlInAppContent', () => {
               </div>
             </body>
           </html>
-        `
+        `,
       };
 
       // WHEN creating from dictionary
@@ -189,9 +189,9 @@ describe('IterableHtmlInAppContent', () => {
           top: -5,
           left: -10,
           bottom: -15,
-          right: -20
+          right: -20,
         },
-        html: '<div>Negative insets</div>'
+        html: '<div>Negative insets</div>',
       };
 
       // WHEN creating from dictionary
@@ -213,9 +213,9 @@ describe('IterableHtmlInAppContent', () => {
           top: 1.5,
           left: 2.7,
           bottom: 3.9,
-          right: 4.1
+          right: 4.1,
         },
-        html: '<div>Decimal insets</div>'
+        html: '<div>Decimal insets</div>',
       };
 
       // WHEN creating from dictionary
@@ -358,9 +358,9 @@ describe('IterableHtmlInAppContent', () => {
           top: NaN,
           left: NaN,
           bottom: NaN,
-          right: NaN
+          right: NaN,
         },
-        html: '<div>NaN insets</div>'
+        html: '<div>NaN insets</div>',
       };
 
       // WHEN creating from dictionary
@@ -382,9 +382,9 @@ describe('IterableHtmlInAppContent', () => {
           top: Infinity,
           left: -Infinity,
           bottom: Infinity,
-          right: -Infinity
+          right: -Infinity,
         },
-        html: '<div>Infinity insets</div>'
+        html: '<div>Infinity insets</div>',
       };
 
       // WHEN creating from dictionary
