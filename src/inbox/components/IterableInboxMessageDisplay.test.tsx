@@ -208,11 +208,13 @@ describe('IterableInboxMessageDisplay', () => {
       expect(getByText('Inbox')).toBeTruthy();
     });
 
-    it('should render the return button icon', () => {
+    it('should render the return button', () => {
       const { getByTestId } = render(
         <IterableInboxMessageDisplay {...defaultProps} />
       );
-      expect(getByTestId(iterableMessageDisplayTestIds.icon)).toBeTruthy();
+      expect(
+        getByTestId(iterableMessageDisplayTestIds.returnButton)
+      ).toBeTruthy();
     });
 
     it('should handle missing message title gracefully', () => {

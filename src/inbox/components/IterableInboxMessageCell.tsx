@@ -20,18 +20,16 @@ import type {
 import { ITERABLE_INBOX_COLORS } from '../constants';
 
 export const inboxMessageCellTestIDs = {
-  container: 'inbox-message-cell',
-  unreadIndicator: 'inbox-message-cell-unread-indicator',
-  thumbnail: 'inbox-message-cell-thumbnail',
-  textContainer: 'inbox-message-cell-text-container',
-  title: 'inbox-message-cell-title',
   body: 'inbox-message-cell-body',
+  container: 'inbox-message-cell',
   createdAt: 'inbox-message-cell-created-at',
-  deleteSlider: 'inbox-message-cell-delete-slider',
-  selectButton: 'inbox-message-cell-select-button',
-  cellContainer: 'inbox-message-cell-container',
   defaultContainer: 'inbox-message-cell-default-container',
+  deleteSlider: 'inbox-message-cell-delete-slider',
   select: 'inbox-message-cell-select',
+  textContainer: 'inbox-message-cell-text-container',
+  thumbnail: 'inbox-message-cell-thumbnail',
+  title: 'inbox-message-cell-title',
+  unreadIndicator: 'inbox-message-cell-unread-indicator',
 } as const;
 
 /**
@@ -154,9 +152,17 @@ function defaultMessageListLayout(
   }
 
   return (
-    <View testID={inboxMessageCellTestIDs.defaultContainer} style={messageRowStyle(rowViewModel) as ViewStyle}>
+    <View
+      testID={inboxMessageCellTestIDs.defaultContainer}
+      style={messageRowStyle(rowViewModel) as ViewStyle}
+    >
       <View style={unreadIndicatorContainer as ViewStyle}>
-        {rowViewModel.read ? null : <View testID={inboxMessageCellTestIDs.unreadIndicator} style={unreadIndicator} />}
+        {rowViewModel.read ? null : (
+          <View
+            testID={inboxMessageCellTestIDs.unreadIndicator}
+            style={unreadIndicator}
+          />
+        )}
       </View>
       <View
         style={
@@ -175,14 +181,29 @@ function defaultMessageListLayout(
           />
         ) : null}
       </View>
-      <View testID={inboxMessageCellTestIDs.textContainer} style={messageContainer as ViewStyle}>
-        <Text testID={inboxMessageCellTestIDs.title} numberOfLines={1} ellipsizeMode="tail" style={title}>
+      <View
+        testID={inboxMessageCellTestIDs.textContainer}
+        style={messageContainer as ViewStyle}
+      >
+        <Text
+          testID={inboxMessageCellTestIDs.title}
+          numberOfLines={1}
+          ellipsizeMode="tail"
+          style={title}
+        >
           {messageTitle}
         </Text>
-        <Text testID={inboxMessageCellTestIDs.body} numberOfLines={3} ellipsizeMode="tail" style={body as TextStyle}>
+        <Text
+          testID={inboxMessageCellTestIDs.body}
+          numberOfLines={3}
+          ellipsizeMode="tail"
+          style={body as TextStyle}
+        >
           {messageBody}
         </Text>
-        <Text testID={inboxMessageCellTestIDs.createdAt} style={createdAt}>{messageCreatedAt}</Text>
+        <Text testID={inboxMessageCellTestIDs.createdAt} style={createdAt}>
+          {messageCreatedAt}
+        </Text>
       </View>
     </View>
   );
@@ -416,7 +437,10 @@ export const IterableInboxMessageCell = ({
 
   return (
     <>
-      <View testID={inboxMessageCellTestIDs.deleteSlider} style={styles.deleteSlider}>
+      <View
+        testID={inboxMessageCellTestIDs.deleteSlider}
+        style={styles.deleteSlider}
+      >
         <Text style={styles.textStyle}>DELETE</Text>
       </View>
       <Animated.View

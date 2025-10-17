@@ -31,7 +31,6 @@ export const iterableMessageDisplayTestIds = {
   returnButton: 'iterable-message-display-return-button',
   messageTitle: 'iterable-message-display-message-title',
   webview: 'iterable-message-display-webview',
-  icon: 'iterable-message-display-icon',
 };
 
 /**
@@ -218,7 +217,7 @@ export const IterableInboxMessageDisplay = ({
       <View style={styles.header}>
         <View style={styles.returnButtonContainer}>
           <HeaderBackButton
-            testID={iterableMessageDisplayTestIds.icon}
+            testID={iterableMessageDisplayTestIds.returnButton}
             label="Inbox"
             onPress={() => {
               returnToInbox();
@@ -236,6 +235,7 @@ export const IterableInboxMessageDisplay = ({
               numberOfLines={1}
               ellipsizeMode="tail"
               style={styles.messageTitleText}
+              testID={iterableMessageDisplayTestIds.messageTitle}
             >
               {messageTitle}
             </Text>
