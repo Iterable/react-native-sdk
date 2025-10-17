@@ -23,7 +23,8 @@ _example app directory_.  To do so, run the following:
 
 ```bash
 cd ios
-pod install
+bundle install
+bundle exec pod install
 ```
 
 Once this is done, `cd` back into the _example app directory_:
@@ -40,12 +41,15 @@ In it, you will find:
 
 ```shell
 ITBL_API_KEY=replace_this_with_your_iterable_api_key
+ITBL_JWT_SECRET=replace_this_with_your_jwt_secret
 ITBL_ID=replace_this_with_your_user_id_or_email
 ```
 
-Replace `replace_this_with_your_iterable_api_key` with your _mobile_ Iterable API key,
-and replace `replace_this_with_your_user_id_or_email` with the email or user id
-that you use to log into Iterable.
+Replace `replace_this_with_your_iterable_api_key` with your **_mobile_ Iterable
+API key**, replace `replace_this_with_your_jwt_secret` with your **JWT Secret**
+(if you have a JWT-enabled API key) and replace
+`replace_this_with_your_user_id_or_email` with the **email or user id** that you
+use to log into Iterable.
 
 Follow the steps below if you do not have a mobile Iterable API key.
 
@@ -57,10 +61,9 @@ To add an API key, do the following:
  4. Fill in the followsing fields:
     - Name: A descriptive name for the API key
     - Type: Mobile
-    - JWT authentication: Leave **unchecked** (IMPORTANT)
+    - JWT authentication: Check to enable JWT authentication. If enabled, will need to create a [JWT generator](https://support.iterable.com/hc/en-us/articles/360050801231-JWT-Enabled-API-Keys#sample-python-code-for-jwt-generation) to generate the JWT token.
  5. Click "Create API Key"
- 6. Copy the generated API key
-
+ 6. Copy the generated API key and JWT secret into your _.env_ file
 
 ## Step 3: Start the Metro Server
 
