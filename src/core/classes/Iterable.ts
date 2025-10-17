@@ -43,12 +43,6 @@ const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 /* eslint-enable tsdoc/syntax */
 export class Iterable {
   /**
-   * Logger for the Iterable SDK
-   * Log level is set with {@link IterableLogLevel}
-   */
-  static logger: IterableLogger = new IterableLogger(new IterableConfig());
-
-  /**
    * Current configuration of the Iterable SDK
    */
   static savedConfig: IterableConfig = new IterableConfig();
@@ -121,9 +115,7 @@ export class Iterable {
     config: IterableConfig = new IterableConfig()
   ): Promise<boolean> {
     Iterable.savedConfig = config;
-    Iterable.logger = new IterableLogger(Iterable.savedConfig);
-
-    this.setupEventHandlers();
+    this.setupIterable(config);
 
     const version = this.getVersionFromPackageJson();
 
@@ -141,10 +133,7 @@ export class Iterable {
     config: IterableConfig = new IterableConfig(),
     apiEndPoint: string
   ): Promise<boolean> {
-    Iterable.savedConfig = config;
-    Iterable.logger = new IterableLogger(Iterable.savedConfig);
-
-    this.setupEventHandlers();
+    this.setupIterable(config);
 
     const version = this.getVersionFromPackageJson();
 
@@ -153,6 +142,22 @@ export class Iterable {
       version,
       apiEndPoint,
     });
+  }
+
+  /**
+   * @internal
+   * Does basic setup of the Iterable SDK.
+   * @param config - The configuration object for the Iterable SDK
+   */
+  private static setupIterable(config: IterableConfig = new IterableConfig()) {
+    if (config) {
+      Iterable.savedConfig = config;
+
+      IterableLogger.setLoggingEnabled(config.logReactNativeSdkCalls ?? true);
+      IterableLogger.setLogLevel(config.logLevel);
+    }
+
+    this.setupEventHandlers();
   }
 
   /**
@@ -502,7 +507,7 @@ export class Iterable {
     items: IterableCommerceItem[],
     dataFields?: unknown
   ) {
-    Iterable?.logger?.log('trackPurchase');
+    IterableLogger?.log('trackPurchase');
 
     IterableApi.trackPurchase({ total, items, dataFields });
   }
@@ -531,7 +536,7 @@ export class Iterable {
     location: IterableInAppLocation
   ) {
     if (!message?.messageId) {
-      Iterable?.logger?.log(
+      IterableLogger?.log(
         `Skipping trackInAppOpen because message ID is required, but received ${message}.`
       );
       return;
@@ -968,9 +973,7 @@ export class Iterable {
                     (promiseResult as IterableAuthResponse).failureCallback?.();
                   }
                 } else {
-                  Iterable?.logger?.log(
-                    'No callback received from native layer'
-                  );
+                  IterableLogger?.log('No callback received from native layer');
                 }
               }, 1000);
               // Use unref() to prevent the timeout from keeping the process alive
@@ -979,12 +982,12 @@ export class Iterable {
               //If promise only returns string
               Iterable.authManager.passAlongAuthToken(promiseResult as string);
             } else {
-              Iterable?.logger?.log(
+              IterableLogger?.log(
                 'Unexpected promise returned. Auth token expects promise of String or AuthResponse type.'
               );
             }
           })
-          .catch((e) => Iterable?.logger?.log(e));
+          .catch((e) => IterableLogger?.log(e));
       });
 
       RNEventEmitter.addListener(
@@ -1018,7 +1021,7 @@ export class Iterable {
             }
           })
           .catch((reason) => {
-            Iterable?.logger?.log('could not open url: ' + reason);
+            IterableLogger?.log('could not open url: ' + reason);
           });
       }
     }

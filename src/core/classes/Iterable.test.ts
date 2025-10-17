@@ -2,7 +2,6 @@ import { NativeEventEmitter, Platform } from 'react-native';
 
 import { MockLinking } from '../../__mocks__/MockLinking';
 import { MockRNIterableAPI } from '../../__mocks__/MockRNIterableAPI';
-import { IterableLogger } from '..';
 // import from the same location that consumers import from
 import {
   Iterable,
@@ -10,33 +9,25 @@ import {
   IterableActionContext,
   IterableActionSource,
   IterableAttributionInfo,
+  IterableAuthResponse,
   IterableCommerceItem,
   IterableConfig,
   IterableDataRegion,
   IterableEventName,
-  IterableLogLevel,
-  IterableInAppMessage,
   IterableInAppCloseSource,
   IterableInAppDeleteSource,
   IterableInAppLocation,
+  IterableInAppMessage,
+  IterableInAppShowResponse,
   IterableInAppTrigger,
   IterableInAppTriggerType,
-  IterableAuthResponse,
-  IterableInAppShowResponse,
+  IterableLogLevel,
 } from '../..';
 import { TestHelper } from '../../__tests__/TestHelper';
-
-const getDefaultConfig = () => {
-  const config = new IterableConfig();
-  config.logReactNativeSdkCalls = false;
-  return config;
-};
 
 describe('Iterable', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    const config = getDefaultConfig();
-    Iterable.logger = new IterableLogger(config);
   });
 
   afterEach(() => {
@@ -265,7 +256,7 @@ describe('Iterable', () => {
       expect(config.customActionHandler).toBe(undefined);
       expect(config.inAppHandler).toBe(undefined);
       expect(config.authHandler).toBe(undefined);
-      expect(config.logLevel).toBe(IterableLogLevel.info);
+      expect(config.logLevel).toBe(IterableLogLevel.debug);
       expect(config.logReactNativeSdkCalls).toBe(true);
       expect(config.expiringAuthTokenRefreshPeriod).toBe(60.0);
       expect(config.allowedProtocols).toEqual([]);
@@ -281,7 +272,7 @@ describe('Iterable', () => {
       expect(configDict.customActionHandlerPresent).toBe(false);
       expect(configDict.inAppHandlerPresent).toBe(false);
       expect(configDict.authHandlerPresent).toBe(false);
-      expect(configDict.logLevel).toBe(IterableLogLevel.info);
+      expect(configDict.logLevel).toBe(IterableLogLevel.debug);
       expect(configDict.expiringAuthTokenRefreshPeriod).toBe(60.0);
       expect(configDict.allowedProtocols).toEqual([]);
       expect(configDict.androidSdkUseInMemoryStorageForInApps).toBe(false);
