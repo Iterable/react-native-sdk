@@ -1,51 +1,145 @@
-import { IterableConfig } from './IterableConfig';
+import { IterableLogLevel } from '../enums/IterableLogLevel';
+
+export const DEFAULT_LOG_LEVEL = IterableLogLevel.debug;
+export const DEFAULT_LOGGING_ENABLED = true;
 
 /**
  * A logger class for the Iterable SDK.
  *
- * This class is responsible for logging messages based on the configuration provided.
+ * This class is responsible for logging messages based on the configuration
+ * provided, is useful in unit testing or debug environments.
  *
  * @remarks
  * The logging behavior is controlled by the `logReactNativeSdkCalls` property
  * in {@link IterableConfig}.
- * If this property is not set, logging defaults to `true`, which is useful in unit testing or debug environments.
+ *
+ * If this property is not set, logging defaults to `true`, which is useful in
+ * unit testing or debug environments.
  *
  * @example
  * ```typescript
- * const config = new IterableConfig();
- * config.logReactNativeSdkCalls = true;
- * const logger = new IterableLogger(config);
- * logger.log('This is a log message.');
+ * IterableLogger.logLevel = IterableLogLevel.debug;
+ * IterableLogger.loggingEnabled = true;
+ *
+ * // This log will show in the developer console
+ * IterableLogger.log('I will be shown.');
+ *
+ * Iterable.loggingEnabled = false;
+ *
+ * // This log will show in the developer console
+ * IterableLogger.log('I will NOT be shown.');
+ *
  * ```
  */
 export class IterableLogger {
   /**
-   * The configuration settings for the Iterable SDK.
-   * This property is read-only and is initialized with an instance of `IterableConfig`.
+   * Whether logs should show in the developer console.
    */
-  readonly config: IterableConfig;
+  static loggingEnabled = DEFAULT_LOGGING_ENABLED;
 
   /**
-   * Creates an instance of IterableLogger.
+   * The level of logging.
    *
-   * @param config - The configuration object for IterableLogger.
+   * This controls which logs will show when using the {@link IterableLogger.error}, {@link IterableLogger.debug}, and {@link IterableLogger.info} methods.
    */
-  constructor(config: IterableConfig) {
-    this.config = config;
+  static logLevel = DEFAULT_LOG_LEVEL;
+
+  /**
+   * Sets whether logs should show in the developer console.
+   *
+   * @param loggingEnabled - Whether logs should show in the developer console.
+   */
+  static setLoggingEnabled(loggingEnabled?: boolean) {
+    IterableLogger.loggingEnabled =
+      typeof loggingEnabled === 'boolean'
+        ? loggingEnabled
+        : DEFAULT_LOGGING_ENABLED;
+  }
+
+  /**
+   * Sets the level of logging to show in the developer console.
+   *
+   * @param logLevel - The level of logging to show in the developer console.
+   */
+  static setLogLevel(logLevel?: IterableLogLevel) {
+    IterableLogger.logLevel =
+      typeof logLevel === 'undefined' ? DEFAULT_LOG_LEVEL : logLevel;
   }
 
   /**
    * Logs a message to the console if logging is enabled.
    *
    * @param message - The message to be logged.
+   *
+   * @example
+   * ```typescript
+   * IterableLogger.log('I will show if logging is enabled');
+   * ```
    */
-  log(message: string) {
-    // default to `true` in the case of unit testing where `Iterable` is not initialized
-    // which is most likely in a debug environment anyways
-    const loggingEnabled = this.config.logReactNativeSdkCalls ?? true;
+  static log(message?: unknown, ...optionalParams: unknown[]) {
+    if (!IterableLogger.loggingEnabled) return;
 
-    if (loggingEnabled) {
-      console.log(message);
-    }
+    console.log(message, ...optionalParams);
+  }
+
+  /**
+   * Logs a message to the console if the log level is {@link IterableLogLevel.error}.
+   *
+   * @param message - The message to be logged.
+   *
+   * @example
+   * ```typescript
+   * IterableLogger.error('I will only show if the log level is error and logging is enabled');
+   * ```
+   */
+  static error(message?: unknown, ...optionalParams: unknown[]) {
+    if (!IterableLogger.loggingEnabled) return;
+    if (IterableLogger.logLevel !== IterableLogLevel.error) return;
+
+    console.log(`ERROR:`, message, ...optionalParams);
+  }
+
+  /**
+   * Logs a message to the console if the log level is
+   * {@link IterableLogLevel.debug} or {@link IterableLogLevel.error}.
+   *
+   * @param message - The message to be logged.
+   *
+   * @example
+   * ```typescript
+   * IterableLogger.debug('I will show if the log level is debug and logging is enabled');
+   * IterableLogger.debug('I will also show if the log level is error and logging is enabled');
+   * ```
+   */
+  static debug(message?: unknown, ...optionalParams: unknown[]) {
+    if (!IterableLogger.loggingEnabled) return;
+
+    const shouldLog = [IterableLogLevel.error, IterableLogLevel.debug].includes(
+      IterableLogger.logLevel
+    );
+
+    if (!shouldLog) return;
+
+    console.log(`DEBUG:`, message, ...optionalParams);
+  }
+
+  /**
+   * Logs a message to the console if the log level is
+   * {@link IterableLogLevel.info}, {@link IterableLogLevel.debug} or
+   * {@link IterableLogLevel.error}.
+   *
+   * @param message - The message to be logged.
+   *
+   * @example
+   * ```typescript
+   * IterableLogger.info('I will show if the log level is info and logging is enabled');
+   * IterableLogger.info('I will also show if the log level is debug and logging is enabled');
+   * IterableLogger.info('I will also show if the log level is error and logging is enabled');
+   * ```
+   */
+  static info(message?: unknown, ...optionalParams: unknown[]) {
+    if (!IterableLogger.loggingEnabled) return;
+
+    console.log(`INFO:`, message, ...optionalParams);
   }
 }

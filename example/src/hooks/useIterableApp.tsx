@@ -1,10 +1,10 @@
 import type { StackNavigationProp } from '@react-navigation/stack';
 import {
-  type FunctionComponent,
   createContext,
   useCallback,
   useContext,
   useState,
+  type FunctionComponent,
 } from 'react';
 import { Alert } from 'react-native';
 
@@ -14,6 +14,8 @@ import {
   IterableConfig,
   IterableInAppShowResponse,
   IterableLogLevel,
+  IterableRetryBackoff,
+  IterableAuthFailureReason,
 } from '@iterable/react-native-sdk';
 
 import { Route } from '../constants/routes';
@@ -96,7 +98,9 @@ export const IterableAppProvider: FunctionComponent<
   const [apiKey, setApiKey] = useState<string | undefined>(
     process.env.ITBL_API_KEY
   );
-  const [userId, setUserId] = useState<string | null>(process.env.ITBL_ID ?? null);
+  const [userId, setUserId] = useState<string | null>(
+    process.env.ITBL_ID ?? null
+  );
   const [loginInProgress, setLoginInProgress] = useState<boolean>(false);
 
   const getUserId = useCallback(() => userId ?? process.env.ITBL_ID, [userId]);
@@ -124,6 +128,26 @@ export const IterableAppProvider: FunctionComponent<
 
       config.inAppDisplayInterval = 1.0; // Min gap between in-apps. No need to set this in production.
 
+      config.retryPolicy = {
+        maxRetry: 5,
+        retryInterval: 10,
+        retryBackoff: IterableRetryBackoff.LINEAR,
+      };
+
+      config.onJWTError = (authFailure) => {
+        console.log('onJWTError', authFailure);
+
+        const failureReason =
+          typeof authFailure.failureReason === 'string'
+            ? authFailure.failureReason
+            : IterableAuthFailureReason[authFailure.failureReason];
+
+        Alert.alert(
+          `Error fetching JWT: ${failureReason}`,
+          `Token: ${authFailure.failedAuthToken}`
+        );
+      };
+
       config.urlHandler = (url: string) => {
         const routeNames = [Route.Commerce, Route.Inbox, Route.User];
         for (const route of routeNames) {
@@ -148,6 +172,22 @@ export const IterableAppProvider: FunctionComponent<
       config.logLevel = IterableLogLevel.debug;
 
       config.inAppHandler = () => IterableInAppShowResponse.show;
+
+      // NOTE: Uncomment to test authHandler failure
+      // config.authHandler = () => {
+      //   console.log(`authHandler`);
+
+      //   return Promise.resolve({
+      //     authToken: 'SomethingNotValid',
+      //     successCallback: () => {
+      //       console.log(`authHandler > success`);
+      //     },
+      //     // This is not firing
+      //     failureCallback: () => {
+      //       console.log(`authHandler > failure`);
+      //     },
+      //   });
+      // };
 
       setItblConfig(config);
 
