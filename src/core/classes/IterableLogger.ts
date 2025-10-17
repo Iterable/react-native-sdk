@@ -6,14 +6,15 @@ const DEFAULT_LOGGING_ENABLED = true;
 /**
  * A logger class for the Iterable SDK.
  *
- * This class is responsible for logging messages based on the configuration provided.
- *
- * TODO: add a logLevel property to the IterableLogger class to control the level of logging.
+ * This class is responsible for logging messages based on the configuration
+ * provided, is useful in unit testing or debug environments.
  *
  * @remarks
  * The logging behavior is controlled by the `logReactNativeSdkCalls` property
  * in {@link IterableConfig}.
- * If this property is not set, logging defaults to `true`, which is useful in unit testing or debug environments.
+ *
+ * If this property is not set, logging defaults to `true`, which is useful in
+ * unit testing or debug environments.
  *
  * @example
  * ```typescript
@@ -99,7 +100,8 @@ export class IterableLogger {
   }
 
   /**
-   * Logs a message to the console if the log level is {@link IterableLogLevel.debug} or lower.
+   * Logs a message to the console if the log level is
+   * {@link IterableLogLevel.debug} or {@link IterableLogLevel.error}.
    *
    * @param message - The message to be logged.
    *
@@ -122,7 +124,9 @@ export class IterableLogger {
   }
 
   /**
-   * Logs a message to the console if the log level is {@link IterableLogLevel.info} or lower.
+   * Logs a message to the console if the log level is
+   * {@link IterableLogLevel.info}, {@link IterableLogLevel.debug} or
+   * {@link IterableLogLevel.error}.
    *
    * @param message - The message to be logged.
    *
