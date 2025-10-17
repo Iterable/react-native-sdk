@@ -5,7 +5,7 @@ import { IterableInAppMessage, IterableInAppTrigger, IterableInboxMetadata } fro
 import { IterableHtmlInAppContent } from '../../inApp/classes/IterableHtmlInAppContent';
 import { IterableInAppTriggerType } from '../../inApp/enums';
 import type { IterableInboxRowViewModel } from '../types';
-import { IterableInboxMessageDisplay } from './IterableInboxMessageDisplay';
+import { displayTestIds, IterableInboxMessageDisplay } from './IterableInboxMessageDisplay';
 
 // Suppress act() warnings for this test suite since they're expected from the component's useEffect
 const originalError = console.error;
@@ -28,16 +28,6 @@ jest.mock('../../core/classes/Iterable', () => ({
     },
   },
 }));
-
-// Mock react-native-vector-icons
-jest.mock('react-native-vector-icons/Ionicons', () => {
-  const { View } = require('react-native');
-  const MockIcon = ({ testID, ...props }: { testID?: string; [key: string]: unknown }) => (
-    <View testID={testID || 'Icon'} {...props} />
-  );
-  MockIcon.displayName = 'MockIcon';
-  return MockIcon;
-});
 
 // Mock Linking
 jest.mock('react-native', () => ({
@@ -198,7 +188,7 @@ describe('IterableInboxMessageDisplay', () => {
 
     it('should render the return button icon', () => {
       const { getByTestId } = render(<IterableInboxMessageDisplay {...defaultProps} />);
-      expect(getByTestId('Icon')).toBeTruthy();
+      expect(getByTestId(displayTestIds.icon)).toBeTruthy();
     });
 
     it('should handle missing message title gracefully', () => {

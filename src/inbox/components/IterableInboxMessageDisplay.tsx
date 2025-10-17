@@ -26,6 +26,10 @@ import { ITERABLE_INBOX_COLORS } from '../constants';
 import { type IterableInboxRowViewModel } from '../types';
 import { HeaderBackButton } from './HeaderBackButton';
 
+export const displayTestIds = {
+  icon: 'message-display-icon',
+};
+
 /**
  * Props for the IterableInboxMessageDisplay component.
  */
@@ -207,6 +211,7 @@ export const IterableInboxMessageDisplay = ({
       <View style={styles.header}>
         <View style={styles.returnButtonContainer}>
           <HeaderBackButton
+            testID={displayTestIds.icon}
             label="Inbox"
             onPress={() => {
               returnToInbox();
