@@ -1,18 +1,36 @@
 import { render } from '@testing-library/react-native';
-import { IterableInAppMessage, IterableInAppTrigger, IterableInboxMetadata } from '../../inApp/classes';
+import {
+  IterableInAppMessage,
+  IterableInAppTrigger,
+  IterableInboxMetadata,
+} from '../../inApp/classes';
 import { IterableInAppTriggerType } from '../../inApp/enums';
 import { IterableInboxDataModel } from '../classes';
-import type { IterableInboxCustomizations, IterableInboxImpressionRowInfo, IterableInboxRowViewModel } from '../types';
+import type {
+  IterableInboxCustomizations,
+  IterableInboxImpressionRowInfo,
+  IterableInboxRowViewModel,
+} from '../types';
 import { IterableInboxMessageList } from './IterableInboxMessageList';
 
 // Mock the IterableInboxMessageCell component
 jest.mock('./IterableInboxMessageCell', () => ({
-  IterableInboxMessageCell: ({ rowViewModel, index, last }: { rowViewModel: IterableInboxRowViewModel; index: number; last: boolean }) => {
+  IterableInboxMessageCell: ({
+    rowViewModel,
+    index,
+    last,
+  }: {
+    rowViewModel: IterableInboxRowViewModel;
+    index: number;
+    last: boolean;
+  }) => {
     const { View, Text } = require('react-native');
     return (
       <View testID={`message-cell-${rowViewModel.inAppMessage.messageId}`}>
         <Text testID={`message-title-${index}`}>{rowViewModel.title}</Text>
-        <Text testID={`message-last-${index}`}>{last ? 'last' : 'not-last'}</Text>
+        <Text testID={`message-last-${index}`}>
+          {last ? 'last' : 'not-last'}
+        </Text>
       </View>
     );
   },
@@ -111,17 +129,23 @@ describe('IterableInboxMessageList', () => {
 
   describe('Basic Rendering', () => {
     it('should render without crashing with minimal valid props', () => {
-      expect(() => render(<IterableInboxMessageList {...defaultProps} />)).not.toThrow();
+      expect(() =>
+        render(<IterableInboxMessageList {...defaultProps} />)
+      ).not.toThrow();
     });
 
     it('should render FlatList component', () => {
-      const { getByTestId } = render(<IterableInboxMessageList {...defaultProps} />);
+      const { getByTestId } = render(
+        <IterableInboxMessageList {...defaultProps} />
+      );
       // FlatList doesn't have a testID by default, but we can check if it renders
       expect(() => getByTestId('message-cell-messageId1')).not.toThrow();
     });
 
     it('should render message cells for each row view model', () => {
-      const { getByTestId } = render(<IterableInboxMessageList {...defaultProps} />);
+      const { getByTestId } = render(
+        <IterableInboxMessageList {...defaultProps} />
+      );
 
       expect(getByTestId('message-cell-messageId1')).toBeTruthy();
       expect(getByTestId('message-cell-messageId2')).toBeTruthy();
@@ -129,12 +153,19 @@ describe('IterableInboxMessageList', () => {
 
     it('should render with empty row view models array', () => {
       const propsWithEmptyData = { ...defaultProps, rowViewModels: [] };
-      expect(() => render(<IterableInboxMessageList {...propsWithEmptyData} />)).not.toThrow();
+      expect(() =>
+        render(<IterableInboxMessageList {...propsWithEmptyData} />)
+      ).not.toThrow();
     });
 
     it('should render with single row view model', () => {
-      const propsWithSingleItem = { ...defaultProps, rowViewModels: [mockRowViewModel1] };
-      const { getByTestId } = render(<IterableInboxMessageList {...propsWithSingleItem} />);
+      const propsWithSingleItem = {
+        ...defaultProps,
+        rowViewModels: [mockRowViewModel1],
+      };
+      const { getByTestId } = render(
+        <IterableInboxMessageList {...propsWithSingleItem} />
+      );
 
       expect(getByTestId('message-cell-messageId1')).toBeTruthy();
     });
@@ -143,38 +174,52 @@ describe('IterableInboxMessageList', () => {
   describe('Props Variations', () => {
     it('should handle different content widths', () => {
       const propsWithDifferentWidth = { ...defaultProps, contentWidth: 600 };
-      expect(() => render(<IterableInboxMessageList {...propsWithDifferentWidth} />)).not.toThrow();
+      expect(() =>
+        render(<IterableInboxMessageList {...propsWithDifferentWidth} />)
+      ).not.toThrow();
     });
 
     it('should handle portrait mode', () => {
       const portraitProps = { ...defaultProps, isPortrait: true };
-      expect(() => render(<IterableInboxMessageList {...portraitProps} />)).not.toThrow();
+      expect(() =>
+        render(<IterableInboxMessageList {...portraitProps} />)
+      ).not.toThrow();
     });
 
     it('should handle landscape mode', () => {
       const landscapeProps = { ...defaultProps, isPortrait: false };
-      expect(() => render(<IterableInboxMessageList {...landscapeProps} />)).not.toThrow();
+      expect(() =>
+        render(<IterableInboxMessageList {...landscapeProps} />)
+      ).not.toThrow();
     });
 
     it('should handle zero content width', () => {
       const zeroWidthProps = { ...defaultProps, contentWidth: 0 };
-      expect(() => render(<IterableInboxMessageList {...zeroWidthProps} />)).not.toThrow();
+      expect(() =>
+        render(<IterableInboxMessageList {...zeroWidthProps} />)
+      ).not.toThrow();
     });
 
     it('should handle negative content width', () => {
       const negativeWidthProps = { ...defaultProps, contentWidth: -100 };
-      expect(() => render(<IterableInboxMessageList {...negativeWidthProps} />)).not.toThrow();
+      expect(() =>
+        render(<IterableInboxMessageList {...negativeWidthProps} />)
+      ).not.toThrow();
     });
 
     it('should handle very large content width', () => {
       const largeWidthProps = { ...defaultProps, contentWidth: 2000 };
-      expect(() => render(<IterableInboxMessageList {...largeWidthProps} />)).not.toThrow();
+      expect(() =>
+        render(<IterableInboxMessageList {...largeWidthProps} />)
+      ).not.toThrow();
     });
   });
 
   describe('FlatList Functionality', () => {
     it('should pass correct data to FlatList', () => {
-      const { getByTestId } = render(<IterableInboxMessageList {...defaultProps} />);
+      const { getByTestId } = render(
+        <IterableInboxMessageList {...defaultProps} />
+      );
 
       // Verify that both message cells are rendered
       expect(getByTestId('message-cell-messageId1')).toBeTruthy();
@@ -182,7 +227,9 @@ describe('IterableInboxMessageList', () => {
     });
 
     it('should use correct keyExtractor', () => {
-      const { getByTestId } = render(<IterableInboxMessageList {...defaultProps} />);
+      const { getByTestId } = render(
+        <IterableInboxMessageList {...defaultProps} />
+      );
 
       // The keyExtractor should use messageId, which is used in the mock component
       expect(getByTestId('message-cell-messageId1')).toBeTruthy();
@@ -190,7 +237,9 @@ describe('IterableInboxMessageList', () => {
     });
 
     it('should pass correct props to message cells', () => {
-      const { getByTestId } = render(<IterableInboxMessageList {...defaultProps} />);
+      const { getByTestId } = render(
+        <IterableInboxMessageList {...defaultProps} />
+      );
 
       // Check that the first message is not marked as last
       expect(getByTestId('message-title-0')).toBeTruthy();
@@ -202,8 +251,13 @@ describe('IterableInboxMessageList', () => {
     });
 
     it('should handle single item as last', () => {
-      const singleItemProps = { ...defaultProps, rowViewModels: [mockRowViewModel1] };
-      const { getByTestId } = render(<IterableInboxMessageList {...singleItemProps} />);
+      const singleItemProps = {
+        ...defaultProps,
+        rowViewModels: [mockRowViewModel1],
+      };
+      const { getByTestId } = render(
+        <IterableInboxMessageList {...singleItemProps} />
+      );
 
       expect(getByTestId('message-last-0')).toHaveTextContent('last');
     });
@@ -211,7 +265,9 @@ describe('IterableInboxMessageList', () => {
 
   describe('Viewability Configuration', () => {
     it('should have correct viewability configuration', () => {
-      const { getByTestId } = render(<IterableInboxMessageList {...defaultProps} />);
+      const { getByTestId } = render(
+        <IterableInboxMessageList {...defaultProps} />
+      );
 
       // The component should render without errors, indicating viewability config is valid
       expect(getByTestId('message-cell-messageId1')).toBeTruthy();
@@ -219,17 +275,23 @@ describe('IterableInboxMessageList', () => {
 
     it('should handle viewability config with minimum view time', () => {
       // Test that the component renders with the configured minimumViewTime of 500ms
-      expect(() => render(<IterableInboxMessageList {...defaultProps} />)).not.toThrow();
+      expect(() =>
+        render(<IterableInboxMessageList {...defaultProps} />)
+      ).not.toThrow();
     });
 
     it('should handle viewability config with item visible percent threshold', () => {
       // Test that the component renders with the configured itemVisiblePercentThreshold of 100
-      expect(() => render(<IterableInboxMessageList {...defaultProps} />)).not.toThrow();
+      expect(() =>
+        render(<IterableInboxMessageList {...defaultProps} />)
+      ).not.toThrow();
     });
 
     it('should handle viewability config with waitForInteraction false', () => {
       // Test that the component renders with waitForInteraction set to false
-      expect(() => render(<IterableInboxMessageList {...defaultProps} />)).not.toThrow();
+      expect(() =>
+        render(<IterableInboxMessageList {...defaultProps} />)
+      ).not.toThrow();
     });
   });
 
@@ -254,7 +316,9 @@ describe('IterableInboxMessageList', () => {
         updateVisibleMessageImpressions: mockUpdateVisibleMessageImpressions,
       };
 
-      const { getByTestId } = render(<IterableInboxMessageList {...propsWithMockCallback} />);
+      const { getByTestId } = render(
+        <IterableInboxMessageList {...propsWithMockCallback} />
+      );
 
       // Verify the component renders and can process view tokens
       expect(getByTestId('message-cell-messageId1')).toBeTruthy();
@@ -267,7 +331,9 @@ describe('IterableInboxMessageList', () => {
         updateVisibleMessageImpressions: mockUpdateVisibleMessageImpressions,
       };
 
-      const { getByTestId } = render(<IterableInboxMessageList {...propsWithMockCallback} />);
+      const { getByTestId } = render(
+        <IterableInboxMessageList {...propsWithMockCallback} />
+      );
 
       // The component should render and have the callback ready
       expect(getByTestId('message-cell-messageId1')).toBeTruthy();
@@ -275,41 +341,53 @@ describe('IterableInboxMessageList', () => {
     });
 
     it('should handle updateVisibleMessageImpressions with different implementations', () => {
-      const customUpdateCallback = jest.fn((rowInfos: IterableInboxImpressionRowInfo[]) => {
-        // Custom implementation
-        rowInfos.forEach(rowInfo => {
-          console.log(`Message ${rowInfo.messageId} is visible`);
-        });
-      });
+      const customUpdateCallback = jest.fn(
+        (rowInfos: IterableInboxImpressionRowInfo[]) => {
+          // Custom implementation
+          rowInfos.forEach((rowInfo) => {
+            console.log(`Message ${rowInfo.messageId} is visible`);
+          });
+        }
+      );
 
       const propsWithCustomCallback = {
         ...defaultProps,
         updateVisibleMessageImpressions: customUpdateCallback,
       };
 
-      expect(() => render(<IterableInboxMessageList {...propsWithCustomCallback} />)).not.toThrow();
+      expect(() =>
+        render(<IterableInboxMessageList {...propsWithCustomCallback} />)
+      ).not.toThrow();
     });
 
     it('should handle updateVisibleMessageImpressions with undefined callback', () => {
       const propsWithUndefinedCallback = {
         ...defaultProps,
-        updateVisibleMessageImpressions: undefined as unknown as (rowInfos: IterableInboxImpressionRowInfo[]) => void,
+        updateVisibleMessageImpressions: undefined as unknown as (
+          rowInfos: IterableInboxImpressionRowInfo[]
+        ) => void,
       };
 
-      expect(() => render(<IterableInboxMessageList {...propsWithUndefinedCallback} />)).not.toThrow();
+      expect(() =>
+        render(<IterableInboxMessageList {...propsWithUndefinedCallback} />)
+      ).not.toThrow();
     });
   });
 
   describe('Scroll Behavior', () => {
     it('should have scrollEnabled true by default (when not swiping)', () => {
-      const { getByTestId } = render(<IterableInboxMessageList {...defaultProps} />);
+      const { getByTestId } = render(
+        <IterableInboxMessageList {...defaultProps} />
+      );
 
       // Component should render without errors, indicating scroll is enabled by default
       expect(getByTestId('message-cell-messageId1')).toBeTruthy();
     });
 
     it('should handle swiping state changes', () => {
-      const { getByTestId } = render(<IterableInboxMessageList {...defaultProps} />);
+      const { getByTestId } = render(
+        <IterableInboxMessageList {...defaultProps} />
+      );
 
       // The component should render and handle swiping state internally
       expect(getByTestId('message-cell-messageId1')).toBeTruthy();
@@ -318,7 +396,9 @@ describe('IterableInboxMessageList', () => {
 
   describe('Layout Callback', () => {
     it('should handle onLayout callback', () => {
-      const { getByTestId } = render(<IterableInboxMessageList {...defaultProps} />);
+      const { getByTestId } = render(
+        <IterableInboxMessageList {...defaultProps} />
+      );
 
       // Component should render without errors, indicating onLayout is handled
       expect(getByTestId('message-cell-messageId1')).toBeTruthy();
@@ -326,11 +406,15 @@ describe('IterableInboxMessageList', () => {
 
     it('should call recordInteraction on layout', () => {
       // We can't directly test the ref behavior, but we can ensure the component renders
-      expect(() => render(<IterableInboxMessageList {...defaultProps} />)).not.toThrow();
+      expect(() =>
+        render(<IterableInboxMessageList {...defaultProps} />)
+      ).not.toThrow();
     });
 
     it('should handle onLayout callback with FlatList ref', () => {
-      const { getByTestId } = render(<IterableInboxMessageList {...defaultProps} />);
+      const { getByTestId } = render(
+        <IterableInboxMessageList {...defaultProps} />
+      );
 
       // The component should render and handle the onLayout callback
       // The onLayout callback calls flatListRef.current?.recordInteraction()
@@ -343,41 +427,66 @@ describe('IterableInboxMessageList', () => {
       const mockDeleteRow = jest.fn();
       const propsWithDeleteRow = { ...defaultProps, deleteRow: mockDeleteRow };
 
-      expect(() => render(<IterableInboxMessageList {...propsWithDeleteRow} />)).not.toThrow();
+      expect(() =>
+        render(<IterableInboxMessageList {...propsWithDeleteRow} />)
+      ).not.toThrow();
     });
 
     it('should handle handleMessageSelect function', () => {
       const mockHandleMessageSelect = jest.fn();
-      const propsWithHandleMessageSelect = { ...defaultProps, handleMessageSelect: mockHandleMessageSelect };
+      const propsWithHandleMessageSelect = {
+        ...defaultProps,
+        handleMessageSelect: mockHandleMessageSelect,
+      };
 
-      expect(() => render(<IterableInboxMessageList {...propsWithHandleMessageSelect} />)).not.toThrow();
+      expect(() =>
+        render(<IterableInboxMessageList {...propsWithHandleMessageSelect} />)
+      ).not.toThrow();
     });
 
     it('should handle messageListItemLayout function', () => {
       const mockMessageListItemLayout = jest.fn().mockReturnValue([null, 200]);
-      const propsWithLayout = { ...defaultProps, messageListItemLayout: mockMessageListItemLayout };
+      const propsWithLayout = {
+        ...defaultProps,
+        messageListItemLayout: mockMessageListItemLayout,
+      };
 
-      expect(() => render(<IterableInboxMessageList {...propsWithLayout} />)).not.toThrow();
+      expect(() =>
+        render(<IterableInboxMessageList {...propsWithLayout} />)
+      ).not.toThrow();
     });
 
     it('should handle undefined function props gracefully', () => {
       const propsWithUndefinedFunctions = {
         ...defaultProps,
         deleteRow: undefined as unknown as (messageId: string) => void,
-        handleMessageSelect: undefined as unknown as (messageId: string, index: number) => void,
-        messageListItemLayout: undefined as unknown as (last: boolean, rowViewModel: IterableInboxRowViewModel) => [React.ReactElement | null, number],
+        handleMessageSelect: undefined as unknown as (
+          messageId: string,
+          index: number
+        ) => void,
+        messageListItemLayout: undefined as unknown as (
+          last: boolean,
+          rowViewModel: IterableInboxRowViewModel
+        ) => [React.ReactElement | null, number],
       };
 
-      expect(() => render(<IterableInboxMessageList {...propsWithUndefinedFunctions} />)).not.toThrow();
+      expect(() =>
+        render(<IterableInboxMessageList {...propsWithUndefinedFunctions} />)
+      ).not.toThrow();
     });
   });
 
   describe('Data Model Integration', () => {
     it('should work with different data model instances', () => {
       const differentDataModel = new IterableInboxDataModel();
-      const propsWithDifferentDataModel = { ...defaultProps, dataModel: differentDataModel };
+      const propsWithDifferentDataModel = {
+        ...defaultProps,
+        dataModel: differentDataModel,
+      };
 
-      expect(() => render(<IterableInboxMessageList {...propsWithDifferentDataModel} />)).not.toThrow();
+      expect(() =>
+        render(<IterableInboxMessageList {...propsWithDifferentDataModel} />)
+      ).not.toThrow();
     });
 
     it('should handle data model with custom functions', () => {
@@ -388,8 +497,13 @@ describe('IterableInboxMessageList', () => {
         (message) => message.createdAt?.toISOString() ?? 'No date'
       );
 
-      const propsWithCustomDataModel = { ...defaultProps, dataModel: customDataModel };
-      expect(() => render(<IterableInboxMessageList {...propsWithCustomDataModel} />)).not.toThrow();
+      const propsWithCustomDataModel = {
+        ...defaultProps,
+        dataModel: customDataModel,
+      };
+      expect(() =>
+        render(<IterableInboxMessageList {...propsWithCustomDataModel} />)
+      ).not.toThrow();
     });
   });
 
@@ -406,8 +520,15 @@ describe('IterableInboxMessageList', () => {
         },
       };
 
-      const propsWithDifferentCustomizations = { ...defaultProps, customizations: differentCustomizations };
-      expect(() => render(<IterableInboxMessageList {...propsWithDifferentCustomizations} />)).not.toThrow();
+      const propsWithDifferentCustomizations = {
+        ...defaultProps,
+        customizations: differentCustomizations,
+      };
+      expect(() =>
+        render(
+          <IterableInboxMessageList {...propsWithDifferentCustomizations} />
+        )
+      ).not.toThrow();
     });
 
     it('should handle minimal customizations', () => {
@@ -417,20 +538,35 @@ describe('IterableInboxMessageList', () => {
         },
       };
 
-      const propsWithMinimalCustomizations = { ...defaultProps, customizations: minimalCustomizations };
-      expect(() => render(<IterableInboxMessageList {...propsWithMinimalCustomizations} />)).not.toThrow();
+      const propsWithMinimalCustomizations = {
+        ...defaultProps,
+        customizations: minimalCustomizations,
+      };
+      expect(() =>
+        render(<IterableInboxMessageList {...propsWithMinimalCustomizations} />)
+      ).not.toThrow();
     });
   });
 
   describe('Edge Cases', () => {
     it('should handle null row view models', () => {
-      const propsWithNullData = { ...defaultProps, rowViewModels: null as unknown as IterableInboxRowViewModel[] };
-      expect(() => render(<IterableInboxMessageList {...propsWithNullData} />)).not.toThrow();
+      const propsWithNullData = {
+        ...defaultProps,
+        rowViewModels: null as unknown as IterableInboxRowViewModel[],
+      };
+      expect(() =>
+        render(<IterableInboxMessageList {...propsWithNullData} />)
+      ).not.toThrow();
     });
 
     it('should handle undefined row view models', () => {
-      const propsWithUndefinedData = { ...defaultProps, rowViewModels: undefined as unknown as IterableInboxRowViewModel[] };
-      expect(() => render(<IterableInboxMessageList {...propsWithUndefinedData} />)).not.toThrow();
+      const propsWithUndefinedData = {
+        ...defaultProps,
+        rowViewModels: undefined as unknown as IterableInboxRowViewModel[],
+      };
+      expect(() =>
+        render(<IterableInboxMessageList {...propsWithUndefinedData} />)
+      ).not.toThrow();
     });
 
     it('should handle row view models with missing properties', () => {
@@ -440,8 +576,13 @@ describe('IterableInboxMessageList', () => {
         // Missing other properties
       } as IterableInboxRowViewModel;
 
-      const propsWithIncompleteData = { ...defaultProps, rowViewModels: [incompleteRowViewModel] };
-      expect(() => render(<IterableInboxMessageList {...propsWithIncompleteData} />)).not.toThrow();
+      const propsWithIncompleteData = {
+        ...defaultProps,
+        rowViewModels: [incompleteRowViewModel],
+      };
+      expect(() =>
+        render(<IterableInboxMessageList {...propsWithIncompleteData} />)
+      ).not.toThrow();
     });
 
     it('should handle very large number of row view models', () => {
@@ -453,7 +594,11 @@ describe('IterableInboxMessageList', () => {
           new Date(),
           undefined,
           true,
-          new IterableInboxMetadata(`Title ${i}`, `Subtitle ${i}`, `imageUrl${i}.png`),
+          new IterableInboxMetadata(
+            `Title ${i}`,
+            `Subtitle ${i}`,
+            `imageUrl${i}.png`
+          ),
           undefined,
           false,
           i
@@ -465,8 +610,13 @@ describe('IterableInboxMessageList', () => {
         createdAt: new Date(),
       }));
 
-      const propsWithLargeData = { ...defaultProps, rowViewModels: largeRowViewModels };
-      expect(() => render(<IterableInboxMessageList {...propsWithLargeData} />)).not.toThrow();
+      const propsWithLargeData = {
+        ...defaultProps,
+        rowViewModels: largeRowViewModels,
+      };
+      expect(() =>
+        render(<IterableInboxMessageList {...propsWithLargeData} />)
+      ).not.toThrow();
     });
 
     it('should handle row view models with special characters in message IDs', () => {
@@ -477,7 +627,11 @@ describe('IterableInboxMessageList', () => {
         new Date(),
         undefined,
         true,
-        new IterableInboxMetadata('Special Title', 'Special Subtitle', 'special.png'),
+        new IterableInboxMetadata(
+          'Special Title',
+          'Special Subtitle',
+          'special.png'
+        ),
         undefined,
         false,
         0
@@ -492,8 +646,13 @@ describe('IterableInboxMessageList', () => {
         createdAt: new Date(),
       };
 
-      const propsWithSpecialData = { ...defaultProps, rowViewModels: [specialRowViewModel] };
-      expect(() => render(<IterableInboxMessageList {...propsWithSpecialData} />)).not.toThrow();
+      const propsWithSpecialData = {
+        ...defaultProps,
+        rowViewModels: [specialRowViewModel],
+      };
+      expect(() =>
+        render(<IterableInboxMessageList {...propsWithSpecialData} />)
+      ).not.toThrow();
     });
 
     it('should handle row view models with unicode characters', () => {
@@ -519,21 +678,30 @@ describe('IterableInboxMessageList', () => {
         createdAt: new Date(),
       };
 
-      const propsWithUnicodeData = { ...defaultProps, rowViewModels: [unicodeRowViewModel] };
-      expect(() => render(<IterableInboxMessageList {...propsWithUnicodeData} />)).not.toThrow();
+      const propsWithUnicodeData = {
+        ...defaultProps,
+        rowViewModels: [unicodeRowViewModel],
+      };
+      expect(() =>
+        render(<IterableInboxMessageList {...propsWithUnicodeData} />)
+      ).not.toThrow();
     });
   });
 
   describe('Component State Management', () => {
     it('should manage swiping state internally', () => {
-      const { getByTestId } = render(<IterableInboxMessageList {...defaultProps} />);
+      const { getByTestId } = render(
+        <IterableInboxMessageList {...defaultProps} />
+      );
 
       // Component should render and manage swiping state
       expect(getByTestId('message-cell-messageId1')).toBeTruthy();
     });
 
     it('should maintain FlatList ref', () => {
-      const { getByTestId } = render(<IterableInboxMessageList {...defaultProps} />);
+      const { getByTestId } = render(
+        <IterableInboxMessageList {...defaultProps} />
+      );
 
       // Component should render and maintain ref
       expect(getByTestId('message-cell-messageId1')).toBeTruthy();
@@ -542,12 +710,18 @@ describe('IterableInboxMessageList', () => {
 
   describe('Performance Considerations', () => {
     it('should handle rapid prop changes', () => {
-      const { rerender, getByTestId } = render(<IterableInboxMessageList {...defaultProps} />);
+      const { rerender, getByTestId } = render(
+        <IterableInboxMessageList {...defaultProps} />
+      );
 
       // Change props rapidly
       const newProps1 = { ...defaultProps, contentWidth: 400 };
       const newProps2 = { ...defaultProps, isPortrait: false };
-      const newProps3 = { ...defaultProps, contentWidth: 500, isPortrait: true };
+      const newProps3 = {
+        ...defaultProps,
+        contentWidth: 500,
+        isPortrait: true,
+      };
 
       expect(() => {
         rerender(<IterableInboxMessageList {...newProps1} />);
@@ -567,7 +741,11 @@ describe('IterableInboxMessageList', () => {
           new Date(),
           undefined,
           true,
-          new IterableInboxMetadata(`Large Title ${i}`, `Large Subtitle ${i}`, `largeImage${i}.png`),
+          new IterableInboxMetadata(
+            `Large Title ${i}`,
+            `Large Subtitle ${i}`,
+            `largeImage${i}.png`
+          ),
           undefined,
           false,
           i
@@ -579,14 +757,21 @@ describe('IterableInboxMessageList', () => {
         createdAt: new Date(),
       }));
 
-      const propsWithLargeDataset = { ...defaultProps, rowViewModels: largeDataset };
-      expect(() => render(<IterableInboxMessageList {...propsWithLargeDataset} />)).not.toThrow();
+      const propsWithLargeDataset = {
+        ...defaultProps,
+        rowViewModels: largeDataset,
+      };
+      expect(() =>
+        render(<IterableInboxMessageList {...propsWithLargeDataset} />)
+      ).not.toThrow();
     });
   });
 
   describe('Integration with IterableInboxMessageCell', () => {
     it('should pass all required props to message cells', () => {
-      const { getByTestId } = render(<IterableInboxMessageList {...defaultProps} />);
+      const { getByTestId } = render(
+        <IterableInboxMessageList {...defaultProps} />
+      );
 
       // Verify that message cells receive the correct props by checking their rendering
       expect(getByTestId('message-cell-messageId1')).toBeTruthy();
@@ -594,13 +779,157 @@ describe('IterableInboxMessageList', () => {
     });
 
     it('should handle message cell prop changes', () => {
-      const { rerender, getByTestId } = render(<IterableInboxMessageList {...defaultProps} />);
+      const { rerender, getByTestId } = render(
+        <IterableInboxMessageList {...defaultProps} />
+      );
 
       // Change props that affect message cells
-      const newProps = { ...defaultProps, contentWidth: 600, isPortrait: false };
+      const newProps = {
+        ...defaultProps,
+        contentWidth: 600,
+        isPortrait: false,
+      };
       rerender(<IterableInboxMessageList {...newProps} />);
 
       expect(getByTestId('message-cell-messageId1')).toBeTruthy();
+    });
+  });
+
+  describe('Viewable Items Change Handling', () => {
+    it('should call updateVisibleMessageImpressions when onViewableItemsChanged is triggered', () => {
+      const mockUpdateVisibleMessageImpressions = jest.fn();
+      const propsWithMockCallback = {
+        ...defaultProps,
+        updateVisibleMessageImpressions: mockUpdateVisibleMessageImpressions,
+      };
+
+      // Render the component
+      const { UNSAFE_root } = render(
+        <IterableInboxMessageList {...propsWithMockCallback} />
+      );
+
+      // Find the FlatList component
+      const flatListInstance = UNSAFE_root.findByType(
+        require('react-native').FlatList
+      );
+
+      // Create mock ViewTokens that simulate what FlatList provides
+      const mockViewToken1 = {
+        item: mockRowViewModel1,
+        index: 0,
+        isViewable: true,
+        key: 'messageId1',
+      };
+
+      const mockViewToken2 = {
+        item: mockRowViewModel2,
+        index: 1,
+        isViewable: true,
+        key: 'messageId2',
+      };
+
+      // Simulate the FlatList calling onViewableItemsChanged
+      const mockInfo = {
+        viewableItems: [mockViewToken1, mockViewToken2],
+        changed: [mockViewToken1, mockViewToken2],
+      };
+
+      // Call the onViewableItemsChanged prop directly
+      flatListInstance.props.onViewableItemsChanged(mockInfo);
+
+      // Verify updateVisibleMessageImpressions was called
+      expect(mockUpdateVisibleMessageImpressions).toHaveBeenCalledTimes(1);
+
+      // Verify it was called with the correct structure
+      expect(mockUpdateVisibleMessageImpressions).toHaveBeenCalledWith([
+        {
+          messageId: 'messageId1',
+          silentInbox: expect.any(Boolean),
+        },
+        {
+          messageId: 'messageId2',
+          silentInbox: expect.any(Boolean),
+        },
+      ]);
+    });
+
+    it('should process view tokens and extract messageId and silentInbox', () => {
+      const mockUpdateVisibleMessageImpressions = jest.fn();
+      const propsWithMockCallback = {
+        ...defaultProps,
+        updateVisibleMessageImpressions: mockUpdateVisibleMessageImpressions,
+      };
+
+      const { UNSAFE_root } = render(
+        <IterableInboxMessageList {...propsWithMockCallback} />
+      );
+      const flatListInstance = UNSAFE_root.findByType(
+        require('react-native').FlatList
+      );
+
+      const mockViewToken = {
+        item: mockRowViewModel1,
+        index: 0,
+        isViewable: true,
+        key: 'messageId1',
+      };
+
+      const mockInfo = {
+        viewableItems: [mockViewToken],
+        changed: [mockViewToken],
+      };
+
+      flatListInstance.props.onViewableItemsChanged(mockInfo);
+
+      expect(mockUpdateVisibleMessageImpressions).toHaveBeenCalledWith(
+        expect.arrayContaining([
+          expect.objectContaining({
+            messageId: 'messageId1',
+            silentInbox: expect.any(Boolean),
+          }),
+        ])
+      );
+    });
+
+    it('should handle empty viewableItems array', () => {
+      const mockUpdateVisibleMessageImpressions = jest.fn();
+      const propsWithMockCallback = {
+        ...defaultProps,
+        updateVisibleMessageImpressions: mockUpdateVisibleMessageImpressions,
+      };
+
+      const { UNSAFE_root } = render(
+        <IterableInboxMessageList {...propsWithMockCallback} />
+      );
+      const flatListInstance = UNSAFE_root.findByType(
+        require('react-native').FlatList
+      );
+
+      const mockInfo = {
+        viewableItems: [],
+        changed: [],
+      };
+
+      flatListInstance.props.onViewableItemsChanged(mockInfo);
+
+      expect(mockUpdateVisibleMessageImpressions).toHaveBeenCalledWith([]);
+    });
+
+    it('should have correct viewability configuration', () => {
+      const { UNSAFE_root } = render(
+        <IterableInboxMessageList {...defaultProps} />
+      );
+      const flatListInstance = UNSAFE_root.findByType(
+        require('react-native').FlatList
+      );
+
+      const viewabilityConfig = flatListInstance.props.viewabilityConfig;
+
+      expect(viewabilityConfig).toEqual({
+        minimumViewTime: 500,
+        itemVisiblePercentThreshold: 100,
+        waitForInteraction: false,
+      });
     });
   });
 });
