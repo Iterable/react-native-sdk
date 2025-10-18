@@ -48,7 +48,7 @@ const config = {
     "IndexSignature",
     // Equivalent to Constructor due to the same implementation detail as CallSignature
     "ConstructorSignature",
-    "Parameter",
+    // "Parameter", // Commented out - React component props don't need individual parameter docs when the type is documented
     // Used for object literal types. You probably should set TypeAlias instead, which refers to types created with `type X =`.
     // This only really exists because of an implementation detail.
     // "TypeLiteral", // Commented out to avoid warnings on inline function types like () => void

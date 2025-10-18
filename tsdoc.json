@@ -2,6 +2,28 @@
   "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
   "tagDefinitions": [
     {
+      "tagName": "@param",
+      "syntaxKind": "block",
+      "allowMultiple": true
+    },
+    {
+      "tagName": "@returns",
+      "syntaxKind": "block"
+    },
+    {
+      "tagName": "@remarks",
+      "syntaxKind": "block"
+    },
+    {
+      "tagName": "@example",
+      "syntaxKind": "block",
+      "allowMultiple": true
+    },
+    {
+      "tagName": "@link",
+      "syntaxKind": "inline"
+    },
+    {
       "tagName": "@os",
       "syntaxKind": "block"
     },
@@ -15,6 +37,11 @@
     }
   ],
   "supportForTags": {
+    "@remarks": true,
+    "@returns": true,
+    "@example": true,
+    "@link": true,
+    "@param": true,
     "@includeCode": true,
     "@mermaid": true,
     "@os": true

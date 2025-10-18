@@ -65,11 +65,7 @@ export class IterableInAppManager {
    * use this method to do it manually (for example, after rendering an in-app
    * message in a custom way).
    */
-  consumeMessage({
-    message,
-    location,
-    source,
-  }: {
+  consumeMessage(params: {
     /** The in-app message (an {@link IterableInAppMessage} object) */
     message: IterableInAppMessage;
     /** The location of the in-app message (an {@link IterableInAppLocation} enum) */
@@ -77,6 +73,7 @@ export class IterableInAppManager {
     /** How the in-app message was deleted (an {@link IterableInAppDeleteSource} enum) */
     source: IterableInAppDeleteSource;
   }): Promise<void> {
+    const { message, location, source } = params;
     return IterableApi.inAppConsume(message, location, source);
   }
 
