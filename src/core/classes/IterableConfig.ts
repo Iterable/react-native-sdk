@@ -9,12 +9,42 @@ import { IterableAction } from './IterableAction';
 import type { IterableActionContext } from './IterableActionContext';
 import type { IterableAuthResponse } from './IterableAuthResponse';
 
+type ConfigKeys = keyof IterableConfig;
+
 /**
- * An IterableConfig object sets various properties of the SDK.
+ * Checks if a key is a property of the IterableConfig object.
+ * @param config - The IterableConfig object to check.
+ * @param key - The key to check.
+ * @returns A boolean indicating if the key is a property of the IterableConfig object.
+ */
+function hasConfigProperty(
+  config: Partial<IterableConfig>,
+  key: string
+): key is ConfigKeys {
+  return key in config;
+}
+
+/**
+ * An `IterableConfig` instance sets various options for the Iterable SDK.
  *
- * An IterableConfig object is passed into the static initialize method on the
+ * An `IterableConfig` instance is passed into the static initialize method on the
  * Iterable class when initializing the SDK.
  *
+ * @example
+ * ```typescript
+ * const config = new IterableConfig({
+ *   inAppDisplayInterval: 10.0,
+ *   logLevel: IterableLogLevel.debug,
+ *   urlHandler: (url, context) => {
+ *     if (url.includes('product')) {
+ *       return true;
+ *     }
+ *     return false;
+ *   },
+ * });
+ *
+ * Iterable.initialize('<YOUR_API_KEY>', config);
+ * ```
  */
 export class IterableConfig {
   /**
@@ -47,6 +77,36 @@ export class IterableConfig {
    * Defaults to 30 seconds.
    */
   inAppDisplayInterval = 30.0;
+
+  /**
+   * Initializes the IterableConfig object with the given options.
+   *
+   * @param config - The options to initialize the IterableConfig object with.
+   *
+   * @example
+   * ```typescript
+   * const config = new IterableConfig({
+   *   inAppDisplayInterval: 10.0,
+   *   urlHandler: (url, context) => {
+   *     if (url.includes('product')) {
+   *       return true;
+   *     }
+   *     return false;
+   *   },
+   * });
+   * ```
+   */
+  constructor(config: Partial<IterableConfig> = {}) {
+    for (const key in config) {
+      if (
+        Object.prototype.hasOwnProperty.call(config, key) &&
+        hasConfigProperty(config, key)
+      ) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (this as any)[key] = config[key];
+      }
+    }
+  }
 
   /**
    * A callback function used to handle deep link URLs and in-app message button and link URLs.

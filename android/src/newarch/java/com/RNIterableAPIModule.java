@@ -225,8 +225,8 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   }
 
   @Override
-  public void generateJwtForUserId(ReadableMap opts, Promise promise) {
-    moduleImpl.generateJwtForUserId(opts, promise);
+  public void generateJwtToken(ReadableMap opts, Promise promise) {
+    moduleImpl.generateJwtToken(opts, promise);
   }
 
   public void sendEvent(@NonNull String eventName, @Nullable Object eventData) {

@@ -6,11 +6,13 @@ export {
   IterableAction,
   IterableActionContext,
   IterableAttributionInfo,
+  IterableAuthManager,
   IterableAuthResponse,
   IterableCommerceItem,
   IterableConfig,
   IterableEdgeInsets,
   IterableLogger,
+  IterableTrackingManager,
 } from './core/classes';
 export {
   IterableActionSource,
@@ -31,6 +33,7 @@ export type {
   IterableAuthFailure,
   IterableEdgeInsetDetails,
   IterableRetryPolicy,
+  IterableGenerateJwtTokenOpts,
 } from './core/types';
 export {
   IterableHtmlInAppContent,

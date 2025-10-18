@@ -215,7 +215,8 @@ import React
       ITBError("Could not find message with id: \(messageId)")
       return
     }
-    IterableAPI.track(inAppOpen: message, location: InAppLocation.from(number: locationNumber as NSNumber))
+    IterableAPI.track(
+      inAppOpen: message, location: InAppLocation.from(number: locationNumber as NSNumber))
   }
 
   @objc(trackInAppClick:location:clickedUrl:)
@@ -414,8 +415,10 @@ import React
     templateId: Double
   ) {
     ITBInfo()
-    let finalCampaignId: NSNumber? = (campaignId as NSNumber).intValue <= 0 ? nil : campaignId as NSNumber
-    let finalTemplateId: NSNumber? = (templateId as NSNumber).intValue <= 0 ? nil : templateId as NSNumber
+    let finalCampaignId: NSNumber? =
+      (campaignId as NSNumber).intValue <= 0 ? nil : campaignId as NSNumber
+    let finalTemplateId: NSNumber? =
+      (templateId as NSNumber).intValue <= 0 ? nil : templateId as NSNumber
     IterableAPI.updateSubscriptions(
       emailListIds,
       unsubscribedChannelIds: unsubscribedChannelIds,
@@ -488,6 +491,21 @@ import React
   public func pauseAuthRetries(pauseRetry: Bool) {
     ITBInfo()
     IterableAPI.pauseAuthRetries(pauseRetry)
+  }
+
+  @objc(generateJwtToken:resolver:rejecter:)
+  public func generateJwtToken(
+    _ opts: NSDictionary,
+    resolver: @escaping RCTPromiseResolveBlock,
+    rejecter: @escaping RCTPromiseRejectBlock
+  ) {
+    ITBInfo()
+
+    rejecter(
+      "E_NOT_IMPLEMENTED",
+      "JWT generation is not available on iOS. Please use the JavaScript implementation from IterableJwtGenerator.ts instead.",
+      nil
+    )
   }
 
   // MARK: Private

@@ -1,4 +1,4 @@
-![Iterable logo](./images/Iterable-Logo.png "Iterable Logo")
+![Iterable logo](./assets/Iterable-Logo.png "Iterable Logo")
 
 # Iterable's React Native SDK
 

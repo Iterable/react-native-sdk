@@ -45,7 +45,8 @@
     "prebuild": "yarn add_build_info",
     "build": "yarn add_build_info && yarn bob build",
     "prepare": "yarn build",
-    "release": "release-it"
+    "release": "release-it",
+    "typedoc": "typedoc"
   },
   "keywords": [
     "react-native",

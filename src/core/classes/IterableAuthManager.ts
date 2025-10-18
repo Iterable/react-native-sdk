@@ -1,5 +1,6 @@
 import { IterableAuthResponse } from './IterableAuthResponse';
 import { IterableApi } from './IterableApi';
+import type { IterableGenerateJwtTokenOpts } from '../types/IterableGenerateJwtTokenOpts';
 
 /**
  * Manages the authentication for the Iterable SDK.
@@ -30,6 +31,8 @@ export class IterableAuthManager {
    *
    * @param authToken - The auth token to pass along
    *
+   * TODO: Add a more flushed out example
+   *
    * @example
    * ```typescript
    * const authManager = new IterableAuthManager();
@@ -40,5 +43,35 @@ export class IterableAuthManager {
     authToken: string | null | undefined
   ): Promise<IterableAuthResponse | string | undefined> {
     return IterableApi.passAlongAuthToken(authToken);
+  }
+
+  /**
+   * Generate a JWT token for the current user.
+   *
+   * This only needs to be used if JWT was enabled when [creating your API key](https://app.iterable.com/settings/apiKeys).
+   *
+   * To create a JWT enabled API key:
+   * 1. Go to Iterable's [**API key page**](https://app.iterable.com/settings/apiKeys)
+   * 2. Click **+ New API key** in the top right corner
+   * 3. Fill in the following fields:
+   *    - **Name**: A descriptive name for the API key
+   *    - **Type**: _Mobile_ (<span style="color: red;">IMPORTANT:</span> This must be _Mobile_ for the RN SDK)
+   *    - **JWT authentication**: Check to enable JWT authentication.
+   * 4. Click **Create API Key**
+   * 5. The generated **API key** will be used in `Iterable.initialize`, and the
+   *    **JWT secret** will be used in `IterableApi.generateJwtToken`.
+   *
+   *  @example
+   * ```typescript
+   * const jwtToken = await IterableApi.generateJwtToken({
+   *   secret: 'your-jwt-secret',
+   *   duration: 1000 * 60 * 60 * 24, // 1 day
+   *   userId: 'your-iterable-user-id',
+   *   email: 'me@gmail.com',
+   * });
+   * ```
+   */
+  static generateJwtToken(opts: IterableGenerateJwtTokenOpts) {
+    return IterableApi.generateJwtToken(opts);
   }
 }

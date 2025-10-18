@@ -20,6 +20,7 @@ import { IterableAuthResponse } from './IterableAuthResponse';
 import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
+import { IterableTrackingManager } from './IterableTrackingManager';
 
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
@@ -78,6 +79,19 @@ export class Iterable {
    * ```
    */
   static authManager: IterableAuthManager = new IterableAuthManager();
+
+  /**
+   * Tracking manager for the current user.
+   *
+   * This property provides access to tracking functionality including
+   * setting attribution information, tracking push opens, and tracking events.
+   *
+   * @example
+   * ```typescript
+   * Iterable.track.setAttributionInfo(new IterableAttributionInfo(1234, 5678, 9012));
+   * ```
+   */
+  static track: IterableTrackingManager = new IterableTrackingManager();
 
   /**
    * Initializes the Iterable React Native SDK in your app's Javascript or Typescript code.
@@ -466,6 +480,8 @@ export class Iterable {
    * Launch the application from the background in Android devices.
    *
    * Android only.
+   *
+   * @group Android
    *
    * @example
    * ```typescript

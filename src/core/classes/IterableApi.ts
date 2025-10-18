@@ -12,6 +12,7 @@ import { IterableAttributionInfo } from './IterableAttributionInfo';
 import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
+import type { IterableGenerateJwtTokenOpts } from '../types/IterableGenerateJwtTokenOpts';
 
 /**
  * Contains functions that directly interact with the native layer.
@@ -187,14 +188,12 @@ export class IterableApi {
     appAlreadyRunning: boolean;
     dataFields?: unknown;
   }) {
-    IterableLogger.log(
-      'trackPushOpenWithCampaignId: ',
-      campaignId,
-      templateId,
-      messageId,
-      appAlreadyRunning,
-      dataFields
-    );
+    if (!messageId) {
+      IterableLogger?.log(
+        `Skipping trackPushOpenWithCampaignId because message ID is required, but received ${messageId}.`
+      );
+      return;
+    }
     return RNIterableAPI.trackPushOpenWithCampaignId(
       campaignId,
       templateId,
@@ -240,6 +239,12 @@ export class IterableApi {
     message: IterableInAppMessage;
     location: IterableInAppLocation;
   }) {
+    if (!message?.messageId) {
+      IterableLogger?.log(
+        `Skipping trackInAppOpen because message ID is required, but received ${message?.messageId}.`
+      );
+      return;
+    }
     IterableLogger.log('trackInAppOpen: ', message, location);
     return RNIterableAPI.trackInAppOpen(message.messageId, location);
   }
@@ -349,6 +354,17 @@ export class IterableApi {
   static passAlongAuthToken(authToken: string | null | undefined) {
     IterableLogger.log('passAlongAuthToken: ', authToken);
     return RNIterableAPI.passAlongAuthToken(authToken);
+  }
+
+  /**
+   * Generate a JWT token for the current user.
+   *
+   * @param opts - The options for generating a JWT token
+   * @returns A Promise that resolves to the generated JWT token
+   */
+  static generateJwtToken(opts: IterableGenerateJwtTokenOpts) {
+    IterableLogger.log('generateJwtToken: ', opts);
+    return RNIterableAPI.generateJwtToken(opts);
   }
 
   // ---- End AUTH ---- //
@@ -507,7 +523,7 @@ export class IterableApi {
   // ---- End IN-APP ---- //
 
   // ====================================================== //
-  // ======================= MOSC ======================= //
+  // ======================== MISC ======================== //
   // ====================================================== //
 
   /**
@@ -597,7 +613,6 @@ export class IterableApi {
    * Get the attribution info.
    */
   static getAttributionInfo() {
-    IterableLogger.log('getAttributionInfo');
     // FIXME: What if this errors?
     return RNIterableAPI.getAttributionInfo().then(
       (
