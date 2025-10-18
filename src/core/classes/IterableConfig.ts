@@ -129,15 +129,15 @@ export class IterableConfig {
    * This example searches for URLs that contain product/, followed by more text. Upon finding this sequence of text, the code displays the appropriate screen and returns `true`. When it's not found, the app returns `false`.
    *
    * ```typescript
-   * const config = new IterableConfig();
-   *
-   * config.urlHandler = (url, context) => {
-   *  if (url.match(/product\/([^\/]+)/i)) {
-   *    this.navigate(match[1]);
-   *    return true; // handled
-   *  }
-   *  return false; // not handled
-   * };
+   * const config = new IterableConfig({
+   *   urlHandler: (url, context) => {
+   *     if (url.match(/product\/([^\/]+)/i)) {
+   *       this.navigate(match[1]);
+   *       return true; // handled
+   *     }
+   *     return false; // not handled
+   *   },
+   * });
    *
    * Iterable.initialize('<YOUR_API_KEY>', config);
    * ```
@@ -174,16 +174,18 @@ export class IterableConfig {
    * @example
    * This example responds to the `action://achievedPremierStatus` custom action URL by updating the app's styles and return `true`. Since this is the only custom action handled by the method, it returns `false` for anything else.
    * ```typescript
-   *  const config = new IterableConfig();
-   *  config.customActionHandler = (action, context) => {
-   *    if (action.type == "achievedPremierStatus") {
-   *      // For this action, update the app's styles
-   *      this.updateAppStyles("premier");
-   *      return true;
-   *    }
-   *    return false;
-   *  }
-   *  Iterable.initialize('<YOUR_API_KEY>', config);
+   *  const config = new IterableConfig({
+   *    customActionHandler: (action, context) => {
+   *      if (action.type == "achievedPremierStatus") {
+   *        // For this action, update the app's styles
+   *        this.updateAppStyles("premier");
+   *        return true;
+   *      }
+   *      return false;
+   *    },
+   *  });
+   *
+   * Iterable.initialize('<YOUR_API_KEY>', config);
    * ```
    *
    * @returns A boolean indicating whether the action was handled.
@@ -257,16 +259,16 @@ export class IterableConfig {
    * This example demonstrates how an app that uses a JWT-enabled API key might initialize the SDK.
    *
    * ```typescript
-   * const config = new IterableConfig();
-   *
-   * config.authHandler = () => {
-   *  // ... Fetch a JWT from your server, or locate one you've already retrieved
-   *  return new Promise(function (resolve, reject) {
-   *    // Resolve the promise with a valid auth token for the current user
-   *    resolve("<AUTH_TOKEN>")
-   *  });
-   * };
-   * config.autoPushRegistration = false;
+   * const config = new IterableConfig({
+   *   authHandler: () => {
+   *     // ... Fetch a JWT from your server, or locate one you've already retrieved
+   *     return new Promise(function (resolve, reject) {
+   *       // Resolve the promise with a valid auth token for the current user
+   *       resolve("<AUTH_TOKEN>")
+   *     });
+   *   },
+   *   autoPushRegistration: false,
+   * });
    *
    * Iterable.initialize('<YOUR_API_KEY>', config);
    * ```
@@ -289,10 +291,13 @@ export class IterableConfig {
    *
    * @example
    * ```typescript
-   * const config = new IterableConfig();
-   * config.onJWTError = (authFailure) => {
-   *   console.error('Error fetching JWT:', authFailure);
-   * };
+   * const config = new IterableConfig({
+   *   onJWTError: (authFailure) => {
+   *     console.error('Error fetching JWT:', authFailure);
+   *   },
+   * });
+   *
+   * Iterable.initialize('<YOUR_API_KEY>', config);
    * ```
    */
   onJWTError?: (authFailure: IterableAuthFailure) => void;
@@ -334,8 +339,11 @@ export class IterableConfig {
    * To allow the SDK to handle `http`, `tel`, and `custom` links, use code similar to this:
    *
    * ```typescript
-   * const config = new IterableConfig();
-   * config.allowedProtocols = ["http", "tel", "custom"];
+   * const config = new IterableConfig({
+   *   allowedProtocols: ["http", "tel", "custom"],
+   * });
+   *
+   * Iterable.initialize('<YOUR_API_KEY>', config);
    * ```
    *
    * @remarks

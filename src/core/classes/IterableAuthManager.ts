@@ -5,6 +5,8 @@ import { IterableAuthResponse } from './IterableAuthResponse';
  * @beta
  * Manages the authentication for the Iterable SDK.
  *
+ * @since Introduced in [2.2.0](https://www.npmjs.com/package/@iterable/react-native-sdk/v/2.2.0)
+ *
  * @example
  * ```typescript
  * const authManager = new IterableAuthManager();

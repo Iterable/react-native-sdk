@@ -46,6 +46,8 @@ const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 export class Iterable {
   /**
    * Current configuration of the Iterable SDK
+   *
+   * @readonly
    */
   static savedConfig: Readonly<IterableConfig> = new IterableConfig();
 
@@ -75,6 +77,9 @@ export class Iterable {
    * This property provides access to authentication functionality including
    * pausing the authentication retry mechanism.
    *
+   * @since Introduced in
+   * [2.2.0](https://www.npmjs.com/package/@iterable/react-native-sdk/v/2.2.0)
+   *
    * @example
    * ```typescript
    * Iterable.authManager.pauseAuthRetries(true);
@@ -87,6 +92,9 @@ export class Iterable {
    *
    * This property provides access to user functionality including
    * getting the current user's email and setting the current user's email.
+   *
+   * @since Introduced in
+   * [2.2.0](https://www.npmjs.com/package/@iterable/react-native-sdk/v/2.2.0)
    *
    * @example
    * ```typescript
@@ -102,6 +110,9 @@ export class Iterable {
    *
    * This property provides access to tracking functionality including
    * setting attribution information, tracking push opens, and tracking events.
+   *
+   * @since Introduced in
+   * [2.2.0](https://www.npmjs.com/package/@iterable/react-native-sdk/v/2.2.0)
    *
    * @example
    * ```typescript
