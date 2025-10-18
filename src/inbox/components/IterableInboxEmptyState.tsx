@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
+import type { PropsWithChildren, ReactElement } from 'react';
 
 import { type IterableInboxCustomizations } from '../types';
 import { ITERABLE_INBOX_COLORS } from '../constants';
@@ -26,7 +27,9 @@ export interface IterableInboxEmptyStateProps {
 /**
  * A functional component that renders an empty state for the inbox when there are no messages.
  */
-export const IterableInboxEmptyState = (params: IterableInboxEmptyStateProps) => {
+export const IterableInboxEmptyState = (
+  params: PropsWithChildren<IterableInboxEmptyStateProps>
+): ReactElement => {
   const {
     customizations,
     tabBarHeight,

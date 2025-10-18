@@ -40,6 +40,8 @@
     "test:coverage": "jest --coverage",
     "typecheck": "tsc",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
+    "eslint": "eslint",
+    "commitlint": "commitlint",
     "docs": "typedoc",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prebuild": "yarn add_build_info",

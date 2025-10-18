@@ -1,4 +1,10 @@
-import { useCallback, useRef, useState } from 'react';
+import {
+  useCallback,
+  useRef,
+  useState,
+  type PropsWithChildren,
+  type ReactElement,
+} from 'react';
 import { type ViewabilityConfig, type ViewToken, FlatList } from 'react-native';
 
 import { IterableInAppMessage } from '../../inApp';
@@ -65,7 +71,7 @@ export const IterableInboxMessageList = ({
   updateVisibleMessageImpressions,
   contentWidth,
   isPortrait,
-}: IterableInboxMessageListProps) => {
+}: PropsWithChildren<IterableInboxMessageListProps>): ReactElement => {
   const [swiping, setSwiping] = useState<boolean>(false);
   const flatListRef = useRef<FlatList>(null);
 

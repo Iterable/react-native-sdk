@@ -1,5 +1,10 @@
 import { useIsFocused } from '@react-navigation/native';
-import { useEffect, useState } from 'react';
+import {
+  useEffect,
+  useState,
+  type PropsWithChildren,
+  type ReactElement,
+} from 'react';
 import {
   Animated,
   NativeEventEmitter,
@@ -31,7 +36,6 @@ import {
   IterableInboxMessageList,
   type IterableInboxMessageListProps,
 } from './IterableInboxMessageList';
-
 
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
@@ -186,7 +190,9 @@ export interface IterableInboxProps
  * )
  * ```
  */
-export const IterableInbox = (params: IterableInboxProps) => {
+export const IterableInbox = (
+  params: PropsWithChildren<IterableInboxProps>
+): ReactElement => {
   const {
     returnToInboxTrigger = true,
     messageListItemLayout = () => null,

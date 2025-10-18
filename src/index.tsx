@@ -61,8 +61,6 @@ export {
 export {
   IterableInbox,
   IterableInboxDataModel,
-  IterableInboxEmptyState,
-  IterableInboxMessageCell,
   type IterableInboxCustomizations,
   type IterableInboxEmptyStateProps,
   type IterableInboxImpressionRowInfo,

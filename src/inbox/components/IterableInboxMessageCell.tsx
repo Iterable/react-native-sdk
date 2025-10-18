@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, type PropsWithChildren, type ReactElement } from 'react';
 import {
   Animated,
   Image,
@@ -280,7 +280,9 @@ export interface IterableInboxMessageCellProps {
 /**
  * Component which renders a single message cell in the Iterable inbox.
  */
-export const IterableInboxMessageCell = (params: IterableInboxMessageCellProps) => {
+export const IterableInboxMessageCell = (
+  params: PropsWithChildren<IterableInboxMessageCellProps>
+): ReactElement => {
   const {
     index,
     last,

@@ -1,4 +1,9 @@
-import { useEffect, useState } from 'react';
+import {
+  useEffect,
+  useState,
+  type PropsWithChildren,
+  type ReactElement,
+} from 'react';
 import {
   Linking,
   Platform,
@@ -73,7 +78,7 @@ export const IterableInboxMessageDisplay = ({
   deleteRow,
   contentWidth,
   isPortrait,
-}: IterableInboxMessageDisplayProps) => {
+}: PropsWithChildren<IterableInboxMessageDisplayProps>): ReactElement => {
   const messageTitle = rowViewModel.inAppMessage.inboxMetadata?.title;
   const [inAppContent, setInAppContent] =
     useState<IterableHtmlInAppContent | null>(null);
@@ -85,7 +90,7 @@ export const IterableInboxMessageDisplay = ({
 
     header: {
       flexDirection: 'row',
-      height:  Platform.OS === 'ios' ? 44 : 56,
+      height: Platform.OS === 'ios' ? 44 : 56,
       justifyContent: 'center',
       width: '100%',
     },
