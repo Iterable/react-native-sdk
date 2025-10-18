@@ -31,7 +31,7 @@ export class IterableAuthManager {
    *
    * @param authToken - The auth token to pass along
    *
-   * TODO: Add a more flushed out example
+   * {@includeCode ./IterableAuthResponse.ts }
    *
    * @example
    * ```typescript

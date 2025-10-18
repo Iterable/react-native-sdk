@@ -20,6 +20,12 @@ const config = {
   searchInDocuments: true,
   favicon: "./assets/favicon.ico",
   treatValidationWarningsAsErrors: true,
+  useFirstParagraphOfCommentAsSummary: true,
+  cascadedModifierTags: ["@beta"],
+  jsDocCompatibility: {
+    inheritDocTag: true,
+  },
+  preservedTypeAnnotationTags: ["@fires"],
   // transformTags: true,
   requiredToBeDocumented: [
     // "Project",
@@ -45,7 +51,7 @@ const config = {
     "Parameter",
     // Used for object literal types. You probably should set TypeAlias instead, which refers to types created with `type X =`.
     // This only really exists because of an implementation detail.
-    "TypeLiteral",
+    // "TypeLiteral", // Commented out to avoid warnings on inline function types like () => void
     "TypeParameter",
     "Accessor", // shorthand for GetSignature + SetSignature
     "GetSignature",
@@ -61,6 +67,14 @@ const config = {
     compactFolders: false,
     excludeReferences: false,
     includeFolders: false,
+  },
+  visibilityFilters: {
+    protected: true,
+    private: true,
+    inherited: true,
+    external: true,
+    "@alpha": true,
+    "@beta": true,
   },
   sort: [
     "documents-first",

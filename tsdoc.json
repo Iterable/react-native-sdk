@@ -3,7 +3,20 @@
   "tagDefinitions": [
     {
       "tagName": "@os",
-      "syntaxKind": "modifier"
+      "syntaxKind": "block"
+    },
+    {
+      "tagName": "@includeCode",
+      "syntaxKind": "inline"
+    },
+    {
+      "tagName": "@mermaid",
+      "syntaxKind": "block"
     }
-  ]
+  ],
+  "supportForTags": {
+    "@includeCode": true,
+    "@mermaid": true,
+    "@os": true
+  }
 }
