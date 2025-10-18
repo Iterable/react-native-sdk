@@ -18,8 +18,9 @@ const config = {
   includeVersion: true,
   searchInComments: true,
   searchInDocuments: true,
-  modifierTags: ["@group"],
   favicon: "./assets/favicon.ico",
+  treatValidationWarningsAsErrors: true,
+  // transformTags: true,
   requiredToBeDocumented: [
     // "Project",
     // "Module",

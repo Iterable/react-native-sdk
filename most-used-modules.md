@@ -33,4 +33,9 @@ initialize the SDK:
 Iterable.initialize(YOUR_API_KEY, new IterableConfig());
 ```
 
+`Iterable` contains a slew of methods, and the following helper classes:
+- `Iterable.authManager` -- authentication functionality
+- `Iterable.inAppManager` -- in-app message functionality
+- `Iterable.track` -- tracking functionality
+- `Iterable.user` -- functionality related to the current user
 

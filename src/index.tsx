@@ -1,4 +1,10 @@
 /**
+ * This is the doc comment for file1.ts
+ *
+ * @packageDocumentation
+ */
+
+/**
  * React Native module for Iterable.
  */
 export {
@@ -13,6 +19,7 @@ export {
   IterableEdgeInsets,
   IterableLogger,
   IterableTrackingManager,
+  IterableUserManager,
 } from './core/classes';
 export {
   IterableActionSource,
@@ -49,6 +56,7 @@ export {
   IterableInboxMetadata,
   type IterableHtmlInAppContentRaw,
   type IterableInAppContent,
+  type IterableInAppMessageRaw,
 } from './inApp';
 export {
   IterableInbox,

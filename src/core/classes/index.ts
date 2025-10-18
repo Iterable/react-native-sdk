@@ -11,3 +11,4 @@ export * from './IterableEdgeInsets';
 export * from './IterableLogger';
 export * from './IterableTrackingManager';
 export * from './IterableUtil';
+export * from './IterableUserManager';

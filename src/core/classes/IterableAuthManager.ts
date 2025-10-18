@@ -1,8 +1,8 @@
-import { IterableAuthResponse } from './IterableAuthResponse';
 import { IterableApi } from './IterableApi';
-import type { IterableGenerateJwtTokenOpts } from '../types/IterableGenerateJwtTokenOpts';
+import { IterableAuthResponse } from './IterableAuthResponse';
 
 /**
+ * @beta
  * Manages the authentication for the Iterable SDK.
  *
  * @example
@@ -71,7 +71,24 @@ export class IterableAuthManager {
    * });
    * ```
    */
-  static generateJwtToken(opts: IterableGenerateJwtTokenOpts) {
+  static generateJwtToken(opts: {
+    /** The JWT secret generated when you created the **JWT enabled [API key](https://app.iterable.com/settings/apiKeys)** */
+    secret: string;
+    /** The duration of the JWT token in milliseconds. */
+    duration: number;
+    /**
+     * The **Iterable user ID** which was used in **`Iterable.initialize`**.
+     *
+     * NOTE: Either `userId` or `email` must be provided.
+     */
+    userId: string;
+    /**
+     * The **email** which was used in **`Iterable.initialize`**.
+     *
+     * NOTE: Either `userId` or `email` must be provided.
+     */
+    email: string;
+  }): Promise<string> {
     return IterableApi.generateJwtToken(opts);
   }
 }
