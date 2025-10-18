@@ -280,19 +280,20 @@ export interface IterableInboxMessageCellProps {
 /**
  * Component which renders a single message cell in the Iterable inbox.
  */
-export const IterableInboxMessageCell = ({
-  index,
-  last,
-  dataModel,
-  rowViewModel,
-  customizations,
-  swipingCheck,
-  messageListItemLayout,
-  deleteRow,
-  handleMessageSelect,
-  contentWidth,
-  isPortrait,
-}: IterableInboxMessageCellProps) => {
+export const IterableInboxMessageCell = (params: IterableInboxMessageCellProps) => {
+  const {
+    index,
+    last,
+    dataModel,
+    rowViewModel,
+    customizations,
+    swipingCheck,
+    messageListItemLayout,
+    deleteRow,
+    handleMessageSelect,
+    contentWidth,
+    isPortrait,
+  } = params;
   const position = useRef(new Animated.ValueXY()).current;
 
   let deleteSliderHeight = customizations.messageRow?.height

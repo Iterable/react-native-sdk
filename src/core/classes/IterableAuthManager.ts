@@ -61,6 +61,8 @@ export class IterableAuthManager {
    * 5. The generated **API key** will be used in `Iterable.initialize`, and the
    *    **JWT secret** will be used in `IterableApi.generateJwtToken`.
    *
+   *  @param opts - Options for generating the JWT token.
+   *
    *  @example
    * ```typescript
    * const jwtToken = await IterableApi.generateJwtToken({

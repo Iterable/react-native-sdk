@@ -186,15 +186,16 @@ export interface IterableInboxProps
  * )
  * ```
  */
-export const IterableInbox = ({
-  returnToInboxTrigger = true,
-  messageListItemLayout = () => null,
-  customizations = {} as IterableInboxCustomizations,
-  tabBarHeight = 80,
-  tabBarPadding = 20,
-  safeAreaMode = true,
-  showNavTitle = true,
-}: IterableInboxProps) => {
+export const IterableInbox = (params: IterableInboxProps) => {
+  const {
+    returnToInboxTrigger = true,
+    messageListItemLayout = () => null,
+    customizations = {} as IterableInboxCustomizations,
+    tabBarHeight = 80,
+    tabBarPadding = 20,
+    safeAreaMode = true,
+    showNavTitle = true,
+  } = params;
   const defaultInboxTitle = 'Inbox';
   const inboxDataModel = new IterableInboxDataModel();
 

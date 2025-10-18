@@ -26,14 +26,15 @@ export interface IterableInboxEmptyStateProps {
 /**
  * A functional component that renders an empty state for the inbox when there are no messages.
  */
-export const IterableInboxEmptyState = ({
-  customizations,
-  tabBarHeight,
-  tabBarPadding,
-  navTitleHeight,
-  height,
-  isPortrait,
-}: IterableInboxEmptyStateProps) => {
+export const IterableInboxEmptyState = (params: IterableInboxEmptyStateProps) => {
+  const {
+    customizations,
+    tabBarHeight,
+    tabBarPadding,
+    navTitleHeight,
+    height,
+    isPortrait,
+  } = params;
   const defaultTitle = 'No saved messages';
   const defaultBody = 'Check again later!';
 

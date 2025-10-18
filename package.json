@@ -103,8 +103,9 @@
     "release-it": "^17.10.0",
     "turbo": "^1.10.7",
     "typedoc": "^0.28.13",
-    "typedoc-plugin-coverage": "^3.3.0",
+    "typedoc-plugin-coverage": "^4.0.2",
     "typedoc-plugin-mermaid": "^1.12.0",
+    "typedoc-umlclass": "^0.10.2",
     "typescript": "^5.2.2"
   },
   "resolutions": {
@@ -198,5 +199,8 @@
     "type": "module-legacy",
     "languages": "kotlin-swift",
     "version": "0.41.2"
+  },
+  "dependencies": {
+    "typedoc-plugin-dt-links": "^2.0.24"
   }
 }

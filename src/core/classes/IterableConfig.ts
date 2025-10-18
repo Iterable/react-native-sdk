@@ -111,10 +111,13 @@ export class IterableConfig {
   /**
    * A callback function used to handle deep link URLs and in-app message button and link URLs.
    *
+   * This function is called when a URL is clicked in an in-app message, push notification, or universal link.
+   *
    * @param url - The URL to be processed (likely from a click).
    * @param context - The context in which the URL action is being performed.
    * Describes the source of the URL (push, in-app, or universal link) and
    * information about any associated custom actions.
+   * @returns A boolean indicating whether the URL was successfully handled.
    *
    * @remarks
    * Use this method to determine whether or not the app can handle the clicked
@@ -151,9 +154,12 @@ export class IterableConfig {
    * custom action URL. If it can, it should handle the action and return `true`.
    * Otherwise, it should return `false`.
    *
+   * This function is called when a custom action URL is clicked in an in-app message.
+   *
    * @param action - The custom action that was triggered.
    * @param context - The context in which the action was triggered.  In other
    * words, information about where the action was invoked.
+   * @returns A boolean indicating whether the action was handled.
    *
    * @remarks
    * A custom action URL has format `action://customActionName`: an `action://`
@@ -193,6 +199,8 @@ export class IterableConfig {
    * By default, every single in-app will be shown as soon as it is available.
    * If more than 1 in-app is available, we show the first.
    *
+   * This function is called when an in-app message is about to be shown, allowing you to control whether it should be displayed.
+   *
    * @see [In-App Messages with Iterable's React Native SDK](https://support.iterable.com/hc/en-us/articles/360045714172-In-App-Messages-with-Iterable-s-React-Native-SDK)
    *
    * @remarks
@@ -220,6 +228,8 @@ export class IterableConfig {
    * Provide an implementation for this method only if your app uses a
    * [JWT-enabled API
    * key](https://support.iterable.com/hc/en-us/articles/360045714132-Installing-Iterable-s-React-Native-SDK#:~:text=app%20uses%20a-,JWT%2Denabled%20API%20key,-.).
+   *
+   * This function is called when the SDK needs to retrieve a JWT token for authentication.
    *
    * @remarks
    * To make requests to Iterable's API using a JWT-enabled API key, you should
@@ -272,6 +282,8 @@ export class IterableConfig {
    *
    * The retry for JWT should be automatically handled by the native SDK, so
    * this is just for logging/transparency purposes.
+   *
+   * This function is called when JWT authentication fails, allowing you to log or handle the error.
    *
    * @param authFailure - The details of the auth failure.
    *
@@ -382,9 +394,42 @@ export class IterableConfig {
   /**
    * Converts the IterableConfig instance to a dictionary object.
    *
-   * @returns An object representing the configuration.
+   * @returns An object representing the configuration with all properties serialized.
    */
-  toDict() {
+  toDict(): {
+    /** The name of the Iterable push integration. */
+    pushIntegrationName: string | undefined;
+    /** Whether automatic push registration is enabled. */
+    autoPushRegistration: boolean;
+    /** Number of seconds between each in-app message display. */
+    inAppDisplayInterval: number;
+    /** A boolean indicating if a URL handler is present. */
+    urlHandlerPresent: boolean;
+    /** A boolean indicating if a custom action handler is present. */
+    customActionHandlerPresent: boolean;
+    /** A boolean indicating if an in-app handler is present. */
+    inAppHandlerPresent: boolean;
+    /** A boolean indicating if an authentication handler is present. */
+    authHandlerPresent: boolean;
+    /** The log level for the SDK. */
+    logLevel: IterableLogLevel;
+    /** The number of seconds before JWT expiration to refresh the token. */
+    expiringAuthTokenRefreshPeriod: number;
+    /** The array of allowed URL protocols. */
+    allowedProtocols: string[];
+    /** @deprecated Whether Android SDK should use in-memory storage for in-apps. */
+    androidSdkUseInMemoryStorageForInApps: boolean;
+    /** Whether to use in-memory storage for in-apps. */
+    useInMemoryStorageForInApps: boolean;
+    /** The data region for the SDK. */
+    dataRegion: IterableDataRegion;
+    /** The push platform to use. */
+    pushPlatform: IterablePushPlatform;
+    /** Whether encryption is enforced for PII stored on disk (Android only). */
+    encryptionEnforced: boolean;
+    /** The retry policy configuration for JWT refresh. */
+    retryPolicy: IterableRetryPolicy | undefined;
+  } {
     return {
       pushIntegrationName: this.pushIntegrationName,
       autoPushRegistration: this.autoPushRegistration,

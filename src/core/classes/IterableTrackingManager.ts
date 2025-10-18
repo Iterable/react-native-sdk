@@ -111,6 +111,8 @@ export class IterableTrackingManager {
    * SDK's default rendering. Click events refer to click events within the in-app message to distinguish
    * from `inAppOpen` events.
    *
+   * @param params - Parameters for tracking the in-app click event.
+   *
    * @example
    * ```typescript
    * const message = new IterableInAppMessage(1234, 4567, IterableInAppTrigger.auto, new Date(), new Date(), false, undefined, undefined, false, 0);
@@ -139,7 +141,8 @@ export class IterableTrackingManager {
    * user's profile for manual tracking purposes. Iterable's SDK automatically
    * tracks in-app message close events when you use the SDK's default
    * rendering.
-
+   *
+   * @param params - Parameters for tracking the in-app close event.
    *
    * @example
    * ```typescript
@@ -171,6 +174,8 @@ export class IterableTrackingManager {
    * for manual tracking purposes. Iterable's SDK automatically tracks in-app message opens when you use the
    * SDK's default rendering.
    *
+   * @param params - Parameters for tracking the in-app open event.
+   *
    * @example
    * ```typescript
    * const message = new IterableInAppMessage(1234, 4567, IterableInAppTrigger.auto, new Date(), new Date(), false, undefined, undefined, false, 0);
@@ -198,6 +203,8 @@ export class IterableTrackingManager {
    * Represent each item in the purchase event with an {@link IterableCommerceItem} object.
    *
    * @see {@link IterableCommerceItem}
+   *
+   * @param params - Parameters for tracking the purchase event.
    *
    * **NOTE**: `total` is a parameter that is passed in. Iterable does not sum the `price` fields of the various items in the purchase event.
    *
@@ -231,6 +238,7 @@ export class IterableTrackingManager {
    * However, it's also possible to manually track these events by calling this
    * method.
    *
+   * @param opts - Options for tracking the push open event.
    *
    * @example
    * ```typescript
