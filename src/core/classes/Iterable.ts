@@ -194,7 +194,7 @@ export class Iterable {
   }
 
   /**
-   * @deprecated Use {@link Iterable.user.setEmail} instead.
+   * @deprecated Use {@link IterableUserManager.setEmail | Iterable.user.setEmail} instead.
    *  Associate the current user with the passed in email parameter.
    *
    * Note: specify a user by calling `Iterable.setEmail` or
@@ -248,7 +248,7 @@ export class Iterable {
   }
 
   /**
-   * @deprecated Use {@link Iterable.user.getEmail} instead.
+   * @deprecated Use {@link IterableUserManager.getEmail | Iterable.user.getEmail} instead.
    * Get the email associated with the current user.
    *
    * @example
@@ -263,7 +263,7 @@ export class Iterable {
   }
 
   /**
-   * @deprecated Use {@link Iterable.user.setUserId} instead.
+   * @deprecated Use {@link IterableUserManager.setUserId | Iterable.user.setUserId} instead.
    * Associate the current user with the passed in `userId` parameter.
    *
    * Note: specify a user by calling `Iterable.setEmail` or
@@ -311,7 +311,7 @@ export class Iterable {
   }
 
   /**
-   * @deprecated Use {@link Iterable.user.getUserId} instead.
+   * @deprecated Use {@link IterableUserManager.getUserId | Iterable.user.getUserId} instead.
    * Get the `userId` associated with the current user.
    *
    * @example
@@ -326,7 +326,7 @@ export class Iterable {
   }
 
   /**
-   * @deprecated Use {@link Iterable.user.disableDevice} instead.
+   * @deprecated Use {@link IterableUserManager.disableDevice | Iterable.user.disableDevice} instead.
    * Disable the device's token for the current user.  This will disable push notifications for the current user.
    *
    * @example
@@ -354,7 +354,7 @@ export class Iterable {
   }
 
   /**
-   * @deprecated Use {@link Iterable.track.getAttributionInfo} instead.
+   * @deprecated Use {@link IterableTrackingManager.getAttributionInfo | Iterable.track.getAttributionInfo} instead.
    * Get the stored attribution information -- possibly based on a recent deep link click.
    *
    * The attribution information contains the campaign ID, template ID, and message ID of the message
@@ -399,7 +399,7 @@ export class Iterable {
   }
 
   /**
-   * @deprecated Use {@link Iterable.track.setAttributionInfo} instead.
+   * @deprecated Use {@link IterableTrackingManager.setAttributionInfo | Iterable.track.setAttributionInfo} instead.
    * Manually set the current stored attribution information so that it can later be used when tracking events.
    *
    * The attribution information contains the campaign ID, template ID, and message ID of the message
@@ -428,7 +428,7 @@ export class Iterable {
   }
 
   /**
-   * @deprecated Use {@link Iterable.track.trackPushOpenWithCampaignId} instead.
+   * @deprecated Use {@link IterableTrackingManager.trackPushOpenWithCampaignId | Iterable.track.trackPushOpenWithCampaignId} instead.
    * Create a `pushOpen` event on the current user's Iterable profile, populating
    * it with data provided to the method call.
    *
@@ -522,7 +522,7 @@ export class Iterable {
   }
 
   /**
-   * @deprecated Use {@link Iterable.track.trackPurchase} instead.
+   * @deprecated Use {@link IterableTrackingManager.trackPurchase | Iterable.track.trackPurchase} instead.
    * Create a purchase event on the current user's Iterable profile.
    *
    * Represent each item in the purchase event with an {@link IterableCommerceItem} object.
@@ -557,7 +557,7 @@ export class Iterable {
   }
 
   /**
-   * @deprecated Use {@link Iterable.track.trackInAppOpen} instead.
+   * @deprecated Use {@link IterableTrackingManager.trackInAppOpen | Iterable.track.trackInAppOpen} instead.
    * Create an `inAppOpen` event for the specified message on the current user's profile
    * for manual tracking purposes. Iterable's SDK automatically tracks in-app message opens when you use the
    * SDK's default rendering.
@@ -590,7 +590,7 @@ export class Iterable {
   }
 
   /**
-   * @deprecated Use {@link Iterable.track.trackInAppClick} instead.
+   * @deprecated Use {@link IterableTrackingManager.trackInAppClick | Iterable.track.trackInAppClick} instead.
    * Create an `inAppClick` event for the specified message on the current user's profile
    * for manual tracking purposes. Iterable's SDK automatically tracks in-app message clicks when you use the
    * SDK's default rendering. Click events refer to click events within the in-app message to distinguish
@@ -620,7 +620,7 @@ export class Iterable {
   }
 
   /**
-   * @deprecated Use {@link Iterable.track.trackInAppClose} instead.
+   * @deprecated Use {@link IterableTrackingManager.trackInAppClose | Iterable.track.trackInAppClose} instead.
    * Create an `inAppClose` event for the specified message on the current
    * user's profile for manual tracking purposes. Iterable's SDK automatically
    * tracks in-app message close events when you use the SDK's default
@@ -698,7 +698,7 @@ export class Iterable {
   }
 
   /**
-   * @deprecated Use {@link Iterable.track.trackEvent} instead.
+   * @deprecated Use {@link IterableTrackingManager.trackEvent | Iterable.track.trackEvent} instead.
    * Create a custom event to the current user's Iterable profile.
    *
    * Pass in the name of the event stored in eventName key and the data associated with the event.
@@ -723,7 +723,7 @@ export class Iterable {
   }
 
   /**
-   * @deprecated Use {@link Iterable.user.updateUser} instead.
+   * @deprecated Use {@link IterableUserManager.updateUser | Iterable.user.updateUser} instead.
    * Save data to the current user's Iterable profile.
    *
    * If `mergeNestedObjects` is set to `true`, top-level objects in the passed in dataFields parameter
@@ -770,7 +770,7 @@ export class Iterable {
   }
 
   /**
-   * @deprecated Use {@link Iterable.user.updateEmail} instead.
+   * @deprecated Use {@link IterableUserManager.updateEmail | Iterable.user.updateEmail} instead.
    * Change the value of the email field on the current user's Iterable profile.
    *
    * If `Iterable.setUserId` was used to identify the current user, `Iterable.updateEmail` can be called to

@@ -73,7 +73,7 @@ export class IterableAuthManager {
    * });
    * ```
    */
-  static generateJwtToken(opts: {
+  generateJwtToken(opts: {
     /** The JWT secret generated when you created the **JWT enabled [API key](https://app.iterable.com/settings/apiKeys)** */
     secret: string;
     /** The duration of the JWT token in milliseconds. */
