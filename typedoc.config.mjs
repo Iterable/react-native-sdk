@@ -3,7 +3,7 @@
 const config = {
   entryPoints: ['./src/index.tsx'],
   projectDocuments: ['README.md', 'most-used-modules.md'],
-  out: './docs',
+  out: './docs-gen',
   tsconfig: './tsconfig.json',
   excludeInternal: true,
   excludePrivate: true,

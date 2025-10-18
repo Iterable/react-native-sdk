@@ -1,6 +1,6 @@
 [build]
   # This is the directory that will be deployed to Netlify
-  publish = "docs"
+  publish = "docs-gen"
 
   # Build command (not needed since we build in GitHub Actions)
   command = "yarn docs"
