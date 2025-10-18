@@ -1,5 +1,14 @@
 import { IterableApi } from './IterableApi';
 
+/**
+ * Manages user identity and profile information for the Iterable SDK.
+ *
+ * @remarks
+ * Provides methods to get and set user email and user ID, and to update user profile fields.
+ * User identity persists across app sessions until manually changed.
+ *
+ * Access this class via `Iterable.user`.
+ */
 export class IterableUserManager {
   /**
    * Get the current user's email.

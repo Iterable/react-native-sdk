@@ -1,11 +1,9 @@
 /**
- * This is the doc comment for file1.ts
+ * [@iterable/react-native-sdk](https://github.com/Iterable/react-native-sdk)
+ * provides APIs to integrate Iterable features into React Native apps,
+ * including user tracking, push notifications, and in-app messaging.
  *
  * @packageDocumentation
- */
-
-/**
- * React Native module for Iterable.
  */
 export {
   Iterable,

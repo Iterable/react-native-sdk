@@ -1,4 +1,5 @@
 /** @type {Partial<import('typedoc').TypeDocOptions>} */
+/** @type { import('typedoc').TypeDocOptionMap & import('typedoc-umlclass').Config } */
 const config = {
   entryPoints: ['./src/index.tsx'],
   projectDocuments: ['README.md', 'most-used-modules.md'],
@@ -25,7 +26,7 @@ const config = {
   jsDocCompatibility: {
     inheritDocTag: true,
   },
-  preservedTypeAnnotationTags: ['@fires'],
+  preservedTypeAnnotationTags: ['@fires', '@license'],
   // transformTags: true,
   requiredToBeDocumented: [
     // "Project",
@@ -113,7 +114,12 @@ const config = {
     },
   },
   readme: './README.md',
-  plugin: ['typedoc-plugin-coverage', 'typedoc-plugin-mermaid'],
+  plugin: [
+    'typedoc-plugin-coverage',
+    'typedoc-plugin-mermaid',
+    'typedoc-plugin-inline-sources',
+    'typedoc-plugin-dt-links',
+  ],
 };
 
 export default config;

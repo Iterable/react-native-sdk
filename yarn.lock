@@ -2014,8 +2014,8 @@ __metadata:
     typedoc: ^0.28.13
     typedoc-plugin-coverage: ^4.0.2
     typedoc-plugin-dt-links: ^2.0.24
+    typedoc-plugin-inline-sources: ^1.3.0
     typedoc-plugin-mermaid: ^1.12.0
-    typedoc-umlclass: ^0.10.2
     typescript: ^5.2.2
   peerDependencies:
     "@react-navigation/native": "*"
@@ -4541,15 +4541,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"binary-split@npm:^1.0.5":
-  version: 1.0.5
-  resolution: "binary-split@npm:1.0.5"
-  dependencies:
-    through2: ^2.0.3
-  checksum: 5ce99054a4696a2667269b87dab0a4b09ffcab0e0c939c6397e0ec6ec5bd169b7850f6b50ef39f7c76f6898b627cca4fb929624fadc53a51809ede329450abcb
-  languageName: node
-  linkType: hard
-
 "bl@npm:^4.1.0":
   version: 4.1.0
   resolution: "bl@npm:4.1.0"
@@ -5564,15 +5555,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dbly-linked-list@npm:0.3.4":
-  version: 0.3.4
-  resolution: "dbly-linked-list@npm:0.3.4"
-  dependencies:
-    lodash.isequal: ^4.5.0
-  checksum: 629d23f83f1dc1c12012471c9cde3ea491c7401dc081e6c56b43f67e9f92875f0ecfa8d2bf43c6c7653958c6ed9880fefbcee04e1ac6c2679301e4b49bc2aa9f
-  languageName: node
-  linkType: hard
-
 "debug@npm:2.6.9, debug@npm:^2.2.0, debug@npm:^2.6.9":
   version: 2.6.9
   resolution: "debug@npm:2.6.9"
@@ -5622,13 +5604,6 @@ __metadata:
   version: 0.2.2
   resolution: "decode-uri-component@npm:0.2.2"
   checksum: 95476a7d28f267292ce745eac3524a9079058bbb35767b76e3ee87d42e34cd0275d2eb19d9d08c3e167f97556e8a2872747f5e65cbebcac8b0c98d83e285f139
-  languageName: node
-  linkType: hard
-
-"decorator-cache-getter@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "decorator-cache-getter@npm:1.0.0"
-  checksum: 78f9278e975bce54d186f8484f589b8993fdc10217b45d1cebda0c016a667ee269d8aaedf6bcdee770441194ad19c52dd4e80cb987d62198ee8491440f28394d
   languageName: node
   linkType: hard
 
@@ -9228,13 +9203,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash.isequal@npm:^4.5.0":
-  version: 4.5.0
-  resolution: "lodash.isequal@npm:4.5.0"
-  checksum: da27515dc5230eb1140ba65ff8de3613649620e8656b19a6270afe4866b7bd461d9ba2ac8a48dcc57f7adac4ee80e1de9f965d89d4d81a0ad52bb3eec2609644
-  languageName: node
-  linkType: hard
-
 "lodash.isplainobject@npm:^4.0.6":
   version: 4.0.6
   resolution: "lodash.isplainobject@npm:4.0.6"
@@ -11052,23 +11020,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"plantuml-encoder@npm:^1.4.0":
-  version: 1.4.0
-  resolution: "plantuml-encoder@npm:1.4.0"
-  checksum: d0ad77d960a8b092d8cfe9bdefc7a482ec073ecc686a92e482a8cbe35183d42433e79efd61fe24859ebd3219859d7fe022d49aaeec8827d46fde2ae4e7dba461
-  languageName: node
-  linkType: hard
-
-"plantuml-pipe@npm:^1.6.0":
-  version: 1.6.0
-  resolution: "plantuml-pipe@npm:1.6.0"
-  dependencies:
-    binary-split: ^1.0.5
-    split2: ^4.2.0
-  checksum: 5bf4bc6831d7fdb92a6b56a25d4a8854789a395d8eefb5b47ea16c084394196d34b5e1b6ac0f5ada1979a86f93e3fc3f2e2f00c111aea74c8b695d56d6110faa
-  languageName: node
-  linkType: hard
-
 "possible-typed-array-names@npm:^1.0.0":
   version: 1.1.0
   resolution: "possible-typed-array-names@npm:1.1.0"
@@ -11174,13 +11125,6 @@ __metadata:
   version: 2.0.1
   resolution: "process-nextick-args@npm:2.0.1"
   checksum: 1d38588e520dab7cea67cbbe2efdd86a10cc7a074c09657635e34f035277b59fbb57d09d8638346bf7090f8e8ebc070c96fa5fd183b777fff4f5edff5e9466cf
-  languageName: node
-  linkType: hard
-
-"progress@npm:^2.0.3":
-  version: 2.0.3
-  resolution: "progress@npm:2.0.3"
-  checksum: f67403fe7b34912148d9252cb7481266a354bd99ce82c835f79070643bb3c6583d10dbcfda4d41e04bbc1d8437e9af0fb1e1f2135727878f5308682a579429b7
   languageName: node
   linkType: hard
 
@@ -11319,15 +11263,6 @@ __metadata:
     split-on-first: ^1.0.0
     strict-uri-encode: ^2.0.0
   checksum: 91af02dcd9cc9227a052841d5c2eecb80a0d6489d05625df506a097ef1c59037cfb5e907f39b84643cbfd535c955abec3e553d0130a7b510120c37d06e0f4346
-  languageName: node
-  linkType: hard
-
-"queue-fifo@npm:^0.2.6":
-  version: 0.2.6
-  resolution: "queue-fifo@npm:0.2.6"
-  dependencies:
-    dbly-linked-list: 0.3.4
-  checksum: 78d41938c9d105b9e10c54a20cf715aa6888097e2b09e5f9ce64d4226f482fb8661ae7b38c40d8cd2ad5ceb7aedae59530a1ce8c283afa63490ff6d0ab54a82d
   languageName: node
   linkType: hard
 
@@ -12523,7 +12458,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"split2@npm:^4.0.0, split2@npm:^4.2.0":
+"split2@npm:^4.0.0":
   version: 4.2.0
   resolution: "split2@npm:4.2.0"
   checksum: 05d54102546549fe4d2455900699056580cca006c0275c334611420f854da30ac999230857a85fdd9914dc2109ae50f80fda43d2a445f2aa86eccdc1dfce779d
@@ -12947,7 +12882,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"through2@npm:^2.0.1, through2@npm:^2.0.3":
+"through2@npm:^2.0.1":
   version: 2.0.5
   resolution: "through2@npm:2.0.5"
   dependencies:
@@ -13280,6 +13215,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typedoc-plugin-inline-sources@npm:^1.3.0":
+  version: 1.3.0
+  resolution: "typedoc-plugin-inline-sources@npm:1.3.0"
+  peerDependencies:
+    typedoc: 0.28.x
+  checksum: 52ea03565d6299007325097bc8585fdc251d00862ab1adce5d377447645f9a7488b806b6b627bd8f03c1d8522949acf1c16abeef16aa5c8e81516947296f1196
+  languageName: node
+  linkType: hard
+
 "typedoc-plugin-mermaid@npm:^1.12.0":
   version: 1.12.0
   resolution: "typedoc-plugin-mermaid@npm:1.12.0"
@@ -13288,21 +13232,6 @@ __metadata:
   peerDependencies:
     typedoc: ">=0.23.0 || 0.24.x || 0.25.x || 0.26.x"
   checksum: 444060509dec72059f01dd1f867c2e40278dcdd0f91584e05a4fccd25d48a63e4d1a56f845e994b049e9f6f785b1517f874fa1e7d7c4b5106259bddb37080e84
-  languageName: node
-  linkType: hard
-
-"typedoc-umlclass@npm:^0.10.2":
-  version: 0.10.2
-  resolution: "typedoc-umlclass@npm:0.10.2"
-  dependencies:
-    decorator-cache-getter: ^1.0.0
-    plantuml-encoder: ^1.4.0
-    plantuml-pipe: ^1.6.0
-    progress: ^2.0.3
-    queue-fifo: ^0.2.6
-  peerDependencies:
-    typedoc: 0.24.x || 0.25.x || ^0.26.5 || 0.27.x || 0.28.x
-  checksum: 1dbbd73d638bed2716ccfa1b4e650477e6c72c0ac8450f769a0ae8e1431e445736b08889d54fbcc286cfdcbbb8b933a3e13f83690118da40e92c1ff8187d6e8f
   languageName: node
   linkType: hard
 

@@ -12,6 +12,10 @@
     {
       "tagName": "@mermaid",
       "syntaxKind": "block"
+    },
+    {
+      "tagName": "@license",
+      "syntaxKind": "block"
     }
   ]
 }
