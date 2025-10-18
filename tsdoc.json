@@ -1,24 +1,14 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
+  "extends": ["typedoc/tsdoc.json"],
+  "noStandardTags": false,
   "tagDefinitions": [
     {
       "tagName": "@os",
       "syntaxKind": "block"
     },
     {
-      "tagName": "@includeCode",
-      "syntaxKind": "inline"
-    },
-    {
       "tagName": "@mermaid",
-      "syntaxKind": "block"
-    },
-    {
-      "tagName": "@license",
-      "syntaxKind": "block"
-    },
-    {
-      "tagName": "@since",
       "syntaxKind": "block"
     }
   ]

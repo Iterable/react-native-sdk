@@ -33,6 +33,10 @@ const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
  * static methods of this class.  EG: initializing the SDK, logging in a user,
  * tracking purchases, etc.
  *
+ * @document ../../../most-used-modules.md
+ *
+ * @category Testing
+ *
  * @example
  * // Initialize the SDK
  * Iterable.initialize(YOUR_API_KEY, new IterableConfig());
@@ -46,6 +50,8 @@ const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 export class Iterable {
   /**
    * Current configuration of the Iterable SDK
+   *
+   * @categoryDescription Advanced Use
    *
    * @readonly
    */

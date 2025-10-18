@@ -2,30 +2,65 @@
 /** @type { import('typedoc').TypeDocOptionMap & import('typedoc-umlclass').Config } */
 const config = {
   entryPoints: ['./src/index.tsx'],
-  projectDocuments: ['README.md', 'most-used-modules.md'],
+  projectDocuments: ['README.md', 'most-used-modules.md', 'another-md.md'],
   out: './docs-gen',
   tsconfig: './tsconfig.json',
   excludeInternal: true,
   excludePrivate: true,
-  excludeExternals: true,
+  excludeExternals: false,
   excludePrivateClassFields: true,
   categorizeByGroup: true,
+  excludeProtected: true,
   validation: {
-    invalidLink: true,
-    notDocumented: true,
     notExported: true,
+    invalidLink: true,
+    rewrittenLink: true,
+    notDocumented: true,
     unusedMergeModuleWith: true,
   },
+  entryPointStrategy: 'expand',
   includeVersion: true,
   searchInComments: true,
   searchInDocuments: true,
-  favicon: './assets/favicon.ico',
   treatValidationWarningsAsErrors: true,
   useFirstParagraphOfCommentAsSummary: true,
+  disableSources: false,
   cascadedModifierTags: ['@beta'],
-  jsDocCompatibility: {
-    inheritDocTag: true,
+  theme: 'typedoc-github-theme',
+  router: 'structure',
+  customFooterHtml: '<p>Copyright <strong>Iterable</strong> 2025</p>',
+  customFooterHtmlDisableWrapper: true,
+  markdownLinkExternal: true,
+  hideGenerator: true,
+  // groupReferencesByType: true,
+  sortEntryPoints: true,
+  sidebarLinks: {
+    Iterable: 'https://app.iterable.com/',
+    Support:
+      'https://support.iterable.com/hc/en-us/articles/360045714072-Overview-of-Iterable-s-React-Native-SDK',
+    Installation:
+      'https://support.iterable.com/hc/en-us/articles/360045714132-Installing-Iterable-s-React-Native-SDK',
   },
+  headings: {
+    readme: true,
+    document: false,
+  },
+  groupOrder: [
+    'Documents',
+    'React Components',
+    'Classes',
+    'Enums',
+    'Interfaces',
+    'Types',
+    'Functions',
+    'Variables',
+    'Constants',
+    '*',
+  ],
+  categoryOrder: ['Documents', 'React Components', '*'],
+  // jsDocCompatibility: {
+  //   inheritDocTag: true,
+  // },
   preservedTypeAnnotationTags: ['@fires', '@license'],
   // transformTags: true,
   requiredToBeDocumented: [
@@ -64,14 +99,26 @@ const config = {
   ],
   navigation: {
     includeCategories: false,
-    includeGroups: false,
+    includeGroups: true,
     compactFolders: false,
     excludeReferences: false,
-    includeFolders: false,
+    includeFolders: true,
+  },
+  alwaysCreateEntryPointModule: false,
+  navigationLinks: {
+    Github: 'https://github.com/Iterable/react-native-sdk',
+    Changelog:
+      'https://github.com/Iterable/react-native-sdk/blob/master/CHANGELOG.md',
+  },
+  searchCategoryBoosts: {
+    'React Components': 1.5,
+  },
+  searchGroupBoosts: {
+    'React Components': 1.5,
   },
   visibilityFilters: {
-    'protected': true,
-    'private': true,
+    'protected': false,
+    'private': false,
     'inherited': true,
     'external': true,
     '@alpha': true,
@@ -111,14 +158,23 @@ const config = {
     // used by {@link react!Component}
     'react': {
       Component: 'https://react.dev/reference/react/Component',
+      FunctionComponent:
+        'https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/mdx/types.d.ts',
     },
   },
   readme: './README.md',
+  customJs: './expand-nav.js',
   plugin: [
     'typedoc-plugin-coverage',
     'typedoc-plugin-mermaid',
     'typedoc-plugin-inline-sources',
     'typedoc-plugin-dt-links',
+    // 'typedoc-plugin-localization',
+    'typedoc-plugin-emojify',
+    '@reside-ic/typedoc-plugin-copy-doc',
+    'typedoc-github-theme',
+    // 'typedoc-material-theme',
+    // '@droppedcode/typedoc-plugin-relative-includes',
   ],
 };
 

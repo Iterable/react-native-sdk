@@ -165,6 +165,9 @@ export interface IterableInboxProps
  * It handles fetching messages, displaying them in a list, and showing individual message details.
  * It also manages the state of the inbox, including loading state, selected message, and visible message impressions.
  *
+ * @category React Components
+ * @group React Components
+ *
  * @example
  * ```tsx
  * const [visible, setVisible] = useState<boolean>(false);
