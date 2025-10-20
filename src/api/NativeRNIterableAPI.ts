@@ -117,10 +117,9 @@ export interface Spec extends TurboModule {
   // Auth
   passAlongAuthToken(authToken?: string | null): void;
   pauseAuthRetries(pauseRetry: boolean): void;
-  generateJwtForUserId(opts: {
+  generateJwtToken(opts: {
     secret: string;
-    iat: Date;
-    exp: Date;
+    duration: number;
     userId: string | null;
     email: string | null;
   }): Promise<string>;

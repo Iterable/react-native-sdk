@@ -351,6 +351,29 @@ export class IterableApi {
     return RNIterableAPI.passAlongAuthToken(authToken);
   }
 
+  /**
+   * Generate a JWT token for the current user.
+   *
+   * @since Introduced in
+   * [2.2.0](https://www.npmjs.com/package/@iterable/react-native-sdk/v/2.2.0)
+   *
+   * @param opts - The options for generating a JWT token
+   * @returns A Promise that resolves to the generated JWT token
+   */
+  static generateJwtToken(opts: {
+    /* The secret key for generating the JWT token. */
+    secret: string;
+    /* The duration of the JWT token in milliseconds. */
+    duration: number;
+    /* The user ID for the current user. */
+    userId: string | null;
+    /* The email for the current user. */
+    email: string | null;
+  }): Promise<string> {
+    IterableLogger.log('generateJwtToken: ', opts);
+    return RNIterableAPI.generateJwtToken(opts);
+  }
+
   // ---- End AUTH ---- //
 
   // ====================================================== //
@@ -507,7 +530,7 @@ export class IterableApi {
   // ---- End IN-APP ---- //
 
   // ====================================================== //
-  // ======================= MOSC ======================= //
+  // ======================== MISC ======================== //
   // ====================================================== //
 
   /**
