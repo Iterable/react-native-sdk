@@ -1,5 +1,10 @@
 import { useIsFocused } from '@react-navigation/native';
-import { useEffect, useState } from 'react';
+import {
+  useEffect,
+  useState,
+  type PropsWithChildren,
+  type ReactElement,
+} from 'react';
 import {
   Animated,
   NativeEventEmitter,
@@ -161,6 +166,9 @@ export interface IterableInboxProps
  * It handles fetching messages, displaying them in a list, and showing individual message details.
  * It also manages the state of the inbox, including loading state, selected message, and visible message impressions.
  *
+ * @category React Components
+ * @group React Components
+ *
  * @example
  * ```tsx
  * const [visible, setVisible] = useState<boolean>(false);
@@ -186,15 +194,18 @@ export interface IterableInboxProps
  * )
  * ```
  */
-export const IterableInbox = ({
-  returnToInboxTrigger = true,
-  messageListItemLayout = () => null,
-  customizations = {} as IterableInboxCustomizations,
-  tabBarHeight = 80,
-  tabBarPadding = 20,
-  safeAreaMode = true,
-  showNavTitle = true,
-}: IterableInboxProps) => {
+export const IterableInbox = (
+  params: PropsWithChildren<IterableInboxProps>
+): ReactElement => {
+  const {
+    returnToInboxTrigger = true,
+    messageListItemLayout = () => null,
+    customizations = {} as IterableInboxCustomizations,
+    tabBarHeight = 80,
+    tabBarPadding = 20,
+    safeAreaMode = true,
+    showNavTitle = true,
+  } = params;
   const defaultInboxTitle = 'Inbox';
   const inboxDataModel = new IterableInboxDataModel();
 

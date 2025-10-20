@@ -301,8 +301,11 @@ export class IterableConfig {
    */
   toDict() {
     return {
+      /** The name of the Iterable push integration. */
       pushIntegrationName: this.pushIntegrationName,
+      /** Whether automatic push registration is enabled. */
       autoPushRegistration: this.autoPushRegistration,
+      /** The display interval between in-app messages (in seconds). */
       inAppDisplayInterval: this.inAppDisplayInterval,
       /**
        * A boolean indicating if a URL handler is present.
@@ -334,13 +337,22 @@ export class IterableConfig {
       authHandlerPresent: this.authHandler != undefined,
       /** The log level for the SDK. */
       logLevel: this.logLevel,
+      /** The number of seconds before JWT expiration to refresh the token. */
       expiringAuthTokenRefreshPeriod: this.expiringAuthTokenRefreshPeriod,
+      /** The array of allowed URL protocols that the SDK can handle. */
       allowedProtocols: this.allowedProtocols,
+      /**
+       * @deprecated Whether to use in-memory storage for in-app messages on Android.
+       */
       androidSdkUseInMemoryStorageForInApps:
         this.androidSdkUseInMemoryStorageForInApps,
+      /** Whether to use in-memory storage for in-app messages. */
       useInMemoryStorageForInApps: this.useInMemoryStorageForInApps,
+      /** The data region determining the data center and endpoints. */
       dataRegion: this.dataRegion,
+      /** The push platform to use for push notifications. */
       pushPlatform: this.pushPlatform,
+      /** Whether encryption is enforced for PII stored on disk (Android only). */
       encryptionEnforced: this.encryptionEnforced,
     };
   }

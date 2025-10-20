@@ -57,8 +57,10 @@ export class Iterable {
 
   /**
    * Current configuration of the Iterable SDK
+   *
+   * @readonly
    */
-  static savedConfig: IterableConfig = new IterableConfig();
+  static savedConfig: Readonly<IterableConfig> = new IterableConfig();
 
   /**
    * In-app message manager for the current user.

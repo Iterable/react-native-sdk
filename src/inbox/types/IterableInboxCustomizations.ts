@@ -24,7 +24,7 @@ export interface IterableInboxCustomizations {
   noMessagesBody?: string;
 
   /**
-   * CThe container that holds the unread indicator.
+   * The container that holds the unread indicator.
    */
   unreadIndicatorContainer?: {
     /** The flex direction of the container.  */
