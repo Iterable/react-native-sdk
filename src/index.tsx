@@ -39,12 +39,11 @@ export {
   IterableInboxMetadata,
   type IterableHtmlInAppContentRaw,
   type IterableInAppContent,
+  type IterableInAppMessageRaw,
 } from './inApp';
 export {
   IterableInbox,
   IterableInboxDataModel,
-  IterableInboxEmptyState,
-  IterableInboxMessageCell,
   type IterableInboxCustomizations,
   type IterableInboxEmptyStateProps,
   type IterableInboxImpressionRowInfo,

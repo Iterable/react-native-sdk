@@ -1,0 +1,31 @@
+name: Validate Documentation
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  merge_group:
+    types:
+      - checks_requested
+
+jobs:
+  validate-docs:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch full history for proper git info
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Validate documentation
+        run: yarn docs --validation --treatWarningsAsErrors --json /dev/null
