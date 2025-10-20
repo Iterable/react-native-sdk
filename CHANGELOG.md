@@ -1,6 +1,6 @@
 ## 2.0.4
 
-## Updates
+### Updates
 - Added API documentation via Netlify([1087275](https://github.com/Iterable/react-native-sdk/commit/1087275))
 - Removed dependency on `react-native-vector-icons`, per issues
   [#513](https://github.com/Iterable/react-native-sdk/issues/513),

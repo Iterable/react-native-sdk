@@ -1,14 +1,7 @@
 /** @type {Partial<import('typedoc').TypeDocOptions>} */
 const config = {
   entryPoints: ['./src/index.tsx'],
-  projectDocuments: [
-    'README.md',
-    './docs-static/Quick Start.md',
-    './docs-static/Authenticating.md',
-    './docs-static/In-app Inbox.md',
-    './docs-static/Most Used Modules.md',
-    'CHANGELOG.md',
-  ],
+  projectDocuments: ['README.md', 'CHANGELOG.md'],
   out: './docs',
   tsconfig: './tsconfig.json',
   excludeInternal: true,

@@ -9,7 +9,22 @@ import { IterableAction } from './IterableAction';
 import type { IterableActionContext } from './IterableActionContext';
 import type { IterableAuthResponse } from './IterableAuthResponse';
 
+/**
+ * An IterableConfig object sets various properties of the SDK.
+ *
+ * An IterableConfig object is passed into the static initialize method on the
+ * Iterable class when initializing the SDK.
+ *
+ */
 export class IterableConfig {
+  /**
+   * The name of the Iterable push integration that will send push notifications to your app.
+   *
+   * Defaults to your app's application ID or bundle ID for iOS.
+   *
+   * Note: Don't specify this value unless you are using an older Iterable push integration that
+   * has a custom name. To view your existing integrations, navigate to Settings \> Mobile Apps.
+   */
   pushIntegrationName?: string;
 
   /**
