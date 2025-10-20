@@ -2,7 +2,15 @@
 /** @type { import('typedoc').TypeDocOptionMap & import('typedoc-umlclass').Config } */
 const config = {
   entryPoints: ['./src/index.tsx'],
-  projectDocuments: ['README.md', 'most-used-modules.md', 'another-md.md'],
+  projectDocuments: [
+    'README.md',
+    'Quick Start.md',
+    'Authenticating.md',
+    'In-app Inbox.md',
+    'most-used-modules.md',
+    'another-md.md',
+    'CHANGELOG.md',
+  ],
   out: './docs-gen',
   tsconfig: './tsconfig.json',
   excludeInternal: true,
@@ -46,7 +54,7 @@ const config = {
     document: false,
   },
   groupOrder: [
-    'Documents',
+    'Guides',
     'React Components',
     'Classes',
     'Enums',
@@ -57,7 +65,7 @@ const config = {
     'Constants',
     '*',
   ],
-  categoryOrder: ['Documents', 'React Components', '*'],
+  categoryOrder: ['Guides', 'React Components', '*'],
   // jsDocCompatibility: {
   //   inheritDocTag: true,
   // },
@@ -112,9 +120,11 @@ const config = {
   },
   searchCategoryBoosts: {
     'React Components': 1.5,
+    'Guides': 1.5,
   },
   searchGroupBoosts: {
     'React Components': 1.5,
+    'Guides': 1.5,
   },
   visibilityFilters: {
     'protected': false,
