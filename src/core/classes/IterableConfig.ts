@@ -9,12 +9,42 @@ import { IterableAction } from './IterableAction';
 import type { IterableActionContext } from './IterableActionContext';
 import type { IterableAuthResponse } from './IterableAuthResponse';
 
+type ConfigKeys = keyof IterableConfig;
+
 /**
- * An IterableConfig object sets various properties of the SDK.
+ * Checks if a key is a property of the IterableConfig object.
+ * @param config - The IterableConfig object to check.
+ * @param key - The key to check.
+ * @returns A boolean indicating if the key is a property of the IterableConfig object.
+ */
+function hasConfigProperty(
+  config: Partial<IterableConfig>,
+  key: string
+): key is ConfigKeys {
+  return key in config;
+}
+
+/**
+ * An `IterableConfig` instance sets various options for the Iterable SDK.
  *
- * An IterableConfig object is passed into the static initialize method on the
+ * An `IterableConfig` instance is passed into the static initialize method on the
  * Iterable class when initializing the SDK.
  *
+ * @example
+ * ```typescript
+ * const config = new IterableConfig({
+ *   inAppDisplayInterval: 10.0,
+ *   logLevel: IterableLogLevel.debug,
+ *   urlHandler: (url, context) => {
+ *     if (url.includes('product')) {
+ *       return true;
+ *     }
+ *     return false;
+ *   },
+ * });
+ *
+ * Iterable.initialize('<YOUR_API_KEY>', config);
+ * ```
  */
 export class IterableConfig {
   /**
@@ -49,12 +79,45 @@ export class IterableConfig {
   inAppDisplayInterval = 30.0;
 
   /**
+   * Initializes the IterableConfig object with the given options.
+   *
+   * @param config - The options to initialize the IterableConfig object with.
+   *
+   * @example
+   * ```typescript
+   * const config = new IterableConfig({
+   *   inAppDisplayInterval: 10.0,
+   *   urlHandler: (url, context) => {
+   *     if (url.includes('product')) {
+   *       return true;
+   *     }
+   *     return false;
+   *   },
+   * });
+   * ```
+   */
+  constructor(config: Partial<IterableConfig> = {}) {
+    for (const key in config) {
+      if (
+        Object.prototype.hasOwnProperty.call(config, key) &&
+        hasConfigProperty(config, key)
+      ) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (this as any)[key] = config[key];
+      }
+    }
+  }
+
+  /**
    * A callback function used to handle deep link URLs and in-app message button and link URLs.
+   *
+   * This function is called when a URL is clicked in an in-app message, push notification, or universal link.
    *
    * @param url - The URL to be processed (likely from a click).
    * @param context - The context in which the URL action is being performed.
    * Describes the source of the URL (push, in-app, or universal link) and
    * information about any associated custom actions.
+   * @returns A boolean indicating whether the URL was successfully handled.
    *
    * @remarks
    * Use this method to determine whether or not the app can handle the clicked
@@ -66,15 +129,15 @@ export class IterableConfig {
    * This example searches for URLs that contain product/, followed by more text. Upon finding this sequence of text, the code displays the appropriate screen and returns `true`. When it's not found, the app returns `false`.
    *
    * ```typescript
-   * const config = new IterableConfig();
-   *
-   * config.urlHandler = (url, context) => {
-   *  if (url.match(/product\/([^\/]+)/i)) {
-   *    this.navigate(match[1]);
-   *    return true; // handled
-   *  }
-   *  return false; // not handled
-   * };
+   * const config = new IterableConfig({
+   *   urlHandler: (url, context) => {
+   *     if (url.match(/product\/([^\/]+)/i)) {
+   *       this.navigate(match[1]);
+   *       return true; // handled
+   *     }
+   *     return false; // not handled
+   *   },
+   * });
    *
    * Iterable.initialize('<YOUR_API_KEY>', config);
    * ```
@@ -91,9 +154,12 @@ export class IterableConfig {
    * custom action URL. If it can, it should handle the action and return `true`.
    * Otherwise, it should return `false`.
    *
+   * This function is called when a custom action URL is clicked in an in-app message.
+   *
    * @param action - The custom action that was triggered.
    * @param context - The context in which the action was triggered.  In other
    * words, information about where the action was invoked.
+   * @returns A boolean indicating whether the action was handled.
    *
    * @remarks
    * A custom action URL has format `action://customActionName`: an `action://`
@@ -108,16 +174,18 @@ export class IterableConfig {
    * @example
    * This example responds to the `action://achievedPremierStatus` custom action URL by updating the app's styles and return `true`. Since this is the only custom action handled by the method, it returns `false` for anything else.
    * ```typescript
-   *  const config = new IterableConfig();
-   *  config.customActionHandler = (action, context) => {
-   *    if (action.type == "achievedPremierStatus") {
-   *      // For this action, update the app's styles
-   *      this.updateAppStyles("premier");
-   *      return true;
-   *    }
-   *    return false;
-   *  }
-   *  Iterable.initialize('<YOUR_API_KEY>', config);
+   *  const config = new IterableConfig({
+   *    customActionHandler: (action, context) => {
+   *      if (action.type == "achievedPremierStatus") {
+   *        // For this action, update the app's styles
+   *        this.updateAppStyles("premier");
+   *        return true;
+   *      }
+   *      return false;
+   *    },
+   *  });
+   *
+   * Iterable.initialize('<YOUR_API_KEY>', config);
    * ```
    *
    * @returns A boolean indicating whether the action was handled.
@@ -132,6 +200,8 @@ export class IterableConfig {
    *
    * By default, every single in-app will be shown as soon as it is available.
    * If more than 1 in-app is available, we show the first.
+   *
+   * This function is called when an in-app message is about to be shown, allowing you to control whether it should be displayed.
    *
    * @see [In-App Messages with Iterable's React Native SDK](https://support.iterable.com/hc/en-us/articles/360045714172-In-App-Messages-with-Iterable-s-React-Native-SDK)
    *
@@ -161,6 +231,8 @@ export class IterableConfig {
    * [JWT-enabled API
    * key](https://support.iterable.com/hc/en-us/articles/360045714132-Installing-Iterable-s-React-Native-SDK#:~:text=app%20uses%20a-,JWT%2Denabled%20API%20key,-.).
    *
+   * This function is called when the SDK needs to retrieve a JWT token for authentication.
+   *
    * @remarks
    * To make requests to Iterable's API using a JWT-enabled API key, you should
    * first fetch a valid JWT for your app's current user from your own server,
@@ -187,16 +259,16 @@ export class IterableConfig {
    * This example demonstrates how an app that uses a JWT-enabled API key might initialize the SDK.
    *
    * ```typescript
-   * const config = new IterableConfig();
-   *
-   * config.authHandler = () => {
-   *  // ... Fetch a JWT from your server, or locate one you've already retrieved
-   *  return new Promise(function (resolve, reject) {
-   *    // Resolve the promise with a valid auth token for the current user
-   *    resolve("<AUTH_TOKEN>")
-   *  });
-   * };
-   * config.autoPushRegistration = false;
+   * const config = new IterableConfig({
+   *   authHandler: () => {
+   *     // ... Fetch a JWT from your server, or locate one you've already retrieved
+   *     return new Promise(function (resolve, reject) {
+   *       // Resolve the promise with a valid auth token for the current user
+   *       resolve("<AUTH_TOKEN>")
+   *     });
+   *   },
+   *   autoPushRegistration: false,
+   * });
    *
    * Iterable.initialize('<YOUR_API_KEY>', config);
    * ```
@@ -213,14 +285,19 @@ export class IterableConfig {
    * The retry for JWT should be automatically handled by the native SDK, so
    * this is just for logging/transparency purposes.
    *
+   * This function is called when JWT authentication fails, allowing you to log or handle the error.
+   *
    * @param authFailure - The details of the auth failure.
    *
    * @example
    * ```typescript
-   * const config = new IterableConfig();
-   * config.onJWTError = (authFailure) => {
-   *   console.error('Error fetching JWT:', authFailure);
-   * };
+   * const config = new IterableConfig({
+   *   onJWTError: (authFailure) => {
+   *     console.error('Error fetching JWT:', authFailure);
+   *   },
+   * });
+   *
+   * Iterable.initialize('<YOUR_API_KEY>', config);
    * ```
    */
   onJWTError?: (authFailure: IterableAuthFailure) => void;
@@ -262,8 +339,11 @@ export class IterableConfig {
    * To allow the SDK to handle `http`, `tel`, and `custom` links, use code similar to this:
    *
    * ```typescript
-   * const config = new IterableConfig();
-   * config.allowedProtocols = ["http", "tel", "custom"];
+   * const config = new IterableConfig({
+   *   allowedProtocols: ["http", "tel", "custom"],
+   * });
+   *
+   * Iterable.initialize('<YOUR_API_KEY>', config);
    * ```
    *
    * @remarks
@@ -322,9 +402,42 @@ export class IterableConfig {
   /**
    * Converts the IterableConfig instance to a dictionary object.
    *
-   * @returns An object representing the configuration.
+   * @returns An object representing the configuration with all properties serialized.
    */
-  toDict() {
+  toDict(): {
+    /** The name of the Iterable push integration. */
+    pushIntegrationName: string | undefined;
+    /** Whether automatic push registration is enabled. */
+    autoPushRegistration: boolean;
+    /** Number of seconds between each in-app message display. */
+    inAppDisplayInterval: number;
+    /** A boolean indicating if a URL handler is present. */
+    urlHandlerPresent: boolean;
+    /** A boolean indicating if a custom action handler is present. */
+    customActionHandlerPresent: boolean;
+    /** A boolean indicating if an in-app handler is present. */
+    inAppHandlerPresent: boolean;
+    /** A boolean indicating if an authentication handler is present. */
+    authHandlerPresent: boolean;
+    /** The log level for the SDK. */
+    logLevel: IterableLogLevel;
+    /** The number of seconds before JWT expiration to refresh the token. */
+    expiringAuthTokenRefreshPeriod: number;
+    /** The array of allowed URL protocols. */
+    allowedProtocols: string[];
+    /** @deprecated Whether Android SDK should use in-memory storage for in-apps. */
+    androidSdkUseInMemoryStorageForInApps: boolean;
+    /** Whether to use in-memory storage for in-apps. */
+    useInMemoryStorageForInApps: boolean;
+    /** The data region for the SDK. */
+    dataRegion: IterableDataRegion;
+    /** The push platform to use. */
+    pushPlatform: IterablePushPlatform;
+    /** Whether encryption is enforced for PII stored on disk (Android only). */
+    encryptionEnforced: boolean;
+    /** The retry policy configuration for JWT refresh. */
+    retryPolicy: IterableRetryPolicy | undefined;
+  } {
     return {
       pushIntegrationName: this.pushIntegrationName,
       autoPushRegistration: this.autoPushRegistration,

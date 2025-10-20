@@ -16,6 +16,14 @@ export class IterableActionContext {
 
   /**
    * Creates an instance of IterableActionContext.
+   *
+   * @param action - The action associated with the context.
+   * @param source - The origin of the action (where the action was triggered).
+   *
+   * @example
+   * ```typescript
+   * const actionContext = new IterableActionContext(action, source);
+   * ```
    */
   constructor(action: IterableAction, source: IterableActionSource) {
     this.action = action;
@@ -25,9 +33,10 @@ export class IterableActionContext {
   /**
    * Creates an instance of `IterableActionContext` from a dictionary object.
    *
+   * @param dict - A dictionary object containing the action and source properties.
    * @returns A new instance of `IterableActionContext` with the provided properties.
    */
-  static fromDict(dict: IterableActionContext): IterableActionContext {
+  static fromDict(dict: IterableActionContext) {
     const action = IterableAction.fromDict(dict.action);
     const source = dict.source;
     return new IterableActionContext(action, source);

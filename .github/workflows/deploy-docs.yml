@@ -58,7 +58,7 @@ jobs:
         if: github.event_name == 'push'
         uses: nwtgck/actions-netlify@4cbaf4c08f1a7bfa537d6113472ef4424e4eb654
         with:
-          publish-dir: "./docs"
+          publish-dir: "./docs-gen"
           production-branch: master
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: "${{ steps.deployment-type.outputs.message }}"
@@ -71,7 +71,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: nwtgck/actions-netlify@4cbaf4c08f1a7bfa537d6113472ef4424e4eb654 # v3.0
         with:
-          publish-dir: "./docs"
+          publish-dir: "./docs-gen"
           production-branch: master
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: "${{ steps.deployment-type.outputs.message }}"

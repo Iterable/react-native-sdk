@@ -88,7 +88,10 @@ android/generated
 .env
 .xcode.env.local
 coverage/
-docs/
 
 # Local Netlify folder
 .netlify
+
+# Documentation
+docs-gen/
+.docusaurus/

@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
+import java.time.Duration;
 import java.util.Date;
 
 import androidx.annotation.NonNull;
@@ -596,40 +597,22 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         IterableApi.getInstance().pauseAuthRetries(pauseRetry);
     }
 
-    // public void generateJwtForUserId(String secret, double iat, double exp, String userId, String email, Promise promise) {
-      public void generateJwtForUserId(ReadableMap opts, Promise promise) {
-        String secret = opts.getString("secret");
-        double iat = opts.getDouble("iat");
-        double exp = opts.getDouble("exp");
-        String userId = opts.hasKey("userId") && !opts.isNull("userId") ? opts.getString("userId") : null;
-        String email = opts.hasKey("email") && !opts.isNull("email") ? opts.getString("email") : null;
-
+    public void generateJwtToken(ReadableMap opts, Promise promise) {
         try {
+            String secret = opts.getString("secret");
+            long durationMs = (long) opts.getDouble("duration");
+            String userId = opts.hasKey("userId") && !opts.isNull("userId") ? opts.getString("userId") : null;
+            String email = opts.hasKey("email") && !opts.isNull("email") ? opts.getString("email") : null;
+
             // Validate that exactly one of userId or email is provided
             if ((userId != null && email != null) || (userId == null && email == null)) {
                 promise.reject("E_INVALID_ARGS", "The token must include a userId or email, but not both.", (Throwable) null);
                 return;
             }
 
-            // Build the JSON payload
-            String payload;
-            long iatLong = (long) iat;
-            long expLong = (long) exp;
-
-            if (userId != null) {
-                payload = String.format(
-                    "{ \"userId\": \"%s\", \"iat\": %d, \"exp\": %d }",
-                    userId, iatLong, expLong
-                );
-            } else {
-                payload = String.format(
-                    "{ \"email\": \"%s\", \"iat\": %d, \"exp\": %d }",
-                    email, iatLong, expLong
-                );
-            }
-
-            // Generate the JWT token
-            String token = IterableJwtGenerator.generateToken(secret, payload);
+            // Use the Android SDK's Duration-based JWT generator
+            Duration duration = Duration.ofMillis(durationMs);
+            String token = IterableJwtGenerator.generateToken(secret, duration, email, userId);
             promise.resolve(token);
         } catch (Exception e) {
             promise.reject("E_JWT_GENERATION_FAILED", "Failed to generate JWT: " + e.getMessage(), e);

@@ -20,6 +20,8 @@ import { IterableAuthResponse } from './IterableAuthResponse';
 import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
+import { IterableTrackingManager } from './IterableTrackingManager';
+import { IterableUserManager } from './IterableUserManager';
 
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
@@ -30,6 +32,10 @@ const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
  * The majority of the high-level functionality can be accomplished through the
  * static methods of this class.  EG: initializing the SDK, logging in a user,
  * tracking purchases, etc.
+ *
+ * @document ../../../most-used-modules.md
+ *
+ * @category Testing
  *
  * @example
  * // Initialize the SDK
@@ -44,8 +50,12 @@ const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 export class Iterable {
   /**
    * Current configuration of the Iterable SDK
+   *
+   * @categoryDescription Advanced Use
+   *
+   * @readonly
    */
-  static savedConfig: IterableConfig = new IterableConfig();
+  static savedConfig: Readonly<IterableConfig> = new IterableConfig();
 
   /**
    * In-app message manager for the current user.
@@ -67,10 +77,14 @@ export class Iterable {
   static inAppManager: IterableInAppManager = new IterableInAppManager();
 
   /**
+   * @beta
    * Authentication manager for the current user.
    *
    * This property provides access to authentication functionality including
    * pausing the authentication retry mechanism.
+   *
+   * @since Introduced in
+   * [2.2.0](https://www.npmjs.com/package/@iterable/react-native-sdk/v/2.2.0)
    *
    * @example
    * ```typescript
@@ -78,6 +92,40 @@ export class Iterable {
    * ```
    */
   static authManager: IterableAuthManager = new IterableAuthManager();
+
+  /**
+   * User manager for the current logged in user.
+   *
+   * This property provides access to user functionality including
+   * getting the current user's email and setting the current user's email.
+   *
+   * @since Introduced in
+   * [2.2.0](https://www.npmjs.com/package/@iterable/react-native-sdk/v/2.2.0)
+   *
+   * @example
+   * ```typescript
+   * Iterable.user.getEmail().then((email) => {
+   *  // Do something with the email
+   * });
+   * ```
+   */
+  static user: IterableUserManager = new IterableUserManager();
+
+  /**
+   * Tracking functionality for Iterable events.
+   *
+   * This property provides access to tracking functionality including
+   * setting attribution information, tracking push opens, and tracking events.
+   *
+   * @since Introduced in
+   * [2.2.0](https://www.npmjs.com/package/@iterable/react-native-sdk/v/2.2.0)
+   *
+   * @example
+   * ```typescript
+   * Iterable.track.setAttributionInfo(new IterableAttributionInfo(1234, 5678, 9012));
+   * ```
+   */
+  static track: IterableTrackingManager = new IterableTrackingManager();
 
   /**
    * Initializes the Iterable React Native SDK in your app's Javascript or Typescript code.
@@ -161,7 +209,8 @@ export class Iterable {
   }
 
   /**
-   * Associate the current user with the passed in email parameter.
+   * @deprecated Use {@link IterableUserManager.setEmail | Iterable.user.setEmail} instead.
+   *  Associate the current user with the passed in email parameter.
    *
    * Note: specify a user by calling `Iterable.setEmail` or
    * `Iterable.setUserId`, but **NOT** both
@@ -214,6 +263,7 @@ export class Iterable {
   }
 
   /**
+   * @deprecated Use {@link IterableUserManager.getEmail | Iterable.user.getEmail} instead.
    * Get the email associated with the current user.
    *
    * @example
@@ -228,6 +278,7 @@ export class Iterable {
   }
 
   /**
+   * @deprecated Use {@link IterableUserManager.setUserId | Iterable.user.setUserId} instead.
    * Associate the current user with the passed in `userId` parameter.
    *
    * Note: specify a user by calling `Iterable.setEmail` or
@@ -275,6 +326,7 @@ export class Iterable {
   }
 
   /**
+   * @deprecated Use {@link IterableUserManager.getUserId | Iterable.user.getUserId} instead.
    * Get the `userId` associated with the current user.
    *
    * @example
@@ -289,6 +341,7 @@ export class Iterable {
   }
 
   /**
+   * @deprecated Use {@link IterableUserManager.disableDevice | Iterable.user.disableDevice} instead.
    * Disable the device's token for the current user.  This will disable push notifications for the current user.
    *
    * @example
@@ -316,6 +369,7 @@ export class Iterable {
   }
 
   /**
+   * @deprecated Use {@link IterableTrackingManager.getAttributionInfo | Iterable.track.getAttributionInfo} instead.
    * Get the stored attribution information -- possibly based on a recent deep link click.
    *
    * The attribution information contains the campaign ID, template ID, and message ID of the message
@@ -360,6 +414,7 @@ export class Iterable {
   }
 
   /**
+   * @deprecated Use {@link IterableTrackingManager.setAttributionInfo | Iterable.track.setAttributionInfo} instead.
    * Manually set the current stored attribution information so that it can later be used when tracking events.
    *
    * The attribution information contains the campaign ID, template ID, and message ID of the message
@@ -388,6 +443,7 @@ export class Iterable {
   }
 
   /**
+   * @deprecated Use {@link IterableTrackingManager.trackPushOpenWithCampaignId | Iterable.track.trackPushOpenWithCampaignId} instead.
    * Create a `pushOpen` event on the current user's Iterable profile, populating
    * it with data provided to the method call.
    *
@@ -467,6 +523,8 @@ export class Iterable {
    *
    * Android only.
    *
+   * @os Android
+   *
    * @example
    * ```typescript
    * Iterable.wakeApp();
@@ -479,6 +537,7 @@ export class Iterable {
   }
 
   /**
+   * @deprecated Use {@link IterableTrackingManager.trackPurchase | Iterable.track.trackPurchase} instead.
    * Create a purchase event on the current user's Iterable profile.
    *
    * Represent each item in the purchase event with an {@link IterableCommerceItem} object.
@@ -513,6 +572,7 @@ export class Iterable {
   }
 
   /**
+   * @deprecated Use {@link IterableTrackingManager.trackInAppOpen | Iterable.track.trackInAppOpen} instead.
    * Create an `inAppOpen` event for the specified message on the current user's profile
    * for manual tracking purposes. Iterable's SDK automatically tracks in-app message opens when you use the
    * SDK's default rendering.
@@ -545,6 +605,7 @@ export class Iterable {
   }
 
   /**
+   * @deprecated Use {@link IterableTrackingManager.trackInAppClick | Iterable.track.trackInAppClick} instead.
    * Create an `inAppClick` event for the specified message on the current user's profile
    * for manual tracking purposes. Iterable's SDK automatically tracks in-app message clicks when you use the
    * SDK's default rendering. Click events refer to click events within the in-app message to distinguish
@@ -574,6 +635,7 @@ export class Iterable {
   }
 
   /**
+   * @deprecated Use {@link IterableTrackingManager.trackInAppClose | Iterable.track.trackInAppClose} instead.
    * Create an `inAppClose` event for the specified message on the current
    * user's profile for manual tracking purposes. Iterable's SDK automatically
    * tracks in-app message close events when you use the SDK's default
@@ -605,6 +667,8 @@ export class Iterable {
   }
 
   /**
+   * @deprecated Use {@link Iterable.inAppManager.consumeMessage} instead.
+   *
    * Remove the specified message from the current user's message queue.
    *
    * This creates an in-app delete event for the specified message on the current user's profile
@@ -649,6 +713,7 @@ export class Iterable {
   }
 
   /**
+   * @deprecated Use {@link IterableTrackingManager.trackEvent | Iterable.track.trackEvent} instead.
    * Create a custom event to the current user's Iterable profile.
    *
    * Pass in the name of the event stored in eventName key and the data associated with the event.
@@ -673,6 +738,7 @@ export class Iterable {
   }
 
   /**
+   * @deprecated Use {@link IterableUserManager.updateUser | Iterable.user.updateUser} instead.
    * Save data to the current user's Iterable profile.
    *
    * If `mergeNestedObjects` is set to `true`, top-level objects in the passed in dataFields parameter
@@ -719,6 +785,7 @@ export class Iterable {
   }
 
   /**
+   * @deprecated Use {@link IterableUserManager.updateEmail | Iterable.user.updateEmail} instead.
    * Change the value of the email field on the current user's Iterable profile.
    *
    * If `Iterable.setUserId` was used to identify the current user, `Iterable.updateEmail` can be called to
@@ -957,7 +1024,7 @@ export class Iterable {
                 (promiseResult as IterableAuthResponse).authToken
               );
 
-              const timeoutId = setTimeout(() => {
+              setTimeout(() => {
                 if (
                   authResponseCallback === IterableAuthResponseResult.SUCCESS
                 ) {
@@ -977,7 +1044,6 @@ export class Iterable {
                 }
               }, 1000);
               // Use unref() to prevent the timeout from keeping the process alive
-              timeoutId.unref();
             } else if (typeof promiseResult === 'string') {
               //If promise only returns string
               Iterable.authManager.passAlongAuthToken(promiseResult as string);

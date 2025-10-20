@@ -57,8 +57,8 @@ Follow the steps below if you do not have a mobile Iterable API key.
 To add an API key, do the following:
  1. Sign into your Iterable account
  2. Go to [Integrations > API Keys](https://app.iterable.com/settings/apiKeys)
- 3. Click "New API Key" in the top right corner
- 4. Fill in the followsing fields:
+ 3. Click "+New API Key" in the top right corner
+ 4. Fill in the following fields:
     - Name: A descriptive name for the API key
     - Type: Mobile
     - JWT authentication: Check to enable JWT authentication. If enabled, will need to create a [JWT generator](https://support.iterable.com/hc/en-us/articles/360050801231-JWT-Enabled-API-Keys#sample-python-code-for-jwt-generation) to generate the JWT token.

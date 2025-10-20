@@ -14,7 +14,10 @@ export type IterableInAppMessageRaw = {
   expiresAt?: number;
   /** A boolean indicating if the message should be saved to the inbox. */
   saveToInbox?: boolean;
-  /** Metadata for the inbox message, including title, subtitle, and icon. */
+  /**
+   * Metadata for the inbox message, including title, subtitle, and icon.
+   * This object contains display information for the message when shown in the inbox.
+   */
   inboxMetadata?: {
     /** The title of the inbox message. */
     title: string | undefined;

@@ -70,6 +70,7 @@ export class IterableLogger {
    * Logs a message to the console if logging is enabled.
    *
    * @param message - The message to be logged.
+   * @param optionalParams - Additional parameters to be logged.
    *
    * @example
    * ```typescript
@@ -86,6 +87,7 @@ export class IterableLogger {
    * Logs a message to the console if the log level is {@link IterableLogLevel.error}.
    *
    * @param message - The message to be logged.
+   * @param optionalParams - Additional parameters to be logged.
    *
    * @example
    * ```typescript
@@ -104,6 +106,7 @@ export class IterableLogger {
    * {@link IterableLogLevel.debug} or {@link IterableLogLevel.error}.
    *
    * @param message - The message to be logged.
+   * @param optionalParams - Additional parameters to be logged.
    *
    * @example
    * ```typescript
@@ -129,6 +132,7 @@ export class IterableLogger {
    * {@link IterableLogLevel.error}.
    *
    * @param message - The message to be logged.
+   * @param optionalParams - Additional parameters to be logged.
    *
    * @example
    * ```typescript

@@ -1,3 +1,4 @@
+import type { PropsWithChildren, ReactElement } from 'react';
 import {
   Image,
   PixelRatio,
@@ -73,7 +74,7 @@ export const HeaderBackButton = ({
     height: PixelRatio.getPixelSizeForLayoutSize(ICON_SIZE),
   },
   ...props
-}: HeaderBackButtonProps) => {
+}: PropsWithChildren<HeaderBackButtonProps>): ReactElement => {
   return (
     <TouchableWithoutFeedback {...props}>
       <View style={styles.returnButton}>

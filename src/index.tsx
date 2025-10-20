@@ -1,16 +1,23 @@
 /**
- * React Native module for Iterable.
+ * [@iterable/react-native-sdk](https://github.com/Iterable/react-native-sdk)
+ * provides APIs to integrate Iterable features into React Native apps,
+ * including user tracking, push notifications, and in-app messaging.
+ *
+ * @packageDocumentation
  */
 export {
   Iterable,
   IterableAction,
   IterableActionContext,
   IterableAttributionInfo,
+  IterableAuthManager,
   IterableAuthResponse,
   IterableCommerceItem,
   IterableConfig,
   IterableEdgeInsets,
   IterableLogger,
+  IterableTrackingManager,
+  IterableUserManager,
 } from './core/classes';
 export {
   IterableActionSource,
@@ -31,6 +38,7 @@ export type {
   IterableAuthFailure,
   IterableEdgeInsetDetails,
   IterableRetryPolicy,
+  IterableGenerateJwtTokenOpts,
 } from './core/types';
 export {
   IterableHtmlInAppContent,
@@ -46,12 +54,11 @@ export {
   IterableInboxMetadata,
   type IterableHtmlInAppContentRaw,
   type IterableInAppContent,
+  type IterableInAppMessageRaw,
 } from './inApp';
 export {
   IterableInbox,
   IterableInboxDataModel,
-  IterableInboxEmptyState,
-  IterableInboxMessageCell,
   type IterableInboxCustomizations,
   type IterableInboxEmptyStateProps,
   type IterableInboxImpressionRowInfo,

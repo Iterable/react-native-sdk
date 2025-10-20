@@ -30,6 +30,54 @@ import { IterableInAppMessage } from './IterableInAppMessage';
  */
 export class IterableInAppManager {
   /**
+   * Remove the specified message from the current user's message queue.
+   *
+   * This creates an in-app delete event for the specified message on the current user's profile
+   * unless otherwise specified (specifying a source of {@link IterableInAppDeleteSource.unknown} prevents
+   * an `inAppDelete` event from being created).
+   *
+   * @example
+   * ```typescript
+   * const message = new IterableInAppMessage(
+   *    1234,
+   *    4567,
+   *    IterableInAppTrigger.auto,
+   *    new Date(),
+   *    new Date(),
+   *    false,
+   *    undefined,
+   *    undefined,
+   *    false,
+   *    0,
+   * );
+   *
+   * Iterable.inAppManager.consumeMessage({
+   *   message,
+   *   location: IterableInAppLocation.inApp,
+   *   source: IterableInAppDeleteSource.delete,
+   * });
+   * ```
+   *
+   * @remarks
+   * After a user has read an in-app message, you can _consume_ it so that it's no
+   * longer in their queue of messages. When you use the SDK's default rendering
+   * for in-app messages, it handles this automatically. However, you can also
+   * use this method to do it manually (for example, after rendering an in-app
+   * message in a custom way).
+   */
+  consumeMessage(params: {
+    /** The in-app message (an {@link IterableInAppMessage} object) */
+    message: IterableInAppMessage;
+    /** The location of the in-app message (an {@link IterableInAppLocation} enum) */
+    location: IterableInAppLocation;
+    /** How the in-app message was deleted (an {@link IterableInAppDeleteSource} enum) */
+    source: IterableInAppDeleteSource;
+  }): Promise<void> {
+    const { message, location, source } = params;
+    return IterableApi.inAppConsume(message, location, source);
+  }
+
+  /**
    * Retrieve the current user's list of in-app messages stored in the local queue.
    *
    * This method does not cause the application to immediately check for new in-app messages on the server, since the SDK keeps the message list in sync.

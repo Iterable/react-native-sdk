@@ -24,7 +24,9 @@ export interface IterableInboxCustomizations {
   noMessagesBody?: string;
 
   /**
-   * CThe container that holds the unread indicator.
+   * The container that holds the unread indicator.
+   *
+   * This object allows customization of the container that wraps the unread indicator dot.
    */
   unreadIndicatorContainer?: {
     /** The flex direction of the container.  */
@@ -36,6 +38,8 @@ export interface IterableInboxCustomizations {
 
   /**
    * Customizations for the unread indicator icon.
+   *
+   * This object allows customization of the unread indicator dot that appears next to unread messages.
    */
   unreadIndicator?: {
     /** The width of the unread indicator. */
@@ -64,6 +68,8 @@ export interface IterableInboxCustomizations {
    * For an unread message, this is the container for the thumbnail image
    * associated with the message (as configured when setting up the template in
    * Iterable).
+   *
+   * This object allows customization of the container that wraps the thumbnail image for unread messages.
    */
   unreadMessageThumbnailContainer?: {
     /** The left padding of the container. */
@@ -80,6 +86,8 @@ export interface IterableInboxCustomizations {
    * For a read message, this is the container for the thumbnail image
    * associated with the message (as configured when setting up the template in
    * Iterable).
+   *
+   * This object allows customization of the container that wraps the thumbnail image for read messages.
    */
   readMessageThumbnailContainer?: {
     /** The left padding of the container. */
@@ -95,6 +103,8 @@ export interface IterableInboxCustomizations {
   /**
    * A container around various elements in the message item: title, body, and
    * created at.
+   *
+   * This object allows customization of the container that wraps the message text content.
    */
   messageContainer?: {
     /** The left padding of the container. */
@@ -112,6 +122,8 @@ export interface IterableInboxCustomizations {
 
   /**
    * The title of the message, as displayed in the inbox.
+   *
+   * This object allows customization of the message title text style.
    */
   title?: {
     /** The font size of the title. */
@@ -124,6 +136,8 @@ export interface IterableInboxCustomizations {
   /**
    * The body of the message, as displayed in the inbox (not when the message
    * has been opened).
+   *
+   * This object allows customization of the message body text style.
    */
   body?: {
     /** The font size of the body text. */
@@ -144,6 +158,8 @@ export interface IterableInboxCustomizations {
 
   /**
    * The message date.
+   *
+   * This object allows customization of the message date text style.
    */
   createdAt?: {
     /** The font size of the creation date text. */
@@ -158,6 +174,8 @@ export interface IterableInboxCustomizations {
    *
    * Use these styles to customize row height, padding, background color,
    * border, etc.
+   *
+   * This object allows customization of the entire message row container.
    */
   messageRow?: {
     /** The flex direction of the message row. */
