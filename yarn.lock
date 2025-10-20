@@ -3151,8 +3151,9 @@ __metadata:
     react-test-renderer: 19.0.0
     release-it: ^17.10.0
     turbo: ^1.10.7
-    typedoc: ^0.28.13
-    typedoc-plugin-coverage: ^3.3.0
+    typedoc: latest
+    typedoc-github-theme: ^0.3.1
+    typedoc-plugin-coverage: ^4.0.2
     typedoc-plugin-mermaid: ^1.12.0
     typescript: ^5.2.2
   peerDependencies:
@@ -14486,12 +14487,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typedoc-plugin-coverage@npm:^3.3.0":
-  version: 3.3.0
-  resolution: "typedoc-plugin-coverage@npm:3.3.0"
+"typedoc-github-theme@npm:^0.3.1":
+  version: 0.3.1
+  resolution: "typedoc-github-theme@npm:0.3.1"
   peerDependencies:
-    typedoc: 0.25.x || 0.26.x
-  checksum: b1779429618ab4df38c6b066c4113376b455d19863f70a170fe2e3a06cdcb276b82c4205c67922ea05e926b2fb0c85d932d7e09d00a42d4c4d95689768243524
+    typedoc: ~0.28.0
+  checksum: 0690481d64e7dec6264f1a3e10fd74b7ff54c92b1291d3ffcc81725d6ac7ce495db2bfbf37b1e69db542b653db837d5d84c32cfc21e02b41c01e2a2efa3c71e2
+  languageName: node
+  linkType: hard
+
+"typedoc-plugin-coverage@npm:^4.0.2":
+  version: 4.0.2
+  resolution: "typedoc-plugin-coverage@npm:4.0.2"
+  peerDependencies:
+    typedoc: 0.28.x
+  checksum: afe01efa282061b0f38bcc53b003bf60d0fb111cca2d4e91a3bf601b92483992c4fc3a4490144e2e7130831d405395fdc3deac988431cd4a9c6cfe0a06735426
   languageName: node
   linkType: hard
 
@@ -14506,9 +14516,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typedoc@npm:^0.28.13":
-  version: 0.28.13
-  resolution: "typedoc@npm:0.28.13"
+"typedoc@npm:latest":
+  version: 0.28.14
+  resolution: "typedoc@npm:0.28.14"
   dependencies:
     "@gerrit0/mini-shiki": ^3.12.0
     lunr: ^2.3.9
@@ -14519,7 +14529,7 @@ __metadata:
     typescript: 5.0.x || 5.1.x || 5.2.x || 5.3.x || 5.4.x || 5.5.x || 5.6.x || 5.7.x || 5.8.x || 5.9.x
   bin:
     typedoc: bin/typedoc
-  checksum: 238b567661d4118eaf1bc61696ce2129dc0f0d4bd9b0928942bdd40ab9165df842143a04bc1fd8c7c1c2a8978ad2b48118f4bfcd753be322476568a8cc27e355
+  checksum: d579280e58f50dfdb4c0017ab1ed5807a98c468ebd2aca4ae4d725194c3b575de2524543d142382c0fa7cd1b7a7b3732245f459677406365c7ba7151b3c87ebc
   languageName: node
   linkType: hard
 
