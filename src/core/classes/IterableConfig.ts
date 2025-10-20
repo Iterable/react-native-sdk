@@ -291,6 +291,8 @@ export class IterableConfig {
   /**
    * Android only feature: This controls whether the SDK should enforce encryption for all PII stored on disk.
    * By default, the SDK will not enforce encryption and may fallback to unencrypted storage in case the encryption fails.
+   *
+   * @group Android only.
    */
   encryptionEnforced = false;
 

@@ -45,8 +45,9 @@ const config = {
     document: false,
   },
   groupOrder: [
-    'Guides',
+    'Documents',
     'React Components',
+    'Hooks',
     'Classes',
     'Enums',
     'Interfaces',
@@ -56,7 +57,7 @@ const config = {
     'Constants',
     '*',
   ],
-  categoryOrder: ['Guides', 'React Components', '*'],
+  categoryOrder: ['React Components', 'Hooks', '*'],
   // jsDocCompatibility: {
   //   inheritDocTag: true,
   // },
@@ -111,11 +112,13 @@ const config = {
   },
   searchCategoryBoosts: {
     'React Components': 1.5,
-    'Guides': 1.5,
+    'Hooks': 1.5,
   },
   searchGroupBoosts: {
     'React Components': 1.5,
-    'Guides': 1.5,
+    'Hooks': 1.5,
+    'Documents': 1.5,
+    'Classes': 1.3,
   },
   visibilityFilters: {
     'protected': false,
@@ -168,14 +171,7 @@ const config = {
   plugin: [
     'typedoc-plugin-coverage',
     'typedoc-plugin-mermaid',
-    // 'typedoc-plugin-inline-sources',
-    // 'typedoc-plugin-dt-links',
-    // 'typedoc-plugin-localization',
-    // 'typedoc-plugin-emojify',
-    // '@reside-ic/typedoc-plugin-copy-doc',
     'typedoc-github-theme',
-    // 'typedoc-material-theme',
-    // '@droppedcode/typedoc-plugin-relative-includes',
   ],
 };
 

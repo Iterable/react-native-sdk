@@ -7,6 +7,9 @@ import { AppState } from 'react-native';
  *
  * @returns The current app state.
  *
+ * @category Hooks
+ * @group Hooks
+ *
  * @example
  * ```typescript
  * const appState = useAppStateListener();

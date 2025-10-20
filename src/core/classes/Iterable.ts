@@ -490,7 +490,7 @@ export class Iterable {
   /**
    * Launch the application from the background in Android devices.
    *
-   * Android only.
+   * @group Android only.
    *
    * @example
    * ```typescript

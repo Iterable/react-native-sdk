@@ -22,6 +22,9 @@ export interface IterableDeviceOrientation {
  *
  * @returns {IterableDeviceOrientation} An object containing the height, width, and a boolean `isPortrait` indicating if the device is in portrait mode.
  *
+ * @category Hooks
+ * @group Hooks
+ *
  * @example
  * const { height, width, isPortrait } = useDeviceOrientation();
  *
