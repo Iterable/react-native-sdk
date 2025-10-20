@@ -483,7 +483,7 @@ import React
   @objc(passAlongAuthToken:)
   public func passAlongAuthToken(authToken: String?) {
     ITBInfo()
-    passedAuthToken = authToken
+    self.passedAuthToken = authToken
     authHandlerSemaphore.signal()
   }
 
@@ -596,7 +596,9 @@ import React
       iterableConfig.inAppDelegate = self
     }
 
-    if let authHandlerPresent = configDict["authHandlerPresent"] as? Bool, authHandlerPresent {
+    if let authHandlerPresent = configDict["authHandlerPresent"] as? Bool,
+      authHandlerPresent == true
+    {
       iterableConfig.authDelegate = self
     }
 
