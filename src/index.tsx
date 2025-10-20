@@ -30,6 +30,7 @@ export {
 export type {
   IterableAuthFailure,
   IterableEdgeInsetDetails,
+  IterableGenerateJwtTokenArgs,
   IterableRetryPolicy,
 } from './core/types';
 export {

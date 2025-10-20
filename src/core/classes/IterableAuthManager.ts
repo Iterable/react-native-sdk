@@ -1,11 +1,9 @@
-import { IterableAuthResponse } from './IterableAuthResponse';
+import type { IterableGenerateJwtTokenArgs } from '../types/IterableGenerateJwtTokenArgs';
 import { IterableApi } from './IterableApi';
+import { IterableAuthResponse } from './IterableAuthResponse';
 
 /**
  * Manages the authentication for the Iterable SDK.
- *
- * @since Introduced in
- * [2.2.0](https://www.npmjs.com/package/@iterable/react-native-sdk/v/2.2.0)
  *
  * @example
  * ```typescript
@@ -15,9 +13,6 @@ import { IterableApi } from './IterableApi';
 export class IterableAuthManager {
   /**
    * Pause the authentication retry mechanism.
-   *
-   * @since Introduced in
-   * [2.2.0](https://www.npmjs.com/package/@iterable/react-native-sdk/v/2.2.0)
    *
    * @param pauseRetry - Whether to pause the authentication retry mechanism
    *
@@ -33,9 +28,6 @@ export class IterableAuthManager {
 
   /**
    * Pass along an auth token to the SDK.
-   *
-   * @since Introduced in
-   * [2.2.0](https://www.npmjs.com/package/@iterable/react-native-sdk/v/2.2.0)
    *
    * @param authToken - The auth token to pass along
    *
@@ -67,9 +59,6 @@ export class IterableAuthManager {
    * 5. The generated **API key** will be used in `Iterable.initialize`, and the
    *    **JWT secret** will be used in `IterableApi.generateJwtToken`.
    *
-   * @since Introduced in
-   * [2.2.0](https://www.npmjs.com/package/@iterable/react-native-sdk/v/2.2.0)
-   *
    *  @param opts - Options for generating the JWT token.
    *
    *  @example
@@ -82,24 +71,7 @@ export class IterableAuthManager {
    * });
    * ```
    */
-  generateJwtToken(opts: {
-    /** The JWT secret generated when you created the **JWT enabled [API key](https://app.iterable.com/settings/apiKeys)** */
-    secret: string;
-    /** The duration of the JWT token in milliseconds. */
-    duration: number;
-    /**
-     * The **Iterable user ID** which was used in **`Iterable.initialize`**.
-     *
-     * NOTE: Either `userId` or `email` must be provided.
-     */
-    userId: string;
-    /**
-     * The **email** which was used in **`Iterable.initialize`**.
-     *
-     * NOTE: Either `userId` or `email` must be provided.
-     */
-    email: string;
-  }): Promise<string> {
+  generateJwtToken(opts: IterableGenerateJwtTokenArgs): Promise<string> {
     return IterableApi.generateJwtToken(opts);
   }
 }

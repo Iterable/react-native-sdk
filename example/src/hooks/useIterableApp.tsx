@@ -16,6 +16,7 @@ import {
   IterableLogLevel,
   IterableRetryBackoff,
   IterableAuthFailureReason,
+  type IterableGenerateJwtTokenArgs,
 } from '@iterable/react-native-sdk';
 
 import { Route } from '../constants/routes';
@@ -86,6 +87,8 @@ const IterableAppContext = createContext<IterableAppProps>({
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+const isEmail = (id: string) => EMAIL_REGEX.test(id);
+
 export const IterableAppProvider: FunctionComponent<
   React.PropsWithChildren<unknown>
 > = ({ children }) => {
@@ -112,8 +115,7 @@ export const IterableAppProvider: FunctionComponent<
 
     setLoginInProgress(true);
 
-    const isEmail = EMAIL_REGEX.test(id);
-    const fn = isEmail ? Iterable.setEmail : Iterable.setUserId;
+    const fn = isEmail(id) ? Iterable.setEmail : Iterable.setUserId;
 
     fn(id);
     setIsLoggedIn(true);
@@ -123,7 +125,7 @@ export const IterableAppProvider: FunctionComponent<
   }, [userId]);
 
   const initialize = useCallback(
-    (navigation: Navigation) => {
+    async (navigation: Navigation) => {
       const config = new IterableConfig();
 
       config.inAppDisplayInterval = 1.0; // Min gap between in-apps. No need to set this in production.
@@ -173,21 +175,31 @@ export const IterableAppProvider: FunctionComponent<
 
       config.inAppHandler = () => IterableInAppShowResponse.show;
 
-      // NOTE: Uncomment to test authHandler failure
-      // config.authHandler = () => {
-      //   console.log(`authHandler`);
+      config.authHandler = async () => {
+        const id = userId ?? process.env.ITBL_ID;
+        const idType = isEmail(id as string) ? 'email' : 'userId';
+        const secret = process.env.ITBL_JWT_SECRET ?? '';
+        const duration = 1000 * 60 * 60 * 24;
 
-      //   return Promise.resolve({
-      //     authToken: 'SomethingNotValid',
-      //     successCallback: () => {
-      //       console.log(`authHandler > success`);
-      //     },
-      //     // This is not firing
-      //     failureCallback: () => {
-      //       console.log(`authHandler > failure`);
-      //     },
-      //   });
-      // };
+        const jwtArgs: IterableGenerateJwtTokenArgs =
+          idType === 'email'
+            ? { secret, duration, email: id as string }
+            : { secret, duration, userId: id as string };
+
+        const jwtToken = await Iterable.authManager.generateJwtToken(jwtArgs);
+
+        return Promise.resolve({
+          authToken: jwtToken,
+          // authToken: 'SomethingNotValid', // NOTE: Uncomment to test authHandler failure
+          successCallback: () => {
+            console.log(`authHandler > success`);
+          },
+          // This is not firing
+          failureCallback: () => {
+            console.log(`authHandler > failure`);
+          },
+        });
+      };
 
       setItblConfig(config);
 
@@ -232,7 +244,7 @@ export const IterableAppProvider: FunctionComponent<
           return Promise.resolve(true);
         });
     },
-    [apiKey, getUserId, login]
+    [apiKey, getUserId, login, userId]
   );
 
   const logout = useCallback(() => {
