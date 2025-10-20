@@ -213,6 +213,7 @@ export const IterableAppProvider: FunctionComponent<
       // Initialize app
       return Iterable.initialize(key, config)
         .then((isSuccessful) => {
+          console.log('initialize success', isSuccessful);
           setIsInitialized(isSuccessful);
 
           if (!isSuccessful)

@@ -608,16 +608,15 @@ import React
       name: Notification.Name.iterableInboxChanged, object: nil)
 
     DispatchQueue.main.async {
-      IterableAPI.initialize2(
+      IterableAPI.initialize(
         apiKey: apiKey,
         launchOptions: launchOptions,
-        config: iterableConfig,
-        apiEndPointOverride: apiEndPointOverride
-      ) { result in
-        resolver(result)
-      }
+        config: iterableConfig
+      )
 
       IterableAPI.setDeviceAttribute(name: "reactNativeSDKVersion", value: version)
+
+      resolver(true)
     }
   }
 
