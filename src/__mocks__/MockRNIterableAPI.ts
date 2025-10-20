@@ -80,6 +80,19 @@ export class MockRNIterableAPI {
 
   static pauseAuthRetries = jest.fn();
 
+  static generateJwtToken = jest.fn(
+    async (_opts: {
+      secret: string;
+      duration: number;
+      userId?: string;
+      email?: string;
+    }): Promise<string> => {
+      return await new Promise((resolve) => {
+        resolve('mock-jwt-token');
+      });
+    }
+  );
+
   static async getInAppMessages(): Promise<IterableInAppMessage[] | undefined> {
     return await new Promise((resolve) => {
       resolve(MockRNIterableAPI.messages);
