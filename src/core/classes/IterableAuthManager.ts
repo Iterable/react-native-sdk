@@ -67,6 +67,11 @@ export class IterableAuthManager {
    *   secret: 'your-jwt-secret',
    *   duration: 1000 * 60 * 60 * 24, // 1 day
    *   userId: 'your-iterable-user-id',
+   * });
+   * // OR
+   * const jwtToken = await IterableApi.generateJwtToken({
+   *   secret: 'your-jwt-secret',
+   *   duration: 1000 * 60 * 60 * 24, // 1 day
    *   email: 'me@gmail.com',
    * });
    * ```

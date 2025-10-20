@@ -619,20 +619,6 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         }
     }
 
-
-  //   private static JSONObject optSerializedDataFields(ReadableMap dataFields) {
-  //     JSONObject dataFieldsJson = null;
-
-  //     if (dataFields != null) {
-  //         try {
-  //             dataFieldsJson = Serialization.convertMapToJson(dataFields);
-  //         } catch (JSONException e) {
-  //             IterableLogger.d(TAG, "Failed to convert dataFields to JSON");
-  //         }
-  //     }
-
-  //     return dataFieldsJson;
-  // }
     @Override
     public void onTokenRegistrationSuccessful(String authToken) {
         IterableLogger.v(TAG, "authToken successfully set");
