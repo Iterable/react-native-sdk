@@ -215,7 +215,8 @@ import React
       ITBError("Could not find message with id: \(messageId)")
       return
     }
-    IterableAPI.track(inAppOpen: message, location: InAppLocation.from(number: locationNumber as NSNumber))
+    IterableAPI.track(
+      inAppOpen: message, location: InAppLocation.from(number: locationNumber as NSNumber))
   }
 
   @objc(trackInAppClick:location:clickedUrl:)
@@ -414,8 +415,10 @@ import React
     templateId: Double
   ) {
     ITBInfo()
-    let finalCampaignId: NSNumber? = (campaignId as NSNumber).intValue <= 0 ? nil : campaignId as NSNumber
-    let finalTemplateId: NSNumber? = (templateId as NSNumber).intValue <= 0 ? nil : templateId as NSNumber
+    let finalCampaignId: NSNumber? =
+      (campaignId as NSNumber).intValue <= 0 ? nil : campaignId as NSNumber
+    let finalTemplateId: NSNumber? =
+      (templateId as NSNumber).intValue <= 0 ? nil : templateId as NSNumber
     IterableAPI.updateSubscriptions(
       emailListIds,
       unsubscribedChannelIds: unsubscribedChannelIds,
@@ -488,6 +491,62 @@ import React
   public func pauseAuthRetries(pauseRetry: Bool) {
     ITBInfo()
     IterableAPI.pauseAuthRetries(pauseRetry)
+  }
+
+  @objc(generateJwtToken:resolver:rejecter:)
+  public func generateJwtToken(
+    _ opts: NSDictionary,
+    resolver: @escaping RCTPromiseResolveBlock,
+    rejecter: @escaping RCTPromiseRejectBlock
+  ) {
+    ITBInfo()
+
+    // Extract parameters
+    guard let secret = opts["secret"] as? String else {
+      rejecter("E_INVALID_ARGS", "secret is required", nil)
+      return
+    }
+
+    guard let durationMs = opts["duration"] as? Double else {
+      rejecter("E_INVALID_ARGS", "duration is required", nil)
+      return
+    }
+
+    let userId = opts["userId"] as? String
+    let email = opts["email"] as? String
+
+    // Validate that exactly one of userId or email is provided
+    if (userId != nil && email != nil) || (userId == nil && email == nil) {
+      rejecter("E_INVALID_ARGS", "The token must include a userId or email, but not both.", nil)
+      return
+    }
+
+    // Calculate iat and exp
+    let iat = Int(Date().timeIntervalSince1970)
+    let durationSeconds = Int(durationMs / 1000)
+    let exp = iat + durationSeconds
+
+    let token: String
+    if let userId = userId {
+      token = IterableTokenGenerator.generateJwtForUserId(
+        secret: secret,
+        iat: iat,
+        exp: exp,
+        userId: userId
+      )
+    } else if let email = email {
+      token = IterableTokenGenerator.generateJwtForEial(
+        secret: secret,
+        iat: iat,
+        exp: exp,
+        email: email
+      )
+    } else {
+      rejecter("E_INVALID_ARGS", "Either userId or email must be provided", nil)
+      return
+    }
+
+    resolver(token)
   }
 
   // MARK: Private
@@ -709,8 +768,5 @@ extension ReactIterableAPI: IterableAuthDelegate {
           body: nil as Any?)
       }
     }
-  }
-
-  public func onTokenRegistrationFailed(_ reason: String?) {
   }
 }

@@ -277,6 +277,21 @@ RCT_EXPORT_MODULE()
   [_swiftAPI pauseAuthRetries:pauseRetry];
 }
 
+- (void)generateJwtToken:(JS::NativeRNIterableAPI::SpecGenerateJwtTokenOpts &)opts
+                 resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject {
+  NSMutableDictionary *optsDict = [NSMutableDictionary new];
+  optsDict[@"secret"] = opts.secret();
+  optsDict[@"duration"] = @(opts.duration());
+  if (opts.userId()) {
+    optsDict[@"userId"] = opts.userId();
+  }
+  if (opts.email()) {
+    optsDict[@"email"] = opts.email();
+  }
+  [_swiftAPI generateJwtToken:optsDict resolver:resolve rejecter:reject];
+}
+
 - (void)wakeApp {
   // Placeholder function -- this method is only used in Android
 }
@@ -505,6 +520,11 @@ RCT_EXPORT_METHOD(passAlongAuthToken : (NSString *_Nullable)authToken) {
 
 RCT_EXPORT_METHOD(pauseAuthRetries : (BOOL)pauseRetry) {
   [_swiftAPI pauseAuthRetries:pauseRetry];
+}
+
+RCT_EXPORT_METHOD(generateJwtToken : (NSDictionary *)opts resolve : (
+    RCTPromiseResolveBlock)resolve reject : (RCTPromiseRejectBlock)reject) {
+  [_swiftAPI generateJwtToken:opts resolver:resolve rejecter:reject];
 }
 
 RCT_EXPORT_METHOD(wakeApp) {
