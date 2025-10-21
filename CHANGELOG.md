@@ -1,6 +1,21 @@
+## 2.2.0-alpha.0 (2025-10-21)
+
+### Updates
+- Updated Android SDK version to [3.6.1](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.6.1)
+- Updated iOS SDK version to [6.6.1](https://github.com/Iterable/swift-sdk/releases/tag/6.6.1)
+- Added JWT Capabilities:
+  - Added `Iterable.authhManager`, which manages the authentication flow
+  - Added `IterableRetryBackoff` and `IterableAuthFailureReason` enums
+  - Added `onJWTError` and `retryPolicy` for control over JWT flow
+- Moved all native calls to `IterableApi.ts`
+- Added JWT example to our example app
+
+### Fixes
+- Created a standalone `IterableLogger` to avoid circular dependencies
+
 ## 2.1.0-beta.1
 
-## Fixes
+### Fixes
 - Add Temporary fix for circular paths, which break expo ([9c09743](https://github.com/Iterable/react-native-sdk/commit/9c09743))
 
 ## 2.1.0-beta.0
