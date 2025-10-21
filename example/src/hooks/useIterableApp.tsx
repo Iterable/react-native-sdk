@@ -92,13 +92,6 @@ const getIsEmail = (id: string) => EMAIL_REGEX.test(id);
 export const IterableAppProvider: FunctionComponent<
   React.PropsWithChildren<unknown>
 > = ({ children }) => {
-  console.log('process.env.ITBL_JWT_SECRET', process.env.ITBL_JWT_SECRET);
-  console.log('process.env.ITBL_ID', process.env.ITBL_ID);
-  console.log(
-    'process.env.ITBL_IS_JWT_ENABLED',
-    process.env.ITBL_IS_JWT_ENABLED
-  );
-  console.log('process.env.ITBL_API_KEY', process.env.ITBL_API_KEY);
   const [returnToInboxTrigger, setReturnToInboxTrigger] =
     useState<boolean>(false);
   const [isInboxTab, setIsInboxTab] = useState<boolean>(false);
@@ -139,7 +132,7 @@ export const IterableAppProvider: FunctionComponent<
 
     const fn = getIsEmail(id) ? Iterable.setEmail : Iterable.setUserId;
 
-    fn(id, process.env.ITBL_JWT_SECRET);
+    fn(id);
     setIsLoggedIn(true);
     setLoginInProgress(false);
 
@@ -197,36 +190,19 @@ export const IterableAppProvider: FunctionComponent<
 
       config.inAppHandler = () => IterableInAppShowResponse.show;
 
-      console.log('getJwtToken', getJwtToken());
-
       if (
         process.env.ITBL_IS_JWT_ENABLED === 'true' &&
         process.env.ITBL_JWT_SECRET
       ) {
         console.log('CONFIGURED AUTH HANDLER');
         config.authHandler = async () => {
-          console.log(`authHandler`);
-
           const token = await getJwtToken();
-
-          console.log(`🚀 > IterableAppProvider > token:`, token);
-
-          return Promise.resolve({
-            // authToken: 'SomethingNotValid',
-            authToken: token,
-            successCallback: () => {
-              console.log(`authHandler > success`);
-            },
-            // This is not firing
-            failureCallback: () => {
-              console.log(`authHandler > failure`);
-            },
-          });
+          // return 'SomethingNotValid'; // Uncomment this to test the failure callback
+          return token;
         };
       }
 
       setItblConfig(config);
-      console.log(`🚀 > IterableAppProvider > config:`, config);
 
       const key = apiKey ?? process.env.ITBL_API_KEY;
 
@@ -240,33 +216,36 @@ export const IterableAppProvider: FunctionComponent<
         .then((isSuccessful) => {
           setIsInitialized(isSuccessful);
 
-          if (!isSuccessful)
-            return Promise.reject('`Iterable.initialize` failed');
+          console.log('🚀 > IterableAppProvider > isSuccessful:', isSuccessful);
 
-          if (getUserId()) {
+          if (!isSuccessful) {
+            // return Promise.reject('`Iterable.initialize` failed');
+            throw new Error('`Iterable.initialize` failed');
+          } else if (getUserId()) {
             login();
           }
 
           return isSuccessful;
         })
         .catch((err) => {
-          console.error(
-            '`Iterable.initialize` failed with the following error',
-            err
-          );
-          setIsInitialized(false);
-          setLoginInProgress(false);
-          return Promise.reject(err);
+          console.log(`🚀 > IterableAppProvider > err:`, err);
+          // console.error(
+          //   '`Iterable.initialize` failed with the following error',
+          //   err
+          // );
+          // setIsInitialized(false);
+          // setLoginInProgress(false);
+          // return Promise.reject(err);
         })
         .finally(() => {
           // For some reason, ios is throwing an error on initialize.
           // To temporarily fix this, we're using the finally block to login.
           // MOB-10419: Find out why initialize is throwing an error on ios
-          setIsInitialized(true);
-          if (getUserId()) {
-            login();
-          }
-          return Promise.resolve(true);
+          // setIsInitialized(true);
+          // if (getUserId()) {
+          //   login();
+          // }
+          // return Promise.resolve(true);
         });
     },
     [apiKey, getUserId, login, getJwtToken]
