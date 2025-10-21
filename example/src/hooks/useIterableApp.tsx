@@ -235,7 +235,8 @@ export const IterableAppProvider: FunctionComponent<
           return Promise.reject(err);
         });
     },
-    [getUserId, apiKey, login, getJwtToken]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [getUserId, apiKey, login, getJwtToken, userId]
   );
 
   const logout = useCallback(() => {

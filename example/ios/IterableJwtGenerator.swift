@@ -10,6 +10,11 @@ import Foundation
 
 @objcMembers public final class IterableJwtGenerator: NSObject {
 
+  private struct Header: Encodable {
+    let alg = "HS256"
+    let typ = "JWT"
+  }
+
   /// Base64 URL encode without padding (URL-safe base64 encoding for JWT)
   private static func urlEncodedBase64(_ data: Data) -> String {
     let base64 = data.base64EncodedString()
@@ -20,24 +25,12 @@ import Foundation
       .replacingOccurrences(of: "=", with: "")
   }
 
-  public static func generateJwtForEmail(secret: String, iat: Int, exp: Int, email: String)
-    -> String
-  {
-    struct Header: Encodable {
-      let alg = "HS256"
-      let typ = "JWT"
-    }
-
-    struct Payload: Encodable {
-      var email = ""
-      var iat = Int(Date().timeIntervalSince1970)
-      var exp = Int(Date().timeIntervalSince1970) + 60
-
-    }
+  /// Generic JWT generation helper that works with any Encodable payload
+  private static func generateJwt<T: Encodable>(secret: String, payload: T) -> String {
     let headerJsonData = try! JSONEncoder().encode(Header())
     let headerBase64 = urlEncodedBase64(headerJsonData)
 
-    let payloadJsonData = try! JSONEncoder().encode(Payload(email: email, iat: iat, exp: exp))
+    let payloadJsonData = try! JSONEncoder().encode(payload)
     let payloadBase64 = urlEncodedBase64(payloadJsonData)
 
     let toSign = Data((headerBase64 + "." + payloadBase64).utf8)
@@ -54,38 +47,28 @@ import Foundation
     return ""
   }
 
+  public static func generateJwtForEmail(secret: String, iat: Int, exp: Int, email: String)
+    -> String
+  {
+    struct Payload: Encodable {
+      var email: String
+      var iat: Int
+      var exp: Int
+    }
+
+    return generateJwt(secret: secret, payload: Payload(email: email, iat: iat, exp: exp))
+  }
+
   public static func generateJwtForUserId(secret: String, iat: Int, exp: Int, userId: String)
     -> String
   {
-    struct Header: Encodable {
-      let alg = "HS256"
-      let typ = "JWT"
-    }
-
     struct Payload: Encodable {
-      var userId = ""
-      var iat = Int(Date().timeIntervalSince1970)
-      var exp = Int(Date().timeIntervalSince1970) + 60
-
+      var userId: String
+      var iat: Int
+      var exp: Int
     }
-    let headerJsonData = try! JSONEncoder().encode(Header())
-    let headerBase64 = urlEncodedBase64(headerJsonData)
 
-    let payloadJsonData = try! JSONEncoder().encode(Payload(userId: userId, iat: iat, exp: exp))
-    let payloadBase64 = urlEncodedBase64(payloadJsonData)
-
-    let toSign = Data((headerBase64 + "." + payloadBase64).utf8)
-
-    if #available(iOS 13.0, *) {
-      let privateKey = SymmetricKey(data: Data(secret.utf8))
-      let signature = HMAC<SHA256>.authenticationCode(for: toSign, using: privateKey)
-      let signatureBase64 = urlEncodedBase64(Data(signature))
-
-      let token = [headerBase64, payloadBase64, signatureBase64].joined(separator: ".")
-
-      return token
-    }
-    return ""
+    return generateJwt(secret: secret, payload: Payload(userId: userId, iat: iat, exp: exp))
   }
 
   public static func generateToken(
