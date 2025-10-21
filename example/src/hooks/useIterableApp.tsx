@@ -198,7 +198,6 @@ export const IterableAppProvider: FunctionComponent<
         process.env.ITBL_IS_JWT_ENABLED === 'true' &&
         process.env.ITBL_JWT_SECRET
       ) {
-        console.log('CONFIGURED AUTH HANDLER');
         config.authHandler = async () => {
           const token = await getJwtToken();
           // return 'SomethingNotValid'; // Uncomment this to test the failure callback
@@ -219,8 +218,6 @@ export const IterableAppProvider: FunctionComponent<
       return Iterable.initialize(key, config)
         .then((isSuccessful) => {
           setIsInitialized(isSuccessful);
-
-          console.log('🚀 > IterableAppProvider > isSuccessful:', isSuccessful);
 
           if (!isSuccessful) {
             return Promise.reject('`Iterable.initialize` failed');
