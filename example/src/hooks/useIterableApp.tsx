@@ -20,7 +20,7 @@ import {
 
 import { Route } from '../constants/routes';
 import type { RootStackParamList } from '../types/navigation';
-import NativeJwtTokenModule from '../utility/NativeJwtTokenModule';
+import NativeJwtTokenModule from '../NativeJwtTokenModule';
 
 type Navigation = StackNavigationProp<RootStackParamList>;
 
@@ -141,7 +141,9 @@ export const IterableAppProvider: FunctionComponent<
 
   const initialize = useCallback(
     (navigation: Navigation) => {
-      login();
+      if (getUserId()) {
+        login();
+      }
 
       const config = new IterableConfig();
 
@@ -222,8 +224,6 @@ export const IterableAppProvider: FunctionComponent<
 
           if (!isSuccessful) {
             return Promise.reject('`Iterable.initialize` failed');
-          } else if (getUserId()) {
-            login();
           }
 
           return isSuccessful;
@@ -236,19 +236,9 @@ export const IterableAppProvider: FunctionComponent<
           setIsInitialized(false);
           setLoginInProgress(false);
           return Promise.reject(err);
-        })
-        .finally(() => {
-          // For some reason, ios is throwing an error on initialize.
-          // To temporarily fix this, we're using the finally block to login.
-          // MOB-10419: Find out why initialize is throwing an error on ios
-          setIsInitialized(true);
-          if (getUserId()) {
-            login();
-          }
-          return Promise.resolve(true);
         });
     },
-    [apiKey, getUserId, login, getJwtToken]
+    [getUserId, apiKey, login, getJwtToken]
   );
 
   const logout = useCallback(() => {
