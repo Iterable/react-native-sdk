@@ -999,7 +999,7 @@ export class Iterable {
                 (promiseResult as IterableAuthResponse).authToken
               );
 
-              const timeoutId = setTimeout(() => {
+              setTimeout(() => {
                 if (
                   authResponseCallback === IterableAuthResponseResult.SUCCESS
                 ) {
@@ -1018,8 +1018,6 @@ export class Iterable {
                   );
                 }
               }, 1000);
-              // Use unref() to prevent the timeout from keeping the process alive
-              timeoutId.unref();
             } else if (typeof promiseResult === typeof '') {
               //If promise only returns string
               RNIterableAPI.passAlongAuthToken(promiseResult as string);
