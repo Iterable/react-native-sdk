@@ -141,6 +141,8 @@ export const IterableAppProvider: FunctionComponent<
 
   const initialize = useCallback(
     (navigation: Navigation) => {
+      login();
+
       const config = new IterableConfig();
 
       config.inAppDisplayInterval = 1.0; // Min gap between in-apps. No need to set this in production.
@@ -219,8 +221,7 @@ export const IterableAppProvider: FunctionComponent<
           console.log('🚀 > IterableAppProvider > isSuccessful:', isSuccessful);
 
           if (!isSuccessful) {
-            // return Promise.reject('`Iterable.initialize` failed');
-            throw new Error('`Iterable.initialize` failed');
+            return Promise.reject('`Iterable.initialize` failed');
           } else if (getUserId()) {
             login();
           }
@@ -228,24 +229,23 @@ export const IterableAppProvider: FunctionComponent<
           return isSuccessful;
         })
         .catch((err) => {
-          console.log(`🚀 > IterableAppProvider > err:`, err);
-          // console.error(
-          //   '`Iterable.initialize` failed with the following error',
-          //   err
-          // );
-          // setIsInitialized(false);
-          // setLoginInProgress(false);
-          // return Promise.reject(err);
+          console.error(
+            '`Iterable.initialize` failed with the following error',
+            err
+          );
+          setIsInitialized(false);
+          setLoginInProgress(false);
+          return Promise.reject(err);
         })
         .finally(() => {
           // For some reason, ios is throwing an error on initialize.
           // To temporarily fix this, we're using the finally block to login.
           // MOB-10419: Find out why initialize is throwing an error on ios
-          // setIsInitialized(true);
-          // if (getUserId()) {
-          //   login();
-          // }
-          // return Promise.resolve(true);
+          setIsInitialized(true);
+          if (getUserId()) {
+            login();
+          }
+          return Promise.resolve(true);
         });
     },
     [apiKey, getUserId, login, getJwtToken]
