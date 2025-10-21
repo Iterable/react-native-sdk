@@ -20,6 +20,7 @@ import {
 
 import { Route } from '../constants/routes';
 import type { RootStackParamList } from '../types/navigation';
+import NativeJwtTokenModule from '../utility/NativeJwtTokenModule';
 
 type Navigation = StackNavigationProp<RootStackParamList>;
 
@@ -86,9 +87,18 @@ const IterableAppContext = createContext<IterableAppProps>({
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+const getIsEmail = (id: string) => EMAIL_REGEX.test(id);
+
 export const IterableAppProvider: FunctionComponent<
   React.PropsWithChildren<unknown>
 > = ({ children }) => {
+  console.log('process.env.ITBL_JWT_SECRET', process.env.ITBL_JWT_SECRET);
+  console.log('process.env.ITBL_ID', process.env.ITBL_ID);
+  console.log(
+    'process.env.ITBL_IS_JWT_ENABLED',
+    process.env.ITBL_IS_JWT_ENABLED
+  );
+  console.log('process.env.ITBL_API_KEY', process.env.ITBL_API_KEY);
   const [returnToInboxTrigger, setReturnToInboxTrigger] =
     useState<boolean>(false);
   const [isInboxTab, setIsInboxTab] = useState<boolean>(false);
@@ -105,6 +115,21 @@ export const IterableAppProvider: FunctionComponent<
 
   const getUserId = useCallback(() => userId ?? process.env.ITBL_ID, [userId]);
 
+  const getJwtToken = useCallback(async () => {
+    const id = userId ?? process.env.ITBL_ID;
+    const idType = getIsEmail(id as string) ? 'email' : 'userId';
+    const secret = process.env.ITBL_JWT_SECRET ?? '';
+    const duration = 1000 * 60 * 60 * 24; // 1 day in milliseconds
+    const jwtToken = await NativeJwtTokenModule.generateJwtToken(
+      secret,
+      duration,
+      idType === 'email' ? (id as string) : null, // Email (can be null if userId is provided)
+      idType === 'userId' ? (id as string) : null // UserId (can be null if email is provided)
+    );
+
+    return jwtToken;
+  }, [userId]);
+
   const login = useCallback(() => {
     const id = userId ?? process.env.ITBL_ID;
 
@@ -112,10 +137,9 @@ export const IterableAppProvider: FunctionComponent<
 
     setLoginInProgress(true);
 
-    const isEmail = EMAIL_REGEX.test(id);
-    const fn = isEmail ? Iterable.setEmail : Iterable.setUserId;
+    const fn = getIsEmail(id) ? Iterable.setEmail : Iterable.setUserId;
 
-    fn(id);
+    fn(id, process.env.ITBL_JWT_SECRET);
     setIsLoggedIn(true);
     setLoginInProgress(false);
 
@@ -173,23 +197,36 @@ export const IterableAppProvider: FunctionComponent<
 
       config.inAppHandler = () => IterableInAppShowResponse.show;
 
-      // NOTE: Uncomment to test authHandler failure
-      // config.authHandler = () => {
-      //   console.log(`authHandler`);
+      console.log('getJwtToken', getJwtToken());
 
-      //   return Promise.resolve({
-      //     authToken: 'SomethingNotValid',
-      //     successCallback: () => {
-      //       console.log(`authHandler > success`);
-      //     },
-      //     // This is not firing
-      //     failureCallback: () => {
-      //       console.log(`authHandler > failure`);
-      //     },
-      //   });
-      // };
+      if (
+        process.env.ITBL_IS_JWT_ENABLED === 'true' &&
+        process.env.ITBL_JWT_SECRET
+      ) {
+        console.log('CONFIGURED AUTH HANDLER');
+        config.authHandler = async () => {
+          console.log(`authHandler`);
+
+          const token = await getJwtToken();
+
+          console.log(`🚀 > IterableAppProvider > token:`, token);
+
+          return Promise.resolve({
+            // authToken: 'SomethingNotValid',
+            authToken: token,
+            successCallback: () => {
+              console.log(`authHandler > success`);
+            },
+            // This is not firing
+            failureCallback: () => {
+              console.log(`authHandler > failure`);
+            },
+          });
+        };
+      }
 
       setItblConfig(config);
+      console.log(`🚀 > IterableAppProvider > config:`, config);
 
       const key = apiKey ?? process.env.ITBL_API_KEY;
 
@@ -232,7 +269,7 @@ export const IterableAppProvider: FunctionComponent<
           return Promise.resolve(true);
         });
     },
-    [apiKey, getUserId, login]
+    [apiKey, getUserId, login, getJwtToken]
   );
 
   const logout = useCallback(() => {
