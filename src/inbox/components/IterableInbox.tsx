@@ -1,4 +1,3 @@
-import { useIsFocused } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import {
   Animated,
@@ -11,7 +10,11 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { useAppStateListener, useDeviceOrientation } from '../../core';
+import {
+  useAppStateListener,
+  useDeviceOrientation,
+  useLazyIsFocused,
+} from '../../core';
 // expo throws an error if this is not imported directly due to circular
 // dependencies
 // See: https://github.com/expo/expo/issues/35100
@@ -200,7 +203,7 @@ export const IterableInbox = ({
 
   const { height, width, isPortrait } = useDeviceOrientation();
   const appState = useAppStateListener();
-  const isFocused = useIsFocused();
+  const [isFocused, focusTracker] = useLazyIsFocused();
 
   const [selectedRowViewModelIdx, setSelectedRowViewModelIdx] =
     useState<number>(0);
@@ -499,9 +502,16 @@ export const IterableInbox = ({
     </Animated.View>
   );
 
-  return safeAreaMode ? (
-    <SafeAreaView style={styles.container}>{inboxAnimatedView}</SafeAreaView>
-  ) : (
-    <View style={styles.container}>{inboxAnimatedView}</View>
+  return (
+    <>
+      {focusTracker}
+      {safeAreaMode ? (
+        <SafeAreaView style={styles.container}>
+          {inboxAnimatedView}
+        </SafeAreaView>
+      ) : (
+        <View style={styles.container}>{inboxAnimatedView}</View>
+      )}
+    </>
   );
 };
