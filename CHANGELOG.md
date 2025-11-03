@@ -1,3 +1,11 @@
+##2.1.0
+### Features
+* SDK is now compatible with both New Architecture and Legacy Architecture. Fix
+  for #691, #602, #563.
+
+### Fixes
+* Dependencies update
+
 ## 2.1.0-beta.1
 
 ## Fixes
