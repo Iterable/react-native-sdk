@@ -82,6 +82,25 @@ export class MockRNIterableAPI {
     });
   }
 
+  static async getInboxMessages(): Promise<IterableInAppMessage[] | undefined> {
+    return await new Promise((resolve) => {
+      // Filter messages that are marked for inbox
+      const inboxMessages = MockRNIterableAPI.messages?.filter(msg => msg.saveToInbox) || [];
+      resolve(inboxMessages);
+    });
+  }
+
+  static async getHtmlInAppContentForMessage(messageId: string): Promise<unknown> {
+    return await new Promise((resolve) => {
+      // Mock HTML content for testing
+      const mockHtmlContent = {
+        edgeInsets: { top: 10, left: 20, bottom: 30, right: 40 },
+        html: `<div>Mock HTML content for message ${messageId}</div>`,
+      };
+      resolve(mockHtmlContent);
+    });
+  }
+
   static setAutoDisplayPaused = jest.fn();
 
   static async showMessage(
