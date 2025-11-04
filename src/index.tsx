@@ -18,13 +18,14 @@ export {
   IterableEventName,
   IterableLogLevel,
   IterablePushPlatform,
+  IterableRetryBackoff,
 } from './core/enums';
 export {
   useAppStateListener,
   useDeviceOrientation,
   type IterableDeviceOrientation,
 } from './core/hooks';
-export { type IterableEdgeInsetDetails } from './core/types';
+export { type IterableEdgeInsetDetails, type IterableAuthFailure, type IterableRetryPolicy } from './core/types';
 export {
   IterableHtmlInAppContent,
   IterableInAppCloseSource,

@@ -1,0 +1,15 @@
+- Iterable API
+  - `setVisitorUsageTracked`
+  - `getVisitorUsageTracked`
+  - `logoutUser`
+  - `disableDeviceForAllUsers`
+  - `trackInboxSession`
+- Embedded
+- `IterableConfig`
+  - `IterableAPIMobileFrameworkType`
+  - `expiringAuthTokenRefreshPeriod`
+  - `eventThresholdLimit`
+  - `identityResolution`
+  - `mobileFrameworkInfo`
+- Unknown User
+- `IterableInAppTriggerType`
