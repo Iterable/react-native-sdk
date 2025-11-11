@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
   s.private_header_files = "ios/**/*.h"
 
   # Load Iterables iOS SDK as a dependency
-  s.dependency "Iterable-iOS-SDK", "6.6.2"
+  s.dependency "Iterable-iOS-SDK", "6.6.3"
 
   # Basic Swift support
   s.pod_target_xcconfig = {
