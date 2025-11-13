@@ -891,6 +891,34 @@ export class Iterable {
   }
 
   /**
+   * Logs out the current user from the Iterable SDK.
+   *
+   * This method will remove all event listeners for the Iterable SDK and set the email and user ID to null.
+   *
+   * @example
+   * ```typescript
+   * Iterable.logout();
+   * ```
+   */
+  static logout() {
+    Iterable.removeAllEventListeners();
+    Iterable.setEmail(null);
+    Iterable.setUserId(null);
+  }
+
+  /**
+   * Removes all event listeners for the Iterable SDK.
+   */
+  private static removeAllEventListeners() {
+    RNEventEmitter.removeAllListeners(IterableEventName.handleUrlCalled);
+    RNEventEmitter.removeAllListeners(IterableEventName.handleInAppCalled);
+    RNEventEmitter.removeAllListeners(IterableEventName.handleCustomActionCalled);
+    RNEventEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
+    RNEventEmitter.removeAllListeners(IterableEventName.handleAuthSuccessCalled);
+    RNEventEmitter.removeAllListeners(IterableEventName.handleAuthFailureCalled);
+  }
+
+  /**
    * Sets up event handlers for various Iterable events.
    *
    * This method performs the following actions:
@@ -912,14 +940,7 @@ export class Iterable {
    */
   private static setupEventHandlers() {
     // Remove all listeners to avoid duplicate listeners
-    RNEventEmitter.removeAllListeners(IterableEventName.handleUrlCalled);
-    RNEventEmitter.removeAllListeners(IterableEventName.handleInAppCalled);
-    RNEventEmitter.removeAllListeners(
-      IterableEventName.handleCustomActionCalled
-    );
-    RNEventEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
-    RNEventEmitter.removeAllListeners(IterableEventName.handleAuthSuccessCalled);
-    RNEventEmitter.removeAllListeners(IterableEventName.handleAuthFailureCalled);
+    Iterable.removeAllEventListeners();
 
     if (Iterable.savedConfig.urlHandler) {
       RNEventEmitter.addListener(IterableEventName.handleUrlCalled, (dict) => {
