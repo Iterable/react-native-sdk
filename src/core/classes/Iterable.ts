@@ -989,7 +989,7 @@ export class Iterable {
         // Asks frontend of the client/app to pass authToken
         Iterable.savedConfig.authHandler!()
           .then((promiseResult) => {
-            // Promise result can be either just String OR of type AuthRespronse.
+            // Promise result can be either just String OR of type AuthResponse.
             // If type AuthReponse, authToken will be parsed looking for `authToken` within promised object. Two additional listeners will be registered for success and failure callbacks sent by native bridge layer.
             // Else it will be looked for as a String.
             if (isIterableAuthResponse(promiseResult)) {
