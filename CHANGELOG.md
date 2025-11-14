@@ -1,4 +1,11 @@
-## 2.2.0-alpha.0 (2025-10-21)
+## 2.2.0-alpha.1
+
+### Fixes
+* [SDK-151] cannot-read-property-authtoken-of-undefined by @lposen in https://github.com/Iterable/react-native-sdk/pull/779
+* [SDK-181] update ios/android sdk versions by @lposen in https://github.com/Iterable/react-native-sdk/pull/780
+* [SDK-149] add-logout-functionality by @lposen in https://github.com/Iterable/react-native-sdk/pull/781
+
+## 2.2.0-alpha.0
 
 ### Updates
 - Updated Android SDK version to [3.6.1](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.6.1)
