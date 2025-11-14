@@ -97,6 +97,9 @@ describe('Iterable', () => {
 
     it('should clear email and userId', async () => {
       // GIVEN a user is logged in
+
+      // This is just for testing purposed.
+      // Usually you'd either call `setEmail` or `setUserId`, but not both.
       Iterable.setEmail('user@example.com');
       Iterable.setUserId('user123');
       // WHEN Iterable.logout is called
