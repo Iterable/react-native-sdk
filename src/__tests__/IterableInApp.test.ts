@@ -1,7 +1,5 @@
 import { NativeEventEmitter } from 'react-native';
 
-import { IterableLogger } from '../core';
-
 import { MockRNIterableAPI } from '../__mocks__/MockRNIterableAPI';
 
 import {
@@ -21,7 +19,6 @@ import {
 describe('Iterable In App', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    Iterable.logger = new IterableLogger(new IterableConfig());
   });
 
   test('trackInAppOpen_params_methodCalledWithParams', () => {
@@ -202,9 +199,11 @@ describe('Iterable In App', () => {
     // WHEN the simulated local queue is set to the in-app messages
     MockRNIterableAPI.setMessages(messages);
     // THEN Iterable.inAppManager.getMessages returns the list of in-app messages
-    return await Iterable.inAppManager?.getMessages().then((messagesObtained) => {
-      expect(messagesObtained).toEqual(messages);
-    });
+    return await Iterable.inAppManager
+      ?.getMessages()
+      .then((messagesObtained) => {
+        expect(messagesObtained).toEqual(messages);
+      });
   });
 
   test('showMessage_messageAndConsume_returnsClickedUrl', async () => {
@@ -222,9 +221,11 @@ describe('Iterable In App', () => {
     // WHEN the simulated clicked url is set to the clicked url
     MockRNIterableAPI.setClickedUrl(clickedUrl);
     // THEN Iterable,inAppManager.showMessage returns the simulated clicked url
-    return await Iterable.inAppManager?.showMessage(message, consume).then((url) => {
-      expect(url).toEqual(clickedUrl);
-    });
+    return await Iterable.inAppManager
+      ?.showMessage(message, consume)
+      .then((url) => {
+        expect(url).toEqual(clickedUrl);
+      });
   });
 
   test('removeMessage_params_methodCalledWithParams', () => {

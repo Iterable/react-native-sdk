@@ -215,7 +215,8 @@ import React
       ITBError("Could not find message with id: \(messageId)")
       return
     }
-    IterableAPI.track(inAppOpen: message, location: InAppLocation.from(number: locationNumber as NSNumber))
+    IterableAPI.track(
+      inAppOpen: message, location: InAppLocation.from(number: locationNumber as NSNumber))
   }
 
   @objc(trackInAppClick:location:clickedUrl:)
@@ -414,8 +415,10 @@ import React
     templateId: Double
   ) {
     ITBInfo()
-    let finalCampaignId: NSNumber? = (campaignId as NSNumber).intValue <= 0 ? nil : campaignId as NSNumber
-    let finalTemplateId: NSNumber? = (templateId as NSNumber).intValue <= 0 ? nil : templateId as NSNumber
+    let finalCampaignId: NSNumber? =
+      (campaignId as NSNumber).intValue <= 0 ? nil : campaignId as NSNumber
+    let finalTemplateId: NSNumber? =
+      (templateId as NSNumber).intValue <= 0 ? nil : templateId as NSNumber
     IterableAPI.updateSubscriptions(
       emailListIds,
       unsubscribedChannelIds: unsubscribedChannelIds,
@@ -480,8 +483,14 @@ import React
   @objc(passAlongAuthToken:)
   public func passAlongAuthToken(authToken: String?) {
     ITBInfo()
-    passedAuthToken = authToken
+    self.passedAuthToken = authToken
     authHandlerSemaphore.signal()
+  }
+
+  @objc(pauseAuthRetries:)
+  public func pauseAuthRetries(pauseRetry: Bool) {
+    ITBInfo()
+    IterableAPI.pauseAuthRetries(pauseRetry)
   }
 
   // MARK: Private
@@ -531,7 +540,9 @@ import React
       iterableConfig.inAppDelegate = self
     }
 
-    if let authHandlerPresent = configDict["authHandlerPresent"] as? Bool, authHandlerPresent {
+    if let authHandlerPresent = configDict["authHandlerPresent"] as? Bool,
+      authHandlerPresent == true
+    {
       iterableConfig.authDelegate = self
     }
 
@@ -662,6 +673,20 @@ extension ReactIterableAPI: IterableInAppDelegate {
 }
 
 extension ReactIterableAPI: IterableAuthDelegate {
+  public func onAuthFailure(_ authFailure: IterableSDK.AuthFailure) {
+    ITBInfo()
+
+    var failureDict: [String: Any] = [:]
+    failureDict["userKey"] = authFailure.userKey
+    failureDict["failedAuthToken"] = authFailure.failedAuthToken
+    failureDict["failedRequestTime"] = authFailure.failedRequestTime
+    failureDict["failureReason"] = authFailure.failureReason.rawValue
+
+    delegate?.sendEvent(
+      withName: EventName.handleAuthFailureCalled.rawValue,
+      body: failureDict)
+  }
+
   public func onAuthTokenRequested(completion: @escaping AuthTokenRetrievalHandler) {
     ITBInfo()
     DispatchQueue.global(qos: .userInitiated).async {
@@ -682,6 +707,8 @@ extension ReactIterableAPI: IterableAuthDelegate {
         DispatchQueue.main.async {
           completion(nil)
         }
+        // TODO: RN should be able to handle nil case as well. Or we can wrap this up under one of the existing AuthFailure. But again, its not a authFailure in this one. Its a timeout error.
+        // TODO: Create a Dictionary representing AuthFailure object due to `null` auth token and pass it in body instead of passing `nil`
         self.delegate?.sendEvent(
           withName: EventName.handleAuthFailureCalled.rawValue,
           body: nil as Any?)

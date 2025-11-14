@@ -1979,6 +1979,7 @@ __metadata:
   dependencies:
     "@commitlint/config-conventional": ^19.6.0
     "@evilmartians/lefthook": ^1.5.0
+    "@react-native-community/cli": 18.0.0
     "@react-native/babel-preset": 0.79.3
     "@react-native/eslint-config": 0.79.3
     "@react-native/metro-config": 0.79.3
@@ -1994,7 +1995,7 @@ __metadata:
     commitlint: ^19.6.1
     del-cli: ^5.1.0
     eslint: ^8.51.0
-    eslint-config-prettier: ^9.0.0
+    eslint-config-prettier: ^10.1.8
     eslint-plugin-jest: ^28.9.0
     eslint-plugin-prettier: ^5.0.1
     eslint-plugin-tsdoc: ^0.3.0
@@ -6215,6 +6216,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-config-prettier@npm:^10.1.8":
+  version: 10.1.8
+  resolution: "eslint-config-prettier@npm:10.1.8"
+  peerDependencies:
+    eslint: ">=7.0.0"
+  bin:
+    eslint-config-prettier: bin/cli.js
+  checksum: 9140e19f78f0dbc888b160bb72b85f8043bada7b12a548faa56cea0ba74f8ef16653250ffd014d85d9a376a88c4941c96a3cdc9d39a07eb3def6967166635bd8
+  languageName: node
+  linkType: hard
+
 "eslint-config-prettier@npm:^8.5.0":
   version: 8.10.2
   resolution: "eslint-config-prettier@npm:8.10.2"
@@ -6223,17 +6235,6 @@ __metadata:
   bin:
     eslint-config-prettier: bin/cli.js
   checksum: a92b7e8a996e65adf79de1579524235687e9d3552d088cfab4f170da60d23762addb4276169c8ca3a9551329dda8408c59f7e414101b238a6385379ac1bc3b16
-  languageName: node
-  linkType: hard
-
-"eslint-config-prettier@npm:^9.0.0":
-  version: 9.1.2
-  resolution: "eslint-config-prettier@npm:9.1.2"
-  peerDependencies:
-    eslint: ">=7.0.0"
-  bin:
-    eslint-config-prettier: bin/cli.js
-  checksum: e786b767331094fd024cb1b0899964a9da0602eaf4ebd617d6d9794752ccd04dbe997e3c14c17f256c97af20bee1c83c9273f69b74cb2081b6f514580d62408f
   languageName: node
   linkType: hard
 
