@@ -13,7 +13,7 @@
 - Added JWT Capabilities:
   - Added `Iterable.authhManager`, which manages the authentication flow
   - Added `IterableRetryBackoff` and `IterableAuthFailureReason` enums
-  - Added `onJWTError` and `retryPolicy` for control over JWT flow
+  - Added `onJwtError` and `retryPolicy` for control over JWT flow
 - Moved all native calls to `IterableApi.ts`
 - Added JWT example to our example app
 

@@ -155,8 +155,8 @@ export const IterableAppProvider: FunctionComponent<
         retryBackoff: IterableRetryBackoff.LINEAR,
       };
 
-      config.onJWTError = (authFailure) => {
-        console.log('onJWTError', authFailure);
+      config.onJwtError = (authFailure) => {
+        console.log('onJwtError', authFailure);
 
         const failureReason =
           typeof authFailure.failureReason === 'string'

@@ -1041,7 +1041,7 @@ export class Iterable {
           authResponseCallback = IterableAuthResponseResult.FAILURE;
 
           // Call the actual JWT error with `authFailure` object.
-          Iterable.savedConfig?.onJWTError?.(authFailureResponse);
+          Iterable.savedConfig?.onJwtError?.(authFailureResponse);
         }
       );
     }

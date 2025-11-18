@@ -218,12 +218,12 @@ export class IterableConfig {
    * @example
    * ```typescript
    * const config = new IterableConfig();
-   * config.onJWTError = (authFailure) => {
+   * config.onJwtError = (authFailure) => {
    *   console.error('Error fetching JWT:', authFailure);
    * };
    * ```
    */
-  onJWTError?: (authFailure: IterableAuthFailure) => void;
+  onJwtError?: (authFailure: IterableAuthFailure) => void;
 
   /**
    * Set the verbosity of Android and iOS project's log system.
