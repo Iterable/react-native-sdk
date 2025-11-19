@@ -91,10 +91,6 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
             configBuilder.setAuthHandler(this);
         }
 
-        if (configReadableMap.hasKey("enableEmbeddedMessaging")) {
-            configBuilder.setEnableEmbeddedMessaging(configReadableMap.getBoolean("enableEmbeddedMessaging"));
-        }
-
         IterableApi.initialize(reactContext, apiKey, configBuilder.build());
         IterableApi.getInstance().setDeviceAttribute("reactNativeSDKVersion", version);
 
@@ -124,10 +120,6 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
 
         if (configReadableMap.hasKey("authHandlerPresent") && configReadableMap.getBoolean("authHandlerPresent") == true) {
             configBuilder.setAuthHandler(this);
-        }
-
-        if (configReadableMap.hasKey("enableEmbeddedMessaging")) {
-            configBuilder.setEnableEmbeddedMessaging(configReadableMap.getBoolean("enableEmbeddedMessaging"));
         }
 
         // NOTE: There does not seem to be a way to set the API endpoint
