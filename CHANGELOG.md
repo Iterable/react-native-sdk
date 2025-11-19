@@ -1,3 +1,13 @@
+## 2.2.0-alpha.2
+
+### Updates
+* Changed `onJWTError` to `onJwtError`
+* Changed `IterableRetryBackoff` enum keys to be lowercase for consistency
+  across application
+
+### Fixes
+* Fixed Android `retryInterval` not being respected - Android native SDK expects milliseconds while iOS expects seconds, added conversion in Android bridge layer
+
 ## 2.2.0-alpha.1
 
 ### Updates
@@ -5,7 +15,6 @@
 
 ### Fixes
 * [SDK-151] Fixed "cannot read property authtoken of undefined" error
-
 
 ## 2.2.0-alpha.0
 
