@@ -1,15 +1,17 @@
 ## 2.2.0-alpha.1
 
+### Updates
+* [SDK-149] Added logout functionality
+
 ### Fixes
-* [SDK-151] cannot-read-property-authtoken-of-undefined by @lposen in https://github.com/Iterable/react-native-sdk/pull/779
-* [SDK-181] update ios/android sdk versions by @lposen in https://github.com/Iterable/react-native-sdk/pull/780
-* [SDK-149] add-logout-functionality by @lposen in https://github.com/Iterable/react-native-sdk/pull/781
+* [SDK-151] Fixed "cannot read property authtoken of undefined" error
+
 
 ## 2.2.0-alpha.0
 
 ### Updates
-- Updated Android SDK version to [3.6.1](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.6.1)
-- Updated iOS SDK version to [6.6.1](https://github.com/Iterable/swift-sdk/releases/tag/6.6.1)
+- Updated Android SDK version to [3.6.2](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.6.2)
+- Updated iOS SDK version to [6.6.3](https://github.com/Iterable/swift-sdk/releases/tag/6.6.3)
 - Added JWT Capabilities:
   - Added `Iterable.authhManager`, which manages the authentication flow
   - Added `IterableRetryBackoff` and `IterableAuthFailureReason` enums
@@ -20,17 +22,13 @@
 ### Fixes
 - Created a standalone `IterableLogger` to avoid circular dependencies
 
-##2.1.0
+## 2.1.0
 ### Updates
 * SDK is now compatible with both New Architecture and Legacy Architecture. Fix
   for #691, #602, #563.
 
 ### Fixes
-* Dependencies update
-
-## 2.1.0
-
-### Fixes
+- Dependencies update
 - Update SDK so that it has full support for [React Native New Architecture](https://reactnative.dev/architecture/landing-page)
 - Add Temporary fix for circular paths, which break expo ([9c09743](https://github.com/Iterable/react-native-sdk/commit/9c09743))
 
