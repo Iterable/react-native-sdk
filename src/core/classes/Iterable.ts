@@ -196,7 +196,7 @@ export class Iterable {
       IterableLogger.setLogLevel(config.logLevel);
 
       Iterable.embeddedManager.setEnabled(
-        config.embeddedMessagingEnabled === true
+        config.embeddedMessagingEnabled ?? false
       );
     }
 
