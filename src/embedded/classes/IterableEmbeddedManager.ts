@@ -18,6 +18,15 @@ export class IterableEmbeddedManager {
   isEnabled = false;
 
   /**
+   * Sets whether the embedded manager is enabled.
+   *
+   * @param enabled - Whether the embedded manager is enabled.
+   */
+  setEnabled(enabled: boolean) {
+    this.isEnabled = enabled;
+  }
+
+  /**
    * Retrieves a list of placement IDs for the embedded manager.
    *
    * [Placement Documentation](https://support.iterable.com/hc/en-us/articles/23060529977364-Embedded-Messaging-Overview#placements-and-prioritization)

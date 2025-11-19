@@ -20,7 +20,7 @@ export const Embedded = () => {
         Does embedded class exist? {Iterable.embeddedManager ? 'Yes' : 'No'}
       </Text>
       <Text style={styles.text}>
-        Is embedded manager enabled?
+        Is embedded manager enabled?{' '}
         {Iterable.embeddedManager.isEnabled ? 'Yes' : 'No'}
       </Text>
       <Text style={styles.text}>

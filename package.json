@@ -1,6 +1,6 @@
 {
   "name": "@iterable/react-native-sdk",
-  "version": "2.1.0-beta.1",
+  "version": "2.2.0-alpha.1",
   "description": "Iterable SDK for React Native.",
   "source": "./src/index.tsx",
   "main": "./lib/module/index.js",
@@ -69,6 +69,7 @@
   "devDependencies": {
     "@commitlint/config-conventional": "^19.6.0",
     "@evilmartians/lefthook": "^1.5.0",
+    "@react-native-community/cli": "18.0.0",
     "@react-native/babel-preset": "0.79.3",
     "@react-native/eslint-config": "0.79.3",
     "@react-native/metro-config": "0.79.3",
@@ -79,7 +80,6 @@
     "@testing-library/react-native": "^13.3.3",
     "@types/jest": "^29.5.5",
     "@types/react": "^19.0.0",
-    "@types/react-native-vector-icons": "^6.4.18",
     "@typescript-eslint/eslint-plugin": "^8.13.0",
     "@typescript-eslint/parser": "^8.13.0",
     "commitlint": "^19.6.1",
@@ -98,7 +98,6 @@
     "react-native-gesture-handler": "^2.26.0",
     "react-native-safe-area-context": "^5.4.0",
     "react-native-screens": "^4.10.0",
-    "react-native-vector-icons": "^10.2.0",
     "react-native-webview": "^13.14.1",
     "react-test-renderer": "19.0.0",
     "release-it": "^17.10.0",
@@ -116,7 +115,6 @@
     "react": "*",
     "react-native": "*",
     "react-native-safe-area-context": "*",
-    "react-native-vector-icons": "*",
     "react-native-webview": "*"
   },
   "peerDependenciesMeta": {

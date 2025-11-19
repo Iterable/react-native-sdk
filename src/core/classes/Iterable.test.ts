@@ -74,6 +74,58 @@ describe('Iterable', () => {
     });
   });
 
+  describe('logout', () => {
+    it('should call setEmail with null', () => {
+      // GIVEN no parameters
+      // WHEN Iterable.logout is called
+      const setEmailSpy = jest.spyOn(Iterable, 'setEmail');
+      Iterable.logout();
+      // THEN Iterable.setEmail is called with null
+      expect(setEmailSpy).toBeCalledWith(null);
+      setEmailSpy.mockRestore();
+    });
+
+    it('should call setUserId with null', () => {
+      // GIVEN no parameters
+      // WHEN Iterable.logout is called
+      const setUserIdSpy = jest.spyOn(Iterable, 'setUserId');
+      Iterable.logout();
+      // THEN Iterable.setUserId is called with null
+      expect(setUserIdSpy).toBeCalledWith(null);
+      setUserIdSpy.mockRestore();
+    });
+
+    it('should clear email and userId', async () => {
+      // GIVEN a user is logged in
+
+      // This is just for testing purposed.
+      // Usually you'd either call `setEmail` or `setUserId`, but not both.
+      Iterable.setEmail('user@example.com');
+      Iterable.setUserId('user123');
+      // WHEN Iterable.logout is called
+      Iterable.logout();
+      // THEN email and userId are set to null
+      const email = await Iterable.getEmail();
+      const userId = await Iterable.getUserId();
+      expect(email).toBeNull();
+      expect(userId).toBeNull();
+    });
+
+    it('should call setEmail and setUserId with null', () => {
+      // GIVEN no parameters
+      const setEmailSpy = jest.spyOn(Iterable, 'setEmail');
+      const setUserIdSpy = jest.spyOn(Iterable, 'setUserId');
+      // WHEN Iterable.logout is called
+      Iterable.logout();
+      // THEN both methods are called with null
+      expect(setEmailSpy).toBeCalledWith(null);
+      expect(setUserIdSpy).toBeCalledWith(null);
+      // Clean up
+      setEmailSpy.mockRestore();
+      setUserIdSpy.mockRestore();
+    });
+  });
+
   describe('disableDeviceForCurrentUser', () => {
     it('should disable the device for the current user', () => {
       // GIVEN no parameters
@@ -256,7 +308,7 @@ describe('Iterable', () => {
       expect(config.customActionHandler).toBe(undefined);
       expect(config.inAppHandler).toBe(undefined);
       expect(config.authHandler).toBe(undefined);
-      expect(config.logLevel).toBe(IterableLogLevel.info);
+      expect(config.logLevel).toBe(IterableLogLevel.debug);
       expect(config.logReactNativeSdkCalls).toBe(true);
       expect(config.expiringAuthTokenRefreshPeriod).toBe(60.0);
       expect(config.allowedProtocols).toEqual([]);
@@ -272,7 +324,7 @@ describe('Iterable', () => {
       expect(configDict.customActionHandlerPresent).toBe(false);
       expect(configDict.inAppHandlerPresent).toBe(false);
       expect(configDict.authHandlerPresent).toBe(false);
-      expect(configDict.logLevel).toBe(IterableLogLevel.info);
+      expect(configDict.logLevel).toBe(IterableLogLevel.debug);
       expect(configDict.expiringAuthTokenRefreshPeriod).toBe(60.0);
       expect(configDict.allowedProtocols).toEqual([]);
       expect(configDict.androidSdkUseInMemoryStorageForInApps).toBe(false);
