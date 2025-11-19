@@ -1,6 +1,7 @@
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 import { useCallback, useState } from 'react';
 import { Iterable } from '@iterable/react-native-sdk';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import styles from './Embedded.styles';
 
@@ -28,13 +29,13 @@ export const Embedded = () => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.text}>EMBEDDED</Text>
       <Text style={styles.text}>
         Does embedded class exist? {Iterable.embeddedManager ? 'Yes' : 'No'}
       </Text>
       <Text style={styles.text}>
-        Is embedded manager enabled?
+        Is embedded manager enabled?{' '}
         {Iterable.embeddedManager.isEnabled ? 'Yes' : 'No'}
       </Text>
       <Text style={styles.text}>
@@ -49,7 +50,7 @@ export const Embedded = () => {
       <TouchableOpacity style={styles.button} onPress={endEmbeddedSession}>
         <Text style={styles.buttonText}>End embedded session</Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -18,7 +18,23 @@ export class IterableEmbeddedManager {
    * This is set through the `enableEmbeddedMessaging` flag in the
    * `IterableConfig` class.
    */
-  isEnabled = false;
+  private _isEnabled = false;
+
+  /**
+   * Gets whether the embedded manager is enabled.
+   */
+  get isEnabled(): boolean {
+    return this._isEnabled;
+  }
+
+  /**
+   * Sets whether the embedded manager is enabled.
+   *
+   * @param enabled - Whether the embedded manager is enabled.
+   */
+  setEnabled(enabled: boolean) {
+    this._isEnabled = enabled;
+  }
 
   /**
    * Retrieves a list of placement IDs for the embedded manager.

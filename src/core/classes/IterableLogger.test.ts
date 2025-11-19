@@ -1,5 +1,5 @@
 import { IterableLogLevel } from '../enums/IterableLogLevel';
-import { IterableLogger } from './IterableLogger';
+import { IterableLogger, DEFAULT_LOG_LEVEL, DEFAULT_LOGGING_ENABLED } from './IterableLogger';
 
 // Mock console.log to capture log output
 const mockConsoleLog = jest.fn();
@@ -8,8 +8,8 @@ const originalConsoleLog = console.log;
 describe('IterableLogger', () => {
   beforeEach(() => {
     // Reset to default values before each test
-    IterableLogger.loggingEnabled = true;
-    IterableLogger.logLevel = IterableLogLevel.info;
+    IterableLogger.loggingEnabled = DEFAULT_LOGGING_ENABLED;
+    IterableLogger.logLevel = DEFAULT_LOG_LEVEL;
 
     // Mock console.log
     console.log = mockConsoleLog;
@@ -26,8 +26,8 @@ describe('IterableLogger', () => {
       expect(IterableLogger.loggingEnabled).toBe(true);
     });
 
-    test('should have default log level as info', () => {
-      expect(IterableLogger.logLevel).toBe(IterableLogLevel.info);
+    test('should have default log level as debug', () => {
+      expect(IterableLogger.logLevel).toBe(IterableLogLevel.debug);
     });
 
     test('should allow setting loggingEnabled directly', () => {
@@ -86,9 +86,9 @@ describe('IterableLogger', () => {
       expect(IterableLogger.logLevel).toBe(IterableLogLevel.info);
     });
 
-    test('should default to info when passed undefined', () => {
+    test('should default to debug when passed undefined', () => {
       IterableLogger.setLogLevel(undefined);
-      expect(IterableLogger.logLevel).toBe(IterableLogLevel.info);
+      expect(IterableLogger.logLevel).toBe(IterableLogLevel.debug);
     });
   });
 
