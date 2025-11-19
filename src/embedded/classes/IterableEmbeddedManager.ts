@@ -56,7 +56,7 @@ export class IterableEmbeddedManager {
    *
    * @example
    * ```typescript
-   * IterableEmbeddedManager.startSession();
+   * Iterable.embeddedManager.startSession();
    * ```
    */
   startSession() {
@@ -75,7 +75,7 @@ export class IterableEmbeddedManager {
    *
    * @example
    * ```typescript
-   * IterableEmbeddedManager.endSession();
+   * Iterable.embeddedManager.endSession();
    * ```
    */
   endSession() {
