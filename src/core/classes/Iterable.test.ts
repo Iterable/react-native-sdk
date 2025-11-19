@@ -74,6 +74,58 @@ describe('Iterable', () => {
     });
   });
 
+  describe('logout', () => {
+    it('should call setEmail with null', () => {
+      // GIVEN no parameters
+      // WHEN Iterable.logout is called
+      const setEmailSpy = jest.spyOn(Iterable, 'setEmail');
+      Iterable.logout();
+      // THEN Iterable.setEmail is called with null
+      expect(setEmailSpy).toBeCalledWith(null);
+      setEmailSpy.mockRestore();
+    });
+
+    it('should call setUserId with null', () => {
+      // GIVEN no parameters
+      // WHEN Iterable.logout is called
+      const setUserIdSpy = jest.spyOn(Iterable, 'setUserId');
+      Iterable.logout();
+      // THEN Iterable.setUserId is called with null
+      expect(setUserIdSpy).toBeCalledWith(null);
+      setUserIdSpy.mockRestore();
+    });
+
+    it('should clear email and userId', async () => {
+      // GIVEN a user is logged in
+
+      // This is just for testing purposed.
+      // Usually you'd either call `setEmail` or `setUserId`, but not both.
+      Iterable.setEmail('user@example.com');
+      Iterable.setUserId('user123');
+      // WHEN Iterable.logout is called
+      Iterable.logout();
+      // THEN email and userId are set to null
+      const email = await Iterable.getEmail();
+      const userId = await Iterable.getUserId();
+      expect(email).toBeNull();
+      expect(userId).toBeNull();
+    });
+
+    it('should call setEmail and setUserId with null', () => {
+      // GIVEN no parameters
+      const setEmailSpy = jest.spyOn(Iterable, 'setEmail');
+      const setUserIdSpy = jest.spyOn(Iterable, 'setUserId');
+      // WHEN Iterable.logout is called
+      Iterable.logout();
+      // THEN both methods are called with null
+      expect(setEmailSpy).toBeCalledWith(null);
+      expect(setUserIdSpy).toBeCalledWith(null);
+      // Clean up
+      setEmailSpy.mockRestore();
+      setUserIdSpy.mockRestore();
+    });
+  });
+
   describe('disableDeviceForCurrentUser', () => {
     it('should disable the device for the current user', () => {
       // GIVEN no parameters
@@ -248,37 +300,39 @@ describe('Iterable', () => {
       // WHEN config is initialized
       const config = new IterableConfig();
       // THEN config has default values
-      expect(config.pushIntegrationName).toBe(undefined);
-      expect(config.autoPushRegistration).toBe(true);
-      expect(config.checkForDeferredDeeplink).toBe(false);
-      expect(config.inAppDisplayInterval).toBe(30.0);
-      expect(config.urlHandler).toBe(undefined);
-      expect(config.customActionHandler).toBe(undefined);
-      expect(config.inAppHandler).toBe(undefined);
-      expect(config.authHandler).toBe(undefined);
-      expect(config.logLevel).toBe(IterableLogLevel.info);
-      expect(config.logReactNativeSdkCalls).toBe(true);
-      expect(config.expiringAuthTokenRefreshPeriod).toBe(60.0);
       expect(config.allowedProtocols).toEqual([]);
       expect(config.androidSdkUseInMemoryStorageForInApps).toBe(false);
-      expect(config.useInMemoryStorageForInApps).toBe(false);
+      expect(config.authHandler).toBe(undefined);
+      expect(config.autoPushRegistration).toBe(true);
+      expect(config.checkForDeferredDeeplink).toBe(false);
+      expect(config.customActionHandler).toBe(undefined);
       expect(config.dataRegion).toBe(IterableDataRegion.US);
+      expect(config.enableEmbeddedMessaging).toBe(false);
       expect(config.encryptionEnforced).toBe(false);
+      expect(config.expiringAuthTokenRefreshPeriod).toBe(60.0);
+      expect(config.inAppDisplayInterval).toBe(30.0);
+      expect(config.inAppHandler).toBe(undefined);
+      expect(config.logLevel).toBe(IterableLogLevel.debug);
+      expect(config.logReactNativeSdkCalls).toBe(true);
+      expect(config.pushIntegrationName).toBe(undefined);
+      expect(config.urlHandler).toBe(undefined);
+      expect(config.useInMemoryStorageForInApps).toBe(false);
       const configDict = config.toDict();
-      expect(configDict.pushIntegrationName).toBe(undefined);
-      expect(configDict.autoPushRegistration).toBe(true);
-      expect(configDict.inAppDisplayInterval).toBe(30.0);
-      expect(configDict.urlHandlerPresent).toBe(false);
-      expect(configDict.customActionHandlerPresent).toBe(false);
-      expect(configDict.inAppHandlerPresent).toBe(false);
-      expect(configDict.authHandlerPresent).toBe(false);
-      expect(configDict.logLevel).toBe(IterableLogLevel.info);
-      expect(configDict.expiringAuthTokenRefreshPeriod).toBe(60.0);
       expect(configDict.allowedProtocols).toEqual([]);
       expect(configDict.androidSdkUseInMemoryStorageForInApps).toBe(false);
-      expect(configDict.useInMemoryStorageForInApps).toBe(false);
+      expect(configDict.authHandlerPresent).toBe(false);
+      expect(configDict.autoPushRegistration).toBe(true);
+      expect(configDict.customActionHandlerPresent).toBe(false);
       expect(configDict.dataRegion).toBe(IterableDataRegion.US);
+      expect(configDict.enableEmbeddedMessaging).toBe(false);
       expect(configDict.encryptionEnforced).toBe(false);
+      expect(configDict.expiringAuthTokenRefreshPeriod).toBe(60.0);
+      expect(configDict.inAppDisplayInterval).toBe(30.0);
+      expect(configDict.inAppHandlerPresent).toBe(false);
+      expect(configDict.logLevel).toBe(IterableLogLevel.debug);
+      expect(configDict.pushIntegrationName).toBe(undefined);
+      expect(configDict.urlHandlerPresent).toBe(false);
+      expect(configDict.useInMemoryStorageForInApps).toBe(false);
     });
   });
 
@@ -1158,6 +1212,21 @@ describe('Iterable', () => {
           authToken2
         );
       });
+    });
+  });
+
+  describe('embeddedManager', () => {
+    it('should be disabled by default', () => {
+      const config = new IterableConfig();
+      expect(config.enableEmbeddedMessaging).toBe(false);
+      expect(Iterable.embeddedManager.isEnabled).toBe(false);
+    });
+
+    it('should enable embeddedManager when config is set', async () => {
+      const config = new IterableConfig();
+      config.enableEmbeddedMessaging = true;
+      await Iterable.initialize('test-key', config);
+      expect(Iterable.embeddedManager.isEnabled).toBe(true);
     });
   });
 });
