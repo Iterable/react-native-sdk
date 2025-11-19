@@ -155,6 +155,11 @@ export interface Spec extends TurboModule {
   getEmbeddedMessages(
     placementIds: number[] | null
   ): Promise<EmbeddedMessage[]>;
+  trackEmbeddedClick(
+    message: EmbeddedMessage,
+    buttonId: string | null,
+    clickedUrl: string | null
+  ): void;
 
   // Wake app -- android only
   wakeApp(): void;

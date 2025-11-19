@@ -259,6 +259,11 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
     moduleImpl.getEmbeddedMessages(placementIds, promise);
   }
 
+  @Override
+  public void trackEmbeddedClick(ReadableMap message, String buttonId, String clickedUrl) {
+    moduleImpl.trackEmbeddedClick(message, buttonId, clickedUrl);
+  }
+
   public void sendEvent(@NonNull String eventName, @Nullable Object eventData) {
     moduleImpl.sendEvent(eventName, eventData);
   }
