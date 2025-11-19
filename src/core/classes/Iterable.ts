@@ -199,9 +199,7 @@ export class Iterable {
       IterableLogger.setLoggingEnabled(config.logReactNativeSdkCalls ?? true);
       IterableLogger.setLogLevel(config.logLevel);
 
-      Iterable.embeddedManager.setEnabled(
-        config.enableEmbeddedMessaging ?? false
-      );
+      Iterable.embeddedManager = new IterableEmbeddedManager(config);
     }
 
     this.setupEventHandlers();
