@@ -41,7 +41,7 @@ export class IterableEmbeddedManager {
    * Syncs embedded local cache with the server.
    *
    * When your app first launches, and each time it comes to the foreground,
-   * Iterable's iOS SDK automatically refresh a local, on-device cache of
+   * Iterable's Native SDKs automatically refresh a local, on-device cache of
    * embedded messages for the signed-in user. These are the messages the
    * signed-in user is eligible to see.
    *
@@ -84,7 +84,7 @@ export class IterableEmbeddedManager {
   /**
    * Starts a session.
    *
-   * As session is a period of time when a user is on a screen or page that can
+   * A session is a period of time when a user is on a screen or page that can
    * display embedded messages.
    *
    * When a user comes to a screen or page in your app where embedded messages
@@ -104,7 +104,7 @@ export class IterableEmbeddedManager {
    *
    * When a user leaves a screen in your app where embedded messages are
    * displayed, the session should be ended.  This causes the SDK to send
-   * session and impression data back to the server.
+   * session an impression data back to the server.
    *
    * A session is tracked when it is ended, so you should be able to find
    * tracking data after this method is called.

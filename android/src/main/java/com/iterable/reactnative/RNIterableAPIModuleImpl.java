@@ -659,10 +659,12 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
     }
 
     public void startEmbeddedImpression(String messageId, int placementId) {
+        IterableLogger.d(TAG, "startEmbeddedImpression");
         IterableApi.getInstance().getEmbeddedManager().getEmbeddedSessionManager().startImpression(messageId, placementId);
     }
 
     public void pauseEmbeddedImpression(String messageId) {
+        IterableLogger.d(TAG, "pauseEmbeddedImpression");
         IterableApi.getInstance().getEmbeddedManager().getEmbeddedSessionManager().pauseImpression(messageId);
     }
 
