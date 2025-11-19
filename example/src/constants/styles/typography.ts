@@ -56,3 +56,8 @@ export const requiredStar: TextStyle = {
   ...label,
   color: colors.textDestructive,
 };
+
+export const link: TextStyle = {
+  color: colors.textInteractive,
+  textDecorationLine: 'underline',
+};

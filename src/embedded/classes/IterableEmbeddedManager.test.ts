@@ -167,5 +167,92 @@ describe('IterableEmbeddedManager', () => {
     });
   });
 
+  describe('startImpression', () => {
+    it('should call IterableApi.startEmbeddedImpression with messageId and placementId', () => {
+      // GIVEN a message ID and placement ID
+      const messageId = 'message-123';
+      const placementId = 456;
+
+      // WHEN startImpression is called
+      embeddedManager.startImpression(messageId, placementId);
+
+      // THEN IterableApi.startEmbeddedImpression is called with the correct parameters
+      expect(MockRNIterableAPI.startEmbeddedImpression).toHaveBeenCalledTimes(
+        1
+      );
+      expect(MockRNIterableAPI.startEmbeddedImpression).toHaveBeenCalledWith(
+        messageId,
+        placementId
+      );
+    });
+
+    it('should handle multiple impression starts', () => {
+      // GIVEN multiple messages
+      const messageId1 = 'message-1';
+      const placementId1 = 100;
+      const messageId2 = 'message-2';
+      const placementId2 = 200;
+
+      // WHEN startImpression is called multiple times
+      embeddedManager.startImpression(messageId1, placementId1);
+      embeddedManager.startImpression(messageId2, placementId2);
+
+      // THEN IterableApi.startEmbeddedImpression is called twice
+      expect(MockRNIterableAPI.startEmbeddedImpression).toHaveBeenCalledTimes(
+        2
+      );
+      expect(MockRNIterableAPI.startEmbeddedImpression).toHaveBeenNthCalledWith(
+        1,
+        messageId1,
+        placementId1
+      );
+      expect(MockRNIterableAPI.startEmbeddedImpression).toHaveBeenNthCalledWith(
+        2,
+        messageId2,
+        placementId2
+      );
+    });
+  });
+
+  describe('pauseImpression', () => {
+    it('should call IterableApi.pauseEmbeddedImpression with messageId', () => {
+      // GIVEN a message ID
+      const messageId = 'message-123';
+
+      // WHEN pauseImpression is called
+      embeddedManager.pauseImpression(messageId);
+
+      // THEN IterableApi.pauseEmbeddedImpression is called with the correct parameter
+      expect(MockRNIterableAPI.pauseEmbeddedImpression).toHaveBeenCalledTimes(
+        1
+      );
+      expect(MockRNIterableAPI.pauseEmbeddedImpression).toHaveBeenCalledWith(
+        messageId
+      );
+    });
+
+    it('should handle multiple impression pauses', () => {
+      // GIVEN multiple message IDs
+      const messageId1 = 'message-1';
+      const messageId2 = 'message-2';
+
+      // WHEN pauseImpression is called multiple times
+      embeddedManager.pauseImpression(messageId1);
+      embeddedManager.pauseImpression(messageId2);
+
+      // THEN IterableApi.pauseEmbeddedImpression is called twice
+      expect(MockRNIterableAPI.pauseEmbeddedImpression).toHaveBeenCalledTimes(
+        2
+      );
+      expect(MockRNIterableAPI.pauseEmbeddedImpression).toHaveBeenNthCalledWith(
+        1,
+        messageId1
+      );
+      expect(MockRNIterableAPI.pauseEmbeddedImpression).toHaveBeenNthCalledWith(
+        2,
+        messageId2
+      );
+    });
+  });
 });
 
