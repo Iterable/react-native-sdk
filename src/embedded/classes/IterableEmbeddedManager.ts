@@ -54,6 +54,7 @@ export class IterableEmbeddedManager {
 
   constructor(config: IterableConfig) {
     this._config = config;
+    this._isEnabled = config.enableEmbeddedMessaging ?? false;
   }
 
   /**
@@ -218,7 +219,7 @@ export class IterableEmbeddedManager {
   /**
    * Handles a click on an embedded message.
    *
-   * This will fire the correct handers set in the config, and will track the
+   * This will fire the correct handlers set in the config, and will track the
    * click.  It should be use on either a button click or a click on the message itself.
    *
    * @param message - The embedded message.
