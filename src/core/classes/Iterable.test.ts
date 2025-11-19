@@ -1214,4 +1214,19 @@ describe('Iterable', () => {
       });
     });
   });
+
+  describe('embeddedManager', () => {
+    it('should be disabled by default', () => {
+      const config = new IterableConfig();
+      expect(config.embeddedMessagingEnabled).toBe(false);
+      expect(Iterable.embeddedManager.isEnabled).toBe(false);
+    });
+
+    it('should enable embeddedManager when config is set', async () => {
+      const config = new IterableConfig();
+      config.embeddedMessagingEnabled = true;
+      await Iterable.initialize('test-key', config);
+      expect(Iterable.embeddedManager.isEnabled).toBe(true);
+    });
+  });
 });
