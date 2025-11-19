@@ -7,11 +7,11 @@ export enum IterableRetryBackoff {
    *
    * EG: 2 seconds, 4 seconds, 6 seconds, 8 seconds, etc.
    */
-  Linear = 'LINEAR',
+  linear = 'LINEAR',
   /**
    * Exponential backoff (each retry will wait for an interval that increases exponentially)
    *
    * EG: 2 seconds, 4 seconds, 8 seconds, 16 seconds, etc.
    */
-  Exponential = 'EXPONENTIAL',
+  exponential = 'EXPONENTIAL',
 }
