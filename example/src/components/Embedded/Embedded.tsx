@@ -4,6 +4,7 @@ import {
   Iterable,
   type IterableEmbeddedMessage,
 } from '@iterable/react-native-sdk';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import styles from './Embedded.styles';
 
@@ -49,14 +50,14 @@ export const Embedded = () => {
   }, [getPlacementIds]);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.text}>EMBEDDED</Text>
       <View style={styles.utilitySection}>
         <Text style={styles.text}>
           Does embedded class exist? {Iterable.embeddedManager ? 'Yes' : 'No'}
         </Text>
         <Text style={styles.text}>
-          Is embedded manager enabled?
+          Is embedded manager enabled?{' '}
           {Iterable.embeddedManager.isEnabled ? 'Yes' : 'No'}
         </Text>
         <Text style={styles.text}>
@@ -102,7 +103,7 @@ export const Embedded = () => {
           ))}
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

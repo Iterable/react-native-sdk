@@ -24,6 +24,23 @@ import { IterableEmbeddedManager } from '../../embedded/classes/IterableEmbedded
 
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
+/**
+ * Checks if the response is an IterableAuthResponse
+ */
+const isIterableAuthResponse = (
+  response: IterableAuthResponse | string | undefined | null
+): response is IterableAuthResponse => {
+  if (typeof response === 'string') return false;
+  if (
+    response?.authToken ||
+    response?.successCallback ||
+    response?.failureCallback
+  ) {
+    return true;
+  }
+  return false;
+};
+
 /* eslint-disable tsdoc/syntax */
 /**
  * The main class for the Iterable React Native SDK.
@@ -177,6 +194,10 @@ export class Iterable {
 
       IterableLogger.setLoggingEnabled(config.logReactNativeSdkCalls ?? true);
       IterableLogger.setLogLevel(config.logLevel);
+
+      Iterable.embeddedManager.setEnabled(
+        config.enableEmbeddedMessaging ?? false
+      );
     }
 
     this.setupEventHandlers();
@@ -896,6 +917,34 @@ export class Iterable {
   }
 
   /**
+   * Logs out the current user from the Iterable SDK.
+   *
+   * This method will remove all event listeners for the Iterable SDK and set the email and user ID to null.
+   *
+   * @example
+   * ```typescript
+   * Iterable.logout();
+   * ```
+   */
+  static logout() {
+    Iterable.removeAllEventListeners();
+    Iterable.setEmail(null);
+    Iterable.setUserId(null);
+  }
+
+  /**
+   * Removes all event listeners for the Iterable SDK.
+   */
+  private static removeAllEventListeners() {
+    RNEventEmitter.removeAllListeners(IterableEventName.handleUrlCalled);
+    RNEventEmitter.removeAllListeners(IterableEventName.handleInAppCalled);
+    RNEventEmitter.removeAllListeners(IterableEventName.handleCustomActionCalled);
+    RNEventEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
+    RNEventEmitter.removeAllListeners(IterableEventName.handleAuthSuccessCalled);
+    RNEventEmitter.removeAllListeners(IterableEventName.handleAuthFailureCalled);
+  }
+
+  /**
    * Sets up event handlers for various Iterable events.
    *
    * This method performs the following actions:
@@ -917,12 +966,7 @@ export class Iterable {
    */
   private static setupEventHandlers() {
     // Remove all listeners to avoid duplicate listeners
-    RNEventEmitter.removeAllListeners(IterableEventName.handleUrlCalled);
-    RNEventEmitter.removeAllListeners(IterableEventName.handleInAppCalled);
-    RNEventEmitter.removeAllListeners(
-      IterableEventName.handleCustomActionCalled
-    );
-    RNEventEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
+    Iterable.removeAllEventListeners();
 
     if (Iterable.savedConfig.urlHandler) {
       RNEventEmitter.addListener(IterableEventName.handleUrlCalled, (dict) => {
@@ -974,35 +1018,31 @@ export class Iterable {
             // Promise result can be either just String OR of type AuthResponse.
             // If type AuthReponse, authToken will be parsed looking for `authToken` within promised object. Two additional listeners will be registered for success and failure callbacks sent by native bridge layer.
             // Else it will be looked for as a String.
-            if (typeof promiseResult === typeof new IterableAuthResponse()) {
-              Iterable.authManager.passAlongAuthToken(
-                (promiseResult as IterableAuthResponse).authToken
-              );
+            if (isIterableAuthResponse(promiseResult)) {
+              Iterable.authManager.passAlongAuthToken(promiseResult.authToken);
 
-              const timeoutId = setTimeout(() => {
+              setTimeout(() => {
                 if (
                   authResponseCallback === IterableAuthResponseResult.SUCCESS
                 ) {
-                  if ((promiseResult as IterableAuthResponse).successCallback) {
-                    (promiseResult as IterableAuthResponse).successCallback?.();
+                  if (promiseResult.successCallback) {
+                    promiseResult.successCallback?.();
                   }
                 } else if (
                   authResponseCallback === IterableAuthResponseResult.FAILURE
                 ) {
                   // We are currently only reporting JWT related errors.  In
                   // the future, we should handle other types of errors as well.
-                  if ((promiseResult as IterableAuthResponse).failureCallback) {
-                    (promiseResult as IterableAuthResponse).failureCallback?.();
+                  if (promiseResult.failureCallback) {
+                    promiseResult.failureCallback?.();
                   }
                 } else {
                   IterableLogger?.log('No callback received from native layer');
                 }
               }, 1000);
-              // Use unref() to prevent the timeout from keeping the process alive
-              timeoutId.unref();
             } else if (typeof promiseResult === 'string') {
               //If promise only returns string
-              Iterable.authManager.passAlongAuthToken(promiseResult as string);
+              Iterable.authManager.passAlongAuthToken(promiseResult);
             } else {
               IterableLogger?.log(
                 'Unexpected promise returned. Auth token expects promise of String or AuthResponse type.'
@@ -1027,7 +1067,7 @@ export class Iterable {
           authResponseCallback = IterableAuthResponseResult.FAILURE;
 
           // Call the actual JWT error with `authFailure` object.
-          Iterable.savedConfig?.onJWTError?.(authFailureResponse);
+          Iterable.savedConfig?.onJwtError?.(authFailureResponse);
         }
       );
     }
