@@ -1,11 +1,12 @@
-import { Text, View } from 'react-native';
 import { Iterable } from '@iterable/react-native-sdk';
+import { Text } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import styles from './Embedded.styles';
 
 export const Embedded = () => {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.text}>EMBEDDED</Text>
       <Text style={styles.text}>
         Does embedded class exist? {Iterable.embeddedManager ? 'Yes' : 'No'}
@@ -14,7 +15,7 @@ export const Embedded = () => {
         Is embedded manager enabled?{' '}
         {Iterable.embeddedManager.isEnabled ? 'Yes' : 'No'}
       </Text>
-    </View>
+    </SafeAreaView>
   );
 };
 
