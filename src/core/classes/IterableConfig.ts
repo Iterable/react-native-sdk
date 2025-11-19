@@ -235,6 +235,16 @@ export class IterableConfig {
   /**
    * Configuration for JWT refresh retry behavior.
    * If not specified, the SDK will use default retry behavior.
+   *
+   * @example
+   * ```typescript
+   * const config = new IterableConfig();
+   * config.retryPolicy = new IterableRetryPolicy({
+   *   maxRetries: 3,
+   *   initialDelay: 1000,
+   *   maxDelay: 10000,
+   * });
+   * ```
    */
   retryPolicy?: IterableRetryPolicy;
 

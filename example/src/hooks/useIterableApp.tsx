@@ -152,7 +152,7 @@ export const IterableAppProvider: FunctionComponent<
       config.retryPolicy = {
         maxRetry: 5,
         retryInterval: 10,
-        retryBackoff: IterableRetryBackoff.LINEAR,
+        retryBackoff: IterableRetryBackoff.Linear,
       };
 
       config.onJwtError = (authFailure) => {
