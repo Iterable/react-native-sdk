@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import {
   Animated,
   NativeEventEmitter,
-  NativeModules,
   Platform,
   StyleSheet,
   Text,
@@ -11,6 +10,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import RNIterableAPI from '../../api';
 import { useAppStateListener, useDeviceOrientation } from '../../core';
 // expo throws an error if this is not imported directly due to circular
 // dependencies
@@ -32,7 +32,7 @@ import {
   type IterableInboxMessageListProps,
 } from './IterableInboxMessageList';
 
-const RNIterableAPI = NativeModules.RNIterableAPI;
+
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
 const DEFAULT_HEADLINE_HEIGHT = 60;
