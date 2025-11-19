@@ -16,10 +16,10 @@ export class MockRNIterableAPI {
     });
   }
 
-  static setEmail(email: string, authToken?: string): void {
+  static setEmail = jest.fn((email: string, authToken?: string): void => {
     MockRNIterableAPI.email = email;
     MockRNIterableAPI.token = authToken;
-  }
+  });
 
   static async getUserId(): Promise<string | undefined> {
     return await new Promise((resolve) => {
@@ -27,10 +27,10 @@ export class MockRNIterableAPI {
     });
   }
 
-  static setUserId(userId: string, authToken?: string): void {
+  static setUserId = jest.fn((userId: string, authToken?: string): void => {
     MockRNIterableAPI.userId = userId;
     MockRNIterableAPI.token = authToken;
-  }
+  });
 
   static disableDeviceForCurrentUser = jest.fn();
 
@@ -62,9 +62,11 @@ export class MockRNIterableAPI {
     });
   }
 
-  static setAttributionInfo(attributionInfo?: IterableAttributionInfo): void {
-    MockRNIterableAPI.attributionInfo = attributionInfo;
-  }
+  static setAttributionInfo = jest.fn(
+    (attributionInfo?: IterableAttributionInfo): void => {
+      MockRNIterableAPI.attributionInfo = attributionInfo;
+    }
+  );
 
   static initializeWithApiKey = jest.fn().mockResolvedValue(true);
 
@@ -86,14 +88,16 @@ export class MockRNIterableAPI {
 
   static setAutoDisplayPaused = jest.fn();
 
-  static async showMessage(
-    _message: IterableInAppMessage,
-    _consume: boolean
-  ): Promise<string | undefined> {
-    return await new Promise((resolve) => {
-      resolve(MockRNIterableAPI.clickedUrl);
-    });
-  }
+  static showMessage = jest.fn(
+    async (
+      _messageId: string,
+      _consume: boolean
+    ): Promise<string | undefined> => {
+      return await new Promise((resolve) => {
+        resolve(MockRNIterableAPI.clickedUrl);
+      });
+    }
+  );
 
   static removeMessage = jest.fn();
 
@@ -108,6 +112,63 @@ export class MockRNIterableAPI {
   static handleAppLink = jest.fn();
 
   static updateSubscriptions = jest.fn();
+
+  static getInboxMessages = jest.fn(
+    async (): Promise<IterableInAppMessage[] | undefined> => {
+      return await new Promise((resolve) => {
+        resolve(MockRNIterableAPI.messages);
+      });
+    }
+  );
+
+  static startSession = jest.fn();
+
+  static endSession = jest.fn();
+
+  static updateVisibleRows = jest.fn();
+
+  static getHtmlInAppContentForMessage = jest.fn();
+
+  static startEmbeddedSession = jest.fn();
+
+  static endEmbeddedSession = jest.fn();
+
+  static getEmbeddedPlacementIds = jest
+    .fn()
+    .mockResolvedValue([1, 2, 3] as number[]);
+
+  static syncEmbeddedMessages = jest.fn().mockResolvedValue(undefined);
+
+  static getEmbeddedMessages = jest.fn().mockResolvedValue([
+    {
+      metadata: {
+        messageId: 'msg-1',
+        campaignId: 123,
+        placementId: 1,
+      },
+      elements: {
+        title: 'Test Message 1',
+        body: 'Test body 1',
+      },
+      payload: { customKey: 'customValue' },
+    },
+    {
+      metadata: {
+        messageId: 'msg-2',
+        campaignId: 456,
+        placementId: 2,
+      },
+      elements: {
+        title: 'Test Message 2',
+        body: 'Test body 2',
+      },
+      payload: null,
+    },
+  ]);
+
+  static startEmbeddedImpression = jest.fn();
+
+  static pauseEmbeddedImpression = jest.fn();
 
   // set messages function is to set the messages static property
   // this is for testing purposes only
