@@ -155,6 +155,8 @@ export const IterableAppProvider: FunctionComponent<
         retryBackoff: IterableRetryBackoff.linear,
       };
 
+      config.enableEmbeddedMessaging = true;
+
       config.onJwtError = (authFailure) => {
         console.log('onJwtError', authFailure);
 
@@ -192,7 +194,7 @@ export const IterableAppProvider: FunctionComponent<
 
       config.logLevel = IterableLogLevel.debug;
 
-      config.embeddedMessagingEnabled = true;
+      config.enableEmbeddedMessaging = true;
 
       config.inAppHandler = () => IterableInAppShowResponse.show;
 

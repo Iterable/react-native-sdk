@@ -507,7 +507,21 @@ export class IterableApi {
   // ---- End IN-APP ---- //
 
   // ====================================================== //
-  // ======================= MOSC ======================= //
+  // ======================= EMBEDDED ===================== //
+  // ====================================================== //
+
+  /**
+   * Get the embedded placement IDs.
+   */
+  static getEmbeddedPlacementIds() {
+    IterableLogger.log('getEmbeddedPlacementIds');
+    return RNIterableAPI.getEmbeddedPlacementIds();
+  }
+
+  // ---- End EMBEDDED ---- //
+
+  // ====================================================== //
+  // ======================= MISCELLANEOUS ================ //
   // ====================================================== //
 
   /**
