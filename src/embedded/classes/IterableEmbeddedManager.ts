@@ -15,7 +15,14 @@ export class IterableEmbeddedManager {
   /**
    * Whether the embedded manager is enabled.
    */
-  isEnabled = false;
+  private _isEnabled = false;
+
+  /**
+   * Gets whether the embedded manager is enabled.
+   */
+  get isEnabled(): boolean {
+    return this._isEnabled;
+  }
 
   /**
    * Sets whether the embedded manager is enabled.
@@ -23,7 +30,7 @@ export class IterableEmbeddedManager {
    * @param enabled - Whether the embedded manager is enabled.
    */
   setEnabled(enabled: boolean) {
-    this.isEnabled = enabled;
+    this._isEnabled = enabled;
   }
 
   /**
