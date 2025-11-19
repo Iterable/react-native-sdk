@@ -28,10 +28,7 @@ import com.iterable.iterableapi.IterableAttributionInfo;
 import com.iterable.iterableapi.IterableAuthHandler;
 import com.iterable.iterableapi.IterableConfig;
 import com.iterable.iterableapi.IterableCustomActionHandler;
-// import com.iterable.iterableapi.IterableEmbeddedManager;
 import com.iterable.iterableapi.IterableEmbeddedMessage;
-// import com.iterable.iterableapi.IterableEmbeddedSession;
-// import com.iterable.iterableapi.IterableEmbeddedUpdateHandler;
 import com.iterable.iterableapi.IterableHelper;
 import com.iterable.iterableapi.IterableInAppCloseAction;
 import com.iterable.iterableapi.IterableInAppHandler;
@@ -130,8 +127,8 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         }
 
         if (configReadableMap.hasKey("enableEmbeddedMessaging")) {
-          configBuilder.setEnableEmbeddedMessaging(configReadableMap.getBoolean("enableEmbeddedMessaging"));
-      }
+            configBuilder.setEnableEmbeddedMessaging(configReadableMap.getBoolean("enableEmbeddedMessaging"));
+        }
 
         // NOTE: There does not seem to be a way to set the API endpoint
         // override in the Android SDK.  Check with @Ayyanchira and @evantk91 to
