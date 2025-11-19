@@ -137,9 +137,34 @@ export class MockRNIterableAPI {
     .fn()
     .mockResolvedValue([1, 2, 3] as number[]);
 
-  static syncEmbeddedMessages = jest.fn();
+  static syncEmbeddedMessages = jest.fn().mockResolvedValue(undefined);
 
-  static getEmbeddedMessages = jest.fn().mockResolvedValue([]);
+  static getEmbeddedMessages = jest.fn().mockResolvedValue([
+    {
+      metadata: {
+        messageId: 'msg-1',
+        campaignId: 123,
+        placementId: 1,
+      },
+      elements: {
+        title: 'Test Message 1',
+        body: 'Test body 1',
+      },
+      payload: { customKey: 'customValue' },
+    },
+    {
+      metadata: {
+        messageId: 'msg-2',
+        campaignId: 456,
+        placementId: 2,
+      },
+      elements: {
+        title: 'Test Message 2',
+        body: 'Test body 2',
+      },
+      payload: null,
+    },
+  ]);
 
   static startEmbeddedImpression = jest.fn();
 

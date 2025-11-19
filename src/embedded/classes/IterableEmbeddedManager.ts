@@ -64,6 +64,13 @@ export class IterableEmbeddedManager {
    * Retrieves a list of placement IDs for the embedded manager.
    *
    * [Placement Documentation](https://support.iterable.com/hc/en-us/articles/23060529977364-Embedded-Messaging-Overview#placements-and-prioritization)
+   *
+   * @example
+   * ```typescript
+   * Iterable.embeddedManager.getPlacementIds().then(placementIds => {
+   *   console.log('Placement IDs:', placementIds);
+   * });
+   * ```
    */
   getPlacementIds() {
     return IterableApi.getEmbeddedPlacementIds();
@@ -74,6 +81,13 @@ export class IterableEmbeddedManager {
    *
    * @param placementIds - The placement IDs to retrieve messages for.
    * @returns A Promise that resolves to an array of embedded messages.
+   *
+   * @example
+   * ```typescript
+   * Iterable.embeddedManager.getMessages([1, 2, 3]).then(messages => {
+   *   console.log('Messages:', messages);
+   * });
+   * ```
    */
   getMessages(
     placementIds: number[] | null
@@ -133,7 +147,7 @@ export class IterableEmbeddedManager {
    *
    * @example
    * ```typescript
-   * IterableEmbeddedManager.startImpression(messageId, placementId);
+   * Iterable.embeddedManager.startImpression(messageId, placementId);
    * ```
    */
   startImpression(messageId: string, placementId: number) {
@@ -151,7 +165,7 @@ export class IterableEmbeddedManager {
    *
    * @example
    * ```typescript
-   * IterableEmbeddedManager.pauseImpression(messageId);
+   * Iterable.embeddedManager.pauseImpression(messageId);
    * ```
    */
   pauseImpression(messageId: string) {
