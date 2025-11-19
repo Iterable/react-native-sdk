@@ -59,4 +59,7 @@ export {
   type IterableInboxProps,
   type IterableInboxRowViewModel,
 } from './inbox';
-export { IterableEmbeddedManager } from './embedded';
+export {
+  IterableEmbeddedManager,
+  type IterableEmbeddedMessage,
+} from './embedded';
