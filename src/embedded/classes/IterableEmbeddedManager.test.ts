@@ -1,10 +1,18 @@
+import { MockRNIterableAPI } from '../../__mocks__/MockRNIterableAPI';
 import { IterableEmbeddedManager } from './IterableEmbeddedManager';
+
+// Mock the RNIterableAPI module
+jest.mock('../../api', () => ({
+  __esModule: true,
+  default: MockRNIterableAPI,
+}));
 
 describe('IterableEmbeddedManager', () => {
   let embeddedManager: IterableEmbeddedManager;
 
   beforeEach(() => {
     embeddedManager = new IterableEmbeddedManager();
+    jest.clearAllMocks();
   });
 
   describe('isEnabled', () => {
@@ -53,6 +61,41 @@ describe('IterableEmbeddedManager', () => {
       embeddedManager.setEnabled(false);
       embeddedManager.setEnabled(false);
       expect(embeddedManager.isEnabled).toBe(false);
+    });
+  });
+
+  describe('getPlacementIds', () => {
+    it('should call IterableApi.getEmbeddedPlacementIds', async () => {
+      // WHEN getPlacementIds is called
+      const result = await embeddedManager.getPlacementIds();
+
+      // THEN IterableApi.getEmbeddedPlacementIds is called
+      expect(MockRNIterableAPI.getEmbeddedPlacementIds).toHaveBeenCalledTimes(
+        1
+      );
+
+      // AND the result is returned
+      expect(result).toEqual([1, 2, 3]);
+    });
+  });
+
+  describe('startSession', () => {
+    it('should call IterableApi.startEmbeddedSession', () => {
+      // WHEN startSession is called
+      embeddedManager.startSession();
+
+      // THEN IterableApi.startEmbeddedSession is called
+      expect(MockRNIterableAPI.startEmbeddedSession).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('endSession', () => {
+    it('should call IterableApi.endEmbeddedSession', () => {
+      // WHEN endSession is called
+      embeddedManager.endSession();
+
+      // THEN IterableApi.endEmbeddedSession is called
+      expect(MockRNIterableAPI.endEmbeddedSession).toHaveBeenCalledTimes(1);
     });
   });
 });
