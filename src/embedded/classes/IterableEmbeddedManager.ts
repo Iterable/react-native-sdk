@@ -31,7 +31,9 @@ export class IterableEmbeddedManager {
   /**
    * Sets whether the embedded manager is enabled.
    *
-   * @internal This method is for internal SDK use only and should not be called by SDK consumers.
+   * @internal This method is for internal SDK use only and should not be called
+   * by SDK consumers, as it is meant to be called at initialization time.
+   *
    * @param enabled - Whether the embedded manager is enabled.
    */
   setEnabled(enabled: boolean) {
