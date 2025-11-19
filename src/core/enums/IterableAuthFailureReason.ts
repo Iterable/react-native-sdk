@@ -2,6 +2,10 @@
  * The reason for the failure of an authentication attempt.
  *
  * This is generally related to JWT token validation.
+ *
+ * FIXME: Android returns the string (EG: `'AUTH_TOKEN_EXPIRATION_INVALID'`),
+ * but iOS returns the enum value (EG: `0`).  These should be standardized so
+ * that they both return the same type on either platform.
  */
 export enum IterableAuthFailureReason {
   /**
