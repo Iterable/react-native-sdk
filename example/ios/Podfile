@@ -36,3 +36,7 @@ target 'ReactNativeSdkExample' do
     )
   end
 end
+
+target 'NotificationService' do
+   pod 'Iterable-iOS-AppExtensions'
+end

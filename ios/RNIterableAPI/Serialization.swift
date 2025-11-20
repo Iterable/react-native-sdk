@@ -175,9 +175,15 @@ extension UIEdgeInsets {
 extension IterableInboxMetadata {
   func toDict() -> [AnyHashable: Any]? {
     var dict = [AnyHashable: Any]()
-    dict["title"] = title
-    dict["subtitle"] = subtitle
-    dict["icon"] = icon
+    if let title = title {
+      dict["title"] = title
+    }
+    if let subtitle = subtitle {
+      dict["subtitle"] = subtitle
+    }
+    if let icon = icon {
+      dict["icon"] = icon
+    }
     return dict
   }
 }
@@ -185,16 +191,34 @@ extension IterableInboxMetadata {
 extension IterableInAppMessage {
   func toDict() -> [AnyHashable: Any] {
     var dict = [AnyHashable: Any]()
+
+    // Required fields - always present
     dict["messageId"] = messageId
-    dict["campaignId"] = campaignId
     dict["trigger"] = trigger.toDict()
-    dict["createdAt"] = createdAt.map(SerializationUtil.dateToInt(date:))
-    dict["expiresAt"] = expiresAt.map(SerializationUtil.dateToInt(date:))
     dict["saveToInbox"] = saveToInbox
-    dict["inboxMetadata"] = inboxMetadata?.toDict() ?? nil
-    dict["customPayload"] = customPayload
     dict["read"] = read
     dict["priorityLevel"] = priorityLevel
+
+    // Optional fields - only add if they exist to avoid NSNull bridge issues
+    if let campaignId = campaignId {
+      dict["campaignId"] = campaignId
+    }
+
+    if let createdAt = createdAt {
+      dict["createdAt"] = SerializationUtil.dateToInt(date: createdAt)
+    }
+
+    if let expiresAt = expiresAt {
+      dict["expiresAt"] = SerializationUtil.dateToInt(date: expiresAt)
+    }
+
+    if let inboxMetadata = inboxMetadata {
+      dict["inboxMetadata"] = inboxMetadata.toDict()
+    }
+
+    if let customPayload = customPayload {
+      dict["customPayload"] = customPayload
+    }
 
     return dict
   }

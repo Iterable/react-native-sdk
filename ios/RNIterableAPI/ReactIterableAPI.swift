@@ -106,7 +106,7 @@ import React
   @objc(getEmail:rejecter:)
   public func getEmail(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
     ITBInfo()
-    resolver(IterableAPI.email)
+    resolver(IterableAPI.email ?? NSNull())
   }
 
   @objc(setUserId:)
@@ -124,7 +124,7 @@ import React
   @objc(getUserId:rejecter:)
   public func getUserId(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
     ITBInfo()
-    resolver(IterableAPI.userId)
+    resolver(IterableAPI.userId ?? NSNull())
   }
 
   // MARK: - Iterable API Request Functions
@@ -146,14 +146,19 @@ import React
   public func getLastPushPayload(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock)
   {
     ITBInfo()
-    resolver(IterableAPI.lastPushPayload)
+    resolver(IterableAPI.lastPushPayload ?? NSNull())
   }
 
   @objc(getAttributionInfo:rejecter:)
   public func getAttributionInfo(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock)
   {
     ITBInfo()
-    resolver(IterableAPI.attributionInfo.map(SerializationUtil.encodableToDictionary))
+    if let attributionInfo = IterableAPI.attributionInfo,
+       let dict = SerializationUtil.encodableToDictionary(encodable: attributionInfo) {
+      resolver(dict)
+    } else {
+      resolver(NSNull())
+    }
   }
 
   @objc(setAttributionInfo:)
@@ -378,7 +383,11 @@ import React
     }
     DispatchQueue.main.async {
       IterableAPI.inAppManager.show(message: message, consume: consume) { (url) in
-        resolver(url.map({ $0.absoluteString }))
+        if let urlString = url?.absoluteString {
+          resolver(urlString)
+        } else {
+          resolver(NSNull())
+        }
       }
     }
   }
