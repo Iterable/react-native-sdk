@@ -376,8 +376,10 @@ import React
       ITBError("Could not find message with id: \(messageId)")
       return
     }
-    IterableAPI.inAppManager.show(message: message, consume: consume) { (url) in
-      resolver(url.map({ $0.absoluteString }))
+    DispatchQueue.main.async {
+      IterableAPI.inAppManager.show(message: message, consume: consume) { (url) in
+        resolver(url.map({ $0.absoluteString }))
+      }
     }
   }
 
