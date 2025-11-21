@@ -222,7 +222,6 @@ class Serialization {
                 JSONObject retryPolicyJson = iterableContextJSON.getJSONObject("retryPolicy");
                 int maxRetry = retryPolicyJson.getInt("maxRetry");
                 long retryInterval = retryPolicyJson.getLong("retryInterval");
-
                 String retryBackoff = retryPolicyJson.getString("retryBackoff");
                 RetryPolicy.Type retryPolicyType = RetryPolicy.Type.LINEAR;
                 if (retryBackoff.equals("EXPONENTIAL")) {
