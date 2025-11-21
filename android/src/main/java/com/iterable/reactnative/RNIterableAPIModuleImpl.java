@@ -93,7 +93,9 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         IterableApi.initialize(reactContext, apiKey, config);
 
         // Update retry policy on existing authManager if it was already created
-        // This fixes the issue where retryInterval is not respected after re-initialization
+        // This fixes the issue where retryInterval is not respected after
+        // re-initialization
+        // TODO [SDK-197]: Fix the root cause of this issue, instead of this hack
         try {
             // Use reflection to access package-private fields and methods
             java.lang.reflect.Field configRetryPolicyField = config.getClass().getDeclaredField("retryPolicy");
@@ -154,7 +156,9 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         IterableApi.initialize(reactContext, apiKey, config);
 
         // Update retry policy on existing authManager if it was already created
-        // This fixes the issue where retryInterval is not respected after re-initialization
+        // This fixes the issue where retryInterval is not respected after
+        // re-initialization
+        // TODO [SDK-197]: Fix the root cause of this issue, instead of this hack
         try {
             // Use reflection to access package-private fields and methods
             java.lang.reflect.Field configRetryPolicyField = config.getClass().getDeclaredField("retryPolicy");
