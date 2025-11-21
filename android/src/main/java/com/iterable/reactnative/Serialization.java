@@ -223,9 +223,6 @@ class Serialization {
                 int maxRetry = retryPolicyJson.getInt("maxRetry");
                 long retryInterval = retryPolicyJson.getLong("retryInterval");
 
-                // TODO [SDK-197]: Create consistency between Android and iOS
-                // instead of converting here
-                // Convert from seconds to milliseconds for Android native SDK
                 String retryBackoff = retryPolicyJson.getString("retryBackoff");
                 RetryPolicy.Type retryPolicyType = RetryPolicy.Type.LINEAR;
                 if (retryBackoff.equals("EXPONENTIAL")) {
