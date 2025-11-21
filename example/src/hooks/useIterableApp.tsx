@@ -151,7 +151,7 @@ export const IterableAppProvider: FunctionComponent<
 
       config.retryPolicy = {
         maxRetry: 5,
-        retryInterval:5,
+        retryInterval: 5,
         retryBackoff: IterableRetryBackoff.linear,
       };
 
