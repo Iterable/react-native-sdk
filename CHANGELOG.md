@@ -6,7 +6,7 @@
   across application
 
 ### Fixes
-* Fixed Android `retryInterval` not being respected - Android native SDK expects milliseconds while iOS expects seconds, added conversion in Android bridge layer
+* Fixed Android `retryInterval` not being updated on re-initialization.
 
 ## 2.2.0-alpha.1
 
