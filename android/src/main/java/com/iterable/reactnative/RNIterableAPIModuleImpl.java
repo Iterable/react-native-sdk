@@ -24,6 +24,7 @@ import com.iterable.iterableapi.IterableAction;
 import com.iterable.iterableapi.IterableActionContext;
 import com.iterable.iterableapi.IterableApi;
 import com.iterable.iterableapi.IterableAuthHandler;
+import com.iterable.iterableapi.IterableAuthManager;
 import com.iterable.iterableapi.IterableConfig;
 import com.iterable.iterableapi.IterableCustomActionHandler;
 import com.iterable.iterableapi.IterableAttributionInfo;
@@ -88,7 +89,34 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
             configBuilder.setAuthHandler(this);
         }
 
-        IterableApi.initialize(reactContext, apiKey, configBuilder.build());
+        IterableConfig config = configBuilder.build();
+        IterableApi.initialize(reactContext, apiKey, config);
+
+        // Update retry policy on existing authManager if it was already created
+        // This fixes the issue where retryInterval is not respected after re-initialization
+        try {
+            // Use reflection to access package-private fields and methods
+            java.lang.reflect.Field configRetryPolicyField = config.getClass().getDeclaredField("retryPolicy");
+            configRetryPolicyField.setAccessible(true);
+            Object retryPolicy = configRetryPolicyField.get(config);
+
+            if (retryPolicy != null) {
+                java.lang.reflect.Method getAuthManagerMethod = IterableApi.getInstance().getClass().getDeclaredMethod("getAuthManager");
+                getAuthManagerMethod.setAccessible(true);
+                IterableAuthManager authManager = (IterableAuthManager) getAuthManagerMethod.invoke(IterableApi.getInstance());
+
+                if (authManager != null) {
+                    // Update the retry policy field on the authManager
+                    java.lang.reflect.Field authRetryPolicyField = authManager.getClass().getDeclaredField("authRetryPolicy");
+                    authRetryPolicyField.setAccessible(true);
+                    authRetryPolicyField.set(authManager, retryPolicy);
+                    IterableLogger.d(TAG, "Updated retry policy on existing authManager");
+                }
+            }
+        } catch (Exception e) {
+            IterableLogger.e(TAG, "Failed to update retry policy: " + e.getMessage());
+        }
+
         IterableApi.getInstance().setDeviceAttribute("reactNativeSDKVersion", version);
 
         IterableApi.getInstance().getInAppManager().addListener(this);
@@ -122,7 +150,34 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         // override in the Android SDK.  Check with @Ayyanchira and @evantk91 to
         // see what the best approach is.
 
-        IterableApi.initialize(reactContext, apiKey, configBuilder.build());
+        IterableConfig config = configBuilder.build();
+        IterableApi.initialize(reactContext, apiKey, config);
+
+        // Update retry policy on existing authManager if it was already created
+        // This fixes the issue where retryInterval is not respected after re-initialization
+        try {
+            // Use reflection to access package-private fields and methods
+            java.lang.reflect.Field configRetryPolicyField = config.getClass().getDeclaredField("retryPolicy");
+            configRetryPolicyField.setAccessible(true);
+            Object retryPolicy = configRetryPolicyField.get(config);
+
+            if (retryPolicy != null) {
+                java.lang.reflect.Method getAuthManagerMethod = IterableApi.getInstance().getClass().getDeclaredMethod("getAuthManager");
+                getAuthManagerMethod.setAccessible(true);
+                IterableAuthManager authManager = (IterableAuthManager) getAuthManagerMethod.invoke(IterableApi.getInstance());
+
+                if (authManager != null) {
+                    // Update the retry policy field on the authManager
+                    java.lang.reflect.Field authRetryPolicyField = authManager.getClass().getDeclaredField("authRetryPolicy");
+                    authRetryPolicyField.setAccessible(true);
+                    authRetryPolicyField.set(authManager, retryPolicy);
+                    IterableLogger.d(TAG, "Updated retry policy on existing authManager");
+                }
+            }
+        } catch (Exception e) {
+            IterableLogger.e(TAG, "Failed to update retry policy: " + e.getMessage());
+        }
+
         IterableApi.getInstance().setDeviceAttribute("reactNativeSDKVersion", version);
 
         IterableApi.getInstance().getInAppManager().addListener(this);
