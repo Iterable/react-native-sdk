@@ -1,33 +1,44 @@
-/* eslint-disable eslint-comments/no-unlimited-disable */
-import {
-  Linking,
-  NativeEventEmitter,
-  Platform,
-} from 'react-native';
+import { Linking, NativeEventEmitter, Platform } from 'react-native';
 
 import { buildInfo } from '../../itblBuildInfo';
 
 import { RNIterableAPI } from '../../api';
-// TODO: Organize these so that there are no circular dependencies
-// See https://github.com/expo/expo/issues/35100
+import { IterableInAppManager } from '../../inApp/classes/IterableInAppManager';
 import { IterableInAppMessage } from '../../inApp/classes/IterableInAppMessage';
 import { IterableInAppCloseSource } from '../../inApp/enums/IterableInAppCloseSource';
 import { IterableInAppDeleteSource } from '../../inApp/enums/IterableInAppDeleteSource';
 import { IterableInAppLocation } from '../../inApp/enums/IterableInAppLocation';
-import { IterableAuthResponseResult, IterableEventName } from '../enums';
-
-// Add this type-only import to avoid circular dependency
-import type { IterableInAppManager } from '../../inApp/classes/IterableInAppManager';
-
+import { IterableAuthResponseResult } from '../enums/IterableAuthResponseResult';
+import { IterableEventName } from '../enums/IterableEventName';
+import type { IterableAuthFailure } from '../types/IterableAuthFailure';
 import { IterableAction } from './IterableAction';
 import { IterableActionContext } from './IterableActionContext';
+import { IterableApi } from './IterableApi';
 import { IterableAttributionInfo } from './IterableAttributionInfo';
+import { IterableAuthManager } from './IterableAuthManager';
 import { IterableAuthResponse } from './IterableAuthResponse';
 import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
 
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
+
+/**
+ * Checks if the response is an IterableAuthResponse
+ */
+const isIterableAuthResponse = (
+  response: IterableAuthResponse | string | undefined | null
+): response is IterableAuthResponse => {
+  if (typeof response === 'string') return false;
+  if (
+    response?.authToken ||
+    response?.successCallback ||
+    response?.failureCallback
+  ) {
+    return true;
+  }
+  return false;
+};
 
 /* eslint-disable tsdoc/syntax */
 /**
@@ -48,12 +59,6 @@ const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
  */
 /* eslint-enable tsdoc/syntax */
 export class Iterable {
-  /**
-   * Logger for the Iterable SDK
-   * Log level is set with {@link IterableLogLevel}
-   */
-  static logger: IterableLogger = new IterableLogger(new IterableConfig());
-
   /**
    * Current configuration of the Iterable SDK
    */
@@ -76,21 +81,20 @@ export class Iterable {
    * Iterable.inAppManager.showMessage(message, true);
    * ```
    */
-  static get inAppManager() {
-    // Lazy initialization to avoid circular dependency
-    if (!this._inAppManager) {
-      // Import here to avoid circular dependency at module level
+  static inAppManager: IterableInAppManager = new IterableInAppManager();
 
-      const {
-        IterableInAppManager,
-        // eslint-disable-next-line
-      } = require('../../inApp/classes/IterableInAppManager');
-      this._inAppManager = new IterableInAppManager();
-    }
-    return this._inAppManager;
-  }
-
-  private static _inAppManager: IterableInAppManager | undefined;
+  /**
+   * Authentication manager for the current user.
+   *
+   * This property provides access to authentication functionality including
+   * pausing the authentication retry mechanism.
+   *
+   * @example
+   * ```typescript
+   * Iterable.authManager.pauseAuthRetries(true);
+   * ```
+   */
+  static authManager: IterableAuthManager = new IterableAuthManager();
 
   /**
    * Initializes the Iterable React Native SDK in your app's Javascript or Typescript code.
@@ -128,16 +132,11 @@ export class Iterable {
     config: IterableConfig = new IterableConfig()
   ): Promise<boolean> {
     Iterable.savedConfig = config;
-
-    Iterable.logger = new IterableLogger(Iterable.savedConfig);
-
-    Iterable?.logger?.log('initialize: ' + apiKey);
-
-    this.setupEventHandlers();
+    this.setupIterable(config);
 
     const version = this.getVersionFromPackageJson();
 
-    return RNIterableAPI.initializeWithApiKey(apiKey, config.toDict(), version);
+    return IterableApi.initializeWithApiKey(apiKey, { config, version });
   }
 
   /**
@@ -151,21 +150,31 @@ export class Iterable {
     config: IterableConfig = new IterableConfig(),
     apiEndPoint: string
   ): Promise<boolean> {
-    Iterable.savedConfig = config;
+    this.setupIterable(config);
 
-    Iterable.logger = new IterableLogger(Iterable.savedConfig);
-
-    Iterable?.logger?.log('initialize2: ' + apiKey);
-
-    this.setupEventHandlers();
     const version = this.getVersionFromPackageJson();
 
-    return RNIterableAPI.initialize2WithApiKey(
-      apiKey,
-      config.toDict(),
+    return IterableApi.initialize2WithApiKey(apiKey, {
+      config,
       version,
-      apiEndPoint
-    );
+      apiEndPoint,
+    });
+  }
+
+  /**
+   * @internal
+   * Does basic setup of the Iterable SDK.
+   * @param config - The configuration object for the Iterable SDK
+   */
+  private static setupIterable(config: IterableConfig = new IterableConfig()) {
+    if (config) {
+      Iterable.savedConfig = config;
+
+      IterableLogger.setLoggingEnabled(config.logReactNativeSdkCalls ?? true);
+      IterableLogger.setLogLevel(config.logLevel);
+    }
+
+    this.setupEventHandlers();
   }
 
   /**
@@ -218,9 +227,7 @@ export class Iterable {
    * ```
    */
   static setEmail(email: string | null, authToken?: string | null) {
-    Iterable?.logger?.log('setEmail: ' + email);
-
-    RNIterableAPI.setEmail(email, authToken);
+    IterableApi.setEmail(email, authToken);
   }
 
   /**
@@ -234,9 +241,7 @@ export class Iterable {
    * ```
    */
   static getEmail(): Promise<string | null> {
-    Iterable?.logger?.log('getEmail');
-
-    return RNIterableAPI.getEmail();
+    return IterableApi.getEmail();
   }
 
   /**
@@ -283,9 +288,7 @@ export class Iterable {
    * taken
    */
   static setUserId(userId?: string | null, authToken?: string | null) {
-    Iterable?.logger?.log('setUserId: ' + userId);
-
-    RNIterableAPI.setUserId(userId, authToken);
+    IterableApi.setUserId(userId, authToken);
   }
 
   /**
@@ -299,9 +302,7 @@ export class Iterable {
    * ```
    */
   static getUserId(): Promise<string | null | undefined> {
-    Iterable?.logger?.log('getUserId');
-
-    return RNIterableAPI.getUserId();
+    return IterableApi.getUserId();
   }
 
   /**
@@ -313,9 +314,7 @@ export class Iterable {
    * ```
    */
   static disableDeviceForCurrentUser() {
-    Iterable?.logger?.log('disableDeviceForCurrentUser');
-
-    RNIterableAPI.disableDeviceForCurrentUser();
+    IterableApi.disableDeviceForCurrentUser();
   }
 
   /**
@@ -330,9 +329,7 @@ export class Iterable {
    * ```
    */
   static getLastPushPayload(): Promise<unknown> {
-    Iterable?.logger?.log('getLastPushPayload');
-
-    return RNIterableAPI.getLastPushPayload();
+    return IterableApi.getLastPushPayload();
   }
 
   /**
@@ -358,10 +355,14 @@ export class Iterable {
    * ```
    */
   static getAttributionInfo(): Promise<IterableAttributionInfo | undefined> {
-    Iterable?.logger?.log('getAttributionInfo');
-
-    return RNIterableAPI.getAttributionInfo().then(
-      (dict: { campaignId: number; templateId: number; messageId: string } | null) => {
+    return IterableApi.getAttributionInfo().then(
+      (
+        dict: {
+          campaignId: number;
+          templateId: number;
+          messageId: string;
+        } | null
+      ) => {
         if (dict) {
           return new IterableAttributionInfo(
             dict.campaignId as number,
@@ -400,9 +401,7 @@ export class Iterable {
    * ```
    */
   static setAttributionInfo(attributionInfo?: IterableAttributionInfo) {
-    Iterable?.logger?.log('setAttributionInfo');
-
-    RNIterableAPI.setAttributionInfo(attributionInfo as unknown as { [key: string]: string | number | boolean; } | null);
+    IterableApi.setAttributionInfo(attributionInfo);
   }
 
   /**
@@ -441,15 +440,13 @@ export class Iterable {
     appAlreadyRunning: boolean,
     dataFields?: unknown
   ) {
-    Iterable?.logger?.log('trackPushOpenWithCampaignId');
-
-    RNIterableAPI.trackPushOpenWithCampaignId(
+    IterableApi.trackPushOpenWithCampaignId({
       campaignId,
       templateId,
-      messageId as string,
+      messageId,
       appAlreadyRunning,
-      dataFields as { [key: string]: string | number | boolean } | undefined
-    );
+      dataFields,
+    });
   }
 
   /**
@@ -479,9 +476,7 @@ export class Iterable {
    * ```
    */
   static updateCart(items: IterableCommerceItem[]) {
-    Iterable?.logger?.log('updateCart');
-
-    RNIterableAPI.updateCart(items as unknown as { [key: string]: string | number | boolean }[]);
+    IterableApi.updateCart(items);
   }
 
   /**
@@ -496,9 +491,7 @@ export class Iterable {
    */
   static wakeApp() {
     if (Platform.OS === 'android') {
-      Iterable?.logger?.log('Attempting to wake the app');
-
-      RNIterableAPI.wakeApp();
+      IterableApi.wakeApp();
     }
   }
 
@@ -531,9 +524,9 @@ export class Iterable {
     items: IterableCommerceItem[],
     dataFields?: unknown
   ) {
-    Iterable?.logger?.log('trackPurchase');
+    IterableLogger?.log('trackPurchase');
 
-    RNIterableAPI.trackPurchase(total, items as unknown as { [key: string]: string | number | boolean }[], dataFields as { [key: string]: string | number | boolean } | undefined);
+    IterableApi.trackPurchase({ total, items, dataFields });
   }
 
   /**
@@ -559,9 +552,13 @@ export class Iterable {
     message: IterableInAppMessage,
     location: IterableInAppLocation
   ) {
-    Iterable?.logger?.log('trackInAppOpen');
-
-    RNIterableAPI.trackInAppOpen(message.messageId, location);
+    if (!message?.messageId) {
+      IterableLogger?.log(
+        `Skipping trackInAppOpen because message ID is required, but received ${message}.`
+      );
+      return;
+    }
+    IterableApi.trackInAppOpen({ message, location });
   }
 
   /**
@@ -590,9 +587,7 @@ export class Iterable {
     location: IterableInAppLocation,
     clickedUrl: string
   ) {
-    Iterable?.logger?.log('trackInAppClick');
-
-    RNIterableAPI.trackInAppClick(message.messageId, location, clickedUrl);
+    IterableApi.trackInAppClick({ message, location, clickedUrl });
   }
 
   /**
@@ -623,14 +618,7 @@ export class Iterable {
     source: IterableInAppCloseSource,
     clickedUrl?: string
   ) {
-    Iterable?.logger?.log('trackInAppClose');
-
-    RNIterableAPI.trackInAppClose(
-      message.messageId,
-      location,
-      source,
-      clickedUrl
-    );
+    IterableApi.trackInAppClose({ message, location, source, clickedUrl });
   }
 
   /**
@@ -674,9 +662,7 @@ export class Iterable {
     location: IterableInAppLocation,
     source: IterableInAppDeleteSource
   ) {
-    Iterable?.logger?.log('inAppConsume');
-
-    RNIterableAPI.inAppConsume(message.messageId, location, source);
+    IterableApi.inAppConsume(message, location, source);
   }
 
   /**
@@ -700,9 +686,7 @@ export class Iterable {
    * ```
    */
   static trackEvent(name: string, dataFields?: unknown) {
-    Iterable?.logger?.log('trackEvent');
-
-    RNIterableAPI.trackEvent(name, dataFields as { [key: string]: string | number | boolean } | undefined);
+    IterableApi.trackEvent({ name, dataFields });
   }
 
   /**
@@ -748,9 +732,7 @@ export class Iterable {
     dataFields: unknown | undefined,
     mergeNestedObjects: boolean
   ) {
-    Iterable?.logger?.log('updateUser');
-
-    RNIterableAPI.updateUser(dataFields as { [key: string]: string | number | boolean }, mergeNestedObjects);
+    IterableApi.updateUser(dataFields, mergeNestedObjects);
   }
 
   /**
@@ -771,9 +753,7 @@ export class Iterable {
    * ```
    */
   static updateEmail(email: string, authToken?: string) {
-    Iterable?.logger?.log('updateEmail');
-
-    RNIterableAPI.updateEmail(email, authToken);
+    IterableApi.updateEmail(email, authToken);
   }
 
   /**
@@ -855,9 +835,7 @@ export class Iterable {
    */
   /* eslint-enable tsdoc/syntax */
   static handleAppLink(link: string): Promise<boolean> {
-    Iterable?.logger?.log('handleAppLink');
-
-    return RNIterableAPI.handleAppLink(link);
+    return IterableApi.handleAppLink(link);
   }
 
   /**
@@ -902,15 +880,47 @@ export class Iterable {
     campaignId: number,
     templateId: number
   ) {
-    Iterable?.logger?.log('updateSubscriptions');
-
-    RNIterableAPI.updateSubscriptions(
+    IterableApi.updateSubscriptions({
       emailListIds,
       unsubscribedChannelIds,
       unsubscribedMessageTypeIds,
       subscribedMessageTypeIds,
       campaignId,
-      templateId
+      templateId,
+    });
+  }
+
+  /**
+   * Logs out the current user from the Iterable SDK.
+   *
+   * This method will remove all event listeners for the Iterable SDK and set the email and user ID to null.
+   *
+   * @example
+   * ```typescript
+   * Iterable.logout();
+   * ```
+   */
+  static logout() {
+    Iterable.removeAllEventListeners();
+    Iterable.setEmail(null);
+    Iterable.setUserId(null);
+  }
+
+  /**
+   * Removes all event listeners for the Iterable SDK.
+   */
+  private static removeAllEventListeners() {
+    RNEventEmitter.removeAllListeners(IterableEventName.handleUrlCalled);
+    RNEventEmitter.removeAllListeners(IterableEventName.handleInAppCalled);
+    RNEventEmitter.removeAllListeners(
+      IterableEventName.handleCustomActionCalled
+    );
+    RNEventEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
+    RNEventEmitter.removeAllListeners(
+      IterableEventName.handleAuthSuccessCalled
+    );
+    RNEventEmitter.removeAllListeners(
+      IterableEventName.handleAuthFailureCalled
     );
   }
 
@@ -935,13 +945,8 @@ export class Iterable {
    * @internal
    */
   private static setupEventHandlers() {
-    //Remove all listeners to avoid duplicate listeners
-    RNEventEmitter.removeAllListeners(IterableEventName.handleUrlCalled);
-    RNEventEmitter.removeAllListeners(IterableEventName.handleInAppCalled);
-    RNEventEmitter.removeAllListeners(
-      IterableEventName.handleCustomActionCalled
-    );
-    RNEventEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
+    // Remove all listeners to avoid duplicate listeners
+    Iterable.removeAllEventListeners();
 
     if (Iterable.savedConfig.urlHandler) {
       RNEventEmitter.addListener(IterableEventName.handleUrlCalled, (dict) => {
@@ -978,7 +983,7 @@ export class Iterable {
           const message = IterableInAppMessage.fromDict(messageDict);
           // MOB-10423: Check if we can use chain operator (?.) here instead
           const result = Iterable.savedConfig.inAppHandler!(message);
-          RNIterableAPI.setInAppShowResponse(result);
+          IterableApi.setInAppShowResponse(result);
         }
       );
     }
@@ -987,46 +992,48 @@ export class Iterable {
       let authResponseCallback: IterableAuthResponseResult;
       RNEventEmitter.addListener(IterableEventName.handleAuthCalled, () => {
         // MOB-10423: Check if we can use chain operator (?.) here instead
-
+        // Asks frontend of the client/app to pass authToken
         Iterable.savedConfig.authHandler!()
           .then((promiseResult) => {
             // Promise result can be either just String OR of type AuthResponse.
             // If type AuthReponse, authToken will be parsed looking for `authToken` within promised object. Two additional listeners will be registered for success and failure callbacks sent by native bridge layer.
             // Else it will be looked for as a String.
-            if (typeof promiseResult === typeof new IterableAuthResponse()) {
-              RNIterableAPI.passAlongAuthToken(
-                (promiseResult as IterableAuthResponse).authToken
-              );
+            if (isIterableAuthResponse(promiseResult)) {
+              Iterable.authManager.passAlongAuthToken(promiseResult.authToken);
 
               setTimeout(() => {
                 if (
                   authResponseCallback === IterableAuthResponseResult.SUCCESS
                 ) {
-                  if ((promiseResult as IterableAuthResponse).successCallback) {
-                    (promiseResult as IterableAuthResponse).successCallback?.();
+                  if (promiseResult.successCallback) {
+                    promiseResult.successCallback?.();
                   }
                 } else if (
                   authResponseCallback === IterableAuthResponseResult.FAILURE
                 ) {
-                  if ((promiseResult as IterableAuthResponse).failureCallback) {
-                    (promiseResult as IterableAuthResponse).failureCallback?.();
+                  // We are currently only reporting JWT related errors.  In
+                  // the future, we should handle other types of errors as well.
+                  if (promiseResult.failureCallback) {
+                    promiseResult.failureCallback?.();
                   }
                 } else {
-                  Iterable?.logger?.log(
-                    'No callback received from native layer'
-                  );
+                  IterableLogger?.log('No callback received from native layer');
                 }
               }, 1000);
-            } else if (typeof promiseResult === typeof '') {
-              //If promise only returns string
-              RNIterableAPI.passAlongAuthToken(promiseResult as string);
+            } else if (typeof promiseResult === 'string') {
+              // If promise only returns string
+              Iterable.authManager.passAlongAuthToken(promiseResult);
+            } else if (promiseResult === null || promiseResult === undefined) {
+              // Even though this will cause authentication to fail, we want to
+              // allow for this for JWT handling.
+              Iterable.authManager.passAlongAuthToken(promiseResult);
             } else {
-              Iterable?.logger?.log(
-                'Unexpected promise returned. Auth token expects promise of String or AuthResponse type.'
+              IterableLogger?.log(
+                'Unexpected promise returned. Auth token expects promise of String, null, undefined, or AuthResponse type.'
               );
             }
           })
-          .catch((e) => Iterable?.logger?.log(e));
+          .catch((e) => IterableLogger?.log(e));
       });
 
       RNEventEmitter.addListener(
@@ -1037,8 +1044,14 @@ export class Iterable {
       );
       RNEventEmitter.addListener(
         IterableEventName.handleAuthFailureCalled,
-        () => {
+        (authFailureResponse: IterableAuthFailure) => {
+          // Mark the flag for above listener to indicate something failed.
+          // `catch(err)` will only indicate failure on high level. No actions
+          // should be taken inside `catch(err)`.
           authResponseCallback = IterableAuthResponseResult.FAILURE;
+
+          // Call the actual JWT error with `authFailure` object.
+          Iterable.savedConfig?.onJwtError?.(authFailureResponse);
         }
       );
     }
@@ -1054,7 +1067,7 @@ export class Iterable {
             }
           })
           .catch((reason) => {
-            Iterable?.logger?.log('could not open url: ' + reason);
+            IterableLogger?.log('could not open url: ' + reason);
           });
       }
     }

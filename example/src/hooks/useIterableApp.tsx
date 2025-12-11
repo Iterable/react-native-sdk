@@ -1,10 +1,10 @@
 import type { StackNavigationProp } from '@react-navigation/stack';
 import {
-  type FunctionComponent,
   createContext,
   useCallback,
   useContext,
   useState,
+  type FunctionComponent,
 } from 'react';
 import { Alert } from 'react-native';
 
@@ -14,10 +14,13 @@ import {
   IterableConfig,
   IterableInAppShowResponse,
   IterableLogLevel,
+  IterableRetryBackoff,
+  IterableAuthFailureReason,
 } from '@iterable/react-native-sdk';
 
 import { Route } from '../constants/routes';
 import type { RootStackParamList } from '../types/navigation';
+import NativeJwtTokenModule from '../NativeJwtTokenModule';
 
 type Navigation = StackNavigationProp<RootStackParamList>;
 
@@ -84,6 +87,10 @@ const IterableAppContext = createContext<IterableAppProps>({
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+const getIsEmail = (id: string) => EMAIL_REGEX.test(id);
+
+let lastTimeStamp = 0;
+
 export const IterableAppProvider: FunctionComponent<
   React.PropsWithChildren<unknown>
 > = ({ children }) => {
@@ -96,10 +103,27 @@ export const IterableAppProvider: FunctionComponent<
   const [apiKey, setApiKey] = useState<string | undefined>(
     process.env.ITBL_API_KEY
   );
-  const [userId, setUserId] = useState<string | null>(process.env.ITBL_ID ?? null);
+  const [userId, setUserId] = useState<string | null>(
+    process.env.ITBL_ID ?? null
+  );
   const [loginInProgress, setLoginInProgress] = useState<boolean>(false);
 
   const getUserId = useCallback(() => userId ?? process.env.ITBL_ID, [userId]);
+
+  const getJwtToken = useCallback(async () => {
+    const id = userId ?? process.env.ITBL_ID;
+    const idType = getIsEmail(id as string) ? 'email' : 'userId';
+    const secret = process.env.ITBL_JWT_SECRET ?? '';
+    const duration = 1000 * 60 * 60 * 24; // 1 day in milliseconds
+    const jwtToken = await NativeJwtTokenModule.generateJwtToken(
+      secret,
+      duration,
+      idType === 'email' ? (id as string) : null, // Email (can be null if userId is provided)
+      idType === 'userId' ? (id as string) : null // UserId (can be null if email is provided)
+    );
+
+    return jwtToken;
+  }, [userId]);
 
   const login = useCallback(() => {
     const id = userId ?? process.env.ITBL_ID;
@@ -108,8 +132,7 @@ export const IterableAppProvider: FunctionComponent<
 
     setLoginInProgress(true);
 
-    const isEmail = EMAIL_REGEX.test(id);
-    const fn = isEmail ? Iterable.setEmail : Iterable.setUserId;
+    const fn = getIsEmail(id) ? Iterable.setEmail : Iterable.setUserId;
 
     fn(id);
     setIsLoggedIn(true);
@@ -120,9 +143,31 @@ export const IterableAppProvider: FunctionComponent<
 
   const initialize = useCallback(
     (navigation: Navigation) => {
+      logout();
+
       const config = new IterableConfig();
 
       config.inAppDisplayInterval = 1.0; // Min gap between in-apps. No need to set this in production.
+
+      config.retryPolicy = {
+        maxRetry: 5,
+        retryInterval: 5,
+        retryBackoff: IterableRetryBackoff.linear,
+      };
+
+      config.onJwtError = (authFailure) => {
+        console.log('onJwtError', authFailure);
+
+        const failureReason =
+          typeof authFailure.failureReason === 'string'
+            ? authFailure.failureReason
+            : IterableAuthFailureReason[authFailure.failureReason];
+
+        Alert.alert(
+          `Error fetching JWT: ${failureReason}`,
+          `Token: ${authFailure.failedAuthToken}`
+        );
+      };
 
       config.urlHandler = (url: string) => {
         const routeNames = [Route.Commerce, Route.Inbox, Route.User];
@@ -149,6 +194,25 @@ export const IterableAppProvider: FunctionComponent<
 
       config.inAppHandler = () => IterableInAppShowResponse.show;
 
+      if (
+        process.env.ITBL_IS_JWT_ENABLED === 'true' &&
+        process.env.ITBL_JWT_SECRET
+      ) {
+        config.authHandler = async () => {
+          console.group('authHandler');
+          const now = Date.now();
+          if (lastTimeStamp !== 0) {
+            console.log('Time since last call:', now - lastTimeStamp);
+          }
+          lastTimeStamp = now;
+          console.groupEnd();
+
+          // return 'InvalidToken'; // Uncomment this to test the failure callback
+          const token = await getJwtToken();
+          return token;
+        };
+      }
+
       setItblConfig(config);
 
       const key = apiKey ?? process.env.ITBL_API_KEY;
@@ -163,11 +227,12 @@ export const IterableAppProvider: FunctionComponent<
         .then((isSuccessful) => {
           setIsInitialized(isSuccessful);
 
-          if (!isSuccessful)
-            return Promise.reject('`Iterable.initialize` failed');
+          if (isSuccessful && getUserId()) {
+            return login();
+          }
 
-          if (getUserId()) {
-            login();
+          if (!isSuccessful) {
+            return Promise.reject('`Iterable.initialize` failed');
           }
 
           return isSuccessful;
@@ -180,24 +245,17 @@ export const IterableAppProvider: FunctionComponent<
           setIsInitialized(false);
           setLoginInProgress(false);
           return Promise.reject(err);
-        })
-        .finally(() => {
-          // For some reason, ios is throwing an error on initialize.
-          // To temporarily fix this, we're using the finally block to login.
-          // MOB-10419: Find out why initialize is throwing an error on ios
-          setIsInitialized(true);
-          if (getUserId()) {
-            login();
-          }
-          return Promise.resolve(true);
         });
     },
-    [apiKey, getUserId, login]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [getUserId, apiKey, login, getJwtToken, userId]
   );
 
   const logout = useCallback(() => {
     Iterable.setEmail(null);
     Iterable.setUserId(null);
+    Iterable.logout();
+    lastTimeStamp = 0;
     setIsLoggedIn(false);
   }, []);
 
