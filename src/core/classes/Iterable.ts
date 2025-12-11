@@ -938,10 +938,16 @@ export class Iterable {
   private static removeAllEventListeners() {
     RNEventEmitter.removeAllListeners(IterableEventName.handleUrlCalled);
     RNEventEmitter.removeAllListeners(IterableEventName.handleInAppCalled);
-    RNEventEmitter.removeAllListeners(IterableEventName.handleCustomActionCalled);
+    RNEventEmitter.removeAllListeners(
+      IterableEventName.handleCustomActionCalled
+    );
     RNEventEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
-    RNEventEmitter.removeAllListeners(IterableEventName.handleAuthSuccessCalled);
-    RNEventEmitter.removeAllListeners(IterableEventName.handleAuthFailureCalled);
+    RNEventEmitter.removeAllListeners(
+      IterableEventName.handleAuthSuccessCalled
+    );
+    RNEventEmitter.removeAllListeners(
+      IterableEventName.handleAuthFailureCalled
+    );
   }
 
   /**
@@ -1041,11 +1047,15 @@ export class Iterable {
                 }
               }, 1000);
             } else if (typeof promiseResult === 'string') {
-              //If promise only returns string
+              // If promise only returns string
+              Iterable.authManager.passAlongAuthToken(promiseResult);
+            } else if (promiseResult === null || promiseResult === undefined) {
+              // Even though this will cause authentication to fail, we want to
+              // allow for this for JWT handling.
               Iterable.authManager.passAlongAuthToken(promiseResult);
             } else {
               IterableLogger?.log(
-                'Unexpected promise returned. Auth token expects promise of String or AuthResponse type.'
+                'Unexpected promise returned. Auth token expects promise of String, null, undefined, or AuthResponse type.'
               );
             }
           })
