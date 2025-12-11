@@ -225,6 +225,16 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   }
 
   @Override
+  public void startEmbeddedSession() {
+    moduleImpl.startEmbeddedSession();
+  }
+
+  @Override
+  public void endEmbeddedSession() {
+    moduleImpl.endEmbeddedSession();
+  }
+
+  @Override
   public void getEmbeddedPlacementIds(Promise promise) {
     moduleImpl.getEmbeddedPlacementIds(promise);
   }
