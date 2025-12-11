@@ -89,6 +89,8 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const getIsEmail = (id: string) => EMAIL_REGEX.test(id);
 
+let lastTimeStamp = 0;
+
 export const IterableAppProvider: FunctionComponent<
   React.PropsWithChildren<unknown>
 > = ({ children }) => {
@@ -147,9 +149,7 @@ export const IterableAppProvider: FunctionComponent<
 
   const initialize = useCallback(
     (navigation: Navigation) => {
-      if (getUserId()) {
-        login();
-      }
+      logout();
 
       const config = new IterableConfig();
 
@@ -157,7 +157,7 @@ export const IterableAppProvider: FunctionComponent<
 
       config.retryPolicy = {
         maxRetry: 5,
-        retryInterval: 10,
+        retryInterval: 5,
         retryBackoff: IterableRetryBackoff.linear,
       };
 
@@ -209,8 +209,16 @@ export const IterableAppProvider: FunctionComponent<
         process.env.ITBL_JWT_SECRET
       ) {
         config.authHandler = async () => {
+          console.group('authHandler');
+          const now = Date.now();
+          if (lastTimeStamp !== 0) {
+            console.log('Time since last call:', now - lastTimeStamp);
+          }
+          lastTimeStamp = now;
+          console.groupEnd();
+
+          // return 'InvalidToken'; // Uncomment this to test the failure callback
           const token = await getJwtToken();
-          // return 'SomethingNotValid'; // Uncomment this to test the failure callback
           return token;
         };
       }
@@ -228,6 +236,10 @@ export const IterableAppProvider: FunctionComponent<
       return Iterable.initialize(key, config)
         .then((isSuccessful) => {
           setIsInitialized(isSuccessful);
+
+          if (isSuccessful && getUserId()) {
+            return login();
+          }
 
           if (!isSuccessful) {
             return Promise.reject('`Iterable.initialize` failed');
@@ -252,6 +264,8 @@ export const IterableAppProvider: FunctionComponent<
   const logout = useCallback(() => {
     Iterable.setEmail(null);
     Iterable.setUserId(null);
+    Iterable.logout();
+    lastTimeStamp = 0;
     setIsLoggedIn(false);
   }, []);
 
