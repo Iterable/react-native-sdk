@@ -730,7 +730,7 @@ describe('IterableApi', () => {
       const result = await IterableApi.getInboxMessages();
 
       // THEN the messages are returned
-      expect(result).toBe(mockMessages);
+      expect(result).toStrictEqual(mockMessages);
     });
   });
 
