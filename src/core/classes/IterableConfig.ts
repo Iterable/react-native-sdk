@@ -202,9 +202,9 @@ export class IterableConfig {
    * ```
    *
    * @returns A promise that resolves to an `IterableAuthResponse`, a `string`,
-   * or `undefined`.
+   * `null`, or `undefined`.
    */
-  authHandler?: () => Promise<IterableAuthResponse | string | undefined>;
+  authHandler?: () => Promise<IterableAuthResponse | string | null | undefined>;
 
   /**
    * A callback function that is called when the SDK encounters an error while
