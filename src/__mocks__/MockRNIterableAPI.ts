@@ -86,6 +86,28 @@ export class MockRNIterableAPI {
     });
   }
 
+  static async getInboxMessages(): Promise<IterableInAppMessage[] | undefined> {
+    return await new Promise((resolve) => {
+      // Filter messages that are marked for inbox
+      const inboxMessages =
+        MockRNIterableAPI.messages?.filter((msg) => msg.saveToInbox) || [];
+      resolve(inboxMessages);
+    });
+  }
+
+  static async getHtmlInAppContentForMessage(
+    messageId: string
+  ): Promise<unknown> {
+    return await new Promise((resolve) => {
+      // Mock HTML content for testing
+      const mockHtmlContent = {
+        edgeInsets: { top: 10, left: 20, bottom: 30, right: 40 },
+        html: `<div>Mock HTML content for message ${messageId}</div>`,
+      };
+      resolve(mockHtmlContent);
+    });
+  }
+
   static setAutoDisplayPaused = jest.fn();
 
   static showMessage = jest.fn(
@@ -113,21 +135,11 @@ export class MockRNIterableAPI {
 
   static updateSubscriptions = jest.fn();
 
-  static getInboxMessages = jest.fn(
-    async (): Promise<IterableInAppMessage[] | undefined> => {
-      return await new Promise((resolve) => {
-        resolve(MockRNIterableAPI.messages);
-      });
-    }
-  );
-
   static startSession = jest.fn();
 
   static endSession = jest.fn();
 
   static updateVisibleRows = jest.fn();
-
-  static getHtmlInAppContentForMessage = jest.fn();
 
   static startEmbeddedSession = jest.fn();
 
