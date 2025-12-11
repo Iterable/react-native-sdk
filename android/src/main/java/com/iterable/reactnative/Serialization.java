@@ -138,6 +138,17 @@ class Serialization {
         return inAppMessagesJson;
     }
 
+    static JSONArray serializeEmbeddedMessages(List<IterableEmbeddedMessage> embeddedMessages) {
+        JSONArray embeddedMessagesJson = new JSONArray();
+        if (embeddedMessages != null) {
+            for (IterableEmbeddedMessage message : embeddedMessages) {
+                JSONObject messageJson = IterableEmbeddedMessage.Companion.toJSONObject(message);
+                embeddedMessagesJson.put(messageJson);
+            }
+        }
+        return embeddedMessagesJson;
+    }
+
     static IterableConfig.Builder getConfigFromReadableMap(ReadableMap iterableContextMap) {
         try {
             JSONObject iterableContextJSON = convertMapToJson(iterableContextMap);

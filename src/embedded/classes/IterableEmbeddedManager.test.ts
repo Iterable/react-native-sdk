@@ -64,6 +64,19 @@ describe('IterableEmbeddedManager', () => {
     });
   });
 
+  describe('syncMessages', () => {
+    it('should call IterableApi.syncEmbeddedMessages', async () => {
+      // WHEN syncMessages is called
+      const result = await embeddedManager.syncMessages();
+
+      // THEN IterableApi.syncEmbeddedMessages is called
+      expect(MockRNIterableAPI.syncEmbeddedMessages).toHaveBeenCalledTimes(1);
+
+      // AND the result is returned
+      expect(result).toBeUndefined();
+    });
+  });
+
   describe('getPlacementIds', () => {
     it('should call IterableApi.getEmbeddedPlacementIds', async () => {
       // WHEN getPlacementIds is called
@@ -76,6 +89,61 @@ describe('IterableEmbeddedManager', () => {
 
       // AND the result is returned
       expect(result).toEqual([1, 2, 3]);
+    });
+  });
+
+  describe('getMessages', () => {
+    it('should call IterableApi.getEmbeddedMessages with placement IDs', async () => {
+      // GIVEN placement IDs
+      const placementIds = [1, 2];
+
+      // WHEN getMessages is called
+      const result = await embeddedManager.getMessages(placementIds);
+
+      // THEN IterableApi.getEmbeddedMessages is called with placement IDs
+      expect(MockRNIterableAPI.getEmbeddedMessages).toHaveBeenCalledTimes(1);
+      expect(MockRNIterableAPI.getEmbeddedMessages).toHaveBeenCalledWith(
+        placementIds
+      );
+
+      // AND the result contains embedded messages
+      expect(result).toHaveLength(2);
+      expect(result[0]).toEqual({
+        metadata: {
+          messageId: 'msg-1',
+          campaignId: 123,
+          placementId: 1,
+        },
+        elements: {
+          title: 'Test Message 1',
+          body: 'Test body 1',
+        },
+        payload: { customKey: 'customValue' },
+      });
+      expect(result[1]).toEqual({
+        metadata: {
+          messageId: 'msg-2',
+          campaignId: 456,
+          placementId: 2,
+        },
+        elements: {
+          title: 'Test Message 2',
+          body: 'Test body 2',
+        },
+        payload: null,
+      });
+    });
+
+    it('should call IterableApi.getEmbeddedMessages with null placement IDs', async () => {
+      // WHEN getMessages is called with null
+      const result = await embeddedManager.getMessages(null);
+
+      // THEN IterableApi.getEmbeddedMessages is called with null
+      expect(MockRNIterableAPI.getEmbeddedMessages).toHaveBeenCalledTimes(1);
+      expect(MockRNIterableAPI.getEmbeddedMessages).toHaveBeenCalledWith(null);
+
+      // AND the result is returned
+      expect(result).toBeDefined();
     });
   });
 
@@ -98,5 +166,6 @@ describe('IterableEmbeddedManager', () => {
       expect(MockRNIterableAPI.endEmbeddedSession).toHaveBeenCalledTimes(1);
     });
   });
+
 });
 
