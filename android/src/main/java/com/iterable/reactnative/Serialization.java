@@ -149,6 +149,22 @@ class Serialization {
         return embeddedMessagesJson;
     }
 
+    /**
+     * Converts a ReadableMap to an IterableEmbeddedMessage.
+     *
+     * This is needed as in new arch you can only pass in basic types, which
+     * then need to be converted in the native layer.
+     */
+    static IterableEmbeddedMessage embeddedMessageFromReadableMap(ReadableMap messageMap) {
+        try {
+            JSONObject messageJson = convertMapToJson(messageMap);
+            return IterableEmbeddedMessage.Companion.fromJSONObject(messageJson);
+        } catch (JSONException e) {
+            IterableLogger.e(TAG, "Failed to convert ReadableMap to IterableEmbeddedMessage: " + e.getLocalizedMessage());
+            return null;
+        }
+    }
+
     static IterableConfig.Builder getConfigFromReadableMap(ReadableMap iterableContextMap) {
         try {
             JSONObject iterableContextJSON = convertMapToJson(iterableContextMap);

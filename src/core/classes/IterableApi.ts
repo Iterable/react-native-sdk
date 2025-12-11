@@ -571,6 +571,18 @@ export class IterableApi {
     return RNIterableAPI.getEmbeddedMessages(placementIds);
   }
 
+  /**
+   * Track an embedded click.
+   */
+  static trackEmbeddedClick(
+    message: IterableEmbeddedMessage,
+    buttonId: string | null,
+    clickedUrl: string | null
+  ) {
+    IterableLogger.log('trackEmbeddedClick: ', message, buttonId, clickedUrl);
+    return RNIterableAPI.trackEmbeddedClick(message, buttonId, clickedUrl);
+  }
+
   // ---- End EMBEDDED ---- //
 
   // ====================================================== //

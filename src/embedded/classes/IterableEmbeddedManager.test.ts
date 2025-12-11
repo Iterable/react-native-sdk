@@ -1,4 +1,5 @@
 import { MockRNIterableAPI } from '../../__mocks__/MockRNIterableAPI';
+import { IterableConfig } from '../../core/classes/IterableConfig';
 import { IterableEmbeddedManager } from './IterableEmbeddedManager';
 
 // Mock the RNIterableAPI module
@@ -11,7 +12,7 @@ describe('IterableEmbeddedManager', () => {
   let embeddedManager: IterableEmbeddedManager;
 
   beforeEach(() => {
-    embeddedManager = new IterableEmbeddedManager();
+    embeddedManager = new IterableEmbeddedManager(new IterableConfig());
     jest.clearAllMocks();
   });
 
