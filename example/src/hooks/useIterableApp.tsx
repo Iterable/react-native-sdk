@@ -192,6 +192,8 @@ export const IterableAppProvider: FunctionComponent<
 
       config.logLevel = IterableLogLevel.debug;
 
+      config.embeddedMessagingEnabled = true;
+
       config.inAppHandler = () => IterableInAppShowResponse.show;
 
       if (

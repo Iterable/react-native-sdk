@@ -6,7 +6,6 @@ export const appName: TextStyle = {
   fontWeight: 'bold',
   fontSize: 14,
   width: '100%',
-  marginTop: 41,
   marginBottom: 64,
   textTransform: 'uppercase',
   letterSpacing: 2,
