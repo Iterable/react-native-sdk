@@ -118,6 +118,9 @@ export interface Spec extends TurboModule {
   passAlongAuthToken(authToken?: string | null): void;
   pauseAuthRetries(pauseRetry: boolean): void;
 
+  // Embedded Messaging
+  getEmbeddedPlacementIds(): Promise<number[]>;
+
   // Wake app -- android only
   wakeApp(): void;
 
