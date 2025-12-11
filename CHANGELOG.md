@@ -1,22 +1,4 @@
-## 2.2.0-alpha.2
-
-### Updates
-* Changed `onJWTError` to `onJwtError`
-* Changed `IterableRetryBackoff` enum keys to be lowercase for consistency
-  across application
-
-### Fixes
-* Fixed Android `retryInterval` not being updated on re-initialization.
-
-## 2.2.0-alpha.1
-
-### Updates
-* [SDK-149] Added logout functionality
-
-### Fixes
-* [SDK-151] Fixed "cannot read property authtoken of undefined" error
-
-## 2.2.0-alpha.0
+## 2.2.0
 
 ### Updates
 - Updated Android SDK version to [3.6.2](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.6.2)
@@ -27,13 +9,19 @@
   - Added `onJwtError` and `retryPolicy` for control over JWT flow
 - Moved all native calls to `IterableApi.ts`
 - Added JWT example to our example app
+- Changed `onJWTError` to `onJwtError`
+- Changed `IterableRetryBackoff` enum keys to be lowercase for consistency
+  across application
+- [SDK-149] Added logout functionality
 
 ### Fixes
 - Created a standalone `IterableLogger` to avoid circular dependencies
+- [SDK-151] Fixed "cannot read property authtoken of undefined" error
+- Fixed Android `retryInterval` not being updated on re-initialization.
 
 ## 2.1.0
 ### Updates
-* SDK is now compatible with both New Architecture and Legacy Architecture. Fix
+- SDK is now compatible with both New Architecture and Legacy Architecture. Fix
   for #691, #602, #563.
 
 ### Fixes
