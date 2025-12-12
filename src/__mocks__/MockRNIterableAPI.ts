@@ -16,10 +16,10 @@ export class MockRNIterableAPI {
     });
   }
 
-  static setEmail(email: string, authToken?: string): void {
+  static setEmail = jest.fn((email: string, authToken?: string): void => {
     MockRNIterableAPI.email = email;
     MockRNIterableAPI.token = authToken;
-  }
+  });
 
   static async getUserId(): Promise<string | undefined> {
     return await new Promise((resolve) => {
@@ -27,10 +27,10 @@ export class MockRNIterableAPI {
     });
   }
 
-  static setUserId(userId: string, authToken?: string): void {
+  static setUserId = jest.fn((userId: string, authToken?: string): void => {
     MockRNIterableAPI.userId = userId;
     MockRNIterableAPI.token = authToken;
-  }
+  });
 
   static disableDeviceForCurrentUser = jest.fn();
 
@@ -62,9 +62,11 @@ export class MockRNIterableAPI {
     });
   }
 
-  static setAttributionInfo(attributionInfo?: IterableAttributionInfo): void {
-    MockRNIterableAPI.attributionInfo = attributionInfo;
-  }
+  static setAttributionInfo = jest.fn(
+    (attributionInfo?: IterableAttributionInfo): void => {
+      MockRNIterableAPI.attributionInfo = attributionInfo;
+    }
+  );
 
   static initializeWithApiKey = jest.fn().mockResolvedValue(true);
 
@@ -84,16 +86,40 @@ export class MockRNIterableAPI {
     });
   }
 
-  static setAutoDisplayPaused = jest.fn();
-
-  static async showMessage(
-    _message: IterableInAppMessage,
-    _consume: boolean
-  ): Promise<string | undefined> {
+  static async getInboxMessages(): Promise<IterableInAppMessage[] | undefined> {
     return await new Promise((resolve) => {
-      resolve(MockRNIterableAPI.clickedUrl);
+      // Filter messages that are marked for inbox
+      const inboxMessages =
+        MockRNIterableAPI.messages?.filter((msg) => msg.saveToInbox) || [];
+      resolve(inboxMessages);
     });
   }
+
+  static async getHtmlInAppContentForMessage(
+    messageId: string
+  ): Promise<unknown> {
+    return await new Promise((resolve) => {
+      // Mock HTML content for testing
+      const mockHtmlContent = {
+        edgeInsets: { top: 10, left: 20, bottom: 30, right: 40 },
+        html: `<div>Mock HTML content for message ${messageId}</div>`,
+      };
+      resolve(mockHtmlContent);
+    });
+  }
+
+  static setAutoDisplayPaused = jest.fn();
+
+  static showMessage = jest.fn(
+    async (
+      _messageId: string,
+      _consume: boolean
+    ): Promise<string | undefined> => {
+      return await new Promise((resolve) => {
+        resolve(MockRNIterableAPI.clickedUrl);
+      });
+    }
+  );
 
   static removeMessage = jest.fn();
 
@@ -108,6 +134,12 @@ export class MockRNIterableAPI {
   static handleAppLink = jest.fn();
 
   static updateSubscriptions = jest.fn();
+
+  static startSession = jest.fn();
+
+  static endSession = jest.fn();
+
+  static updateVisibleRows = jest.fn();
 
   // set messages function is to set the messages static property
   // this is for testing purposes only

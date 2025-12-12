@@ -94,8 +94,26 @@ extension IterableConfig {
       }
     }
 
+    if let enableEmbeddedMessaging = dict["enableEmbeddedMesssaging"] as? Bool {
+      config.enableEmbeddedMessaging = enableEmbeddedMessaging
+    }
+
+    if let retryPolicyDict = dict["retryPolicy"] as? [AnyHashable: Any] {
+      if let maxRetry = retryPolicyDict["maxRetry"] as? Int,
+        let retryInterval = retryPolicyDict["retryInterval"] as? TimeInterval,
+        let retryBackoffString = retryPolicyDict["retryBackoff"] as? String
+      {
+        let retryBackoffType: RetryPolicy.BackoffType =
+          retryBackoffString == "EXPONENTIAL" ? .exponential : .linear
+        config.retryPolicy = RetryPolicy(
+          maxRetry: maxRetry, retryInterval: retryInterval, retryBackoff: retryBackoffType)
+      }
+    }
+
     return config
   }
+
+
 
   private static func createLogDelegate(logLevelNumber: NSNumber) -> IterableLogDelegate {
     DefaultLogDelegate(minLogLevel: LogLevel.from(number: logLevelNumber))
@@ -265,5 +283,98 @@ extension InboxImpressionTracker.RowInfo {
 
   static func rowInfos(from rows: [[AnyHashable: Any]]) -> [InboxImpressionTracker.RowInfo] {
     return rows.compactMap(InboxImpressionTracker.RowInfo.from(dict:))
+  }
+}
+
+extension IterableEmbeddedMessage {
+  func toDict() -> [AnyHashable: Any] {
+    var dict = [AnyHashable: Any]()
+
+    // Metadata
+    var metadata = [AnyHashable: Any]()
+    metadata["messageId"] = self.metadata.messageId
+    metadata["placementId"] = self.metadata.placementId
+    if let campaignId = self.metadata.campaignId {
+      metadata["campaignId"] = campaignId
+    }
+    if let isProof = self.metadata.isProof {
+      metadata["isProof"] = isProof
+    }
+    dict["metadata"] = metadata
+
+    // Elements
+    if let elements = self.elements {
+      var elementsDict = [AnyHashable: Any]()
+
+      if let title = elements.title {
+        elementsDict["title"] = title
+      }
+
+      if let body = elements.body {
+        elementsDict["body"] = body
+      }
+
+      if let mediaUrl = elements.mediaUrl {
+        elementsDict["mediaUrl"] = mediaUrl
+      }
+
+      if let mediaUrlCaption = elements.mediaUrlCaption {
+        elementsDict["mediaUrlCaption"] = mediaUrlCaption
+      }
+
+      if let defaultAction = elements.defaultAction {
+        var actionDict = [AnyHashable: Any]()
+        actionDict["type"] = defaultAction.type
+        if let data = defaultAction.data {
+          actionDict["data"] = data
+        }
+        elementsDict["defaultAction"] = actionDict
+      }
+
+      if let buttons = elements.buttons {
+        var buttonsArray = [[AnyHashable: Any]]()
+        for button in buttons {
+          var buttonDict = [AnyHashable: Any]()
+          buttonDict["id"] = button.id
+          if let title = button.title {
+            buttonDict["title"] = title
+          }
+          if let action = button.action {
+            var actionDict = [AnyHashable: Any]()
+            actionDict["type"] = action.type
+            if let data = action.data {
+              actionDict["data"] = data
+            }
+            buttonDict["action"] = actionDict
+          } else {
+            buttonDict["action"] = NSNull()
+          }
+          buttonsArray.append(buttonDict)
+        }
+        elementsDict["buttons"] = buttonsArray
+      }
+
+      if let text = elements.text {
+        var textArray = [[AnyHashable: Any]]()
+        for textElement in text {
+          var textDict = [AnyHashable: Any]()
+          textDict["id"] = textElement.id
+          if let textValue = textElement.text {
+            textDict["text"] = textValue
+          }
+          textArray.append(textDict)
+        }
+        elementsDict["text"] = textArray
+      }
+
+      dict["elements"] = elementsDict
+    }
+
+    // Payload
+    if let payload = self.payload {
+      dict["payload"] = payload
+    }
+
+    return dict
   }
 }

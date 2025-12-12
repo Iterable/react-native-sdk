@@ -11,7 +11,7 @@ import {
 import styles from './Embedded.styles';
 
 export const Embedded = () => {
-  const [placementIds, setPlacementIds] = useState<number[]>([]);
+  const [placementIds] = useState<number[]>([10, 2112]);
   const [embeddedMessages, setEmbeddedMessages] = useState<
     IterableEmbeddedMessage[]
   >([]);
@@ -23,21 +23,27 @@ export const Embedded = () => {
   }, []);
 
   const getPlacementIds = useCallback(() => {
-    return Iterable.embeddedManager.getPlacementIds().then((ids: unknown) => {
-      console.log(ids);
-      setPlacementIds(ids as number[]);
-      return ids;
-    });
+    // return Iterable.embeddedManager.getPlacementIds().then((ids: unknown) => {
+    //   console.log(ids);
+    //   setPlacementIds(ids as number[]);
+    //   return ids;
+    // });
   }, []);
 
   const getEmbeddedMessages = useCallback(() => {
-    getPlacementIds()
-      .then((ids: number[]) => Iterable.embeddedManager.getMessages(ids))
+    Iterable.embeddedManager
+      .getMessages(placementIds)
       .then((messages: IterableEmbeddedMessage[]) => {
         setEmbeddedMessages(messages);
         console.log(messages);
       });
-  }, [getPlacementIds]);
+    // getPlacementIds()
+    //   .then((ids: number[]) => Iterable.embeddedManager.getMessages(ids))
+    //   .then((messages: IterableEmbeddedMessage[]) => {
+    //     setEmbeddedMessages(messages);
+    //     console.log(messages);
+    //   });
+  }, [placementIds]);
 
   return (
     <View style={styles.container}>

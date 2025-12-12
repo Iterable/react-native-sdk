@@ -202,9 +202,9 @@ export class IterableConfig {
    * ```
    *
    * @returns A promise that resolves to an `IterableAuthResponse`, a `string`,
-   * or `undefined`.
+   * `null`, or `undefined`.
    */
-  authHandler?: () => Promise<IterableAuthResponse | string | undefined>;
+  authHandler?: () => Promise<IterableAuthResponse | string | null | undefined>;
 
   /**
    * A callback function that is called when the SDK encounters an error while
@@ -218,23 +218,33 @@ export class IterableConfig {
    * @example
    * ```typescript
    * const config = new IterableConfig();
-   * config.onJWTError = (authFailure) => {
+   * config.onJwtError = (authFailure) => {
    *   console.error('Error fetching JWT:', authFailure);
    * };
    * ```
    */
-  onJWTError?: (authFailure: IterableAuthFailure) => void;
+  onJwtError?: (authFailure: IterableAuthFailure) => void;
 
   /**
    * Set the verbosity of Android and iOS project's log system.
    *
    * By default, you will be able to see info level logs printed in IDE when running the app.
    */
-  logLevel: IterableLogLevel = IterableLogLevel.info;
+  logLevel: IterableLogLevel = IterableLogLevel.debug;
 
   /**
    * Configuration for JWT refresh retry behavior.
    * If not specified, the SDK will use default retry behavior.
+   *
+   * @example
+   * ```typescript
+   * const config = new IterableConfig();
+   * config.retryPolicy = new IterableRetryPolicy({
+   *   maxRetries: 3,
+   *   initialDelay: 1000,
+   *   maxDelay: 10000,
+   * });
+   * ```
    */
   retryPolicy?: IterableRetryPolicy;
 

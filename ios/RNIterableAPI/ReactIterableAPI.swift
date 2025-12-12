@@ -215,7 +215,8 @@ import React
       ITBError("Could not find message with id: \(messageId)")
       return
     }
-    IterableAPI.track(inAppOpen: message, location: InAppLocation.from(number: locationNumber as NSNumber))
+    IterableAPI.track(
+      inAppOpen: message, location: InAppLocation.from(number: locationNumber as NSNumber))
   }
 
   @objc(trackInAppClick:location:clickedUrl:)
@@ -414,8 +415,10 @@ import React
     templateId: Double
   ) {
     ITBInfo()
-    let finalCampaignId: NSNumber? = (campaignId as NSNumber).intValue <= 0 ? nil : campaignId as NSNumber
-    let finalTemplateId: NSNumber? = (templateId as NSNumber).intValue <= 0 ? nil : templateId as NSNumber
+    let finalCampaignId: NSNumber? =
+      (campaignId as NSNumber).intValue <= 0 ? nil : campaignId as NSNumber
+    let finalTemplateId: NSNumber? =
+      (templateId as NSNumber).intValue <= 0 ? nil : templateId as NSNumber
     IterableAPI.updateSubscriptions(
       emailListIds,
       unsubscribedChannelIds: unsubscribedChannelIds,
@@ -480,7 +483,7 @@ import React
   @objc(passAlongAuthToken:)
   public func passAlongAuthToken(authToken: String?) {
     ITBInfo()
-    passedAuthToken = authToken
+    self.passedAuthToken = authToken
     authHandlerSemaphore.signal()
   }
 
@@ -488,6 +491,43 @@ import React
   public func pauseAuthRetries(pauseRetry: Bool) {
     ITBInfo()
     IterableAPI.pauseAuthRetries(pauseRetry)
+  }
+
+  @objc(syncEmbeddedMessages)
+  public func syncEmbeddedMessages() {
+    ITBInfo()
+    IterableAPI.embeddedManager.syncMessages(completion: {})
+  }
+
+  @objc(getEmbeddedMessages:resolver:rejecter:)
+  public func getEmbeddedMessages(
+    placementIds: [NSNumber]?,
+    resolver: RCTPromiseResolveBlock,
+    rejecter: RCTPromiseRejectBlock
+  ) {
+    ITBInfo()
+    ITBInfo("getEmbeddedMessages called with placementIds: \(String(describing: placementIds))")
+    var allMessages: [IterableEmbeddedMessage] = []
+
+    if let placementIds = placementIds, !placementIds.isEmpty {
+      // Get messages for each specified placement ID
+      ITBInfo("Getting messages for \(placementIds.count) placement IDs")
+      for placementId in placementIds {
+        ITBInfo("Getting messages for placement ID: \(placementId.intValue)")
+        let messages = IterableAPI.embeddedManager.getMessages(for: placementId.intValue)
+        ITBInfo("Found \(messages.count) messages for placement ID: \(placementId.intValue)")
+        allMessages.append(contentsOf: messages)
+      }
+    } else {
+      // Get messages for all placements by getting placement IDs first
+      ITBInfo("Getting all messages (no placement IDs specified)")
+      let messages = IterableAPI.embeddedManager.getMessages()
+      ITBInfo("Found \(messages.count) total messages")
+      allMessages.append(contentsOf: messages)
+    }
+
+    ITBInfo("Returning \(allMessages.count) total embedded messages")
+    resolver(allMessages.map { $0.toDict() })
   }
 
   // MARK: Private
@@ -537,7 +577,9 @@ import React
       iterableConfig.inAppDelegate = self
     }
 
-    if let authHandlerPresent = configDict["authHandlerPresent"] as? Bool, authHandlerPresent {
+    if let authHandlerPresent = configDict["authHandlerPresent"] as? Bool,
+      authHandlerPresent == true
+    {
       iterableConfig.authDelegate = self
     }
 
@@ -554,6 +596,7 @@ import React
         apiEndPointOverride: apiEndPointOverride
       ) { result in
         resolver(result)
+        IterableAPI.embeddedManager.syncMessages(completion: {})
       }
 
       IterableAPI.setDeviceAttribute(name: "reactNativeSDKVersion", value: version)
