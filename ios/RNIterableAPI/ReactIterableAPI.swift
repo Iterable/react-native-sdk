@@ -215,7 +215,8 @@ import React
       ITBError("Could not find message with id: \(messageId)")
       return
     }
-    IterableAPI.track(inAppOpen: message, location: InAppLocation.from(number: locationNumber as NSNumber))
+    IterableAPI.track(
+      inAppOpen: message, location: InAppLocation.from(number: locationNumber as NSNumber))
   }
 
   @objc(trackInAppClick:location:clickedUrl:)
@@ -414,8 +415,10 @@ import React
     templateId: Double
   ) {
     ITBInfo()
-    let finalCampaignId: NSNumber? = (campaignId as NSNumber).intValue <= 0 ? nil : campaignId as NSNumber
-    let finalTemplateId: NSNumber? = (templateId as NSNumber).intValue <= 0 ? nil : templateId as NSNumber
+    let finalCampaignId: NSNumber? =
+      (campaignId as NSNumber).intValue <= 0 ? nil : campaignId as NSNumber
+    let finalTemplateId: NSNumber? =
+      (templateId as NSNumber).intValue <= 0 ? nil : templateId as NSNumber
     IterableAPI.updateSubscriptions(
       emailListIds,
       unsubscribedChannelIds: unsubscribedChannelIds,
@@ -480,7 +483,7 @@ import React
   @objc(passAlongAuthToken:)
   public func passAlongAuthToken(authToken: String?) {
     ITBInfo()
-    passedAuthToken = authToken
+    self.passedAuthToken = authToken
     authHandlerSemaphore.signal()
   }
 
@@ -574,7 +577,9 @@ import React
       iterableConfig.inAppDelegate = self
     }
 
-    if let authHandlerPresent = configDict["authHandlerPresent"] as? Bool, authHandlerPresent {
+    if let authHandlerPresent = configDict["authHandlerPresent"] as? Bool,
+      authHandlerPresent == true
+    {
       iterableConfig.authDelegate = self
     }
 
