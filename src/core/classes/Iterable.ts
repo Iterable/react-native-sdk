@@ -20,6 +20,7 @@ import { IterableAuthResponse } from './IterableAuthResponse';
 import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
+import { IterableEmbeddedManager } from '../../embedded/classes/IterableEmbeddedManager';
 
 const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
@@ -97,6 +98,27 @@ export class Iterable {
   static authManager: IterableAuthManager = new IterableAuthManager();
 
   /**
+   * Embedded message manager for the current user.
+   *
+   * This property provides access to embedded message functionality including
+   * retrieving messages, displaying messages, removing messages, and more.
+   *
+   * **Documentation**
+   * - [Embedded Messaging Overview](https://support.iterable.com/hc/en-us/articles/23060529977364-Embedded-Messaging-Overview)
+   * - [Android Embedded Messaging](https://support.iterable.com/hc/en-us/articles/23061877893652-Embedded-Messages-with-Iterable-s-Android-SDK)
+   * - [iOS Embedded Messaging](https://support.iterable.com/hc/en-us/articles/23061840746900-Embedded-Messages-with-Iterable-s-iOS-SDK)
+   *
+   * @example
+   * ```typescript
+   * Iterable.embeddedManager.getMessages().then(messages => {
+   *   console.log('Messages:', messages);
+   * });
+   * ```
+   */
+  static embeddedManager: IterableEmbeddedManager =
+    new IterableEmbeddedManager();
+
+  /**
    * Initializes the Iterable React Native SDK in your app's Javascript or Typescript code.
    *
    * Pass in a mobile API key distributed with the mobile app.
@@ -172,6 +194,10 @@ export class Iterable {
 
       IterableLogger.setLoggingEnabled(config.logReactNativeSdkCalls ?? true);
       IterableLogger.setLogLevel(config.logLevel);
+
+      Iterable.embeddedManager.setEnabled(
+        config.embeddedMessagingEnabled ?? false
+      );
     }
 
     this.setupEventHandlers();
