@@ -224,6 +224,11 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
     moduleImpl.pauseAuthRetries(pauseRetry);
   }
 
+  @Override
+  public void getEmbeddedPlacementIds(Promise promise) {
+    moduleImpl.getEmbeddedPlacementIds(promise);
+  }
+
   public void sendEvent(@NonNull String eventName, @Nullable Object eventData) {
     moduleImpl.sendEvent(eventName, eventData);
   }
