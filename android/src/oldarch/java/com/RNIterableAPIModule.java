@@ -229,6 +229,11 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void syncEmbeddedMessages() {
+      moduleImpl.syncEmbeddedMessages();
+    }
+
+    @ReactMethod
     public void startEmbeddedSession() {
       moduleImpl.startEmbeddedSession();
     }
@@ -241,6 +246,11 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void getEmbeddedPlacementIds(Promise promise) {
       moduleImpl.getEmbeddedPlacementIds(promise);
+    }
+
+    @ReactMethod
+    public void getEmbeddedMessages(@Nullable ReadableArray placementIds, Promise promise) {
+      moduleImpl.getEmbeddedMessages(placementIds, promise);
     }
 
     public void sendEvent(@NonNull String eventName, @Nullable Object eventData) {
