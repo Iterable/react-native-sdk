@@ -31,6 +31,9 @@ export class IterableEmbeddedManager {
   /**
    * Sets whether the embedded manager is enabled.
    *
+   * @internal This method is for internal SDK use only and should not be called
+   * by SDK consumers, as it is meant to be called at initialization time.
+   *
    * @param enabled - Whether the embedded manager is enabled.
    */
   setEnabled(enabled: boolean) {
@@ -41,7 +44,7 @@ export class IterableEmbeddedManager {
    * Syncs embedded local cache with the server.
    *
    * When your app first launches, and each time it comes to the foreground,
-   * Iterable's iOS SDK automatically refresh a local, on-device cache of
+   * Iterable's Native SDKs automatically refresh a local, on-device cache of
    * embedded messages for the signed-in user. These are the messages the
    * signed-in user is eligible to see.
    *
@@ -64,6 +67,13 @@ export class IterableEmbeddedManager {
    * Retrieves a list of placement IDs for the embedded manager.
    *
    * [Placement Documentation](https://support.iterable.com/hc/en-us/articles/23060529977364-Embedded-Messaging-Overview#placements-and-prioritization)
+   *
+   * @example
+   * ```typescript
+   * Iterable.embeddedManager.getPlacementIds().then(placementIds => {
+   *   console.log('Placement IDs:', placementIds);
+   * });
+   * ```
    */
   getPlacementIds() {
     return IterableApi.getEmbeddedPlacementIds();
@@ -74,6 +84,13 @@ export class IterableEmbeddedManager {
    *
    * @param placementIds - The placement IDs to retrieve messages for.
    * @returns A Promise that resolves to an array of embedded messages.
+   *
+   * @example
+   * ```typescript
+   * Iterable.embeddedManager.getMessages([1, 2, 3]).then(messages => {
+   *   console.log('Messages:', messages);
+   * });
+   * ```
    */
   getMessages(
     placementIds: number[] | null
@@ -84,7 +101,7 @@ export class IterableEmbeddedManager {
   /**
    * Starts a session.
    *
-   * As session is a period of time when a user is on a screen or page that can
+   * A session is a period of time when a user is on a screen or page that can
    * display embedded messages.
    *
    * When a user comes to a screen or page in your app where embedded messages
@@ -104,7 +121,7 @@ export class IterableEmbeddedManager {
    *
    * When a user leaves a screen in your app where embedded messages are
    * displayed, the session should be ended.  This causes the SDK to send
-   * session and impression data back to the server.
+   * session an impression data back to the server.
    *
    * A session is tracked when it is ended, so you should be able to find
    * tracking data after this method is called.
@@ -116,5 +133,45 @@ export class IterableEmbeddedManager {
    */
   endSession() {
     return IterableApi.endEmbeddedSession();
+  }
+  /**
+   * Starts an embedded impression.
+   *
+   * An impression represents the on-screen appearances of a given embedded message,
+   * in context of a session.
+   *
+   * Each impression tracks:
+   * - The total number of times a message appears during a session.
+   * - The total amount of time that message was visible, across all its
+   *   appearances in the session.
+   *
+   * Be sure to start and pause impressions when your app goes to and from the
+   * background, too.
+   *
+   * @example
+   * ```typescript
+   * Iterable.embeddedManager.startImpression(messageId, placementId);
+   * ```
+   */
+  startImpression(messageId: string, placementId: number) {
+    return IterableApi.startEmbeddedImpression(messageId, placementId);
+  }
+
+  /**
+   * Pauses an embedded impression.
+   *
+   * An impression represents the on-screen appearances of a given embedded message,
+   * in context of a session.
+   *
+   * And impression should be paused when the message is no longer visible,
+   * including when your app goes to the background.
+   *
+   * @example
+   * ```typescript
+   * Iterable.embeddedManager.pauseImpression(messageId);
+   * ```
+   */
+  pauseImpression(messageId: string) {
+    return IterableApi.pauseEmbeddedImpression(messageId);
   }
 }
