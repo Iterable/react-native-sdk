@@ -1,4 +1,11 @@
+import { IterableAction } from '../../core/classes/IterableAction';
+import { IterableActionContext } from '../../core/classes/IterableActionContext';
 import { IterableApi } from '../../core/classes/IterableApi';
+import { IterableConfig } from '../../core/classes/IterableConfig';
+import { IterableLogger } from '../../core/classes/IterableLogger';
+import { IterableActionSource } from '../../core/enums/IterableActionSource';
+import { callUrlHandler } from '../../core/utils/callUrlHandler';
+import { getActionPrefix } from '../../core/utils/getActionPrefix';
 import type { IterableEmbeddedMessage } from '../types/IterableEmbeddedMessage';
 
 /**
@@ -38,6 +45,16 @@ export class IterableEmbeddedManager {
    */
   setEnabled(enabled: boolean) {
     this._isEnabled = enabled;
+  }
+
+  /**
+   * The config for the Iterable SDK.
+   */
+  private _config: IterableConfig = new IterableConfig();
+
+  constructor(config: IterableConfig) {
+    this._config = config;
+    this._isEnabled = config.enableEmbeddedMessaging ?? false;
   }
 
   /**
@@ -173,5 +190,87 @@ export class IterableEmbeddedManager {
    */
   pauseImpression(messageId: string) {
     return IterableApi.pauseEmbeddedImpression(messageId);
+  }
+
+  /**
+   * Tracks a click on an embedded message.
+   *
+   * This is called internally when `Iterable.embeddedManager.handleClick` is
+   * called.  However, if you want to implement your own click handling, you can
+   * use this method to track the click you implement.
+   *
+   * @param message - The embedded message.
+   * @param buttonId - The button ID.
+   * @param clickedUrl - The clicked URL.
+   *
+   * @example
+   * ```typescript
+   * Iterable.embeddedManager.trackClick(message, buttonId, clickedUrl);
+   * ```
+   */
+  trackClick(
+    message: IterableEmbeddedMessage,
+    buttonId: string | null,
+    clickedUrl: string | null
+  ) {
+    return IterableApi.trackEmbeddedClick(message, buttonId, clickedUrl);
+  }
+
+  /**
+   * Handles a click on an embedded message.
+   *
+   * This will fire the correct handlers set in the config, and will track the
+   * click.  It should be use on either a button click or a click on the message itself.
+   *
+   * @param message - The embedded message.
+   * @param buttonId - The button ID.
+   * @param clickedUrl - The clicked URL.
+   *
+   * @example
+   * ```typescript
+   * Iterable.embeddedManager.handleClick(message, buttonId, clickedUrl);
+   * ```
+   */
+  handleClick(
+    message: IterableEmbeddedMessage,
+    buttonId: string | null,
+    action?: IterableAction | null
+  ) {
+    const { data, type: actionType } = action ?? {};
+    const clickedUrl = data && data?.length > 0 ? data : actionType;
+
+    IterableLogger.log(
+      'Iterable.embeddedManager.handleClick',
+      message,
+      buttonId,
+      clickedUrl
+    );
+
+    if (!clickedUrl) {
+      IterableLogger.log(
+        'Iterable.embeddedManager.handleClick:',
+        'A url or action is required to handle an embedded click',
+        clickedUrl
+      );
+      return;
+    }
+
+    const actionPrefix = getActionPrefix(clickedUrl);
+    const source = IterableActionSource.embedded;
+
+    this.trackClick(message, buttonId, clickedUrl);
+
+    if (actionPrefix) {
+      const actionName = clickedUrl?.replace(actionPrefix, '');
+      const actionDetails = new IterableAction(actionName, '', '');
+      const context = new IterableActionContext(actionDetails, source);
+      if (this._config.customActionHandler) {
+        this._config.customActionHandler(actionDetails, context);
+      }
+    } else {
+      const actionDetails = new IterableAction('openUrl', clickedUrl, '');
+      const context = new IterableActionContext(actionDetails, source);
+      callUrlHandler(this._config, clickedUrl, context);
+    }
   }
 }

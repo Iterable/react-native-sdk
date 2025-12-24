@@ -6,3 +6,4 @@ export * from './IterableEventName';
 export * from './IterableLogLevel';
 export * from './IterablePushPlatform';
 export * from './IterableRetryBackoff';
+export * from './IterableCustomActionPrefix';

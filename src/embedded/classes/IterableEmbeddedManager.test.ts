@@ -1,4 +1,8 @@
 import { MockRNIterableAPI } from '../../__mocks__/MockRNIterableAPI';
+import { IterableAction } from '../../core/classes/IterableAction';
+import { IterableConfig } from '../../core/classes/IterableConfig';
+import { IterableLogger } from '../../core/classes/IterableLogger';
+import type { IterableEmbeddedMessage } from '../types/IterableEmbeddedMessage';
 import { IterableEmbeddedManager } from './IterableEmbeddedManager';
 
 // Mock the RNIterableAPI module
@@ -7,11 +11,39 @@ jest.mock('../../api', () => ({
   default: MockRNIterableAPI,
 }));
 
+// Mock the callUrlHandler utility
+jest.mock('../../core/utils/callUrlHandler', () => ({
+  callUrlHandler: jest.fn(),
+}));
+
+// Mock the IterableLogger
+jest.mock('../../core/classes/IterableLogger', () => ({
+  IterableLogger: {
+    log: jest.fn(),
+  },
+}));
+
 describe('IterableEmbeddedManager', () => {
   let embeddedManager: IterableEmbeddedManager;
+  let config: IterableConfig;
+
+  // Mock embedded message for testing
+  const mockEmbeddedMessage: IterableEmbeddedMessage = {
+    metadata: {
+      messageId: 'test-message-id',
+      campaignId: 12345,
+      placementId: 1,
+    },
+    elements: {
+      title: 'Test Message',
+      body: 'Test body',
+    },
+    payload: { customKey: 'customValue' },
+  };
 
   beforeEach(() => {
-    embeddedManager = new IterableEmbeddedManager();
+    config = new IterableConfig();
+    embeddedManager = new IterableEmbeddedManager(config);
     jest.clearAllMocks();
   });
 
@@ -252,6 +284,393 @@ describe('IterableEmbeddedManager', () => {
         2,
         messageId2
       );
+    });
+  });
+
+  describe('trackClick', () => {
+    it('should call IterableApi.trackEmbeddedClick with message, buttonId and clickedUrl', () => {
+      // GIVEN a message, button ID and clicked URL
+      const buttonId = 'button-1';
+      const clickedUrl = 'https://example.com';
+
+      // WHEN trackClick is called
+      embeddedManager.trackClick(mockEmbeddedMessage, buttonId, clickedUrl);
+
+      // THEN IterableApi.trackEmbeddedClick is called with the correct parameters
+      expect(MockRNIterableAPI.trackEmbeddedClick).toHaveBeenCalledTimes(1);
+      expect(MockRNIterableAPI.trackEmbeddedClick).toHaveBeenCalledWith(
+        mockEmbeddedMessage,
+        buttonId,
+        clickedUrl
+      );
+    });
+
+    it('should handle null buttonId', () => {
+      // GIVEN a message with null buttonId
+      const buttonId = null;
+      const clickedUrl = 'https://example.com';
+
+      // WHEN trackClick is called
+      embeddedManager.trackClick(mockEmbeddedMessage, buttonId, clickedUrl);
+
+      // THEN IterableApi.trackEmbeddedClick is called with null buttonId
+      expect(MockRNIterableAPI.trackEmbeddedClick).toHaveBeenCalledTimes(1);
+      expect(MockRNIterableAPI.trackEmbeddedClick).toHaveBeenCalledWith(
+        mockEmbeddedMessage,
+        null,
+        clickedUrl
+      );
+    });
+
+    it('should handle null clickedUrl', () => {
+      // GIVEN a message with null clickedUrl
+      const buttonId = 'button-1';
+      const clickedUrl = null;
+
+      // WHEN trackClick is called
+      embeddedManager.trackClick(mockEmbeddedMessage, buttonId, clickedUrl);
+
+      // THEN IterableApi.trackEmbeddedClick is called with null clickedUrl
+      expect(MockRNIterableAPI.trackEmbeddedClick).toHaveBeenCalledTimes(1);
+      expect(MockRNIterableAPI.trackEmbeddedClick).toHaveBeenCalledWith(
+        mockEmbeddedMessage,
+        buttonId,
+        null
+      );
+    });
+
+    it('should handle multiple trackClick calls', () => {
+      // GIVEN multiple click events
+      const buttonId1 = 'button-1';
+      const clickedUrl1 = 'https://example.com/1';
+      const buttonId2 = 'button-2';
+      const clickedUrl2 = 'https://example.com/2';
+
+      // WHEN trackClick is called multiple times
+      embeddedManager.trackClick(mockEmbeddedMessage, buttonId1, clickedUrl1);
+      embeddedManager.trackClick(mockEmbeddedMessage, buttonId2, clickedUrl2);
+
+      // THEN IterableApi.trackEmbeddedClick is called twice
+      expect(MockRNIterableAPI.trackEmbeddedClick).toHaveBeenCalledTimes(2);
+      expect(MockRNIterableAPI.trackEmbeddedClick).toHaveBeenNthCalledWith(
+        1,
+        mockEmbeddedMessage,
+        buttonId1,
+        clickedUrl1
+      );
+      expect(MockRNIterableAPI.trackEmbeddedClick).toHaveBeenNthCalledWith(
+        2,
+        mockEmbeddedMessage,
+        buttonId2,
+        clickedUrl2
+      );
+    });
+  });
+
+  describe('handleClick', () => {
+    // Import the mocked callUrlHandler
+    const { callUrlHandler } = require('../../core/utils/callUrlHandler');
+
+    beforeEach(() => {
+      // Add trackEmbeddedClick mock if not already present
+      MockRNIterableAPI.trackEmbeddedClick = jest.fn();
+    });
+
+    it('should return early and log when no clickedUrl is provided', () => {
+      // GIVEN no action is provided
+      const buttonId = 'button-1';
+
+      // WHEN handleClick is called without an action
+      embeddedManager.handleClick(mockEmbeddedMessage, buttonId, null);
+
+      // THEN it should log the error
+      expect(IterableLogger.log).toHaveBeenCalledWith(
+        'Iterable.embeddedManager.handleClick:',
+        'A url or action is required to handle an embedded click',
+        undefined
+      );
+
+      // AND trackClick should not be called
+      expect(MockRNIterableAPI.trackEmbeddedClick).not.toHaveBeenCalled();
+    });
+
+    it('should return early and log when action has empty data and empty type', () => {
+      // GIVEN an action with empty data and type
+      const buttonId = 'button-1';
+      const action = new IterableAction('', '', '');
+
+      // WHEN handleClick is called
+      embeddedManager.handleClick(mockEmbeddedMessage, buttonId, action);
+
+      // THEN it should log the error (with empty string since that's what we get from action)
+      expect(IterableLogger.log).toHaveBeenCalledWith(
+        'Iterable.embeddedManager.handleClick:',
+        'A url or action is required to handle an embedded click',
+        ''
+      );
+
+      // AND trackClick should not be called
+      expect(MockRNIterableAPI.trackEmbeddedClick).not.toHaveBeenCalled();
+    });
+
+    it('should handle action:// prefix and call customActionHandler', () => {
+      // GIVEN an action with action:// prefix and a custom action handler
+      const buttonId = 'button-1';
+      const action = new IterableAction('', 'action://myAction', '');
+      const customActionHandler = jest.fn();
+      config.customActionHandler = customActionHandler;
+
+      // WHEN handleClick is called
+      embeddedManager.handleClick(mockEmbeddedMessage, buttonId, action);
+
+      // THEN it should log the click
+      expect(IterableLogger.log).toHaveBeenCalledWith(
+        'Iterable.embeddedManager.handleClick',
+        mockEmbeddedMessage,
+        buttonId,
+        'action://myAction'
+      );
+
+      // AND trackClick should be called
+      expect(MockRNIterableAPI.trackEmbeddedClick).toHaveBeenCalledWith(
+        mockEmbeddedMessage,
+        buttonId,
+        'action://myAction'
+      );
+
+      // AND customActionHandler should be called with the correct action
+      expect(customActionHandler).toHaveBeenCalledTimes(1);
+      const calledAction = customActionHandler.mock.calls[0][0];
+      const calledContext = customActionHandler.mock.calls[0][1];
+      expect(calledAction.type).toBe('myAction');
+      expect(calledContext.source).toBe(3); // IterableActionSource.embedded
+    });
+
+    it('should handle itbl:// prefix and call customActionHandler', () => {
+      // GIVEN an action with itbl:// prefix and a custom action handler
+      const buttonId = 'button-1';
+      const action = new IterableAction('', 'itbl://legacyAction', '');
+      const customActionHandler = jest.fn();
+      config.customActionHandler = customActionHandler;
+
+      // WHEN handleClick is called
+      embeddedManager.handleClick(mockEmbeddedMessage, buttonId, action);
+
+      // THEN it should log the click
+      expect(IterableLogger.log).toHaveBeenCalledWith(
+        'Iterable.embeddedManager.handleClick',
+        mockEmbeddedMessage,
+        buttonId,
+        'itbl://legacyAction'
+      );
+
+      // AND trackClick should be called
+      expect(MockRNIterableAPI.trackEmbeddedClick).toHaveBeenCalledWith(
+        mockEmbeddedMessage,
+        buttonId,
+        'itbl://legacyAction'
+      );
+
+      // AND customActionHandler should be called
+      expect(customActionHandler).toHaveBeenCalledTimes(1);
+      const calledAction = customActionHandler.mock.calls[0][0];
+      expect(calledAction.type).toBe('legacyAction');
+    });
+
+    it('should not call customActionHandler if action prefix exists but handler is not configured', () => {
+      // GIVEN an action with action:// prefix but no custom action handler
+      const buttonId = 'button-1';
+      const action = new IterableAction('', 'action://myAction', '');
+
+      // WHEN handleClick is called
+      embeddedManager.handleClick(mockEmbeddedMessage, buttonId, action);
+
+      // THEN trackClick should be called
+      expect(MockRNIterableAPI.trackEmbeddedClick).toHaveBeenCalledWith(
+        mockEmbeddedMessage,
+        buttonId,
+        'action://myAction'
+      );
+
+      // AND customActionHandler should not error (it's undefined)
+      // Just verify trackClick was called
+      expect(MockRNIterableAPI.trackEmbeddedClick).toHaveBeenCalledTimes(1);
+    });
+
+    it('should handle regular URL and call urlHandler', () => {
+      // GIVEN a regular URL action and a URL handler
+      const buttonId = 'button-1';
+      const action = new IterableAction('', 'https://example.com', '');
+      const urlHandler = jest.fn().mockReturnValue(true);
+      config.urlHandler = urlHandler;
+
+      // WHEN handleClick is called
+      embeddedManager.handleClick(mockEmbeddedMessage, buttonId, action);
+
+      // THEN it should log the click
+      expect(IterableLogger.log).toHaveBeenCalledWith(
+        'Iterable.embeddedManager.handleClick',
+        mockEmbeddedMessage,
+        buttonId,
+        'https://example.com'
+      );
+
+      // AND trackClick should be called
+      expect(MockRNIterableAPI.trackEmbeddedClick).toHaveBeenCalledWith(
+        mockEmbeddedMessage,
+        buttonId,
+        'https://example.com'
+      );
+
+      // AND callUrlHandler should be called
+      expect(callUrlHandler).toHaveBeenCalledTimes(1);
+      expect(callUrlHandler).toHaveBeenCalledWith(
+        config,
+        'https://example.com',
+        expect.objectContaining({
+          action: expect.objectContaining({
+            type: 'openUrl',
+            data: 'https://example.com',
+          }),
+          source: 3, // IterableActionSource.embedded
+        })
+      );
+    });
+
+    it('should handle regular URL without urlHandler configured', () => {
+      // GIVEN a regular URL action without a URL handler
+      const buttonId = 'button-1';
+      const action = new IterableAction('', 'https://example.com', '');
+
+      // WHEN handleClick is called
+      embeddedManager.handleClick(mockEmbeddedMessage, buttonId, action);
+
+      // THEN trackClick should be called
+      expect(MockRNIterableAPI.trackEmbeddedClick).toHaveBeenCalledWith(
+        mockEmbeddedMessage,
+        buttonId,
+        'https://example.com'
+      );
+
+      // AND callUrlHandler should be called
+      expect(callUrlHandler).toHaveBeenCalledTimes(1);
+    });
+
+    it('should prefer action.data over action.type when data is available', () => {
+      // GIVEN an action with both data and type
+      const buttonId = 'button-1';
+      const action = new IterableAction('someType', 'https://example.com', '');
+
+      // WHEN handleClick is called
+      embeddedManager.handleClick(mockEmbeddedMessage, buttonId, action);
+
+      // THEN it should use data as clickedUrl
+      expect(IterableLogger.log).toHaveBeenCalledWith(
+        'Iterable.embeddedManager.handleClick',
+        mockEmbeddedMessage,
+        buttonId,
+        'https://example.com'
+      );
+
+      // AND trackClick should be called with the data
+      expect(MockRNIterableAPI.trackEmbeddedClick).toHaveBeenCalledWith(
+        mockEmbeddedMessage,
+        buttonId,
+        'https://example.com'
+      );
+    });
+
+    it('should use action.type when data is empty', () => {
+      // GIVEN an action with empty data but valid type
+      const buttonId = 'button-1';
+      const action = new IterableAction('https://example.com', '', '');
+
+      // WHEN handleClick is called
+      embeddedManager.handleClick(mockEmbeddedMessage, buttonId, action);
+
+      // THEN it should use type as clickedUrl
+      expect(IterableLogger.log).toHaveBeenCalledWith(
+        'Iterable.embeddedManager.handleClick',
+        mockEmbeddedMessage,
+        buttonId,
+        'https://example.com'
+      );
+
+      // AND trackClick should be called with the type
+      expect(MockRNIterableAPI.trackEmbeddedClick).toHaveBeenCalledWith(
+        mockEmbeddedMessage,
+        buttonId,
+        'https://example.com'
+      );
+    });
+
+    it('should handle null buttonId', () => {
+      // GIVEN an action with null buttonId
+      const buttonId = null;
+      const action = new IterableAction('', 'https://example.com', '');
+
+      // WHEN handleClick is called
+      embeddedManager.handleClick(mockEmbeddedMessage, buttonId, action);
+
+      // THEN trackClick should be called with null buttonId
+      expect(MockRNIterableAPI.trackEmbeddedClick).toHaveBeenCalledWith(
+        mockEmbeddedMessage,
+        null,
+        'https://example.com'
+      );
+    });
+
+    it('should handle action with undefined action parameter', () => {
+      // GIVEN no action parameter
+      const buttonId = 'button-1';
+
+      // WHEN handleClick is called with undefined action
+      embeddedManager.handleClick(mockEmbeddedMessage, buttonId, undefined);
+
+      // THEN it should log the error and not track
+      expect(IterableLogger.log).toHaveBeenCalledWith(
+        'Iterable.embeddedManager.handleClick:',
+        'A url or action is required to handle an embedded click',
+        undefined
+      );
+      expect(MockRNIterableAPI.trackEmbeddedClick).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('constructor', () => {
+    it('should initialize with embedded messaging enabled when config flag is true', () => {
+      // GIVEN a config with embedded messaging enabled
+      const configWithEnabled = new IterableConfig();
+      configWithEnabled.enableEmbeddedMessaging = true;
+
+      // WHEN creating a new embedded manager
+      const manager = new IterableEmbeddedManager(configWithEnabled);
+
+      // THEN isEnabled should be true
+      expect(manager.isEnabled).toBe(true);
+    });
+
+    it('should initialize with embedded messaging disabled when config flag is false', () => {
+      // GIVEN a config with embedded messaging disabled
+      const configWithDisabled = new IterableConfig();
+      configWithDisabled.enableEmbeddedMessaging = false;
+
+      // WHEN creating a new embedded manager
+      const manager = new IterableEmbeddedManager(configWithDisabled);
+
+      // THEN isEnabled should be false
+      expect(manager.isEnabled).toBe(false);
+    });
+
+    it('should initialize with embedded messaging disabled when config flag is undefined', () => {
+      // GIVEN a config without the flag set
+      const configWithUndefined = new IterableConfig();
+
+      // WHEN creating a new embedded manager
+      const manager = new IterableEmbeddedManager(configWithUndefined);
+
+      // THEN isEnabled should be false (default)
+      expect(manager.isEnabled).toBe(false);
     });
   });
 });

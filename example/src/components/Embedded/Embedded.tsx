@@ -2,6 +2,7 @@ import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { useCallback, useState } from 'react';
 import {
   Iterable,
+  type IterableAction,
   type IterableEmbeddedMessage,
 } from '@iterable/react-native-sdk';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -69,6 +70,18 @@ export const Embedded = () => {
     []
   );
 
+  const handleClick = useCallback(
+    (
+      message: IterableEmbeddedMessage,
+      buttonId: string | null,
+      action?: IterableAction | null
+    ) => {
+      console.log(`handleClick:`, message);
+      Iterable.embeddedManager.handleClick(message, buttonId, action);
+    },
+    []
+  );
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.text}>EMBEDDED</Text>
@@ -105,7 +118,9 @@ export const Embedded = () => {
           {embeddedMessages.map((message) => (
             <View key={message.metadata.messageId}>
               <View style={styles.embeddedTitleContainer}>
-                <Text style={styles.embeddedTitle}>Embedded message | </Text>
+                <Text style={styles.embeddedTitle}>Embedded message</Text>
+              </View>
+              <View style={styles.embeddedTitleContainer}>
                 <TouchableOpacity
                   onPress={() => startEmbeddedImpression(message)}
                 >
@@ -117,15 +132,42 @@ export const Embedded = () => {
                 >
                   <Text style={styles.link}>Pause impression</Text>
                 </TouchableOpacity>
+                <Text style={styles.embeddedTitle}> | </Text>
+                <TouchableOpacity
+                  onPress={() =>
+                    handleClick(message, null, message.elements?.defaultAction)
+                  }
+                >
+                  <Text style={styles.link}>Handle click</Text>
+                </TouchableOpacity>
               </View>
 
               <Text>metadata.messageId: {message.metadata.messageId}</Text>
               <Text>metadata.placementId: {message.metadata.placementId}</Text>
               <Text>elements.title: {message.elements?.title}</Text>
               <Text>elements.body: {message.elements?.body}</Text>
+              <Text>
+                elements.defaultAction.data:{' '}
+                {message.elements?.defaultAction?.data}
+              </Text>
+              <Text>
+                elements.defaultAction.type:{' '}
+                {message.elements?.defaultAction?.type}
+              </Text>
               {(message.elements?.buttons ?? []).map((button, buttonIndex) => (
                 <View key={`${button.id}-${buttonIndex}`}>
-                  <Text>Button {buttonIndex + 1}</Text>
+                  <View style={styles.embeddedTitleContainer}>
+                    <Text>Button {buttonIndex + 1}</Text>
+                    <Text style={styles.embeddedTitle}> | </Text>
+                    <TouchableOpacity
+                      onPress={() =>
+                        handleClick(message, button.id, button.action)
+                      }
+                    >
+                      <Text style={styles.link}>Handle click</Text>
+                    </TouchableOpacity>
+                  </View>
+
                   <Text>button.id: {button.id}</Text>
                   <Text>button.title: {button.title}</Text>
                   <Text>button.action?.data: {button.action?.data}</Text>

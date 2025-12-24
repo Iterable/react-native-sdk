@@ -182,6 +182,8 @@ export class MockRNIterableAPI {
 
   static pauseEmbeddedImpression = jest.fn();
 
+  static trackEmbeddedClick = jest.fn();
+
   // set messages function is to set the messages static property
   // this is for testing purposes only
   static setMessages(messages: IterableInAppMessage[]): void {
