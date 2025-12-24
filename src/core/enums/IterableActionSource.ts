@@ -8,4 +8,6 @@ export enum IterableActionSource {
   appLink = 1,
   /** The action source was an in-app message */
   inApp = 2,
+  /** The action source was an embedded message */
+  embedded = 3,
 }

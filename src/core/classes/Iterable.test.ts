@@ -300,37 +300,39 @@ describe('Iterable', () => {
       // WHEN config is initialized
       const config = new IterableConfig();
       // THEN config has default values
-      expect(config.pushIntegrationName).toBe(undefined);
-      expect(config.autoPushRegistration).toBe(true);
-      expect(config.checkForDeferredDeeplink).toBe(false);
-      expect(config.inAppDisplayInterval).toBe(30.0);
-      expect(config.urlHandler).toBe(undefined);
-      expect(config.customActionHandler).toBe(undefined);
-      expect(config.inAppHandler).toBe(undefined);
-      expect(config.authHandler).toBe(undefined);
-      expect(config.logLevel).toBe(IterableLogLevel.debug);
-      expect(config.logReactNativeSdkCalls).toBe(true);
-      expect(config.expiringAuthTokenRefreshPeriod).toBe(60.0);
       expect(config.allowedProtocols).toEqual([]);
       expect(config.androidSdkUseInMemoryStorageForInApps).toBe(false);
-      expect(config.useInMemoryStorageForInApps).toBe(false);
+      expect(config.authHandler).toBe(undefined);
+      expect(config.autoPushRegistration).toBe(true);
+      expect(config.checkForDeferredDeeplink).toBe(false);
+      expect(config.customActionHandler).toBe(undefined);
       expect(config.dataRegion).toBe(IterableDataRegion.US);
+      expect(config.enableEmbeddedMessaging).toBe(false);
       expect(config.encryptionEnforced).toBe(false);
+      expect(config.expiringAuthTokenRefreshPeriod).toBe(60.0);
+      expect(config.inAppDisplayInterval).toBe(30.0);
+      expect(config.inAppHandler).toBe(undefined);
+      expect(config.logLevel).toBe(IterableLogLevel.debug);
+      expect(config.logReactNativeSdkCalls).toBe(true);
+      expect(config.pushIntegrationName).toBe(undefined);
+      expect(config.urlHandler).toBe(undefined);
+      expect(config.useInMemoryStorageForInApps).toBe(false);
       const configDict = config.toDict();
-      expect(configDict.pushIntegrationName).toBe(undefined);
-      expect(configDict.autoPushRegistration).toBe(true);
-      expect(configDict.inAppDisplayInterval).toBe(30.0);
-      expect(configDict.urlHandlerPresent).toBe(false);
-      expect(configDict.customActionHandlerPresent).toBe(false);
-      expect(configDict.inAppHandlerPresent).toBe(false);
-      expect(configDict.authHandlerPresent).toBe(false);
-      expect(configDict.logLevel).toBe(IterableLogLevel.debug);
-      expect(configDict.expiringAuthTokenRefreshPeriod).toBe(60.0);
       expect(configDict.allowedProtocols).toEqual([]);
       expect(configDict.androidSdkUseInMemoryStorageForInApps).toBe(false);
-      expect(configDict.useInMemoryStorageForInApps).toBe(false);
+      expect(configDict.authHandlerPresent).toBe(false);
+      expect(configDict.autoPushRegistration).toBe(true);
+      expect(configDict.customActionHandlerPresent).toBe(false);
       expect(configDict.dataRegion).toBe(IterableDataRegion.US);
+      expect(configDict.enableEmbeddedMessaging).toBe(false);
       expect(configDict.encryptionEnforced).toBe(false);
+      expect(configDict.expiringAuthTokenRefreshPeriod).toBe(60.0);
+      expect(configDict.inAppDisplayInterval).toBe(30.0);
+      expect(configDict.inAppHandlerPresent).toBe(false);
+      expect(configDict.logLevel).toBe(IterableLogLevel.debug);
+      expect(configDict.pushIntegrationName).toBe(undefined);
+      expect(configDict.urlHandlerPresent).toBe(false);
+      expect(configDict.useInMemoryStorageForInApps).toBe(false);
     });
   });
 
@@ -1210,6 +1212,21 @@ describe('Iterable', () => {
           authToken2
         );
       });
+    });
+  });
+
+  describe('embeddedManager', () => {
+    it('should be disabled by default', () => {
+      const config = new IterableConfig();
+      expect(config.enableEmbeddedMessaging).toBe(false);
+      expect(Iterable.embeddedManager.isEnabled).toBe(false);
+    });
+
+    it('should enable embeddedManager when config is set', async () => {
+      const config = new IterableConfig();
+      config.enableEmbeddedMessaging = true;
+      await Iterable.initialize('test-key', config);
+      expect(Iterable.embeddedManager.isEnabled).toBe(true);
     });
   });
 });
