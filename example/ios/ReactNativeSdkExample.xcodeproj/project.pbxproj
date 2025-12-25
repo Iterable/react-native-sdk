@@ -388,7 +388,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = iterable.reactnativesdk.example;
+				PRODUCT_BUNDLE_IDENTIFIER = com.iterable.reactnative.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "ReactNativeSdkExampleTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -416,7 +416,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = iterable.reactnativesdk.example;
+				PRODUCT_BUNDLE_IDENTIFIER = com.iterable.reactnative.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "ReactNativeSdkExampleTests-Bridging-Header.h";
 				SWIFT_VERSION = 6.0;
@@ -445,7 +445,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = iterable.reactnativesdk.example;
+				PRODUCT_BUNDLE_IDENTIFIER = com.iterable.reactnative.example;
 				PRODUCT_NAME = ReactNativeSdkExample;
 				SWIFT_OBJC_BRIDGING_HEADER = "ReactNativeSdkExample-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -474,7 +474,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = iterable.reactnativesdk.example;
+				PRODUCT_BUNDLE_IDENTIFIER = com.iterable.reactnative.example;
 				PRODUCT_NAME = ReactNativeSdkExample;
 				SWIFT_OBJC_BRIDGING_HEADER = "ReactNativeSdkExample-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;

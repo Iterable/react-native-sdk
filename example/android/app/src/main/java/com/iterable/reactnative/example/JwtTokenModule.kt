@@ -1,4 +1,4 @@
-package iterable.reactnativesdk.example
+package com.iterable.reactnative.example
 
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
