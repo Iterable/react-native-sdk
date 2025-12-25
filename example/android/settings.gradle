@@ -4,3 +4,7 @@ extensions.configure(com.facebook.react.ReactSettingsExtension){ ex -> ex.autoli
 rootProject.name = 'iterable.reactnativesdk.example'
 include ':app'
 includeBuild('../node_modules/@react-native/gradle-plugin')
+
+// Include local Android SDK for development
+// include ':iterableapi'
+// project(':iterableapi').projectDir = new File('../../../../android/iterable-android-sdk/iterableapi')
