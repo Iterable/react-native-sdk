@@ -6,7 +6,7 @@ import {
   useState,
   type FunctionComponent,
 } from 'react';
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
 
 import {
   Iterable,
@@ -153,6 +153,10 @@ export const IterableAppProvider: FunctionComponent<
 
       const config = new IterableConfig();
 
+      if (Platform.OS === 'ios') {
+        login();
+      }
+
       config.inAppDisplayInterval = 1.0; // Min gap between in-apps. No need to set this in production.
 
       config.retryPolicy = {
@@ -252,9 +256,15 @@ export const IterableAppProvider: FunctionComponent<
             '`Iterable.initialize` failed with the following error',
             err
           );
-          setIsInitialized(false);
-          setLoginInProgress(false);
-          return Promise.reject(err);
+          if (Platform.OS === 'ios') {
+            setIsInitialized(true);
+            login();
+            return Promise.resolve(true);
+          } else {
+            setIsInitialized(false);
+            setLoginInProgress(false);
+            return Promise.reject(err);
+          }
         });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -26,13 +26,15 @@ import React
   }
 
   enum EventName: String, CaseIterable {
-    case handleUrlCalled
+    case handleAuthCalled
+    case handleAuthFailureCalled
+    case handleAuthSuccessCalled
     case handleCustomActionCalled
     case handleInAppCalled
-    case handleAuthCalled
+    case handleUrlCalled
+    case receivedIterableEmbeddedMessagesChanged
+    case receivedIterableEmbeddedMessagingDisabledCalled
     case receivedIterableInboxChanged
-    case handleAuthSuccessCalled
-    case handleAuthFailureCalled
   }
 
   @objc public static var supportedEvents: [String] {
