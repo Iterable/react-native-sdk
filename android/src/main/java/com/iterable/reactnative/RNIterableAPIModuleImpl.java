@@ -52,7 +52,7 @@ import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCustomActionHandler, IterableInAppHandler, IterableAuthHandler, IterableInAppManager.Listener {
+public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCustomActionHandler, IterableInAppHandler, IterableAuthHandler, IterableInAppManager.Listener, IterableEmbeddedUpdateHandler {
     public static final String NAME = "RNIterableAPI";
 
     private static String TAG = "RNIterableAPIModule";
@@ -779,6 +779,18 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         } else {
             IterableLogger.e(TAG, "Failed to convert message map to IterableEmbeddedMessage");
         }
+    }
+
+    @Override
+    public void onMessagesUpdated() {
+        IterableLogger.d(TAG, "onMessagesUpdated");
+        sendEvent(EventName.receivedIterableEmbeddedMessagesChanged.name(), null);
+    }
+
+    @Override
+    public void onEmbeddedMessagingDisabled() {
+        IterableLogger.d(TAG, "onEmbeddedMessagingDisabled");
+        sendEvent(EventName.receivedIterableEmbeddedMessagingDisabledCalled.name(), null);
     }
 
     // ---------------------------------------------------------------------------------------
