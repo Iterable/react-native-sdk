@@ -950,6 +950,9 @@ export class Iterable {
     RNEventEmitter.removeAllListeners(
       IterableEventName.handleAuthFailureCalled
     );
+    RNEventEmitter.removeAllListeners(IterableEventName.receivedIterableInboxChanged);
+    RNEventEmitter.removeAllListeners(IterableEventName.receivedIterableEmbeddedMessagesChanged);
+    RNEventEmitter.removeAllListeners(IterableEventName.receivedIterableEmbeddedMessagingDisabledCalled);
   }
 
   /**
@@ -975,6 +978,13 @@ export class Iterable {
   private static setupEventHandlers() {
     // Remove all listeners to avoid duplicate listeners
     Iterable.removeAllEventListeners();
+
+    RNEventEmitter.addListener(IterableEventName.receivedIterableEmbeddedMessagesChanged, () => {
+      console.log('!!! EMBEDDED MESSAGES UPDATED !!!');
+    });
+    RNEventEmitter.addListener(IterableEventName.receivedIterableEmbeddedMessagingDisabledCalled, () => {
+      console.log('!!! EMBEDDED MESSAGING DISABLED !!!');
+    });
 
     if (Iterable.savedConfig.urlHandler) {
       RNEventEmitter.addListener(IterableEventName.handleUrlCalled, (dict) => {

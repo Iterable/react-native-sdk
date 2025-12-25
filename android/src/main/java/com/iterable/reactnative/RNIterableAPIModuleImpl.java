@@ -687,6 +687,7 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
 
     @Override
     public void onInboxUpdated() {
+        IterableLogger.d(TAG, "!!! INBOX UPDATED !!!!");
         sendEvent(EventName.receivedIterableInboxChanged.name(), null);
     }
     // ---------------------------------------------------------------------------------------
@@ -784,13 +785,13 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
 
     @Override
     public void onMessagesUpdated() {
-        IterableLogger.d(TAG, "onMessagesUpdated");
+      IterableLogger.d(TAG, "!!! EMBEDDED MESSAGES UPDATED !!!");
         sendEvent(EventName.receivedIterableEmbeddedMessagesChanged.name(), null);
     }
 
     @Override
     public void onEmbeddedMessagingDisabled() {
-        IterableLogger.d(TAG, "onEmbeddedMessagingDisabled");
+        IterableLogger.d(TAG, "!!! EMBEDDED MESSAGING DISABLED !!!");
         sendEvent(EventName.receivedIterableEmbeddedMessagingDisabledCalled.name(), null);
     }
 
