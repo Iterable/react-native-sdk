@@ -1,0 +1,106 @@
+{
+  "project_info": {
+    "project_number": "286320681479",
+    "firebase_url": "https://react-dev-18d01.firebaseio.com",
+    "project_id": "react-dev-18d01",
+    "storage_bucket": "react-dev-18d01.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:286320681479:android:1052f37b2ad9d101bfc0a2",
+        "android_client_info": {
+          "package_name": "com.devapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-b9GtNBgoAV9VyYSvtreGXNLqnZRVt3g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:286320681479:android:eecf4aea0a791c05bfc0a2",
+        "android_client_info": {
+          "package_name": "com.iterable.ReactDev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-b9GtNBgoAV9VyYSvtreGXNLqnZRVt3g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:286320681479:android:64a83a853c7e1f90bfc0a2",
+        "android_client_info": {
+          "package_name": "com.iterable.expodev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-b9GtNBgoAV9VyYSvtreGXNLqnZRVt3g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:286320681479:android:c38e139af19eba13bfc0a2",
+        "android_client_info": {
+          "package_name": "com.iterable.reactnative.example"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-b9GtNBgoAV9VyYSvtreGXNLqnZRVt3g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:286320681479:android:1acd516f03642826bfc0a2",
+        "android_client_info": {
+          "package_name": "expo.modules.adapters.iterable.example"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-b9GtNBgoAV9VyYSvtreGXNLqnZRVt3g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
