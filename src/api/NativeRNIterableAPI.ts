@@ -155,6 +155,9 @@ export interface Spec extends TurboModule {
   getEmbeddedMessages(
     placementIds: number[] | null
   ): Promise<EmbeddedMessage[]>;
+  getEmbeddedMessagesForPlacement(
+    placementId: number
+  ): Promise<EmbeddedMessage[]>;
   trackEmbeddedClick(
     message: EmbeddedMessage,
     buttonId: string | null,

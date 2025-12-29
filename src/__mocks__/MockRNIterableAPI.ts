@@ -178,6 +178,21 @@ export class MockRNIterableAPI {
     },
   ]);
 
+  static getEmbeddedMessagesForPlacement = jest.fn().mockResolvedValue([
+    {
+      metadata: {
+        messageId: 'msg-1',
+        campaignId: 123,
+        placementId: 1,
+      },
+      elements: {
+        title: 'Test Message 1',
+        body: 'Test body 1',
+      },
+      payload: { customKey: 'customValue' },
+    },
+  ]);
+
   static startEmbeddedImpression = jest.fn();
 
   static pauseEmbeddedImpression = jest.fn();

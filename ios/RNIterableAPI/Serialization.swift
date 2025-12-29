@@ -279,3 +279,87 @@ extension InboxImpressionTracker.RowInfo {
     return rows.compactMap(InboxImpressionTracker.RowInfo.from(dict:))
   }
 }
+
+// MARK: - Embedded Message Serialization
+
+extension IterableEmbeddedMessage.EmbeddedMessageElements.EmbeddedMessageElementsButtonAction {
+  func toDict() -> [AnyHashable: Any] {
+    var dict = [AnyHashable: Any]()
+    dict["type"] = type
+    dict["data"] = data
+    return dict
+  }
+}
+
+extension IterableEmbeddedMessage.EmbeddedMessageElements.EmbeddedMessageElementsDefaultAction {
+  func toDict() -> [AnyHashable: Any] {
+    var dict = [AnyHashable: Any]()
+    dict["type"] = type
+    dict["data"] = data
+    return dict
+  }
+}
+
+extension IterableEmbeddedMessage.EmbeddedMessageElements.EmbeddedMessageElementsButton {
+  func toDict() -> [AnyHashable: Any] {
+    var dict = [AnyHashable: Any]()
+    dict["id"] = id
+    dict["title"] = title
+    dict["action"] = action?.toDict()
+    return dict
+  }
+}
+
+extension IterableEmbeddedMessage.EmbeddedMessageElements.EmbeddedMessageElementsText {
+  func toDict() -> [AnyHashable: Any] {
+    var dict = [AnyHashable: Any]()
+    dict["id"] = id
+    dict["text"] = text
+    return dict
+  }
+}
+
+extension IterableEmbeddedMessage.EmbeddedMessageElements {
+  func toDict() -> [AnyHashable: Any] {
+    var dict = [AnyHashable: Any]()
+    dict["title"] = title
+    dict["body"] = body
+    dict["mediaUrl"] = mediaUrl
+    dict["mediaUrlCaption"] = mediaUrlCaption
+    dict["buttons"] = buttons?.map { $0.toDict() }
+    dict["text"] = text?.map { $0.toDict() }
+    dict["defaultAction"] = defaultAction?.toDict()
+    return dict
+  }
+}
+
+extension IterableEmbeddedMessage.EmbeddedMessageMetadata {
+  func toDict() -> [AnyHashable: Any] {
+    var dict = [AnyHashable: Any]()
+    dict["messageId"] = messageId
+    dict["placementId"] = placementId
+    dict["campaignId"] = campaignId
+    dict["isProof"] = isProof
+    return dict
+  }
+}
+
+extension IterableEmbeddedMessage {
+  func toDict() -> [AnyHashable: Any] {
+    var dict = [AnyHashable: Any]()
+    dict["metadata"] = metadata.toDict()
+    dict["elements"] = elements?.toDict()
+    dict["payload"] = payload
+    return dict
+  }
+  
+  static func from(dict: [AnyHashable: Any]) -> IterableEmbeddedMessage? {
+    // Convert dictionary to JSON data, then decode to IterableEmbeddedMessage
+    guard let jsonData = try? JSONSerialization.data(withJSONObject: dict, options: []),
+          let message = try? JSONDecoder().decode(IterableEmbeddedMessage.self, from: jsonData) else {
+      ITBError("Failed to decode IterableEmbeddedMessage from dictionary")
+      return nil
+    }
+    return message
+  }
+}

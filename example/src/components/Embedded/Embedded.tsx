@@ -82,6 +82,19 @@ export const Embedded = () => {
     []
   );
 
+  const getEmbeddedMessagesForPlacement = useCallback(
+    (placementId: number) => {
+      console.log(`🚀 > Embedded > placementId:`, placementId);
+      Iterable.embeddedManager.getMessagesForPlacement(placementId).then((messages: IterableEmbeddedMessage[]) => {
+        setEmbeddedMessages(messages);
+        console.log(messages);
+      }).catch((error: unknown) => {
+        console.error(error);
+      });
+    },
+    []
+  );
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.text}>EMBEDDED</Text>
@@ -110,6 +123,9 @@ export const Embedded = () => {
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={getEmbeddedMessages}>
           <Text style={styles.buttonText}>Get messages</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => getEmbeddedMessagesForPlacement(10)}>
+          <Text style={styles.buttonText}>Get messages for placement 10</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.hr} />

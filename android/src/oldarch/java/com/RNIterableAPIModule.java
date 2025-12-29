@@ -264,6 +264,11 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void getEmbeddedMessagesForPlacement(int placementId, Promise promise) {
+      moduleImpl.getEmbeddedMessagesForPlacement(placementId, promise);
+    }
+
+    @ReactMethod
     public void trackEmbeddedClick(ReadableMap message, String buttonId, String clickedUrl) {
       moduleImpl.trackEmbeddedClick(message, buttonId, clickedUrl);
     }

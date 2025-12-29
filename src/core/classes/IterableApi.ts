@@ -572,6 +572,19 @@ export class IterableApi {
   }
 
   /**
+   * Get the embedded messages for a specific placement ID.
+   *
+   * @param placementId - The placement ID to retrieve messages for.
+   * @returns A Promise that resolves to an array of embedded messages for the placement.
+   */
+  static getEmbeddedMessagesForPlacement(
+    placementId: number
+  ): Promise<IterableEmbeddedMessage[]> {
+    IterableLogger.log('getEmbeddedMessagesForPlacement: ', placementId);
+    return RNIterableAPI.getEmbeddedMessagesForPlacement(placementId);
+  }
+
+  /**
    * Track an embedded click.
    */
   static trackEmbeddedClick(

@@ -260,6 +260,11 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   }
 
   @Override
+  public void getEmbeddedMessagesForPlacement(double placementId, Promise promise) {
+    moduleImpl.getEmbeddedMessagesForPlacement((int) placementId, promise);
+  }
+
+  @Override
   public void trackEmbeddedClick(ReadableMap message, String buttonId, String clickedUrl) {
     moduleImpl.trackEmbeddedClick(message, buttonId, clickedUrl);
   }

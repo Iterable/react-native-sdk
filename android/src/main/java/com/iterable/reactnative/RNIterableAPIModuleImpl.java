@@ -773,6 +773,26 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         }
     }
 
+    public void getEmbeddedMessagesForPlacement(int placementId, Promise promise) {
+        IterableLogger.d(TAG, "getEmbeddedMessagesForPlacement for placement: " + placementId);
+
+        try {
+            List<IterableEmbeddedMessage> messages = IterableApi.getInstance().getEmbeddedManager().getMessages((long) placementId);
+
+            if (messages == null) {
+                messages = new ArrayList<>();
+            }
+
+            JSONArray embeddedMessageJsonArray = Serialization.serializeEmbeddedMessages(messages);
+            IterableLogger.d(TAG, "Messages for placement " + placementId + ": " + embeddedMessageJsonArray);
+
+            promise.resolve(Serialization.convertJsonToArray(embeddedMessageJsonArray));
+        } catch (JSONException e) {
+            IterableLogger.e(TAG, e.getLocalizedMessage());
+            promise.reject("", "Failed to fetch messages for placement with error " + e.getLocalizedMessage());
+        }
+    }
+
     public void trackEmbeddedClick(ReadableMap messageMap, String buttonId, String clickedUrl) {
         IterableLogger.d(TAG, "trackEmbeddedClick: buttonId: " + buttonId + " clickedUrl: " + clickedUrl);
         IterableEmbeddedMessage message = Serialization.embeddedMessageFromReadableMap(messageMap);

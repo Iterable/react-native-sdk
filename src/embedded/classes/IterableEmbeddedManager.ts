@@ -116,6 +116,28 @@ export class IterableEmbeddedManager {
   }
 
   /**
+   * Retrieves a list of embedded messages for a specific placement ID.
+   *
+   * This is a convenience method that wraps the Swift SDK's
+   * `getMessages(for placementId: Int)` method.
+   *
+   * @param placementId - The placement ID to retrieve messages for.
+   * @returns A Promise that resolves to an array of embedded messages for the placement.
+   *
+   * @example
+   * ```typescript
+   * Iterable.embeddedManager.getMessagesForPlacement(123).then(messages => {
+   *   console.log('Messages for placement 123:', messages);
+   * });
+   * ```
+   */
+  getMessagesForPlacement(
+    placementId: number
+  ): Promise<IterableEmbeddedMessage[]> {
+    return IterableApi.getEmbeddedMessagesForPlacement(placementId);
+  }
+
+  /**
    * Starts a session.
    *
    * A session is a period of time when a user is on a screen or page that can

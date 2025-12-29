@@ -281,6 +281,54 @@ RCT_EXPORT_MODULE()
   // Placeholder function -- this method is only used in Android
 }
 
+// MARK: - Embedded Messaging
+
+- (void)syncEmbeddedMessages {
+  [_swiftAPI syncEmbeddedMessages];
+}
+
+- (void)startEmbeddedSession {
+  [_swiftAPI startEmbeddedSession];
+}
+
+- (void)endEmbeddedSession {
+  [_swiftAPI endEmbeddedSession];
+}
+
+- (void)startEmbeddedImpression:(NSString *)messageId
+                    placementId:(double)placementId {
+  [_swiftAPI startEmbeddedImpression:messageId placementId:placementId];
+}
+
+- (void)pauseEmbeddedImpression:(NSString *)messageId {
+  [_swiftAPI pauseEmbeddedImpression:messageId];
+}
+
+- (void)getEmbeddedPlacementIds:(RCTPromiseResolveBlock)resolve
+                         reject:(RCTPromiseRejectBlock)reject {
+  [_swiftAPI getEmbeddedPlacementIds:resolve rejecter:reject];
+}
+
+- (void)getEmbeddedMessages:(NSArray *_Nullable)placementIds
+                    resolve:(RCTPromiseResolveBlock)resolve
+                     reject:(RCTPromiseRejectBlock)reject {
+  [_swiftAPI getEmbeddedMessages:placementIds resolver:resolve rejecter:reject];
+}
+
+- (void)getEmbeddedMessagesForPlacement:(double)placementId
+                                resolve:(RCTPromiseResolveBlock)resolve
+                                 reject:(RCTPromiseRejectBlock)reject {
+  [_swiftAPI getEmbeddedMessagesForPlacement:placementId
+                                    resolver:resolve
+                                    rejecter:reject];
+}
+
+- (void)trackEmbeddedClick:(NSDictionary *)message
+                  buttonId:(NSString *_Nullable)buttonId
+                clickedUrl:(NSString *_Nullable)clickedUrl {
+  [_swiftAPI trackEmbeddedClick:message buttonId:buttonId clickedUrl:clickedUrl];
+}
+
 // MARK: - TurboModule integration
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
     (const facebook::react::ObjCTurboModule::InitParams &)params {
@@ -509,6 +557,52 @@ RCT_EXPORT_METHOD(pauseAuthRetries : (BOOL)pauseRetry) {
 
 RCT_EXPORT_METHOD(wakeApp) {
   // Placeholder function -- this method is only used in Android
+}
+
+// MARK: - Embedded Messaging
+
+RCT_EXPORT_METHOD(syncEmbeddedMessages) {
+  [_swiftAPI syncEmbeddedMessages];
+}
+
+RCT_EXPORT_METHOD(startEmbeddedSession) {
+  [_swiftAPI startEmbeddedSession];
+}
+
+RCT_EXPORT_METHOD(endEmbeddedSession) {
+  [_swiftAPI endEmbeddedSession];
+}
+
+RCT_EXPORT_METHOD(startEmbeddedImpression : (NSString *)messageId placementId : (
+    double)placementId) {
+  [_swiftAPI startEmbeddedImpression:messageId placementId:placementId];
+}
+
+RCT_EXPORT_METHOD(pauseEmbeddedImpression : (NSString *)messageId) {
+  [_swiftAPI pauseEmbeddedImpression:messageId];
+}
+
+RCT_EXPORT_METHOD(getEmbeddedPlacementIds : (RCTPromiseResolveBlock)
+                      resolve reject : (RCTPromiseRejectBlock)reject) {
+  [_swiftAPI getEmbeddedPlacementIds:resolve rejecter:reject];
+}
+
+RCT_EXPORT_METHOD(getEmbeddedMessages : (NSArray *)placementIds resolve : (
+    RCTPromiseResolveBlock)resolve reject : (RCTPromiseRejectBlock)reject) {
+  [_swiftAPI getEmbeddedMessages:placementIds resolver:resolve rejecter:reject];
+}
+
+RCT_EXPORT_METHOD(getEmbeddedMessagesForPlacement : (double)
+                      placementId resolve : (RCTPromiseResolveBlock)
+                          resolve reject : (RCTPromiseRejectBlock)reject) {
+  [_swiftAPI getEmbeddedMessagesForPlacement:placementId
+                                    resolver:resolve
+                                    rejecter:reject];
+}
+
+RCT_EXPORT_METHOD(trackEmbeddedClick : (NSDictionary *)message buttonId : (
+    NSString *)buttonId clickedUrl : (NSString *)clickedUrl) {
+  [_swiftAPI trackEmbeddedClick:message buttonId:buttonId clickedUrl:clickedUrl];
 }
 
 #endif

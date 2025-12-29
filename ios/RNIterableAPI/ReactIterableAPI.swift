@@ -495,6 +495,104 @@ import React
     IterableAPI.pauseAuthRetries(pauseRetry)
   }
 
+  // MARK: - SDK Embedded Messaging Functions
+
+  @objc(syncEmbeddedMessages)
+  public func syncEmbeddedMessages() {
+    ITBInfo()
+    IterableAPI.embeddedManager.syncMessages { }
+  }
+
+  @objc(startEmbeddedSession)
+  public func startEmbeddedSession() {
+    ITBInfo()
+    EmbeddedSessionManager.shared.startSession()
+  }
+
+  @objc(endEmbeddedSession)
+  public func endEmbeddedSession() {
+    ITBInfo()
+    EmbeddedSessionManager.shared.endSession()
+  }
+
+  @objc(startEmbeddedImpression:placementId:)
+  public func startEmbeddedImpression(messageId: String, placementId: Double) {
+    ITBInfo()
+    EmbeddedSessionManager.shared.startImpression(
+      messageId: messageId,
+      placementId: placementId
+    )
+  }
+
+  @objc(pauseEmbeddedImpression:)
+  public func pauseEmbeddedImpression(messageId: String) {
+    ITBInfo()
+    EmbeddedSessionManager.shared.pauseImpression(messageId: messageId)
+  }
+
+  @objc(getEmbeddedPlacementIds:rejecter:)
+  public func getEmbeddedPlacementIds(
+    resolver: RCTPromiseResolveBlock,
+    rejecter: RCTPromiseRejectBlock
+  ) {
+    ITBInfo()
+    let messages = IterableAPI.embeddedManager.getMessages()
+    let placementIds = Set(messages.compactMap { $0.metadata.placementId })
+    resolver(Array(placementIds))
+  }
+
+  @objc(getEmbeddedMessages:resolver:rejecter:)
+  public func getEmbeddedMessages(
+    placementIds: NSArray?,
+    resolver: RCTPromiseResolveBlock,
+    rejecter: RCTPromiseRejectBlock
+  ) {
+    ITBInfo()
+    var messages: [IterableEmbeddedMessage] = []
+    
+    if let placementIds = placementIds as? [Int], !placementIds.isEmpty {
+      for placementId in placementIds {
+        let placementMessages = IterableAPI.embeddedManager.getMessages(for: placementId)
+        messages.append(contentsOf: placementMessages)
+      }
+    } else {
+      messages = IterableAPI.embeddedManager.getMessages()
+    }
+    
+    resolver(messages.map { $0.toDict() })
+  }
+
+  @objc(getEmbeddedMessagesForPlacement:resolver:rejecter:)
+  public func getEmbeddedMessagesForPlacement(
+    placementId: Double,
+    resolver: RCTPromiseResolveBlock,
+    rejecter: RCTPromiseRejectBlock
+  ) {
+    ITBInfo()
+    let messages = IterableAPI.embeddedManager.getMessages(for: Int(placementId))
+    resolver(messages.map { $0.toDict() })
+  }
+
+  @objc(trackEmbeddedClick:buttonId:clickedUrl:)
+  public func trackEmbeddedClick(
+    message: NSDictionary,
+    buttonId: String?,
+    clickedUrl: String?
+  ) {
+    ITBInfo()
+    guard let messageDict = message as? [AnyHashable: Any],
+          let embeddedMessage = IterableEmbeddedMessage.from(dict: messageDict) else {
+      ITBError("Could not parse embedded message")
+      return
+    }
+    
+    IterableAPI.track(
+      embeddedMessageClick: embeddedMessage,
+      buttonIdentifier: buttonId,
+      clickedUrl: clickedUrl ?? ""
+    )
+  }
+
   // MARK: Private
   private var shouldEmit = false
   private let _methodQueue = DispatchQueue(label: String(describing: ReactIterableAPI.self))
