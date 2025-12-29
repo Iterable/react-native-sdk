@@ -506,28 +506,28 @@ import React
   @objc(startEmbeddedSession)
   public func startEmbeddedSession() {
     ITBInfo()
-    EmbeddedSessionManager.shared.startSession()
+    IterableAPI.embeddedSessionManager.startSession()
   }
 
   @objc(endEmbeddedSession)
   public func endEmbeddedSession() {
     ITBInfo()
-    EmbeddedSessionManager.shared.endSession()
+    IterableAPI.embeddedSessionManager.endSession()
   }
 
   @objc(startEmbeddedImpression:placementId:)
   public func startEmbeddedImpression(messageId: String, placementId: Double) {
     ITBInfo()
-    EmbeddedSessionManager.shared.startImpression(
+    IterableAPI.embeddedSessionManager.startImpression(
       messageId: messageId,
-      placementId: placementId
+      placementId: Int(placementId)
     )
   }
 
   @objc(pauseEmbeddedImpression:)
   public func pauseEmbeddedImpression(messageId: String) {
     ITBInfo()
-    EmbeddedSessionManager.shared.pauseImpression(messageId: messageId)
+    IterableAPI.embeddedSessionManager.pauseImpression(messageId: messageId)
   }
 
   @objc(getEmbeddedPlacementIds:rejecter:)

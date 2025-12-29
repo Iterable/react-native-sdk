@@ -354,12 +354,33 @@ extension IterableEmbeddedMessage {
   }
   
   static func from(dict: [AnyHashable: Any]) -> IterableEmbeddedMessage? {
-    // Convert dictionary to JSON data, then decode to IterableEmbeddedMessage
-    guard let jsonData = try? JSONSerialization.data(withJSONObject: dict, options: []),
-          let message = try? JSONDecoder().decode(IterableEmbeddedMessage.self, from: jsonData) else {
-      ITBError("Failed to decode IterableEmbeddedMessage from dictionary")
+    guard let metadataDict = dict["metadata"] as? [AnyHashable: Any],
+          let messageId = metadataDict["messageId"] as? String,
+          let placementId = metadataDict["placementId"] as? Int else {
       return nil
     }
-    return message
+    
+    let campaignId = metadataDict["campaignId"] as? Int
+    let isProof = metadataDict["isProof"] as? Bool
+    let metadata = EmbeddedMessageMetadata(
+      messageId: messageId,
+      campaignId: campaignId,
+      isProof: isProof,
+      placementId: placementId
+    )
+    
+    let elements = dict["elements"] as? [AnyHashable: Any]
+    let payload = dict["payload"] as? [AnyHashable: Any]
+    
+    return IterableEmbeddedMessage(
+      metadata: metadata,
+      elements: elementsFrom(dict: elements),
+      payload: payload
+    )
+  }
+  
+  private static func elementsFrom(dict: [AnyHashable: Any]?) -> EmbeddedMessageElements? {
+    guard let dict = dict else { return nil }
+    return SerializationUtil.dictionaryToDecodable(dict: dict)
   }
 }
