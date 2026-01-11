@@ -507,6 +507,12 @@ import React
     EmbeddedSessionManager.shared.endSession()
   }
 
+  @objc(syncEmbeddedMessages)
+  public func syncEmbeddedMessages() {
+    ITBInfo()
+    IterableAPI.embeddedManager.syncMessages { }
+  }
+
   // MARK: Private
   private var shouldEmit = false
   private let _methodQueue = DispatchQueue(label: String(describing: ReactIterableAPI.self))

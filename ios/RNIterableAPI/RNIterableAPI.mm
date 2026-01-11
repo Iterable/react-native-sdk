@@ -285,6 +285,10 @@ RCT_EXPORT_MODULE()
   [_swiftAPI endEmbeddedSession];
 }
 
+- (void)syncEmbeddedMessages {
+  [_swiftAPI syncEmbeddedMessages];
+}
+
 - (void)wakeApp {
   // Placeholder function -- this method is only used in Android
 }
@@ -521,6 +525,10 @@ RCT_EXPORT_METHOD(startEmbeddedSession) {
 
 RCT_EXPORT_METHOD(endEmbeddedSession) {
   [_swiftAPI endEmbeddedSession];
+}
+
+RCT_EXPORT_METHOD(syncEmbeddedMessages) {
+  [_swiftAPI syncEmbeddedMessages];
 }
 
 RCT_EXPORT_METHOD(wakeApp) {
