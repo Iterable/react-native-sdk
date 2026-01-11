@@ -513,6 +513,29 @@ import React
     IterableAPI.embeddedManager.syncMessages { }
   }
 
+  @objc(getEmbeddedMessages:resolver:rejecter:)
+  public func getEmbeddedMessages(
+    placementIds: [NSNumber]?, resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock
+  ) {
+    ITBInfo()
+    var messages: [IterableEmbeddedMessage] = []
+
+    if let placementIds = placementIds, !placementIds.isEmpty {
+      // Get messages for specific placement IDs
+      for placementId in placementIds {
+        let placementMessages = IterableAPI.embeddedManager.getMessages(
+          for: placementId.intValue
+        )
+        messages.append(contentsOf: placementMessages)
+      }
+    } else {
+      // Get all messages
+      messages = IterableAPI.embeddedManager.getMessages()
+    }
+
+    resolver(messages.map { $0.toDict() })
+  }
+
   // MARK: Private
   private var shouldEmit = false
   private let _methodQueue = DispatchQueue(label: String(describing: ReactIterableAPI.self))
