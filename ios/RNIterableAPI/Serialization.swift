@@ -83,6 +83,10 @@ extension IterableConfig {
       config.useInMemoryStorageForInApps = useInMemoryStorageForInApp
     }
 
+    if let enableEmbeddedMessaging = dict["enableEmbeddedMessaging"] as? Bool {
+      config.enableEmbeddedMessaging = enableEmbeddedMessaging
+    }
+
     if let dataRegion = dict["dataRegion"] as? NSNumber {
       switch dataRegion {
       case 0:
@@ -277,5 +281,29 @@ extension InboxImpressionTracker.RowInfo {
 
   static func rowInfos(from rows: [[AnyHashable: Any]]) -> [InboxImpressionTracker.RowInfo] {
     return rows.compactMap(InboxImpressionTracker.RowInfo.from(dict:))
+  }
+}
+
+extension IterableEmbeddedMessage {
+  func toDict() -> [AnyHashable: Any] {
+    var dict = [AnyHashable: Any]()
+
+    // Serialize metadata (which is Codable)
+    if let metadataDict = SerializationUtil.encodableToDictionary(encodable: metadata) {
+      dict["metadata"] = metadataDict
+    }
+
+    // Serialize elements if present (which is Codable)
+    if let elements = elements,
+       let elementsDict = SerializationUtil.encodableToDictionary(encodable: elements) {
+      dict["elements"] = elementsDict
+    }
+
+    // Add payload directly
+    if let payload = payload {
+      dict["payload"] = payload
+    }
+
+    return dict
   }
 }
