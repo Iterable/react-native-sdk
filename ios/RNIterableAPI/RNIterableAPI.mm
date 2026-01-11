@@ -2,6 +2,7 @@
 
 #if RCT_NEW_ARCH_ENABLED
   #import "RNIterableAPISpec.h"
+  #import <string>
 #endif
 
 #import <IterableSDK/IterableSDK.h>
@@ -303,10 +304,28 @@ RCT_EXPORT_MODULE()
   [_swiftAPI pauseEmbeddedImpression:messageId];
 }
 
-- (void)trackEmbeddedClick:(NSDictionary *)message
+- (void)trackEmbeddedClick:(JS::NativeRNIterableAPI::EmbeddedMessage &)message
                   buttonId:(NSString *_Nullable)buttonId
                 clickedUrl:(NSString *_Nullable)clickedUrl {
-  [_swiftAPI trackEmbeddedClick:message buttonId:buttonId clickedUrl:clickedUrl];
+  // The TurboModule bridge requires us to use the C++ type in the signature,
+  // but we need to convert it to NSDictionary to pass to Swift.
+  // The C++ struct wraps an NSDictionary, and the generated methods already
+  // return NSString*/NSNumber* types, so we just need to reconstruct the dict.
+  NSMutableDictionary *messageDict = [NSMutableDictionary new];
+
+  // Convert metadata (the accessor methods already return proper ObjC types)
+  NSMutableDictionary *metadataDict = [NSMutableDictionary new];
+  metadataDict[@"messageId"] = message.metadata().messageId();
+  metadataDict[@"placementId"] = @(message.metadata().placementId());
+  if (message.metadata().campaignId().has_value()) {
+    metadataDict[@"campaignId"] = @(*message.metadata().campaignId());
+  }
+  if (message.metadata().isProof().has_value()) {
+    metadataDict[@"isProof"] = @(*message.metadata().isProof());
+  }
+  messageDict[@"metadata"] = metadataDict;
+
+  [_swiftAPI trackEmbeddedClick:messageDict buttonId:buttonId clickedUrl:clickedUrl];
 }
 
 - (void)wakeApp {
