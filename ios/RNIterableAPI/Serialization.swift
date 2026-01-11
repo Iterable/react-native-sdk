@@ -83,6 +83,10 @@ extension IterableConfig {
       config.useInMemoryStorageForInApps = useInMemoryStorageForInApp
     }
 
+    if let enableEmbeddedMessaging = dict["enableEmbeddedMessaging"] as? Bool {
+      config.enableEmbeddedMessaging = enableEmbeddedMessaging
+    }
+
     if let dataRegion = dict["dataRegion"] as? NSNumber {
       switch dataRegion {
       case 0:
