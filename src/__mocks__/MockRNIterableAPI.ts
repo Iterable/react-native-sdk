@@ -145,10 +145,6 @@ export class MockRNIterableAPI {
 
   static endEmbeddedSession = jest.fn();
 
-  static getEmbeddedPlacementIds = jest
-    .fn()
-    .mockResolvedValue([1, 2, 3] as number[]);
-
   static syncEmbeddedMessages = jest.fn().mockResolvedValue(undefined);
 
   static getEmbeddedMessages = jest.fn().mockResolvedValue([

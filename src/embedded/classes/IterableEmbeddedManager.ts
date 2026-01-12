@@ -81,22 +81,6 @@ export class IterableEmbeddedManager {
   }
 
   /**
-   * Retrieves a list of placement IDs for the embedded manager.
-   *
-   * [Placement Documentation](https://support.iterable.com/hc/en-us/articles/23060529977364-Embedded-Messaging-Overview#placements-and-prioritization)
-   *
-   * @example
-   * ```typescript
-   * Iterable.embeddedManager.getPlacementIds().then(placementIds => {
-   *   console.log('Placement IDs:', placementIds);
-   * });
-   * ```
-   */
-  getPlacementIds() {
-    return IterableApi.getEmbeddedPlacementIds();
-  }
-
-  /**
    * Retrieves a list of embedded messages the user is eligible to see.
    *
    * @param placementIds - The placement IDs to retrieve messages for.

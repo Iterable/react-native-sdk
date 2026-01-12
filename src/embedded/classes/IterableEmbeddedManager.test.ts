@@ -109,21 +109,6 @@ describe('IterableEmbeddedManager', () => {
     });
   });
 
-  describe('getPlacementIds', () => {
-    it('should call IterableApi.getEmbeddedPlacementIds', async () => {
-      // WHEN getPlacementIds is called
-      const result = await embeddedManager.getPlacementIds();
-
-      // THEN IterableApi.getEmbeddedPlacementIds is called
-      expect(MockRNIterableAPI.getEmbeddedPlacementIds).toHaveBeenCalledTimes(
-        1
-      );
-
-      // AND the result is returned
-      expect(result).toEqual([1, 2, 3]);
-    });
-  });
-
   describe('getMessages', () => {
     it('should call IterableApi.getEmbeddedMessages with placement IDs', async () => {
       // GIVEN placement IDs
