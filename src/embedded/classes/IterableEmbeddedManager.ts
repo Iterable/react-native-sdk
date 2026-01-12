@@ -1,12 +1,18 @@
+import { NativeEventEmitter } from 'react-native';
+
+import { RNIterableAPI } from '../../api';
 import { IterableAction } from '../../core/classes/IterableAction';
 import { IterableActionContext } from '../../core/classes/IterableActionContext';
 import { IterableApi } from '../../core/classes/IterableApi';
 import { IterableConfig } from '../../core/classes/IterableConfig';
 import { IterableLogger } from '../../core/classes/IterableLogger';
 import { IterableActionSource } from '../../core/enums/IterableActionSource';
+import { IterableEventName } from '../../core/enums/IterableEventName';
 import { callUrlHandler } from '../../core/utils/callUrlHandler';
 import { getActionPrefix } from '../../core/utils/getActionPrefix';
 import type { IterableEmbeddedMessage } from '../types/IterableEmbeddedMessage';
+
+const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
 /**
  * Manages embedded messages from Iterable.
@@ -272,5 +278,81 @@ export class IterableEmbeddedManager {
       const context = new IterableActionContext(actionDetails, source);
       callUrlHandler(this._config, clickedUrl, context);
     }
+  }
+
+  /**
+   * Adds a listener for when embedded messages are updated.
+   *
+   * This event fires when the embedded message cache is synced and messages
+   * have changed (new messages added, existing messages removed, etc.).
+   *
+   * @param callback - Function to call when messages are updated.
+   * @returns An event subscription that can be used to remove the listener.
+   *
+   * @example
+   * ```typescript
+   * const subscription = Iterable.embeddedManager.addMessagesUpdatedListener(() => {
+   *   // Refresh your UI with updated messages
+   *   Iterable.embeddedManager.getMessages([1, 2, 3]).then(messages => {
+   *     // Update UI with new messages
+   *   });
+   * });
+   *
+   * // Later, remove the listener
+   * subscription.remove();
+   * ```
+   */
+  addMessagesUpdatedListener(callback: () => void) {
+    return RNEventEmitter.addListener(
+      IterableEventName.receivedIterableEmbeddedMessagesChanged,
+      callback
+    );
+  }
+
+  /**
+   * Adds a listener for when embedded messaging is disabled.
+   *
+   * This event fires when embedded messaging is disabled, typically due to
+   * subscription being inactive or invalid API key.
+   *
+   * @param callback - Function to call when embedded messaging is disabled.
+   * @returns An event subscription that can be used to remove the listener.
+   *
+   * @example
+   * ```typescript
+   * const subscription = Iterable.embeddedManager.addEmbeddedMessagingDisabledListener(() => {
+   *   // Handle embedded messaging being disabled
+   *   console.log('Embedded messaging has been disabled');
+   * });
+   *
+   * // Later, remove the listener
+   * subscription.remove();
+   * ```
+   */
+  addEmbeddedMessagingDisabledListener(callback: () => void) {
+    return RNEventEmitter.addListener(
+      IterableEventName.receivedIterableEmbeddedMessagingDisabled,
+      callback
+    );
+  }
+
+  /**
+   * Removes all listeners for embedded message events.
+   *
+   * This removes all listeners for both `receivedIterableEmbeddedMessagesChanged`
+   * and `receivedIterableEmbeddedMessagingDisabled` events.
+   *
+   * @example
+   * ```typescript
+   * Iterable.embeddedManager.removeAllListeners();
+   * ```
+   */
+  removeAllListeners() {
+    RNEventEmitter.removeAllListeners(
+      IterableEventName.receivedIterableEmbeddedMessagesChanged
+    );
+    RNEventEmitter.removeAllListeners(
+      IterableEventName.receivedIterableEmbeddedMessagingDisabled
+    );
   }
 }

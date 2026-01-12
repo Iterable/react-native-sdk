@@ -30,6 +30,7 @@ import com.iterable.iterableapi.IterableAuthManager;
 import com.iterable.iterableapi.IterableConfig;
 import com.iterable.iterableapi.IterableCustomActionHandler;
 import com.iterable.iterableapi.IterableEmbeddedMessage;
+import com.iterable.iterableapi.IterableEmbeddedUpdateHandler;
 import com.iterable.iterableapi.IterableHelper;
 import com.iterable.iterableapi.IterableInAppCloseAction;
 import com.iterable.iterableapi.IterableInAppHandler;
@@ -52,7 +53,7 @@ import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCustomActionHandler, IterableInAppHandler, IterableAuthHandler, IterableInAppManager.Listener {
+public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCustomActionHandler, IterableInAppHandler, IterableAuthHandler, IterableInAppManager.Listener, IterableEmbeddedUpdateHandler {
     public static final String NAME = "RNIterableAPI";
 
     private static String TAG = "RNIterableAPIModule";
@@ -125,6 +126,7 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         IterableApi.getInstance().setDeviceAttribute("reactNativeSDKVersion", version);
 
         IterableApi.getInstance().getInAppManager().addListener(this);
+        IterableApi.getInstance().getEmbeddedManager().addUpdateListener(this);
         IterableApi.getInstance().getEmbeddedManager().syncMessages();
 
         // MOB-10421: Figure out what the error cases are and handle them appropriately
@@ -189,6 +191,7 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         IterableApi.getInstance().setDeviceAttribute("reactNativeSDKVersion", version);
 
         IterableApi.getInstance().getInAppManager().addListener(this);
+        IterableApi.getInstance().getEmbeddedManager().addUpdateListener(this);
         IterableApi.getInstance().getEmbeddedManager().syncMessages();
 
         // MOB-10421: Figure out what the error cases are and handle them appropriately
@@ -781,6 +784,18 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         }
     }
 
+    @Override
+    public void onMessagesUpdated() {
+        IterableLogger.d(TAG, "onMessagesUpdated");
+        sendEvent(EventName.receivedIterableEmbeddedMessagesChanged.name(), null);
+    }
+
+    @Override
+    public void onEmbeddedMessagingDisabled() {
+        IterableLogger.d(TAG, "onEmbeddedMessagingDisabled");
+        sendEvent(EventName.receivedIterableEmbeddedMessagingDisabled.name(), null);
+    }
+
     // ---------------------------------------------------------------------------------------
     // endregion
 }
@@ -793,5 +808,6 @@ enum EventName {
   handleInAppCalled,
   handleUrlCalled,
   receivedIterableEmbeddedMessagesChanged,
+  receivedIterableEmbeddedMessagingDisabled,
   receivedIterableInboxChanged
 }
