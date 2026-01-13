@@ -493,6 +493,20 @@ import React
     IterableAPI.pauseAuthRetries(pauseRetry)
   }
 
+  // MARK: - SDK Embedded Messaging Functions
+
+  @objc(startEmbeddedSession)
+  public func startEmbeddedSession() {
+    ITBInfo()
+    EmbeddedSessionManager.shared.startSession()
+  }
+
+  @objc(endEmbeddedSession)
+  public func endEmbeddedSession() {
+    ITBInfo()
+    EmbeddedSessionManager.shared.endSession()
+  }
+
   // MARK: Private
   private var shouldEmit = false
   private let _methodQueue = DispatchQueue(label: String(describing: ReactIterableAPI.self))
