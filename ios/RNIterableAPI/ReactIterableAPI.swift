@@ -529,7 +529,8 @@ import React
         messages.append(contentsOf: placementMessages)
       }
     } else {
-      // Get all messages
+      // Get all messages from all placements
+      // getMessages() without parameters flattens all placement messages into a single array
       messages = IterableAPI.embeddedManager.getMessages()
     }
 
