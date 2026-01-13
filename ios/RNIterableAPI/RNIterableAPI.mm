@@ -285,6 +285,16 @@ RCT_EXPORT_MODULE()
   [_swiftAPI endEmbeddedSession];
 }
 
+- (void)syncEmbeddedMessages {
+  [_swiftAPI syncEmbeddedMessages];
+}
+
+- (void)getEmbeddedMessages:(NSArray *_Nullable)placementIds
+                    resolve:(RCTPromiseResolveBlock)resolve
+                     reject:(RCTPromiseRejectBlock)reject {
+  [_swiftAPI getEmbeddedMessages:placementIds resolver:resolve rejecter:reject];
+}
+
 - (void)wakeApp {
   // Placeholder function -- this method is only used in Android
 }
@@ -521,6 +531,14 @@ RCT_EXPORT_METHOD(startEmbeddedSession) {
 
 RCT_EXPORT_METHOD(endEmbeddedSession) {
   [_swiftAPI endEmbeddedSession];
+}
+
+RCT_EXPORT_METHOD(syncEmbeddedMessages) {
+  [_swiftAPI syncEmbeddedMessages];
+}
+
+RCT_EXPORT_METHOD(getEmbeddedMessages : (NSArray *_Nullable)placementIds resolve : (RCTPromiseResolveBlock)resolve reject : (RCTPromiseRejectBlock)reject) {
+  [_swiftAPI getEmbeddedMessages:placementIds resolver:resolve rejecter:reject];
 }
 
 RCT_EXPORT_METHOD(wakeApp) {

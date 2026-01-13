@@ -41,14 +41,12 @@ export const Embedded = () => {
     Iterable.embeddedManager.endSession();
   }, []);
 
-  const getEmbeddedMessages = useCallback(() => {
-    getPlacementIds()
-      .then((ids: number[]) => Iterable.embeddedManager.getMessages(ids))
-      .then((messages: IterableEmbeddedMessage[]) => {
+  const getEmbeddedMessages = useCallback((ids: number[] | null = null) => {
+    Iterable.embeddedManager.getMessages(ids).then((messages: IterableEmbeddedMessage[]) => {
         setEmbeddedMessages(messages);
         console.log(messages);
       });
-  }, [getPlacementIds]);
+  }, []);
 
   const startEmbeddedImpression = useCallback(
     (message: IterableEmbeddedMessage) => {
@@ -108,7 +106,7 @@ export const Embedded = () => {
         <TouchableOpacity style={styles.button} onPress={endEmbeddedSession}>
           <Text style={styles.buttonText}>End session</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={getEmbeddedMessages}>
+        <TouchableOpacity style={styles.button} onPress={() => getEmbeddedMessages(placementIds)}>
           <Text style={styles.buttonText}>Get messages</Text>
         </TouchableOpacity>
       </View>
