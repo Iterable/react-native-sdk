@@ -953,6 +953,9 @@ export class Iterable {
     RNEventEmitter.removeAllListeners(
       IterableEventName.handleEmbeddedMessageUpdateCalled
     );
+    RNEventEmitter.removeAllListeners(
+      IterableEventName.handleEmbeddedMessagingDisabledCalled
+    );
   }
 
   /**
@@ -1092,6 +1095,15 @@ export class Iterable {
         IterableEventName.handleEmbeddedMessageUpdateCalled,
         () => {
           Iterable.savedConfig.onEmbeddedMessageUpdate?.();
+        }
+      );
+    }
+
+    if (Iterable.savedConfig.onEmbeddedMessagingDisabled) {
+      RNEventEmitter.addListener(
+        IterableEventName.handleEmbeddedMessagingDisabledCalled,
+        () => {
+          Iterable.savedConfig.onEmbeddedMessagingDisabled?.();
         }
       );
     }

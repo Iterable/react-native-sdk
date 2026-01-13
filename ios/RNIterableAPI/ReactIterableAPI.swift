@@ -34,6 +34,7 @@ import React
     case handleAuthSuccessCalled
     case handleAuthFailureCalled
     case handleEmbeddedMessageUpdateCalled
+    case handleEmbeddedMessagingDisabledCalled
   }
 
   @objc public static var supportedEvents: [String] {
@@ -651,11 +652,12 @@ import React
       }
 
       IterableAPI.setDeviceAttribute(name: "reactNativeSDKVersion", value: version)
-
-      // Add embedded update listener if callback is present
-      if let onEmbeddedMessageUpdatePresent = configDict["onEmbeddedMessageUpdatePresent"] as? Bool,
-        onEmbeddedMessageUpdatePresent == true
-      {
+      
+      // Add embedded update listener if any callback is present
+      let onEmbeddedMessageUpdatePresent = configDict["onEmbeddedMessageUpdatePresent"] as? Bool ?? false
+      let onEmbeddedMessagingDisabledPresent = configDict["onEmbeddedMessagingDisabledPresent"] as? Bool ?? false
+      
+      if onEmbeddedMessageUpdatePresent || onEmbeddedMessagingDisabledPresent {
         IterableAPI.embeddedManager.addUpdateListener(self)
       }
     }
@@ -826,9 +828,14 @@ extension ReactIterableAPI: IterableEmbeddedUpdateDelegate {
       withName: EventName.handleEmbeddedMessageUpdateCalled.rawValue,
       body: nil as Any?)
   }
-
+  
   public func onEmbeddedMessagingDisabled() {
     ITBInfo()
-    // This is called when embedded messaging is disabled, we don't need to do anything here for now
+    guard shouldEmit else {
+      return
+    }
+    delegate?.sendEvent(
+      withName: EventName.handleEmbeddedMessagingDisabledCalled.rawValue,
+      body: nil as Any?)
   }
 }
