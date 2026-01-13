@@ -1090,22 +1090,24 @@ export class Iterable {
       );
     }
 
-    if (Iterable.savedConfig.onEmbeddedMessageUpdate) {
-      RNEventEmitter.addListener(
-        IterableEventName.handleEmbeddedMessageUpdateCalled,
-        () => {
-          Iterable.savedConfig.onEmbeddedMessageUpdate?.();
-        }
-      );
-    }
+    if (Iterable.savedConfig.enableEmbeddedMessaging) {
+      if (Iterable.savedConfig.onEmbeddedMessageUpdate) {
+        RNEventEmitter.addListener(
+          IterableEventName.handleEmbeddedMessageUpdateCalled,
+          () => {
+            Iterable.savedConfig.onEmbeddedMessageUpdate?.();
+          }
+        );
+      }
 
-    if (Iterable.savedConfig.onEmbeddedMessagingDisabled) {
-      RNEventEmitter.addListener(
-        IterableEventName.handleEmbeddedMessagingDisabledCalled,
-        () => {
-          Iterable.savedConfig.onEmbeddedMessagingDisabled?.();
-        }
-      );
+      if (Iterable.savedConfig.onEmbeddedMessagingDisabled) {
+        RNEventEmitter.addListener(
+          IterableEventName.handleEmbeddedMessagingDisabledCalled,
+          () => {
+            Iterable.savedConfig.onEmbeddedMessagingDisabled?.();
+          }
+        );
+      }
     }
   }
 

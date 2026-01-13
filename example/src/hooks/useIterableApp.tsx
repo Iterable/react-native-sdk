@@ -200,6 +200,14 @@ export const IterableAppProvider: FunctionComponent<
 
       config.enableEmbeddedMessaging = true;
 
+      config.onEmbeddedMessageUpdate = () => {
+        console.log('onEmbeddedMessageUpdate');
+      };
+
+      config.onEmbeddedMessagingDisabled = () => {
+        console.log('onEmbeddedMessagingDisabled');
+      };
+
       config.inAppHandler = () => IterableInAppShowResponse.show;
 
       if (
