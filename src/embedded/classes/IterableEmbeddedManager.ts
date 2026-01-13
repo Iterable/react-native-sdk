@@ -27,6 +27,16 @@ const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
  */
 export class IterableEmbeddedManager {
   /**
+   * List of listeners for embedded messages updated events.
+   */
+  private _messagesUpdatedListeners: (() => void)[] = [];
+
+  /**
+   * List of listeners for embedded messaging disabled events.
+   */
+  private _embeddedMessagingDisabledListeners: (() => void)[] = [];
+
+  /**
    * Whether the embedded manager is enabled.
    *
    * This is set through the `enableEmbeddedMessaging` flag in the
@@ -61,6 +71,28 @@ export class IterableEmbeddedManager {
   constructor(config: IterableConfig) {
     this._config = config;
     this._isEnabled = config.enableEmbeddedMessaging ?? false;
+  }
+
+  /**
+   * Notifies all registered listeners that messages have been updated.
+   *
+   * @internal This method is for internal SDK use only.
+   */
+  notifyMessagesUpdated() {
+    this._messagesUpdatedListeners.forEach((listener) => {
+      listener();
+    });
+  }
+
+  /**
+   * Notifies all registered listeners that embedded messaging has been disabled.
+   *
+   * @internal This method is for internal SDK use only.
+   */
+  notifyEmbeddedMessagingDisabled() {
+    this._embeddedMessagingDisabledListeners.forEach((listener) => {
+      listener();
+    });
   }
 
   /**
@@ -286,61 +318,109 @@ export class IterableEmbeddedManager {
    * This event fires when the embedded message cache is synced and messages
    * have changed (new messages added, existing messages removed, etc.).
    *
+   * The listener is added to an internal list and will be called when the
+   * native SDK detects that messages have been updated.
+   *
    * @param callback - Function to call when messages are updated.
-   * @returns An event subscription that can be used to remove the listener.
    *
    * @example
    * ```typescript
-   * const subscription = Iterable.embeddedManager.addMessagesUpdatedListener(() => {
+   * const callback = () => {
    *   // Refresh your UI with updated messages
    *   Iterable.embeddedManager.getMessages([1, 2, 3]).then(messages => {
    *     // Update UI with new messages
    *   });
-   * });
+   * };
+   * Iterable.embeddedManager.addMessagesUpdatedListener(callback);
    *
    * // Later, remove the listener
-   * subscription.remove();
+   * Iterable.embeddedManager.removeMessagesUpdatedListener(callback);
    * ```
    */
   addMessagesUpdatedListener(callback: () => void) {
-    return RNEventEmitter.addListener(
-      IterableEventName.receivedIterableEmbeddedMessagesChanged,
-      callback
-    );
+    // Add to internal list
+    this._messagesUpdatedListeners.push(callback);
   }
 
   /**
    * Adds a listener for when embedded messaging is disabled.
    *
    * This event fires when embedded messaging is disabled, typically due to
-   * subscription being inactive or invalid API key.
+   * subscription being inactive or invalid API key during sync.
+   *
+   * The listener is added to an internal list and will be called when the
+   * native SDK detects that embedded messaging has been disabled.
    *
    * @param callback - Function to call when embedded messaging is disabled.
-   * @returns An event subscription that can be used to remove the listener.
    *
    * @example
    * ```typescript
-   * const subscription = Iterable.embeddedManager.addEmbeddedMessagingDisabledListener(() => {
+   * const callback = () => {
    *   // Handle embedded messaging being disabled
    *   console.log('Embedded messaging has been disabled');
-   * });
+   *   // Hide embedded message UI, etc.
+   * };
+   * Iterable.embeddedManager.addEmbeddedMessagingDisabledListener(callback);
    *
    * // Later, remove the listener
-   * subscription.remove();
+   * Iterable.embeddedManager.removeEmbeddedMessagingDisabledListener(callback);
    * ```
    */
   addEmbeddedMessagingDisabledListener(callback: () => void) {
-    return RNEventEmitter.addListener(
-      IterableEventName.receivedIterableEmbeddedMessagingDisabled,
-      callback
-    );
+    // Add to internal list
+    this._embeddedMessagingDisabledListeners.push(callback);
+  }
+
+  /**
+   * Removes a specific listener for when embedded messages are updated.
+   *
+   * @param callback - The callback function that was previously registered.
+   *
+   * @example
+   * ```typescript
+   * const listener = () => {
+   *   console.log('Messages updated');
+   * };
+   * Iterable.embeddedManager.addMessagesUpdatedListener(listener);
+   * // Later, remove the specific listener
+   * Iterable.embeddedManager.removeMessagesUpdatedListener(listener);
+   * ```
+   */
+  removeMessagesUpdatedListener(callback: () => void) {
+    const index = this._messagesUpdatedListeners.indexOf(callback);
+    if (index > -1) {
+      this._messagesUpdatedListeners.splice(index, 1);
+    }
+  }
+
+  /**
+   * Removes a specific listener for when embedded messaging is disabled.
+   *
+   * @param callback - The callback function that was previously registered.
+   *
+   * @example
+   * ```typescript
+   * const listener = () => {
+   *   console.log('Embedded messaging disabled');
+   * };
+   * Iterable.embeddedManager.addEmbeddedMessagingDisabledListener(listener);
+   * // Later, remove the specific listener
+   * Iterable.embeddedManager.removeEmbeddedMessagingDisabledListener(listener);
+   * ```
+   */
+  removeEmbeddedMessagingDisabledListener(callback: () => void) {
+    const index = this._embeddedMessagingDisabledListeners.indexOf(callback);
+    if (index > -1) {
+      this._embeddedMessagingDisabledListeners.splice(index, 1);
+    }
   }
 
   /**
    * Removes all listeners for embedded message events.
    *
    * This removes all listeners for both `receivedIterableEmbeddedMessagesChanged`
-   * and `receivedIterableEmbeddedMessagingDisabled` events.
+   * and `receivedIterableEmbeddedMessagingDisabled` events, including the
+   * internal lists of listeners.
    *
    * @example
    * ```typescript
@@ -354,5 +434,8 @@ export class IterableEmbeddedManager {
     RNEventEmitter.removeAllListeners(
       IterableEventName.receivedIterableEmbeddedMessagingDisabled
     );
+    // Clear internal listener lists
+    this._messagesUpdatedListeners = [];
+    this._embeddedMessagingDisabledListeners = [];
   }
 }
