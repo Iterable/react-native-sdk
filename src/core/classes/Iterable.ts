@@ -950,6 +950,9 @@ export class Iterable {
     RNEventEmitter.removeAllListeners(
       IterableEventName.handleAuthFailureCalled
     );
+    RNEventEmitter.removeAllListeners(
+      IterableEventName.handleEmbeddedMessageUpdateCalled
+    );
   }
 
   /**
@@ -1080,6 +1083,15 @@ export class Iterable {
 
           // Call the actual JWT error with `authFailure` object.
           Iterable.savedConfig?.onJwtError?.(authFailureResponse);
+        }
+      );
+    }
+
+    if (Iterable.savedConfig.onEmbeddedMessageUpdate) {
+      RNEventEmitter.addListener(
+        IterableEventName.handleEmbeddedMessageUpdateCalled,
+        () => {
+          Iterable.savedConfig.onEmbeddedMessageUpdate?.();
         }
       );
     }

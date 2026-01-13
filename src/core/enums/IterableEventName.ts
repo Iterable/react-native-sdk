@@ -19,4 +19,6 @@ export enum IterableEventName {
   handleAuthSuccessCalled = 'handleAuthSuccessCalled',
   /** Event that fires when authentication with Iterable fails */
   handleAuthFailureCalled = 'handleAuthFailureCalled',
+  /** Event that fires when embedded messages are updated */
+  handleEmbeddedMessageUpdateCalled = 'handleEmbeddedMessageUpdateCalled',
 }
