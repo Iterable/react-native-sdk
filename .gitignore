@@ -93,3 +93,4 @@ docs/
 
 # Local Netlify folder
 .netlify
+.metals/
