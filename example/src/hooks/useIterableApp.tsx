@@ -6,7 +6,7 @@ import {
   useState,
   type FunctionComponent,
 } from 'react';
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
 
 import {
   Iterable,
@@ -252,6 +252,12 @@ export const IterableAppProvider: FunctionComponent<
             '`Iterable.initialize` failed with the following error',
             err
           );
+
+          if (Platform.OS === 'ios' && getUserId()) {
+            setIsInitialized(true);
+            return login();
+          }
+
           setIsInitialized(false);
           setLoginInProgress(false);
           return Promise.reject(err);
