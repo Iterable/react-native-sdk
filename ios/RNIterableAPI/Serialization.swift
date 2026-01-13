@@ -285,21 +285,27 @@ extension InboxImpressionTracker.RowInfo {
 }
 
 extension IterableEmbeddedMessage {
-  func toDict() -> [AnyHashable: Any] {
+  func toDict() -> [AnyHashable: Any]? {
     var dict = [AnyHashable: Any]()
 
-    // Serialize metadata (which is Codable)
-    if let metadataDict = SerializationUtil.encodableToDictionary(encodable: metadata) {
-      dict["metadata"] = metadataDict
+    // CRITICAL: Metadata is required - fail if missing
+    guard let metadataDict = SerializationUtil.encodableToDictionary(encodable: metadata) else {
+      ITBError("Failed to serialize embedded message metadata. Dropping invalid message.")
+      return nil
+    }
+    dict["metadata"] = metadataDict
+
+    // IMPORTANT: Elements are optional, but if present and fail to serialize, that's bad
+    if let elements = elements {
+      if let elementsDict = SerializationUtil.encodableToDictionary(encodable: elements) {
+        dict["elements"] = elementsDict
+      } else {
+        ITBError("Failed to serialize embedded message elements. Message will not be displayable.")
+        return nil
+      }
     }
 
-    // Serialize elements if present (which is Codable)
-    if let elements = elements,
-       let elementsDict = SerializationUtil.encodableToDictionary(encodable: elements) {
-      dict["elements"] = elementsDict
-    }
-
-    // Add payload directly
+    // Payload doesn't need serialization - it's already a dictionary
     if let payload = payload {
       dict["payload"] = payload
     }
