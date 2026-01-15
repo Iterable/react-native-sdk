@@ -224,6 +224,41 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
     moduleImpl.pauseAuthRetries(pauseRetry);
   }
 
+  @Override
+  public void syncEmbeddedMessages() {
+    moduleImpl.syncEmbeddedMessages();
+  }
+
+  @Override
+  public void startEmbeddedSession() {
+    moduleImpl.startEmbeddedSession();
+  }
+
+  @Override
+  public void endEmbeddedSession() {
+    moduleImpl.endEmbeddedSession();
+  }
+
+  @Override
+  public void startEmbeddedImpression(String messageId, double placementId) {
+    moduleImpl.startEmbeddedImpression(messageId, (int) placementId);
+  }
+
+  @Override
+  public void pauseEmbeddedImpression(String messageId) {
+    moduleImpl.pauseEmbeddedImpression(messageId);
+  }
+
+  @Override
+  public void getEmbeddedMessages(@Nullable ReadableArray placementIds, Promise promise) {
+    moduleImpl.getEmbeddedMessages(placementIds, promise);
+  }
+
+  @Override
+  public void trackEmbeddedClick(ReadableMap message, String buttonId, String clickedUrl) {
+    moduleImpl.trackEmbeddedClick(message, buttonId, clickedUrl);
+  }
+
   public void sendEvent(@NonNull String eventName, @Nullable Object eventData) {
     moduleImpl.sendEvent(eventName, eventData);
   }

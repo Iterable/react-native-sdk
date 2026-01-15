@@ -2,6 +2,7 @@
 
 #if RCT_NEW_ARCH_ENABLED
   #import "RNIterableAPISpec.h"
+  #import <string>
 #endif
 
 #import <IterableSDK/IterableSDK.h>
@@ -12,6 +13,7 @@
 @protocol IterableCustomActionDelegate;
 @protocol IterableAuthDelegate;
 @protocol IterableURLDelegate;
+@protocol IterableEmbeddedUpdateDelegate;
 typedef NS_ENUM(NSInteger, InAppShowResponse) {
   show = 0,
   skip = 1,
@@ -277,6 +279,56 @@ RCT_EXPORT_MODULE()
   [_swiftAPI pauseAuthRetries:pauseRetry];
 }
 
+- (void)startEmbeddedSession {
+  [_swiftAPI startEmbeddedSession];
+}
+
+- (void)endEmbeddedSession {
+  [_swiftAPI endEmbeddedSession];
+}
+
+- (void)syncEmbeddedMessages {
+  [_swiftAPI syncEmbeddedMessages];
+}
+
+- (void)getEmbeddedMessages:(NSArray *_Nullable)placementIds
+                    resolve:(RCTPromiseResolveBlock)resolve
+                     reject:(RCTPromiseRejectBlock)reject {
+  [_swiftAPI getEmbeddedMessages:placementIds resolver:resolve rejecter:reject];
+}
+
+- (void)startEmbeddedImpression:(NSString *)messageId placementId:(double)placementId {
+  [_swiftAPI startEmbeddedImpression:messageId placementId:placementId];
+}
+
+- (void)pauseEmbeddedImpression:(NSString *)messageId {
+  [_swiftAPI pauseEmbeddedImpression:messageId];
+}
+
+- (void)trackEmbeddedClick:(JS::NativeRNIterableAPI::EmbeddedMessage &)message
+                  buttonId:(NSString *_Nullable)buttonId
+                clickedUrl:(NSString *_Nullable)clickedUrl {
+  // The TurboModule bridge requires us to use the C++ type in the signature,
+  // but we need to convert it to NSDictionary to pass to Swift.
+  // The C++ struct wraps an NSDictionary, and the generated methods already
+  // return NSString*/NSNumber* types, so we just need to reconstruct the dict.
+  NSMutableDictionary *messageDict = [NSMutableDictionary new];
+
+  // Convert metadata (the accessor methods already return proper ObjC types)
+  NSMutableDictionary *metadataDict = [NSMutableDictionary new];
+  metadataDict[@"messageId"] = message.metadata().messageId();
+  metadataDict[@"placementId"] = @(message.metadata().placementId());
+  if (message.metadata().campaignId().has_value()) {
+    metadataDict[@"campaignId"] = @(*message.metadata().campaignId());
+  }
+  if (message.metadata().isProof().has_value()) {
+    metadataDict[@"isProof"] = @(*message.metadata().isProof());
+  }
+  messageDict[@"metadata"] = metadataDict;
+
+  [_swiftAPI trackEmbeddedClick:messageDict buttonId:buttonId clickedUrl:clickedUrl];
+}
+
 - (void)wakeApp {
   // Placeholder function -- this method is only used in Android
 }
@@ -505,6 +557,34 @@ RCT_EXPORT_METHOD(passAlongAuthToken : (NSString *_Nullable)authToken) {
 
 RCT_EXPORT_METHOD(pauseAuthRetries : (BOOL)pauseRetry) {
   [_swiftAPI pauseAuthRetries:pauseRetry];
+}
+
+RCT_EXPORT_METHOD(startEmbeddedSession) {
+  [_swiftAPI startEmbeddedSession];
+}
+
+RCT_EXPORT_METHOD(endEmbeddedSession) {
+  [_swiftAPI endEmbeddedSession];
+}
+
+RCT_EXPORT_METHOD(syncEmbeddedMessages) {
+  [_swiftAPI syncEmbeddedMessages];
+}
+
+RCT_EXPORT_METHOD(getEmbeddedMessages : (NSArray *_Nullable)placementIds resolve : (RCTPromiseResolveBlock)resolve reject : (RCTPromiseRejectBlock)reject) {
+  [_swiftAPI getEmbeddedMessages:placementIds resolver:resolve rejecter:reject];
+}
+
+RCT_EXPORT_METHOD(startEmbeddedImpression : (NSString *)messageId placementId : (double)placementId) {
+  [_swiftAPI startEmbeddedImpression:messageId placementId:placementId];
+}
+
+RCT_EXPORT_METHOD(pauseEmbeddedImpression : (NSString *)messageId) {
+  [_swiftAPI pauseEmbeddedImpression:messageId];
+}
+
+RCT_EXPORT_METHOD(trackEmbeddedClick : (NSDictionary *)message buttonId : (NSString *_Nullable)buttonId clickedUrl : (NSString *_Nullable)clickedUrl) {
+  [_swiftAPI trackEmbeddedClick:message buttonId:buttonId clickedUrl:clickedUrl];
 }
 
 RCT_EXPORT_METHOD(wakeApp) {
