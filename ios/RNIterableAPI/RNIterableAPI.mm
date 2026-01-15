@@ -295,6 +295,14 @@ RCT_EXPORT_MODULE()
   [_swiftAPI getEmbeddedMessages:placementIds resolver:resolve rejecter:reject];
 }
 
+- (void)startEmbeddedImpression:(NSString *)messageId placementId:(double)placementId {
+  [_swiftAPI startEmbeddedImpression:messageId placementId:placementId];
+}
+
+- (void)pauseEmbeddedImpression:(NSString *)messageId {
+  [_swiftAPI pauseEmbeddedImpression:messageId];
+}
+
 - (void)wakeApp {
   // Placeholder function -- this method is only used in Android
 }
@@ -539,6 +547,14 @@ RCT_EXPORT_METHOD(syncEmbeddedMessages) {
 
 RCT_EXPORT_METHOD(getEmbeddedMessages : (NSArray *_Nullable)placementIds resolve : (RCTPromiseResolveBlock)resolve reject : (RCTPromiseRejectBlock)reject) {
   [_swiftAPI getEmbeddedMessages:placementIds resolver:resolve rejecter:reject];
+}
+
+RCT_EXPORT_METHOD(startEmbeddedImpression : (NSString *)messageId placementId : (double)placementId) {
+  [_swiftAPI startEmbeddedImpression:messageId placementId:placementId];
+}
+
+RCT_EXPORT_METHOD(pauseEmbeddedImpression : (NSString *)messageId) {
+  [_swiftAPI pauseEmbeddedImpression:messageId];
 }
 
 RCT_EXPORT_METHOD(wakeApp) {

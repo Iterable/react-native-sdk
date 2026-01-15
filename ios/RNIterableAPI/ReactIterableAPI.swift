@@ -537,6 +537,18 @@ import React
     resolver(messages.map { $0.toDict() })
   }
 
+  @objc(startEmbeddedImpression:placementId:)
+  public func startEmbeddedImpression(messageId: String, placementId: Double) {
+    ITBInfo()
+    EmbeddedSessionManager.shared.startImpression(messageId: messageId, placementId: placementId)
+  }
+
+  @objc(pauseEmbeddedImpression:)
+  public func pauseEmbeddedImpression(messageId: String) {
+    ITBInfo()
+    EmbeddedSessionManager.shared.pauseImpression(messageId: messageId)
+  }
+
   // MARK: Private
   private var shouldEmit = false
   private let _methodQueue = DispatchQueue(label: String(describing: ReactIterableAPI.self))
