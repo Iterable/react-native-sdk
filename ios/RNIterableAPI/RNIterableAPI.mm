@@ -13,6 +13,7 @@
 @protocol IterableCustomActionDelegate;
 @protocol IterableAuthDelegate;
 @protocol IterableURLDelegate;
+@protocol IterableEmbeddedUpdateDelegate;
 typedef NS_ENUM(NSInteger, InAppShowResponse) {
   show = 0,
   skip = 1,

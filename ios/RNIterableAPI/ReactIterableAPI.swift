@@ -33,6 +33,8 @@ import React
     case receivedIterableInboxChanged
     case handleAuthSuccessCalled
     case handleAuthFailureCalled
+    case handleEmbeddedMessageUpdateCalled
+    case handleEmbeddedMessagingDisabledCalled
   }
 
   @objc public static var supportedEvents: [String] {
@@ -651,6 +653,14 @@ import React
       }
 
       IterableAPI.setDeviceAttribute(name: "reactNativeSDKVersion", value: version)
+      
+      // Add embedded update listener if any callback is present
+      let onEmbeddedMessageUpdatePresent = configDict["onEmbeddedMessageUpdatePresent"] as? Bool ?? false
+      let onEmbeddedMessagingDisabledPresent = configDict["onEmbeddedMessagingDisabledPresent"] as? Bool ?? false
+      
+      if onEmbeddedMessageUpdatePresent || onEmbeddedMessagingDisabledPresent {
+        IterableAPI.embeddedManager.addUpdateListener(self)
+      }
     }
   }
 
@@ -806,5 +816,27 @@ extension ReactIterableAPI: IterableAuthDelegate {
   }
 
   public func onTokenRegistrationFailed(_ reason: String?) {
+  }
+}
+
+extension ReactIterableAPI: IterableEmbeddedUpdateDelegate {
+  public func onMessagesUpdated() {
+    ITBInfo()
+    guard shouldEmit else {
+      return
+    }
+    delegate?.sendEvent(
+      withName: EventName.handleEmbeddedMessageUpdateCalled.rawValue,
+      body: nil as Any?)
+  }
+  
+  public func onEmbeddedMessagingDisabled() {
+    ITBInfo()
+    guard shouldEmit else {
+      return
+    }
+    delegate?.sendEvent(
+      withName: EventName.handleEmbeddedMessagingDisabledCalled.rawValue,
+      body: nil as Any?)
   }
 }

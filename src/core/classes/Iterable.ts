@@ -950,6 +950,12 @@ export class Iterable {
     RNEventEmitter.removeAllListeners(
       IterableEventName.handleAuthFailureCalled
     );
+    RNEventEmitter.removeAllListeners(
+      IterableEventName.handleEmbeddedMessageUpdateCalled
+    );
+    RNEventEmitter.removeAllListeners(
+      IterableEventName.handleEmbeddedMessagingDisabledCalled
+    );
   }
 
   /**
@@ -1082,6 +1088,26 @@ export class Iterable {
           Iterable.savedConfig?.onJwtError?.(authFailureResponse);
         }
       );
+    }
+
+    if (Iterable.savedConfig.enableEmbeddedMessaging) {
+      if (Iterable.savedConfig.onEmbeddedMessageUpdate) {
+        RNEventEmitter.addListener(
+          IterableEventName.handleEmbeddedMessageUpdateCalled,
+          () => {
+            Iterable.savedConfig.onEmbeddedMessageUpdate?.();
+          }
+        );
+      }
+
+      if (Iterable.savedConfig.onEmbeddedMessagingDisabled) {
+        RNEventEmitter.addListener(
+          IterableEventName.handleEmbeddedMessagingDisabledCalled,
+          () => {
+            Iterable.savedConfig.onEmbeddedMessagingDisabled?.();
+          }
+        );
+      }
     }
   }
 

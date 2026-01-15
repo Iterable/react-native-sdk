@@ -340,6 +340,42 @@ export class IterableConfig {
   enableEmbeddedMessaging = false;
 
   /**
+   * A callback function that is called when embedded messages are updated.
+   *
+   * This callback is triggered when the local cache of embedded messages changes,
+   * such as when new messages arrive or existing messages are removed.
+   *
+   * @example
+   * ```typescript
+   * const config = new IterableConfig();
+   * config.onEmbeddedMessageUpdate = () => {
+   *   console.log('Embedded messages updated!');
+   *   // Refresh your UI to display the latest messages
+   * };
+   * Iterable.initialize('<YOUR_API_KEY>', config);
+   * ```
+   */
+  onEmbeddedMessageUpdate?: () => void;
+
+  /**
+   * A callback function that is called when embedded messaging is disabled.
+   *
+   * This callback is triggered when embedded messaging becomes unavailable,
+   * which can happen due to configuration issues or API errors.
+   *
+   * @example
+   * ```typescript
+   * const config = new IterableConfig();
+   * config.onEmbeddedMessagingDisabled = () => {
+   *   console.warn('Embedded messaging has been disabled');
+   *   // Hide embedded message UI or show error state
+   * };
+   * Iterable.initialize('<YOUR_API_KEY>', config);
+   * ```
+   */
+  onEmbeddedMessagingDisabled?: () => void;
+
+  /**
    * Converts the IterableConfig instance to a dictionary object.
    *
    * @returns An object representing the configuration.
@@ -377,6 +413,21 @@ export class IterableConfig {
        */
       // eslint-disable-next-line eqeqeq
       authHandlerPresent: this.authHandler != undefined,
+      /**
+       * A boolean indicating if an embedded message update callback is present.
+       *
+       * TODO: Figure out if this is purposeful
+       */
+      // eslint-disable-next-line eqeqeq
+      onEmbeddedMessageUpdatePresent: this.onEmbeddedMessageUpdate != undefined,
+      /**
+       * A boolean indicating if an embedded messaging disabled callback is present.
+       *
+       * TODO: Figure out if this is purposeful
+       */
+      // eslint-disable-next-line eqeqeq
+      onEmbeddedMessagingDisabledPresent:
+        this.onEmbeddedMessagingDisabled != undefined,
       /** The log level for the SDK. */
       logLevel: this.logLevel,
       expiringAuthTokenRefreshPeriod: this.expiringAuthTokenRefreshPeriod,
