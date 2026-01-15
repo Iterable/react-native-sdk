@@ -549,6 +549,39 @@ import React
     EmbeddedSessionManager.shared.pauseImpression(messageId: messageId)
   }
 
+  @objc(trackEmbeddedClick:buttonId:clickedUrl:)
+  public func trackEmbeddedClick(
+    message: NSDictionary, buttonId: String?, clickedUrl: String?
+  ) {
+    ITBInfo()
+
+    // Extract message ID from the dictionary
+    guard let messageDict = message as? [AnyHashable: Any],
+          let metadataDict = messageDict["metadata"] as? [AnyHashable: Any],
+          let messageId = metadataDict["messageId"] as? String else {
+      ITBError("Could not extract messageId from message dictionary")
+      return
+    }
+
+    // Find the message in the embedded manager's cache
+    let messages = IterableAPI.embeddedManager.getMessages()
+    guard let embeddedMessage = messages.first(where: { $0.metadata.messageId == messageId }) else {
+      ITBError("Could not find embedded message with id: \(messageId)")
+      return
+    }
+
+    guard let clickedUrl = clickedUrl else {
+      ITBError("clickedUrl is required for trackEmbeddedClick")
+      return
+    }
+
+    IterableAPI.track(
+      embeddedMessageClick: embeddedMessage,
+      buttonIdentifier: buttonId,
+      clickedUrl: clickedUrl
+    )
+  }
+
   // MARK: Private
   private var shouldEmit = false
   private let _methodQueue = DispatchQueue(label: String(describing: ReactIterableAPI.self))
