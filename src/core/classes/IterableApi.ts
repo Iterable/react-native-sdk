@@ -552,14 +552,6 @@ export class IterableApi {
   }
 
   /**
-   * Get the embedded placement IDs.
-   */
-  static getEmbeddedPlacementIds() {
-    IterableLogger.log('getEmbeddedPlacementIds');
-    return RNIterableAPI.getEmbeddedPlacementIds();
-  }
-
-  /**
    * Get the embedded messages.
    *
    * @returns A Promise that resolves to an array of embedded messages.

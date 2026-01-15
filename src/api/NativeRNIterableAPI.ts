@@ -151,7 +151,6 @@ export interface Spec extends TurboModule {
   endEmbeddedSession(): void;
   startEmbeddedImpression(messageId: string, placementId: number): void;
   pauseEmbeddedImpression(messageId: string): void;
-  getEmbeddedPlacementIds(): Promise<number[]>;
   getEmbeddedMessages(
     placementIds: number[] | null
   ): Promise<EmbeddedMessage[]>;

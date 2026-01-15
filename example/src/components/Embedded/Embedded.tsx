@@ -1,4 +1,4 @@
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useCallback, useState } from 'react';
 import {
   Iterable,
@@ -10,21 +10,23 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from './Embedded.styles';
 
 export const Embedded = () => {
-  const [placementIds, setPlacementIds] = useState<number[]>([]);
+  const [placementIdsInput, setPlacementIdsInput] = useState<string>('');
   const [embeddedMessages, setEmbeddedMessages] = useState<
     IterableEmbeddedMessage[]
   >([]);
 
+  // Parse placement IDs from input
+  const parsedPlacementIds = placementIdsInput
+    .split(',')
+    .map((id) => id.trim())
+    .filter((id) => id !== '')
+    .map((id) => parseInt(id, 10))
+    .filter((id) => !isNaN(id));
+
+  const idsToFetch = parsedPlacementIds.length > 0 ? parsedPlacementIds : null;
+
   const syncEmbeddedMessages = useCallback(() => {
     Iterable.embeddedManager.syncMessages();
-  }, []);
-
-  const getPlacementIds = useCallback(() => {
-    return Iterable.embeddedManager.getPlacementIds().then((ids: unknown) => {
-      console.log(ids);
-      setPlacementIds(ids as number[]);
-      return ids;
-    });
   }, []);
 
   const startEmbeddedSession = useCallback(() => {
@@ -41,12 +43,20 @@ export const Embedded = () => {
     Iterable.embeddedManager.endSession();
   }, []);
 
-  const getEmbeddedMessages = useCallback((ids: number[] | null = null) => {
-    Iterable.embeddedManager.getMessages(ids).then((messages: IterableEmbeddedMessage[]) => {
+  const getEmbeddedMessages = useCallback(() => {
+    // Don't fetch if no IDs
+    if (parsedPlacementIds.length === 0) {
+      console.log('No placement IDs entered, button should be disabled');
+      return;
+    }
+
+    console.log('Fetching messages for placement IDs:', idsToFetch);
+
+    Iterable.embeddedManager.getMessages(idsToFetch).then((messages: IterableEmbeddedMessage[]) => {
         setEmbeddedMessages(messages);
         console.log(messages);
       });
-  }, []);
+  }, [idsToFetch, parsedPlacementIds.length]);
 
   const startEmbeddedImpression = useCallback(
     (message: IterableEmbeddedMessage) => {
@@ -82,23 +92,20 @@ export const Embedded = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.text}>EMBEDDED</Text>
+      <Text style={styles.title}>Embedded</Text>
+      {!Iterable.embeddedManager.isEnabled && (
+        <View style={styles.warningContainer}>
+          <Text style={styles.warningText}>
+            ⚠️ Embedded messaging is disabled. Please enable it in your Iterable config.
+          </Text>
+        </View>
+      )}
+      <Text style={styles.subtitle}>
+        Enter placement IDs to fetch embedded messages
+      </Text>
       <View style={styles.utilitySection}>
-        <Text style={styles.text}>
-          Does embedded class exist? {Iterable.embeddedManager ? 'Yes' : 'No'}
-        </Text>
-        <Text style={styles.text}>
-          Is embedded manager enabled?{' '}
-          {Iterable.embeddedManager.isEnabled ? 'Yes' : 'No'}
-        </Text>
-        <Text style={styles.text}>
-          Placement ids: [{placementIds.join(', ')}]
-        </Text>
         <TouchableOpacity style={styles.button} onPress={syncEmbeddedMessages}>
           <Text style={styles.buttonText}>Sync messages</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={getPlacementIds}>
-          <Text style={styles.buttonText}>Get placement ids</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={startEmbeddedSession}>
           <Text style={styles.buttonText}>Start session</Text>
@@ -106,9 +113,34 @@ export const Embedded = () => {
         <TouchableOpacity style={styles.button} onPress={endEmbeddedSession}>
           <Text style={styles.buttonText}>End session</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => getEmbeddedMessages(placementIds)}>
-          <Text style={styles.buttonText}>Get messages</Text>
-        </TouchableOpacity>
+        <View style={styles.inputContainer}>
+          <Text style={styles.text}>
+            Placement IDs (comma-separated):
+          </Text>
+          <TextInput
+            style={styles.textInput}
+            placeholder="e.g., 1, 2, 3"
+            placeholderTextColor="#999"
+            value={placementIdsInput}
+            onChangeText={setPlacementIdsInput}
+            keyboardType="numbers-and-punctuation"
+          />
+          <TouchableOpacity
+            style={[
+              styles.button,
+              parsedPlacementIds.length === 0 && styles.buttonDisabled
+            ]}
+            onPress={getEmbeddedMessages}
+            disabled={parsedPlacementIds.length === 0}
+          >
+            <Text style={[
+              styles.buttonText,
+              parsedPlacementIds.length === 0 && styles.buttonTextDisabled
+            ]}>
+              Get messages for placement ids
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
       <View style={styles.hr} />
       <ScrollView>

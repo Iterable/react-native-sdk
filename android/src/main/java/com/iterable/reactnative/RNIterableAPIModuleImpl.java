@@ -719,23 +719,6 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         IterableApi.getInstance().getEmbeddedManager().getEmbeddedSessionManager().pauseImpression(messageId);
     }
 
-    public void getEmbeddedPlacementIds(Promise promise) {
-        IterableLogger.d(TAG, "getEmbeddedPlacementIds");
-        try {
-            List<Long> placementIds = IterableApi.getInstance().getEmbeddedManager().getPlacementIds();
-            WritableArray writableArray = Arguments.createArray();
-            if (placementIds != null) {
-                for (Long placementId : placementIds) {
-                    writableArray.pushDouble(placementId.doubleValue());
-                }
-            }
-            promise.resolve(writableArray);
-        } catch (Exception e) {
-            IterableLogger.e(TAG, "Error getting placement IDs: " + e.getLocalizedMessage());
-            promise.reject("", "Failed to get placement IDs: " + e.getLocalizedMessage());
-        }
-    }
-
     public void getEmbeddedMessages(@Nullable ReadableArray placementIds, Promise promise) {
         IterableLogger.d(TAG, "getEmbeddedMessages for placements: " + placementIds);
 
