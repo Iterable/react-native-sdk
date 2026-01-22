@@ -1,4 +1,10 @@
-import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { useCallback, useState } from 'react';
 import {
   Iterable,
@@ -44,19 +50,15 @@ export const Embedded = () => {
   }, []);
 
   const getEmbeddedMessages = useCallback(() => {
-    // Don't fetch if no IDs
-    if (parsedPlacementIds.length === 0) {
-      console.log('No placement IDs entered, button should be disabled');
-      return;
-    }
-
     console.log('Fetching messages for placement IDs:', idsToFetch);
 
-    Iterable.embeddedManager.getMessages(idsToFetch).then((messages: IterableEmbeddedMessage[]) => {
+    Iterable.embeddedManager
+      .getMessages(idsToFetch)
+      .then((messages: IterableEmbeddedMessage[]) => {
         setEmbeddedMessages(messages);
         console.log(messages);
       });
-  }, [idsToFetch, parsedPlacementIds.length]);
+  }, [idsToFetch]);
 
   const startEmbeddedImpression = useCallback(
     (message: IterableEmbeddedMessage) => {
@@ -96,7 +98,8 @@ export const Embedded = () => {
       {!Iterable.embeddedManager.isEnabled && (
         <View style={styles.warningContainer}>
           <Text style={styles.warningText}>
-            ⚠️ Embedded messaging is disabled. Please enable it in your Iterable config.
+            ⚠️ Embedded messaging is disabled. Please enable it in your Iterable
+            config.
           </Text>
         </View>
       )}
@@ -114,9 +117,7 @@ export const Embedded = () => {
           <Text style={styles.buttonText}>End session</Text>
         </TouchableOpacity>
         <View style={styles.inputContainer}>
-          <Text style={styles.text}>
-            Placement IDs (comma-separated):
-          </Text>
+          <Text style={styles.text}>Placement IDs (comma-separated):</Text>
           <TextInput
             style={styles.textInput}
             placeholder="e.g., 1, 2, 3"
@@ -125,18 +126,8 @@ export const Embedded = () => {
             onChangeText={setPlacementIdsInput}
             keyboardType="numbers-and-punctuation"
           />
-          <TouchableOpacity
-            style={[
-              styles.button,
-              parsedPlacementIds.length === 0 && styles.buttonDisabled
-            ]}
-            onPress={getEmbeddedMessages}
-            disabled={parsedPlacementIds.length === 0}
-          >
-            <Text style={[
-              styles.buttonText,
-              parsedPlacementIds.length === 0 && styles.buttonTextDisabled
-            ]}>
+          <TouchableOpacity style={styles.button} onPress={getEmbeddedMessages}>
+            <Text style={styles.buttonText}>
               Get messages for placement ids
             </Text>
           </TouchableOpacity>
