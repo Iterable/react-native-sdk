@@ -1,17 +1,10 @@
 import { StyleSheet } from 'react-native';
 import { button, buttonText, container, hr, link, input, title, subtitle } from '../../constants';
-import { neutrals, utilityColors, backgroundColors } from '../../constants/styles/colors';
+import { utilityColors, backgroundColors } from '../../constants/styles/colors';
 
 const styles = StyleSheet.create({
   button,
-  buttonDisabled: {
-    backgroundColor: neutrals.grey25,
-    opacity: 0.6,
-  },
   buttonText,
-  buttonTextDisabled: {
-    color: neutrals.grey50,
-  },
   container,
   embeddedSection: {
     display: 'flex',
