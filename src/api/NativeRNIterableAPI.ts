@@ -1,6 +1,33 @@
 import type { TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
 
+// NOTE: No types can be imported because of the way new arch works, so we have
+// to re-define the types here.
+interface EmbeddedMessage {
+  metadata: {
+    messageId: string;
+    placementId: number;
+    campaignId?: number | null;
+    isProof?: boolean;
+  };
+  elements: {
+    buttons?:
+      | {
+          id: string;
+          title?: string | null;
+          action: { type: string; data?: string } | null;
+        }[]
+      | null;
+    body?: string | null;
+    mediaUrl?: string | null;
+    mediaUrlCaption?: string | null;
+    defaultAction?: { type: string; data?: string } | null;
+    text?: { id: string; text?: string | null; label?: string | null }[] | null;
+    title?: string | null;
+  } | null;
+  payload?: { [key: string]: string | number | boolean | null } | null;
+}
+
 export interface Spec extends TurboModule {
   // Initialization
   initializeWithApiKey(
@@ -117,6 +144,21 @@ export interface Spec extends TurboModule {
   // Auth
   passAlongAuthToken(authToken?: string | null): void;
   pauseAuthRetries(pauseRetry: boolean): void;
+
+  // Embedded Messaging
+  syncEmbeddedMessages(): void;
+  startEmbeddedSession(): void;
+  endEmbeddedSession(): void;
+  startEmbeddedImpression(messageId: string, placementId: number): void;
+  pauseEmbeddedImpression(messageId: string): void;
+  getEmbeddedMessages(
+    placementIds: number[] | null
+  ): Promise<EmbeddedMessage[]>;
+  trackEmbeddedClick(
+    message: EmbeddedMessage,
+    buttonId: string | null,
+    clickedUrl: string | null
+  ): void;
 
   // Wake app -- android only
   wakeApp(): void;

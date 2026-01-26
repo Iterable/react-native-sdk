@@ -83,6 +83,10 @@ extension IterableConfig {
       config.useInMemoryStorageForInApps = useInMemoryStorageForInApp
     }
 
+    if let enableEmbeddedMessaging = dict["enableEmbeddedMessaging"] as? Bool {
+      config.enableEmbeddedMessaging = enableEmbeddedMessaging
+    }
+
     if let dataRegion = dict["dataRegion"] as? NSNumber {
       switch dataRegion {
       case 0:
@@ -277,5 +281,35 @@ extension InboxImpressionTracker.RowInfo {
 
   static func rowInfos(from rows: [[AnyHashable: Any]]) -> [InboxImpressionTracker.RowInfo] {
     return rows.compactMap(InboxImpressionTracker.RowInfo.from(dict:))
+  }
+}
+
+extension IterableEmbeddedMessage {
+  func toDict() -> [AnyHashable: Any]? {
+    var dict = [AnyHashable: Any]()
+
+    // CRITICAL: Metadata is required - fail if missing
+    guard let metadataDict = SerializationUtil.encodableToDictionary(encodable: metadata) else {
+      ITBError("Failed to serialize embedded message metadata. Dropping invalid message.")
+      return nil
+    }
+    dict["metadata"] = metadataDict
+
+    // IMPORTANT: Elements are optional, but if present and fail to serialize, that's bad
+    if let elements = elements {
+      if let elementsDict = SerializationUtil.encodableToDictionary(encodable: elements) {
+        dict["elements"] = elementsDict
+      } else {
+        ITBError("Failed to serialize embedded message elements. Message will not be displayable.")
+        return nil
+      }
+    }
+
+    // Payload doesn't need serialization - it's already a dictionary
+    if let payload = payload {
+      dict["payload"] = payload
+    }
+
+    return dict
   }
 }

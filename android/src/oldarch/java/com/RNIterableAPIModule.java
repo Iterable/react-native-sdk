@@ -228,6 +228,40 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
       moduleImpl.pauseAuthRetries(pauseRetry);
     }
 
+    @ReactMethod
+    public void syncEmbeddedMessages() {
+      moduleImpl.syncEmbeddedMessages();
+    }
+
+    @ReactMethod
+    public void startEmbeddedSession() {
+      moduleImpl.startEmbeddedSession();
+    }
+
+    @ReactMethod
+    public void endEmbeddedSession() {
+      moduleImpl.endEmbeddedSession();
+    }
+
+    @ReactMethod
+    public void startEmbeddedImpression(String messageId, double placementId) {
+      moduleImpl.startEmbeddedImpression(messageId, (int) placementId);
+    }
+
+    @ReactMethod
+    public void pauseEmbeddedImpression(String messageId) {
+      moduleImpl.pauseEmbeddedImpression(messageId);
+    }
+
+    @ReactMethod
+    public void getEmbeddedMessages(@Nullable ReadableArray placementIds, Promise promise) {
+      moduleImpl.getEmbeddedMessages(placementIds, promise);
+    }
+
+    @ReactMethod
+    public void trackEmbeddedClick(ReadableMap message, String buttonId, String clickedUrl) {
+      moduleImpl.trackEmbeddedClick(message, buttonId, clickedUrl);
+    }
 
     public void sendEvent(@NonNull String eventName, @Nullable Object eventData) {
       moduleImpl.sendEvent(eventName, eventData);

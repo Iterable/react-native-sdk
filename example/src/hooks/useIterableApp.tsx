@@ -6,7 +6,7 @@ import {
   useState,
   type FunctionComponent,
 } from 'react';
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
 
 import {
   Iterable,
@@ -125,7 +125,7 @@ export const IterableAppProvider: FunctionComponent<
     return jwtToken;
   }, [userId]);
 
-  const login = useCallback(() => {
+  const login = useCallback(async () => {
     const id = userId ?? process.env.ITBL_ID;
 
     if (!id) return Promise.reject('No User ID or Email set');
@@ -134,12 +134,18 @@ export const IterableAppProvider: FunctionComponent<
 
     const fn = getIsEmail(id) ? Iterable.setEmail : Iterable.setUserId;
 
-    fn(id);
+    let token;
+
+    if (process.env.ITBL_IS_JWT_ENABLED === 'true' && process.env.ITBL_JWT_SECRET) {
+      token = await getJwtToken();
+    }
+
+    fn(id, token);
     setIsLoggedIn(true);
     setLoginInProgress(false);
 
     return Promise.resolve(true);
-  }, [userId]);
+  }, [getJwtToken, userId]);
 
   const initialize = useCallback(
     (navigation: Navigation) => {
@@ -192,6 +198,16 @@ export const IterableAppProvider: FunctionComponent<
 
       config.logLevel = IterableLogLevel.debug;
 
+      config.enableEmbeddedMessaging = true;
+
+      config.onEmbeddedMessageUpdate = () => {
+        console.log('onEmbeddedMessageUpdate');
+      };
+
+      config.onEmbeddedMessagingDisabled = () => {
+        console.log('onEmbeddedMessagingDisabled');
+      };
+
       config.inAppHandler = () => IterableInAppShowResponse.show;
 
       if (
@@ -242,6 +258,12 @@ export const IterableAppProvider: FunctionComponent<
             '`Iterable.initialize` failed with the following error',
             err
           );
+
+          if (Platform.OS === 'ios' && getUserId()) {
+            setIsInitialized(true);
+            return login();
+          }
+
           setIsInitialized(false);
           setLoginInProgress(false);
           return Promise.reject(err);

@@ -12,6 +12,7 @@ import { IterableAttributionInfo } from './IterableAttributionInfo';
 import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
+import type { IterableEmbeddedMessage } from '../../embedded/types/IterableEmbeddedMessage';
 
 /**
  * Contains functions that directly interact with the native layer.
@@ -507,7 +508,77 @@ export class IterableApi {
   // ---- End IN-APP ---- //
 
   // ====================================================== //
-  // ======================= MOSC ======================= //
+  // ======================= EMBEDDED ===================== //
+  // ====================================================== //
+
+  /**
+   * Syncs embedded local cache with the server.
+   */
+  static syncEmbeddedMessages() {
+    IterableLogger.log('syncEmbeddedMessages');
+    return RNIterableAPI.syncEmbeddedMessages();
+  }
+
+  /**
+   * Starts an embedded session.
+   */
+  static startEmbeddedSession() {
+    IterableLogger.log('startEmbeddedSession');
+    return RNIterableAPI.startEmbeddedSession();
+  }
+
+  /**
+   * Ends an embedded session.
+   */
+  static endEmbeddedSession() {
+    IterableLogger.log('endEmbeddedSession');
+    return RNIterableAPI.endEmbeddedSession();
+  }
+
+  /**
+   * Starts an embedded impression.
+   */
+  static startEmbeddedImpression(messageId: string, placementId: number) {
+    IterableLogger.log('startEmbeddedImpression: ', messageId, placementId);
+    return RNIterableAPI.startEmbeddedImpression(messageId, placementId);
+  }
+
+  /**
+   * Pauses an embedded impression.
+   */
+  static pauseEmbeddedImpression(messageId: string) {
+    IterableLogger.log('pauseEmbeddedImpression: ', messageId);
+    return RNIterableAPI.pauseEmbeddedImpression(messageId);
+  }
+
+  /**
+   * Get the embedded messages.
+   *
+   * @returns A Promise that resolves to an array of embedded messages.
+   */
+  static getEmbeddedMessages(
+    placementIds: number[] | null
+  ): Promise<IterableEmbeddedMessage[]> {
+    IterableLogger.log('getEmbeddedMessages: ', placementIds);
+    return RNIterableAPI.getEmbeddedMessages(placementIds);
+  }
+
+  /**
+   * Track an embedded click.
+   */
+  static trackEmbeddedClick(
+    message: IterableEmbeddedMessage,
+    buttonId: string | null,
+    clickedUrl: string | null
+  ) {
+    IterableLogger.log('trackEmbeddedClick: ', message, buttonId, clickedUrl);
+    return RNIterableAPI.trackEmbeddedClick(message, buttonId, clickedUrl);
+  }
+
+  // ---- End EMBEDDED ---- //
+
+  // ====================================================== //
+  // ======================= MISCELLANEOUS ================ //
   // ====================================================== //
 
   /**

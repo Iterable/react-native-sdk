@@ -15,6 +15,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.UiThreadUtil;
+import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
@@ -23,11 +24,13 @@ import com.iterable.iterableapi.InboxSessionManager;
 import com.iterable.iterableapi.IterableAction;
 import com.iterable.iterableapi.IterableActionContext;
 import com.iterable.iterableapi.IterableApi;
+import com.iterable.iterableapi.IterableAttributionInfo;
 import com.iterable.iterableapi.IterableAuthHandler;
 import com.iterable.iterableapi.IterableAuthManager;
 import com.iterable.iterableapi.IterableConfig;
 import com.iterable.iterableapi.IterableCustomActionHandler;
-import com.iterable.iterableapi.IterableAttributionInfo;
+import com.iterable.iterableapi.IterableEmbeddedMessage;
+import com.iterable.iterableapi.IterableEmbeddedUpdateHandler;
 import com.iterable.iterableapi.IterableHelper;
 import com.iterable.iterableapi.IterableInAppCloseAction;
 import com.iterable.iterableapi.IterableInAppHandler;
@@ -46,10 +49,11 @@ import org.json.JSONObject;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCustomActionHandler, IterableInAppHandler, IterableAuthHandler, IterableInAppManager.Listener {
+public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCustomActionHandler, IterableInAppHandler, IterableAuthHandler, IterableInAppManager.Listener, IterableEmbeddedUpdateHandler {
     public static final String NAME = "RNIterableAPI";
 
     private static String TAG = "RNIterableAPIModule";
@@ -89,6 +93,9 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
             configBuilder.setAuthHandler(this);
         }
 
+        // Check if embedded messaging is enabled before building config
+        boolean enableEmbeddedMessaging = configReadableMap.hasKey("enableEmbeddedMessaging") && configReadableMap.getBoolean("enableEmbeddedMessaging");
+
         IterableConfig config = configBuilder.build();
         IterableApi.initialize(reactContext, apiKey, config);
 
@@ -122,6 +129,12 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         IterableApi.getInstance().setDeviceAttribute("reactNativeSDKVersion", version);
 
         IterableApi.getInstance().getInAppManager().addListener(this);
+        IterableApi.getInstance().getEmbeddedManager().syncMessages();
+
+        // Add embedded update listener if embedded messaging is enabled
+        if (enableEmbeddedMessaging) {
+            IterableApi.getInstance().getEmbeddedManager().addUpdateListener(this);
+        }
 
         // MOB-10421: Figure out what the error cases are and handle them appropriately
         // This is just here to match the TS types and let the JS thread know when we are done initializing
@@ -152,6 +165,9 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         // override in the Android SDK.  Check with @Ayyanchira and @evantk91 to
         // see what the best approach is.
 
+        // Check if embedded messaging is enabled before building config
+        boolean enableEmbeddedMessaging = configReadableMap.hasKey("enableEmbeddedMessaging") && configReadableMap.getBoolean("enableEmbeddedMessaging");
+
         IterableConfig config = configBuilder.build();
         IterableApi.initialize(reactContext, apiKey, config);
 
@@ -185,6 +201,12 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         IterableApi.getInstance().setDeviceAttribute("reactNativeSDKVersion", version);
 
         IterableApi.getInstance().getInAppManager().addListener(this);
+        IterableApi.getInstance().getEmbeddedManager().syncMessages();
+
+        // Add embedded update listener if embedded messaging is enabled
+        if (enableEmbeddedMessaging) {
+            IterableApi.getInstance().getEmbeddedManager().addUpdateListener(this);
+        }
 
         // MOB-10421: Figure out what the error cases are and handle them appropriately
         // This is just here to match the TS types and let the JS thread know when we are done initializing
@@ -683,14 +705,111 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
     public void onInboxUpdated() {
         sendEvent(EventName.receivedIterableInboxChanged.name(), null);
     }
+
+    @Override
+    public void onMessagesUpdated() {
+        IterableLogger.d(TAG, "onMessagesUpdated");
+        sendEvent(EventName.handleEmbeddedMessageUpdateCalled.name(), null);
+    }
+
+    @Override
+    public void onEmbeddedMessagingDisabled() {
+        IterableLogger.d(TAG, "onEmbeddedMessagingDisabled");
+        sendEvent(EventName.handleEmbeddedMessagingDisabledCalled.name(), null);
+    }
+    // ---------------------------------------------------------------------------------------
+    // endregion
+
+    // ---------------------------------------------------------------------------------------
+    // region Embedded messaging
+
+    public void syncEmbeddedMessages() {
+        IterableLogger.d(TAG, "syncEmbeddedMessages");
+        IterableApi.getInstance().getEmbeddedManager().syncMessages();
+    }
+
+    public void startEmbeddedSession() {
+        IterableLogger.d(TAG, "startEmbeddedSession");
+        IterableApi.getInstance().getEmbeddedManager().getEmbeddedSessionManager().startSession();
+    }
+
+    public void endEmbeddedSession() {
+        IterableLogger.d(TAG, "endEmbeddedSession");
+        IterableApi.getInstance().getEmbeddedManager().getEmbeddedSessionManager().endSession();
+    }
+
+    public void startEmbeddedImpression(String messageId, int placementId) {
+        IterableLogger.d(TAG, "startEmbeddedImpression");
+        IterableApi.getInstance().getEmbeddedManager().getEmbeddedSessionManager().startImpression(messageId, placementId);
+    }
+
+    public void pauseEmbeddedImpression(String messageId) {
+        IterableLogger.d(TAG, "pauseEmbeddedImpression");
+        IterableApi.getInstance().getEmbeddedManager().getEmbeddedSessionManager().pauseImpression(messageId);
+    }
+
+    public void getEmbeddedMessages(@Nullable ReadableArray placementIds, Promise promise) {
+        IterableLogger.d(TAG, "getEmbeddedMessages for placements: " + placementIds);
+
+        try {
+            List<IterableEmbeddedMessage> allMessages = new ArrayList<>();
+
+            if (placementIds == null || placementIds.size() == 0) {
+                // If no placement IDs provided, get messages from all placements
+                // Get all available placement IDs and fetch messages for each
+                List<Long> allPlacementIds = IterableApi.getInstance().getEmbeddedManager().getPlacementIds();
+                IterableLogger.d(TAG, "Getting messages for all placement IDs: " + allPlacementIds);
+                
+                for (Long placementId : allPlacementIds) {
+                    List<IterableEmbeddedMessage> messages = IterableApi.getInstance().getEmbeddedManager().getMessages(placementId);
+                    if (messages != null) {
+                        allMessages.addAll(messages);
+                    }
+                }
+            } else {
+                // Convert ReadableArray to individual placement IDs and get messages for each
+                for (int i = 0; i < placementIds.size(); i++) {
+                    long placementId = placementIds.getInt(i);
+                    List<IterableEmbeddedMessage> messages = IterableApi.getInstance().getEmbeddedManager().getMessages(placementId);
+                    if (messages != null) {
+                        allMessages.addAll(messages);
+                    }
+                }
+            }
+
+            JSONArray embeddedMessageJsonArray = Serialization.serializeEmbeddedMessages(allMessages);
+            IterableLogger.d(TAG, "Messages for placements: " + embeddedMessageJsonArray);
+
+            promise.resolve(Serialization.convertJsonToArray(embeddedMessageJsonArray));
+        } catch (JSONException e) {
+            IterableLogger.e(TAG, e.getLocalizedMessage());
+            promise.reject("", "Failed to fetch messages with error " + e.getLocalizedMessage());
+        }
+    }
+
+    public void trackEmbeddedClick(ReadableMap messageMap, String buttonId, String clickedUrl) {
+        IterableLogger.d(TAG, "trackEmbeddedClick: buttonId: " + buttonId + " clickedUrl: " + clickedUrl);
+        IterableEmbeddedMessage message = Serialization.embeddedMessageFromReadableMap(messageMap);
+        if (message != null) {
+            IterableApi.getInstance().trackEmbeddedClick(message, buttonId, clickedUrl);
+        } else {
+            IterableLogger.e(TAG, "Failed to convert message map to IterableEmbeddedMessage");
+        }
+    }
+
+    // ---------------------------------------------------------------------------------------
+    // endregion
 }
 
 enum EventName {
-  handleUrlCalled,
-  handleCustomActionCalled,
-  handleInAppCalled,
   handleAuthCalled,
-  receivedIterableInboxChanged,
+  handleAuthFailureCalled,
   handleAuthSuccessCalled,
-  handleAuthFailureCalled
+  handleCustomActionCalled,
+  handleEmbeddedMessageUpdateCalled,
+  handleEmbeddedMessagingDisabledCalled,
+  handleInAppCalled,
+  handleUrlCalled,
+  receivedIterableEmbeddedMessagesChanged,
+  receivedIterableInboxChanged
 }

@@ -41,6 +41,12 @@ describe('Iterable', () => {
     nativeEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
     nativeEmitter.removeAllListeners(IterableEventName.handleAuthSuccessCalled);
     nativeEmitter.removeAllListeners(IterableEventName.handleAuthFailureCalled);
+    nativeEmitter.removeAllListeners(
+      IterableEventName.handleEmbeddedMessageUpdateCalled
+    );
+    nativeEmitter.removeAllListeners(
+      IterableEventName.handleEmbeddedMessagingDisabledCalled
+    );
 
     // Clear any pending timers
     jest.clearAllTimers();
@@ -300,37 +306,39 @@ describe('Iterable', () => {
       // WHEN config is initialized
       const config = new IterableConfig();
       // THEN config has default values
-      expect(config.pushIntegrationName).toBe(undefined);
-      expect(config.autoPushRegistration).toBe(true);
-      expect(config.checkForDeferredDeeplink).toBe(false);
-      expect(config.inAppDisplayInterval).toBe(30.0);
-      expect(config.urlHandler).toBe(undefined);
-      expect(config.customActionHandler).toBe(undefined);
-      expect(config.inAppHandler).toBe(undefined);
-      expect(config.authHandler).toBe(undefined);
-      expect(config.logLevel).toBe(IterableLogLevel.debug);
-      expect(config.logReactNativeSdkCalls).toBe(true);
-      expect(config.expiringAuthTokenRefreshPeriod).toBe(60.0);
       expect(config.allowedProtocols).toEqual([]);
       expect(config.androidSdkUseInMemoryStorageForInApps).toBe(false);
-      expect(config.useInMemoryStorageForInApps).toBe(false);
+      expect(config.authHandler).toBe(undefined);
+      expect(config.autoPushRegistration).toBe(true);
+      expect(config.checkForDeferredDeeplink).toBe(false);
+      expect(config.customActionHandler).toBe(undefined);
       expect(config.dataRegion).toBe(IterableDataRegion.US);
+      expect(config.enableEmbeddedMessaging).toBe(false);
       expect(config.encryptionEnforced).toBe(false);
+      expect(config.expiringAuthTokenRefreshPeriod).toBe(60.0);
+      expect(config.inAppDisplayInterval).toBe(30.0);
+      expect(config.inAppHandler).toBe(undefined);
+      expect(config.logLevel).toBe(IterableLogLevel.debug);
+      expect(config.logReactNativeSdkCalls).toBe(true);
+      expect(config.pushIntegrationName).toBe(undefined);
+      expect(config.urlHandler).toBe(undefined);
+      expect(config.useInMemoryStorageForInApps).toBe(false);
       const configDict = config.toDict();
-      expect(configDict.pushIntegrationName).toBe(undefined);
-      expect(configDict.autoPushRegistration).toBe(true);
-      expect(configDict.inAppDisplayInterval).toBe(30.0);
-      expect(configDict.urlHandlerPresent).toBe(false);
-      expect(configDict.customActionHandlerPresent).toBe(false);
-      expect(configDict.inAppHandlerPresent).toBe(false);
-      expect(configDict.authHandlerPresent).toBe(false);
-      expect(configDict.logLevel).toBe(IterableLogLevel.debug);
-      expect(configDict.expiringAuthTokenRefreshPeriod).toBe(60.0);
       expect(configDict.allowedProtocols).toEqual([]);
       expect(configDict.androidSdkUseInMemoryStorageForInApps).toBe(false);
-      expect(configDict.useInMemoryStorageForInApps).toBe(false);
+      expect(configDict.authHandlerPresent).toBe(false);
+      expect(configDict.autoPushRegistration).toBe(true);
+      expect(configDict.customActionHandlerPresent).toBe(false);
       expect(configDict.dataRegion).toBe(IterableDataRegion.US);
+      expect(configDict.enableEmbeddedMessaging).toBe(false);
       expect(configDict.encryptionEnforced).toBe(false);
+      expect(configDict.expiringAuthTokenRefreshPeriod).toBe(60.0);
+      expect(configDict.inAppDisplayInterval).toBe(30.0);
+      expect(configDict.inAppHandlerPresent).toBe(false);
+      expect(configDict.logLevel).toBe(IterableLogLevel.debug);
+      expect(configDict.pushIntegrationName).toBe(undefined);
+      expect(configDict.urlHandlerPresent).toBe(false);
+      expect(configDict.useInMemoryStorageForInApps).toBe(false);
     });
   });
 
@@ -1209,6 +1217,246 @@ describe('Iterable', () => {
           2,
           authToken2
         );
+      });
+    });
+  });
+
+  describe('embeddedManager', () => {
+    it('should be disabled by default', () => {
+      const config = new IterableConfig();
+      expect(config.enableEmbeddedMessaging).toBe(false);
+      expect(Iterable.embeddedManager.isEnabled).toBe(false);
+    });
+
+    it('should enable embeddedManager when config is set', async () => {
+      const config = new IterableConfig();
+      config.enableEmbeddedMessaging = true;
+      await Iterable.initialize('test-key', config);
+      expect(Iterable.embeddedManager.isEnabled).toBe(true);
+    });
+  });
+
+  describe('embedded messaging callbacks', () => {
+    describe('onEmbeddedMessageUpdate', () => {
+      it('should call onEmbeddedMessageUpdate when handleEmbeddedMessageUpdateCalled event is emitted', () => {
+        // sets up event emitter
+        const nativeEmitter = new NativeEventEmitter();
+        nativeEmitter.removeAllListeners(
+          IterableEventName.handleEmbeddedMessageUpdateCalled
+        );
+        // sets up config file and onEmbeddedMessageUpdate callback
+        const config = new IterableConfig();
+        config.logReactNativeSdkCalls = false;
+        config.enableEmbeddedMessaging = true;
+        config.onEmbeddedMessageUpdate = jest.fn();
+        // initialize Iterable object
+        Iterable.initialize('apiKey', config);
+        // WHEN handleEmbeddedMessageUpdateCalled event is emitted
+        nativeEmitter.emit(
+          IterableEventName.handleEmbeddedMessageUpdateCalled
+        );
+        // THEN onEmbeddedMessageUpdate callback is called
+        expect(config.onEmbeddedMessageUpdate).toHaveBeenCalled();
+        expect(config.onEmbeddedMessageUpdate).toHaveBeenCalledTimes(1);
+      });
+
+      it('should not set up listener if onEmbeddedMessageUpdate is not provided', () => {
+        // sets up event emitter
+        const nativeEmitter = new NativeEventEmitter();
+        nativeEmitter.removeAllListeners(
+          IterableEventName.handleEmbeddedMessageUpdateCalled
+        );
+        // sets up config without onEmbeddedMessageUpdate callback
+        const config = new IterableConfig();
+        config.logReactNativeSdkCalls = false;
+        // initialize Iterable object
+        Iterable.initialize('apiKey', config);
+        // WHEN handleEmbeddedMessageUpdateCalled event is emitted
+        // THEN no error should occur (no listener was set up)
+        expect(() => {
+          nativeEmitter.emit(
+            IterableEventName.handleEmbeddedMessageUpdateCalled
+          );
+        }).not.toThrow();
+      });
+
+      it('should call onEmbeddedMessageUpdate multiple times when event is emitted multiple times', () => {
+        // sets up event emitter
+        const nativeEmitter = new NativeEventEmitter();
+        nativeEmitter.removeAllListeners(
+          IterableEventName.handleEmbeddedMessageUpdateCalled
+        );
+        // sets up config with callback
+        const config = new IterableConfig();
+        config.logReactNativeSdkCalls = false;
+        config.enableEmbeddedMessaging = true;
+        config.onEmbeddedMessageUpdate = jest.fn();
+        // initialize Iterable object
+        Iterable.initialize('apiKey', config);
+        // WHEN handleEmbeddedMessageUpdateCalled event is emitted multiple times
+        nativeEmitter.emit(
+          IterableEventName.handleEmbeddedMessageUpdateCalled
+        );
+        nativeEmitter.emit(
+          IterableEventName.handleEmbeddedMessageUpdateCalled
+        );
+        nativeEmitter.emit(
+          IterableEventName.handleEmbeddedMessageUpdateCalled
+        );
+        // THEN onEmbeddedMessageUpdate callback is called three times
+        expect(config.onEmbeddedMessageUpdate).toHaveBeenCalledTimes(3);
+      });
+
+      it('should include onEmbeddedMessageUpdatePresent flag in config dict when callback is provided', () => {
+        // GIVEN a config with onEmbeddedMessageUpdate callback
+        const config = new IterableConfig();
+        config.onEmbeddedMessageUpdate = jest.fn();
+        // WHEN toDict is called
+        const configDict = config.toDict();
+        // THEN onEmbeddedMessageUpdatePresent is true
+        expect(configDict.onEmbeddedMessageUpdatePresent).toBe(true);
+      });
+
+      it('should set onEmbeddedMessageUpdatePresent flag to false when callback is not provided', () => {
+        // GIVEN a config without onEmbeddedMessageUpdate callback
+        const config = new IterableConfig();
+        // WHEN toDict is called
+        const configDict = config.toDict();
+        // THEN onEmbeddedMessageUpdatePresent is false
+        expect(configDict.onEmbeddedMessageUpdatePresent).toBe(false);
+      });
+    });
+
+    describe('onEmbeddedMessagingDisabled', () => {
+      it('should call onEmbeddedMessagingDisabled when handleEmbeddedMessagingDisabledCalled event is emitted', () => {
+        // sets up event emitter
+        const nativeEmitter = new NativeEventEmitter();
+        nativeEmitter.removeAllListeners(
+          IterableEventName.handleEmbeddedMessagingDisabledCalled
+        );
+        // sets up config file and onEmbeddedMessagingDisabled callback
+        const config = new IterableConfig();
+        config.logReactNativeSdkCalls = false;
+        config.enableEmbeddedMessaging = true;
+        config.onEmbeddedMessagingDisabled = jest.fn();
+        // initialize Iterable object
+        Iterable.initialize('apiKey', config);
+        // WHEN handleEmbeddedMessagingDisabledCalled event is emitted
+        nativeEmitter.emit(
+          IterableEventName.handleEmbeddedMessagingDisabledCalled
+        );
+        // THEN onEmbeddedMessagingDisabled callback is called
+        expect(config.onEmbeddedMessagingDisabled).toHaveBeenCalled();
+        expect(config.onEmbeddedMessagingDisabled).toHaveBeenCalledTimes(1);
+      });
+
+      it('should not set up listener if onEmbeddedMessagingDisabled is not provided', () => {
+        // sets up event emitter
+        const nativeEmitter = new NativeEventEmitter();
+        nativeEmitter.removeAllListeners(
+          IterableEventName.handleEmbeddedMessagingDisabledCalled
+        );
+        // sets up config without onEmbeddedMessagingDisabled callback
+        const config = new IterableConfig();
+        config.logReactNativeSdkCalls = false;
+        // initialize Iterable object
+        Iterable.initialize('apiKey', config);
+        // WHEN handleEmbeddedMessagingDisabledCalled event is emitted
+        // THEN no error should occur (no listener was set up)
+        expect(() => {
+          nativeEmitter.emit(
+            IterableEventName.handleEmbeddedMessagingDisabledCalled
+          );
+        }).not.toThrow();
+      });
+
+      it('should call onEmbeddedMessagingDisabled when embedded messaging becomes unavailable', () => {
+        // sets up event emitter
+        const nativeEmitter = new NativeEventEmitter();
+        nativeEmitter.removeAllListeners(
+          IterableEventName.handleEmbeddedMessagingDisabledCalled
+        );
+        // sets up config with callback
+        const config = new IterableConfig();
+        config.logReactNativeSdkCalls = false;
+        config.enableEmbeddedMessaging = true;
+        config.onEmbeddedMessagingDisabled = jest.fn();
+        // initialize Iterable object
+        Iterable.initialize('apiKey', config);
+        // WHEN handleEmbeddedMessagingDisabledCalled event is emitted
+        nativeEmitter.emit(
+          IterableEventName.handleEmbeddedMessagingDisabledCalled
+        );
+        // THEN onEmbeddedMessagingDisabled callback is called
+        expect(config.onEmbeddedMessagingDisabled).toHaveBeenCalled();
+      });
+
+      it('should include onEmbeddedMessagingDisabledPresent flag in config dict when callback is provided', () => {
+        // GIVEN a config with onEmbeddedMessagingDisabled callback
+        const config = new IterableConfig();
+        config.onEmbeddedMessagingDisabled = jest.fn();
+        // WHEN toDict is called
+        const configDict = config.toDict();
+        // THEN onEmbeddedMessagingDisabledPresent is true
+        expect(configDict.onEmbeddedMessagingDisabledPresent).toBe(true);
+      });
+
+      it('should set onEmbeddedMessagingDisabledPresent flag to false when callback is not provided', () => {
+        // GIVEN a config without onEmbeddedMessagingDisabled callback
+        const config = new IterableConfig();
+        // WHEN toDict is called
+        const configDict = config.toDict();
+        // THEN onEmbeddedMessagingDisabledPresent is false
+        expect(configDict.onEmbeddedMessagingDisabledPresent).toBe(false);
+      });
+    });
+
+    describe('both embedded callbacks', () => {
+      it('should call both callbacks independently when both are provided', () => {
+        // sets up event emitter
+        const nativeEmitter = new NativeEventEmitter();
+        nativeEmitter.removeAllListeners(
+          IterableEventName.handleEmbeddedMessageUpdateCalled
+        );
+        nativeEmitter.removeAllListeners(
+          IterableEventName.handleEmbeddedMessagingDisabledCalled
+        );
+        // sets up config with both callbacks
+        const config = new IterableConfig();
+        config.logReactNativeSdkCalls = false;
+        config.enableEmbeddedMessaging = true;
+        config.onEmbeddedMessageUpdate = jest.fn();
+        config.onEmbeddedMessagingDisabled = jest.fn();
+        // initialize Iterable object
+        Iterable.initialize('apiKey', config);
+        // WHEN handleEmbeddedMessageUpdateCalled event is emitted
+        nativeEmitter.emit(
+          IterableEventName.handleEmbeddedMessageUpdateCalled
+        );
+        // THEN only onEmbeddedMessageUpdate is called
+        expect(config.onEmbeddedMessageUpdate).toHaveBeenCalled();
+        expect(config.onEmbeddedMessagingDisabled).not.toHaveBeenCalled();
+        // Reset mocks
+        jest.clearAllMocks();
+        // WHEN handleEmbeddedMessagingDisabledCalled event is emitted
+        nativeEmitter.emit(
+          IterableEventName.handleEmbeddedMessagingDisabledCalled
+        );
+        // THEN only onEmbeddedMessagingDisabled is called
+        expect(config.onEmbeddedMessagingDisabled).toHaveBeenCalled();
+        expect(config.onEmbeddedMessageUpdate).not.toHaveBeenCalled();
+      });
+
+      it('should set both presence flags in config dict when both callbacks are provided', () => {
+        // GIVEN a config with both callbacks
+        const config = new IterableConfig();
+        config.onEmbeddedMessageUpdate = jest.fn();
+        config.onEmbeddedMessagingDisabled = jest.fn();
+        // WHEN toDict is called
+        const configDict = config.toDict();
+        // THEN both presence flags are true
+        expect(configDict.onEmbeddedMessageUpdatePresent).toBe(true);
+        expect(configDict.onEmbeddedMessagingDisabledPresent).toBe(true);
       });
     });
   });

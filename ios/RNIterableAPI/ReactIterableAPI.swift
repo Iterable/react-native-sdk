@@ -33,6 +33,8 @@ import React
     case receivedIterableInboxChanged
     case handleAuthSuccessCalled
     case handleAuthFailureCalled
+    case handleEmbeddedMessageUpdateCalled
+    case handleEmbeddedMessagingDisabledCalled
   }
 
   @objc public static var supportedEvents: [String] {
@@ -493,6 +495,95 @@ import React
     IterableAPI.pauseAuthRetries(pauseRetry)
   }
 
+  // MARK: - SDK Embedded Messaging Functions
+
+  @objc(startEmbeddedSession)
+  public func startEmbeddedSession() {
+    ITBInfo()
+    EmbeddedSessionManager.shared.startSession()
+  }
+
+  @objc(endEmbeddedSession)
+  public func endEmbeddedSession() {
+    ITBInfo()
+    EmbeddedSessionManager.shared.endSession()
+  }
+
+  @objc(syncEmbeddedMessages)
+  public func syncEmbeddedMessages() {
+    ITBInfo()
+    IterableAPI.embeddedManager.syncMessages { }
+  }
+
+  @objc(getEmbeddedMessages:resolver:rejecter:)
+  public func getEmbeddedMessages(
+    placementIds: [NSNumber]?, resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock
+  ) {
+    ITBInfo()
+    var messages: [IterableEmbeddedMessage] = []
+
+    if let placementIds = placementIds, !placementIds.isEmpty {
+      // Get messages for specific placement IDs
+      for placementId in placementIds {
+        let placementMessages = IterableAPI.embeddedManager.getMessages(
+          for: placementId.intValue
+        )
+        messages.append(contentsOf: placementMessages)
+      }
+    } else {
+      // Get all messages from all placements
+      // getMessages() without parameters flattens all placement messages into a single array
+      messages = IterableAPI.embeddedManager.getMessages()
+    }
+
+    resolver(messages.map { $0.toDict() })
+  }
+
+  @objc(startEmbeddedImpression:placementId:)
+  public func startEmbeddedImpression(messageId: String, placementId: Double) {
+    ITBInfo()
+    EmbeddedSessionManager.shared.startImpression(messageId: messageId, placementId: placementId)
+  }
+
+  @objc(pauseEmbeddedImpression:)
+  public func pauseEmbeddedImpression(messageId: String) {
+    ITBInfo()
+    EmbeddedSessionManager.shared.pauseImpression(messageId: messageId)
+  }
+
+  @objc(trackEmbeddedClick:buttonId:clickedUrl:)
+  public func trackEmbeddedClick(
+    message: NSDictionary, buttonId: String?, clickedUrl: String?
+  ) {
+    ITBInfo()
+
+    // Extract message ID from the dictionary
+    guard let messageDict = message as? [AnyHashable: Any],
+          let metadataDict = messageDict["metadata"] as? [AnyHashable: Any],
+          let messageId = metadataDict["messageId"] as? String else {
+      ITBError("Could not extract messageId from message dictionary")
+      return
+    }
+
+    // Find the message in the embedded manager's cache
+    let messages = IterableAPI.embeddedManager.getMessages()
+    guard let embeddedMessage = messages.first(where: { $0.metadata.messageId == messageId }) else {
+      ITBError("Could not find embedded message with id: \(messageId)")
+      return
+    }
+
+    guard let clickedUrl = clickedUrl else {
+      ITBError("clickedUrl is required for trackEmbeddedClick")
+      return
+    }
+
+    IterableAPI.track(
+      embeddedMessageClick: embeddedMessage,
+      buttonIdentifier: buttonId,
+      clickedUrl: clickedUrl
+    )
+  }
+
   // MARK: Private
   private var shouldEmit = false
   private let _methodQueue = DispatchQueue(label: String(describing: ReactIterableAPI.self))
@@ -562,6 +653,14 @@ import React
       }
 
       IterableAPI.setDeviceAttribute(name: "reactNativeSDKVersion", value: version)
+      
+      // Add embedded update listener if any callback is present
+      let onEmbeddedMessageUpdatePresent = configDict["onEmbeddedMessageUpdatePresent"] as? Bool ?? false
+      let onEmbeddedMessagingDisabledPresent = configDict["onEmbeddedMessagingDisabledPresent"] as? Bool ?? false
+      
+      if onEmbeddedMessageUpdatePresent || onEmbeddedMessagingDisabledPresent {
+        IterableAPI.embeddedManager.addUpdateListener(self)
+      }
     }
   }
 
@@ -717,5 +816,27 @@ extension ReactIterableAPI: IterableAuthDelegate {
   }
 
   public func onTokenRegistrationFailed(_ reason: String?) {
+  }
+}
+
+extension ReactIterableAPI: IterableEmbeddedUpdateDelegate {
+  public func onMessagesUpdated() {
+    ITBInfo()
+    guard shouldEmit else {
+      return
+    }
+    delegate?.sendEvent(
+      withName: EventName.handleEmbeddedMessageUpdateCalled.rawValue,
+      body: nil as Any?)
+  }
+  
+  public func onEmbeddedMessagingDisabled() {
+    ITBInfo()
+    guard shouldEmit else {
+      return
+    }
+    delegate?.sendEvent(
+      withName: EventName.handleEmbeddedMessagingDisabledCalled.rawValue,
+      body: nil as Any?)
   }
 }
