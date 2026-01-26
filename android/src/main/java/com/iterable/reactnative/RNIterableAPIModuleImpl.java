@@ -755,12 +755,16 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
             List<IterableEmbeddedMessage> allMessages = new ArrayList<>();
 
             if (placementIds == null || placementIds.size() == 0) {
-                // If no placement IDs provided, we need to get messages for all possible placements
-                // Since the Android SDK requires a placement ID, we'll use 0 as a default
-                // This might need to be adjusted based on the actual SDK behavior
-                List<IterableEmbeddedMessage> messages = IterableApi.getInstance().getEmbeddedManager().getMessages(0L);
-                if (messages != null) {
-                    allMessages.addAll(messages);
+                // If no placement IDs provided, get messages from all placements
+                // Get all available placement IDs and fetch messages for each
+                List<Long> allPlacementIds = IterableApi.getInstance().getEmbeddedManager().getPlacementIds();
+                IterableLogger.d(TAG, "Getting messages for all placement IDs: " + allPlacementIds);
+                
+                for (Long placementId : allPlacementIds) {
+                    List<IterableEmbeddedMessage> messages = IterableApi.getInstance().getEmbeddedManager().getMessages(placementId);
+                    if (messages != null) {
+                        allMessages.addAll(messages);
+                    }
                 }
             } else {
                 // Convert ReadableArray to individual placement IDs and get messages for each

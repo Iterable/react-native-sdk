@@ -1247,6 +1247,7 @@ describe('Iterable', () => {
         // sets up config file and onEmbeddedMessageUpdate callback
         const config = new IterableConfig();
         config.logReactNativeSdkCalls = false;
+        config.enableEmbeddedMessaging = true;
         config.onEmbeddedMessageUpdate = jest.fn();
         // initialize Iterable object
         Iterable.initialize('apiKey', config);
@@ -1288,6 +1289,7 @@ describe('Iterable', () => {
         // sets up config with callback
         const config = new IterableConfig();
         config.logReactNativeSdkCalls = false;
+        config.enableEmbeddedMessaging = true;
         config.onEmbeddedMessageUpdate = jest.fn();
         // initialize Iterable object
         Iterable.initialize('apiKey', config);
@@ -1335,6 +1337,7 @@ describe('Iterable', () => {
         // sets up config file and onEmbeddedMessagingDisabled callback
         const config = new IterableConfig();
         config.logReactNativeSdkCalls = false;
+        config.enableEmbeddedMessaging = true;
         config.onEmbeddedMessagingDisabled = jest.fn();
         // initialize Iterable object
         Iterable.initialize('apiKey', config);
@@ -1376,6 +1379,7 @@ describe('Iterable', () => {
         // sets up config with callback
         const config = new IterableConfig();
         config.logReactNativeSdkCalls = false;
+        config.enableEmbeddedMessaging = true;
         config.onEmbeddedMessagingDisabled = jest.fn();
         // initialize Iterable object
         Iterable.initialize('apiKey', config);
@@ -1420,6 +1424,7 @@ describe('Iterable', () => {
         // sets up config with both callbacks
         const config = new IterableConfig();
         config.logReactNativeSdkCalls = false;
+        config.enableEmbeddedMessaging = true;
         config.onEmbeddedMessageUpdate = jest.fn();
         config.onEmbeddedMessagingDisabled = jest.fn();
         // initialize Iterable object
