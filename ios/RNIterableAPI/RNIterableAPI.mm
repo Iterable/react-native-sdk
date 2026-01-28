@@ -17,7 +17,11 @@ typedef NS_ENUM(NSInteger, InAppShowResponse) {
   skip = 1,
 };
 
-#import <Iterable_React_Native_SDK/Iterable_React_Native_SDK-Swift.h>
+#if __has_include(<Iterable_React_Native_SDK/Iterable_React_Native_SDK-Swift.h>)
+  #import <Iterable_React_Native_SDK/Iterable_React_Native_SDK-Swift.h>
+#else
+  #import "Iterable_React_Native_SDK-Swift.h"
+#endif
 
 @interface RNIterableAPI () <ReactIterableAPIDelegate>
 @end
