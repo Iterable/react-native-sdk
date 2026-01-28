@@ -18,11 +18,13 @@ import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
+import com.iterable.iterableapi.AuthFailure;
 import com.iterable.iterableapi.InboxSessionManager;
 import com.iterable.iterableapi.IterableAction;
 import com.iterable.iterableapi.IterableActionContext;
 import com.iterable.iterableapi.IterableApi;
 import com.iterable.iterableapi.IterableAuthHandler;
+import com.iterable.iterableapi.IterableAuthManager;
 import com.iterable.iterableapi.IterableConfig;
 import com.iterable.iterableapi.IterableCustomActionHandler;
 import com.iterable.iterableapi.IterableAttributionInfo;
@@ -87,7 +89,36 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
             configBuilder.setAuthHandler(this);
         }
 
-        IterableApi.initialize(reactContext, apiKey, configBuilder.build());
+        IterableConfig config = configBuilder.build();
+        IterableApi.initialize(reactContext, apiKey, config);
+
+        // Update retry policy on existing authManager if it was already created
+        // This fixes the issue where retryInterval is not respected after
+        // re-initialization
+        // TODO [SDK-197]: Fix the root cause of this issue, instead of this hack
+        try {
+            // Use reflection to access package-private fields and methods
+            java.lang.reflect.Field configRetryPolicyField = config.getClass().getDeclaredField("retryPolicy");
+            configRetryPolicyField.setAccessible(true);
+            Object retryPolicy = configRetryPolicyField.get(config);
+
+            if (retryPolicy != null) {
+                java.lang.reflect.Method getAuthManagerMethod = IterableApi.getInstance().getClass().getDeclaredMethod("getAuthManager");
+                getAuthManagerMethod.setAccessible(true);
+                IterableAuthManager authManager = (IterableAuthManager) getAuthManagerMethod.invoke(IterableApi.getInstance());
+
+                if (authManager != null) {
+                    // Update the retry policy field on the authManager
+                    java.lang.reflect.Field authRetryPolicyField = authManager.getClass().getDeclaredField("authRetryPolicy");
+                    authRetryPolicyField.setAccessible(true);
+                    authRetryPolicyField.set(authManager, retryPolicy);
+                    IterableLogger.d(TAG, "Updated retry policy on existing authManager");
+                }
+            }
+        } catch (Exception e) {
+            IterableLogger.e(TAG, "Failed to update retry policy: " + e.getMessage());
+        }
+
         IterableApi.getInstance().setDeviceAttribute("reactNativeSDKVersion", version);
 
         IterableApi.getInstance().getInAppManager().addListener(this);
@@ -121,7 +152,36 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         // override in the Android SDK.  Check with @Ayyanchira and @evantk91 to
         // see what the best approach is.
 
-        IterableApi.initialize(reactContext, apiKey, configBuilder.build());
+        IterableConfig config = configBuilder.build();
+        IterableApi.initialize(reactContext, apiKey, config);
+
+        // Update retry policy on existing authManager if it was already created
+        // This fixes the issue where retryInterval is not respected after
+        // re-initialization
+        // TODO [SDK-197]: Fix the root cause of this issue, instead of this hack
+        try {
+            // Use reflection to access package-private fields and methods
+            java.lang.reflect.Field configRetryPolicyField = config.getClass().getDeclaredField("retryPolicy");
+            configRetryPolicyField.setAccessible(true);
+            Object retryPolicy = configRetryPolicyField.get(config);
+
+            if (retryPolicy != null) {
+                java.lang.reflect.Method getAuthManagerMethod = IterableApi.getInstance().getClass().getDeclaredMethod("getAuthManager");
+                getAuthManagerMethod.setAccessible(true);
+                IterableAuthManager authManager = (IterableAuthManager) getAuthManagerMethod.invoke(IterableApi.getInstance());
+
+                if (authManager != null) {
+                    // Update the retry policy field on the authManager
+                    java.lang.reflect.Field authRetryPolicyField = authManager.getClass().getDeclaredField("authRetryPolicy");
+                    authRetryPolicyField.setAccessible(true);
+                    authRetryPolicyField.set(authManager, retryPolicy);
+                    IterableLogger.d(TAG, "Updated retry policy on existing authManager");
+                }
+            }
+        } catch (Exception e) {
+            IterableLogger.e(TAG, "Failed to update retry policy: " + e.getMessage());
+        }
+
         IterableApi.getInstance().setDeviceAttribute("reactNativeSDKVersion", version);
 
         IterableApi.getInstance().getInAppManager().addListener(this);
@@ -573,16 +633,30 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
     }
 
     @Override
+    public void onAuthFailure(AuthFailure authFailure) {
+      // Create a JSON object for the authFailure object
+      JSONObject messageJson = new JSONObject();
+      try {
+        messageJson.put("userKey", authFailure.userKey);
+        messageJson.put("failedAuthToken", authFailure.failedAuthToken);
+        messageJson.put("failedRequestTime", authFailure.failedRequestTime);
+        messageJson.put("failureReason", authFailure.failureReason.name());
+        WritableMap eventData = Serialization.convertJsonToMap(messageJson);
+        sendEvent(EventName.handleAuthFailureCalled.name(), eventData);
+      } catch (JSONException e) {
+        IterableLogger.v(TAG, "Failed to set authToken");
+      }
+    }
+
+    public void pauseAuthRetries(boolean pauseRetry) {
+        IterableApi.getInstance().pauseAuthRetries(pauseRetry);
+    }
+
+    @Override
     public void onTokenRegistrationSuccessful(String authToken) {
         IterableLogger.v(TAG, "authToken successfully set");
         // MOB-10422: Pass successhandler to event listener
         sendEvent(EventName.handleAuthSuccessCalled.name(), null);
-    }
-
-    @Override
-    public void onTokenRegistrationFailed(Throwable object) {
-        IterableLogger.v(TAG, "Failed to set authToken");
-        sendEvent(EventName.handleAuthFailureCalled.name(), null);
     }
 
     public void addListener(String eventName) {
