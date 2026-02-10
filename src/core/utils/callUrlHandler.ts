@@ -15,17 +15,17 @@ export function callUrlHandler(
   url: string,
   context: IterableActionContext
 ) {
-  // MOB-10424: Figure out if this is purposeful
-  // eslint-disable-next-line eqeqeq
-  if (config.urlHandler?.(url, context) == false) {
+  if (!config.urlHandler?.(url, context)) {
     Linking.canOpenURL(url)
       .then((canOpen) => {
         if (canOpen) {
           Linking.openURL(url);
+        } else {
+          IterableLogger?.log('Url cannot be opened: ' + url);
         }
       })
       .catch((reason) => {
-        IterableLogger?.log('could not open url: ' + reason);
+        IterableLogger?.log('Error opening url: ' + reason);
       });
   }
 }

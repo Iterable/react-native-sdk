@@ -85,6 +85,7 @@ ios/generated
 android/generated
 
 # Iterable
+.env.local
 .env
 .xcode.env.local
 coverage/
@@ -92,3 +93,4 @@ docs/
 
 # Local Netlify folder
 .netlify
+.metals/

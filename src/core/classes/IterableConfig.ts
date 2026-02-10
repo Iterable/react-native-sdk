@@ -202,9 +202,9 @@ export class IterableConfig {
    * ```
    *
    * @returns A promise that resolves to an `IterableAuthResponse`, a `string`,
-   * or `undefined`.
+   * `null`, or `undefined`.
    */
-  authHandler?: () => Promise<IterableAuthResponse | string | undefined>;
+  authHandler?: () => Promise<IterableAuthResponse | string | null | undefined>;
 
   /**
    * A callback function that is called when the SDK encounters an error while
@@ -218,23 +218,33 @@ export class IterableConfig {
    * @example
    * ```typescript
    * const config = new IterableConfig();
-   * config.onJWTError = (authFailure) => {
+   * config.onJwtError = (authFailure) => {
    *   console.error('Error fetching JWT:', authFailure);
    * };
    * ```
    */
-  onJWTError?: (authFailure: IterableAuthFailure) => void;
+  onJwtError?: (authFailure: IterableAuthFailure) => void;
 
   /**
    * Set the verbosity of Android and iOS project's log system.
    *
    * By default, you will be able to see info level logs printed in IDE when running the app.
    */
-  logLevel: IterableLogLevel = IterableLogLevel.info;
+  logLevel: IterableLogLevel = IterableLogLevel.debug;
 
   /**
    * Configuration for JWT refresh retry behavior.
    * If not specified, the SDK will use default retry behavior.
+   *
+   * @example
+   * ```typescript
+   * const config = new IterableConfig();
+   * config.retryPolicy = new IterableRetryPolicy({
+   *   maxRetries: 3,
+   *   initialDelay: 1000,
+   *   maxDelay: 10000,
+   * });
+   * ```
    */
   retryPolicy?: IterableRetryPolicy;
 
@@ -330,6 +340,42 @@ export class IterableConfig {
   enableEmbeddedMessaging = false;
 
   /**
+   * A callback function that is called when embedded messages are updated.
+   *
+   * This callback is triggered when the local cache of embedded messages changes,
+   * such as when new messages arrive or existing messages are removed.
+   *
+   * @example
+   * ```typescript
+   * const config = new IterableConfig();
+   * config.onEmbeddedMessageUpdate = () => {
+   *   console.log('Embedded messages updated!');
+   *   // Refresh your UI to display the latest messages
+   * };
+   * Iterable.initialize('<YOUR_API_KEY>', config);
+   * ```
+   */
+  onEmbeddedMessageUpdate?: () => void;
+
+  /**
+   * A callback function that is called when embedded messaging is disabled.
+   *
+   * This callback is triggered when embedded messaging becomes unavailable,
+   * which can happen due to configuration issues or API errors.
+   *
+   * @example
+   * ```typescript
+   * const config = new IterableConfig();
+   * config.onEmbeddedMessagingDisabled = () => {
+   *   console.warn('Embedded messaging has been disabled');
+   *   // Hide embedded message UI or show error state
+   * };
+   * Iterable.initialize('<YOUR_API_KEY>', config);
+   * ```
+   */
+  onEmbeddedMessagingDisabled?: () => void;
+
+  /**
    * Converts the IterableConfig instance to a dictionary object.
    *
    * @returns An object representing the configuration.
@@ -367,6 +413,21 @@ export class IterableConfig {
        */
       // eslint-disable-next-line eqeqeq
       authHandlerPresent: this.authHandler != undefined,
+      /**
+       * A boolean indicating if an embedded message update callback is present.
+       *
+       * TODO: Figure out if this is purposeful
+       */
+      // eslint-disable-next-line eqeqeq
+      onEmbeddedMessageUpdatePresent: this.onEmbeddedMessageUpdate != undefined,
+      /**
+       * A boolean indicating if an embedded messaging disabled callback is present.
+       *
+       * TODO: Figure out if this is purposeful
+       */
+      // eslint-disable-next-line eqeqeq
+      onEmbeddedMessagingDisabledPresent:
+        this.onEmbeddedMessagingDisabled != undefined,
       /** The log level for the SDK. */
       logLevel: this.logLevel,
       expiringAuthTokenRefreshPeriod: this.expiringAuthTokenRefreshPeriod,

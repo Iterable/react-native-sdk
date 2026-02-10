@@ -1,16 +1,47 @@
-## 2.1.0-beta.1
-
-## Fixes
-- Add Temporary fix for circular paths, which break expo ([9c09743](https://github.com/Iterable/react-native-sdk/commit/9c09743))
-
-## 2.1.0-beta.0
+## 2.2.0
 
 ### Updates
+- Updated Android SDK version to [3.6.2](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.6.2)
+- Updated iOS SDK version to [6.6.3](https://github.com/Iterable/swift-sdk/releases/tag/6.6.3)
+- Added JWT Capabilities:
+  - Added `Iterable.authhManager`, which manages the authentication flow
+  - Added `IterableRetryBackoff` and `IterableAuthFailureReason` enums
+  - Added `onJwtError` and `retryPolicy` for control over JWT flow
+- Moved all native calls to `IterableApi.ts`
+- Added JWT example to our example app
+- Changed `onJWTError` to `onJwtError`
+- Changed `IterableRetryBackoff` enum keys to be lowercase for consistency
+  across application
+- [SDK-149] Added logout functionality
+
+### Fixes
+- Created a standalone `IterableLogger` to avoid circular dependencies
+- [SDK-151] Fixed "cannot read property authtoken of undefined" error
+- Fixed Android `retryInterval` not being updated on re-initialization.
+
+## 2.1.0
+### Updates
+- SDK is now compatible with both New Architecture and Legacy Architecture. Fix
+  for #691, #602, #563.
+
+### Fixes
+- Dependencies update
 - Update SDK so that it has full support for [React Native New Architecture](https://reactnative.dev/architecture/landing-page)
+- Add Temporary fix for circular paths, which break expo ([9c09743](https://github.com/Iterable/react-native-sdk/commit/9c09743))
 
 ### Chores
 - Update dependencies for React Navigation and related packages ([95053bb](https://github.com/Iterable/react-native-sdk/commit/95053bb))
 
+## 2.0.4
+
+### Updates
+- Added API documentation via Netlify([1087275](https://github.com/Iterable/react-native-sdk/commit/1087275))
+- Removed dependency on `react-native-vector-icons`, per issues
+  [#513](https://github.com/Iterable/react-native-sdk/issues/513),
+ [#683](https://github.com/Iterable/react-native-sdk/issues/683) and
+ [#675](https://github.com/Iterable/react-native-sdk/issues/675)
+ ([6ece6e0](https://github.com/Iterable/react-native-sdk/commit/6ece6e0))
+- Updated dependencies
 
 ## 2.0.3
 

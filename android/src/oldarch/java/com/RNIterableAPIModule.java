@@ -254,11 +254,6 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void getEmbeddedPlacementIds(Promise promise) {
-      moduleImpl.getEmbeddedPlacementIds(promise);
-    }
-
-    @ReactMethod
     public void getEmbeddedMessages(@Nullable ReadableArray placementIds, Promise promise) {
       moduleImpl.getEmbeddedMessages(placementIds, promise);
     }
