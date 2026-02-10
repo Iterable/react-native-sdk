@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import {
   ActivityIndicator,
   Pressable,
@@ -5,7 +6,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { useMemo } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { colors, type Route } from '../../constants';
 import { useIterableApp } from '../../hooks';
@@ -18,7 +19,7 @@ export const Login = ({ navigation }: RootStackScreenProps<Route.Login>) => {
   const loginIsEnabled = useMemo(() => apiKey && userId, [apiKey, userId]);
 
   return (
-    <View style={styles.loginScreenContainer}>
+    <SafeAreaView style={styles.loginScreenContainer}>
       {loginInProgress ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={colors.brandPurple} />
@@ -66,7 +67,7 @@ export const Login = ({ navigation }: RootStackScreenProps<Route.Login>) => {
           </View>
         </>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 

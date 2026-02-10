@@ -26,7 +26,7 @@ export const Main = () => {
         screenOptions={({ route }) => {
           const iconName = routeIcon[route.name];
           return {
-            tabBarIcon: (props) => getIcon(iconName, props),
+            tabBarIcon: (props) => getIcon(iconName as Route, props),
             tabBarActiveTintColor: colors.brandPurple,
             tabBarInactiveTintColor: colors.textSecondary,
             headerShown: false,

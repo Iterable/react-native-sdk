@@ -250,11 +250,6 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   }
 
   @Override
-  public void getEmbeddedPlacementIds(Promise promise) {
-    moduleImpl.getEmbeddedPlacementIds(promise);
-  }
-
-  @Override
   public void getEmbeddedMessages(@Nullable ReadableArray placementIds, Promise promise) {
     moduleImpl.getEmbeddedMessages(placementIds, promise);
   }

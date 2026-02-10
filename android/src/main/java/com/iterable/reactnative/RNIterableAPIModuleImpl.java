@@ -26,12 +26,11 @@ import com.iterable.iterableapi.IterableActionContext;
 import com.iterable.iterableapi.IterableApi;
 import com.iterable.iterableapi.IterableAttributionInfo;
 import com.iterable.iterableapi.IterableAuthHandler;
+import com.iterable.iterableapi.IterableAuthManager;
 import com.iterable.iterableapi.IterableConfig;
 import com.iterable.iterableapi.IterableCustomActionHandler;
-// import com.iterable.iterableapi.IterableEmbeddedManager;
 import com.iterable.iterableapi.IterableEmbeddedMessage;
-// import com.iterable.iterableapi.IterableEmbeddedSession;
-// import com.iterable.iterableapi.IterableEmbeddedUpdateHandler;
+import com.iterable.iterableapi.IterableEmbeddedUpdateHandler;
 import com.iterable.iterableapi.IterableHelper;
 import com.iterable.iterableapi.IterableInAppCloseAction;
 import com.iterable.iterableapi.IterableInAppHandler;
@@ -54,7 +53,7 @@ import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCustomActionHandler, IterableInAppHandler, IterableAuthHandler, IterableInAppManager.Listener {
+public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCustomActionHandler, IterableInAppHandler, IterableAuthHandler, IterableInAppManager.Listener, IterableEmbeddedUpdateHandler {
     public static final String NAME = "RNIterableAPI";
 
     private static String TAG = "RNIterableAPIModule";
@@ -94,15 +93,48 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
             configBuilder.setAuthHandler(this);
         }
 
-        if (configReadableMap.hasKey("enableEmbeddedMessaging")) {
-            configBuilder.setEnableEmbeddedMessaging(configReadableMap.getBoolean("enableEmbeddedMessaging"));
+        // Check if embedded messaging is enabled before building config
+        boolean enableEmbeddedMessaging = configReadableMap.hasKey("enableEmbeddedMessaging") && configReadableMap.getBoolean("enableEmbeddedMessaging");
+
+        IterableConfig config = configBuilder.build();
+        IterableApi.initialize(reactContext, apiKey, config);
+
+        // Update retry policy on existing authManager if it was already created
+        // This fixes the issue where retryInterval is not respected after
+        // re-initialization
+        // TODO [SDK-197]: Fix the root cause of this issue, instead of this hack
+        try {
+            // Use reflection to access package-private fields and methods
+            java.lang.reflect.Field configRetryPolicyField = config.getClass().getDeclaredField("retryPolicy");
+            configRetryPolicyField.setAccessible(true);
+            Object retryPolicy = configRetryPolicyField.get(config);
+
+            if (retryPolicy != null) {
+                java.lang.reflect.Method getAuthManagerMethod = IterableApi.getInstance().getClass().getDeclaredMethod("getAuthManager");
+                getAuthManagerMethod.setAccessible(true);
+                IterableAuthManager authManager = (IterableAuthManager) getAuthManagerMethod.invoke(IterableApi.getInstance());
+
+                if (authManager != null) {
+                    // Update the retry policy field on the authManager
+                    java.lang.reflect.Field authRetryPolicyField = authManager.getClass().getDeclaredField("authRetryPolicy");
+                    authRetryPolicyField.setAccessible(true);
+                    authRetryPolicyField.set(authManager, retryPolicy);
+                    IterableLogger.d(TAG, "Updated retry policy on existing authManager");
+                }
+            }
+        } catch (Exception e) {
+            IterableLogger.e(TAG, "Failed to update retry policy: " + e.getMessage());
         }
 
-        IterableApi.initialize(reactContext, apiKey, configBuilder.build());
         IterableApi.getInstance().setDeviceAttribute("reactNativeSDKVersion", version);
 
         IterableApi.getInstance().getInAppManager().addListener(this);
         IterableApi.getInstance().getEmbeddedManager().syncMessages();
+
+        // Add embedded update listener if embedded messaging is enabled
+        if (enableEmbeddedMessaging) {
+            IterableApi.getInstance().getEmbeddedManager().addUpdateListener(this);
+        }
 
         // MOB-10421: Figure out what the error cases are and handle them appropriately
         // This is just here to match the TS types and let the JS thread know when we are done initializing
@@ -129,19 +161,52 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
             configBuilder.setAuthHandler(this);
         }
 
-        if (configReadableMap.hasKey("enableEmbeddedMessaging")) {
-          configBuilder.setEnableEmbeddedMessaging(configReadableMap.getBoolean("enableEmbeddedMessaging"));
-      }
-
         // NOTE: There does not seem to be a way to set the API endpoint
         // override in the Android SDK.  Check with @Ayyanchira and @evantk91 to
         // see what the best approach is.
 
-        IterableApi.initialize(reactContext, apiKey, configBuilder.build());
+        // Check if embedded messaging is enabled before building config
+        boolean enableEmbeddedMessaging = configReadableMap.hasKey("enableEmbeddedMessaging") && configReadableMap.getBoolean("enableEmbeddedMessaging");
+
+        IterableConfig config = configBuilder.build();
+        IterableApi.initialize(reactContext, apiKey, config);
+
+        // Update retry policy on existing authManager if it was already created
+        // This fixes the issue where retryInterval is not respected after
+        // re-initialization
+        // TODO [SDK-197]: Fix the root cause of this issue, instead of this hack
+        try {
+            // Use reflection to access package-private fields and methods
+            java.lang.reflect.Field configRetryPolicyField = config.getClass().getDeclaredField("retryPolicy");
+            configRetryPolicyField.setAccessible(true);
+            Object retryPolicy = configRetryPolicyField.get(config);
+
+            if (retryPolicy != null) {
+                java.lang.reflect.Method getAuthManagerMethod = IterableApi.getInstance().getClass().getDeclaredMethod("getAuthManager");
+                getAuthManagerMethod.setAccessible(true);
+                IterableAuthManager authManager = (IterableAuthManager) getAuthManagerMethod.invoke(IterableApi.getInstance());
+
+                if (authManager != null) {
+                    // Update the retry policy field on the authManager
+                    java.lang.reflect.Field authRetryPolicyField = authManager.getClass().getDeclaredField("authRetryPolicy");
+                    authRetryPolicyField.setAccessible(true);
+                    authRetryPolicyField.set(authManager, retryPolicy);
+                    IterableLogger.d(TAG, "Updated retry policy on existing authManager");
+                }
+            }
+        } catch (Exception e) {
+            IterableLogger.e(TAG, "Failed to update retry policy: " + e.getMessage());
+        }
+
         IterableApi.getInstance().setDeviceAttribute("reactNativeSDKVersion", version);
 
         IterableApi.getInstance().getInAppManager().addListener(this);
         IterableApi.getInstance().getEmbeddedManager().syncMessages();
+
+        // Add embedded update listener if embedded messaging is enabled
+        if (enableEmbeddedMessaging) {
+            IterableApi.getInstance().getEmbeddedManager().addUpdateListener(this);
+        }
 
         // MOB-10421: Figure out what the error cases are and handle them appropriately
         // This is just here to match the TS types and let the JS thread know when we are done initializing
@@ -616,11 +681,6 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         sendEvent(EventName.handleAuthSuccessCalled.name(), null);
     }
 
-    public void onTokenRegistrationFailed(Throwable object) {
-        IterableLogger.v(TAG, "Failed to set authToken");
-        sendEvent(EventName.handleAuthFailureCalled.name(), null);
-    }
-
     public void addListener(String eventName) {
         // Keep: Required for RN built in Event Emitter Calls.
     }
@@ -645,6 +705,18 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
     public void onInboxUpdated() {
         sendEvent(EventName.receivedIterableInboxChanged.name(), null);
     }
+
+    @Override
+    public void onMessagesUpdated() {
+        IterableLogger.d(TAG, "onMessagesUpdated");
+        sendEvent(EventName.handleEmbeddedMessageUpdateCalled.name(), null);
+    }
+
+    @Override
+    public void onEmbeddedMessagingDisabled() {
+        IterableLogger.d(TAG, "onEmbeddedMessagingDisabled");
+        sendEvent(EventName.handleEmbeddedMessagingDisabledCalled.name(), null);
+    }
     // ---------------------------------------------------------------------------------------
     // endregion
 
@@ -667,28 +739,13 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
     }
 
     public void startEmbeddedImpression(String messageId, int placementId) {
+        IterableLogger.d(TAG, "startEmbeddedImpression");
         IterableApi.getInstance().getEmbeddedManager().getEmbeddedSessionManager().startImpression(messageId, placementId);
     }
 
     public void pauseEmbeddedImpression(String messageId) {
+        IterableLogger.d(TAG, "pauseEmbeddedImpression");
         IterableApi.getInstance().getEmbeddedManager().getEmbeddedSessionManager().pauseImpression(messageId);
-    }
-
-    public void getEmbeddedPlacementIds(Promise promise) {
-        IterableLogger.d(TAG, "getEmbeddedPlacementIds");
-        try {
-            List<Long> placementIds = IterableApi.getInstance().getEmbeddedManager().getPlacementIds();
-            WritableArray writableArray = Arguments.createArray();
-            if (placementIds != null) {
-                for (Long placementId : placementIds) {
-                    writableArray.pushDouble(placementId.doubleValue());
-                }
-            }
-            promise.resolve(writableArray);
-        } catch (Exception e) {
-            IterableLogger.e(TAG, "Error getting placement IDs: " + e.getLocalizedMessage());
-            promise.reject("", "Failed to get placement IDs: " + e.getLocalizedMessage());
-        }
     }
 
     public void getEmbeddedMessages(@Nullable ReadableArray placementIds, Promise promise) {
@@ -698,12 +755,16 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
             List<IterableEmbeddedMessage> allMessages = new ArrayList<>();
 
             if (placementIds == null || placementIds.size() == 0) {
-                // If no placement IDs provided, we need to get messages for all possible placements
-                // Since the Android SDK requires a placement ID, we'll use 0 as a default
-                // This might need to be adjusted based on the actual SDK behavior
-                List<IterableEmbeddedMessage> messages = IterableApi.getInstance().getEmbeddedManager().getMessages(0L);
-                if (messages != null) {
-                    allMessages.addAll(messages);
+                // If no placement IDs provided, get messages from all placements
+                // Get all available placement IDs and fetch messages for each
+                List<Long> allPlacementIds = IterableApi.getInstance().getEmbeddedManager().getPlacementIds();
+                IterableLogger.d(TAG, "Getting messages for all placement IDs: " + allPlacementIds);
+                
+                for (Long placementId : allPlacementIds) {
+                    List<IterableEmbeddedMessage> messages = IterableApi.getInstance().getEmbeddedManager().getMessages(placementId);
+                    if (messages != null) {
+                        allMessages.addAll(messages);
+                    }
                 }
             } else {
                 // Convert ReadableArray to individual placement IDs and get messages for each
@@ -745,6 +806,8 @@ enum EventName {
   handleAuthFailureCalled,
   handleAuthSuccessCalled,
   handleCustomActionCalled,
+  handleEmbeddedMessageUpdateCalled,
+  handleEmbeddedMessagingDisabledCalled,
   handleInAppCalled,
   handleUrlCalled,
   receivedIterableEmbeddedMessagesChanged,

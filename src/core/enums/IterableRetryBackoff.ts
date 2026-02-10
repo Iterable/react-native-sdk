@@ -1,17 +1,17 @@
-/* eslint-disable tsdoc/syntax */
-
 /**
  * The type of backoff to use when retrying a request.
  */
 export enum IterableRetryBackoff {
   /**
    * Linear backoff (each retry will wait for a fixed interval)
-   * TODO: check with @Ayyanchira if this is correct
+   *
+   * EG: 2 seconds, 4 seconds, 6 seconds, 8 seconds, etc.
    */
-  LINEAR = 'LINEAR',
+  linear = 'LINEAR',
   /**
    * Exponential backoff (each retry will wait for an interval that increases exponentially)
-   * TODO: check with @Ayyanchira if this is correct
+   *
+   * EG: 2 seconds, 4 seconds, 8 seconds, 16 seconds, etc.
    */
-  EXPONENTIAL = 'EXPONENTIAL',
+  exponential = 'EXPONENTIAL',
 }

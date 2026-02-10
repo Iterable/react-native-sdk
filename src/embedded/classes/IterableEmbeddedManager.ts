@@ -26,22 +26,42 @@ export class IterableEmbeddedManager {
    * This is set through the `enableEmbeddedMessaging` flag in the
    * `IterableConfig` class.
    */
-  isEnabled = false;
+  private _isEnabled = false;
+
+  /**
+   * Gets whether the embedded manager is enabled.
+   */
+  get isEnabled(): boolean {
+    return this._isEnabled;
+  }
+
+  /**
+   * Sets whether the embedded manager is enabled.
+   *
+   * @internal This method is for internal SDK use only and should not be called
+   * by SDK consumers, as it is meant to be called at initialization time.
+   *
+   * @param enabled - Whether the embedded manager is enabled.
+   */
+  setEnabled(enabled: boolean) {
+    this._isEnabled = enabled;
+  }
 
   /**
    * The config for the Iterable SDK.
    */
-  config: IterableConfig = new IterableConfig();
+  private _config: IterableConfig = new IterableConfig();
 
   constructor(config: IterableConfig) {
-    this.config = config;
+    this._config = config;
+    this._isEnabled = config.enableEmbeddedMessaging ?? false;
   }
 
   /**
    * Syncs embedded local cache with the server.
    *
    * When your app first launches, and each time it comes to the foreground,
-   * Iterable's iOS SDK automatically refresh a local, on-device cache of
+   * Iterable's Native SDKs automatically refresh a local, on-device cache of
    * embedded messages for the signed-in user. These are the messages the
    * signed-in user is eligible to see.
    *
@@ -61,19 +81,17 @@ export class IterableEmbeddedManager {
   }
 
   /**
-   * Retrieves a list of placement IDs for the embedded manager.
-   *
-   * [Placement Documentation](https://support.iterable.com/hc/en-us/articles/23060529977364-Embedded-Messaging-Overview#placements-and-prioritization)
-   */
-  getPlacementIds() {
-    return IterableApi.getEmbeddedPlacementIds();
-  }
-
-  /**
    * Retrieves a list of embedded messages the user is eligible to see.
    *
    * @param placementIds - The placement IDs to retrieve messages for.
    * @returns A Promise that resolves to an array of embedded messages.
+   *
+   * @example
+   * ```typescript
+   * Iterable.embeddedManager.getMessages([1, 2, 3]).then(messages => {
+   *   console.log('Messages:', messages);
+   * });
+   * ```
    */
   getMessages(
     placementIds: number[] | null
@@ -84,7 +102,7 @@ export class IterableEmbeddedManager {
   /**
    * Starts a session.
    *
-   * As session is a period of time when a user is on a screen or page that can
+   * A session is a period of time when a user is on a screen or page that can
    * display embedded messages.
    *
    * When a user comes to a screen or page in your app where embedded messages
@@ -92,7 +110,7 @@ export class IterableEmbeddedManager {
    *
    * @example
    * ```typescript
-   * IterableEmbeddedManager.startSession();
+   * Iterable.embeddedManager.startSession();
    * ```
    */
   startSession() {
@@ -104,14 +122,14 @@ export class IterableEmbeddedManager {
    *
    * When a user leaves a screen in your app where embedded messages are
    * displayed, the session should be ended.  This causes the SDK to send
-   * session and impression data back to the server.
+   * session an impression data back to the server.
    *
    * A session is tracked when it is ended, so you should be able to find
    * tracking data after this method is called.
    *
    * @example
    * ```typescript
-   * IterableEmbeddedManager.endSession();
+   * Iterable.embeddedManager.endSession();
    * ```
    */
   endSession() {
@@ -133,7 +151,7 @@ export class IterableEmbeddedManager {
    *
    * @example
    * ```typescript
-   * IterableEmbeddedManager.startImpression(messageId, placementId);
+   * Iterable.embeddedManager.startImpression(messageId, placementId);
    * ```
    */
   startImpression(messageId: string, placementId: number) {
@@ -151,7 +169,7 @@ export class IterableEmbeddedManager {
    *
    * @example
    * ```typescript
-   * IterableEmbeddedManager.pauseImpression(messageId);
+   * Iterable.embeddedManager.pauseImpression(messageId);
    * ```
    */
   pauseImpression(messageId: string) {
@@ -171,7 +189,7 @@ export class IterableEmbeddedManager {
    *
    * @example
    * ```typescript
-   * IterableEmbeddedManager.trackClick(message, buttonId, clickedUrl);
+   * Iterable.embeddedManager.trackClick(message, buttonId, clickedUrl);
    * ```
    */
   trackClick(
@@ -185,7 +203,7 @@ export class IterableEmbeddedManager {
   /**
    * Handles a click on an embedded message.
    *
-   * This will fire the correct handers set in the config, and will track the
+   * This will fire the correct handlers set in the config, and will track the
    * click.  It should be use on either a button click or a click on the message itself.
    *
    * @param message - The embedded message.
@@ -194,7 +212,7 @@ export class IterableEmbeddedManager {
    *
    * @example
    * ```typescript
-   * IterableEmbeddedManager.handleClick(message, buttonId, clickedUrl);
+   * Iterable.embeddedManager.handleClick(message, buttonId, clickedUrl);
    * ```
    */
   handleClick(
@@ -206,7 +224,7 @@ export class IterableEmbeddedManager {
     const clickedUrl = data && data?.length > 0 ? data : actionType;
 
     IterableLogger.log(
-      'IterableEmbeddedManager.handleClick',
+      'Iterable.embeddedManager.handleClick',
       message,
       buttonId,
       clickedUrl
@@ -214,7 +232,7 @@ export class IterableEmbeddedManager {
 
     if (!clickedUrl) {
       IterableLogger.log(
-        'IterableEmbeddedManager.handleClick:',
+        'Iterable.embeddedManager.handleClick:',
         'A url or action is required to handle an embedded click',
         clickedUrl
       );
@@ -230,13 +248,13 @@ export class IterableEmbeddedManager {
       const actionName = clickedUrl?.replace(actionPrefix, '');
       const actionDetails = new IterableAction(actionName, '', '');
       const context = new IterableActionContext(actionDetails, source);
-      if (this.config.customActionHandler) {
-        this.config.customActionHandler(actionDetails, context);
+      if (this._config.customActionHandler) {
+        this._config.customActionHandler(actionDetails, context);
       }
     } else {
       const actionDetails = new IterableAction('openUrl', clickedUrl, '');
       const context = new IterableActionContext(actionDetails, source);
-      callUrlHandler(this.config, clickedUrl, context);
+      callUrlHandler(this._config, clickedUrl, context);
     }
   }
 }

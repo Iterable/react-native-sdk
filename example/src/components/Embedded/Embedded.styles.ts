@@ -1,35 +1,35 @@
 import { StyleSheet } from 'react-native';
 import {
+  backgroundColors,
   button,
   buttonText,
+  colors,
   container,
   hr,
-  link,
-  colors,
+  input,
+  subtitle,
+  title,
+  utilityColors,
 } from '../../constants';
 
 const styles = StyleSheet.create({
   button,
   buttonText,
-  container: { ...container, paddingHorizontal: 0 },
+  container,
   embeddedSection: {
     display: 'flex',
     flexDirection: 'column',
     gap: 16,
     paddingHorizontal: 16,
   },
-  embeddedTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    lineHeight: 20,
-  },
-  embeddedTitleContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-  },
   hr,
-  link,
+  inputContainer: {
+    marginVertical: 10,
+  },
+  subtitle: { ...subtitle, textAlign: 'center' },
   text: { textAlign: 'center' },
+  textInput: input,
+  title: { ...title, textAlign: 'center' },
   utilitySection: {
     paddingHorizontal: 16,
   },
@@ -61,6 +61,22 @@ const styles = StyleSheet.create({
   },
   viewTypeSelector: {
     marginVertical: 12,
+  },
+  warningContainer: {
+    backgroundColor: backgroundColors.backgroundWarningSubtle,
+    borderLeftColor: utilityColors.warning100,
+    borderLeftWidth: 4,
+    borderRadius: 5,
+    marginBottom: 12,
+    marginHorizontal: 16,
+    marginTop: 0,
+    padding: 12,
+  },
+  warningText: {
+    color: utilityColors.warning100,
+    fontSize: 14,
+    fontWeight: '600',
+    textAlign: 'center',
   },
 });
 
