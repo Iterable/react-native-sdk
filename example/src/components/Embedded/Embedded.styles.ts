@@ -1,13 +1,16 @@
 import { StyleSheet } from 'react-native';
 import {
+  backgroundColors,
   button,
   buttonText,
+  colors,
   container,
   hr,
-  link, input, title, subtitle,
-  colors,
+  input,
+  subtitle,
+  title,
+  utilityColors,
 } from '../../constants';
-import { utilityColors, backgroundColors } from '../../constants/styles/colors';
 
 const styles = StyleSheet.create({
   button,
@@ -19,20 +22,10 @@ const styles = StyleSheet.create({
     gap: 16,
     paddingHorizontal: 16,
   },
-  embeddedTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    lineHeight: 20,
-  },
-  embeddedTitleContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-  },
   hr,
   inputContainer: {
     marginVertical: 10,
   },
-  link,
   subtitle: { ...subtitle, textAlign: 'center' },
   text: { textAlign: 'center' },
   textInput: input,

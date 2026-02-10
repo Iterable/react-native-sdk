@@ -8,7 +8,6 @@ import {
 import { useCallback, useState } from 'react';
 import {
   Iterable,
-  // type IterableAction,
   type IterableEmbeddedMessage,
   IterableEmbeddedView,
   IterableEmbeddedViewType,
@@ -56,35 +55,6 @@ export const Embedded = () => {
       });
   }, [idsToFetch]);
 
-  // const startEmbeddedImpression = useCallback(
-  //   (message: IterableEmbeddedMessage) => {
-  //     Iterable.embeddedManager.startImpression(
-  //       message.metadata.messageId,
-  //       // TODO: check if this should be changed to a number, as per the type
-  //       Number(message.metadata.placementId)
-  //     );
-  //   },
-  //   []
-  // );
-
-  // const pauseEmbeddedImpression = useCallback(
-  //   (message: IterableEmbeddedMessage) => {
-  //     Iterable.embeddedManager.pauseImpression(message.metadata.messageId);
-  //   },
-  //   []
-  // );
-
-  // const handleClick = useCallback(
-  //   (
-  //     message: IterableEmbeddedMessage,
-  //     buttonId: string | null,
-  //     action?: IterableAction | null
-  //   ) => {
-  //     Iterable.embeddedManager.handleClick(message, buttonId, action);
-  //   },
-  //   []
-  // );
-
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Embedded</Text>
@@ -100,9 +70,6 @@ export const Embedded = () => {
         Enter placement IDs to fetch embedded messages
       </Text>
       <View style={styles.utilitySection}>
-        {/* <Text style={styles.text}>
-          Placement ids: [{placementIds.join(', ')}]
-        </Text> */}
         <View style={styles.viewTypeSelector}>
           <Text style={styles.text}>Select View Type:</Text>
           <View style={styles.viewTypeButtons}>
