@@ -1,5 +1,5 @@
-import type { IterableEmbeddedMessage } from '../types/IterableEmbeddedMessage';
-import { IterableEmbeddedViewType } from '../enums';
+import type { IterableEmbeddedMessage } from '../../types/IterableEmbeddedMessage';
+import { IterableEmbeddedViewType } from '../../enums';
 
 /**
  * This function is used to get the media to render for a given embedded view

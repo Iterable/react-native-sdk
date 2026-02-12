@@ -71,15 +71,15 @@ export const embeddedMediaImageBackgroundColors = {
 };
 
 export const embeddedStyles = {
-  background: embeddedBackgroundColors,
-  border: embeddedBorderColors,
-  primaryBtnBackground: embeddedPrimaryBtnBackgroundColors,
-  primaryBtnText: embeddedPrimaryBtnTextColors,
-  secondaryBtnBackground: embeddedSecondaryBtnBackgroundColors,
-  secondaryBtnText: embeddedSecondaryBtnTextColors,
-  titleText: embeddedTitleTextColors,
+  backgroundColor: embeddedBackgroundColors,
   bodyText: embeddedBodyTextColors,
-  mediaImageBorder: embeddedMediaImageBorderColors,
-  borderRadius: embeddedBorderRadius,
+  borderColor: embeddedBorderColors,
+  borderCornerRadius: embeddedBorderRadius,
   borderWidth: embeddedBorderWidth,
+  mediaImageBorder: embeddedMediaImageBorderColors,
+  primaryBtnBackgroundColor: embeddedPrimaryBtnBackgroundColors,
+  primaryBtnTextColor: embeddedPrimaryBtnTextColors,
+  secondaryBtnBackground: embeddedSecondaryBtnBackgroundColors,
+  secondaryBtnTextColor: embeddedSecondaryBtnTextColors,
+  titleText: embeddedTitleTextColors,
 };

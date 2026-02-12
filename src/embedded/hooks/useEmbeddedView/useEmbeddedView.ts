@@ -1,10 +1,10 @@
 import { useCallback, useMemo } from 'react';
-import { Iterable } from '../../core/classes/Iterable';
-import { IterableEmbeddedViewType } from '../enums';
-import type { IterableEmbeddedComponentProps } from '../types/IterableEmbeddedComponentProps';
-import type { IterableEmbeddedMessageElementsButton } from '../types/IterableEmbeddedMessageElementsButton';
-import { getMedia } from '../utils/getMedia';
-import { getStyles } from '../utils/getStyles';
+import { Iterable } from '../../../core/classes/Iterable';
+import { IterableEmbeddedViewType } from '../../enums';
+import type { IterableEmbeddedComponentProps } from '../../types/IterableEmbeddedComponentProps';
+import type { IterableEmbeddedMessageElementsButton } from '../../types/IterableEmbeddedMessageElementsButton';
+import { getMedia } from './getMedia';
+import { getStyles } from './getStyles';
 
 /**
  * This hook is used to manage the lifecycle of an embedded view.

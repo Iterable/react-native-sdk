@@ -1,6 +1,6 @@
-import type { IterableEmbeddedViewConfig } from '../types/IterableEmbeddedViewConfig';
-import { embeddedStyles } from '../contants/embeddedViewDefaults';
-import { IterableEmbeddedViewType } from '../enums';
+import type { IterableEmbeddedViewConfig } from '../../types/IterableEmbeddedViewConfig';
+import { embeddedStyles } from './embeddedViewDefaults';
+import { IterableEmbeddedViewType } from '../../enums';
 
 /**
  * Get the default style for the embedded view type.
@@ -53,26 +53,26 @@ export const getStyles = (
   return {
     backgroundColor:
       c?.backgroundColor ??
-      getDefaultStyle(viewType, embeddedStyles.background),
+      getDefaultStyle(viewType, embeddedStyles.backgroundColor),
     borderColor:
-      c?.borderColor ?? getDefaultStyle(viewType, embeddedStyles.border),
+      c?.borderColor ?? getDefaultStyle(viewType, embeddedStyles.borderColor),
     borderWidth:
       c?.borderWidth ?? getDefaultStyle(viewType, embeddedStyles.borderWidth),
     borderCornerRadius:
       c?.borderCornerRadius ??
-      getDefaultStyle(viewType, embeddedStyles.borderRadius),
+      getDefaultStyle(viewType, embeddedStyles.borderCornerRadius),
     primaryBtnBackgroundColor:
       c?.primaryBtnBackgroundColor ??
-      getDefaultStyle(viewType, embeddedStyles.primaryBtnBackground),
+      getDefaultStyle(viewType, embeddedStyles.primaryBtnBackgroundColor),
     primaryBtnTextColor:
       c?.primaryBtnTextColor ??
-      getDefaultStyle(viewType, embeddedStyles.primaryBtnText),
+      getDefaultStyle(viewType, embeddedStyles.primaryBtnTextColor),
     secondaryBtnBackgroundColor:
       c?.secondaryBtnBackgroundColor ??
       getDefaultStyle(viewType, embeddedStyles.secondaryBtnBackground),
     secondaryBtnTextColor:
       c?.secondaryBtnTextColor ??
-      getDefaultStyle(viewType, embeddedStyles.secondaryBtnText),
+      getDefaultStyle(viewType, embeddedStyles.secondaryBtnTextColor),
     titleTextColor:
       c?.titleTextColor ?? getDefaultStyle(viewType, embeddedStyles.titleText),
     bodyTextColor:
