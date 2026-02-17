@@ -6,4 +6,5 @@ export interface IterableEmbeddedComponentProps {
   message: IterableEmbeddedMessage;
   config?: IterableEmbeddedViewConfig | null;
   onButtonClick?: (button: IterableEmbeddedMessageElementsButton) => void;
+  onMessageClick?: () => void;
 }

@@ -22,7 +22,7 @@ export const Embedded = () => {
     IterableEmbeddedMessage[]
   >([]);
   const [selectedViewType, setSelectedViewType] =
-    useState<IterableEmbeddedViewType>(IterableEmbeddedViewType.Banner);
+    useState<IterableEmbeddedViewType>(IterableEmbeddedViewType.Notification);
 
   // Parse placement IDs from input
   const parsedPlacementIds = placementIdsInput

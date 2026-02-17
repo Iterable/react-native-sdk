@@ -4,7 +4,7 @@ import { IterableEmbeddedViewType } from '../enums/IterableEmbeddedViewType';
 
 import { IterableEmbeddedBanner } from './IterableEmbeddedBanner';
 import { IterableEmbeddedCard } from './IterableEmbeddedCard';
-import { IterableEmbeddedNotification } from './IterableEmbeddedNotification';
+import { IterableEmbeddedNotification } from './IterableEmbeddedNotification/IterableEmbeddedNotification';
 import type { IterableEmbeddedComponentProps } from '../types/IterableEmbeddedComponentProps';
 
 /**
