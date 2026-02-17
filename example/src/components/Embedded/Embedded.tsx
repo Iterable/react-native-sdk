@@ -8,8 +8,9 @@ import {
 import { useCallback, useState } from 'react';
 import {
   Iterable,
-  type IterableAction,
   type IterableEmbeddedMessage,
+  IterableEmbeddedView,
+  IterableEmbeddedViewType,
 } from '@iterable/react-native-sdk';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -20,6 +21,8 @@ export const Embedded = () => {
   const [embeddedMessages, setEmbeddedMessages] = useState<
     IterableEmbeddedMessage[]
   >([]);
+  const [selectedViewType, setSelectedViewType] =
+    useState<IterableEmbeddedViewType>(IterableEmbeddedViewType.Banner);
 
   // Parse placement IDs from input
   const parsedPlacementIds = placementIdsInput
@@ -52,35 +55,6 @@ export const Embedded = () => {
       });
   }, [idsToFetch]);
 
-  const startEmbeddedImpression = useCallback(
-    (message: IterableEmbeddedMessage) => {
-      Iterable.embeddedManager.startImpression(
-        message.metadata.messageId,
-        // TODO: check if this should be changed to a number, as per the type
-        Number(message.metadata.placementId)
-      );
-    },
-    []
-  );
-
-  const pauseEmbeddedImpression = useCallback(
-    (message: IterableEmbeddedMessage) => {
-      Iterable.embeddedManager.pauseImpression(message.metadata.messageId);
-    },
-    []
-  );
-
-  const handleClick = useCallback(
-    (
-      message: IterableEmbeddedMessage,
-      buttonId: string | null,
-      action?: IterableAction | null
-    ) => {
-      Iterable.embeddedManager.handleClick(message, buttonId, action);
-    },
-    []
-  );
-
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Embedded</Text>
@@ -96,6 +70,69 @@ export const Embedded = () => {
         Enter placement IDs to fetch embedded messages
       </Text>
       <View style={styles.utilitySection}>
+        <View style={styles.viewTypeSelector}>
+          <Text style={styles.text}>Select View Type:</Text>
+          <View style={styles.viewTypeButtons}>
+            <TouchableOpacity
+              style={[
+                styles.viewTypeButton,
+                selectedViewType === IterableEmbeddedViewType.Banner &&
+                  styles.viewTypeButtonSelected,
+              ]}
+              onPress={() =>
+                setSelectedViewType(IterableEmbeddedViewType.Banner)
+              }
+            >
+              <Text
+                style={[
+                  styles.viewTypeButtonText,
+                  selectedViewType === IterableEmbeddedViewType.Banner &&
+                    styles.viewTypeButtonTextSelected,
+                ]}
+              >
+                Banner
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.viewTypeButton,
+                selectedViewType === IterableEmbeddedViewType.Card &&
+                  styles.viewTypeButtonSelected,
+              ]}
+              onPress={() => setSelectedViewType(IterableEmbeddedViewType.Card)}
+            >
+              <Text
+                style={[
+                  styles.viewTypeButtonText,
+                  selectedViewType === IterableEmbeddedViewType.Card &&
+                    styles.viewTypeButtonTextSelected,
+                ]}
+              >
+                Card
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.viewTypeButton,
+                selectedViewType === IterableEmbeddedViewType.Notification &&
+                  styles.viewTypeButtonSelected,
+              ]}
+              onPress={() =>
+                setSelectedViewType(IterableEmbeddedViewType.Notification)
+              }
+            >
+              <Text
+                style={[
+                  styles.viewTypeButtonText,
+                  selectedViewType === IterableEmbeddedViewType.Notification &&
+                    styles.viewTypeButtonTextSelected,
+                ]}
+              >
+                Notification
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
         <TouchableOpacity style={styles.button} onPress={syncEmbeddedMessages}>
           <Text style={styles.buttonText}>Sync messages</Text>
         </TouchableOpacity>
@@ -126,66 +163,11 @@ export const Embedded = () => {
       <ScrollView>
         <View style={styles.embeddedSection}>
           {embeddedMessages.map((message) => (
-            <View key={message.metadata.messageId}>
-              <View style={styles.embeddedTitleContainer}>
-                <Text style={styles.embeddedTitle}>Embedded message</Text>
-              </View>
-              <View style={styles.embeddedTitleContainer}>
-                <TouchableOpacity
-                  onPress={() => startEmbeddedImpression(message)}
-                >
-                  <Text style={styles.link}>Start impression</Text>
-                </TouchableOpacity>
-                <Text style={styles.embeddedTitle}> | </Text>
-                <TouchableOpacity
-                  onPress={() => pauseEmbeddedImpression(message)}
-                >
-                  <Text style={styles.link}>Pause impression</Text>
-                </TouchableOpacity>
-                <Text style={styles.embeddedTitle}> | </Text>
-                <TouchableOpacity
-                  onPress={() =>
-                    handleClick(message, null, message.elements?.defaultAction)
-                  }
-                >
-                  <Text style={styles.link}>Handle click</Text>
-                </TouchableOpacity>
-              </View>
-
-              <Text>metadata.messageId: {message.metadata.messageId}</Text>
-              <Text>metadata.placementId: {message.metadata.placementId}</Text>
-              <Text>elements.title: {message.elements?.title}</Text>
-              <Text>elements.body: {message.elements?.body}</Text>
-              <Text>
-                elements.defaultAction.data:{' '}
-                {message.elements?.defaultAction?.data}
-              </Text>
-              <Text>
-                elements.defaultAction.type:{' '}
-                {message.elements?.defaultAction?.type}
-              </Text>
-              {(message.elements?.buttons ?? []).map((button, buttonIndex) => (
-                <View key={`${button.id}-${buttonIndex}`}>
-                  <View style={styles.embeddedTitleContainer}>
-                    <Text>Button {buttonIndex + 1}</Text>
-                    <Text style={styles.embeddedTitle}> | </Text>
-                    <TouchableOpacity
-                      onPress={() =>
-                        handleClick(message, button.id, button.action)
-                      }
-                    >
-                      <Text style={styles.link}>Handle click</Text>
-                    </TouchableOpacity>
-                  </View>
-
-                  <Text>button.id: {button.id}</Text>
-                  <Text>button.title: {button.title}</Text>
-                  <Text>button.action?.data: {button.action?.data}</Text>
-                  <Text>button.action?.type: {button.action?.type}</Text>
-                </View>
-              ))}
-              <Text>payload: {JSON.stringify(message.payload)}</Text>
-            </View>
+            <IterableEmbeddedView
+              key={message.metadata.messageId}
+              viewType={selectedViewType}
+              message={message}
+            />
           ))}
         </View>
       </ScrollView>
