@@ -37,11 +37,8 @@ const styles = StyleSheet.create({
   },
   jsonEditor: {
     ...input,
-    fontFamily: undefined,
     fontSize: 12,
     height: 220,
-    marginBottom: 12,
-    padding: 10,
   },
   modalButton,
   modalButtons: modalButtons,
