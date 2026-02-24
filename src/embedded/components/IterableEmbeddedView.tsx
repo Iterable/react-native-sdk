@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { View, Text } from 'react-native';
 
 import { IterableEmbeddedViewType } from '../enums/IterableEmbeddedViewType';
 
@@ -6,6 +7,7 @@ import { IterableEmbeddedBanner } from './IterableEmbeddedBanner';
 import { IterableEmbeddedCard } from './IterableEmbeddedCard';
 import { IterableEmbeddedNotification } from './IterableEmbeddedNotification';
 import type { IterableEmbeddedComponentProps } from '../types/IterableEmbeddedComponentProps';
+import { useEmbeddedView } from '../hooks/useEmbeddedView/useEmbeddedView';
 
 /**
  * The props for the IterableEmbeddedView component.
@@ -43,5 +45,22 @@ export const IterableEmbeddedView = ({
     }
   }, [viewType]);
 
-  return Cmp ? <Cmp {...props} /> : null;
+  const { parsedStyles } =
+    useEmbeddedView(IterableEmbeddedViewType.Notification, props);
+
+  return Cmp ? (
+    <View>
+      <Text>parsedStyles.backgroundColor: {String(parsedStyles.backgroundColor)}</Text>
+      <Text>parsedStyles.borderColor: {String(parsedStyles.borderColor)}</Text>
+      <Text>parsedStyles.borderWidth: {parsedStyles.borderWidth}</Text>
+      <Text>parsedStyles.borderCornerRadius: {parsedStyles.borderCornerRadius}</Text>
+      <Text>parsedStyles.primaryBtnBackgroundColor: {String(parsedStyles.primaryBtnBackgroundColor)}</Text>
+      <Text>parsedStyles.primaryBtnTextColor: {String(parsedStyles.primaryBtnTextColor)}</Text>
+      <Text>parsedStyles.secondaryBtnBackgroundColor: {String(parsedStyles.secondaryBtnBackgroundColor)}</Text>
+      <Text>parsedStyles.secondaryBtnTextColor: {String(parsedStyles.secondaryBtnTextColor)}</Text>
+      <Text>parsedStyles.titleTextColor: {String(parsedStyles.titleTextColor)}</Text>
+      <Text>parsedStyles.bodyTextColor: {String(parsedStyles.bodyTextColor)}</Text>
+      <Cmp {...props} />
+    </View>
+  ) : null;
 };
