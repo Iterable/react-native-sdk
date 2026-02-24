@@ -69,6 +69,7 @@ export const Embedded = () => {
     setConfigJson(
       viewConfig ? JSON.stringify(viewConfig, null, 2) : DEFAULT_CONFIG_JSON
     );
+    setConfigEditorVisible(true);
   }, [viewConfig]);
 
   const applyConfig = useCallback(() => {

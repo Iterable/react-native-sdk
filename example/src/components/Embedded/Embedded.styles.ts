@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     height: 220,
   },
   modalButton,
-  modalButtons: modalButtons,
+  modalButtons,
   modalContent,
   modalOverlay,
   subtitle: { ...subtitle, textAlign: 'center' },
