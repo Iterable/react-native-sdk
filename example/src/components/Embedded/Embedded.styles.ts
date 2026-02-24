@@ -19,11 +19,6 @@ import {
 const styles = StyleSheet.create({
   button,
   buttonText,
-  configError: {
-    color: utilityColors.warning100,
-    fontSize: 12,
-    marginBottom: 8,
-  },
   container,
   embeddedSection: {
     display: 'flex',

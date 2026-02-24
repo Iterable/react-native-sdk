@@ -1,4 +1,5 @@
 import {
+  Alert,
   Modal,
   ScrollView,
   Text,
@@ -32,7 +33,6 @@ export const Embedded = () => {
     useState<IterableEmbeddedViewConfig | null>(null);
   const [configEditorVisible, setConfigEditorVisible] = useState(false);
   const [configJson, setConfigJson] = useState(DEFAULT_CONFIG_JSON);
-  const [configError, setConfigError] = useState<string | null>(null);
 
   // Parse placement IDs from input
   const parsedPlacementIds = placementIdsInput
@@ -66,27 +66,23 @@ export const Embedded = () => {
   }, [idsToFetch]);
 
   const openConfigEditor = useCallback(() => {
-    setConfigError(null);
     setConfigJson(
       viewConfig ? JSON.stringify(viewConfig, null, 2) : DEFAULT_CONFIG_JSON
     );
-    setConfigEditorVisible(true);
   }, [viewConfig]);
 
   const applyConfig = useCallback(() => {
-    setConfigError(null);
     try {
       const parsed = JSON.parse(configJson) as IterableEmbeddedViewConfig;
       setViewConfig(parsed);
       setConfigEditorVisible(false);
-    } catch (e) {
-      setConfigError(e instanceof Error ? e.message : 'Invalid JSON');
+    } catch {
+      Alert.alert('Error', 'Invalid JSON');
     }
   }, [configJson]);
 
   const closeConfigEditor = useCallback(() => {
     setConfigEditorVisible(false);
-    setConfigError(null);
   }, []);
 
   return (
@@ -204,9 +200,6 @@ export const Embedded = () => {
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
-            {configError ? (
-              <Text style={styles.configError}>{configError}</Text>
-            ) : null}
             <TextInput
               style={styles.jsonEditor}
               value={configJson}
