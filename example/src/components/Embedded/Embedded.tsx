@@ -204,7 +204,6 @@ export const Embedded = () => {
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>View config (JSON)</Text>
             {configError ? (
               <Text style={styles.configError}>{configError}</Text>
             ) : null}

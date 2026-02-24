@@ -7,9 +7,13 @@ import {
   container,
   hr,
   input,
+  modalButton,
+  modalButtons,
+  modalContent,
+  modalOverlay,
   subtitle,
   title,
-  utilityColors,
+  utilityColors
 } from '../../constants';
 
 const styles = StyleSheet.create({
@@ -39,33 +43,10 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     padding: 10,
   },
-  modalButton: {
-    flex: 1,
-  },
-  modalButtons: {
-    flexDirection: 'row',
-    gap: 12,
-    justifyContent: 'flex-end',
-  },
-  modalContent: {
-    backgroundColor: colors.backgroundPrimary,
-    borderRadius: 12,
-    maxHeight: '80%',
-    padding: 16,
-  },
-  // eslint-disable-next-line react-native/no-color-literals
-  modalOverlay: {
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    flex: 1,
-    justifyContent: 'center',
-    padding: 20,
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    marginBottom: 12,
-    textAlign: 'center',
-  },
+  modalButton,
+  modalButtons: modalButtons,
+  modalContent,
+  modalOverlay,
   subtitle: { ...subtitle, textAlign: 'center' },
   text: { textAlign: 'center' },
   textInput: input,
