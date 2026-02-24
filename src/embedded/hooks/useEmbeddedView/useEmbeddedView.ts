@@ -11,16 +11,16 @@ import { getStyles } from './getStyles';
  * @returns The embedded view.
  *
  * @example
- * const { parsedStyles } = useEmbeddedView(IterableEmbeddedViewType.Notification, {
+ * const \{ parsedStyles \} = useEmbeddedView(IterableEmbeddedViewType.Notification, \{
  *   message,
  *   config,
  *   onButtonClick,
  *   onMessageClick,
- * });
+ * \});
  *
  * return (
  *   <View>
- *     <Text>{parsedStyles.backgroundColor}</Text>
+ *     <Text>\{parsedStyles.backgroundColor\}</Text>
  *   </View>
  * );
  */
