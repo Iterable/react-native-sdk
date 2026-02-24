@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
+
 import { IterableEmbeddedViewType } from '../../enums';
 import type { IterableEmbeddedComponentProps } from '../../types/IterableEmbeddedComponentProps';
+import { getMedia } from './getMedia';
 import { getStyles } from './getStyles';
 
 /**
@@ -11,7 +13,7 @@ import { getStyles } from './getStyles';
  * @returns The embedded view.
  *
  * @example
- * const \{ parsedStyles \} = useEmbeddedView(IterableEmbeddedViewType.Notification, \{
+ * const \{ media, parsedStyles \} = useEmbeddedView(IterableEmbeddedViewType.Notification, \{
  *   message,
  *   config,
  *   onButtonClick,
@@ -20,6 +22,8 @@ import { getStyles } from './getStyles';
  *
  * return (
  *   <View>
+ *     <Text>\{media.url\}</Text>
+ *     <Text>\{media.caption\}</Text>
  *     <Text>\{parsedStyles.backgroundColor\}</Text>
  *   </View>
  * );
@@ -30,13 +34,18 @@ export const useEmbeddedView = (
   /** The props for the embedded view. */
   {
     config,
+    message,
   }: IterableEmbeddedComponentProps
 ) => {
   const parsedStyles = useMemo(() => {
     return getStyles(viewType, config);
   }, [viewType, config]);
+  const media = useMemo(() => {
+    return getMedia(viewType, message);
+  }, [viewType, message]);
 
   return {
     parsedStyles,
+    media,
   };
 };
