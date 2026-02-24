@@ -1,4 +1,5 @@
 import {
+  Modal,
   ScrollView,
   Text,
   TextInput,
@@ -9,12 +10,16 @@ import { useCallback, useState } from 'react';
 import {
   Iterable,
   type IterableEmbeddedMessage,
+  type IterableEmbeddedViewConfig,
   IterableEmbeddedView,
   IterableEmbeddedViewType,
 } from '@iterable/react-native-sdk';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import styles from './Embedded.styles';
+
+const DEFAULT_CONFIG_JSON = `{
+}`;
 
 export const Embedded = () => {
   const [placementIdsInput, setPlacementIdsInput] = useState<string>('');
@@ -23,6 +28,11 @@ export const Embedded = () => {
   >([]);
   const [selectedViewType, setSelectedViewType] =
     useState<IterableEmbeddedViewType>(IterableEmbeddedViewType.Banner);
+  const [viewConfig, setViewConfig] =
+    useState<IterableEmbeddedViewConfig | null>(null);
+  const [configEditorVisible, setConfigEditorVisible] = useState(false);
+  const [configJson, setConfigJson] = useState(DEFAULT_CONFIG_JSON);
+  const [configError, setConfigError] = useState<string | null>(null);
 
   // Parse placement IDs from input
   const parsedPlacementIds = placementIdsInput
@@ -54,6 +64,30 @@ export const Embedded = () => {
         console.log(messages);
       });
   }, [idsToFetch]);
+
+  const openConfigEditor = useCallback(() => {
+    setConfigError(null);
+    setConfigJson(
+      viewConfig ? JSON.stringify(viewConfig, null, 2) : DEFAULT_CONFIG_JSON
+    );
+    setConfigEditorVisible(true);
+  }, [viewConfig]);
+
+  const applyConfig = useCallback(() => {
+    setConfigError(null);
+    try {
+      const parsed = JSON.parse(configJson) as IterableEmbeddedViewConfig;
+      setViewConfig(parsed);
+      setConfigEditorVisible(false);
+    } catch (e) {
+      setConfigError(e instanceof Error ? e.message : 'Invalid JSON');
+    }
+  }, [configJson]);
+
+  const closeConfigEditor = useCallback(() => {
+    setConfigEditorVisible(false);
+    setConfigError(null);
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -142,6 +176,9 @@ export const Embedded = () => {
         <TouchableOpacity style={styles.button} onPress={endEmbeddedSession}>
           <Text style={styles.buttonText}>End session</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={openConfigEditor}>
+          <Text style={styles.buttonText}>Set view config</Text>
+        </TouchableOpacity>
         <View style={styles.inputContainer}>
           <Text style={styles.text}>Placement IDs (comma-separated):</Text>
           <TextInput
@@ -159,6 +196,44 @@ export const Embedded = () => {
           </TouchableOpacity>
         </View>
       </View>
+      <Modal
+        visible={configEditorVisible}
+        animationType="slide"
+        transparent
+        onRequestClose={closeConfigEditor}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>View config (JSON)</Text>
+            {configError ? (
+              <Text style={styles.configError}>{configError}</Text>
+            ) : null}
+            <TextInput
+              style={styles.jsonEditor}
+              value={configJson}
+              onChangeText={setConfigJson}
+              multiline
+              textAlignVertical="top"
+              placeholder={DEFAULT_CONFIG_JSON}
+              placeholderTextColor="#999"
+            />
+            <View style={styles.modalButtons}>
+              <TouchableOpacity
+                style={[styles.button, styles.modalButton]}
+                onPress={closeConfigEditor}
+              >
+                <Text style={styles.buttonText}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.button, styles.modalButton]}
+                onPress={applyConfig}
+              >
+                <Text style={styles.buttonText}>Apply</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
       <View style={styles.hr} />
       <ScrollView>
         <View style={styles.embeddedSection}>
@@ -167,6 +242,7 @@ export const Embedded = () => {
               key={message.metadata.messageId}
               viewType={selectedViewType}
               message={message}
+              config={viewConfig}
             />
           ))}
         </View>

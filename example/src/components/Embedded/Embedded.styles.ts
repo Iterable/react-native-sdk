@@ -15,6 +15,11 @@ import {
 const styles = StyleSheet.create({
   button,
   buttonText,
+  configError: {
+    color: utilityColors.warning100,
+    fontSize: 12,
+    marginBottom: 8,
+  },
   container,
   embeddedSection: {
     display: 'flex',
@@ -25,6 +30,41 @@ const styles = StyleSheet.create({
   hr,
   inputContainer: {
     marginVertical: 10,
+  },
+  jsonEditor: {
+    ...input,
+    fontFamily: undefined,
+    fontSize: 12,
+    height: 220,
+    marginBottom: 12,
+    padding: 10,
+  },
+  modalButton: {
+    flex: 1,
+  },
+  modalButtons: {
+    flexDirection: 'row',
+    gap: 12,
+    justifyContent: 'flex-end',
+  },
+  modalContent: {
+    backgroundColor: colors.backgroundPrimary,
+    borderRadius: 12,
+    maxHeight: '80%',
+    padding: 16,
+  },
+  // eslint-disable-next-line react-native/no-color-literals
+  modalOverlay: {
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    flex: 1,
+    justifyContent: 'center',
+    padding: 20,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 12,
+    textAlign: 'center',
   },
   subtitle: { ...subtitle, textAlign: 'center' },
   text: { textAlign: 'center' },
