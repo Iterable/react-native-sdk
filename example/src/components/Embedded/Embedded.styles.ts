@@ -7,9 +7,13 @@ import {
   container,
   hr,
   input,
+  modalButton,
+  modalButtons,
+  modalContent,
+  modalOverlay,
   subtitle,
   title,
-  utilityColors,
+  utilityColors
 } from '../../constants';
 
 const styles = StyleSheet.create({
@@ -26,6 +30,15 @@ const styles = StyleSheet.create({
   inputContainer: {
     marginVertical: 10,
   },
+  jsonEditor: {
+    ...input,
+    fontSize: 12,
+    height: 220,
+  },
+  modalButton,
+  modalButtons,
+  modalContent,
+  modalOverlay,
   subtitle: { ...subtitle, textAlign: 'center' },
   text: { textAlign: 'center' },
   textInput: input,

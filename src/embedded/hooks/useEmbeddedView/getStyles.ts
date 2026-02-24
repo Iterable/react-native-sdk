@@ -9,14 +9,14 @@ import { IterableEmbeddedViewType } from '../../enums';
  * @param colors - The colors to use for the default style.
  * @returns The default style.
  */
-const getDefaultStyle = (
+const getDefaultStyle = <T>(
   viewType: IterableEmbeddedViewType,
   colors: {
-    banner: number | string;
-    card: number | string;
-    notification: number | string;
+    banner: T;
+    card: T;
+    notification: T;
   }
-) => {
+): T => {
   switch (viewType) {
     case IterableEmbeddedViewType.Notification:
       return colors.notification;
@@ -53,29 +53,29 @@ export const getStyles = (
   return {
     backgroundColor:
       c?.backgroundColor ??
-      getDefaultStyle(viewType, embeddedStyles.backgroundColor),
+      getDefaultStyle<IterableEmbeddedViewConfig['backgroundColor']>(viewType, embeddedStyles.backgroundColor),
     borderColor:
-      c?.borderColor ?? getDefaultStyle(viewType, embeddedStyles.borderColor),
+      c?.borderColor ?? getDefaultStyle<IterableEmbeddedViewConfig['borderColor']>(viewType, embeddedStyles.borderColor),
     borderWidth:
-      c?.borderWidth ?? getDefaultStyle(viewType, embeddedStyles.borderWidth),
+      c?.borderWidth ?? getDefaultStyle<IterableEmbeddedViewConfig['borderWidth']>(viewType, embeddedStyles.borderWidth),
     borderCornerRadius:
       c?.borderCornerRadius ??
-      getDefaultStyle(viewType, embeddedStyles.borderCornerRadius),
+      getDefaultStyle<IterableEmbeddedViewConfig['borderCornerRadius']>(viewType, embeddedStyles.borderCornerRadius),
     primaryBtnBackgroundColor:
       c?.primaryBtnBackgroundColor ??
-      getDefaultStyle(viewType, embeddedStyles.primaryBtnBackgroundColor),
+      getDefaultStyle<IterableEmbeddedViewConfig['primaryBtnBackgroundColor']>(viewType, embeddedStyles.primaryBtnBackgroundColor),
     primaryBtnTextColor:
       c?.primaryBtnTextColor ??
-      getDefaultStyle(viewType, embeddedStyles.primaryBtnTextColor),
+      getDefaultStyle<IterableEmbeddedViewConfig['primaryBtnTextColor']>(viewType, embeddedStyles.primaryBtnTextColor),
     secondaryBtnBackgroundColor:
       c?.secondaryBtnBackgroundColor ??
-      getDefaultStyle(viewType, embeddedStyles.secondaryBtnBackground),
+      getDefaultStyle<IterableEmbeddedViewConfig['secondaryBtnBackgroundColor']>(viewType, embeddedStyles.secondaryBtnBackground),
     secondaryBtnTextColor:
       c?.secondaryBtnTextColor ??
-      getDefaultStyle(viewType, embeddedStyles.secondaryBtnTextColor),
+      getDefaultStyle<IterableEmbeddedViewConfig['secondaryBtnTextColor']>(viewType, embeddedStyles.secondaryBtnTextColor),
     titleTextColor:
-      c?.titleTextColor ?? getDefaultStyle(viewType, embeddedStyles.titleText),
+      c?.titleTextColor ?? getDefaultStyle<IterableEmbeddedViewConfig['titleTextColor']>(viewType, embeddedStyles.titleText),
     bodyTextColor:
-      c?.bodyTextColor ?? getDefaultStyle(viewType, embeddedStyles.bodyText),
+      c?.bodyTextColor ?? getDefaultStyle<IterableEmbeddedViewConfig['bodyTextColor']>(viewType, embeddedStyles.bodyText),
   };
 };
