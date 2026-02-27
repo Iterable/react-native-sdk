@@ -1,5 +1,5 @@
 import type { IterableEmbeddedViewConfig } from '../../types/IterableEmbeddedViewConfig';
-import { embeddedStyles } from './embeddedViewDefaults';
+import { embeddedStyles } from '../../constants/embeddedViewDefaults';
 import { IterableEmbeddedViewType } from '../../enums';
 
 /**
