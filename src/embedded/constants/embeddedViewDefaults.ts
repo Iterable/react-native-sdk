@@ -58,25 +58,12 @@ export const embeddedBorderWidth = {
   banner: 1,
 };
 
-export const embeddedMediaImageBorderColors = {
-  notification: '#E0DEDF',
-  card: '#E0DEDF',
-  banner: '#E0DEDF',
-};
-
-export const embeddedMediaImageBackgroundColors = {
-  notification: '#F5F4F4',
-  card: '#F5F4F4',
-  banner: '#F5F4F4',
-};
-
 export const embeddedStyles = {
   backgroundColor: embeddedBackgroundColors,
   bodyText: embeddedBodyTextColors,
   borderColor: embeddedBorderColors,
   borderCornerRadius: embeddedBorderRadius,
   borderWidth: embeddedBorderWidth,
-  mediaImageBorder: embeddedMediaImageBorderColors,
   primaryBtnBackgroundColor: embeddedPrimaryBtnBackgroundColors,
   primaryBtnTextColor: embeddedPrimaryBtnTextColors,
   secondaryBtnBackground: embeddedSecondaryBtnBackgroundColors,

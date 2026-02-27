@@ -11,7 +11,7 @@ import {
   embeddedSecondaryBtnTextColors,
   embeddedTitleTextColors,
   embeddedBodyTextColors,
-} from './embeddedViewDefaults';
+} from '../../constants/embeddedViewDefaults';
 
 describe('getStyles', () => {
   describe('default styles by view type (no config)', () => {
