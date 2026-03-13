@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 
 import { IterableEmbeddedViewType } from '../enums/IterableEmbeddedViewType';
 
@@ -45,40 +45,14 @@ export const IterableEmbeddedView = ({
     }
   }, [viewType]);
 
-  const { parsedStyles } = useEmbeddedView(viewType, props);
+  const { media } = useEmbeddedView(viewType, props);
 
   return Cmp ? (
     <View>
-      <Text>
-        parsedStyles.backgroundColor: {String(parsedStyles.backgroundColor)}
-      </Text>
-      <Text>parsedStyles.borderColor: {String(parsedStyles.borderColor)}</Text>
-      <Text>parsedStyles.borderWidth: {parsedStyles.borderWidth}</Text>
-      <Text>
-        parsedStyles.borderCornerRadius: {parsedStyles.borderCornerRadius}
-      </Text>
-      <Text>
-        parsedStyles.primaryBtnBackgroundColor:{' '}
-        {String(parsedStyles.primaryBtnBackgroundColor)}
-      </Text>
-      <Text>
-        parsedStyles.primaryBtnTextColor:{' '}
-        {String(parsedStyles.primaryBtnTextColor)}
-      </Text>
-      <Text>
-        parsedStyles.secondaryBtnBackgroundColor:{' '}
-        {String(parsedStyles.secondaryBtnBackgroundColor)}
-      </Text>
-      <Text>
-        parsedStyles.secondaryBtnTextColor:{' '}
-        {String(parsedStyles.secondaryBtnTextColor)}
-      </Text>
-      <Text>
-        parsedStyles.titleTextColor: {String(parsedStyles.titleTextColor)}
-      </Text>
-      <Text>
-        parsedStyles.bodyTextColor: {String(parsedStyles.bodyTextColor)}
-      </Text>
+      <Text>media.url: {media.url}</Text>
+      <Text>media.caption: {media.caption}</Text>
+      <Text>media.shouldShow: {media.shouldShow ? 'true' : 'false'}</Text>
+      {media.url ? <Image source={{ uri: media.url }} width={100} height={100} /> : null}
       <Cmp {...props} />
     </View>
   ) : null;
