@@ -1,9 +1,12 @@
-import { useMemo } from 'react';
-
+import { useCallback, useMemo } from 'react';
+import { Iterable } from '../../../core/classes/Iterable';
 import { IterableEmbeddedViewType } from '../../enums';
 import type { IterableEmbeddedComponentProps } from '../../types/IterableEmbeddedComponentProps';
+import type { IterableEmbeddedMessageElementsButton } from '../../types/IterableEmbeddedMessageElementsButton';
 import { getMedia } from './getMedia';
 import { getStyles } from './getStyles';
+
+const noop = () => {};
 
 /**
  * This hook is used to manage the lifecycle of an embedded view.
@@ -13,18 +16,18 @@ import { getStyles } from './getStyles';
  * @returns The embedded view.
  *
  * @example
- * const \{ media, parsedStyles \} = useEmbeddedView(IterableEmbeddedViewType.Notification, \{
+ * const { handleButtonClick, handleMessageClick, media, parsedStyles } = useEmbeddedView(IterableEmbeddedViewType.Notification, {
  *   message,
  *   config,
  *   onButtonClick,
  *   onMessageClick,
- * \});
+ * });
  *
  * return (
  *   <View>
- *     <Text>\{media.url\}</Text>
- *     <Text>\{media.caption\}</Text>
- *     <Text>\{parsedStyles.backgroundColor\}</Text>
+ *     <Text>{media.url}</Text>
+ *     <Text>{media.caption}</Text>
+ *     <Text>{parsedStyles.backgroundColor}</Text>
  *   </View>
  * );
  */
@@ -33,8 +36,10 @@ export const useEmbeddedView = (
   viewType: IterableEmbeddedViewType,
   /** The props for the embedded view. */
   {
-    config,
     message,
+    config,
+    onButtonClick = noop,
+    onMessageClick = noop,
   }: IterableEmbeddedComponentProps
 ) => {
   const parsedStyles = useMemo(() => {
@@ -44,8 +49,27 @@ export const useEmbeddedView = (
     return getMedia(viewType, message);
   }, [viewType, message]);
 
+  const handleButtonClick = useCallback(
+    (button: IterableEmbeddedMessageElementsButton) => {
+      onButtonClick(button);
+      Iterable.embeddedManager.handleClick(message, button.id, button.action);
+    },
+    [onButtonClick, message]
+  );
+
+  const handleMessageClick = useCallback(() => {
+    onMessageClick();
+    Iterable.embeddedManager.handleClick(
+      message,
+      null,
+      message.elements?.defaultAction
+    );
+  }, [message, onMessageClick]);
+
   return {
-    parsedStyles,
+    handleButtonClick,
+    handleMessageClick,
     media,
+    parsedStyles,
   };
 };

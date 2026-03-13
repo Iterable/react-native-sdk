@@ -3,7 +3,12 @@ import type { IterableEmbeddedMessageElementsButton } from './IterableEmbeddedMe
 import type { IterableEmbeddedViewConfig } from './IterableEmbeddedViewConfig';
 
 export interface IterableEmbeddedComponentProps {
+  /** The message to render. */
   message: IterableEmbeddedMessage;
+  /** The config for the embedded view. */
   config?: IterableEmbeddedViewConfig | null;
+  /** The function to call when a button is clicked. */
   onButtonClick?: (button: IterableEmbeddedMessageElementsButton) => void;
+  /** The function to call when the message is clicked. */
+  onMessageClick?: () => void;
 }

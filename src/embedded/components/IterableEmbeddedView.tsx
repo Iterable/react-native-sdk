@@ -1,13 +1,10 @@
 import { useMemo } from 'react';
-import { View, Text, Image } from 'react-native';
 
 import { IterableEmbeddedViewType } from '../enums/IterableEmbeddedViewType';
-
+import type { IterableEmbeddedComponentProps } from '../types/IterableEmbeddedComponentProps';
 import { IterableEmbeddedBanner } from './IterableEmbeddedBanner';
 import { IterableEmbeddedCard } from './IterableEmbeddedCard';
 import { IterableEmbeddedNotification } from './IterableEmbeddedNotification';
-import type { IterableEmbeddedComponentProps } from '../types/IterableEmbeddedComponentProps';
-import { useEmbeddedView } from '../hooks/useEmbeddedView/useEmbeddedView';
 
 /**
  * The props for the IterableEmbeddedView component.
@@ -45,15 +42,5 @@ export const IterableEmbeddedView = ({
     }
   }, [viewType]);
 
-  const { media } = useEmbeddedView(viewType, props);
-
-  return Cmp ? (
-    <View>
-      <Text>media.url: {media.url}</Text>
-      <Text>media.caption: {media.caption}</Text>
-      <Text>media.shouldShow: {media.shouldShow ? 'true' : 'false'}</Text>
-      {media.url ? <Image source={{ uri: media.url }} width={100} height={100} /> : null}
-      <Cmp {...props} />
-    </View>
-  ) : null;
+  return Cmp ? <Cmp {...props} /> : null;
 };
