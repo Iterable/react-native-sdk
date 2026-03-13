@@ -15,8 +15,8 @@ import { styles } from './IterableEmbeddedNotification.styles';
 export const IterableEmbeddedNotification = ({
   config,
   message,
-  onButtonClick = () => {},
-  onMessageClick = () => {},
+  onButtonClick,
+  onMessageClick,
 }: IterableEmbeddedComponentProps) => {
   const { parsedStyles, handleButtonClick, handleMessageClick } =
     useEmbeddedView(IterableEmbeddedViewType.Notification, {
@@ -41,7 +41,6 @@ export const IterableEmbeddedNotification = ({
           } as ViewStyle,
         ]}
       >
-        {}
         <View style={styles.bodyContainer}>
           <Text
             style={[
