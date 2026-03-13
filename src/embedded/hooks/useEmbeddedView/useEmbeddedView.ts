@@ -49,7 +49,6 @@ export const useEmbeddedView = (
     return getMedia(viewType, message);
   }, [viewType, message]);
 
-
   const handleButtonClick = useCallback(
     (button: IterableEmbeddedMessageElementsButton) => {
       onButtonClick(button);
