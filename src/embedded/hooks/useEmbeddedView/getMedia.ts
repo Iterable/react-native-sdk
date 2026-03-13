@@ -20,7 +20,14 @@ export const getMedia = (
   viewType: IterableEmbeddedViewType,
   /** The message to render. */
   message: IterableEmbeddedMessage
-) => {
+): {
+  /** The URL of the media to render. */
+  url: string | null;
+  /** The caption of the media to render. */
+  caption: string | null;
+  /** Whether the media should be shown. */
+  shouldShow: boolean;
+} => {
   if (viewType === IterableEmbeddedViewType.Notification) {
     return { url: null, caption: null, shouldShow: false };
   }
