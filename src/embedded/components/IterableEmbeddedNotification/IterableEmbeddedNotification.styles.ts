@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 
+const SHADOW_COLOR = 'rgba(0, 0, 0, 0.06)';
+
 export const styles = StyleSheet.create({
   body: {
     alignSelf: 'stretch',
@@ -38,12 +40,17 @@ export const styles = StyleSheet.create({
     alignItems: 'flex-start',
     borderStyle: 'solid',
     boxShadow:
-      '0 1px 1px 0 rgba(0, 0, 0, 0.06), 0 0 2px 0 rgba(0, 0, 0, 0.06), 0 0 1px 0 rgba(0, 0, 0, 0.08)',
+      `0 1px 1px 0 ${SHADOW_COLOR}, 0 0 2px 0 ${SHADOW_COLOR}, 0 0 1px 0 ${SHADOW_COLOR}`,
     display: 'flex',
+    elevation: 1,
     flexDirection: 'column',
     gap: 8,
     justifyContent: 'center',
     padding: 16,
+    shadowColor: SHADOW_COLOR,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.9,
+    shadowRadius: 2,
     width: '100%',
   },
   title: {
