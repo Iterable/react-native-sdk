@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native';
-import type { IterableEmbeddedComponentProps } from '../types/IterableEmbeddedComponentProps';
+import type { IterableEmbeddedComponentProps } from '../../types/IterableEmbeddedComponentProps';
 
 export const IterableEmbeddedCard = ({
   config,
