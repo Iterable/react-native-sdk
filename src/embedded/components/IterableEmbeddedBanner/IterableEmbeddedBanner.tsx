@@ -39,7 +39,7 @@ export const IterableEmbeddedBanner = ({
   const buttons = message.elements?.buttons ?? [];
 
   return (
-    <Pressable onPress={() => handleMessageClick()}>
+    <Pressable onPress={handleMessageClick}>
       <View
         style={[
           styles.container,
