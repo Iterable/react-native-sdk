@@ -278,19 +278,6 @@ describe('IterableEmbeddedNotification', () => {
         }
       );
     });
-
-    it('should call useEmbeddedView with default callbacks when not provided', () => {
-      render(<IterableEmbeddedNotification message={baseMessage} />);
-
-      expect(mockUseEmbeddedView).toHaveBeenCalledWith(
-        IterableEmbeddedViewType.Notification,
-        expect.objectContaining({
-          message: baseMessage,
-          onButtonClick: expect.any(Function),
-          onMessageClick: expect.any(Function),
-        })
-      );
-    });
   });
 
   describe('Edge cases', () => {

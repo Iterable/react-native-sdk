@@ -303,19 +303,6 @@ describe('IterableEmbeddedBanner', () => {
         }
       );
     });
-
-    it('should call useEmbeddedView with default callbacks when not provided', () => {
-      render(<IterableEmbeddedBanner message={baseMessage} />);
-
-      expect(mockUseEmbeddedView).toHaveBeenCalledWith(
-        IterableEmbeddedViewType.Banner,
-        expect.objectContaining({
-          message: baseMessage,
-          onButtonClick: expect.any(Function),
-          onMessageClick: expect.any(Function),
-        })
-      );
-    });
   });
 
   describe('Edge cases', () => {

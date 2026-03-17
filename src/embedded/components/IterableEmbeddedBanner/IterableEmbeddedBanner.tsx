@@ -18,8 +18,6 @@ import {
   IMAGE_WIDTH,
 } from './IterableEmbeddedBanner.styles';
 
-const noop = () => {};
-
 /**
  * TODO: figure out how default action works.
  */
@@ -27,8 +25,8 @@ const noop = () => {};
 export const IterableEmbeddedBanner = ({
   config,
   message,
-  onButtonClick = noop,
-  onMessageClick = noop,
+  onButtonClick,
+  onMessageClick,
 }: IterableEmbeddedComponentProps) => {
   const { parsedStyles, media, handleButtonClick, handleMessageClick } =
     useEmbeddedView(IterableEmbeddedViewType.Banner, {
