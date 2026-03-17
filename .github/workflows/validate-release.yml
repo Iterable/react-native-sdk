@@ -1,0 +1,60 @@
+name: Validate Release PR
+
+on:
+  pull_request:
+    types: [labeled, opened, synchronize, edited]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  validate:
+    if: >-
+      (github.event.action == 'labeled' && github.event.label.name == 'release') ||
+      (github.event.action != 'labeled' && contains(github.event.pull_request.labels.*.name, 'release'))
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate Release PR
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          errors=()
+
+          # --- Extract version from source of truth ---
+          version=$(node -p "require('./package.json').version")
+          if [ -z "$version" ]; then
+            echo "::error::Could not extract version from package.json"
+            exit 1
+          fi
+          echo "Detected version: $version"
+
+          # --- Check: Docs PR linked ---
+          if ! echo "$PR_BODY" | grep -qiP "github\.com/Iterable/iterable-docs/pull/\d+"; then
+            errors+=("No docs PR link found in the PR description. Add a link to the iterable-docs PR (e.g. https://github.com/Iterable/iterable-docs/pull/123).")
+          fi
+
+          # --- Check: CHANGELOG entry (RN uses ## X.Y.Z without brackets) ---
+          if ! grep -qF "## $version" CHANGELOG.md; then
+            errors+=("CHANGELOG.md is missing an entry for version $version.")
+          fi
+
+          # --- Check: Version consistency ---
+          build_info_ver=$(grep -oP "version:\s*'\K[^']+" src/itblBuildInfo.ts)
+
+          if [ "$build_info_ver" != "$version" ]; then
+            errors+=("src/itblBuildInfo.ts version is '$build_info_ver', expected '$version'. Did you run 'yarn prepare'?")
+          fi
+
+          # --- Report ---
+          if [ ${#errors[@]} -gt 0 ]; then
+            echo "::error::Release validation failed with ${#errors[@]} issue(s):"
+            for err in "${errors[@]}"; do
+              echo "::error::  - $err"
+            done
+            exit 1
+          fi
+
+          echo "All release validations passed for version $version."
