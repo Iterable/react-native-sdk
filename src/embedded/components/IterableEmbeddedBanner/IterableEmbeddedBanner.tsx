@@ -18,6 +18,8 @@ import {
   IMAGE_WIDTH,
 } from './IterableEmbeddedBanner.styles';
 
+const noop = () => {};
+
 /**
  * TODO: figure out how default action works.
  */
@@ -25,8 +27,8 @@ import {
 export const IterableEmbeddedBanner = ({
   config,
   message,
-  onButtonClick = () => {},
-  onMessageClick = () => {},
+  onButtonClick = noop,
+  onMessageClick = noop,
 }: IterableEmbeddedComponentProps) => {
   const { parsedStyles, media, handleButtonClick, handleMessageClick } =
     useEmbeddedView(IterableEmbeddedViewType.Banner, {
@@ -51,7 +53,6 @@ export const IterableEmbeddedBanner = ({
           } as ViewStyle,
         ]}
       >
-        {}
         <View
           // eslint-disable-next-line react-native/no-inline-styles
           style={[styles.bodyContainer, { gap: media.shouldShow ? 16 : 0 }]}

@@ -3,6 +3,8 @@ import { StyleSheet, Platform } from 'react-native';
 // See https://support.iterable.com/hc/en-us/articles/23230946708244-Out-of-the-Box-Views-for-Embedded-Messages#banners
 export const IMAGE_HEIGHT = Platform.OS === 'android' ? 80 : 100;
 export const IMAGE_WIDTH = Platform.OS === 'android' ? 80 : 100;
+const SHADOW_COLOR_LIGHT = 'rgba(0, 0, 0, 0.06)';
+const SHADOW_COLOR_DARK = 'rgba(0, 0, 0, 0.08)';
 
 export const styles = StyleSheet.create({
   body: {
@@ -41,12 +43,17 @@ export const styles = StyleSheet.create({
     alignItems: 'flex-start',
     borderStyle: 'solid',
     boxShadow:
-      '0 1px 1px 0 rgba(0, 0, 0, 0.06), 0 0 2px 0 rgba(0, 0, 0, 0.06), 0 0 1px 0 rgba(0, 0, 0, 0.08)',
+      `0 1px 1px 0 ${SHADOW_COLOR_LIGHT}, 0 0 2px 0 ${SHADOW_COLOR_LIGHT}, 0 0 1px 0 ${SHADOW_COLOR_DARK}`,
     display: 'flex',
+    elevation: 1,
     flexDirection: 'column',
     gap: 16,
     justifyContent: 'center',
     padding: 16,
+    shadowColor: SHADOW_COLOR_LIGHT,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.9,
+    shadowRadius: 2,
     width: '100%',
   },
   mediaContainer: {
