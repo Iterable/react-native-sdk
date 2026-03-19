@@ -12,6 +12,7 @@ import {
 import { IterableLogoGrey } from '../../../core/assets';
 import { IterableEmbeddedViewType } from '../../enums';
 import { useEmbeddedView } from '../../hooks/useEmbeddedView';
+import { useWarnIfOutsideEmbeddedSession } from '../../hooks/useWarnIfOutsideEmbeddedSession';
 import type { IterableEmbeddedComponentProps } from '../../types/IterableEmbeddedComponentProps';
 import { IMAGE_HEIGHT, styles } from './IterableEmbeddedCard.styles';
 
@@ -25,6 +26,8 @@ export const IterableEmbeddedCard = ({
   onButtonClick = () => {},
   onMessageClick = () => {},
 }: IterableEmbeddedComponentProps) => {
+  useWarnIfOutsideEmbeddedSession('IterableEmbeddedCard');
+
   const {
     handleButtonClick,
     handleMessageClick,

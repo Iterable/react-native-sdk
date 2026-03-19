@@ -1,3 +1,4 @@
+export * from './EmbeddedSessionManager';
 export * from './IterableEmbeddedBanner';
 export * from './IterableEmbeddedCard';
 export * from './IterableEmbeddedNotification';

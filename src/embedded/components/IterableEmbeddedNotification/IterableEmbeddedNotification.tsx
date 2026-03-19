@@ -9,6 +9,7 @@ import {
 
 import { IterableEmbeddedViewType } from '../../enums/IterableEmbeddedViewType';
 import { useEmbeddedView } from '../../hooks/useEmbeddedView';
+import { useWarnIfOutsideEmbeddedSession } from '../../hooks/useWarnIfOutsideEmbeddedSession';
 import type { IterableEmbeddedComponentProps } from '../../types/IterableEmbeddedComponentProps';
 import { styles } from './IterableEmbeddedNotification.styles';
 
@@ -18,6 +19,8 @@ export const IterableEmbeddedNotification = ({
   onButtonClick,
   onMessageClick,
 }: IterableEmbeddedComponentProps) => {
+  useWarnIfOutsideEmbeddedSession('IterableEmbeddedNotification');
+
   const { parsedStyles, handleButtonClick, handleMessageClick } =
     useEmbeddedView(IterableEmbeddedViewType.Notification, {
       message,

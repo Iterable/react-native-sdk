@@ -20,6 +20,10 @@ jest.mock('../../hooks/useEmbeddedView', () => ({
   useEmbeddedView: jest.fn(),
 }));
 
+jest.mock('../../hooks/useWarnIfOutsideEmbeddedSession', () => ({
+  useWarnIfOutsideEmbeddedSession: jest.fn(),
+}));
+
 const mockUseEmbeddedView = useEmbeddedView as jest.MockedFunction<
   typeof useEmbeddedView
 >;
