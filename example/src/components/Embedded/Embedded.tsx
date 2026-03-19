@@ -208,19 +208,20 @@ export const Embedded = () => {
         </View>
       </Modal>
       <View style={styles.hr} />
-      <EmbeddedSessionManager isActive={isFocused}>
-        <ScrollView>
-          {embeddedMessages.map((message) => (
-            <View style={styles.embeddedItem} key={message.metadata.messageId}>
+      <ScrollView>
+        <View style={styles.embeddedSection}>
+          <EmbeddedSessionManager isActive={isFocused}>
+            {embeddedMessages.map((message) => (
               <IterableEmbeddedView
+                key={message.metadata.messageId}
                 viewType={selectedViewType}
                 message={message}
                 config={viewConfig}
               />
-            </View>
-          ))}
-        </ScrollView>
-      </EmbeddedSessionManager>
+            ))}
+          </EmbeddedSessionManager>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

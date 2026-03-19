@@ -20,8 +20,11 @@ const styles = StyleSheet.create({
   button,
   buttonText,
   container,
-  embeddedItem: {
-    marginBottom: 16,
+  embeddedSection: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 16,
+    paddingHorizontal: 16,
   },
   hr,
   inputContainer: {
