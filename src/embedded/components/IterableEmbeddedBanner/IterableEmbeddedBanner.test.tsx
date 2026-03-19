@@ -5,7 +5,7 @@ import { IterableEmbeddedViewType } from '../../enums/IterableEmbeddedViewType';
 import { useEmbeddedView } from '../../hooks/useEmbeddedView';
 import type { IterableEmbeddedMessage } from '../../types/IterableEmbeddedMessage';
 import type { IterableEmbeddedMessageElementsButton } from '../../types/IterableEmbeddedMessageElementsButton';
-import { IterableEmbeddedNotification } from './IterableEmbeddedNotification';
+import { IterableEmbeddedBanner } from './IterableEmbeddedBanner';
 
 const mockHandleButtonClick = jest.fn();
 const mockHandleMessageClick = jest.fn();
@@ -31,7 +31,9 @@ const defaultParsedStyles = {
   bodyTextColor: '#787174',
 };
 
-function mockUseEmbeddedViewReturn(overrides: Partial<ReturnType<typeof useEmbeddedView>> = {}) {
+function mockUseEmbeddedViewReturn(
+  overrides: Partial<ReturnType<typeof useEmbeddedView>> = {}
+) {
   mockUseEmbeddedView.mockReturnValue({
     parsedStyles: defaultParsedStyles,
     handleButtonClick: mockHandleButtonClick,
@@ -41,7 +43,7 @@ function mockUseEmbeddedViewReturn(overrides: Partial<ReturnType<typeof useEmbed
   });
 }
 
-describe('IterableEmbeddedNotification', () => {
+describe('IterableEmbeddedBanner', () => {
   const baseMessage: IterableEmbeddedMessage = {
     metadata: {
       messageId: 'msg-1',
@@ -49,8 +51,8 @@ describe('IterableEmbeddedNotification', () => {
       placementId: 1,
     },
     elements: {
-      title: 'Notification Title',
-      body: 'Notification body text.',
+      title: 'Banner Title',
+      body: 'Banner body text.',
     },
   };
 
@@ -62,25 +64,25 @@ describe('IterableEmbeddedNotification', () => {
   describe('Rendering', () => {
     it('should render without crashing', () => {
       const { getByText } = render(
-        <IterableEmbeddedNotification message={baseMessage} />
+        <IterableEmbeddedBanner message={baseMessage} />
       );
-      expect(getByText('Notification Title')).toBeTruthy();
-      expect(getByText('Notification body text.')).toBeTruthy();
+      expect(getByText('Banner Title')).toBeTruthy();
+      expect(getByText('Banner body text.')).toBeTruthy();
     });
 
     it('should render title and body from message.elements', () => {
       const message: IterableEmbeddedMessage = {
         ...baseMessage,
         elements: {
-          title: 'Custom Title',
-          body: 'Custom body content.',
+          title: 'Custom Banner Title',
+          body: 'Custom banner body.',
         },
       };
       const { getByText } = render(
-        <IterableEmbeddedNotification message={message} />
+        <IterableEmbeddedBanner message={message} />
       );
-      expect(getByText('Custom Title')).toBeTruthy();
-      expect(getByText('Custom body content.')).toBeTruthy();
+      expect(getByText('Custom Banner Title')).toBeTruthy();
+      expect(getByText('Custom banner body.')).toBeTruthy();
     });
 
     it('should apply parsedStyles to container and text', () => {
@@ -93,7 +95,7 @@ describe('IterableEmbeddedNotification', () => {
       mockUseEmbeddedViewReturn({ parsedStyles: customStyles });
 
       const { getByText, UNSAFE_getAllByType } = render(
-        <IterableEmbeddedNotification message={baseMessage} />
+        <IterableEmbeddedBanner message={baseMessage} />
       );
 
       const views = UNSAFE_getAllByType('View' as any);
@@ -118,8 +120,8 @@ describe('IterableEmbeddedNotification', () => {
         ])
       );
 
-      const title = getByText('Notification Title');
-      const body = getByText('Notification body text.');
+      const title = getByText('Banner Title');
+      const body = getByText('Banner body text.');
       expect(title.props.style).toEqual(
         expect.arrayContaining([
           expect.any(Object),
@@ -140,9 +142,9 @@ describe('IterableEmbeddedNotification', () => {
         elements: { ...baseMessage.elements, buttons: undefined },
       };
       const { queryByText } = render(
-        <IterableEmbeddedNotification message={message} />
+        <IterableEmbeddedBanner message={message} />
       );
-      expect(queryByText('CTA')).toBeNull();
+      expect(queryByText('Primary')).toBeNull();
     });
 
     it('should not render button container when buttons array is empty', () => {
@@ -151,7 +153,7 @@ describe('IterableEmbeddedNotification', () => {
         elements: { ...baseMessage.elements, buttons: [] },
       };
       const { queryByText } = render(
-        <IterableEmbeddedNotification message={message} />
+        <IterableEmbeddedBanner message={message} />
       );
       expect(queryByText('Primary')).toBeNull();
     });
@@ -177,7 +179,7 @@ describe('IterableEmbeddedNotification', () => {
         },
       };
       const { getByText } = render(
-        <IterableEmbeddedNotification message={message} />
+        <IterableEmbeddedBanner message={message} />
       );
       expect(getByText('Primary')).toBeTruthy();
       expect(getByText('Secondary')).toBeTruthy();
@@ -192,7 +194,7 @@ describe('IterableEmbeddedNotification', () => {
         },
       };
       const { getByText } = render(
-        <IterableEmbeddedNotification message={message} />
+        <IterableEmbeddedBanner message={message} />
       );
 
       const primaryText = getByText('Primary');
@@ -224,7 +226,7 @@ describe('IterableEmbeddedNotification', () => {
         },
       };
       const { getByText } = render(
-        <IterableEmbeddedNotification message={message} />
+        <IterableEmbeddedBanner message={message} />
       );
 
       fireEvent.press(getByText('Primary'));
@@ -237,29 +239,52 @@ describe('IterableEmbeddedNotification', () => {
     });
   });
 
-  describe('Message click', () => {
-    it('should call handleMessageClick when message area is pressed', () => {
-      const { getByText } = render(
-        <IterableEmbeddedNotification message={baseMessage} />
+  describe('Media', () => {
+    it('should not render media when media.shouldShow is false', () => {
+      const { UNSAFE_queryAllByType } = render(
+        <IterableEmbeddedBanner message={baseMessage} />
+      );
+      const images = UNSAFE_queryAllByType('Image' as any);
+      expect(images.length).toBe(0);
+    });
+
+    it('should render media image when media.shouldShow is true', () => {
+      const media = {
+        url: 'https://example.com/image.png',
+        caption: 'Banner image',
+        shouldShow: true,
+      };
+      mockUseEmbeddedViewReturn({ media });
+
+      const { UNSAFE_queryAllByType } = render(
+        <IterableEmbeddedBanner message={baseMessage} />
       );
 
-      fireEvent.press(getByText('Notification Title'));
-      expect(mockHandleMessageClick).toHaveBeenCalledTimes(1);
+      const images = UNSAFE_queryAllByType('Image' as any);
+      expect(images.length).toBeGreaterThan(0);
+      expect((images[0] as any).props.source.uri).toBe(media.url);
+    });
+  });
 
-      mockHandleMessageClick.mockClear();
-      fireEvent.press(getByText('Notification body text.'));
+  describe('Message click', () => {
+    it('should call handleMessageClick when banner is pressed', () => {
+      const { getByText } = render(
+        <IterableEmbeddedBanner message={baseMessage} />
+      );
+
+      fireEvent.press(getByText('Banner Title'));
       expect(mockHandleMessageClick).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('useEmbeddedView integration', () => {
-    it('should call useEmbeddedView with Notification viewType and props', () => {
+    it('should call useEmbeddedView with Banner viewType and props', () => {
       const config = { backgroundColor: '#abc' } as any;
       const onButtonClick = jest.fn();
       const onMessageClick = jest.fn();
 
       render(
-        <IterableEmbeddedNotification
+        <IterableEmbeddedBanner
           message={baseMessage}
           config={config}
           onButtonClick={onButtonClick}
@@ -269,7 +294,7 @@ describe('IterableEmbeddedNotification', () => {
 
       expect(mockUseEmbeddedView).toHaveBeenCalledTimes(1);
       expect(mockUseEmbeddedView).toHaveBeenCalledWith(
-        IterableEmbeddedViewType.Notification,
+        IterableEmbeddedViewType.Banner,
         {
           message: baseMessage,
           config,
@@ -287,10 +312,10 @@ describe('IterableEmbeddedNotification', () => {
         elements: undefined,
       };
       const { queryByText } = render(
-        <IterableEmbeddedNotification message={message} />
+        <IterableEmbeddedBanner message={message} />
       );
-      expect(queryByText('Notification Title')).toBeNull();
-      expect(queryByText('Notification body text.')).toBeNull();
+      expect(queryByText('Banner Title')).toBeNull();
+      expect(queryByText('Banner body text.')).toBeNull();
     });
 
     it('should handle message with empty title and body without throwing', () => {
@@ -299,7 +324,7 @@ describe('IterableEmbeddedNotification', () => {
         elements: { title: '', body: '' },
       };
       const { getAllByText } = render(
-        <IterableEmbeddedNotification message={message} />
+        <IterableEmbeddedBanner message={message} />
       );
       const emptyTextNodes = getAllByText('');
       expect(emptyTextNodes.length).toBeGreaterThanOrEqual(1);
@@ -317,7 +342,7 @@ describe('IterableEmbeddedNotification', () => {
         },
       };
       const { getByText } = render(
-        <IterableEmbeddedNotification message={message} />
+        <IterableEmbeddedBanner message={message} />
       );
       expect(getByText('First')).toBeTruthy();
       expect(getByText('Second')).toBeTruthy();
