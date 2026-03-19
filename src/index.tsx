@@ -34,10 +34,7 @@ export type {
 } from './core/types';
 export {
   EmbeddedSessionManager,
-  IterableEmbeddedBanner,
-  IterableEmbeddedCard,
   IterableEmbeddedManager,
-  IterableEmbeddedNotification,
   IterableEmbeddedView,
   IterableEmbeddedViewType,
   useEmbeddedView,

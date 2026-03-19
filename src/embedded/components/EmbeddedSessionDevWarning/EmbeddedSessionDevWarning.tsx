@@ -10,8 +10,7 @@ interface EmbeddedSessionDevWarningProps {
 }
 
 /**
- * Dev-only error-styled banner when embedded views are not wrapped in
- * `EmbeddedSessionManager`.
+ * Banner when embedded views are not wrapped in EmbeddedSessionManager`.
  */
 export const EmbeddedSessionDevWarning = ({
   visible,
