@@ -21,10 +21,8 @@ const styles = StyleSheet.create({
   buttonText,
   container,
   embeddedSection: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 16,
-    paddingHorizontal: 16,
+
+    marginBottom: 16,
   },
   hr,
   inputContainer: {

@@ -1,3 +1,4 @@
+import { useCallback, useState } from 'react';
 import {
   Alert,
   Modal,
@@ -7,16 +8,16 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { useCallback, useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 import {
+  EmbeddedSessionManager,
   Iterable,
-  type IterableEmbeddedMessage,
-  type IterableEmbeddedViewConfig,
   IterableEmbeddedView,
   IterableEmbeddedViewType,
-  EmbeddedSessionManager,
+  type IterableEmbeddedMessage,
+  type IterableEmbeddedViewConfig,
 } from '@iterable/react-native-sdk';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import styles from './Embedded.styles';
 
@@ -44,18 +45,6 @@ export const Embedded = () => {
     .filter((id) => !isNaN(id));
 
   const idsToFetch = parsedPlacementIds.length > 0 ? parsedPlacementIds : null;
-
-  const syncEmbeddedMessages = useCallback(() => {
-    Iterable.embeddedManager.syncMessages();
-  }, []);
-
-  const startEmbeddedSession = useCallback(() => {
-    Iterable.embeddedManager.startSession();
-  }, []);
-
-  const endEmbeddedSession = useCallback(() => {
-    Iterable.embeddedManager.endSession();
-  }, []);
 
   const getEmbeddedMessages = useCallback(() => {
     Iterable.embeddedManager
@@ -98,9 +87,6 @@ export const Embedded = () => {
           </Text>
         </View>
       )}
-      <Text style={styles.subtitle}>
-        Enter placement IDs to fetch embedded messages
-      </Text>
       <View style={styles.utilitySection}>
         <View style={styles.viewTypeSelector}>
           <Text style={styles.text}>Select View Type:</Text>
@@ -165,15 +151,6 @@ export const Embedded = () => {
             </TouchableOpacity>
           </View>
         </View>
-        <TouchableOpacity style={styles.button} onPress={syncEmbeddedMessages}>
-          <Text style={styles.buttonText}>Sync messages</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={startEmbeddedSession}>
-          <Text style={styles.buttonText}>Start session</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={endEmbeddedSession}>
-          <Text style={styles.buttonText}>End session</Text>
-        </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={openConfigEditor}>
           <Text style={styles.buttonText}>Set view config</Text>
         </TouchableOpacity>
@@ -230,18 +207,20 @@ export const Embedded = () => {
       </Modal>
       <View style={styles.hr} />
       <ScrollView>
-        <View style={styles.embeddedSection}>
-          <EmbeddedSessionManager>
-            {embeddedMessages.map((message) => (
+        <EmbeddedSessionManager>
+          {embeddedMessages.map((message) => (
+            <View
+              style={styles.embeddedSection}
+              key={message.metadata.messageId}
+            >
               <IterableEmbeddedView
-                key={message.metadata.messageId}
                 viewType={selectedViewType}
                 message={message}
                 config={viewConfig}
               />
-            ))}
-          </EmbeddedSessionManager>
-        </View>
+            </View>
+          ))}
+        </EmbeddedSessionManager>
       </ScrollView>
     </SafeAreaView>
   );
