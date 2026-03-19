@@ -26,7 +26,6 @@ export const EmbeddedSessionManager = ({
       return;
     }
 
-    Iterable.embeddedManager.syncMessages();
     Iterable.embeddedManager.startSession();
 
     return () => {
