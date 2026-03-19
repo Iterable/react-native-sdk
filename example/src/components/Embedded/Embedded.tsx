@@ -14,6 +14,7 @@ import {
   type IterableEmbeddedViewConfig,
   IterableEmbeddedView,
   IterableEmbeddedViewType,
+  EmbeddedSessionManager,
 } from '@iterable/react-native-sdk';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -230,14 +231,16 @@ export const Embedded = () => {
       <View style={styles.hr} />
       <ScrollView>
         <View style={styles.embeddedSection}>
-          {embeddedMessages.map((message) => (
-            <IterableEmbeddedView
-              key={message.metadata.messageId}
-              viewType={selectedViewType}
-              message={message}
-              config={viewConfig}
-            />
-          ))}
+          <EmbeddedSessionManager>
+            {embeddedMessages.map((message) => (
+              <IterableEmbeddedView
+                key={message.metadata.messageId}
+                viewType={selectedViewType}
+                message={message}
+                config={viewConfig}
+              />
+            ))}
+          </EmbeddedSessionManager>
         </View>
       </ScrollView>
     </SafeAreaView>
