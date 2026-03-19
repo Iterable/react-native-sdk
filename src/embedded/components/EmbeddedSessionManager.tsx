@@ -7,8 +7,6 @@ import { EmbeddedSessionContext } from '../context/EmbeddedSessionContext';
 export interface EmbeddedSessionManagerProps {
   children?: ReactNode;
   /**
-   * Is the current screen in focus?
-   *
    * When `false`, this wrapper does not start an embedded session (e.g. host
    * screen not focused). Defaults to `true`.
    *
@@ -22,6 +20,8 @@ export interface EmbeddedSessionManagerProps {
  * Wraps embedded content and tracks an embedded session for its lifecycle.
  *
  * If nested, only the top-most wrapper starts and ends the session.
+ *
+ * There should only be one EmbeddedSessionManager per screen.
  */
 export const EmbeddedSessionManager = ({
   children,
