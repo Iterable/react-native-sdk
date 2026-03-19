@@ -1,12 +1,12 @@
 import {
   Image,
   PixelRatio,
-  Pressable,
   Text,
   TouchableOpacity,
   View,
   type TextStyle,
   type ViewStyle,
+  Pressable,
 } from 'react-native';
 
 import { IterableLogoGrey } from '../../../core/assets';
@@ -25,13 +25,17 @@ export const IterableEmbeddedCard = ({
   onButtonClick = () => {},
   onMessageClick = () => {},
 }: IterableEmbeddedComponentProps) => {
-  const { handleButtonClick, handleMessageClick, media, parsedStyles } =
-    useEmbeddedView(IterableEmbeddedViewType.Card, {
-      message,
-      config,
-      onButtonClick,
-      onMessageClick,
-    });
+  const {
+    handleButtonClick,
+    handleMessageClick,
+    media,
+    parsedStyles,
+  } = useEmbeddedView(IterableEmbeddedViewType.Card, {
+    message,
+    config,
+    onButtonClick,
+    onMessageClick,
+  });
   const buttons = message?.elements?.buttons ?? [];
 
   return (
@@ -60,7 +64,8 @@ export const IterableEmbeddedCard = ({
                     uri: media.url as string,
                     height: PixelRatio.getPixelSizeForLayoutSize(IMAGE_HEIGHT),
                   }
-                : IterableLogoGrey
+                :
+                IterableLogoGrey
             }
             style={
               media.shouldShow

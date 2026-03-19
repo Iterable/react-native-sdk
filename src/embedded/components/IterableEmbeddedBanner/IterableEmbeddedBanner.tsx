@@ -1,21 +1,21 @@
 import {
   Image,
-  PixelRatio,
-  Pressable,
   Text,
   TouchableOpacity,
   View,
   type TextStyle,
   type ViewStyle,
+  PixelRatio,
+  Pressable,
 } from 'react-native';
 
 import { IterableEmbeddedViewType } from '../../enums';
 import { useEmbeddedView } from '../../hooks/useEmbeddedView';
 import type { IterableEmbeddedComponentProps } from '../../types/IterableEmbeddedComponentProps';
 import {
+  styles,
   IMAGE_HEIGHT,
   IMAGE_WIDTH,
-  styles,
 } from './IterableEmbeddedBanner.styles';
 
 /**
