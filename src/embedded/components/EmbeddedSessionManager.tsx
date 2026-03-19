@@ -6,8 +6,18 @@ import type { ViewProps } from 'react-native';
 import { Iterable } from '../../core/classes/Iterable';
 import { EmbeddedSessionContext } from '../context/EmbeddedSessionContext';
 
-interface EmbeddedSessionManagerProps extends ViewProps {
+export interface EmbeddedSessionManagerProps extends ViewProps {
   children?: ReactNode;
+  /**
+   * Is the current screen in focus?
+   *
+   * When `false`, this wrapper does not start an embedded session (e.g. host
+   * screen not focused). Defaults to `true`.
+   *
+   * This is not necessary to use.  It is only useful if you want to avoid
+   * starting the session when the screen is hidden but still technically there.
+   */
+  isActive?: boolean;
 }
 
 /**
@@ -17,12 +27,13 @@ interface EmbeddedSessionManagerProps extends ViewProps {
  */
 export const EmbeddedSessionManager = ({
   children,
+  isActive = true,
   ...viewProps
 }: EmbeddedSessionManagerProps) => {
   const hasActiveParentSession = useContext(EmbeddedSessionContext);
 
   useEffect(() => {
-    if (hasActiveParentSession) {
+    if (hasActiveParentSession || !isActive) {
       return;
     }
 
@@ -31,7 +42,7 @@ export const EmbeddedSessionManager = ({
     return () => {
       Iterable.embeddedManager.endSession();
     };
-  }, [hasActiveParentSession]);
+  }, [hasActiveParentSession, isActive]);
 
   return (
     <EmbeddedSessionContext.Provider value={true}>

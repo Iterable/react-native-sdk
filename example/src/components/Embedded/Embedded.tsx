@@ -1,3 +1,4 @@
+import { useIsFocused } from '@react-navigation/native';
 import { useCallback, useState } from 'react';
 import {
   Alert,
@@ -25,6 +26,7 @@ const DEFAULT_CONFIG_JSON = `{
 }`;
 
 export const Embedded = () => {
+  const isFocused = useIsFocused();
   const [placementIdsInput, setPlacementIdsInput] = useState<string>('');
   const [embeddedMessages, setEmbeddedMessages] = useState<
     IterableEmbeddedMessage[]
@@ -77,7 +79,7 @@ export const Embedded = () => {
   }, []);
 
   return (
-    <EmbeddedSessionManager>
+    <EmbeddedSessionManager isActive={isFocused}>
       <SafeAreaView style={styles.container}>
         <Text style={styles.title}>Embedded</Text>
         {!Iterable.embeddedManager.isEnabled && (

@@ -41,6 +41,7 @@ export {
   IterableEmbeddedView,
   IterableEmbeddedViewType,
   useEmbeddedView,
+  type EmbeddedSessionManagerProps,
   type IterableEmbeddedComponentProps,
   type IterableEmbeddedMessage,
   type IterableEmbeddedMessageElements,
