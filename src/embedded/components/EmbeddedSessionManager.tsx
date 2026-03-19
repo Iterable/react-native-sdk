@@ -1,12 +1,10 @@
-import type { ReactNode } from 'react';
+import type { PropsWithChildren, ReactNode } from 'react';
 import { useContext, useEffect } from 'react';
-import { View } from 'react-native';
-import type { ViewProps } from 'react-native';
 
 import { Iterable } from '../../core/classes/Iterable';
 import { EmbeddedSessionContext } from '../context/EmbeddedSessionContext';
 
-export interface EmbeddedSessionManagerProps extends ViewProps {
+export interface EmbeddedSessionManagerProps {
   children?: ReactNode;
   /**
    * Is the current screen in focus?
@@ -28,8 +26,7 @@ export interface EmbeddedSessionManagerProps extends ViewProps {
 export const EmbeddedSessionManager = ({
   children,
   isActive = true,
-  ...viewProps
-}: EmbeddedSessionManagerProps) => {
+}: PropsWithChildren<EmbeddedSessionManagerProps>) => {
   const hasActiveParentSession = useContext(EmbeddedSessionContext);
 
   useEffect(() => {
@@ -46,7 +43,7 @@ export const EmbeddedSessionManager = ({
 
   return (
     <EmbeddedSessionContext.Provider value={true}>
-      <View {...viewProps}>{children}</View>
+      {children}
     </EmbeddedSessionContext.Provider>
   );
 };
