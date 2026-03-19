@@ -12,12 +12,8 @@ import {
 import { IterableLogoGrey } from '../../../core/assets';
 import { IterableEmbeddedViewType } from '../../enums';
 import { useEmbeddedView } from '../../hooks/useEmbeddedView';
-import { useWarnIfOutsideEmbeddedSession } from '../../hooks/useWarnIfOutsideEmbeddedSession';
 import type { IterableEmbeddedComponentProps } from '../../types/IterableEmbeddedComponentProps';
-import { EmbeddedSessionDevWarning } from '../EmbeddedSessionDevWarning/EmbeddedSessionDevWarning';
 import { IMAGE_HEIGHT, styles } from './IterableEmbeddedCard.styles';
-
-const COMPONENT_NAME = 'IterableEmbeddedCard';
 
 /**
  * TODO: Add default action click handler.  See IterableEmbeddedView for functionality.
@@ -29,27 +25,14 @@ export const IterableEmbeddedCard = ({
   onButtonClick = () => {},
   onMessageClick = () => {},
 }: IterableEmbeddedComponentProps) => {
-  const showEmbeddedSessionWarning =
-    useWarnIfOutsideEmbeddedSession(COMPONENT_NAME);
-
-  const {
-    handleButtonClick,
-    handleMessageClick,
-    media,
-    parsedStyles,
-  } = useEmbeddedView(IterableEmbeddedViewType.Card, {
-    message,
-    config,
-    onButtonClick,
-    onMessageClick,
-  });
+  const { handleButtonClick, handleMessageClick, media, parsedStyles } =
+    useEmbeddedView(IterableEmbeddedViewType.Card, {
+      message,
+      config,
+      onButtonClick,
+      onMessageClick,
+    });
   const buttons = message?.elements?.buttons ?? [];
-
-  if (showEmbeddedSessionWarning) {
-    return (
-      <EmbeddedSessionDevWarning visible componentName={COMPONENT_NAME} />
-    );
-  }
 
   return (
     <Pressable onPress={() => handleMessageClick()}>
@@ -77,8 +60,7 @@ export const IterableEmbeddedCard = ({
                     uri: media.url as string,
                     height: PixelRatio.getPixelSizeForLayoutSize(IMAGE_HEIGHT),
                   }
-                :
-                IterableLogoGrey
+                : IterableLogoGrey
             }
             style={
               media.shouldShow

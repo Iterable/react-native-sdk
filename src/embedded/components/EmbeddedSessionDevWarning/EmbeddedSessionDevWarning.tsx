@@ -20,7 +20,7 @@ export const EmbeddedSessionDevWarning = ({
     return null;
   }
 
-  const message = `[Iterable] ${componentName}: wrap this view in <EmbeddedSessionManager> so embedded session tracking works correctly.`;
+  const message = `[Iterable] ${componentName}: wrap this component in <EmbeddedSessionManager> so embedded session tracking works correctly.`;
 
   return (
     <View
