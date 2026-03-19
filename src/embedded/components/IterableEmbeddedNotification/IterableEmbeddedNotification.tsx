@@ -1,10 +1,10 @@
 import {
-  Pressable,
   Text,
   TouchableOpacity,
   View,
   type TextStyle,
   type ViewStyle,
+  Pressable,
 } from 'react-native';
 
 import { IterableEmbeddedViewType } from '../../enums/IterableEmbeddedViewType';

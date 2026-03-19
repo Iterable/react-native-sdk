@@ -1,12 +1,12 @@
 import {
   Image,
   PixelRatio,
+  Pressable,
   Text,
   TouchableOpacity,
   View,
   type TextStyle,
   type ViewStyle,
-  Pressable,
 } from 'react-native';
 
 import { IterableLogoGrey } from '../../../core/assets';
