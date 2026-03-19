@@ -77,140 +77,146 @@ export const Embedded = () => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Embedded</Text>
-      {!Iterable.embeddedManager.isEnabled && (
-        <View style={styles.warningContainer}>
-          <Text style={styles.warningText}>
-            ⚠️ Embedded messaging is disabled. Please enable it in your Iterable
-            config.
-          </Text>
-        </View>
-      )}
-      <View style={styles.utilitySection}>
-        <View style={styles.viewTypeSelector}>
-          <Text style={styles.text}>Select View Type:</Text>
-          <View style={styles.viewTypeButtons}>
-            <TouchableOpacity
-              style={[
-                styles.viewTypeButton,
-                selectedViewType === IterableEmbeddedViewType.Banner &&
-                  styles.viewTypeButtonSelected,
-              ]}
-              onPress={() =>
-                setSelectedViewType(IterableEmbeddedViewType.Banner)
-              }
-            >
-              <Text
-                style={[
-                  styles.viewTypeButtonText,
-                  selectedViewType === IterableEmbeddedViewType.Banner &&
-                    styles.viewTypeButtonTextSelected,
-                ]}
-              >
-                Banner
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.viewTypeButton,
-                selectedViewType === IterableEmbeddedViewType.Card &&
-                  styles.viewTypeButtonSelected,
-              ]}
-              onPress={() => setSelectedViewType(IterableEmbeddedViewType.Card)}
-            >
-              <Text
-                style={[
-                  styles.viewTypeButtonText,
-                  selectedViewType === IterableEmbeddedViewType.Card &&
-                    styles.viewTypeButtonTextSelected,
-                ]}
-              >
-                Card
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.viewTypeButton,
-                selectedViewType === IterableEmbeddedViewType.Notification &&
-                  styles.viewTypeButtonSelected,
-              ]}
-              onPress={() =>
-                setSelectedViewType(IterableEmbeddedViewType.Notification)
-              }
-            >
-              <Text
-                style={[
-                  styles.viewTypeButtonText,
-                  selectedViewType === IterableEmbeddedViewType.Notification &&
-                    styles.viewTypeButtonTextSelected,
-                ]}
-              >
-                Notification
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <TouchableOpacity style={styles.button} onPress={openConfigEditor}>
-          <Text style={styles.buttonText}>Set view config</Text>
-        </TouchableOpacity>
-        <View style={styles.inputContainer}>
-          <Text style={styles.text}>Placement IDs (comma-separated):</Text>
-          <TextInput
-            style={styles.textInput}
-            placeholder="e.g., 1, 2, 3"
-            placeholderTextColor="#999"
-            value={placementIdsInput}
-            onChangeText={setPlacementIdsInput}
-            keyboardType="numbers-and-punctuation"
-          />
-          <TouchableOpacity style={styles.button} onPress={getEmbeddedMessages}>
-            <Text style={styles.buttonText}>
-              Get messages for placement ids
+    <EmbeddedSessionManager>
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.title}>Embedded</Text>
+        {!Iterable.embeddedManager.isEnabled && (
+          <View style={styles.warningContainer}>
+            <Text style={styles.warningText}>
+              ⚠️ Embedded messaging is disabled. Please enable it in your
+              Iterable config.
             </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-      <Modal
-        visible={configEditorVisible}
-        animationType="slide"
-        transparent
-        onRequestClose={closeConfigEditor}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <TextInput
-              style={styles.jsonEditor}
-              value={configJson}
-              onChangeText={setConfigJson}
-              multiline
-              textAlignVertical="top"
-              placeholder={DEFAULT_CONFIG_JSON}
-              placeholderTextColor="#999"
-            />
-            <View style={styles.modalButtons}>
+          </View>
+        )}
+        <View style={styles.utilitySection}>
+          <View style={styles.viewTypeSelector}>
+            <Text style={styles.text}>Select View Type:</Text>
+            <View style={styles.viewTypeButtons}>
               <TouchableOpacity
-                style={[styles.button, styles.modalButton]}
-                onPress={closeConfigEditor}
+                style={[
+                  styles.viewTypeButton,
+                  selectedViewType === IterableEmbeddedViewType.Banner &&
+                    styles.viewTypeButtonSelected,
+                ]}
+                onPress={() =>
+                  setSelectedViewType(IterableEmbeddedViewType.Banner)
+                }
               >
-                <Text style={styles.buttonText}>Cancel</Text>
+                <Text
+                  style={[
+                    styles.viewTypeButtonText,
+                    selectedViewType === IterableEmbeddedViewType.Banner &&
+                      styles.viewTypeButtonTextSelected,
+                  ]}
+                >
+                  Banner
+                </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={[styles.button, styles.modalButton]}
-                onPress={applyConfig}
+                style={[
+                  styles.viewTypeButton,
+                  selectedViewType === IterableEmbeddedViewType.Card &&
+                    styles.viewTypeButtonSelected,
+                ]}
+                onPress={() =>
+                  setSelectedViewType(IterableEmbeddedViewType.Card)
+                }
               >
-                <Text style={styles.buttonText}>Apply</Text>
+                <Text
+                  style={[
+                    styles.viewTypeButtonText,
+                    selectedViewType === IterableEmbeddedViewType.Card &&
+                      styles.viewTypeButtonTextSelected,
+                  ]}
+                >
+                  Card
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.viewTypeButton,
+                  selectedViewType === IterableEmbeddedViewType.Notification &&
+                    styles.viewTypeButtonSelected,
+                ]}
+                onPress={() =>
+                  setSelectedViewType(IterableEmbeddedViewType.Notification)
+                }
+              >
+                <Text
+                  style={[
+                    styles.viewTypeButtonText,
+                    selectedViewType ===
+                      IterableEmbeddedViewType.Notification &&
+                      styles.viewTypeButtonTextSelected,
+                  ]}
+                >
+                  Notification
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
+          <TouchableOpacity style={styles.button} onPress={openConfigEditor}>
+            <Text style={styles.buttonText}>Set view config</Text>
+          </TouchableOpacity>
+          <View style={styles.inputContainer}>
+            <Text style={styles.text}>Placement IDs (comma-separated):</Text>
+            <TextInput
+              style={styles.textInput}
+              placeholder="e.g., 1, 2, 3"
+              placeholderTextColor="#999"
+              value={placementIdsInput}
+              onChangeText={setPlacementIdsInput}
+              keyboardType="numbers-and-punctuation"
+            />
+            <TouchableOpacity
+              style={styles.button}
+              onPress={getEmbeddedMessages}
+            >
+              <Text style={styles.buttonText}>
+                Get messages for placement ids
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </Modal>
-      <View style={styles.hr} />
-      <ScrollView>
-        <EmbeddedSessionManager>
+        <Modal
+          visible={configEditorVisible}
+          animationType="slide"
+          transparent
+          onRequestClose={closeConfigEditor}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContent}>
+              <TextInput
+                style={styles.jsonEditor}
+                value={configJson}
+                onChangeText={setConfigJson}
+                multiline
+                textAlignVertical="top"
+                placeholder={DEFAULT_CONFIG_JSON}
+                placeholderTextColor="#999"
+              />
+              <View style={styles.modalButtons}>
+                <TouchableOpacity
+                  style={[styles.button, styles.modalButton]}
+                  onPress={closeConfigEditor}
+                >
+                  <Text style={styles.buttonText}>Cancel</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.button, styles.modalButton]}
+                  onPress={applyConfig}
+                >
+                  <Text style={styles.buttonText}>Apply</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
+        <View style={styles.hr} />
+        <ScrollView>
           {embeddedMessages.map((message) => (
             <View
-              style={styles.embeddedSection}
+              style={styles.embeddedItem}
               key={message.metadata.messageId}
             >
               <IterableEmbeddedView
@@ -220,9 +226,9 @@ export const Embedded = () => {
               />
             </View>
           ))}
-        </EmbeddedSessionManager>
-      </ScrollView>
-    </SafeAreaView>
+        </ScrollView>
+      </SafeAreaView>
+    </EmbeddedSessionManager>
   );
 };
 

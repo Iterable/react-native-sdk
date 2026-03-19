@@ -20,8 +20,7 @@ const styles = StyleSheet.create({
   button,
   buttonText,
   container,
-  embeddedSection: {
-
+  embeddedItem: {
     marginBottom: 16,
   },
   hr,
