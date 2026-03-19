@@ -13,11 +13,14 @@ import { IterableEmbeddedViewType } from '../../enums';
 import { useEmbeddedView } from '../../hooks/useEmbeddedView';
 import { useWarnIfOutsideEmbeddedSession } from '../../hooks/useWarnIfOutsideEmbeddedSession';
 import type { IterableEmbeddedComponentProps } from '../../types/IterableEmbeddedComponentProps';
+import { EmbeddedSessionDevWarning } from '../EmbeddedSessionDevWarning/EmbeddedSessionDevWarning';
 import {
   styles,
   IMAGE_HEIGHT,
   IMAGE_WIDTH,
 } from './IterableEmbeddedBanner.styles';
+
+const COMPONENT_NAME = 'IterableEmbeddedBanner';
 
 /**
  * TODO: figure out how default action works.
@@ -29,7 +32,8 @@ export const IterableEmbeddedBanner = ({
   onButtonClick,
   onMessageClick,
 }: IterableEmbeddedComponentProps) => {
-  useWarnIfOutsideEmbeddedSession('IterableEmbeddedBanner');
+  const showEmbeddedSessionWarning =
+    useWarnIfOutsideEmbeddedSession(COMPONENT_NAME);
 
   const { parsedStyles, media, handleButtonClick, handleMessageClick } =
     useEmbeddedView(IterableEmbeddedViewType.Banner, {
@@ -40,6 +44,12 @@ export const IterableEmbeddedBanner = ({
     });
 
   const buttons = message.elements?.buttons ?? [];
+
+  if (showEmbeddedSessionWarning) {
+    return (
+      <EmbeddedSessionDevWarning visible componentName={COMPONENT_NAME} />
+    );
+  }
 
   return (
     <Pressable onPress={handleMessageClick}>

@@ -11,7 +11,10 @@ import { IterableEmbeddedViewType } from '../../enums/IterableEmbeddedViewType';
 import { useEmbeddedView } from '../../hooks/useEmbeddedView';
 import { useWarnIfOutsideEmbeddedSession } from '../../hooks/useWarnIfOutsideEmbeddedSession';
 import type { IterableEmbeddedComponentProps } from '../../types/IterableEmbeddedComponentProps';
+import { EmbeddedSessionDevWarning } from '../EmbeddedSessionDevWarning/EmbeddedSessionDevWarning';
 import { styles } from './IterableEmbeddedNotification.styles';
+
+const COMPONENT_NAME = 'IterableEmbeddedNotification';
 
 export const IterableEmbeddedNotification = ({
   config,
@@ -19,7 +22,8 @@ export const IterableEmbeddedNotification = ({
   onButtonClick,
   onMessageClick,
 }: IterableEmbeddedComponentProps) => {
-  useWarnIfOutsideEmbeddedSession('IterableEmbeddedNotification');
+  const showEmbeddedSessionWarning =
+    useWarnIfOutsideEmbeddedSession(COMPONENT_NAME);
 
   const { parsedStyles, handleButtonClick, handleMessageClick } =
     useEmbeddedView(IterableEmbeddedViewType.Notification, {
@@ -30,6 +34,12 @@ export const IterableEmbeddedNotification = ({
     });
 
   const buttons = message.elements?.buttons ?? [];
+
+  if (showEmbeddedSessionWarning) {
+    return (
+      <EmbeddedSessionDevWarning visible componentName={COMPONENT_NAME} />
+    );
+  }
 
   return (
     <Pressable onPress={() => handleMessageClick()}>

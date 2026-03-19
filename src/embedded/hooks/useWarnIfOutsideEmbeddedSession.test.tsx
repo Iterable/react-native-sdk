@@ -8,12 +8,15 @@ describe('useWarnIfOutsideEmbeddedSession', () => {
   it('logs a warning when not under EmbeddedSessionManager', async () => {
     const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
 
-    renderHook(() => useWarnIfOutsideEmbeddedSession('TestComponent'));
+    const { result } = renderHook(() =>
+      useWarnIfOutsideEmbeddedSession('TestComponent')
+    );
 
     await act(async () => {
       await Promise.resolve();
     });
 
+    expect(result.current).toBe(true);
     expect(warnSpy).toHaveBeenCalledTimes(1);
     const firstArg = warnSpy.mock.calls[0]?.[0];
     expect(firstArg).toBeDefined();
@@ -33,14 +36,16 @@ describe('useWarnIfOutsideEmbeddedSession', () => {
       </EmbeddedSessionContext.Provider>
     );
 
-    renderHook(() => useWarnIfOutsideEmbeddedSession('TestComponent'), {
-      wrapper,
-    });
+    const { result } = renderHook(
+      () => useWarnIfOutsideEmbeddedSession('TestComponent'),
+      { wrapper }
+    );
 
     await act(async () => {
       await Promise.resolve();
     });
 
+    expect(result.current).toBe(false);
     expect(warnSpy).not.toHaveBeenCalled();
 
     warnSpy.mockRestore();
