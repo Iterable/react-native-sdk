@@ -100,7 +100,7 @@
     "react-native-screens": "^4.10.0",
     "react-native-webview": "^13.14.1",
     "react-test-renderer": "19.0.0",
-    "release-it": "^17.10.0",
+    "release-it": "^19.0.0",
     "turbo": "^1.10.7",
     "typedoc": "^0.28.13",
     "typedoc-plugin-coverage": "^3.3.0",
