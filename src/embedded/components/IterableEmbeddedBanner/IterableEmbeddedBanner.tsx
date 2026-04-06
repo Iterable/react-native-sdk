@@ -18,10 +18,6 @@ import {
   IMAGE_WIDTH,
 } from './IterableEmbeddedBanner.styles';
 
-/**
- * TODO: figure out how default action works.
- */
-
 export const IterableEmbeddedBanner = ({
   config,
   message,

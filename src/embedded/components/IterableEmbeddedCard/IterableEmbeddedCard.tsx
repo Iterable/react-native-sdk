@@ -15,27 +15,19 @@ import { useEmbeddedView } from '../../hooks/useEmbeddedView';
 import type { IterableEmbeddedComponentProps } from '../../types/IterableEmbeddedComponentProps';
 import { IMAGE_HEIGHT, styles } from './IterableEmbeddedCard.styles';
 
-/**
- * TODO: Add default action click handler.  See IterableEmbeddedView for functionality.
- */
-
 export const IterableEmbeddedCard = ({
   config,
   message,
   onButtonClick = () => {},
   onMessageClick = () => {},
 }: IterableEmbeddedComponentProps) => {
-  const {
-    handleButtonClick,
-    handleMessageClick,
-    media,
-    parsedStyles,
-  } = useEmbeddedView(IterableEmbeddedViewType.Card, {
-    message,
-    config,
-    onButtonClick,
-    onMessageClick,
-  });
+  const { handleButtonClick, handleMessageClick, media, parsedStyles } =
+    useEmbeddedView(IterableEmbeddedViewType.Card, {
+      message,
+      config,
+      onButtonClick,
+      onMessageClick,
+    });
   const buttons = message?.elements?.buttons ?? [];
 
   return (
@@ -64,8 +56,7 @@ export const IterableEmbeddedCard = ({
                     uri: media.url as string,
                     height: PixelRatio.getPixelSizeForLayoutSize(IMAGE_HEIGHT),
                   }
-                :
-                IterableLogoGrey
+                : IterableLogoGrey
             }
             style={
               media.shouldShow
