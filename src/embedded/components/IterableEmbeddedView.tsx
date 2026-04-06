@@ -9,7 +9,8 @@ import { IterableEmbeddedNotification } from './IterableEmbeddedNotification';
 /**
  * The props for the IterableEmbeddedView component.
  */
-export interface IterableEmbeddedViewProps extends IterableEmbeddedComponentProps {
+export interface IterableEmbeddedViewProps
+  extends IterableEmbeddedComponentProps {
   /** The type of view to render. */
   viewType: IterableEmbeddedViewType;
 }
@@ -23,45 +24,62 @@ export interface IterableEmbeddedViewProps extends IterableEmbeddedComponentProp
  * @param onMessageClick - The function to call when the message is clicked.
  * @returns The IterableEmbeddedView component.
  *
- * This component is used to render pre-created, customizable message displays
- * included with Iterables RN SDK: cards, banners, and notifications.
+ * This component is used to render the following pre-created, customizable
+ * message displays included with Iterables RN SDK: cards, banners, and
+ * notifications.
  *
  * @example
  * ```tsx
- * // See `IterableEmbeddedViewType`` for available view types.
+ * import {
+ *   IterableAction,
+ *   IterableEmbeddedView,
+ *   IterableEmbeddedViewType,
+ *   type IterableEmbeddedMessage,
+ *   type IterableEmbeddedMessageElementsButton,
+ * } from '@iterable/react-native-sdk';
+ *
+ * // See `IterableEmbeddedViewType` for available view types.
  * const viewType = IterableEmbeddedViewType.Card;
  *
- * // The message object that will be rendered.
- * // You can retrieve  messages by calling `Iterable.embeddedManager.getMessages(IDS)`
- * const message = {
+ * // Messages usually come from the embedded manager. `placementIds` is `number[] | null`
+ * // (use `null` to load messages for all placements), for example:
+ * // Iterable.embeddedManager.getMessages([101, 102]).then((messages) => { ... });
+ * const message: IterableEmbeddedMessage = {
  *   metadata: {
  *     messageId: 'test-message-123',
+ *     placementId: 101,
  *     campaignId: 123456,
- *     placementId: 'test-placement',
  *   },
  *   elements: {
  *     title: 'Test Title',
  *     body: 'Test Body',
  *     buttons: [
- *       { id: 'button-1', label: 'Button 1', action: 'button-1-action' },
- *       { id: 'button-2', label: 'Button 2', action: 'button-2-action' },
+ *       {
+ *         id: 'button-1',
+ *         title: 'Button 1',
+ *         action: new IterableAction('openUrl', 'https://example.com/one'),
+ *       },
+ *       {
+ *         id: 'button-2',
+ *         title: 'Button 2',
+ *         action: new IterableAction('openUrl', 'https://example.com/two'),
+ *       },
  *     ],
  *   },
  * };
  *
- * // The config for the IterableEmbeddedView component, most likely used to style the view.
+ * // The config is used to style the component.
  * // See `IterableEmbeddedViewConfig` for available config options.
  * const config = { backgroundColor: '#FFFFFF', borderRadius: 8 };
  *
- * // A callback that will be called when a button is clicked.
- * // General click handling is handled by the SDK; This is only for custom logic.
- * const onButtonClick = () => {
- *   console.log('Button clicked');
+ * // `onButtonClick` will be called when a button is clicked.
+ * // This callback allows you to add custom logic in addition to the SDK's default handling.
+ * const onButtonClick = (button: IterableEmbeddedMessageElementsButton) => {
+ *   console.log('Button clicked', button.id, button.title, button.action);
  * };
  *
- * // A callback that will be called when the message is clicked.
- * // This is not called when a button is clicked.
- * // If a default action is set, this is what will be called.
+ * // `onMessageClick` will be called when the message is clicked anywhere outside of a button.
+ * // If a default action is set, it will be handled prior to this callback.
  * const onMessageClick = () => {
  *   console.log('Message clicked');
  * };
