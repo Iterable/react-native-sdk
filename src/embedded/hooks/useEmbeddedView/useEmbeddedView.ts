@@ -16,6 +16,7 @@ const noop = () => {};
  * @returns The embedded view.
  *
  * @example
+ * ```tsx
  * const { handleButtonClick, handleMessageClick, media, parsedStyles } = useEmbeddedView(IterableEmbeddedViewType.Notification, {
  *   message,
  *   config,
@@ -30,6 +31,7 @@ const noop = () => {};
  *     <Text>{parsedStyles.backgroundColor}</Text>
  *   </View>
  * );
+ * ```
  */
 export const useEmbeddedView = (
   /** The type of view to render. */

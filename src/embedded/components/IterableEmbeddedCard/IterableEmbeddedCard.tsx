@@ -15,6 +15,26 @@ import { useEmbeddedView } from '../../hooks/useEmbeddedView';
 import type { IterableEmbeddedComponentProps } from '../../types/IterableEmbeddedComponentProps';
 import { IMAGE_HEIGHT, styles } from './IterableEmbeddedCard.styles';
 
+/**
+ *
+ * @param config - The config for the IterableEmbeddedCard component.
+ * @param message - The message to render.
+ * @param onButtonClick - The function to call when a button is clicked.
+ * @param onMessageClick - The function to call when the message is clicked.
+ * @returns The IterableEmbeddedCard component.
+ *
+ * @example
+ * ```tsx
+ * return (
+ *   <IterableEmbeddedCard
+ *     config={config}
+ *     message={message}
+ *     onButtonClick={onButtonClick}
+ *     onMessageClick={onMessageClick}
+ *   />
+ * );
+ * ```
+ */
 export const IterableEmbeddedCard = ({
   config,
   message,

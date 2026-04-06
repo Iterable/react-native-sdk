@@ -10,10 +10,12 @@ import { IterableEmbeddedViewType } from '../../enums';
  * @returns The media to render.
  *
  * @example
+ * ```ts
  * const media = getMedia(IterableEmbeddedViewType.Notification, message);
  * console.log(media.url);
  * console.log(media.caption);
  * console.log(media.shouldShow ? 'true' : 'false');
+ * ```
  */
 export const getMedia = (
   /** The type of view to render. */

@@ -37,6 +37,7 @@ const getDefaultStyle = <T>(
  * @returns The styles.
  *
  * @example
+ * ```ts
  * const styles = getStyles(IterableEmbeddedViewType.Notification, {
  *   backgroundColor: '#000000',
  *   borderColor: '#000000',
@@ -45,6 +46,7 @@ const getDefaultStyle = <T>(
  *   primaryBtnBackgroundColor: '#000000',
  *   primaryBtnTextColor: '#000000',
  * });
+ * ```
  */
 export const getStyles = (
   viewType: IterableEmbeddedViewType,

@@ -18,6 +18,26 @@ import {
   IMAGE_WIDTH,
 } from './IterableEmbeddedBanner.styles';
 
+/**
+ *
+ * @param config - The config for the IterableEmbeddedBanner component.
+ * @param message - The message to render.
+ * @param onButtonClick - The function to call when a button is clicked.
+ * @param onMessageClick - The function to call when the message is clicked.
+ * @returns The IterableEmbeddedBanner component.
+ *
+ * @example
+ * ```tsx
+ * return (
+ *   <IterableEmbeddedBanner
+ *     config={config}
+ *     message={message}
+ *     onButtonClick={onButtonClick}
+ *     onMessageClick={onMessageClick}
+ *   />
+ * );
+ * ```
+ */
 export const IterableEmbeddedBanner = ({
   config,
   message,
