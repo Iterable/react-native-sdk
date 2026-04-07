@@ -230,6 +230,10 @@ RCT_EXPORT_MODULE()
   [_swiftAPI disableDeviceForCurrentUser];
 }
 
+- (void)registerForPush {
+  [_swiftAPI registerForPush];
+}
+
 - (void)getLastPushPayload:(RCTPromiseResolveBlock)resolve
                     reject:(RCTPromiseRejectBlock)reject {
   [_swiftAPI getLastPushPayload:resolve rejecter:reject];
@@ -510,6 +514,10 @@ RCT_EXPORT_METHOD(setAttributionInfo : (NSDictionary *)attributionInfo) {
 
 RCT_EXPORT_METHOD(disableDeviceForCurrentUser) {
   [_swiftAPI disableDeviceForCurrentUser];
+}
+
+RCT_EXPORT_METHOD(registerForPush) {
+  [_swiftAPI registerForPush];
 }
 
 RCT_EXPORT_METHOD(getLastPushPayload : (RCTPromiseResolveBlock)

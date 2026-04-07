@@ -110,6 +110,7 @@ export interface Spec extends TurboModule {
 
   // Device management
   disableDeviceForCurrentUser(): void;
+  registerForPush(): void;
   getLastPushPayload(): Promise<{
     [key: string]: string | number | boolean;
   } | null>;

@@ -247,6 +247,17 @@ describe('IterableApi', () => {
     });
   });
 
+  describe('registerForPush', () => {
+    it('should call RNIterableAPI.registerForPush', () => {
+      // GIVEN no parameters
+      // WHEN registerForPush is called
+      IterableApi.registerForPush();
+
+      // THEN RNIterableAPI.registerForPush is called
+      expect(MockRNIterableAPI.registerForPush).toBeCalled();
+    });
+  });
+
   describe('updateUser', () => {
     it('should call RNIterableAPI.updateUser with data fields and merge flag', () => {
       // GIVEN data fields and merge flag

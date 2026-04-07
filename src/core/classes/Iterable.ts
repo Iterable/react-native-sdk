@@ -346,6 +346,26 @@ export class Iterable {
   }
 
   /**
+   * Re-register the device for push notifications for the current user.
+   *
+   * This method can be used to re-enable push notifications after they have been
+   * disabled by calling `disableDeviceForCurrentUser`. It triggers the native
+   * push registration flow, re-registering the device token with Iterable.
+   *
+   * @example
+   * ```typescript
+   * // First disable push
+   * Iterable.disableDeviceForCurrentUser();
+   *
+   * // Later, re-enable push
+   * Iterable.registerForPush();
+   * ```
+   */
+  static registerForPush() {
+    IterableApi.registerForPush();
+  }
+
+  /**
    * Get the payload of the last push notification with which the user
    * opened the application (by clicking an action button, etc.).
    *

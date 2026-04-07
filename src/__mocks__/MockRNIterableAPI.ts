@@ -34,6 +34,8 @@ export class MockRNIterableAPI {
 
   static disableDeviceForCurrentUser = jest.fn();
 
+  static registerForPush = jest.fn();
+
   static trackPushOpenWithCampaignId = jest.fn();
 
   static updateCart = jest.fn();

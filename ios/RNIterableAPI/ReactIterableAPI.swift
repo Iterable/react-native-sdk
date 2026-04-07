@@ -144,6 +144,14 @@ import React
     IterableAPI.disableDeviceForCurrentUser()
   }
 
+  @objc(registerForPush)
+  public func registerForPush() {
+    ITBInfo()
+    DispatchQueue.main.async {
+      UIApplication.shared.registerForRemoteNotifications()
+    }
+  }
+
   @objc(getLastPushPayload:rejecter:)
   public func getLastPushPayload(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock)
   {

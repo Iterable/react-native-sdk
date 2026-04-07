@@ -138,6 +138,11 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   }
 
   @Override
+  public void registerForPush() {
+    moduleImpl.registerForPush();
+  }
+
+  @Override
   public void handleAppLink(String uri, Promise promise) {
     moduleImpl.handleAppLink(uri, promise);
   }

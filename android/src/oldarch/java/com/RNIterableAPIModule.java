@@ -139,6 +139,11 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void registerForPush() {
+      moduleImpl.registerForPush();
+    }
+
+    @ReactMethod
     public void handleAppLink(String uri, Promise promise) {
       moduleImpl.handleAppLink(uri, promise);
     }

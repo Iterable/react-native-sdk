@@ -138,6 +138,15 @@ export class IterableApi {
   }
 
   /**
+   * Re-register the device for push notifications for the current user.
+   * This can be used to re-enable push notifications after calling disableDeviceForCurrentUser.
+   */
+  static registerForPush() {
+    IterableLogger.log('registerForPush');
+    return RNIterableAPI.registerForPush();
+  }
+
+  /**
    * Save data to the current user's Iterable profile.
    *
    * @param dataFields - The data fields to update

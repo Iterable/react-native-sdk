@@ -142,6 +142,16 @@ describe('Iterable', () => {
     });
   });
 
+  describe('registerForPush', () => {
+    it('should re-register the device for push notifications', () => {
+      // GIVEN no parameters
+      // WHEN Iterable.registerForPush is called
+      Iterable.registerForPush();
+      // THEN corresponding method is called on RNIterableAPI
+      expect(MockRNIterableAPI.registerForPush).toBeCalled();
+    });
+  });
+
   describe('getLastPushPayload', () => {
     it('should return the last push payload', async () => {
       const result = { var1: 'val1', var2: true };
