@@ -1,3 +1,11 @@
+## Unreleased
+
+### Fixes
+- [#793] Fixed `IterableApi` unresolved reference in `MainApplication.kt` when using
+  new architecture (RN 0.76+, Expo 52). The SDK now automatically calls
+  `IterableApi.setContext()` during module initialization, so users no longer need
+  to add this call manually in their Android application code.
+
 ## 2.2.0
 
 ### Updates

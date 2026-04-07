@@ -76,6 +76,30 @@ Notes:
 - Ensure your app is configured for New Architecture per the React Native docs.
 - The example app in this repository is configured with New Architecture enabled.
 
+### Android Setup (RN 0.76+ / New Architecture)
+
+Starting with version 2.2.1, the SDK **automatically** calls `IterableApi.setContext()` 
+when the React Native module is initialized. You no longer need to manually add 
+`IterableApi.setContext(this)` in your `MainApplication.kt` or `MainActivity.kt`.
+
+If you are upgrading from an older version, you can safely **remove** the following 
+from your Android code:
+
+```kotlin
+// No longer needed - remove this import
+import com.iterable.iterableapi.IterableApi
+
+// No longer needed - remove this call
+IterableApi.setContext(this)
+```
+
+The SDK's initialization (via JavaScript/TypeScript `Iterable.initialize()`) handles 
+all necessary Android context setup automatically.
+
+> **Note for Expo users (SDK 52+):** No additional native Android configuration is 
+> required beyond installing the package. The SDK handles context initialization 
+> automatically through autolinking.
+
 ## Beta Versions
 
 To opt into beta versions of the SDK, you can install the latest beta version by using the `beta` tag:

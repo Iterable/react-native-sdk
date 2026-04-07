@@ -10,12 +10,18 @@ import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.module.model.ReactModuleInfo;
 import com.facebook.react.module.model.ReactModuleInfoProvider;
+import com.iterable.iterableapi.IterableApi;
 
 public class RNIterableAPIPackage extends BaseReactPackage {
     @Nullable
     @Override
     public NativeModule getModule(@NonNull String name, @NonNull ReactApplicationContext reactContext) {
       if (RNIterableAPIModuleImpl.NAME.equals(name)) {
+          // Automatically set the context so users don't need to call
+          // IterableApi.setContext() manually from MainApplication or MainActivity.
+          // This resolves issues with IterableApi being unresolvable in
+          // MainApplication.kt when using the new architecture (RN 0.76+).
+          IterableApi.setContext(reactContext.getApplicationContext());
           return new RNIterableAPIModule(reactContext);
       } else {
           return null;

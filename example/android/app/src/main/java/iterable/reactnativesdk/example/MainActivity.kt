@@ -6,7 +6,6 @@ import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
 import com.facebook.react.defaults.DefaultReactActivityDelegate
-import com.iterable.iterableapi.IterableApi
 
 class MainActivity : ReactActivity() {
 
@@ -28,7 +27,6 @@ class MainActivity : ReactActivity() {
    * This being in Kotlin **may** cause issues with react-native-screens
    */
   override fun onCreate(savedInstanceState: Bundle?) {
-    IterableApi.setContext(this)
     // Call super.onCreate with null to prevent savedInstanceState restoration issues
     super.onCreate(null)
   }
