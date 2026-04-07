@@ -35,6 +35,7 @@ import React
     case handleAuthFailureCalled
     case handleEmbeddedMessageUpdateCalled
     case handleEmbeddedMessagingDisabledCalled
+    case handleTokenRegistrationFailedCalled
   }
 
   @objc public static var supportedEvents: [String] {
@@ -818,6 +819,14 @@ extension ReactIterableAPI: IterableAuthDelegate {
   }
 
   public func onTokenRegistrationFailed(_ reason: String?) {
+    let failureReason = reason ?? "unknown reason"
+    ITBError("Push token registration failed: \(failureReason)")
+    guard shouldEmit else {
+      return
+    }
+    delegate?.sendEvent(
+      withName: EventName.handleTokenRegistrationFailedCalled.rawValue,
+      body: ["reason": failureReason] as [String: Any])
   }
 }
 

@@ -376,6 +376,25 @@ export class IterableConfig {
   onEmbeddedMessagingDisabled?: () => void;
 
   /**
+   * A callback function that is called when device token registration fails.
+   *
+   * This can happen when the pushIntegrationName is invalid or when the
+   * registerDeviceToken API call fails for any reason.
+   *
+   * @param reason - A string describing why the registration failed.
+   *
+   * @example
+   * ```typescript
+   * const config = new IterableConfig();
+   * config.onTokenRegistrationFailed = (reason) => {
+   *   console.error('Push registration failed:', reason);
+   * };
+   * Iterable.initialize('<YOUR_API_KEY>', config);
+   * ```
+   */
+  onTokenRegistrationFailed?: (reason: string) => void;
+
+  /**
    * Converts the IterableConfig instance to a dictionary object.
    *
    * @returns An object representing the configuration.

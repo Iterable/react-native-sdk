@@ -956,6 +956,9 @@ export class Iterable {
     RNEventEmitter.removeAllListeners(
       IterableEventName.handleEmbeddedMessagingDisabledCalled
     );
+    RNEventEmitter.removeAllListeners(
+      IterableEventName.handleTokenRegistrationFailedCalled
+    );
   }
 
   /**
@@ -1109,6 +1112,19 @@ export class Iterable {
         );
       }
     }
+
+    // Always listen for token registration failures so they are surfaced
+    RNEventEmitter.addListener(
+      IterableEventName.handleTokenRegistrationFailedCalled,
+      (dict: { reason: string }) => {
+        IterableLogger?.log(
+          'Push token registration failed: ' + (dict?.reason ?? 'unknown reason')
+        );
+        Iterable.savedConfig.onTokenRegistrationFailed?.(
+          dict?.reason ?? 'unknown reason'
+        );
+      }
+    );
   }
 
   /**
