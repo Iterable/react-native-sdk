@@ -108,6 +108,16 @@ export class MockRNIterableAPI {
     });
   }
 
+
+  static async getUnreadInboxMessagesCount(): Promise<number> {
+    return await new Promise((resolve) => {
+      const inboxMessages =
+        MockRNIterableAPI.messages?.filter((msg) => msg.saveToInbox) || [];
+      const unreadCount = inboxMessages.filter((msg) => !msg.read).length;
+      resolve(unreadCount);
+    });
+  }
+
   static setAutoDisplayPaused = jest.fn();
 
   static showMessage = jest.fn(

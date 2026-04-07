@@ -505,6 +505,35 @@ export class IterableApi {
     return RNIterableAPI.updateVisibleRows(visibleRows);
   }
 
+
+  /**
+   * Retrieve the count of unread inbox messages for the current user.
+   *
+   * This uses the native SDK's built-in method for an accurate count.
+   *
+   * @returns A Promise that resolves to the number of unread inbox messages.
+   */
+  static getUnreadInboxMessagesCount(): Promise<number> {
+    IterableLogger.log('getUnreadInboxMessagesCount');
+    return RNIterableAPI.getUnreadInboxMessagesCount();
+  }
+
+  /**
+   * Retrieve the count of read inbox messages for the current user.
+   *
+   * This is computed by subtracting the unread count from the total inbox message count.
+   *
+   * @returns A Promise that resolves to the number of read inbox messages.
+   */
+  static async getReadInboxMessagesCount(): Promise<number> {
+    IterableLogger.log('getReadInboxMessagesCount');
+    const [inboxMessages, unreadCount] = await Promise.all([
+      IterableApi.getInboxMessages(),
+      IterableApi.getUnreadInboxMessagesCount(),
+    ]);
+    return inboxMessages.length - unreadCount;
+  }
+
   // ---- End IN-APP ---- //
 
   // ====================================================== //

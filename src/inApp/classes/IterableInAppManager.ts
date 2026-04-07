@@ -158,6 +158,39 @@ export class IterableInAppManager {
     return IterableApi.getHtmlInAppContentForMessage(message.messageId);
   }
 
+
+  /**
+   * Retrieve the count of unread in-app messages designated for the mobile inbox.
+   *
+   * @example
+   * ```typescript
+   * Iterable.inAppManager.getUnreadInboxMessagesCount().then(count => {
+   *   console.log('Unread count:', count);
+   * });
+   * ```
+   *
+   * @returns A Promise that resolves to the number of unread inbox messages.
+   */
+  getUnreadInboxMessagesCount(): Promise<number> {
+    return IterableApi.getUnreadInboxMessagesCount();
+  }
+
+  /**
+   * Retrieve the count of read in-app messages designated for the mobile inbox.
+   *
+   * @example
+   * ```typescript
+   * Iterable.inAppManager.getReadInboxMessagesCount().then(count => {
+   *   console.log('Read count:', count);
+   * });
+   * ```
+   *
+   * @returns A Promise that resolves to the number of read inbox messages.
+   */
+  getReadInboxMessagesCount(): Promise<number> {
+    return IterableApi.getReadInboxMessagesCount();
+  }
+
   /**
    * Pause or unpause the automatic display of incoming in-app messages
    *

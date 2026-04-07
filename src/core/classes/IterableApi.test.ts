@@ -922,6 +922,170 @@ describe('IterableApi', () => {
     });
   });
 
+
+  describe('getUnreadInboxMessagesCount', () => {
+    it('should return the count of unread inbox messages', async () => {
+      // GIVEN mock messages with mixed read states
+      const mockMessages = [
+        new IterableInAppMessage(
+          'msg1',
+          123,
+          new IterableInAppTrigger(IterableInAppTriggerType.immediate),
+          new Date(),
+          new Date(),
+          true, // saveToInbox
+          undefined,
+          undefined,
+          false, // unread
+          0
+        ),
+        new IterableInAppMessage(
+          'msg2',
+          456,
+          new IterableInAppTrigger(IterableInAppTriggerType.event),
+          new Date(),
+          new Date(),
+          true, // saveToInbox
+          undefined,
+          undefined,
+          true, // read
+          0
+        ),
+        new IterableInAppMessage(
+          'msg3',
+          789,
+          new IterableInAppTrigger(IterableInAppTriggerType.immediate),
+          new Date(),
+          new Date(),
+          true, // saveToInbox
+          undefined,
+          undefined,
+          false, // unread
+          0
+        ),
+      ];
+      MockRNIterableAPI.messages = mockMessages;
+
+      // WHEN getUnreadInboxMessagesCount is called
+      const result = await IterableApi.getUnreadInboxMessagesCount();
+
+      // THEN the unread count is returned
+      expect(result).toBe(2);
+    });
+
+    it('should return 0 when all inbox messages are read', async () => {
+      // GIVEN mock messages that are all read
+      const mockMessages = [
+        new IterableInAppMessage(
+          'msg1',
+          123,
+          new IterableInAppTrigger(IterableInAppTriggerType.immediate),
+          new Date(),
+          new Date(),
+          true, // saveToInbox
+          undefined,
+          undefined,
+          true, // read
+          0
+        ),
+      ];
+      MockRNIterableAPI.messages = mockMessages;
+
+      // WHEN getUnreadInboxMessagesCount is called
+      const result = await IterableApi.getUnreadInboxMessagesCount();
+
+      // THEN the unread count is 0
+      expect(result).toBe(0);
+    });
+  });
+
+  describe('getReadInboxMessagesCount', () => {
+    it('should return the count of read inbox messages', async () => {
+      // GIVEN mock messages with mixed read states
+      const mockMessages = [
+        new IterableInAppMessage(
+          'msg1',
+          123,
+          new IterableInAppTrigger(IterableInAppTriggerType.immediate),
+          new Date(),
+          new Date(),
+          true, // saveToInbox
+          undefined,
+          undefined,
+          false, // unread
+          0
+        ),
+        new IterableInAppMessage(
+          'msg2',
+          456,
+          new IterableInAppTrigger(IterableInAppTriggerType.event),
+          new Date(),
+          new Date(),
+          true, // saveToInbox
+          undefined,
+          undefined,
+          true, // read
+          0
+        ),
+        new IterableInAppMessage(
+          'msg3',
+          789,
+          new IterableInAppTrigger(IterableInAppTriggerType.immediate),
+          new Date(),
+          new Date(),
+          true, // saveToInbox
+          undefined,
+          undefined,
+          true, // read
+          0
+        ),
+      ];
+      MockRNIterableAPI.messages = mockMessages;
+
+      // WHEN getReadInboxMessagesCount is called
+      const result = await IterableApi.getReadInboxMessagesCount();
+
+      // THEN the read count is returned (total inbox 3 - unread 1 = 2)
+      expect(result).toBe(2);
+    });
+
+    it('should return 0 when no inbox messages are read', async () => {
+      // GIVEN mock messages that are all unread
+      const mockMessages = [
+        new IterableInAppMessage(
+          'msg1',
+          123,
+          new IterableInAppTrigger(IterableInAppTriggerType.immediate),
+          new Date(),
+          new Date(),
+          true, // saveToInbox
+          undefined,
+          undefined,
+          false, // unread
+          0
+        ),
+      ];
+      MockRNIterableAPI.messages = mockMessages;
+
+      // WHEN getReadInboxMessagesCount is called
+      const result = await IterableApi.getReadInboxMessagesCount();
+
+      // THEN the read count is 0
+      expect(result).toBe(0);
+    });
+
+    it('should return 0 when there are no inbox messages', async () => {
+      // GIVEN no messages
+      MockRNIterableAPI.messages = [];
+
+      // WHEN getReadInboxMessagesCount is called
+      const result = await IterableApi.getReadInboxMessagesCount();
+
+      // THEN the read count is 0
+      expect(result).toBe(0);
+    });
+  });
+
   // ====================================================== //
   // ======================= MOSC ======================= //
   // ====================================================== //
