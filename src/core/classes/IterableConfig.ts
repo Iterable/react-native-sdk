@@ -376,6 +376,31 @@ export class IterableConfig {
   onEmbeddedMessagingDisabled?: () => void;
 
   /**
+   * A callback function that is called when a push notification is opened by the user.
+   *
+   * This handler provides the raw push notification payload, giving you access
+   * to all custom data fields sent with the notification. It fires for all
+   * push-originated interactions, regardless of whether the notification has
+   * a URL action, custom action, or no action at all.
+   *
+   * @param pushPayload - The raw push notification payload as a dictionary.
+   *
+   * @example
+   * ```typescript
+   * const config = new IterableConfig();
+   * config.pushOpenHandler = (pushPayload) => {
+   *   console.log('Push notification opened:', pushPayload);
+   *   // Navigate based on custom data in the payload
+   *   if (pushPayload.screen) {
+   *     navigation.navigate(pushPayload.screen);
+   *   }
+   * };
+   * Iterable.initialize('<YOUR_API_KEY>', config);
+   * ```
+   */
+  pushOpenHandler?: (pushPayload: Record<string, unknown>) => void;
+
+  /**
    * Converts the IterableConfig instance to a dictionary object.
    *
    * @returns An object representing the configuration.
@@ -428,6 +453,11 @@ export class IterableConfig {
       // eslint-disable-next-line eqeqeq
       onEmbeddedMessagingDisabledPresent:
         this.onEmbeddedMessagingDisabled != undefined,
+      /**
+       * A boolean indicating if a push open handler is present.
+       */
+      // eslint-disable-next-line eqeqeq
+      pushOpenHandlerPresent: this.pushOpenHandler != undefined,
       /** The log level for the SDK. */
       logLevel: this.logLevel,
       expiringAuthTokenRefreshPeriod: this.expiringAuthTokenRefreshPeriod,

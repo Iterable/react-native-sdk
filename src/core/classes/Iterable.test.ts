@@ -321,6 +321,7 @@ describe('Iterable', () => {
       expect(config.logLevel).toBe(IterableLogLevel.debug);
       expect(config.logReactNativeSdkCalls).toBe(true);
       expect(config.pushIntegrationName).toBe(undefined);
+      expect(config.pushOpenHandler).toBe(undefined);
       expect(config.urlHandler).toBe(undefined);
       expect(config.useInMemoryStorageForInApps).toBe(false);
       const configDict = config.toDict();
@@ -337,8 +338,56 @@ describe('Iterable', () => {
       expect(configDict.inAppHandlerPresent).toBe(false);
       expect(configDict.logLevel).toBe(IterableLogLevel.debug);
       expect(configDict.pushIntegrationName).toBe(undefined);
+      expect(configDict.pushOpenHandlerPresent).toBe(false);
       expect(configDict.urlHandlerPresent).toBe(false);
       expect(configDict.useInMemoryStorageForInApps).toBe(false);
+    });
+  });
+
+  describe('pushOpenHandler', () => {
+    it('should be called with the push payload when handlePushOpenCalled event is emitted', () => {
+      // sets up event emitter
+      const nativeEmitter = new NativeEventEmitter();
+      nativeEmitter.removeAllListeners(IterableEventName.handlePushOpenCalled);
+      // sets up config file and pushOpenHandler function
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      config.pushOpenHandler = jest.fn(
+        (_pushPayload: Record<string, unknown>) => {}
+      );
+      // initialize Iterable object
+      Iterable.initialize('apiKey', config);
+      // GIVEN a push payload
+      const expectedPayload = {
+        campaignId: 123,
+        templateId: 456,
+        customKey: 'customValue',
+      };
+      const dict = { pushPayload: expectedPayload };
+      // WHEN handlePushOpenCalled event is emitted
+      nativeEmitter.emit(IterableEventName.handlePushOpenCalled, dict);
+      // THEN pushOpenHandler is called with expected payload
+      expect(config.pushOpenHandler).toBeCalledWith(expectedPayload);
+    });
+
+    it('should pass empty object when pushPayload is undefined', () => {
+      // sets up event emitter
+      const nativeEmitter = new NativeEventEmitter();
+      nativeEmitter.removeAllListeners(IterableEventName.handlePushOpenCalled);
+      // sets up config file and pushOpenHandler function
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      config.pushOpenHandler = jest.fn(
+        (_pushPayload: Record<string, unknown>) => {}
+      );
+      // initialize Iterable object
+      Iterable.initialize('apiKey', config);
+      // GIVEN no push payload in the event
+      const dict = {};
+      // WHEN handlePushOpenCalled event is emitted
+      nativeEmitter.emit(IterableEventName.handlePushOpenCalled, dict);
+      // THEN pushOpenHandler is called with empty object
+      expect(config.pushOpenHandler).toBeCalledWith({});
     });
   });
 

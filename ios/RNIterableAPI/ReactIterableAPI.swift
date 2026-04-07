@@ -35,6 +35,7 @@ import React
     case handleAuthFailureCalled
     case handleEmbeddedMessageUpdateCalled
     case handleEmbeddedMessagingDisabledCalled
+    case handlePushOpenCalled
   }
 
   @objc public static var supportedEvents: [String] {
@@ -599,6 +600,8 @@ import React
 
   private let inboxSessionManager = InboxSessionManager()
 
+  private var pushOpenHandlerPresent = false
+
   @objc func initialize(
     withApiKey apiKey: String,
     config configDict: NSDictionary,
@@ -644,6 +647,8 @@ import React
       self, selector: #selector(receivedIterableInboxChanged),
       name: Notification.Name.iterableInboxChanged, object: nil)
 
+    self.pushOpenHandlerPresent = configDict["pushOpenHandlerPresent"] as? Bool ?? false
+
     DispatchQueue.main.async {
       IterableAPI.initialize2(
         apiKey: apiKey,
@@ -655,13 +660,20 @@ import React
       }
 
       IterableAPI.setDeviceAttribute(name: "reactNativeSDKVersion", value: version)
-      
+
       // Add embedded update listener if any callback is present
       let onEmbeddedMessageUpdatePresent = configDict["onEmbeddedMessageUpdatePresent"] as? Bool ?? false
       let onEmbeddedMessagingDisabledPresent = configDict["onEmbeddedMessagingDisabledPresent"] as? Bool ?? false
-      
+
       if onEmbeddedMessageUpdatePresent || onEmbeddedMessagingDisabledPresent {
         IterableAPI.embeddedManager.addUpdateListener(self)
+      }
+
+      // Emit push open event for cold-start push opens
+      if self.pushOpenHandlerPresent, let pushPayload = IterableAPI.lastPushPayload {
+        self.delegate?.sendEvent(
+          withName: EventName.handlePushOpenCalled.rawValue,
+          body: ["pushPayload": pushPayload])
       }
     }
   }
@@ -710,6 +722,14 @@ extension ReactIterableAPI: IterableURLDelegate {
         "url": url.absoluteString,
         "context": contextDict,
       ] as [String: Any])
+
+    // Also emit push open event when the URL action originated from a push notification
+    if pushOpenHandlerPresent && context.source == .push {
+      let pushPayload = IterableAPI.lastPushPayload ?? [:]
+      delegate?.sendEvent(
+        withName: EventName.handlePushOpenCalled.rawValue,
+        body: ["pushPayload": pushPayload])
+    }
     return true
   }
 
@@ -749,6 +769,14 @@ extension ReactIterableAPI: IterableCustomActionDelegate {
         "action": actionDict,
         "context": contextDict,
       ])
+
+    // Also emit push open event when the custom action originated from a push notification
+    if pushOpenHandlerPresent && context.source == .push {
+      let pushPayload = IterableAPI.lastPushPayload ?? [:]
+      delegate?.sendEvent(
+        withName: EventName.handlePushOpenCalled.rawValue,
+        body: ["pushPayload": pushPayload])
+    }
     return true
   }
 }

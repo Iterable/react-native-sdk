@@ -69,6 +69,8 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
 
     private final InboxSessionManager sessionManager = new InboxSessionManager();
 
+    private boolean pushOpenHandlerPresent = false;
+
     public RNIterableAPIModuleImpl(ReactApplicationContext reactContext) {
         this.reactContext = reactContext;
     }
@@ -92,6 +94,8 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         if (configReadableMap.hasKey("authHandlerPresent") && configReadableMap.getBoolean("authHandlerPresent") == true) {
             configBuilder.setAuthHandler(this);
         }
+
+        pushOpenHandlerPresent = configReadableMap.hasKey("pushOpenHandlerPresent") && configReadableMap.getBoolean("pushOpenHandlerPresent");
 
         // Check if embedded messaging is enabled before building config
         boolean enableEmbeddedMessaging = configReadableMap.hasKey("enableEmbeddedMessaging") && configReadableMap.getBoolean("enableEmbeddedMessaging");
@@ -136,6 +140,9 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
             IterableApi.getInstance().getEmbeddedManager().addUpdateListener(this);
         }
 
+        // Emit push open event for cold-start push opens
+        emitPushOpenIfPresent();
+
         // MOB-10421: Figure out what the error cases are and handle them appropriately
         // This is just here to match the TS types and let the JS thread know when we are done initializing
         promise.resolve(true);
@@ -160,6 +167,8 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         if (configReadableMap.hasKey("authHandlerPresent") && configReadableMap.getBoolean("authHandlerPresent") == true) {
             configBuilder.setAuthHandler(this);
         }
+
+        pushOpenHandlerPresent = configReadableMap.hasKey("pushOpenHandlerPresent") && configReadableMap.getBoolean("pushOpenHandlerPresent");
 
         // NOTE: There does not seem to be a way to set the API endpoint
         // override in the Android SDK.  Check with @Ayyanchira and @evantk91 to
@@ -207,6 +216,9 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         if (enableEmbeddedMessaging) {
             IterableApi.getInstance().getEmbeddedManager().addUpdateListener(this);
         }
+
+        // Emit push open event for cold-start push opens
+        emitPushOpenIfPresent();
 
         // MOB-10421: Figure out what the error cases are and handle them appropriately
         // This is just here to match the TS types and let the JS thread know when we are done initializing
@@ -596,6 +608,12 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         } catch (JSONException e) {
             IterableLogger.e(TAG, "Failed handling custom action");
         }
+
+        // Also emit push open event when the custom action originated from a push notification
+        if (pushOpenHandlerPresent && actionContext.source.ordinal() == 0 /* PUSH */) {
+            emitPushOpenIfPresent();
+        }
+
         // The Android SDK will not bring the app into focus is this is `true`. It still respects the `openApp` bool flag.
         return false;
     }
@@ -635,6 +653,12 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         } catch (JSONException e) {
             IterableLogger.e(TAG, e.getLocalizedMessage());
         }
+
+        // Also emit push open event when the URL action originated from a push notification
+        if (pushOpenHandlerPresent && actionContext.source.ordinal() == 0 /* PUSH */) {
+            emitPushOpenIfPresent();
+        }
+
         return true;
     }
 
@@ -699,6 +723,18 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
 
     public void sendEvent(@NonNull String eventName, @Nullable Object eventData) {
         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, eventData);
+    }
+
+    private void emitPushOpenIfPresent() {
+        if (!pushOpenHandlerPresent) {
+            return;
+        }
+        Bundle payloadData = IterableApi.getInstance().getPayloadData();
+        if (payloadData != null) {
+            WritableMap eventData = Arguments.createMap();
+            eventData.putMap("pushPayload", Arguments.fromBundle(payloadData));
+            sendEvent(EventName.handlePushOpenCalled.name(), eventData);
+        }
     }
 
     @Override
@@ -809,6 +845,7 @@ enum EventName {
   handleEmbeddedMessageUpdateCalled,
   handleEmbeddedMessagingDisabledCalled,
   handleInAppCalled,
+  handlePushOpenCalled,
   handleUrlCalled,
   receivedIterableEmbeddedMessagesChanged,
   receivedIterableInboxChanged

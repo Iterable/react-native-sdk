@@ -23,4 +23,6 @@ export enum IterableEventName {
   handleEmbeddedMessageUpdateCalled = 'handleEmbeddedMessageUpdateCalled',
   /** Event that fires when embedded messaging is disabled */
   handleEmbeddedMessagingDisabledCalled = 'handleEmbeddedMessagingDisabledCalled',
+  /** Event that fires when a push notification is opened */
+  handlePushOpenCalled = 'handlePushOpenCalled',
 }
