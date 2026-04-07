@@ -454,9 +454,8 @@ export class IterableConfig {
       // eslint-disable-next-line eqeqeq
       onEmbeddedMessagingDisabledPresent:
         this.onEmbeddedMessagingDisabled != undefined,
-      // eslint-disable-next-line eqeqeq
       onTokenRegistrationFailedPresent:
-        this.onTokenRegistrationFailed != undefined,
+        this.onTokenRegistrationFailed !== undefined,
       /** The log level for the SDK. */
       logLevel: this.logLevel,
       expiringAuthTokenRefreshPeriod: this.expiringAuthTokenRefreshPeriod,
