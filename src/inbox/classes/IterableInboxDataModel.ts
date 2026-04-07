@@ -211,15 +211,7 @@ export class IterableInboxDataModel {
       return '';
     }
 
-    let createdAt;
-
-    if (typeof message.createdAt === 'string') {
-      createdAt = new Date(parseInt(message.createdAt, 10));
-    } else {
-      createdAt = new Date(message.createdAt);
-    }
-
-    const defaultDateString = `${createdAt.toLocaleDateString()} at ${createdAt.toLocaleTimeString()}`;
+    const defaultDateString = `${message.createdAt.toLocaleDateString()} at ${message.createdAt.toLocaleTimeString()}`;
 
     return defaultDateString;
   }
