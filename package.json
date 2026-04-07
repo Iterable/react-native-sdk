@@ -113,7 +113,7 @@
   "peerDependencies": {
     "@react-navigation/native": "*",
     "react": "*",
-    "react-native": "*",
+    "react-native": ">=0.70.0",
     "react-native-safe-area-context": "*",
     "react-native-webview": "*"
   },
