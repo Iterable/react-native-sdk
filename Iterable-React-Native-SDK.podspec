@@ -23,9 +23,11 @@ Pod::Spec.new do |s|
   s.pod_target_xcconfig = {
     'DEFINES_MODULE'      => 'YES',
     'CLANG_ENABLE_MODULES' => 'YES',
-    'SWIFT_VERSION'       => '5.3',
+    'SWIFT_VERSION'       => '5.0',
     'SWIFT_OBJC_INTERFACE_HEADER_NAME' => 'Iterable_React_Native_SDK-Swift.h',
     "CLANG_CXX_LANGUAGE_STANDARD" => rct_cxx_language_standard(),
+    'LIBRARY_SEARCH_PATHS' => '$(inherited) "$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)" "$(SDKROOT)/usr/lib/swift"',
+    'OTHER_LDFLAGS' => '$(inherited) -L"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)" -L"$(SDKROOT)/usr/lib/swift"',
   }
 
   install_modules_dependencies(s)
