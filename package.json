@@ -118,6 +118,9 @@
     "react-native-webview": "*"
   },
   "peerDependenciesMeta": {
+    "@react-navigation/native": {
+      "optional": true
+    },
     "expo": {
       "optional": true
     }
