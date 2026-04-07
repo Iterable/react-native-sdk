@@ -35,6 +35,7 @@ import React
     case handleAuthFailureCalled
     case handleEmbeddedMessageUpdateCalled
     case handleEmbeddedMessagingDisabledCalled
+    case handleNotificationOpenedCalled
   }
 
   @objc public static var supportedEvents: [String] {
@@ -710,6 +711,18 @@ extension ReactIterableAPI: IterableURLDelegate {
         "url": url.absoluteString,
         "context": contextDict,
       ] as [String: Any])
+
+    // Emit notification opened event when source is push
+    if context.source == .push {
+      let actionDict = ReactIterableAPI.actionToDictionary(action: context.action)
+      delegate?.sendEvent(
+        withName: EventName.handleNotificationOpenedCalled.rawValue,
+        body: [
+          "action": actionDict,
+          "context": contextDict,
+        ] as [String: Any])
+    }
+
     return true
   }
 
@@ -749,6 +762,17 @@ extension ReactIterableAPI: IterableCustomActionDelegate {
         "action": actionDict,
         "context": contextDict,
       ])
+
+    // Emit notification opened event when source is push
+    if context.source == .push {
+      delegate?.sendEvent(
+        withName: EventName.handleNotificationOpenedCalled.rawValue,
+        body: [
+          "action": actionDict,
+          "context": contextDict,
+        ])
+    }
+
     return true
   }
 }

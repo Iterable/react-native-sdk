@@ -593,6 +593,15 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
             eventDataJson.put("context", actionContextJson);
             WritableMap eventData = Serialization.convertJsonToMap(eventDataJson);
             sendEvent(EventName.handleCustomActionCalled.name(), eventData);
+
+            // Emit notification opened event when source is push
+            if (actionContext.source == IterableActionContext.Source.PUSH) {
+                JSONObject notifEventDataJson = new JSONObject();
+                notifEventDataJson.put("action", actionJson);
+                notifEventDataJson.put("context", actionContextJson);
+                WritableMap notifEventData = Serialization.convertJsonToMap(notifEventDataJson);
+                sendEvent(EventName.handleNotificationOpenedCalled.name(), notifEventData);
+            }
         } catch (JSONException e) {
             IterableLogger.e(TAG, "Failed handling custom action");
         }
@@ -632,6 +641,16 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
             eventDataJson.put("context", actionContextJson);
             WritableMap eventData = Serialization.convertJsonToMap(eventDataJson);
             sendEvent(EventName.handleUrlCalled.name(), eventData);
+
+            // Emit notification opened event when source is push
+            if (actionContext.source == IterableActionContext.Source.PUSH) {
+                JSONObject notifEventDataJson = new JSONObject();
+                JSONObject actionJson = Serialization.actionToJson(actionContext.action);
+                notifEventDataJson.put("action", actionJson);
+                notifEventDataJson.put("context", actionContextJson);
+                WritableMap notifEventData = Serialization.convertJsonToMap(notifEventDataJson);
+                sendEvent(EventName.handleNotificationOpenedCalled.name(), notifEventData);
+            }
         } catch (JSONException e) {
             IterableLogger.e(TAG, e.getLocalizedMessage());
         }
@@ -808,6 +827,7 @@ enum EventName {
   handleCustomActionCalled,
   handleEmbeddedMessageUpdateCalled,
   handleEmbeddedMessagingDisabledCalled,
+  handleNotificationOpenedCalled,
   handleInAppCalled,
   handleUrlCalled,
   receivedIterableEmbeddedMessagesChanged,

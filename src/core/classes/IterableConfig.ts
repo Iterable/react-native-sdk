@@ -376,6 +376,30 @@ export class IterableConfig {
   onEmbeddedMessagingDisabled?: () => void;
 
   /**
+   * A callback function that is called when a push notification is opened/pressed.
+   *
+   * This callback fires for all push notification opens, regardless of whether
+   * the notification has a URL action, custom action, or no action at all.
+   * It provides access to the raw action and context data from the notification.
+   *
+   * @param action - The action associated with the notification press.
+   * @param context - The context in which the action was triggered, including the source.
+   *
+   * @example
+   * ```typescript
+   * const config = new IterableConfig();
+   * config.notificationOpenedHandler = (action, context) => {
+   *   console.log('Notification opened:', action, context);
+   * };
+   * Iterable.initialize('<YOUR_API_KEY>', config);
+   * ```
+   */
+  notificationOpenedHandler?: (
+    action: IterableAction,
+    context: IterableActionContext
+  ) => void;
+
+  /**
    * Converts the IterableConfig instance to a dictionary object.
    *
    * @returns An object representing the configuration.
@@ -440,6 +464,9 @@ export class IterableConfig {
       encryptionEnforced: this.encryptionEnforced,
       retryPolicy: this.retryPolicy,
       enableEmbeddedMessaging: this.enableEmbeddedMessaging,
+      // eslint-disable-next-line eqeqeq
+      notificationOpenedHandlerPresent:
+        this.notificationOpenedHandler != undefined,
     };
   }
 }

@@ -956,6 +956,9 @@ export class Iterable {
     RNEventEmitter.removeAllListeners(
       IterableEventName.handleEmbeddedMessagingDisabledCalled
     );
+    RNEventEmitter.removeAllListeners(
+      IterableEventName.handleNotificationOpenedCalled
+    );
   }
 
   /**
@@ -1108,6 +1111,17 @@ export class Iterable {
           }
         );
       }
+    }
+
+    if (Iterable.savedConfig.notificationOpenedHandler) {
+      RNEventEmitter.addListener(
+        IterableEventName.handleNotificationOpenedCalled,
+        (dict) => {
+          const action = IterableAction.fromDict(dict.action);
+          const context = IterableActionContext.fromDict(dict.context);
+          Iterable.savedConfig.notificationOpenedHandler!(action, context);
+        }
+      );
     }
   }
 
