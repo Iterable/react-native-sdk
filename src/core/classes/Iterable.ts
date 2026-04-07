@@ -956,6 +956,9 @@ export class Iterable {
     RNEventEmitter.removeAllListeners(
       IterableEventName.handleEmbeddedMessagingDisabledCalled
     );
+    RNEventEmitter.removeAllListeners(
+      IterableEventName.handleTokenRegistrationFailedCalled
+    );
   }
 
   /**
@@ -1086,6 +1089,15 @@ export class Iterable {
 
           // Call the actual JWT error with `authFailure` object.
           Iterable.savedConfig?.onJwtError?.(authFailureResponse);
+        }
+      );
+    }
+
+    if (Iterable.savedConfig.onTokenRegistrationFailed) {
+      RNEventEmitter.addListener(
+        IterableEventName.handleTokenRegistrationFailedCalled,
+        (dict: { reason?: string } | null) => {
+          Iterable.savedConfig.onTokenRegistrationFailed?.(dict?.reason);
         }
       );
     }

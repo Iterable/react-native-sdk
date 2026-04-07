@@ -358,6 +358,32 @@ export class IterableConfig {
   onEmbeddedMessageUpdate?: () => void;
 
   /**
+   * A callback function that is called when device token registration fails
+   * during automatic push registration.
+   *
+   * When `autoPushRegistration` is enabled (the default), calling `setEmail`
+   * or `setUserId` triggers an automatic device token registration with Iterable's
+   * servers. If this registration fails (e.g., due to an invalid `pushIntegrationName`),
+   * this callback will be invoked with the failure reason.
+   *
+   * Without this callback, push registration failures are silent and can only
+   * be detected by inspecting network traffic.
+   *
+   * @param reason - A string describing why the token registration failed,
+   * or undefined if the reason is unknown.
+   *
+   * @example
+   * ```typescript
+   * const config = new IterableConfig();
+   * config.onTokenRegistrationFailed = (reason) => {
+   *   console.error('Push token registration failed:', reason);
+   * };
+   * Iterable.initialize('<YOUR_API_KEY>', config);
+   * ```
+   */
+  onTokenRegistrationFailed?: (reason?: string) => void;
+
+  /**
    * A callback function that is called when embedded messaging is disabled.
    *
    * This callback is triggered when embedded messaging becomes unavailable,
@@ -428,6 +454,9 @@ export class IterableConfig {
       // eslint-disable-next-line eqeqeq
       onEmbeddedMessagingDisabledPresent:
         this.onEmbeddedMessagingDisabled != undefined,
+      // eslint-disable-next-line eqeqeq
+      onTokenRegistrationFailedPresent:
+        this.onTokenRegistrationFailed != undefined,
       /** The log level for the SDK. */
       logLevel: this.logLevel,
       expiringAuthTokenRefreshPeriod: this.expiringAuthTokenRefreshPeriod,

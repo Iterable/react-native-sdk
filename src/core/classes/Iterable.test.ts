@@ -47,6 +47,9 @@ describe('Iterable', () => {
     nativeEmitter.removeAllListeners(
       IterableEventName.handleEmbeddedMessagingDisabledCalled
     );
+    nativeEmitter.removeAllListeners(
+      IterableEventName.handleTokenRegistrationFailedCalled
+    );
 
     // Clear any pending timers
     jest.clearAllTimers();

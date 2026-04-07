@@ -681,6 +681,21 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         sendEvent(EventName.handleAuthSuccessCalled.name(), null);
     }
 
+    @Override
+    public void onTokenRegistrationFailed(String reason) {
+        IterableLogger.e(TAG, "Token registration failed: " + reason);
+        JSONObject messageJson = new JSONObject();
+        try {
+            if (reason != null) {
+                messageJson.put("reason", reason);
+            }
+            WritableMap eventData = Serialization.convertJsonToMap(messageJson);
+            sendEvent(EventName.handleTokenRegistrationFailedCalled.name(), eventData);
+        } catch (JSONException e) {
+            IterableLogger.e(TAG, "Failed to send token registration failure event");
+        }
+    }
+
     public void addListener(String eventName) {
         // Keep: Required for RN built in Event Emitter Calls.
     }
@@ -811,5 +826,6 @@ enum EventName {
   handleInAppCalled,
   handleUrlCalled,
   receivedIterableEmbeddedMessagesChanged,
-  receivedIterableInboxChanged
+  receivedIterableInboxChanged,
+  handleTokenRegistrationFailedCalled
 }
