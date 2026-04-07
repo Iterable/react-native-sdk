@@ -1,4 +1,3 @@
-import { useIsFocused } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import {
   Animated,
@@ -11,7 +10,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import RNIterableAPI from '../../api';
-import { useAppStateListener, useDeviceOrientation } from '../../core';
+import { useAppStateListener, useDeviceOrientation, useIsFocused } from '../../core';
 // expo throws an error if this is not imported directly due to circular
 // dependencies
 // See: https://github.com/expo/expo/issues/35100
