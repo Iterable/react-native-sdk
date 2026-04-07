@@ -1,4 +1,3 @@
-import { useIsFocused } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import {
   Animated,
@@ -19,6 +18,7 @@ import { Iterable } from '../../core/classes/Iterable';
 import { IterableInAppDeleteSource, IterableInAppLocation } from '../../inApp';
 
 import { IterableInboxDataModel } from '../classes';
+import { useIsFocused } from '../hooks';
 import { ITERABLE_INBOX_COLORS } from '../constants';
 import type {
   IterableInboxCustomizations,

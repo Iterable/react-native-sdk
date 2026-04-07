@@ -118,7 +118,16 @@
     "react-native-webview": "*"
   },
   "peerDependenciesMeta": {
+    "@react-navigation/native": {
+      "optional": true
+    },
     "expo": {
+      "optional": true
+    },
+    "react-native-safe-area-context": {
+      "optional": true
+    },
+    "react-native-webview": {
       "optional": true
     }
   },
