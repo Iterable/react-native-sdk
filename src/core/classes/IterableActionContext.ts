@@ -15,6 +15,28 @@ export class IterableActionContext {
   source: IterableActionSource;
 
   /**
+   * The push notification payload, if the action originated from a push notification.
+   *
+   * This field is automatically populated when the action source is
+   * {@link IterableActionSource.push}. It contains the custom payload data
+   * from the push notification that triggered the action, allowing you to
+   * access campaign-specific metadata in your URL or custom action handlers.
+   *
+   * @example
+   * ```typescript
+   * const config = new IterableConfig();
+   * config.urlHandler = (url, context) => {
+   *   if (context.pushPayload) {
+   *     const promoCode = context.pushPayload.promoCode;
+   *     // Use the custom payload data from the push notification
+   *   }
+   *   return true;
+   * };
+   * ```
+   */
+  pushPayload?: Record<string, unknown>;
+
+  /**
    * Creates an instance of IterableActionContext.
    */
   constructor(action: IterableAction, source: IterableActionSource) {

@@ -9,6 +9,7 @@ import { IterableInAppMessage } from '../../inApp/classes/IterableInAppMessage';
 import { IterableInAppCloseSource } from '../../inApp/enums/IterableInAppCloseSource';
 import { IterableInAppDeleteSource } from '../../inApp/enums/IterableInAppDeleteSource';
 import { IterableInAppLocation } from '../../inApp/enums/IterableInAppLocation';
+import { IterableActionSource } from '../enums/IterableActionSource';
 import { IterableAuthResponseResult } from '../enums/IterableAuthResponseResult';
 import { IterableEventName } from '../enums/IterableEventName';
 import type { IterableAuthFailure } from '../types/IterableAuthFailure';
@@ -967,7 +968,11 @@ export class Iterable {
    *
    * Event Handlers:
    * - `handleUrlCalled`: Invokes the URL handler if configured, with a delay on Android to allow the activity to wake up.
+   *   When the action source is a push notification, the last push payload is automatically fetched and
+   *   attached to the `IterableActionContext` as `pushPayload`, making custom push data available in the handler.
    * - `handleCustomActionCalled`: Invokes the custom action handler if configured.
+   *   When the action source is a push notification, the last push payload is automatically fetched and
+   *   attached to the `IterableActionContext` as `pushPayload`.
    * - `handleInAppCalled`: Invokes the in-app handler if configured and sets the in-app show response.
    * - `handleAuthCalled`: Invokes the authentication handler if configured and handles the promise result.
    * - `handleAuthSuccessCalled`: Sets the authentication response callback to success.
@@ -988,13 +993,34 @@ export class Iterable {
         const context = IterableActionContext.fromDict(dict.context);
         Iterable.wakeApp();
 
-        if (Platform.OS === 'android') {
-          //Give enough time for Activity to wake up.
-          setTimeout(() => {
-            callUrlHandler(Iterable.savedConfig, url, context);
-          }, 1000);
+        // When the action originates from a push notification, fetch the last
+        // push payload and attach it to the context so that URL handlers can
+        // access custom push data (e.g. promo codes, deep link metadata).
+        const enrichAndHandle = (ctx: IterableActionContext) => {
+          if (Platform.OS === 'android') {
+            //Give enough time for Activity to wake up.
+            setTimeout(() => {
+              callUrlHandler(Iterable.savedConfig, url, ctx);
+            }, 1000);
+          } else {
+            callUrlHandler(Iterable.savedConfig, url, ctx);
+          }
+        };
+
+        if (context.source === IterableActionSource.push) {
+          Iterable.getLastPushPayload()
+            .then((payload) => {
+              if (payload && typeof payload === 'object') {
+                context.pushPayload = payload as Record<string, unknown>;
+              }
+              enrichAndHandle(context);
+            })
+            .catch(() => {
+              // If fetching the payload fails, proceed without it
+              enrichAndHandle(context);
+            });
         } else {
-          callUrlHandler(Iterable.savedConfig, url, context);
+          enrichAndHandle(context);
         }
       });
     }
@@ -1005,7 +1031,25 @@ export class Iterable {
         (dict) => {
           const action = IterableAction.fromDict(dict.action);
           const context = IterableActionContext.fromDict(dict.context);
-          Iterable.savedConfig.customActionHandler!(action, context);
+
+          // When the action originates from a push notification, fetch the last
+          // push payload and attach it to the context so that custom action
+          // handlers can access custom push data.
+          if (context.source === IterableActionSource.push) {
+            Iterable.getLastPushPayload()
+              .then((payload) => {
+                if (payload && typeof payload === 'object') {
+                  context.pushPayload = payload as Record<string, unknown>;
+                }
+                Iterable.savedConfig.customActionHandler!(action, context);
+              })
+              .catch(() => {
+                // If fetching the payload fails, proceed without it
+                Iterable.savedConfig.customActionHandler!(action, context);
+              });
+          } else {
+            Iterable.savedConfig.customActionHandler!(action, context);
+          }
         }
       );
     }
