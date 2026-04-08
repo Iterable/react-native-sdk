@@ -48,7 +48,6 @@ export interface IterableEmbeddedViewProps
  *   metadata: {
  *     messageId: 'test-message-123',
  *     placementId: 101,
- *     campaignId: 123456,
  *   },
  *   elements: {
  *     title: 'Test Title',
