@@ -53,7 +53,7 @@ export const useEmbeddedView = (
 
   const handleButtonClick = useCallback(
     (button: IterableEmbeddedMessageElementsButton) => {
-      onButtonClick(button);
+      onButtonClick(button, message);
       Iterable.embeddedManager.handleClick(message, button.id, button.action);
     },
     [onButtonClick, message]
