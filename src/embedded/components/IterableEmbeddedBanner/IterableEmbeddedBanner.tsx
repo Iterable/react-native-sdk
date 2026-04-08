@@ -19,6 +19,7 @@ import {
 } from './IterableEmbeddedBanner.styles';
 
 /**
+ * The IterableEmbeddedBanner component is used to render a banner message.
  *
  * @param config - The config for the IterableEmbeddedBanner component.
  * @param message - The message to render.

@@ -16,6 +16,7 @@ import type { IterableEmbeddedComponentProps } from '../../types/IterableEmbedde
 import { IMAGE_HEIGHT, styles } from './IterableEmbeddedCard.styles';
 
 /**
+ * The IterableEmbeddedCard component is used to render a card message.
  *
  * @param config - The config for the IterableEmbeddedCard component.
  * @param message - The message to render.
