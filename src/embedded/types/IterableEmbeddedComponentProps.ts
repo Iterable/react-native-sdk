@@ -8,7 +8,10 @@ export interface IterableEmbeddedComponentProps {
   /** The config for the embedded view. */
   config?: IterableEmbeddedViewConfig | null;
   /** The function to call when a button is clicked. */
-  onButtonClick?: (button: IterableEmbeddedMessageElementsButton) => void;
+  onButtonClick?: (
+    button: IterableEmbeddedMessageElementsButton,
+    message: IterableEmbeddedMessage
+  ) => void;
   /** The function to call when the message is clicked. */
   onMessageClick?: () => void;
 }

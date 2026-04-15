@@ -12,6 +12,27 @@ import { useEmbeddedView } from '../../hooks/useEmbeddedView';
 import type { IterableEmbeddedComponentProps } from '../../types/IterableEmbeddedComponentProps';
 import { styles } from './IterableEmbeddedNotification.styles';
 
+/**
+ * The IterableEmbeddedNotification component is used to render a notification message.
+ *
+ * @param config - The config for the IterableEmbeddedNotification component.
+ * @param message - The message to render.
+ * @param onButtonClick - The function to call when a button is clicked.
+ * @param onMessageClick - The function to call when the message is clicked.
+ * @returns The IterableEmbeddedNotification component.
+ *
+ * @example
+ * ```tsx
+ * return (
+ *   <IterableEmbeddedNotification
+ *     config={config}
+ *     message={message}
+ *     onButtonClick={onButtonClick}
+ *     onMessageClick={onMessageClick}
+ *   />
+ * );
+ * ```
+ */
 export const IterableEmbeddedNotification = ({
   config,
   message,

@@ -2,10 +2,16 @@
  * The view type for an embedded message.
  */
 export enum IterableEmbeddedViewType {
-  /** The embedded view is a banner */
+  /**
+   * [Banner](https://support.iterable.com/hc/en-us/articles/23230946708244-Out-of-the-Box-Views-for-Embedded-Messages#banners) Out of the Box (OOTB) view.
+   */
   Banner = 0,
-  /** The embedded view is a card */
+  /**
+   * [Card](https://support.iterable.com/hc/en-us/articles/23230946708244-Out-of-the-Box-Views-for-Embedded-Messages#cards) Out of the Box (OOTB) view.
+   */
   Card = 1,
-  /** The embedded view is a notification */
+  /**
+   * [Notification](https://support.iterable.com/hc/en-us/articles/23230946708244-Out-of-the-Box-Views-for-Embedded-Messages#notifications) Out of the Box (OOTB) view.
+   */
   Notification = 2,
 }

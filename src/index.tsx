@@ -42,6 +42,7 @@ export {
   type IterableEmbeddedMessageElementsButton,
   type IterableEmbeddedMessageElementsText,
   type IterableEmbeddedViewConfig,
+  type IterableEmbeddedViewProps,
 } from './embedded';
 export {
   IterableHtmlInAppContent,

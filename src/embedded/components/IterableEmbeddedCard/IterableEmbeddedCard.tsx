@@ -16,26 +16,39 @@ import type { IterableEmbeddedComponentProps } from '../../types/IterableEmbedde
 import { IMAGE_HEIGHT, styles } from './IterableEmbeddedCard.styles';
 
 /**
- * TODO: Add default action click handler.  See IterableEmbeddedView for functionality.
+ * The IterableEmbeddedCard component is used to render a card message.
+ *
+ * @param config - The config for the IterableEmbeddedCard component.
+ * @param message - The message to render.
+ * @param onButtonClick - The function to call when a button is clicked.
+ * @param onMessageClick - The function to call when the message is clicked.
+ * @returns The IterableEmbeddedCard component.
+ *
+ * @example
+ * ```tsx
+ * return (
+ *   <IterableEmbeddedCard
+ *     config={config}
+ *     message={message}
+ *     onButtonClick={onButtonClick}
+ *     onMessageClick={onMessageClick}
+ *   />
+ * );
+ * ```
  */
-
 export const IterableEmbeddedCard = ({
   config,
   message,
   onButtonClick = () => {},
   onMessageClick = () => {},
 }: IterableEmbeddedComponentProps) => {
-  const {
-    handleButtonClick,
-    handleMessageClick,
-    media,
-    parsedStyles,
-  } = useEmbeddedView(IterableEmbeddedViewType.Card, {
-    message,
-    config,
-    onButtonClick,
-    onMessageClick,
-  });
+  const { handleButtonClick, handleMessageClick, media, parsedStyles } =
+    useEmbeddedView(IterableEmbeddedViewType.Card, {
+      message,
+      config,
+      onButtonClick,
+      onMessageClick,
+    });
   const buttons = message?.elements?.buttons ?? [];
 
   return (
@@ -64,8 +77,7 @@ export const IterableEmbeddedCard = ({
                     uri: media.url as string,
                     height: PixelRatio.getPixelSizeForLayoutSize(IMAGE_HEIGHT),
                   }
-                :
-                IterableLogoGrey
+                : IterableLogoGrey
             }
             style={
               media.shouldShow
