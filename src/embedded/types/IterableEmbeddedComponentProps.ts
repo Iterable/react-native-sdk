@@ -13,5 +13,5 @@ export interface IterableEmbeddedComponentProps {
     message: IterableEmbeddedMessage
   ) => void;
   /** The function to call when the message is clicked. */
-  onMessageClick?: () => void;
+  onMessageClick?: (message: IterableEmbeddedMessage) => void;
 }

@@ -6,7 +6,7 @@ import type { IterableEmbeddedMessageElementsButton } from '../../types/Iterable
 import { getMedia } from './getMedia';
 import { getStyles } from './getStyles';
 
-const noop = () => {};
+const noop = (..._args: unknown[]) => {};
 
 /**
  * This hook is used to manage the lifecycle of an embedded view.
@@ -60,7 +60,7 @@ export const useEmbeddedView = (
   );
 
   const handleMessageClick = useCallback(() => {
-    onMessageClick();
+    onMessageClick(message);
     Iterable.embeddedManager.handleClick(
       message,
       null,

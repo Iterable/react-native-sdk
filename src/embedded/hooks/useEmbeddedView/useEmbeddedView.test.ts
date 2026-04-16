@@ -97,7 +97,7 @@ describe('useEmbeddedView', () => {
   });
 
   describe('handleButtonClick', () => {
-    it('calls onButtonClick with the button', () => {
+    it('calls onButtonClick with the button and message', () => {
       const onButtonClick = jest.fn();
       const button: IterableEmbeddedMessageElementsButton = {
         id: 'btn-1',
@@ -117,7 +117,7 @@ describe('useEmbeddedView', () => {
       });
 
       expect(onButtonClick).toHaveBeenCalledTimes(1);
-      expect(onButtonClick).toHaveBeenCalledWith(button);
+      expect(onButtonClick).toHaveBeenCalledWith(button, minimalMessage);
     });
 
     it('calls Iterable.embeddedManager.handleClick with message, button.id, and button.action', () => {
