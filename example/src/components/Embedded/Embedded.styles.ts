@@ -19,14 +19,31 @@ import {
 const styles = StyleSheet.create({
   button,
   buttonText,
-  container,
+  compactUtilityButton: {
+    ...button,
+    paddingVertical: 8,
+  },
+  compactUtilityButtonText: {
+    ...buttonText,
+    fontSize: 12,
+    lineHeight: 17,
+  },
+  container:{
+    ...container,
+    marginHorizontal: 0,
+    marginTop: 0,
+    paddingHorizontal: 0,
+  },
+  embeddedHr: {
+    ...hr,
+    marginVertical: 12,
+  },
   embeddedSection: {
     display: 'flex',
     flexDirection: 'column',
     gap: 16,
     paddingHorizontal: 16,
   },
-  hr,
   inputContainer: {
     marginVertical: 10,
   },
@@ -39,6 +56,30 @@ const styles = StyleSheet.create({
   modalButtons,
   modalContent,
   modalOverlay,
+  placementIdsInput: {
+    ...input,
+    flex: 1,
+    marginBottom: 0,
+    minWidth: 72,
+  },
+  placementIdsLabel: {
+    flexShrink: 1,
+    fontSize: 14,
+  },
+  placementIdsRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 8,
+    marginBottom: 8,
+  },
+  sessionButtonHalf: {
+    flex: 1,
+  },
+  sessionButtonsRow: {
+    flexDirection: 'row',
+    gap: 8,
+    marginBottom: 8,
+  },
   subtitle: { ...subtitle, textAlign: 'center' },
   text: { textAlign: 'center' },
   textInput: input,
@@ -52,27 +93,37 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 2,
     flex: 1,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 7,
   },
   viewTypeButtonSelected: {
     backgroundColor: colors.brandCyan,
   },
   viewTypeButtonText: {
     color: colors.brandCyan,
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '600',
   },
   viewTypeButtonTextSelected: {
     color: colors.backgroundPrimary,
   },
   viewTypeButtons: {
+    flex: 1,
     flexDirection: 'row',
     gap: 8,
     justifyContent: 'space-around',
-    marginTop: 8,
+    minWidth: 0,
+  },
+  viewTypeLabel: {
+    flexShrink: 0,
+    fontSize: 13,
+    fontWeight: '600',
   },
   viewTypeSelector: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
     marginVertical: 12,
   },
   warningContainer: {
