@@ -1,10 +1,14 @@
 import { useMemo } from 'react';
 
 import { IterableEmbeddedViewType } from '../enums/IterableEmbeddedViewType';
+import { useWarnIfOutsideEmbeddedSession } from '../hooks';
 import type { IterableEmbeddedComponentProps } from '../types/IterableEmbeddedComponentProps';
+import { EmbeddedSessionDevWarning } from './EmbeddedSessionDevWarning';
 import { IterableEmbeddedBanner } from './IterableEmbeddedBanner';
 import { IterableEmbeddedCard } from './IterableEmbeddedCard';
 import { IterableEmbeddedNotification } from './IterableEmbeddedNotification';
+
+const COMPONENT_NAME = 'IterableEmbeddedView';
 
 /**
  * The props for the IterableEmbeddedView component.
@@ -98,6 +102,9 @@ export const IterableEmbeddedView = ({
   viewType,
   ...props
 }: IterableEmbeddedViewProps) => {
+  const showEmbeddedSessionWarning =
+    useWarnIfOutsideEmbeddedSession(COMPONENT_NAME);
+
   const Cmp = useMemo(() => {
     switch (viewType) {
       case IterableEmbeddedViewType.Card:
@@ -110,6 +117,12 @@ export const IterableEmbeddedView = ({
         return null;
     }
   }, [viewType]);
+
+  if (showEmbeddedSessionWarning) {
+    return (
+      <EmbeddedSessionDevWarning visible componentName={COMPONENT_NAME} />
+    );
+  }
 
   return Cmp ? <Cmp {...props} /> : null;
 };

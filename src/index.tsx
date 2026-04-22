@@ -33,9 +33,12 @@ export type {
   IterableRetryPolicy,
 } from './core/types';
 export {
+  EmbeddedSessionManager,
   IterableEmbeddedManager,
   IterableEmbeddedView,
   IterableEmbeddedViewType,
+  useEmbeddedView,
+  type EmbeddedSessionManagerProps,
   type IterableEmbeddedComponentProps,
   type IterableEmbeddedMessage,
   type IterableEmbeddedMessageElements,

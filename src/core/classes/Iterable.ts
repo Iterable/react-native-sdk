@@ -1108,6 +1108,8 @@ export class Iterable {
           }
         );
       }
+
+      Iterable.embeddedManager.syncMessages();
     }
   }
 

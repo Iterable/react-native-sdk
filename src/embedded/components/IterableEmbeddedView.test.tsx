@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import type { ReactElement } from 'react';
 import { render } from '@testing-library/react-native';
 
+import { EmbeddedSessionContext } from '../context/EmbeddedSessionContext';
 import { IterableEmbeddedViewType } from '../enums/IterableEmbeddedViewType';
 import { IterableEmbeddedView } from './IterableEmbeddedView';
 import { IterableEmbeddedBanner } from './IterableEmbeddedBanner';
@@ -19,6 +21,12 @@ jest.mock('./IterableEmbeddedCard', () => ({
 jest.mock('./IterableEmbeddedNotification', () => ({
   IterableEmbeddedNotification: jest.fn(() => null),
 }));
+
+function renderWithEmbeddedSession(ui: ReactElement) {
+  return render(
+    <EmbeddedSessionContext.Provider value={true}>{ui}</EmbeddedSessionContext.Provider>
+  );
+}
 
 describe('IterableEmbeddedView', () => {
   const mockMessage = {
@@ -46,7 +54,7 @@ describe('IterableEmbeddedView', () => {
 
   describe('View Type Rendering', () => {
     it('should render IterableEmbeddedCard when viewType is Card', () => {
-      render(
+      renderWithEmbeddedSession(
         <IterableEmbeddedView
           viewType={IterableEmbeddedViewType.Card}
           message={mockMessage}
@@ -59,7 +67,7 @@ describe('IterableEmbeddedView', () => {
     });
 
     it('should render IterableEmbeddedNotification when viewType is Notification', () => {
-      render(
+      renderWithEmbeddedSession(
         <IterableEmbeddedView
           viewType={IterableEmbeddedViewType.Notification}
           message={mockMessage}
@@ -72,7 +80,7 @@ describe('IterableEmbeddedView', () => {
     });
 
     it('should render IterableEmbeddedBanner when viewType is Banner', () => {
-      render(
+      renderWithEmbeddedSession(
         <IterableEmbeddedView
           viewType={IterableEmbeddedViewType.Banner}
           message={mockMessage}
@@ -85,7 +93,7 @@ describe('IterableEmbeddedView', () => {
     });
 
     it('should render null for invalid viewType', () => {
-      render(
+      renderWithEmbeddedSession(
         <IterableEmbeddedView
           viewType={999 as IterableEmbeddedViewType}
           message={mockMessage}
@@ -98,7 +106,7 @@ describe('IterableEmbeddedView', () => {
     });
 
     it('should render null for undefined viewType', () => {
-      render(
+      renderWithEmbeddedSession(
         <IterableEmbeddedView
           viewType={undefined as any}
           message={mockMessage}
@@ -113,7 +121,7 @@ describe('IterableEmbeddedView', () => {
 
   describe('Props Passing', () => {
     it('should pass message prop to Card component', () => {
-      render(
+      renderWithEmbeddedSession(
         <IterableEmbeddedView
           viewType={IterableEmbeddedViewType.Card}
           message={mockMessage}
@@ -127,7 +135,7 @@ describe('IterableEmbeddedView', () => {
     });
 
     it('should pass message prop to Banner component', () => {
-      render(
+      renderWithEmbeddedSession(
         <IterableEmbeddedView
           viewType={IterableEmbeddedViewType.Banner}
           message={mockMessage}
@@ -141,7 +149,7 @@ describe('IterableEmbeddedView', () => {
     });
 
     it('should pass message prop to Notification component', () => {
-      render(
+      renderWithEmbeddedSession(
         <IterableEmbeddedView
           viewType={IterableEmbeddedViewType.Notification}
           message={mockMessage}
@@ -156,7 +164,7 @@ describe('IterableEmbeddedView', () => {
     });
 
     it('should pass config prop to child component', () => {
-      render(
+      renderWithEmbeddedSession(
         <IterableEmbeddedView
           viewType={IterableEmbeddedViewType.Card}
           message={mockMessage}
@@ -172,7 +180,7 @@ describe('IterableEmbeddedView', () => {
     });
 
     it('should pass onButtonClick prop to child component', () => {
-      render(
+      renderWithEmbeddedSession(
         <IterableEmbeddedView
           viewType={IterableEmbeddedViewType.Card}
           message={mockMessage}
@@ -188,7 +196,7 @@ describe('IterableEmbeddedView', () => {
     });
 
     it('should pass all props to child component', () => {
-      render(
+      renderWithEmbeddedSession(
         <IterableEmbeddedView
           viewType={IterableEmbeddedViewType.Card}
           message={mockMessage}
@@ -208,7 +216,7 @@ describe('IterableEmbeddedView', () => {
 
   describe('Component Memoization', () => {
     it('should memoize component selection based on viewType', () => {
-      const { rerender } = render(
+      const { rerender } = renderWithEmbeddedSession(
         <IterableEmbeddedView
           viewType={IterableEmbeddedViewType.Card}
           message={mockMessage}
@@ -227,10 +235,12 @@ describe('IterableEmbeddedView', () => {
       };
 
       rerender(
-        <IterableEmbeddedView
-          viewType={IterableEmbeddedViewType.Card}
-          message={newMessage}
-        />
+        <EmbeddedSessionContext.Provider value={true}>
+          <IterableEmbeddedView
+            viewType={IterableEmbeddedViewType.Card}
+            message={newMessage}
+          />
+        </EmbeddedSessionContext.Provider>
       );
 
       // Should still render Card component (memoization means same component reference)
@@ -243,7 +253,7 @@ describe('IterableEmbeddedView', () => {
     });
 
     it('should update component when viewType changes', () => {
-      const { rerender } = render(
+      const { rerender } = renderWithEmbeddedSession(
         <IterableEmbeddedView
           viewType={IterableEmbeddedViewType.Card}
           message={mockMessage}
@@ -255,10 +265,12 @@ describe('IterableEmbeddedView', () => {
 
       // Re-render with different viewType
       rerender(
-        <IterableEmbeddedView
-          viewType={IterableEmbeddedViewType.Banner}
-          message={mockMessage}
-        />
+        <EmbeddedSessionContext.Provider value={true}>
+          <IterableEmbeddedView
+            viewType={IterableEmbeddedViewType.Banner}
+            message={mockMessage}
+          />
+        </EmbeddedSessionContext.Provider>
       );
 
       expect(IterableEmbeddedBanner).toHaveBeenCalledTimes(1);
@@ -269,7 +281,7 @@ describe('IterableEmbeddedView', () => {
 
   describe('Edge Cases', () => {
     it('should handle null config gracefully', () => {
-      render(
+      renderWithEmbeddedSession(
         <IterableEmbeddedView
           viewType={IterableEmbeddedViewType.Card}
           message={mockMessage}
@@ -285,7 +297,7 @@ describe('IterableEmbeddedView', () => {
     });
 
     it('should handle undefined config gracefully', () => {
-      render(
+      renderWithEmbeddedSession(
         <IterableEmbeddedView
           viewType={IterableEmbeddedViewType.Card}
           message={mockMessage}
@@ -301,7 +313,7 @@ describe('IterableEmbeddedView', () => {
     });
 
     it('should handle missing onButtonClick gracefully', () => {
-      render(
+      renderWithEmbeddedSession(
         <IterableEmbeddedView
           viewType={IterableEmbeddedViewType.Card}
           message={mockMessage}
@@ -317,19 +329,19 @@ describe('IterableEmbeddedView', () => {
 
     it('should handle numeric viewType values correctly', () => {
       // Test with numeric value 0 (Banner)
-      render(<IterableEmbeddedView viewType={0} message={mockMessage} />);
+      renderWithEmbeddedSession(<IterableEmbeddedView viewType={0} message={mockMessage} />);
       expect(IterableEmbeddedBanner).toHaveBeenCalledTimes(1);
 
       jest.clearAllMocks();
 
       // Test with numeric value 1 (Card)
-      render(<IterableEmbeddedView viewType={1} message={mockMessage} />);
+      renderWithEmbeddedSession(<IterableEmbeddedView viewType={1} message={mockMessage} />);
       expect(IterableEmbeddedCard).toHaveBeenCalledTimes(1);
 
       jest.clearAllMocks();
 
       // Test with numeric value 2 (Notification)
-      render(<IterableEmbeddedView viewType={2} message={mockMessage} />);
+      renderWithEmbeddedSession(<IterableEmbeddedView viewType={2} message={mockMessage} />);
       expect(IterableEmbeddedNotification).toHaveBeenCalledTimes(1);
     });
   });
@@ -337,7 +349,7 @@ describe('IterableEmbeddedView', () => {
   describe('Component Type Verification', () => {
     it('should render correct component type for each enum value', () => {
       // Verify Banner enum value
-      const bannerResult = render(
+      const bannerResult = renderWithEmbeddedSession(
         <IterableEmbeddedView
           viewType={IterableEmbeddedViewType.Banner}
           message={mockMessage}
@@ -349,7 +361,7 @@ describe('IterableEmbeddedView', () => {
       jest.clearAllMocks();
 
       // Verify Card enum value
-      const cardResult = render(
+      const cardResult = renderWithEmbeddedSession(
         <IterableEmbeddedView
           viewType={IterableEmbeddedViewType.Card}
           message={mockMessage}
@@ -361,7 +373,7 @@ describe('IterableEmbeddedView', () => {
       jest.clearAllMocks();
 
       // Verify Notification enum value
-      render(
+      renderWithEmbeddedSession(
         <IterableEmbeddedView
           viewType={IterableEmbeddedViewType.Notification}
           message={mockMessage}
