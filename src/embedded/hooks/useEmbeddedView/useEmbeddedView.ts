@@ -3,6 +3,7 @@ import { Iterable } from '../../../core/classes/Iterable';
 import { IterableEmbeddedViewType } from '../../enums';
 import type { IterableEmbeddedComponentProps } from '../../types/IterableEmbeddedComponentProps';
 import type { IterableEmbeddedMessageElementsButton } from '../../types/IterableEmbeddedMessageElementsButton';
+import { normalizeEmbeddedViewConfig } from '../../utils/normalizeEmbeddedViewConfig';
 import { getMedia } from './getMedia';
 import { getStyles } from './getStyles';
 
@@ -44,9 +45,14 @@ export const useEmbeddedView = (
     onMessageClick = noop,
   }: IterableEmbeddedComponentProps
 ) => {
+  const normalizedConfig = useMemo(
+    () => normalizeEmbeddedViewConfig(config),
+    [config]
+  );
+
   const parsedStyles = useMemo(() => {
-    return getStyles(viewType, config);
-  }, [viewType, config]);
+    return getStyles(viewType, normalizedConfig);
+  }, [viewType, normalizedConfig]);
   const media = useMemo(() => {
     return getMedia(viewType, message);
   }, [viewType, message]);
