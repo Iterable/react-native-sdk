@@ -98,6 +98,8 @@ export const IterableEmbeddedNotification = ({
                   key={button.id}
                 >
                   <Text
+                    ellipsizeMode="tail"
+                    numberOfLines={1}
                     style={[
                       styles.buttonText,
                       { color: textColor } as TextStyle,

@@ -88,7 +88,6 @@ export const Embedded = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Embedded</Text>
       {!Iterable.embeddedManager.isEnabled && (
         <View style={styles.warningContainer}>
           <Text style={styles.warningText}>
@@ -97,12 +96,9 @@ export const Embedded = () => {
           </Text>
         </View>
       )}
-      <Text style={styles.subtitle}>
-        Enter placement IDs to fetch embedded messages
-      </Text>
       <View style={styles.utilitySection}>
         <View style={styles.viewTypeSelector}>
-          <Text style={styles.text}>Select View Type:</Text>
+          <Text style={styles.viewTypeLabel}>View:</Text>
           <View style={styles.viewTypeButtons}>
             <TouchableOpacity
               style={[
@@ -164,28 +160,43 @@ export const Embedded = () => {
             </TouchableOpacity>
           </View>
         </View>
-        <TouchableOpacity style={styles.button} onPress={syncEmbeddedMessages}>
-          <Text style={styles.buttonText}>Sync messages</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={startEmbeddedSession}>
-          <Text style={styles.buttonText}>Start session</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={endEmbeddedSession}>
-          <Text style={styles.buttonText}>End session</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={openConfigEditor}>
-          <Text style={styles.buttonText}>Set view config</Text>
+        <View style={styles.sessionButtonsRow}>
+          <TouchableOpacity
+            style={[styles.compactUtilityButton, styles.sessionButtonHalf]}
+            onPress={syncEmbeddedMessages}
+          >
+            <Text style={styles.compactUtilityButtonText}>Sync</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.compactUtilityButton, styles.sessionButtonHalf]}
+            onPress={startEmbeddedSession}
+          >
+            <Text style={styles.compactUtilityButtonText}>Start session</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.compactUtilityButton, styles.sessionButtonHalf]}
+            onPress={endEmbeddedSession}
+          >
+            <Text style={styles.compactUtilityButtonText}>End session</Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity style={styles.compactUtilityButton} onPress={openConfigEditor}>
+          <Text style={styles.compactUtilityButtonText}>Set view config</Text>
         </TouchableOpacity>
         <View style={styles.inputContainer}>
-          <Text style={styles.text}>Placement IDs (comma-separated):</Text>
-          <TextInput
-            style={styles.textInput}
-            placeholder="e.g., 1, 2, 3"
-            placeholderTextColor="#999"
-            value={placementIdsInput}
-            onChangeText={setPlacementIdsInput}
-            keyboardType="numbers-and-punctuation"
-          />
+          <View style={styles.placementIdsRow}>
+            <Text style={styles.placementIdsLabel}>
+              Placement IDs{'\n'}(comma-separated):
+            </Text>
+            <TextInput
+              style={styles.placementIdsInput}
+              placeholder="e.g., 1, 2, 3"
+              placeholderTextColor="#999"
+              value={placementIdsInput}
+              onChangeText={setPlacementIdsInput}
+              keyboardType="numbers-and-punctuation"
+            />
+          </View>
           <TouchableOpacity style={styles.button} onPress={getEmbeddedMessages}>
             <Text style={styles.buttonText}>
               Get messages for placement ids
@@ -227,7 +238,7 @@ export const Embedded = () => {
           </View>
         </View>
       </Modal>
-      <View style={styles.hr} />
+      <View style={styles.embeddedHr} />
       <ScrollView>
         <View style={styles.embeddedSection}>
           {embeddedMessages.map((message) => (
