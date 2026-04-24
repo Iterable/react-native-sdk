@@ -34,7 +34,7 @@ export const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 14,
-    fontWeight: '400',
+    fontWeight: '700',
     lineHeight: 20,
     paddingHorizontal: 12,
     paddingVertical: 8,
