@@ -343,11 +343,6 @@ RCT_EXPORT_MODULE()
   return std::make_shared<facebook::react::NativeRNIterableAPISpecJSI>(params);
 }
 
-+ (NSString *)moduleName
-{
-  return @"RNIterableAPI";
-}
-
 #else
 
 // MARK: - RCTBridgeModule integration for Legacy Architecture
