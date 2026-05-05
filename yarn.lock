@@ -1967,7 +1967,7 @@ __metadata:
     react-native-dotenv: ^3.4.11
     react-native-gesture-handler: ^2.26.0
     react-native-safe-area-context: ^5.4.0
-    react-native-screens: ^4.10.0
+    react-native-screens: ">=4.14.0 <4.19.0"
     react-native-webview: ^13.14.1
     react-test-renderer: 19.1.0
   languageName: unknown
@@ -2008,7 +2008,7 @@ __metadata:
     react-native-builder-bob: ^0.40.4
     react-native-gesture-handler: ^2.26.0
     react-native-safe-area-context: ^5.4.0
-    react-native-screens: ^4.10.0
+    react-native-screens: ">=4.14.0 <4.19.0"
     react-native-webview: ^13.14.1
     react-test-renderer: 19.1.0
     release-it: ^17.10.0
@@ -11455,16 +11455,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-screens@npm:^4.10.0":
-  version: 4.17.1
-  resolution: "react-native-screens@npm:4.17.1"
+"react-native-screens@npm:>=4.14.0 <4.19.0":
+  version: 4.18.0
+  resolution: "react-native-screens@npm:4.18.0"
   dependencies:
     react-freeze: ^1.0.0
     warn-once: ^0.1.0
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 7c17118bc1313acd6001e63bf1d6c6a95ca5250c9a06450cceec50768571648d2d5f3e17ed19fb757d176a65bbe80fcba142b937a92cbbc795a6da71243c375e
+  checksum: b7942efe7bf316ad66aabf6e3b8b999268d3b88b3d23affb0f90f627d8dd980172f79b48abf476d10c3466ba5123240ee3f18f8d0ff7db5b79b9772cb520afa0
   languageName: node
   linkType: hard
 
