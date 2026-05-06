@@ -2517,7 +2517,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:8.57.1":
+"@eslint/js@npm:8.57.1, @eslint/js@npm:^8.57.1":
   version: 8.57.1
   resolution: "@eslint/js@npm:8.57.1"
   checksum: 10/7562b21be10c2adbfa4aa5bb2eccec2cb9ac649a3569560742202c8d1cb6c931ce634937a2f0f551e078403a1c1285d6c2c0aa345dafc986149665cd69fe8b59
@@ -2697,6 +2697,8 @@ __metadata:
   resolution: "@iterable/react-native-sdk@workspace:."
   dependencies:
     "@commitlint/config-conventional": "npm:^20.5.0"
+    "@eslint/eslintrc": "npm:^2.1.4"
+    "@eslint/js": "npm:^8.57.1"
     "@evilmartians/lefthook": "npm:^1.5.0"
     "@react-native-community/cli": "npm:20.0.0"
     "@react-native/babel-preset": "npm:0.81.6"

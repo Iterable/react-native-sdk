@@ -69,6 +69,8 @@
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^20.5.0",
+    "@eslint/eslintrc": "^2.1.4",
+    "@eslint/js": "^8.57.1",
     "@evilmartians/lefthook": "^1.5.0",
     "@react-native-community/cli": "20.0.0",
     "@react-native/babel-preset": "0.81.6",
