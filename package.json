@@ -2,11 +2,11 @@
   "name": "@iterable/react-native-sdk",
   "version": "2.2.1",
   "description": "Iterable SDK for React Native.",
-  "source": "./src/index.tsx",
   "main": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",
   "exports": {
     ".": {
+      "source": "./src/index.tsx",
       "types": "./lib/typescript/src/index.d.ts",
       "default": "./lib/module/index.js"
     },
@@ -19,6 +19,7 @@
     "ios",
     "cpp",
     "*.podspec",
+    "react-native.config.js",
     "scripts/autoCreatePackageInfo.js",
     "scripts/createPackageInfoFile.js",
     "!ios/build",
@@ -45,7 +46,7 @@
     "prebuild": "yarn add_build_info",
     "build": "yarn add_build_info && yarn bob build",
     "prepare": "yarn build",
-    "release": "release-it"
+    "release": "release-it --only-version"
   },
   "keywords": [
     "react-native",
@@ -95,7 +96,7 @@
     "prettier-eslint": "^16.4.2",
     "react": "19.1.4",
     "react-native": "0.81.6",
-    "react-native-builder-bob": "^0.40.4",
+    "react-native-builder-bob": "^0.41.0",
     "react-native-gesture-handler": "^2.28.0",
     "react-native-safe-area-context": "^5.6.0",
     "react-native-screens": ">=4.19.0 <4.25.0",
