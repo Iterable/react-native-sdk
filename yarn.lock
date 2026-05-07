@@ -2137,7 +2137,7 @@ __metadata:
     react-native: 0.83.9
     react-native-builder-bob: ^0.30.2
     react-native-dotenv: ^3.4.11
-    react-native-gesture-handler: ^2.29.1
+    react-native-gesture-handler: ^2.30.0
     react-native-safe-area-context: ^5.6.0
     react-native-screens: ">=4.19.0 <4.25.0"
     react-native-webview: ^13.14.1
@@ -11642,7 +11642,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-gesture-handler@npm:^2.29.1":
+"react-native-gesture-handler@npm:^2.29.1, react-native-gesture-handler@npm:^2.30.0":
   version: 2.31.2
   resolution: "react-native-gesture-handler@npm:2.31.2"
   dependencies:
