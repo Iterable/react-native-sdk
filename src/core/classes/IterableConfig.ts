@@ -425,8 +425,8 @@ export class IterableConfig {
        *
        * TODO: Figure out if this is purposeful
        */
-      // eslint-disable-next-line eqeqeq
       onEmbeddedMessagingDisabledPresent:
+        // eslint-disable-next-line eqeqeq
         this.onEmbeddedMessagingDisabled != undefined,
       /** The log level for the SDK. */
       logLevel: this.logLevel,

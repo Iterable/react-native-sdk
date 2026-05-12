@@ -1,22 +1,23 @@
+/* eslint-disable @typescript-eslint/no-wrapper-object-types */
 import type { TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
 
 // NOTE: No types can be imported because of the way new arch works, so we have
 // to re-define the types here.
 // Codegen (RN 0.84+) rejects unions that include array types (e.g. `T[] | U`,
-// `string | string[]`). Use `Object` / `unknown` where the bridge carries
-// richer JSON than the parser allows.
+// `string | string[]`). Use capital `Object` (not TS `object`) for loose maps;
+// lowercase `object` is TSObjectKeyword and fails iOS/Android codegen.
 export interface Spec extends TurboModule {
   // Initialization
   initializeWithApiKey(
     apiKey: string,
-    config: object,
+    config: Object,
     version: string
   ): Promise<boolean>;
 
   initialize2WithApiKey(
     apiKey: string,
-    config: object,
+    config: Object,
     version: string,
     apiEndPointOverride: string
   ): Promise<boolean>;
@@ -130,9 +131,9 @@ export interface Spec extends TurboModule {
   endEmbeddedSession(): void;
   startEmbeddedImpression(messageId: string, placementId: number): void;
   pauseEmbeddedImpression(messageId: string): void;
-  getEmbeddedMessages(placementIds: number[]): Promise<object[]>;
+  getEmbeddedMessages(placementIds: number[]): Promise<Object[]>;
   trackEmbeddedClick(
-    message: object,
+    message: Object,
     buttonId: string | null,
     clickedUrl: string | null
   ): void;
