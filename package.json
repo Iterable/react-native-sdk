@@ -82,7 +82,7 @@
     "@types/react": "^19.0.0",
     "@typescript-eslint/eslint-plugin": "^8.13.0",
     "@typescript-eslint/parser": "^8.13.0",
-    "baseline-browser-mapping": "latest",
+    "baseline-browser-mapping": "^2.10.29",
     "commitlint": "^19.6.1",
     "del-cli": "^5.1.0",
     "eslint": "^8.51.0",
