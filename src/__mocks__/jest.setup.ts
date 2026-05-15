@@ -3,7 +3,36 @@ import * as ReactNative from 'react-native';
 import { MockRNIterableAPI } from './MockRNIterableAPI';
 import { MockLinking } from './MockLinking';
 
-jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter.js');
+const mockNativeEventEmitter =
+  new (require('events').EventEmitter)() as import('events').EventEmitter;
+
+const mockNativeEventEmitterConstructor = jest.fn().mockImplementation(() => ({
+  addListener: (
+    eventType: string,
+    listener: (...args: unknown[]) => void
+  ) => {
+    mockNativeEventEmitter.addListener(eventType, listener);
+
+    return {
+      remove: () => mockNativeEventEmitter.removeListener(eventType, listener),
+    };
+  },
+  emit: (eventType: string, ...args: unknown[]) =>
+    mockNativeEventEmitter.emit(eventType, ...args),
+  removeAllListeners: (eventType?: string) =>
+    eventType
+      ? mockNativeEventEmitter.removeAllListeners(eventType)
+      : mockNativeEventEmitter.removeAllListeners(),
+  removeListener: (
+    eventType: string,
+    listener: (...args: unknown[]) => void
+  ) => mockNativeEventEmitter.removeListener(eventType, listener),
+}));
+
+jest.mock(
+  'react-native/Libraries/EventEmitter/NativeEventEmitter',
+  () => mockNativeEventEmitterConstructor
+);
 
 jest.mock('react-native-webview', () => {
   const { View } = require('react-native');
@@ -22,6 +51,7 @@ jest.doMock('react-native', () => {
         RNIterableAPI: MockRNIterableAPI,
       },
       Linking: MockLinking,
+      NativeEventEmitter: mockNativeEventEmitterConstructor,
     },
     ReactNative
   );
