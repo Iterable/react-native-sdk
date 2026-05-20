@@ -1,5 +1,18 @@
-## 2.2.0
+## 2.2.2
+### Updates
+- Added `baseline-browser-mapping`
+- Updated React Native library compatibility to 0.81
 
+### Fixes
+- Added temporary fix for Xcode 26.4 compatibility
+  ([a7768d4](https://github.com/Iterable/react-native-sdk/commit/a7768d4)) in
+  example app
+
+## 2.2.1
+### Updates
+- Updated React Native library compatibility to 0.79.7
+
+## 2.2.0
 ### Updates
 - Updated Android SDK version to [3.6.2](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.6.2)
 - Updated iOS SDK version to [6.6.3](https://github.com/Iterable/swift-sdk/releases/tag/6.6.3)
@@ -17,7 +30,7 @@
 ### Fixes
 - Created a standalone `IterableLogger` to avoid circular dependencies
 - [SDK-151] Fixed "cannot read property authtoken of undefined" error
-- Fixed Android `retryInterval` not being updated on re-initialization.
+- Fixed Android `retryInterval` not being updated on re-initialization
 
 ## 2.1.0
 ### Updates
