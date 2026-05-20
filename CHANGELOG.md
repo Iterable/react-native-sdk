@@ -13,7 +13,6 @@
 - Updated React Native library compatibility to 0.79.7
 
 ## 2.2.0
-
 ### Updates
 - Updated Android SDK version to [3.6.2](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.6.2)
 - Updated iOS SDK version to [6.6.3](https://github.com/Iterable/swift-sdk/releases/tag/6.6.3)
