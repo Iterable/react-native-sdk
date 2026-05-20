@@ -69,17 +69,11 @@ View the [API documentation](https://iterable-react-native-sdk.netlify.app).
 
 ## Architecture Support
 
-Iterable's React Native SDK supports [React Native's New
-Architecture](https://reactnative.dev/architecture/landing-page), including
-TurboModules and Fabric.
+Iterable's React Native SDK requires [React Native's New
+Architecture](https://reactnative.dev/architecture/landing-page).
 
-**IMPORTANT**: Iterable's React Native SDK supports React Native's Legacy Architecture, but it
-is no longer actively maintained.  Use at your own risk.
-
-Notes:
-
-- Ensure your app is configured for New Architecture per the React Native docs.
-- The example app in this repository is configured with New Architecture enabled.
+If your React Native version is less than 0.76, ensure your app has New Architecture enabled.
+The example app in this repository is configured with New Architecture.
 
 ## Beta Versions
 

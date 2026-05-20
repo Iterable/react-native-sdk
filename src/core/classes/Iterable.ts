@@ -16,7 +16,10 @@ import { callUrlHandler } from '../utils/callUrlHandler';
 import { IterableAction } from './IterableAction';
 import { IterableActionContext } from './IterableActionContext';
 import { IterableApi } from './IterableApi';
-import { IterableAttributionInfo } from './IterableAttributionInfo';
+import {
+  IterableAttributionInfo,
+  type IterableAttributionInfoInput,
+} from './IterableAttributionInfo';
 import { IterableAuthManager } from './IterableAuthManager';
 import { IterableAuthResponse } from './IterableAuthResponse';
 import type { IterableCommerceItem } from './IterableCommerceItem';
@@ -383,25 +386,7 @@ export class Iterable {
    * ```
    */
   static getAttributionInfo(): Promise<IterableAttributionInfo | undefined> {
-    return IterableApi.getAttributionInfo().then(
-      (
-        dict: {
-          campaignId: number;
-          templateId: number;
-          messageId: string;
-        } | null
-      ) => {
-        if (dict) {
-          return new IterableAttributionInfo(
-            dict.campaignId as number,
-            dict.templateId as number,
-            dict.messageId as string
-          );
-        } else {
-          return undefined;
-        }
-      }
-    );
+    return IterableApi.getAttributionInfo();
   }
 
   /**
@@ -428,7 +413,9 @@ export class Iterable {
    * Iterable.setAttributionInfo(attributionInfo);
    * ```
    */
-  static setAttributionInfo(attributionInfo?: IterableAttributionInfo) {
+  static setAttributionInfo(
+    attributionInfo?: IterableAttributionInfoInput | null
+  ) {
     IterableApi.setAttributionInfo(attributionInfo);
   }
 

@@ -1,6 +1,12 @@
 import { Platform } from 'react-native';
 
 import RNIterableAPI from '../../api';
+import {
+  asBridgeRecord,
+  asBridgeRecordArray,
+  type BridgeRecord,
+} from '../../api/bridge';
+import type { IterableAuthResponse } from './IterableAuthResponse';
 import type { IterableHtmlInAppContent } from '../../inApp/classes/IterableHtmlInAppContent';
 import type { IterableInAppMessage } from '../../inApp/classes/IterableInAppMessage';
 import type { IterableInAppCloseSource } from '../../inApp/enums/IterableInAppCloseSource';
@@ -8,7 +14,10 @@ import type { IterableInAppDeleteSource } from '../../inApp/enums/IterableInAppD
 import type { IterableInAppLocation } from '../../inApp/enums/IterableInAppLocation';
 import type { IterableInAppShowResponse } from '../../inApp/enums/IterableInAppShowResponse';
 import type { IterableInboxImpressionRowInfo } from '../../inbox/types/IterableInboxImpressionRowInfo';
-import { IterableAttributionInfo } from './IterableAttributionInfo';
+import {
+  IterableAttributionInfo,
+  type IterableAttributionInfoInput,
+} from './IterableAttributionInfo';
 import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
@@ -145,7 +154,10 @@ export class IterableApi {
    */
   static updateUser(dataFields: unknown, mergeNestedObjects: boolean) {
     IterableLogger.log('updateUser: ', dataFields, mergeNestedObjects);
-    return RNIterableAPI.updateUser(dataFields, mergeNestedObjects);
+    return RNIterableAPI.updateUser(
+      asBridgeRecord(dataFields),
+      mergeNestedObjects
+    );
   }
 
   /**
@@ -156,7 +168,10 @@ export class IterableApi {
    */
   static updateEmail(email: string, authToken?: string | null) {
     IterableLogger.log('updateEmail: ', email, authToken);
-    return RNIterableAPI.updateEmail(email, authToken);
+    return (RNIterableAPI.updateEmail as (
+      email: string,
+      authToken?: string | null
+    ) => void)(email, authToken);
   }
 
   // ---- End USER MANAGEMENT ---- //
@@ -196,12 +211,18 @@ export class IterableApi {
       appAlreadyRunning,
       dataFields
     );
-    return RNIterableAPI.trackPushOpenWithCampaignId(
+    return (RNIterableAPI.trackPushOpenWithCampaignId as (
+      campaignId: number,
+      templateId: number,
+      messageId: string | null | undefined,
+      appAlreadyRunning: boolean,
+      dataFields?: BridgeRecord
+    ) => void)(
       campaignId,
       templateId,
       messageId,
       appAlreadyRunning,
-      dataFields
+      dataFields !== undefined ? asBridgeRecord(dataFields) : undefined
     );
   }
 
@@ -223,7 +244,11 @@ export class IterableApi {
     dataFields?: unknown;
   }) {
     IterableLogger.log('trackPurchase: ', total, items, dataFields);
-    return RNIterableAPI.trackPurchase(total, items, dataFields);
+    return RNIterableAPI.trackPurchase(
+      total,
+      asBridgeRecordArray(items),
+      dataFields !== undefined ? asBridgeRecord(dataFields) : undefined
+    );
   }
 
   /**
@@ -323,7 +348,10 @@ export class IterableApi {
     dataFields?: unknown;
   }) {
     IterableLogger.log('trackEvent: ', name, dataFields);
-    return RNIterableAPI.trackEvent(name, dataFields);
+    return RNIterableAPI.trackEvent(
+      name,
+      dataFields !== undefined ? asBridgeRecord(dataFields) : undefined
+    );
   }
 
   // ---- End TRACKING ---- //
@@ -347,9 +375,18 @@ export class IterableApi {
    *
    * @param authToken - The auth token to pass along
    */
-  static passAlongAuthToken(authToken: string | null | undefined) {
+  static passAlongAuthToken(
+    authToken: string | null | undefined
+  ): Promise<IterableAuthResponse | string | undefined> {
     IterableLogger.log('passAlongAuthToken: ', authToken);
-    return RNIterableAPI.passAlongAuthToken(authToken);
+    const result = RNIterableAPI.passAlongAuthToken(authToken) as unknown;
+    if (
+      result !== undefined &&
+      typeof (result as Promise<unknown>).then === 'function'
+    ) {
+      return result as Promise<IterableAuthResponse | string | undefined>;
+    }
+    return Promise.resolve(undefined);
   }
 
   // ---- End AUTH ---- //
@@ -464,7 +501,7 @@ export class IterableApi {
     messageId: string
   ): Promise<IterableHtmlInAppContent> {
     IterableLogger.log('getHtmlInAppContentForMessage: ', messageId);
-    return RNIterableAPI.getHtmlInAppContentForMessage(messageId);
+    return RNIterableAPI.getHtmlInAppContentForMessage(messageId) as unknown as Promise<IterableHtmlInAppContent>;
   }
 
   /**
@@ -484,7 +521,7 @@ export class IterableApi {
    */
   static startSession(visibleRows: IterableInboxImpressionRowInfo[]) {
     IterableLogger.log('startSession: ', visibleRows);
-    return RNIterableAPI.startSession(visibleRows);
+    return RNIterableAPI.startSession(asBridgeRecordArray(visibleRows));
   }
 
   /**
@@ -502,7 +539,7 @@ export class IterableApi {
    */
   static updateVisibleRows(visibleRows: IterableInboxImpressionRowInfo[] = []) {
     IterableLogger.log('updateVisibleRows: ', visibleRows);
-    return RNIterableAPI.updateVisibleRows(visibleRows);
+    return RNIterableAPI.updateVisibleRows(asBridgeRecordArray(visibleRows));
   }
 
   // ---- End IN-APP ---- //
@@ -560,7 +597,9 @@ export class IterableApi {
     placementIds: number[] | null
   ): Promise<IterableEmbeddedMessage[]> {
     IterableLogger.log('getEmbeddedMessages: ', placementIds);
-    return RNIterableAPI.getEmbeddedMessages(placementIds as number[]);
+    return RNIterableAPI.getEmbeddedMessages(
+      placementIds as number[]
+    ) as Promise<IterableEmbeddedMessage[]>;
   }
 
   /**
@@ -572,7 +611,11 @@ export class IterableApi {
     clickedUrl: string | null
   ) {
     IterableLogger.log('trackEmbeddedClick: ', message, buttonId, clickedUrl);
-    return RNIterableAPI.trackEmbeddedClick(message, buttonId, clickedUrl);
+    return RNIterableAPI.trackEmbeddedClick(
+      asBridgeRecord(message),
+      buttonId,
+      clickedUrl
+    );
   }
 
   // ---- End EMBEDDED ---- //
@@ -588,7 +631,7 @@ export class IterableApi {
    */
   static updateCart(items: IterableCommerceItem[]) {
     IterableLogger.log('updateCart: ', items);
-    return RNIterableAPI.updateCart(items);
+    return RNIterableAPI.updateCart(asBridgeRecordArray(items));
   }
 
   /**
@@ -667,27 +710,10 @@ export class IterableApi {
   /**
    * Get the attribution info.
    */
-  static getAttributionInfo() {
+  static getAttributionInfo(): Promise<IterableAttributionInfo | undefined> {
     IterableLogger.log('getAttributionInfo');
-    // FIXME: What if this errors?
-    return RNIterableAPI.getAttributionInfo().then(
-      (
-        dict: {
-          campaignId: number;
-          templateId: number;
-          messageId: string;
-        } | null
-      ) => {
-        if (dict) {
-          return new IterableAttributionInfo(
-            dict.campaignId as number,
-            dict.templateId as number,
-            dict.messageId as string
-          );
-        } else {
-          return undefined;
-        }
-      }
+    return RNIterableAPI.getAttributionInfo().then((dict) =>
+      IterableAttributionInfo.fromBridge(dict)
     );
   }
 
@@ -696,9 +722,13 @@ export class IterableApi {
    *
    * @param attributionInfo - The attribution info.
    */
-  static setAttributionInfo(attributionInfo?: IterableAttributionInfo) {
+  static setAttributionInfo(
+    attributionInfo?: IterableAttributionInfoInput | null
+  ) {
     IterableLogger.log('setAttributionInfo: ', attributionInfo);
-    return RNIterableAPI.setAttributionInfo(attributionInfo);
+    return (RNIterableAPI.setAttributionInfo as (
+      dict: BridgeRecord | null | undefined
+    ) => void)(IterableAttributionInfo.toBridgeRecord(attributionInfo));
   }
 
   // ---- End MOSC ---- //

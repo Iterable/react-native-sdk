@@ -1,6 +1,6 @@
-import { NativeModules } from 'react-native';
-import BridgelessModule from './NativeRNIterableAPI';
+import NativeRNIterableAPI from './NativeRNIterableAPI';
+import type { Spec } from './NativeRNIterableAPI';
 
-export const RNIterableAPI = BridgelessModule ?? NativeModules.RNIterableAPI;
-
+export type { Spec };
+export const RNIterableAPI: Spec = NativeRNIterableAPI;
 export default RNIterableAPI;

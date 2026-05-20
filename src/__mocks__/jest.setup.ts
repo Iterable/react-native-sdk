@@ -1,7 +1,13 @@
 import * as ReactNative from 'react-native';
 
-import { MockRNIterableAPI } from './MockRNIterableAPI';
 import { MockLinking } from './MockLinking';
+import { MockRNIterableAPI } from './MockRNIterableAPI';
+
+jest.mock('../api', () => ({
+  __esModule: true,
+  default: MockRNIterableAPI,
+  RNIterableAPI: MockRNIterableAPI,
+}));
 
 const mockNativeEventEmitter =
   new (require('events').EventEmitter)() as import('events').EventEmitter;
@@ -42,14 +48,8 @@ jest.mock('react-native-webview', () => {
 });
 
 jest.doMock('react-native', () => {
-  // Extend ReactNative
   return Object.setPrototypeOf(
     {
-      // Mock RNIterableAPI
-      NativeModules: {
-        ...ReactNative.NativeModules,
-        RNIterableAPI: MockRNIterableAPI,
-      },
       Linking: MockLinking,
       NativeEventEmitter: mockNativeEventEmitterConstructor,
     },

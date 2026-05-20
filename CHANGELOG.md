@@ -1,3 +1,6 @@
+## 3.0.0
+- **Breaking:** Removed Legacy Architecture support. Apps must use React Native New Architecture (TurboModules).
+
 ## 2.2.2
 ### Updates
 - Added `baseline-browser-mapping`

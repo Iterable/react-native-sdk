@@ -1,4 +1,4 @@
-import { NativeModules, TurboModuleRegistry } from 'react-native';
+import { TurboModuleRegistry } from 'react-native';
 import type { TurboModule } from 'react-native';
 
 export interface Spec extends TurboModule {
@@ -10,18 +10,10 @@ export interface Spec extends TurboModule {
   ): Promise<string>;
 }
 
-// Try to use TurboModule if available (New Architecture)
-// Fall back to NativeModules (Old Architecture)
-const isTurboModuleEnabled =
-  '__turboModuleProxy' in global &&
-  (global as Record<string, unknown>).__turboModuleProxy != null;
-
 let JwtTokenModule: Spec | null = null;
 
 try {
-  JwtTokenModule = isTurboModuleEnabled
-    ? TurboModuleRegistry.getEnforcing<Spec>('JwtTokenModule')
-    : NativeModules.JwtTokenModule;
+  JwtTokenModule = TurboModuleRegistry.getEnforcing<Spec>('JwtTokenModule');
 } catch {
   // Module not available - will throw error when used
   console.warn('JwtTokenModule native module is not available yet');
