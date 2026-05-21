@@ -1,0 +1,146 @@
+
+Showing All Errors Only
+
+Build target ReactNativeSdkExample of project ReactNativeSdkExample with configuration Debug
+/Users/Loren.Posen/mobile/RN/react-native-sdk/example/ios/ReactNativeSdkExample.xcodeproj: error: Failed Registering Bundle Identifier: The app identifier "iterable.reactnativesdk.example" cannot be registered to your development team because it is not available. Change your bundle identifier to a unique string to try again. (in target 'ReactNativeSdkExample' from project 'ReactNativeSdkExample')
+/Users/Loren.Posen/mobile/RN/react-native-sdk/example/ios/ReactNativeSdkExample.xcodeproj: error: Provisioning profile "iOS Team Provisioning Profile: *" doesn't include the Default Web Browser capability. Default Web Browser capability needs to be assigned to your team and bundle identifier by Apple in order to be included in a profile. (in target 'ReactNativeSdkExample' from project 'ReactNativeSdkExample')
+/Users/Loren.Posen/mobile/RN/react-native-sdk/example/ios/ReactNativeSdkExample.xcodeproj: error: Entitlement com.apple.developer.web-browser requires approval from Apple to include in a profile. Please request access to the associated capability. To continue building for device during request processing, remove entitlement and add upon approval. (in target 'ReactNativeSdkExample' from project 'ReactNativeSdkExample')
+warning: Run script build phase 'Bundle React Native code and images' will be run during every build because it does not specify any outputs. To address this issue, either add output dependencies to the script phase, or configure it to run in every build by unchecking "Based on dependency analysis" in the script phase. (in target 'ReactNativeSdkExample' from project 'ReactNativeSdkExample')
+
+
+/Users/Loren.Posen/mobile/RN/react-native-sdk/example/ios/ReactNativeSdkExample.xcodeproj: Failed Registering Bundle Identifier: The app identifier "iterable.reactnativesdk.example" cannot be registered to your development team because it is not available. Change your bundle identifier to a unique string to try again.
+
+/Users/Loren.Posen/mobile/RN/react-native-sdk/example/ios/ReactNativeSdkExample.xcodeproj: Provisioning profile "iOS Team Provisioning Profile: *" doesn't include the Default Web Browser capability. Default Web Browser capability needs to be assigned to your team and bundle identifier by Apple in order to be included in a profile.
+
+/Users/Loren.Posen/mobile/RN/react-native-sdk/example/ios/ReactNativeSdkExample.xcodeproj: Entitlement com.apple.developer.web-browser requires approval from Apple to include in a profile. Please request access to the associated capability. To continue building for device during request processing, remove entitlement and add upon approval.
+
+Ld /Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Products/Debug-iphoneos/ReactNativeSdkExample.app/ReactNativeSdkExample.debug.dylib normal (in target 'ReactNativeSdkExample' from project 'ReactNativeSdkExample')
+    cd /Users/Loren.Posen/mobile/RN/react-native-sdk/example/ios
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -Xlinker -reproducible -target arm64-apple-ios15.1 -dynamiclib -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -O0 -L/Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphoneos -L/Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Products/Debug-iphoneos -L/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk/usr/lib/swift -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos -L/Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Products/Debug-iphoneos/Iterable-React-Native-SDK -L/Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Products/Debug-iphoneos/Iterable-iOS-SDK -L/Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Products/Debug-iphoneos/RCTSwiftUI -L/Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Products/Debug-iphoneos/RCTSwiftUIWrapper -L/Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Products/Debug-iphoneos/RNGestureHandler -L/Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Products/Debug-iphoneos/RNScreens -L/Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Products/Debug-iphoneos/ReactAppDependencyProvider -L/Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Products/Debug-iphoneos/ReactCodegen -L/Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Products/Debug-iphoneos/react-native-safe-area-context -L/Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Products/Debug-iphoneos/react-native-webview -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos -L/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk/usr/lib/swift -F/Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphoneos -F/Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Products/Debug-iphoneos -F/Users/Loren.Posen/mobile/RN/react-native-sdk/example/ios/Pods/React-Core-prebuilt -F/Users/Loren.Posen/mobile/RN/react-native-sdk/example/ios/Pods/ReactNativeDependencies/framework/packages/react-native -F/Users/Loren.Posen/mobile/RN/react-native-sdk/example/ios/Pods/hermes-engine/destroot/Library/Frameworks/universal -F/Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Products/Debug-iphoneos/XCFrameworkIntermediates/React-Core-prebuilt -F/Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Products/Debug-iphoneos/XCFrameworkIntermediates/ReactNativeDependencies -F/Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Products/Debug-iphoneos/XCFrameworkIntermediates/hermes-engine/Pre-built -filelist /Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Intermediates.noindex/ReactNativeSdkExample.build/Debug-iphoneos/ReactNativeSdkExample.build/Objects-normal/arm64/ReactNativeSdkExample.LinkFileList -install_name @rpath/ReactNativeSdkExample.debug.dylib -Xlinker -rpath -Xlinker /usr/lib/swift -Xlinker -rpath -Xlinker @executable_path/Frameworks -Xlinker -rpath -Xlinker @loader_path/Frameworks -Xlinker -dead_strip -Xlinker -object_path_lto -Xlinker /Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Intermediates.noindex/ReactNativeSdkExample.build/Debug-iphoneos/ReactNativeSdkExample.build/Objects-normal/arm64/ReactNativeSdkExample_lto.o -rdynamic -Xlinker -no_deduplicate -Xlinker -dependency_info -Xlinker /Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Intermediates.noindex/ReactNativeSdkExample.build/Debug-iphoneos/ReactNativeSdkExample.build/Objects-normal/arm64/ReactNativeSdkExample_dependency_info.dat -stdlib\=libc++ -fobjc-arc -fobjc-link-runtime -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos -L/usr/lib/swift -Xlinker -add_ast_path -Xlinker /Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Intermediates.noindex/ReactNativeSdkExample.build/Debug-iphoneos/ReactNativeSdkExample.build/Objects-normal/arm64/ReactNativeSdkExample.swiftmodule -ObjC -lIterable-React-Native-SDK -lIterable-iOS-SDK -lRCTSwiftUI -lRCTSwiftUIWrapper -lRNGestureHandler -lRNScreens -lReactAppDependencyProvider -lReactCodegen -lreact-native-safe-area-context -lreact-native-webview -framework Accelerate -framework AudioToolbox -framework CoreGraphics -framework ImageIO -framework MobileCoreServices -framework QuartzCore -framework React -framework ReactNativeDependencies -framework UIKit -framework hermesvm -weak_framework JavaScriptCore -ObjC -lc++ -Xlinker -alias -Xlinker _main -Xlinker ___debug_main_executable_dylib_entry_point -lPods-ReactNativeSdkExample -o /Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Products/Debug-iphoneos/ReactNativeSdkExample.app/ReactNativeSdkExample.debug.dylib
+
+/Users/Loren.Posen/mobile/RN/react-native-sdk/example/ios/ReactNativeSdkExample.xcodeproj: ReactNativeSdkExample: ld: warning: ignoring duplicate libraries: '-lc++'
+ld: library 'Iterable-React-Native-SDK' not found
+/Users/Loren.Posen/mobile/RN/react-native-sdk/example/ios/ReactNativeSdkExample.xcodeproj: ReactNativeSdkExample: clang++: error: linker command failed with exit code 1 (use -v to see invocation)
+
+/Users/Loren.Posen/mobile/RN/react-native-sdk/example/ios/ReactNativeSdkExample.xcodeproj: Library 'Iterable-React-Native-SDK' not found
+
+
+Build target Iterable-React-Native-SDK of project Pods with configuration Debug
+
+CompileC /Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/Iterable-React-Native-SDK.build/Objects-normal/arm64/RNIterableAPI.o /Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm normal arm64 objective-c++ com.apple.compilers.llvm.clang.1_0.compiler (in target 'Iterable-React-Native-SDK' from project 'Pods')
+    cd /Users/Loren.Posen/mobile/RN/react-native-sdk/example/ios/Pods
+    
+    Using response file: /Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/Iterable-React-Native-SDK.build/Objects-normal/arm64/af3fcb34312c57c0f52879cdce924b91-common-args.resp
+    
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c++ -ivfsstatcache /Users/Loren.Posen/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphoneos26.5-23F73-32daed1954a7d5dd0789fcaf2a9bb78b.sdkstatcache -target arm64-apple-ios15.1 -fmessage-length\=0 -fdiagnostics-show-note-include-stack -fmacro-backtrace-limit\=0 -fno-color-diagnostics -fmodules-prune-interval\=86400 -fmodules-prune-after\=345600 -fbuild-session-file\=/Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation -fmodules-validate-once-per-build-session -Wnon-modular-include-in-framework-module -Werror\=non-modular-include-in-framework-module -Wno-trigraphs -Wno-missing-field-initializers -Wno-missing-prototypes -Werror\=return-type -Wdocumentation -Wunreachable-code -Wno-implicit-atomic-properties -Werror\=deprecated-objc-isa-usage -Wno-objc-interface-ivars -Werror\=objc-root-class -Wno-arc-repeated-use-of-weak -Wimplicit-retain-self -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wduplicate-method-match -Wno-missing-braces -Wparentheses -Wswitch -Wunused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wempty-body -Wuninitialized -Wconditional-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wconstant-conversion -Wint-conversion -Wbool-conversion -Wenum-conversion -Wno-float-conversion -Wnon-literal-null-conversion -Wobjc-literal-conversion -Wshorten-64-to-32 -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wundeclared-selector -Wdeprecated-implementations -Wno-c++11-extensions -Wno-implicit-fallthrough -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -fstrict-aliasing -Wprotocol -Wdeprecated-declarations -Winvalid-offsetof -Wno-sign-conversion -Winfinite-recursion -Wmove -Wcomma -Wblock-capture-autoreleasing -Wstrict-prototypes -Wrange-loop-analysis -Wno-semicolon-before-method-body -Wunguarded-availability -index-store-path /Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Index.noindex/DataStore @/Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/Iterable-React-Native-SDK.build/Objects-normal/arm64/af3fcb34312c57c0f52879cdce924b91-common-args.resp -DRCT_NEW_ARCH_ENABLED\=1 -include /Users/Loren.Posen/mobile/RN/react-native-sdk/example/ios/Pods/Target\ Support\ Files/Iterable-React-Native-SDK/Iterable-React-Native-SDK-prefix.pch -MMD -MT dependencies -MF /Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/Iterable-React-Native-SDK.build/Objects-normal/arm64/RNIterableAPI.d --serialize-diagnostics /Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/Iterable-React-Native-SDK.build/Objects-normal/arm64/RNIterableAPI.dia -c /Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm -o /Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/Iterable-React-Native-SDK.build/Objects-normal/arm64/RNIterableAPI.o -index-unit-output-path /Pods.build/Debug-iphoneos/Iterable-React-Native-SDK.build/Objects-normal/arm64/RNIterableAPI.o
+
+In file included from /Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:25:
+/Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/Iterable-React-Native-SDK.build/DerivedSources/Iterable_React_Native_SDK-Swift.h:441:75: warning: cannot find protocol definition for 'IterableCustomActionDelegate'
+  441 | @interface ReactIterableAPI (SWIFT_EXTENSION(Iterable_React_Native_SDK)) <IterableCustomActionDelegate>
+      |                                                                           ^
+/Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:13:11: note: protocol 'IterableCustomActionDelegate' has no definition
+   13 | @protocol IterableCustomActionDelegate;
+      |           ^
+In file included from /Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:25:
+/Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/Iterable-React-Native-SDK.build/DerivedSources/Iterable_React_Native_SDK-Swift.h:369:46: warning: attribute declaration must precede definition [-Wignored-attributes]
+  369 | # pragma clang attribute push(__attribute__((external_source_symbol(language="Swift", defined_in="Iterable_React_Native_SDK",generated_declaration))), apply_to=any(function,enum,objc_interface,objc_category,objc_protocol))
+      |                                              ^
+/Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:17:28: note: previous definition is here
+   17 | typedef NS_ENUM(NSInteger, InAppShowResponse) {
+      |                            ^
+In file included from /Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:25:
+/Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/Iterable-React-Native-SDK.build/DerivedSources/Iterable_React_Native_SDK-Swift.h:447:75: warning: cannot find protocol definition for 'IterableInAppDelegate'
+  447 | @interface ReactIterableAPI (SWIFT_EXTENSION(Iterable_React_Native_SDK)) <IterableInAppDelegate>
+      |                                                                           ^
+/Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:12:11: note: protocol 'IterableInAppDelegate' has no definition
+   12 | @protocol IterableInAppDelegate;
+      |           ^
+In file included from /Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:25:
+/Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/Iterable-React-Native-SDK.build/DerivedSources/Iterable_React_Native_SDK-Swift.h:451:75: warning: cannot find protocol definition for 'IterableEmbeddedUpdateDelegate'
+  451 | @interface ReactIterableAPI (SWIFT_EXTENSION(Iterable_React_Native_SDK)) <IterableEmbeddedUpdateDelegate>
+      |                                                                           ^
+/Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:16:11: note: protocol 'IterableEmbeddedUpdateDelegate' has no definition
+   16 | @protocol IterableEmbeddedUpdateDelegate;
+      |           ^
+In file included from /Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:25:
+/Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/Iterable-React-Native-SDK.build/DerivedSources/Iterable_React_Native_SDK-Swift.h:457:75: warning: cannot find protocol definition for 'IterableAuthDelegate'
+  457 | @interface ReactIterableAPI (SWIFT_EXTENSION(Iterable_React_Native_SDK)) <IterableAuthDelegate>
+      |                                                                           ^
+/Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:14:11: note: protocol 'IterableAuthDelegate' has no definition
+   14 | @protocol IterableAuthDelegate;
+      |           ^
+In file included from /Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:25:
+/Users/Loren.Posen/Library/Developer/Xcode/DerivedData/ReactNativeSdkExample-ghyslpaqbvrzvzdjqnqceksrqnul/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/Iterable-React-Native-SDK.build/DerivedSources/Iterable_React_Native_SDK-Swift.h:463:75: warning: cannot find protocol definition for 'IterableURLDelegate'
+  463 | @interface ReactIterableAPI (SWIFT_EXTENSION(Iterable_React_Native_SDK)) <IterableURLDelegate>
+      |                                                                           ^
+/Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:15:11: note: protocol 'IterableURLDelegate' has no definition
+   15 | @protocol IterableURLDelegate;
+      |           ^
+/Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:252:49: error: nullability specifier '_Nullable' conflicts with existing specifier 'nonnull'
+  252 | - (void)updateSubscriptions:(NSArray *_Nullable)emailListIds
+      |                                                 ^
+/Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:253:52: error: nullability specifier '_Nullable' conflicts with existing specifier 'nonnull'
+  253 |         unsubscribedChannelIds:(NSArray *_Nullable)unsubscribedChannelIds
+      |                                                    ^
+/Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:254:52: error: nullability specifier '_Nullable' conflicts with existing specifier 'nonnull'
+  254 |     unsubscribedMessageTypeIds:(NSArray *_Nullable)unsubscribedMessageTypeIds
+      |                                                    ^
+/Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:255:52: error: nullability specifier '_Nullable' conflicts with existing specifier 'nonnull'
+  255 |       subscribedMessageTypeIds:(NSArray *_Nullable)subscribedMessageTypeIds
+      |                                                    ^
+/Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:298:49: error: nullability specifier '_Nullable' conflicts with existing specifier 'nonnull'
+  298 | - (void)getEmbeddedMessages:(NSArray *_Nullable)placementIds
+      |                                                 ^
+/Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:312:29: error: use of undeclared identifier 'JS'
+  312 | - (void)trackEmbeddedClick:(JS::NativeRNIterableAPI::EmbeddedMessage &)message
+      |                             ^
+/Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:312:29: error: expected a type
+/Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:323:40: error: property 'metadata' not found on object of type '__strong id _Nonnull'
+  323 |   metadataDict[@"messageId"] = message.metadata().messageId();
+      |                                        ^
+/Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:324:44: error: property 'metadata' not found on object of type '__strong id _Nonnull'
+  324 |   metadataDict[@"placementId"] = @(message.metadata().placementId());
+      |                                            ^
+/Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:325:15: error: property 'metadata' not found on object of type '__strong id _Nonnull'
+  325 |   if (message.metadata().campaignId().has_value()) {
+      |               ^
+/Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:326:46: error: property 'metadata' not found on object of type '__strong id _Nonnull'
+  326 |     metadataDict[@"campaignId"] = @(*message.metadata().campaignId());
+      |                                              ^
+/Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:328:15: error: property 'metadata' not found on object of type '__strong id _Nonnull'
+  328 |   if (message.metadata().isProof().has_value()) {
+      |               ^
+/Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:329:43: error: property 'metadata' not found on object of type '__strong id _Nonnull'
+  329 |     metadataDict[@"isProof"] = @(*message.metadata().isProof());
+      |                                           ^
+6 warnings and 13 errors generated.
+
+/Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:252:49: Nullability specifier '_Nullable' conflicts with existing specifier 'nonnull'
+
+/Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:253:52: Nullability specifier '_Nullable' conflicts with existing specifier 'nonnull'
+
+/Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:254:52: Nullability specifier '_Nullable' conflicts with existing specifier 'nonnull'
+
+/Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:255:52: Nullability specifier '_Nullable' conflicts with existing specifier 'nonnull'
+
+/Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:298:49: Nullability specifier '_Nullable' conflicts with existing specifier 'nonnull'
+
+/Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:312:29: Use of undeclared identifier 'JS'
+
+/Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:312:29: Expected a type
+
+/Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:323:40: Property 'metadata' not found on object of type '__strong id _Nonnull'
+
+/Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:324:44: Property 'metadata' not found on object of type '__strong id _Nonnull'
+
+/Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:325:15: Property 'metadata' not found on object of type '__strong id _Nonnull'
+
+/Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:326:46: Property 'metadata' not found on object of type '__strong id _Nonnull'
+
+/Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:328:15: Property 'metadata' not found on object of type '__strong id _Nonnull'
+
+/Users/Loren.Posen/mobile/RN/react-native-sdk/ios/RNIterableAPI/RNIterableAPI.mm:329:43: Property 'metadata' not found on object of type '__strong id _Nonnull'
+
+
+
+Build failed    5/12/26, 4:28 PM    85.5 seconds

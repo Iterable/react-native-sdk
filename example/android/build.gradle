@@ -12,7 +12,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath('com.android.tools.build:gradle:8.7.2')
+        // AGP/Kotlin/RNGP versions are supplied by @react-native/gradle-plugin (see node_modules/@react-native/gradle-plugin/gradle/libs.versions.toml). Do not pin here unless overriding RN intentionally.
+        classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
     }

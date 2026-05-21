@@ -249,10 +249,10 @@ RCT_EXPORT_MODULE()
   [_swiftAPI handleAppLink:appLink resolver:resolve rejecter:reject];
 }
 
-- (void)updateSubscriptions:(NSArray *_Nullable)emailListIds
-        unsubscribedChannelIds:(NSArray *_Nullable)unsubscribedChannelIds
-    unsubscribedMessageTypeIds:(NSArray *_Nullable)unsubscribedMessageTypeIds
-      subscribedMessageTypeIds:(NSArray *_Nullable)subscribedMessageTypeIds
+- (void)updateSubscriptions:(NSArray *)emailListIds
+        unsubscribedChannelIds:(NSArray *)unsubscribedChannelIds
+    unsubscribedMessageTypeIds:(NSArray *)unsubscribedMessageTypeIds
+      subscribedMessageTypeIds:(NSArray *)subscribedMessageTypeIds
                     campaignId:(double)campaignId
                     templateId:(double)templateId {
   [_swiftAPI updateSubscriptions:emailListIds
@@ -295,7 +295,7 @@ RCT_EXPORT_MODULE()
   [_swiftAPI syncEmbeddedMessages];
 }
 
-- (void)getEmbeddedMessages:(NSArray *_Nullable)placementIds
+- (void)getEmbeddedMessages:(NSArray *)placementIds
                     resolve:(RCTPromiseResolveBlock)resolve
                      reject:(RCTPromiseRejectBlock)reject {
   [_swiftAPI getEmbeddedMessages:placementIds resolver:resolve rejecter:reject];
@@ -309,28 +309,10 @@ RCT_EXPORT_MODULE()
   [_swiftAPI pauseEmbeddedImpression:messageId];
 }
 
-- (void)trackEmbeddedClick:(JS::NativeRNIterableAPI::EmbeddedMessage &)message
+- (void)trackEmbeddedClick:(NSDictionary *)message
                   buttonId:(NSString *_Nullable)buttonId
                 clickedUrl:(NSString *_Nullable)clickedUrl {
-  // The TurboModule bridge requires us to use the C++ type in the signature,
-  // but we need to convert it to NSDictionary to pass to Swift.
-  // The C++ struct wraps an NSDictionary, and the generated methods already
-  // return NSString*/NSNumber* types, so we just need to reconstruct the dict.
-  NSMutableDictionary *messageDict = [NSMutableDictionary new];
-
-  // Convert metadata (the accessor methods already return proper ObjC types)
-  NSMutableDictionary *metadataDict = [NSMutableDictionary new];
-  metadataDict[@"messageId"] = message.metadata().messageId();
-  metadataDict[@"placementId"] = @(message.metadata().placementId());
-  if (message.metadata().campaignId().has_value()) {
-    metadataDict[@"campaignId"] = @(*message.metadata().campaignId());
-  }
-  if (message.metadata().isProof().has_value()) {
-    metadataDict[@"isProof"] = @(*message.metadata().isProof());
-  }
-  messageDict[@"metadata"] = metadataDict;
-
-  [_swiftAPI trackEmbeddedClick:messageDict buttonId:buttonId clickedUrl:clickedUrl];
+  [_swiftAPI trackEmbeddedClick:message buttonId:buttonId clickedUrl:clickedUrl];
 }
 
 - (void)wakeApp {

@@ -560,7 +560,7 @@ export class IterableApi {
     placementIds: number[] | null
   ): Promise<IterableEmbeddedMessage[]> {
     IterableLogger.log('getEmbeddedMessages: ', placementIds);
-    return RNIterableAPI.getEmbeddedMessages(placementIds);
+    return RNIterableAPI.getEmbeddedMessages(placementIds as number[]);
   }
 
   /**
@@ -647,10 +647,10 @@ export class IterableApi {
       templateId
     );
     return RNIterableAPI.updateSubscriptions(
-      emailListIds,
-      unsubscribedChannelIds,
-      unsubscribedMessageTypeIds,
-      subscribedMessageTypeIds,
+      emailListIds as number[],
+      unsubscribedChannelIds as number[],
+      unsubscribedMessageTypeIds as number[],
+      subscribedMessageTypeIds as number[],
       campaignId,
       templateId
     );

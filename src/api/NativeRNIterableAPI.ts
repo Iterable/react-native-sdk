@@ -1,44 +1,23 @@
+/* eslint-disable @typescript-eslint/no-wrapper-object-types */
 import type { TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
 
 // NOTE: No types can be imported because of the way new arch works, so we have
 // to re-define the types here.
-interface EmbeddedMessage {
-  metadata: {
-    messageId: string;
-    placementId: number;
-    campaignId?: number | null;
-    isProof?: boolean;
-  };
-  elements: {
-    buttons?:
-      | {
-          id: string;
-          title?: string | null;
-          action: { type: string; data?: string } | null;
-        }[]
-      | null;
-    body?: string | null;
-    mediaUrl?: string | null;
-    mediaUrlCaption?: string | null;
-    defaultAction?: { type: string; data?: string } | null;
-    text?: { id: string; text?: string | null; label?: string | null }[] | null;
-    title?: string | null;
-  } | null;
-  payload?: { [key: string]: string | number | boolean | null } | null;
-}
-
+// Codegen (RN 0.84+) rejects unions that include array types (e.g. `T[] | U`,
+// `string | string[]`). Use capital `Object` (not TS `object`) for loose maps;
+// lowercase `object` is TSObjectKeyword and fails iOS/Android codegen.
 export interface Spec extends TurboModule {
   // Initialization
   initializeWithApiKey(
     apiKey: string,
-    config: { [key: string]: string | number | boolean | undefined | string[] },
+    config: Object,
     version: string
   ): Promise<boolean>;
 
   initialize2WithApiKey(
     apiKey: string,
-    config: { [key: string]: string | number | boolean | undefined | string[] },
+    config: Object,
     version: string,
     apiEndPointOverride: string
   ): Promise<boolean>;
@@ -122,12 +101,13 @@ export interface Spec extends TurboModule {
   // App links
   handleAppLink(appLink: string): Promise<boolean>;
 
-  // Subscriptions
+  // Subscriptions (arrays only in spec — RN codegen rejects `T[] | null`; callers
+  // may still pass null at the bridge when using typed assertions.)
   updateSubscriptions(
-    emailListIds: number[] | null,
-    unsubscribedChannelIds: number[] | null,
-    unsubscribedMessageTypeIds: number[] | null,
-    subscribedMessageTypeIds: number[] | null,
+    emailListIds: number[],
+    unsubscribedChannelIds: number[],
+    unsubscribedMessageTypeIds: number[],
+    subscribedMessageTypeIds: number[],
     campaignId: number,
     templateId: number
   ): void;
@@ -151,11 +131,9 @@ export interface Spec extends TurboModule {
   endEmbeddedSession(): void;
   startEmbeddedImpression(messageId: string, placementId: number): void;
   pauseEmbeddedImpression(messageId: string): void;
-  getEmbeddedMessages(
-    placementIds: number[] | null
-  ): Promise<EmbeddedMessage[]>;
+  getEmbeddedMessages(placementIds: number[]): Promise<Object[]>;
   trackEmbeddedClick(
-    message: EmbeddedMessage,
+    message: Object,
     buttonId: string | null,
     clickedUrl: string | null
   ): void;
