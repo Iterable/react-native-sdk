@@ -39,7 +39,9 @@ def supportsNamespace() {
 android {
   if (supportsNamespace()) {
     namespace "com.iterable.reactnative"
+  }
 
+  if (supportsNamespace()) {
     sourceSets {
       main {
         manifest.srcFile "src/main/AndroidManifestNew.xml"
