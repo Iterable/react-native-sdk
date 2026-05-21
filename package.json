@@ -1,6 +1,6 @@
 {
   "name": "@iterable/react-native-sdk",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "Iterable SDK for React Native.",
   "source": "./src/index.tsx",
   "main": "./lib/module/index.js",
@@ -27,6 +27,7 @@
     "!android/gradlew",
     "!android/gradlew.bat",
     "!android/local.properties",
+    "!**/*.test.{js,ts,tsx}",
     "!**/__tests__",
     "!**/__fixtures__",
     "!**/__mocks__",
