@@ -70,6 +70,24 @@ describe('IterableApi', () => {
       );
       expect(result).toBe(true);
     });
+
+    // SDK-478: the bridge contract is "resolve true immediately after calling
+    // sync IterableAPI.initialize on the native side". The JS layer is a pure
+    // passthrough. This pins that the JS code does not add an await on any
+    // additional async work between the native call and the returned promise.
+    // Regression guard for the 2021 contract drift that gated the JS promise
+    // on the first in-app messages fetch (commit 4c357126).
+    it('resolves promptly without awaiting any additional async work', async () => {
+      MockRNIterableAPI.initializeWithApiKey.mockResolvedValueOnce(true);
+      const startedAt = Date.now();
+      const result = await IterableApi.initializeWithApiKey('test-api-key', {
+        config: new IterableConfig(),
+        version: '1.0.0',
+      });
+      const elapsedMs = Date.now() - startedAt;
+      expect(result).toBe(true);
+      expect(elapsedMs).toBeLessThan(50);
+    });
   });
 
   describe('initialize2WithApiKey', () => {
@@ -118,6 +136,22 @@ describe('IterableApi', () => {
         apiEndPoint
       );
       expect(result).toBe(true);
+    });
+
+    // SDK-478: same contract as initializeWithApiKey above. initialize2 is only
+    // used for staging/test endpoint overrides; its JS-side behavior is still
+    // "resolve immediately with whatever native returns" - no additional waits.
+    it('resolves promptly without awaiting any additional async work', async () => {
+      MockRNIterableAPI.initialize2WithApiKey.mockResolvedValueOnce(true);
+      const startedAt = Date.now();
+      const result = await IterableApi.initialize2WithApiKey('test-api-key', {
+        config: new IterableConfig(),
+        version: '1.0.0',
+        apiEndPoint: 'https://api.staging.iterable.com',
+      });
+      const elapsedMs = Date.now() - startedAt;
+      expect(result).toBe(true);
+      expect(elapsedMs).toBeLessThan(50);
     });
   });
 
