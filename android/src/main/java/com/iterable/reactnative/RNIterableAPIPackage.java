@@ -30,14 +30,13 @@ public class RNIterableAPIPackage extends BaseReactPackage {
         @Override
         public Map<String, ReactModuleInfo> getReactModuleInfos() {
           Map<String, ReactModuleInfo> moduleInfos = new HashMap<>();
-          boolean isTurboModule = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
           moduleInfos.put(RNIterableAPIModuleImpl.NAME, new ReactModuleInfo(
             RNIterableAPIModuleImpl.NAME,
             RNIterableAPIModuleImpl.NAME,
             false,  // canOverrideExistingModule
             false,  // needsEagerInit
             false,  // isCxxModule
-            isTurboModule    // isTurboModule
+            true     // isTurboModule
           ));
           return moduleInfos;
         }

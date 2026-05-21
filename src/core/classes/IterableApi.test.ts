@@ -1092,6 +1092,21 @@ describe('IterableApi', () => {
       expect(result?.messageId).toBe('msg123');
     });
 
+    it('should coerce string bridge values into IterableAttributionInfo', async () => {
+      MockRNIterableAPI.getAttributionInfo = jest.fn().mockResolvedValue({
+        campaignId: '123',
+        templateId: '456',
+        messageId: 'msg123',
+      });
+
+      const result = await IterableApi.getAttributionInfo();
+
+      expect(result).toBeInstanceOf(IterableAttributionInfo);
+      expect(result?.campaignId).toBe(123);
+      expect(result?.templateId).toBe(456);
+      expect(result?.messageId).toBe('msg123');
+    });
+
     it('should return undefined when attribution info is null', async () => {
       // GIVEN null attribution info
       MockRNIterableAPI.getAttributionInfo = jest.fn().mockResolvedValue(null);
@@ -1112,10 +1127,26 @@ describe('IterableApi', () => {
       // WHEN setAttributionInfo is called
       IterableApi.setAttributionInfo(attributionInfo);
 
-      // THEN RNIterableAPI.setAttributionInfo is called with attribution info
+      // THEN RNIterableAPI.setAttributionInfo is called with bridge-serialized info
       expect(MockRNIterableAPI.setAttributionInfo).toBeCalledWith(
-        attributionInfo
+        attributionInfo.toBridge()
       );
+    });
+
+    it('should call RNIterableAPI.setAttributionInfo with a plain object', () => {
+      const attributionInfo = {
+        campaignId: 99,
+        templateId: 88,
+        messageId: 'plain-json',
+      };
+
+      IterableApi.setAttributionInfo(attributionInfo);
+
+      expect(MockRNIterableAPI.setAttributionInfo).toBeCalledWith({
+        campaignId: 99,
+        templateId: 88,
+        messageId: 'plain-json',
+      });
     });
 
     it('should call RNIterableAPI.setAttributionInfo with undefined', () => {
