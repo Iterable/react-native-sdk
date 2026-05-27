@@ -1,5 +1,5 @@
 module.exports = {
-  preset: 'react-native',
+  preset: '@react-native/jest-preset',
   setupFiles: ['<rootDir>/src/__mocks__/jest.setup.ts'],
   setupFilesAfterEnv: [
     '<rootDir>/node_modules/@testing-library/jest-native/extend-expect',
