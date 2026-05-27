@@ -1,5 +1,5 @@
-import type { TextStyle, ViewStyle } from "react-native";
-import { colors } from "./colors";
+import type { TextStyle, ViewStyle } from 'react-native';
+import { colors } from './colors';
 
 export const modalTitle: TextStyle = {
   fontSize: 18,
