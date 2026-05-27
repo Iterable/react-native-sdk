@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 17,
   },
-  container:{
+  container: {
     ...container,
     marginHorizontal: 0,
     marginTop: 0,
