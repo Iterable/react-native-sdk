@@ -3,5 +3,5 @@
  * It contains the version of the package
  */
 export const buildInfo = {
-  version: '2.2.2',
+  version: '3.0.0',
 };
