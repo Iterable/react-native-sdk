@@ -69,7 +69,7 @@ export interface IterableEmbeddedViewProps
  *
  * // The config is used to style the component.
  * // See `IterableEmbeddedViewConfig` for available config options.
- * const config = { backgroundColor: '#FFFFFF', borderRadius: 8 };
+ * const config = { backgroundColor: '#FFFFFF', borderCornerRadius: 8 };
  *
  * // `onButtonClick` will be called when a button is clicked.
  * // This callback allows you to add custom logic in addition to the SDK's default handling.
