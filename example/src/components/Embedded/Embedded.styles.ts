@@ -13,7 +13,7 @@ import {
   modalOverlay,
   subtitle,
   title,
-  utilityColors
+  utilityColors,
 } from '../../constants';
 
 const styles = StyleSheet.create({
