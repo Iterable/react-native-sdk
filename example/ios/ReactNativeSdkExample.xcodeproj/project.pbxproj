@@ -14,6 +14,7 @@
 		77E3B5772EA71A4B001449CE /* IterableJwtGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E3B5742EA71A4B001449CE /* IterableJwtGenerator.swift */; };
 		77E3B5782EA71A4B001449CE /* JwtTokenModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 77E3B5752EA71A4B001449CE /* JwtTokenModule.mm */; };
 		77E3B5792EA71A4B001449CE /* JwtTokenModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E3B5762EA71A4B001449CE /* JwtTokenModule.swift */; };
+		7C8CB9778D44155D232C3690 /* libPods-ReactNativeSdkExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC8A71BC6B8F9B2B3CF98A77 /* libPods-ReactNativeSdkExample.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		A3A40C20801B8F02005FA4C0 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 1FC6B09E65A7BD9F6864C5D8 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
@@ -203,7 +204,8 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1210;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 2640;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
@@ -365,7 +367,6 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = BP98Z28R86;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -397,7 +398,6 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				COPY_PHASE_STRIP = NO;
-				DEVELOPMENT_TEAM = BP98Z28R86;
 				INFOPLIST_FILE = ReactNativeSdkExampleTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -426,7 +426,6 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = ReactNativeSdkExample/ReactNativeSdkExample.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = BP98Z28R86;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = ReactNativeSdkExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
@@ -459,7 +458,6 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = ReactNativeSdkExample/ReactNativeSdkExample.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = BP98Z28R86;
 				INFOPLIST_FILE = ReactNativeSdkExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -515,8 +513,10 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CXX = "";
+				DEVELOPMENT_TEAM = BP98Z28R86;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -577,6 +577,7 @@
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
 				SWIFT_ENABLE_EXPLICIT_MODULES = NO;
 				USE_HERMES = true;
@@ -616,8 +617,10 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				CXX = "";
+				DEVELOPMENT_TEAM = BP98Z28R86;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
