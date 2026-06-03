@@ -127,7 +127,6 @@ jobs:
       - if: matrix.build-mode == 'manual'
         shell: bash
         run: |
-          mkdir example
           cd example
           yarn install
           cd android
