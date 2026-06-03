@@ -956,6 +956,9 @@ export class Iterable {
     RNEventEmitter.removeAllListeners(
       IterableEventName.handleEmbeddedMessagingDisabledCalled
     );
+    RNEventEmitter.removeAllListeners(
+      IterableEventName.handleTokenRegistrationFailedCalled
+    );
   }
 
   /**
@@ -1109,6 +1112,25 @@ export class Iterable {
         );
       }
     }
+
+    // Always listen for token registration failures so they are surfaced
+    // to developers. Without this, push registration errors (e.g. invalid
+    // pushIntegrationName) are silently swallowed.
+    RNEventEmitter.addListener(
+      IterableEventName.handleTokenRegistrationFailedCalled,
+      (dict: { reason: string }) => {
+        const reason = dict?.reason ?? 'unknown';
+
+        // Always log to console.error so developers can see the failure
+        // even without the callback configured
+        console.error(
+          `[Iterable] Push token registration failed: ${reason}. ` +
+            'Check that pushIntegrationName in your IterableConfig is valid.'
+        );
+
+        Iterable.savedConfig.onTokenRegistrationFailed?.(reason);
+      }
+    );
   }
 
   /**
