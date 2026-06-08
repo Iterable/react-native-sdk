@@ -137,9 +137,9 @@ jobs:
         shell: bash
         run: |
           cd example
+          npx -v
           yarn install
           cd android
-          npx -v
           ./gradlew compileKotlin compileJava --no-daemon --no-build-cache
 
       - name: Perform CodeQL Analysis
