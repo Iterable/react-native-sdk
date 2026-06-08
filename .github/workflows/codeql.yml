@@ -109,7 +109,6 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          npm install --legacy-peer-deps
           yarn install
 
       - name: Install JDK
