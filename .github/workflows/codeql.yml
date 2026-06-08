@@ -138,7 +138,7 @@ jobs:
           cd example
           yarn install
           cd android
-          ./gradlew clean --no-daemon --no-build-cache
+          ./gradlew compileKotlin compileJava --no-daemon --no-build-cache
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v4
