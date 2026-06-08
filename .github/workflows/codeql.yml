@@ -22,7 +22,7 @@ concurrency:
 jobs:
   Analyze_Ruby_JSandTS:
     name: Analyze (${{ matrix.language }})
-    runs-on: [self-hosted]
+    runs-on: ubuntu-latest
     permissions:
       # required for all workflows
       security-events: write
@@ -41,9 +41,9 @@ jobs:
           - language: actions
             build-mode: none
           - language: javascript-typescript
-            build-mode: autobuild
+            build-mode: none
           - language: ruby
-            build-mode: autobuild
+            build-mode: none
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
