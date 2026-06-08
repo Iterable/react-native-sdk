@@ -22,7 +22,7 @@ concurrency:
 jobs:
   Analyze_Ruby_JSandTS:
     name: Analyze (${{ matrix.language }})
-    runs-on: gha-runner-no-perms
+    runs-on: gha-runner-ecr-publish
     permissions:
       # required for all workflows
       security-events: write
@@ -99,13 +99,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-#      - name: Setup
-#        uses: ./.github/actions/setup
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Install Dependencies
         run: |
@@ -137,7 +134,6 @@ jobs:
         shell: bash
         run: |
           cd example
-          npx -v
           yarn install
           cd android
           ./gradlew clean
