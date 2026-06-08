@@ -137,6 +137,7 @@ jobs:
         run: |
           cd example
           yarn install
+          npm install --legacy-peer-deps
           cd android
           ./gradlew compileKotlin compileJava --no-daemon --no-build-cache
 
