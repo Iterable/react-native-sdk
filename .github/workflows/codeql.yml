@@ -22,7 +22,7 @@ concurrency:
 jobs:
   Analyze_Ruby_JSandTS:
     name: Analyze (${{ matrix.language }})
-    runs-on: gha-runner-ecr-publish
+    runs-on: [self-hosted]
     permissions:
       # required for all workflows
       security-events: write
