@@ -140,7 +140,7 @@ jobs:
           npx -v
           yarn install
           cd android
-          ./gradlew compileKotlin compileJava --no-daemon --no-build-cache
+          ./gradlew clean
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v4
