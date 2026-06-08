@@ -108,7 +108,7 @@ jobs:
           node-version: '22'
 
       - name: Install Dependencies
-        run: npm install
+        run: npm install --legacy-peer-deps
 
       - name: Install JDK
         if: env.turbo_cache_hit != 1
@@ -137,7 +137,7 @@ jobs:
         run: |
           cd example
           yarn install
-          npm install --legacy-peer-deps
+
           cd android
           ./gradlew compileKotlin compileJava --no-daemon --no-build-cache
 
