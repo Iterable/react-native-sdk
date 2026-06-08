@@ -1,4 +1,6 @@
 import {
+  Alert,
+  Modal,
   ScrollView,
   Text,
   TextInput,
@@ -8,18 +10,29 @@ import {
 import { useCallback, useState } from 'react';
 import {
   Iterable,
-  type IterableAction,
   type IterableEmbeddedMessage,
+  type IterableEmbeddedViewConfig,
+  IterableEmbeddedView,
+  IterableEmbeddedViewType,
 } from '@iterable/react-native-sdk';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import styles from './Embedded.styles';
+
+const DEFAULT_CONFIG_JSON = `{
+}`;
 
 export const Embedded = () => {
   const [placementIdsInput, setPlacementIdsInput] = useState<string>('');
   const [embeddedMessages, setEmbeddedMessages] = useState<
     IterableEmbeddedMessage[]
   >([]);
+  const [selectedViewType, setSelectedViewType] =
+    useState<IterableEmbeddedViewType>(IterableEmbeddedViewType.Banner);
+  const [viewConfig, setViewConfig] =
+    useState<IterableEmbeddedViewConfig | null>(null);
+  const [configEditorVisible, setConfigEditorVisible] = useState(false);
+  const [configJson, setConfigJson] = useState(DEFAULT_CONFIG_JSON);
 
   // Parse placement IDs from input
   const parsedPlacementIds = placementIdsInput
@@ -52,38 +65,29 @@ export const Embedded = () => {
       });
   }, [idsToFetch]);
 
-  const startEmbeddedImpression = useCallback(
-    (message: IterableEmbeddedMessage) => {
-      Iterable.embeddedManager.startImpression(
-        message.metadata.messageId,
-        // TODO: check if this should be changed to a number, as per the type
-        Number(message.metadata.placementId)
-      );
-    },
-    []
-  );
+  const openConfigEditor = useCallback(() => {
+    setConfigJson(
+      viewConfig ? JSON.stringify(viewConfig, null, 2) : DEFAULT_CONFIG_JSON
+    );
+    setConfigEditorVisible(true);
+  }, [viewConfig]);
 
-  const pauseEmbeddedImpression = useCallback(
-    (message: IterableEmbeddedMessage) => {
-      Iterable.embeddedManager.pauseImpression(message.metadata.messageId);
-    },
-    []
-  );
+  const applyConfig = useCallback(() => {
+    try {
+      const parsed = JSON.parse(configJson) as IterableEmbeddedViewConfig;
+      setViewConfig(parsed);
+      setConfigEditorVisible(false);
+    } catch {
+      Alert.alert('Error', 'Invalid JSON');
+    }
+  }, [configJson]);
 
-  const handleClick = useCallback(
-    (
-      message: IterableEmbeddedMessage,
-      buttonId: string | null,
-      action?: IterableAction | null
-    ) => {
-      Iterable.embeddedManager.handleClick(message, buttonId, action);
-    },
-    []
-  );
+  const closeConfigEditor = useCallback(() => {
+    setConfigEditorVisible(false);
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Embedded</Text>
       {!Iterable.embeddedManager.isEnabled && (
         <View style={styles.warningContainer}>
           <Text style={styles.warningText}>
@@ -92,29 +96,107 @@ export const Embedded = () => {
           </Text>
         </View>
       )}
-      <Text style={styles.subtitle}>
-        Enter placement IDs to fetch embedded messages
-      </Text>
       <View style={styles.utilitySection}>
-        <TouchableOpacity style={styles.button} onPress={syncEmbeddedMessages}>
-          <Text style={styles.buttonText}>Sync messages</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={startEmbeddedSession}>
-          <Text style={styles.buttonText}>Start session</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={endEmbeddedSession}>
-          <Text style={styles.buttonText}>End session</Text>
+        <View style={styles.viewTypeSelector}>
+          <Text style={styles.viewTypeLabel}>View:</Text>
+          <View style={styles.viewTypeButtons}>
+            <TouchableOpacity
+              style={[
+                styles.viewTypeButton,
+                selectedViewType === IterableEmbeddedViewType.Banner &&
+                  styles.viewTypeButtonSelected,
+              ]}
+              onPress={() =>
+                setSelectedViewType(IterableEmbeddedViewType.Banner)
+              }
+            >
+              <Text
+                style={[
+                  styles.viewTypeButtonText,
+                  selectedViewType === IterableEmbeddedViewType.Banner &&
+                    styles.viewTypeButtonTextSelected,
+                ]}
+              >
+                Banner
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.viewTypeButton,
+                selectedViewType === IterableEmbeddedViewType.Card &&
+                  styles.viewTypeButtonSelected,
+              ]}
+              onPress={() => setSelectedViewType(IterableEmbeddedViewType.Card)}
+            >
+              <Text
+                style={[
+                  styles.viewTypeButtonText,
+                  selectedViewType === IterableEmbeddedViewType.Card &&
+                    styles.viewTypeButtonTextSelected,
+                ]}
+              >
+                Card
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.viewTypeButton,
+                selectedViewType === IterableEmbeddedViewType.Notification &&
+                  styles.viewTypeButtonSelected,
+              ]}
+              onPress={() =>
+                setSelectedViewType(IterableEmbeddedViewType.Notification)
+              }
+            >
+              <Text
+                style={[
+                  styles.viewTypeButtonText,
+                  selectedViewType === IterableEmbeddedViewType.Notification &&
+                    styles.viewTypeButtonTextSelected,
+                ]}
+              >
+                Notification
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.sessionButtonsRow}>
+          <TouchableOpacity
+            style={[styles.compactUtilityButton, styles.sessionButtonHalf]}
+            onPress={syncEmbeddedMessages}
+          >
+            <Text style={styles.compactUtilityButtonText}>Sync</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.compactUtilityButton, styles.sessionButtonHalf]}
+            onPress={startEmbeddedSession}
+          >
+            <Text style={styles.compactUtilityButtonText}>Start session</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.compactUtilityButton, styles.sessionButtonHalf]}
+            onPress={endEmbeddedSession}
+          >
+            <Text style={styles.compactUtilityButtonText}>End session</Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity style={styles.compactUtilityButton} onPress={openConfigEditor}>
+          <Text style={styles.compactUtilityButtonText}>Set view config</Text>
         </TouchableOpacity>
         <View style={styles.inputContainer}>
-          <Text style={styles.text}>Placement IDs (comma-separated):</Text>
-          <TextInput
-            style={styles.textInput}
-            placeholder="e.g., 1, 2, 3"
-            placeholderTextColor="#999"
-            value={placementIdsInput}
-            onChangeText={setPlacementIdsInput}
-            keyboardType="numbers-and-punctuation"
-          />
+          <View style={styles.placementIdsRow}>
+            <Text style={styles.placementIdsLabel}>
+              Placement IDs{'\n'}(comma-separated):
+            </Text>
+            <TextInput
+              style={styles.placementIdsInput}
+              placeholder="e.g., 1, 2, 3"
+              placeholderTextColor="#999"
+              value={placementIdsInput}
+              onChangeText={setPlacementIdsInput}
+              keyboardType="numbers-and-punctuation"
+            />
+          </View>
           <TouchableOpacity style={styles.button} onPress={getEmbeddedMessages}>
             <Text style={styles.buttonText}>
               Get messages for placement ids
@@ -122,70 +204,50 @@ export const Embedded = () => {
           </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.hr} />
+      <Modal
+        visible={configEditorVisible}
+        animationType="slide"
+        transparent
+        onRequestClose={closeConfigEditor}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <TextInput
+              style={styles.jsonEditor}
+              value={configJson}
+              onChangeText={setConfigJson}
+              multiline
+              textAlignVertical="top"
+              placeholder={DEFAULT_CONFIG_JSON}
+              placeholderTextColor="#999"
+            />
+            <View style={styles.modalButtons}>
+              <TouchableOpacity
+                style={[styles.button, styles.modalButton]}
+                onPress={closeConfigEditor}
+              >
+                <Text style={styles.buttonText}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.button, styles.modalButton]}
+                onPress={applyConfig}
+              >
+                <Text style={styles.buttonText}>Apply</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+      <View style={styles.embeddedHr} />
       <ScrollView>
         <View style={styles.embeddedSection}>
           {embeddedMessages.map((message) => (
-            <View key={message.metadata.messageId}>
-              <View style={styles.embeddedTitleContainer}>
-                <Text style={styles.embeddedTitle}>Embedded message</Text>
-              </View>
-              <View style={styles.embeddedTitleContainer}>
-                <TouchableOpacity
-                  onPress={() => startEmbeddedImpression(message)}
-                >
-                  <Text style={styles.link}>Start impression</Text>
-                </TouchableOpacity>
-                <Text style={styles.embeddedTitle}> | </Text>
-                <TouchableOpacity
-                  onPress={() => pauseEmbeddedImpression(message)}
-                >
-                  <Text style={styles.link}>Pause impression</Text>
-                </TouchableOpacity>
-                <Text style={styles.embeddedTitle}> | </Text>
-                <TouchableOpacity
-                  onPress={() =>
-                    handleClick(message, null, message.elements?.defaultAction)
-                  }
-                >
-                  <Text style={styles.link}>Handle click</Text>
-                </TouchableOpacity>
-              </View>
-
-              <Text>metadata.messageId: {message.metadata.messageId}</Text>
-              <Text>metadata.placementId: {message.metadata.placementId}</Text>
-              <Text>elements.title: {message.elements?.title}</Text>
-              <Text>elements.body: {message.elements?.body}</Text>
-              <Text>
-                elements.defaultAction.data:{' '}
-                {message.elements?.defaultAction?.data}
-              </Text>
-              <Text>
-                elements.defaultAction.type:{' '}
-                {message.elements?.defaultAction?.type}
-              </Text>
-              {(message.elements?.buttons ?? []).map((button, buttonIndex) => (
-                <View key={`${button.id}-${buttonIndex}`}>
-                  <View style={styles.embeddedTitleContainer}>
-                    <Text>Button {buttonIndex + 1}</Text>
-                    <Text style={styles.embeddedTitle}> | </Text>
-                    <TouchableOpacity
-                      onPress={() =>
-                        handleClick(message, button.id, button.action)
-                      }
-                    >
-                      <Text style={styles.link}>Handle click</Text>
-                    </TouchableOpacity>
-                  </View>
-
-                  <Text>button.id: {button.id}</Text>
-                  <Text>button.title: {button.title}</Text>
-                  <Text>button.action?.data: {button.action?.data}</Text>
-                  <Text>button.action?.type: {button.action?.type}</Text>
-                </View>
-              ))}
-              <Text>payload: {JSON.stringify(message.payload)}</Text>
-            </View>
+            <IterableEmbeddedView
+              key={message.metadata.messageId}
+              viewType={selectedViewType}
+              message={message}
+              config={viewConfig}
+            />
           ))}
         </View>
       </ScrollView>

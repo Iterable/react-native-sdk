@@ -6,6 +6,27 @@
   - Previously the promise could wait on the first in-app messages fetch (and any associated auth retry budget) before resolving, leading to multi-second to multi-minute hangs under certain configurations.
   - The native iOS SDK is fully usable the moment `Iterable.initialize` is called; nothing about JS-side correctness requires waiting on the promise.
 
+## 3.0.0
+### Updates
+- Added embedded messaging functionality. This includes the ability to:
+  - Manually sync messages with `Iterable.embeddedManager.syncMessages()`
+  - Get messages with `Iterable.embeddedManager.getMessages([PLACEMENT_IDS])`
+  - Start an embedded session with `Iterable.embeddedManager.startSession()`
+  - End an embedded session with `Iterable.embeddedManager.endSession()`
+  - Start an embedded impression with
+    `Iterable.embeddedManager.startImpression(MESSAGE_ID, PLACEMENT_ID)`
+  - Pause an embedded impression with
+    `Iterable.embeddedManager.pauseImpression(MESSAGE_ID)`
+  - Handle embedded clicks with
+    `Iterable.embeddedManager.handleClick(message, buttonId, action)`
+- Added out-of-the-box (OOTB) embedded views (embedded components) for rendering
+  embedded messages in your app:
+  - `IterableEmbeddedView` — renders a message by `IterableEmbeddedViewType`
+    (Banner, Card, or Notification)
+  - `IterableEmbeddedBanner`, `IterableEmbeddedCard`, and
+    `IterableEmbeddedNotification` — individual OOTB view components
+  - `IterableEmbeddedViewConfig` — optional styling configuration for OOTB views
+
 ## 2.2.2
 ### Updates
 - Added `baseline-browser-mapping`

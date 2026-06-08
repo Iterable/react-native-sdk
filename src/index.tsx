@@ -33,6 +33,18 @@ export type {
   IterableRetryPolicy,
 } from './core/types';
 export {
+  IterableEmbeddedManager,
+  IterableEmbeddedView,
+  IterableEmbeddedViewType,
+  type IterableEmbeddedComponentProps,
+  type IterableEmbeddedMessage,
+  type IterableEmbeddedMessageElements,
+  type IterableEmbeddedMessageElementsButton,
+  type IterableEmbeddedMessageElementsText,
+  type IterableEmbeddedViewConfig,
+  type IterableEmbeddedViewProps,
+} from './embedded';
+export {
   IterableHtmlInAppContent,
   IterableInAppCloseSource,
   IterableInAppContentType,
@@ -59,7 +71,3 @@ export {
   type IterableInboxProps,
   type IterableInboxRowViewModel,
 } from './inbox';
-export {
-  IterableEmbeddedManager,
-  type IterableEmbeddedMessage,
-} from './embedded';
