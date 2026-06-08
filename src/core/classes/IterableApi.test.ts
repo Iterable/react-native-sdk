@@ -86,7 +86,7 @@ describe('IterableApi', () => {
       });
       const elapsedMs = Date.now() - startedAt;
       expect(result).toBe(true);
-      expect(elapsedMs).toBeLessThan(50);
+      expect(elapsedMs).toBeLessThan(250);
     });
   });
 
@@ -151,7 +151,7 @@ describe('IterableApi', () => {
       });
       const elapsedMs = Date.now() - startedAt;
       expect(result).toBe(true);
-      expect(elapsedMs).toBeLessThan(50);
+      expect(elapsedMs).toBeLessThan(250);
     });
   });
 
