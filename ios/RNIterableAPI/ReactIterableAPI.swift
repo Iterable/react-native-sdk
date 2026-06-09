@@ -645,21 +645,38 @@ import React
       name: Notification.Name.iterableInboxChanged, object: nil)
 
     DispatchQueue.main.async {
+      var hasResolved = false
+      let resolveOnce: (Bool) -> Void = { result in
+        guard !hasResolved else { return }
+        hasResolved = true
+        resolver(result)
+      }
+
+      // Defensive timeout: resolve the JS promise if the native SDK callback
+      // is never invoked (e.g. auth handler event cannot reach JS in New
+      // Architecture bridgeless mode, or network fetch hangs).
+      let timeoutWorkItem = DispatchWorkItem {
+        ITBInfo("initialize timeout reached – resolving promise to unblock JS")
+        resolveOnce(true)
+      }
+      DispatchQueue.main.asyncAfter(deadline: .now() + 10.0, execute: timeoutWorkItem)
+
       IterableAPI.initialize2(
         apiKey: apiKey,
         launchOptions: launchOptions,
         config: iterableConfig,
         apiEndPointOverride: apiEndPointOverride
       ) { result in
-        resolver(result)
+        timeoutWorkItem.cancel()
+        resolveOnce(result)
       }
 
       IterableAPI.setDeviceAttribute(name: "reactNativeSDKVersion", value: version)
-      
+
       // Add embedded update listener if any callback is present
       let onEmbeddedMessageUpdatePresent = configDict["onEmbeddedMessageUpdatePresent"] as? Bool ?? false
       let onEmbeddedMessagingDisabledPresent = configDict["onEmbeddedMessagingDisabledPresent"] as? Bool ?? false
-      
+
       if onEmbeddedMessageUpdatePresent || onEmbeddedMessagingDisabledPresent {
         IterableAPI.embeddedManager.addUpdateListener(self)
       }
