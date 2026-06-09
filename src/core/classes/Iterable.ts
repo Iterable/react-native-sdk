@@ -383,25 +383,7 @@ export class Iterable {
    * ```
    */
   static getAttributionInfo(): Promise<IterableAttributionInfo | undefined> {
-    return IterableApi.getAttributionInfo().then(
-      (
-        dict: {
-          campaignId: number;
-          templateId: number;
-          messageId: string;
-        } | null
-      ) => {
-        if (dict) {
-          return new IterableAttributionInfo(
-            dict.campaignId as number,
-            dict.templateId as number,
-            dict.messageId as string
-          );
-        } else {
-          return undefined;
-        }
-      }
-    );
+    return IterableApi.getAttributionInfo();
   }
 
   /**

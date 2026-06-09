@@ -9,10 +9,13 @@ import type { IterableInAppLocation } from '../../inApp/enums/IterableInAppLocat
 import type { IterableInAppShowResponse } from '../../inApp/enums/IterableInAppShowResponse';
 import type { IterableInboxImpressionRowInfo } from '../../inbox/types/IterableInboxImpressionRowInfo';
 import { IterableAttributionInfo } from './IterableAttributionInfo';
+import type { IterableAuthResponse } from './IterableAuthResponse';
 import type { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableConfig } from './IterableConfig';
 import { IterableLogger } from './IterableLogger';
 import type { IterableEmbeddedMessage } from '../../embedded/types/IterableEmbeddedMessage';
+
+type NativeDataRecord = { [key: string]: string | number | boolean };
 
 /**
  * Contains functions that directly interact with the native layer.
@@ -145,7 +148,10 @@ export class IterableApi {
    */
   static updateUser(dataFields: unknown, mergeNestedObjects: boolean) {
     IterableLogger.log('updateUser: ', dataFields, mergeNestedObjects);
-    return RNIterableAPI.updateUser(dataFields, mergeNestedObjects);
+    return RNIterableAPI.updateUser(
+      dataFields as NativeDataRecord,
+      mergeNestedObjects
+    );
   }
 
   /**
@@ -156,7 +162,7 @@ export class IterableApi {
    */
   static updateEmail(email: string, authToken?: string | null) {
     IterableLogger.log('updateEmail: ', email, authToken);
-    return RNIterableAPI.updateEmail(email, authToken);
+    return RNIterableAPI.updateEmail(email, authToken as string | undefined);
   }
 
   // ---- End USER MANAGEMENT ---- //
@@ -199,9 +205,9 @@ export class IterableApi {
     return RNIterableAPI.trackPushOpenWithCampaignId(
       campaignId,
       templateId,
-      messageId,
+      messageId as string,
       appAlreadyRunning,
-      dataFields
+      dataFields as NativeDataRecord | undefined
     );
   }
 
@@ -223,7 +229,11 @@ export class IterableApi {
     dataFields?: unknown;
   }) {
     IterableLogger.log('trackPurchase: ', total, items, dataFields);
-    return RNIterableAPI.trackPurchase(total, items, dataFields);
+    return RNIterableAPI.trackPurchase(
+      total,
+      items as unknown as NativeDataRecord[],
+      dataFields as NativeDataRecord | undefined
+    );
   }
 
   /**
@@ -323,7 +333,10 @@ export class IterableApi {
     dataFields?: unknown;
   }) {
     IterableLogger.log('trackEvent: ', name, dataFields);
-    return RNIterableAPI.trackEvent(name, dataFields);
+    return RNIterableAPI.trackEvent(
+      name,
+      dataFields as NativeDataRecord | undefined
+    );
   }
 
   // ---- End TRACKING ---- //
@@ -347,9 +360,16 @@ export class IterableApi {
    *
    * @param authToken - The auth token to pass along
    */
-  static passAlongAuthToken(authToken: string | null | undefined) {
+  static passAlongAuthToken(
+    authToken: string | null | undefined
+  ): Promise<IterableAuthResponse | string | undefined> {
     IterableLogger.log('passAlongAuthToken: ', authToken);
-    return RNIterableAPI.passAlongAuthToken(authToken);
+    return Promise.resolve(
+      RNIterableAPI.passAlongAuthToken(authToken) as unknown as
+        | IterableAuthResponse
+        | string
+        | undefined
+    );
   }
 
   // ---- End AUTH ---- //
@@ -464,7 +484,9 @@ export class IterableApi {
     messageId: string
   ): Promise<IterableHtmlInAppContent> {
     IterableLogger.log('getHtmlInAppContentForMessage: ', messageId);
-    return RNIterableAPI.getHtmlInAppContentForMessage(messageId);
+    return RNIterableAPI.getHtmlInAppContentForMessage(
+      messageId
+    ) as unknown as Promise<IterableHtmlInAppContent>;
   }
 
   /**
@@ -484,7 +506,9 @@ export class IterableApi {
    */
   static startSession(visibleRows: IterableInboxImpressionRowInfo[]) {
     IterableLogger.log('startSession: ', visibleRows);
-    return RNIterableAPI.startSession(visibleRows);
+    return RNIterableAPI.startSession(
+      visibleRows as unknown as NativeDataRecord[]
+    );
   }
 
   /**
@@ -502,7 +526,9 @@ export class IterableApi {
    */
   static updateVisibleRows(visibleRows: IterableInboxImpressionRowInfo[] = []) {
     IterableLogger.log('updateVisibleRows: ', visibleRows);
-    return RNIterableAPI.updateVisibleRows(visibleRows);
+    return RNIterableAPI.updateVisibleRows(
+      visibleRows as unknown as NativeDataRecord[]
+    );
   }
 
   // ---- End IN-APP ---- //
@@ -572,7 +598,11 @@ export class IterableApi {
     clickedUrl: string | null
   ) {
     IterableLogger.log('trackEmbeddedClick: ', message, buttonId, clickedUrl);
-    return RNIterableAPI.trackEmbeddedClick(message, buttonId, clickedUrl);
+    return RNIterableAPI.trackEmbeddedClick(
+      message as Parameters<typeof RNIterableAPI.trackEmbeddedClick>[0],
+      buttonId,
+      clickedUrl
+    );
   }
 
   // ---- End EMBEDDED ---- //
@@ -588,7 +618,7 @@ export class IterableApi {
    */
   static updateCart(items: IterableCommerceItem[]) {
     IterableLogger.log('updateCart: ', items);
-    return RNIterableAPI.updateCart(items);
+    return RNIterableAPI.updateCart(items as unknown as NativeDataRecord[]);
   }
 
   /**
@@ -670,25 +700,22 @@ export class IterableApi {
   static getAttributionInfo() {
     IterableLogger.log('getAttributionInfo');
     // FIXME: What if this errors?
-    return RNIterableAPI.getAttributionInfo().then(
-      (
-        dict: {
-          campaignId: number;
-          templateId: number;
-          messageId: string;
-        } | null
-      ) => {
-        if (dict) {
-          return new IterableAttributionInfo(
-            dict.campaignId as number,
-            dict.templateId as number,
-            dict.messageId as string
-          );
-        } else {
-          return undefined;
-        }
+    return RNIterableAPI.getAttributionInfo().then((dict) => {
+      if (
+        dict &&
+        typeof dict.campaignId === 'number' &&
+        typeof dict.templateId === 'number' &&
+        typeof dict.messageId === 'string'
+      ) {
+        return new IterableAttributionInfo(
+          dict.campaignId,
+          dict.templateId,
+          dict.messageId
+        );
       }
-    );
+
+      return undefined;
+    });
   }
 
   /**
@@ -698,7 +725,15 @@ export class IterableApi {
    */
   static setAttributionInfo(attributionInfo?: IterableAttributionInfo) {
     IterableLogger.log('setAttributionInfo: ', attributionInfo);
-    return RNIterableAPI.setAttributionInfo(attributionInfo);
+    return RNIterableAPI.setAttributionInfo(
+      (attributionInfo
+        ? {
+            campaignId: attributionInfo.campaignId,
+            templateId: attributionInfo.templateId,
+            messageId: attributionInfo.messageId,
+          }
+        : undefined) as NativeDataRecord | null
+    );
   }
 
   // ---- End MOSC ---- //
