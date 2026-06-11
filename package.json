@@ -198,7 +198,7 @@
     }
   },
   "create-react-native-library": {
-    "type": "module-legacy",
+    "type": "turbo-module",
     "languages": "kotlin-swift",
     "version": "0.41.2"
   }

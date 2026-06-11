@@ -45,13 +45,18 @@ jest.doMock('react-native', () => {
   // Extend ReactNative
   return Object.setPrototypeOf(
     {
-      // Mock RNIterableAPI
-      NativeModules: {
-        ...ReactNative.NativeModules,
-        RNIterableAPI: MockRNIterableAPI,
-      },
       Linking: MockLinking,
       NativeEventEmitter: mockNativeEventEmitterConstructor,
+      TurboModuleRegistry: {
+        ...ReactNative.TurboModuleRegistry,
+        getEnforcing: jest.fn((name: string) => {
+          if (name === 'RNIterableAPI') {
+            return MockRNIterableAPI;
+          }
+
+          return ReactNative.TurboModuleRegistry.getEnforcing(name);
+        }),
+      },
     },
     ReactNative
   );
