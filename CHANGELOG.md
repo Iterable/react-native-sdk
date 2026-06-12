@@ -1,5 +1,12 @@
-## 3.0.0
+## Unreleased
 
+### Fixes
+- Fix iOS-side `Iterable.initialize` promise hang. 
+  - The iOS bridge now resolves the promise immediately after calling the native SDK's sync initializer, matching the Android bridge's behavior.
+  - Previously the promise could wait on the first in-app messages fetch (and any associated auth retry budget) before resolving, leading to multi-second to multi-minute hangs under certain configurations.
+  - The native iOS SDK is fully usable the moment `Iterable.initialize` is called; nothing about JS-side correctness requires waiting on the promise.
+
+## 3.0.0
 ### Updates
 - Added embedded messaging functionality. This includes the ability to:
   - Manually sync messages with `Iterable.embeddedManager.syncMessages()`

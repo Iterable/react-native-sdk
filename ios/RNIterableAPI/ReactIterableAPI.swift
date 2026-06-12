@@ -645,24 +645,40 @@ import React
       name: Notification.Name.iterableInboxChanged, object: nil)
 
     DispatchQueue.main.async {
-      IterableAPI.initialize2(
-        apiKey: apiKey,
-        launchOptions: launchOptions,
-        config: iterableConfig,
-        apiEndPointOverride: apiEndPointOverride
-      ) { result in
-        resolver(result)
+      // The native iOS SDK is fully usable the moment IterableAPI.initialize
+      // returns. The legacy initialize2(callback:) overload fires its callback
+      // only after inAppManager.start() resolves the first in-app messages
+      // fetch, which can take 60s+ under any auth or network friction and
+      // blocks the JS promise on a signal that does not actually represent
+      // "SDK ready". Android's RNIterableAPIModuleImpl.initializeWithApiKey
+      // resolves promise.resolve(true) immediately after sync init - this
+      // brings iOS to parity. See SDK-478.
+      if let apiEndPointOverride = apiEndPointOverride {
+        IterableAPI.initialize2(
+          apiKey: apiKey,
+          launchOptions: launchOptions,
+          config: iterableConfig,
+          apiEndPointOverride: apiEndPointOverride
+        )
+      } else {
+        IterableAPI.initialize(
+          apiKey: apiKey,
+          launchOptions: launchOptions,
+          config: iterableConfig
+        )
       }
 
       IterableAPI.setDeviceAttribute(name: "reactNativeSDKVersion", value: version)
-      
+
       // Add embedded update listener if any callback is present
       let onEmbeddedMessageUpdatePresent = configDict["onEmbeddedMessageUpdatePresent"] as? Bool ?? false
       let onEmbeddedMessagingDisabledPresent = configDict["onEmbeddedMessagingDisabledPresent"] as? Bool ?? false
-      
+
       if onEmbeddedMessageUpdatePresent || onEmbeddedMessagingDisabledPresent {
         IterableAPI.embeddedManager.addUpdateListener(self)
       }
+
+      resolver(true)
     }
   }
 
