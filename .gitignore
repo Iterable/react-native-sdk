@@ -94,3 +94,6 @@ docs/
 # Local Netlify folder
 .netlify
 .metals/
+
+# Agents
+.pi/
