@@ -13,7 +13,6 @@
 		77E3B5772EA71A4B001449CE /* IterableJwtGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E3B5742EA71A4B001449CE /* IterableJwtGenerator.swift */; };
 		77E3B5782EA71A4B001449CE /* JwtTokenModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 77E3B5752EA71A4B001449CE /* JwtTokenModule.mm */; };
 		77E3B5792EA71A4B001449CE /* JwtTokenModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E3B5762EA71A4B001449CE /* JwtTokenModule.swift */; };
-		7C8CB9778D44155D232C3690 /* libPods-ReactNativeSdkExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC8A71BC6B8F9B2B3CF98A77 /* libPods-ReactNativeSdkExample.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		A3A40C20801B8F02005FA4C0 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 1FC6B09E65A7BD9F6864C5D8 /* PrivacyInfo.xcprivacy */; };
 		DDD9C96E1785FEF10EEE61A5 /* libPods-ReactNativeSdkExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 627B7C7165CE568DB5CB8F50 /* libPods-ReactNativeSdkExample.a */; };
