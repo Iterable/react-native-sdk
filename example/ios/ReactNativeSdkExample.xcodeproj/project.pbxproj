@@ -438,7 +438,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = iterable.reactnativesdk.example;
+				PRODUCT_BUNDLE_IDENTIFIER = com.iterable.reactnativesdk.example;
 				PRODUCT_NAME = ReactNativeSdkExample;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_OBJC_BRIDGING_HEADER = "ReactNativeSdkExample-Bridging-Header.h";
@@ -469,7 +469,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = iterable.reactnativesdk.example;
+				PRODUCT_BUNDLE_IDENTIFIER = com.iterable.reactnativesdk.example;
 				PRODUCT_NAME = ReactNativeSdkExample;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_OBJC_BRIDGING_HEADER = "ReactNativeSdkExample-Bridging-Header.h";
