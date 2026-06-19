@@ -1,3 +1,10 @@
+## Unreleased
+
+### Updates
+- Added `Iterable.registerDeviceToken(token)` to re-enable push for the current device.
+  - Android accepts an FCM token string.
+  - iOS accepts a continuous hex string representation of the APNS token.
+
 ## 3.0.0
 
 ### Updates

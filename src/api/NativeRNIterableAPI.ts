@@ -120,6 +120,7 @@ export interface Spec extends TurboModule {
 
   // Device management
   disableDeviceForCurrentUser(): void;
+  registerDeviceToken(token: string): void;
   getLastPushPayload(): Promise<{
     [key: string]: string | number | boolean;
   } | null>;
