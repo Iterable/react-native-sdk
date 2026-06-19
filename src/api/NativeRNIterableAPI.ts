@@ -11,18 +11,20 @@ interface EmbeddedMessage {
     isProof?: boolean;
   };
   elements: {
-    buttons?:
-      | {
-          id: string;
-          title?: string | null;
-          action: { type: string; data?: string } | null;
-        }[]
-      | null;
+    buttons?: Array<{
+      id: string;
+      title?: string | null;
+      action: { type: string; data?: string } | null;
+    }> | null;
     body?: string | null;
     mediaUrl?: string | null;
     mediaUrlCaption?: string | null;
     defaultAction?: { type: string; data?: string } | null;
-    text?: { id: string; text?: string | null; label?: string | null }[] | null;
+    text?: Array<{
+      id: string;
+      text?: string | null;
+      label?: string | null;
+    }> | null;
     title?: string | null;
   } | null;
   payload?: { [key: string]: string | number | boolean | null } | null;
@@ -32,13 +34,15 @@ export interface Spec extends TurboModule {
   // Initialization
   initializeWithApiKey(
     apiKey: string,
-    config: { [key: string]: string | number | boolean | undefined | string[] },
+    // eslint-disable-next-line @typescript-eslint/no-wrapper-object-types -- RN codegen requires `Object`, not `object`
+    config: Object,
     version: string
   ): Promise<boolean>;
 
   initialize2WithApiKey(
     apiKey: string,
-    config: { [key: string]: string | number | boolean | undefined | string[] },
+    // eslint-disable-next-line @typescript-eslint/no-wrapper-object-types -- RN codegen requires `Object`, not `object`
+    config: Object,
     version: string,
     apiEndPointOverride: string
   ): Promise<boolean>;
@@ -51,8 +55,12 @@ export interface Spec extends TurboModule {
 
   // In-app messaging
   setInAppShowResponse(number: number): void;
-  getInAppMessages(): Promise<{ [key: string]: string | number | boolean }[]>;
-  getInboxMessages(): Promise<{ [key: string]: string | number | boolean }[]>;
+  getInAppMessages(): Promise<
+    Array<{ [key: string]: string | number | boolean }>
+  >;
+  getInboxMessages(): Promise<
+    Array<{ [key: string]: string | number | boolean }>
+  >;
   getUnreadInboxMessagesCount(): Promise<number>;
   showMessage(messageId: string, consume: boolean): Promise<string | null>;
   removeMessage(messageId: string, location: number, source: number): void;
@@ -86,10 +94,12 @@ export interface Spec extends TurboModule {
   inAppConsume(messageId: string, location: number, source: number): void;
 
   // Commerce
-  updateCart(items: { [key: string]: string | number | boolean }[]): void;
+  updateCart(
+    items: Array<{ [key: string]: string | number | boolean }>
+  ): void;
   trackPurchase(
     total: number,
-    items: { [key: string]: string | number | boolean }[],
+    items: Array<{ [key: string]: string | number | boolean }>,
     dataFields?: { [key: string]: string | number | boolean }
   ): void;
 
@@ -124,21 +134,21 @@ export interface Spec extends TurboModule {
 
   // Subscriptions
   updateSubscriptions(
-    emailListIds: number[] | null,
-    unsubscribedChannelIds: number[] | null,
-    unsubscribedMessageTypeIds: number[] | null,
-    subscribedMessageTypeIds: number[] | null,
+    emailListIds: Array<number> | null,
+    unsubscribedChannelIds: Array<number> | null,
+    unsubscribedMessageTypeIds: Array<number> | null,
+    subscribedMessageTypeIds: Array<number> | null,
     campaignId: number,
     templateId: number
   ): void;
 
   // Session tracking
   startSession(
-    visibleRows: { [key: string]: string | number | boolean }[]
+    visibleRows: Array<{ [key: string]: string | number | boolean }>
   ): void;
   endSession(): void;
   updateVisibleRows(
-    visibleRows: { [key: string]: string | number | boolean }[]
+    visibleRows: Array<{ [key: string]: string | number | boolean }>
   ): void;
 
   // Auth
@@ -152,8 +162,8 @@ export interface Spec extends TurboModule {
   startEmbeddedImpression(messageId: string, placementId: number): void;
   pauseEmbeddedImpression(messageId: string): void;
   getEmbeddedMessages(
-    placementIds: number[] | null
-  ): Promise<EmbeddedMessage[]>;
+    placementIds: Array<number> | null
+  ): Promise<Array<EmbeddedMessage>>;
   trackEmbeddedClick(
     message: EmbeddedMessage,
     buttonId: string | null,
