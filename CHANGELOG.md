@@ -1,10 +1,11 @@
 ## Unreleased
 
 ### Fixes
-- Fix iOS-side `Iterable.initialize` promise hang. 
-  - The iOS bridge now resolves the promise immediately after calling the native SDK's sync initializer, matching the Android bridge's behavior.
-  - Previously the promise could wait on the first in-app messages fetch (and any associated auth retry budget) before resolving, leading to multi-second to multi-minute hangs under certain configurations.
-  - The native iOS SDK is fully usable the moment `Iterable.initialize` is called; nothing about JS-side correctness requires waiting on the promise.
+- Fixed the React Native bridge contract for `Iterable.initialize` on iOS.
+  - The iOS bridge now calls the synchronous native initializer (`IterableAPI.initialize`) and resolves the JS promise immediately, matching the Android bridge which has always behaved this way.
+  - Previously, the iOS bridge wired the JS promise to the `initialize2(callback:)` overload, whose callback fires when the first in-app messages fetch settles, not when the SDK is ready to use. That callback is an `InAppManager.start()` signal and has nothing to do with whether `IterableAPI.initialize` succeeded.
+  - On iOS, `IterableAPI.initialize(...)` is synchronous, non-failable, and returns `Void`. The native SDK is fully usable the moment it returns. There is no init-error channel to await on the native side, and JS callers should not treat the promise as one. `await Iterable.initialize(...)` is supported for API symmetry but does not gate SDK readiness on any async work.
+  - The user-visible symptom of the old contract was a multi-second to multi-minute hang on the JS promise under JWT or network friction, surfaced as an init failure even though the SDK had already initialized successfully. The error originated in the in-app messages fetch retry budget, not in initialization.
 
 ## 3.0.0
 ### Updates
