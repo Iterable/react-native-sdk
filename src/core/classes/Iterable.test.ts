@@ -1460,4 +1460,266 @@ describe('Iterable', () => {
       });
     });
   });
+
+  describe('getAttributionInfo', () => {
+    it('should return undefined when native returns null', async () => {
+      // GIVEN native returns null attribution info
+      const spy = jest
+        .spyOn(MockRNIterableAPI, 'getAttributionInfo')
+        // @ts-expect-error - native bridge may return null for missing attribution info
+        .mockResolvedValue(null);
+
+      // WHEN getAttributionInfo is called
+      const result = await Iterable.getAttributionInfo();
+
+      // THEN undefined is returned
+      expect(result).toBeUndefined();
+      spy.mockRestore();
+    });
+  });
+
+  describe('trackInAppOpen validation', () => {
+    it('should skip tracking when the message ID is missing', () => {
+      // GIVEN an in-app message without a message ID
+      const message = new IterableInAppMessage(
+        '',
+        4567,
+        new IterableInAppTrigger(IterableInAppTriggerType.immediate),
+        new Date(),
+        new Date(),
+        false,
+        undefined,
+        undefined,
+        false,
+        0
+      );
+      const location = IterableInAppLocation.inApp;
+
+      // WHEN trackInAppOpen is called
+      Iterable.trackInAppOpen(message, location);
+
+      // THEN RNIterableAPI.trackInAppOpen is not called
+      expect(MockRNIterableAPI.trackInAppOpen).not.toBeCalled();
+    });
+  });
+
+  describe('urlHandler platform delay', () => {
+    const originalPlatform = Platform.OS;
+
+    afterEach(() => {
+      Object.defineProperty(Platform, 'OS', {
+        value: originalPlatform,
+        writable: true,
+      });
+    });
+
+    it('should call the handler immediately on iOS', async () => {
+      // GIVEN iOS platform
+      Object.defineProperty(Platform, 'OS', {
+        value: 'ios',
+        writable: true,
+      });
+
+      // sets up event emitter
+      const nativeEmitter = new NativeEventEmitter();
+      nativeEmitter.removeAllListeners(IterableEventName.handleUrlCalled);
+
+      // sets up config with urlHandler that returns false
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      config.urlHandler = jest.fn(() => false);
+
+      // initialize Iterable object
+      Iterable.initialize('apiKey', config);
+
+      // GIVEN the link can be opened
+      MockLinking.canOpenURL = jest.fn(async () => true);
+      MockLinking.openURL.mockReset();
+
+      const expectedUrl = 'https://somewhere.com';
+      const dict = {
+        url: expectedUrl,
+        context: {
+          action: { type: 'openUrl' },
+          source: IterableActionSource.inApp,
+        },
+      };
+
+      // WHEN handleUrlCalled event is emitted
+      nativeEmitter.emit(IterableEventName.handleUrlCalled, dict);
+
+      // THEN the handler and Linking are called without a delay
+      return await TestHelper.delayed(0, () => {
+        expect(config.urlHandler).toBeCalledWith(expectedUrl, dict.context);
+        expect(MockLinking.openURL).toBeCalledWith(expectedUrl);
+      });
+    });
+
+    it('should delay the handler by 1000ms on Android', async () => {
+      // GIVEN Android platform
+      Object.defineProperty(Platform, 'OS', {
+        value: 'android',
+        writable: true,
+      });
+
+      // sets up event emitter
+      const nativeEmitter = new NativeEventEmitter();
+      nativeEmitter.removeAllListeners(IterableEventName.handleUrlCalled);
+
+      // sets up config with urlHandler that returns false
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      config.urlHandler = jest.fn(() => false);
+
+      // initialize Iterable object
+      Iterable.initialize('apiKey', config);
+
+      // GIVEN the link can be opened
+      MockLinking.canOpenURL = jest.fn(async () => true);
+      MockLinking.openURL.mockReset();
+
+      const expectedUrl = 'https://somewhere.com';
+      const dict = {
+        url: expectedUrl,
+        context: {
+          action: { type: 'openUrl' },
+          source: IterableActionSource.inApp,
+        },
+      };
+
+      // WHEN handleUrlCalled event is emitted
+      nativeEmitter.emit(IterableEventName.handleUrlCalled, dict);
+
+      // THEN the handler is not called before the Android wake delay
+      return await TestHelper.delayed(1100, () => {
+        expect(config.urlHandler).toBeCalledWith(expectedUrl, dict.context);
+        expect(MockLinking.openURL).toBeCalledWith(expectedUrl);
+      });
+    });
+  });
+
+  describe('re-initialization', () => {
+    it('should not duplicate event listeners when initialize is called multiple times', () => {
+      // sets up event emitter
+      const nativeEmitter = new NativeEventEmitter();
+      nativeEmitter.removeAllListeners(IterableEventName.handleUrlCalled);
+
+      // sets up config with urlHandler
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      const urlHandler = jest.fn(() => true);
+      config.urlHandler = urlHandler;
+
+      // initialize Iterable object
+      Iterable.initialize('apiKey', config);
+
+      const dict = {
+        url: 'https://example.com',
+        context: {
+          action: { type: 'openUrl' },
+          source: IterableActionSource.inApp,
+        },
+      };
+
+      // WHEN handleUrlCalled event is emitted after the first init
+      nativeEmitter.emit(IterableEventName.handleUrlCalled, dict);
+
+      // THEN urlHandler is called exactly once
+      expect(urlHandler).toHaveBeenCalledTimes(1);
+
+      // reset mocks and re-initialize with the same config
+      jest.clearAllMocks();
+      Iterable.initialize('apiKey', config);
+
+      // WHEN handleUrlCalled event is emitted after the second init
+      nativeEmitter.emit(IterableEventName.handleUrlCalled, dict);
+
+      // THEN urlHandler is still called exactly once per emission
+      expect(urlHandler).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('authHandler resolution shapes', () => {
+    it('should pass null to the bridge when authHandler returns null', async () => {
+      // sets up event emitter
+      const nativeEmitter = new NativeEventEmitter();
+      nativeEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
+
+      // sets up config with authHandler that returns null
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      config.authHandler = jest.fn(() => Promise.resolve(null));
+
+      // initialize Iterable object
+      Iterable.initialize('apiKey', config);
+
+      // WHEN handleAuthCalled event is emitted
+      nativeEmitter.emit(IterableEventName.handleAuthCalled);
+
+      // THEN passAlongAuthToken is called with null
+      return await TestHelper.delayed(100, () => {
+        expect(MockRNIterableAPI.passAlongAuthToken).toBeCalledWith(null);
+      });
+    });
+
+    it('should pass undefined to the bridge when authHandler returns undefined', async () => {
+      // sets up event emitter
+      const nativeEmitter = new NativeEventEmitter();
+      nativeEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
+
+      // sets up config with authHandler that returns undefined
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      config.authHandler = jest.fn(() => Promise.resolve(undefined));
+
+      // initialize Iterable object
+      Iterable.initialize('apiKey', config);
+
+      // WHEN handleAuthCalled event is emitted
+      nativeEmitter.emit(IterableEventName.handleAuthCalled);
+
+      // THEN passAlongAuthToken is called with undefined
+      return await TestHelper.delayed(100, () => {
+        expect(MockRNIterableAPI.passAlongAuthToken).toBeCalledWith(undefined);
+      });
+    });
+
+    it('should not invoke callbacks when no success/failure event arrives within the timeout', async () => {
+      // sets up event emitter
+      const nativeEmitter = new NativeEventEmitter();
+      nativeEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
+      nativeEmitter.removeAllListeners(
+        IterableEventName.handleAuthSuccessCalled
+      );
+      nativeEmitter.removeAllListeners(
+        IterableEventName.handleAuthFailureCalled
+      );
+
+      // sets up config with authHandler that returns an AuthResponse
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      const successCallback = jest.fn();
+      const failureCallback = jest.fn();
+      const authResponse = new IterableAuthResponse();
+      authResponse.authToken = 'timeout-token';
+      authResponse.successCallback = successCallback;
+      authResponse.failureCallback = failureCallback;
+      config.authHandler = jest.fn(() => Promise.resolve(authResponse));
+
+      // initialize Iterable object
+      Iterable.initialize('apiKey', config);
+
+      // WHEN handleAuthCalled event is emitted but no success/failure event follows
+      nativeEmitter.emit(IterableEventName.handleAuthCalled);
+
+      // THEN the token is forwarded and neither callback fires
+      return await TestHelper.delayed(1100, () => {
+        expect(MockRNIterableAPI.passAlongAuthToken).toBeCalledWith(
+          'timeout-token'
+        );
+        expect(successCallback).not.toBeCalled();
+        expect(failureCallback).not.toBeCalled();
+      });
+    });
+  });
 });

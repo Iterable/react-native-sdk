@@ -20,10 +20,28 @@ module.exports = {
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   coverageThreshold: {
     global: {
-      branches: 10,
-      functions: 30,
-      lines: 30,
-      statements: 30,
+      branches: 53,
+      functions: 47,
+      lines: 58,
+      statements: 58,
+    },
+    'src/core/classes/Iterable.ts': {
+      statements: 90,
+      branches: 85,
+      functions: 95,
+      lines: 90,
+    },
+    'src/core/classes/IterableApi.ts': {
+      statements: 95,
+      branches: 70,
+      functions: 95,
+      lines: 95,
+    },
+    'src/core/classes/IterableConfig.ts': {
+      statements: 95,
+      branches: 90,
+      functions: 90,
+      lines: 95,
     },
   },
 };
