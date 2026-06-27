@@ -610,7 +610,8 @@ import React
   private let inboxSessionManager = InboxSessionManager()
 
   private func data(fromHex hex: String) -> Data? {
-    var data = Data()
+    guard !hex.isEmpty, hex.count.isMultiple(of: 2) else { return nil }
+    var data = Data(capacity: hex.count / 2)
     var chars = hex.makeIterator()
     while let high = chars.next(), let low = chars.next() {
       guard let highValue = high.hexDigitValue, let lowValue = low.hexDigitValue else {
