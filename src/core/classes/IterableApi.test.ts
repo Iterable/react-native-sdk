@@ -1113,9 +1113,11 @@ describe('IterableApi', () => {
       IterableApi.setAttributionInfo(attributionInfo);
 
       // THEN RNIterableAPI.setAttributionInfo is called with attribution info
-      expect(MockRNIterableAPI.setAttributionInfo).toBeCalledWith(
-        attributionInfo
-      );
+      expect(MockRNIterableAPI.setAttributionInfo).toBeCalledWith({
+        campaignId: attributionInfo.campaignId,
+        templateId: attributionInfo.templateId,
+        messageId: attributionInfo.messageId,
+      });
     });
 
     it('should call RNIterableAPI.setAttributionInfo with undefined', () => {
