@@ -1,3 +1,11 @@
+## Unreleased
+
+### Updates
+
+- Added `Iterable.registerDeviceToken(token)` to re-enable push for the current device.
+  - Android accepts an FCM token string.
+  - iOS accepts a continuous hex string representation of the APNS token.
+
 ## 3.0.1
 
 ### Updates
@@ -402,4 +410,3 @@ To use this version of Iterable's React Native SDK, you'll need to update your n
   ```java
   IterableApi.setContext(this);
   ```
-
