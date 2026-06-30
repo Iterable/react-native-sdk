@@ -196,7 +196,7 @@ jobs:
           cd ios
           bundle install
           bundle exec pod install
-          xcodebuild -workspace ReactNativeSdkExample.xcworkspace -scheme ReactNativeSdkExample -configuration Debug -destination 'platform=iOS Simulator,name=iPhone 16' build
+          xcodebuild -workspace ReactNativeSdkExample.xcworkspace -scheme ReactNativeSdkExample -configuration Debug -destination 'generic/platform=iOS Simulator' build
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v4
