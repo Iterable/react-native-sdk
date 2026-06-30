@@ -95,4 +95,116 @@ describe('public SDK surface', () => {
     expect(useAppStateListener).toBeDefined();
     expect(useDeviceOrientation).toBeDefined();
   });
+
+  describe('exported enum values', () => {
+    it('IterableActionSource contains expected members', () => {
+      expect(IterableActionSource.push).toBe(0);
+      expect(IterableActionSource.appLink).toBe(1);
+      expect(IterableActionSource.inApp).toBe(2);
+      expect(IterableActionSource.embedded).toBe(3);
+    });
+
+    it('IterableInAppCloseSource contains expected members', () => {
+      expect(IterableInAppCloseSource.back).toBe(0);
+      expect(IterableInAppCloseSource.link).toBe(1);
+      expect(IterableInAppCloseSource.unknown).toBe(100);
+    });
+
+    it('IterableInAppLocation contains expected members', () => {
+      expect(IterableInAppLocation.inApp).toBe(0);
+      expect(IterableInAppLocation.inbox).toBe(1);
+    });
+
+    it('IterableInAppShowResponse contains expected members', () => {
+      expect(IterableInAppShowResponse.show).toBe(0);
+      expect(IterableInAppShowResponse.skip).toBe(1);
+    });
+
+    it('IterableInAppTriggerType contains expected members', () => {
+      expect(IterableInAppTriggerType.immediate).toBe(0);
+      expect(IterableInAppTriggerType.event).toBe(1);
+      expect(IterableInAppTriggerType.never).toBe(2);
+    });
+
+    it('IterableDataRegion contains expected members', () => {
+      expect(IterableDataRegion.US).toBe(0);
+      expect(IterableDataRegion.EU).toBe(1);
+    });
+
+    it('IterableLogLevel contains expected members', () => {
+      expect(IterableLogLevel.error).toBe(3);
+      expect(IterableLogLevel.debug).toBe(1);
+      expect(IterableLogLevel.info).toBe(2);
+    });
+
+    it('IterablePushPlatform contains expected members', () => {
+      expect(IterablePushPlatform.sandbox).toBe(0);
+      expect(IterablePushPlatform.production).toBe(1);
+      expect(IterablePushPlatform.auto).toBe(2);
+    });
+
+    it('IterableRetryBackoff contains expected members', () => {
+      expect(IterableRetryBackoff.linear).toBe('LINEAR');
+      expect(IterableRetryBackoff.exponential).toBe('EXPONENTIAL');
+    });
+
+    it('IterableEmbeddedViewType contains expected members', () => {
+      expect(IterableEmbeddedViewType.Banner).toBe(0);
+      expect(IterableEmbeddedViewType.Card).toBe(1);
+      expect(IterableEmbeddedViewType.Notification).toBe(2);
+    });
+  });
+
+  describe('exported hooks are functions', () => {
+    it('useAppStateListener is a function', () => {
+      expect(typeof useAppStateListener).toBe('function');
+    });
+
+    it('useDeviceOrientation is a function', () => {
+      expect(typeof useDeviceOrientation).toBe('function');
+    });
+  });
+
+  describe('exported components are valid React components', () => {
+    it('IterableInbox is a valid React component', () => {
+      expect(IterableInbox).toBeDefined();
+      // React components are functions or classes (forwardRef objects expose a render fn)
+      const type = typeof IterableInbox;
+      expect(
+        type === 'function' ||
+        type === 'object' ||
+        type === 'symbol'
+      ).toBe(true);
+    });
+
+    it('IterableInboxEmptyState is a valid React component', () => {
+      expect(IterableInboxEmptyState).toBeDefined();
+      const type = typeof IterableInboxEmptyState;
+      expect(
+        type === 'function' ||
+        type === 'object' ||
+        type === 'symbol'
+      ).toBe(true);
+    });
+
+    it('IterableInboxMessageCell is a valid React component', () => {
+      expect(IterableInboxMessageCell).toBeDefined();
+      const type = typeof IterableInboxMessageCell;
+      expect(
+        type === 'function' ||
+        type === 'object' ||
+        type === 'symbol'
+      ).toBe(true);
+    });
+
+    it('IterableEmbeddedView is a valid React component', () => {
+      expect(IterableEmbeddedView).toBeDefined();
+      const type = typeof IterableEmbeddedView;
+      expect(
+        type === 'function' ||
+        type === 'object' ||
+        type === 'symbol'
+      ).toBe(true);
+    });
+  });
 });
