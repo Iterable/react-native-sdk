@@ -138,6 +138,11 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   }
 
   @Override
+  public void registerDeviceToken(String token) {
+    moduleImpl.registerDeviceToken(token);
+  }
+
+  @Override
   public void handleAppLink(String uri, Promise promise) {
     moduleImpl.handleAppLink(uri, promise);
   }

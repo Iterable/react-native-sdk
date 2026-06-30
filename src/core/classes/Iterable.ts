@@ -346,6 +346,26 @@ export class Iterable {
   }
 
   /**
+   * Register the device's token for the current user, re-enabling push notifications.
+   *
+   * @param token - The device token to register.
+   * On Android, pass the Firebase Cloud Messaging (FCM) token string.
+   * On iOS, pass the Apple Push Notification service (APNS) token as a continuous hex string.
+   *
+   * @example
+   * ```typescript
+   * // Android
+   * Iterable.registerDeviceToken('fcm-token-string');
+   *
+   * // iOS
+   * Iterable.registerDeviceToken('abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234');
+   * ```
+   */
+  static registerDeviceToken(token: string) {
+    IterableApi.registerDeviceToken(token);
+  }
+
+  /**
    * Get the payload of the last push notification with which the user
    * opened the application (by clicking an action button, etc.).
    *

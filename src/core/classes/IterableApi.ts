@@ -138,6 +138,16 @@ export class IterableApi {
   }
 
   /**
+   * Register the device token for the current user, re-enabling push notifications.
+   *
+   * @param token - On Android, the FCM token string. On iOS, a continuous hex string representation of the APNS token.
+   */
+  static registerDeviceToken(token: string) {
+    IterableLogger.log('registerDeviceToken');
+    return RNIterableAPI.registerDeviceToken(token);
+  }
+
+  /**
    * Save data to the current user's Iterable profile.
    *
    * @param dataFields - The data fields to update

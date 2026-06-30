@@ -373,6 +373,11 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         IterableApi.getInstance().disablePush();
     }
 
+    public void registerDeviceToken(String token) {
+        IterableLogger.v(TAG, "registerDeviceToken");
+        IterableApi.getInstance().registerDeviceToken(token);
+    }
+
     public void handleAppLink(String uri, Promise promise) {
         IterableLogger.printInfo();
         promise.resolve(IterableApi.getInstance().handleAppLink(uri));
