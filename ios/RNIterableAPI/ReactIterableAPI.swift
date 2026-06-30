@@ -144,6 +144,16 @@ import React
     IterableAPI.disableDeviceForCurrentUser()
   }
 
+  @objc(registerDeviceToken:)
+  public func registerDeviceToken(token: String) {
+    ITBInfo()
+    guard let tokenData = data(fromHex: token) else {
+      ITBError("Could not convert token to Data: invalid hex string")
+      return
+    }
+    IterableAPI.register(token: tokenData)
+  }
+
   @objc(getLastPushPayload:rejecter:)
   public func getLastPushPayload(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock)
   {
@@ -598,6 +608,19 @@ import React
   private var authHandlerSemaphore = DispatchSemaphore(value: 0)
 
   private let inboxSessionManager = InboxSessionManager()
+
+  private func data(fromHex hex: String) -> Data? {
+    guard !hex.isEmpty, hex.count.isMultiple(of: 2) else { return nil }
+    var data = Data(capacity: hex.count / 2)
+    var chars = hex.makeIterator()
+    while let high = chars.next(), let low = chars.next() {
+      guard let highValue = high.hexDigitValue, let lowValue = low.hexDigitValue else {
+        return nil
+      }
+      data.append(UInt8(highValue << 4 | lowValue))
+    }
+    return data
+  }
 
   @objc func initialize(
     withApiKey apiKey: String,

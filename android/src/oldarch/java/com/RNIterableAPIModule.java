@@ -139,6 +139,11 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void registerDeviceToken(String token) {
+      moduleImpl.registerDeviceToken(token);
+    }
+
+    @ReactMethod
     public void handleAppLink(String uri, Promise promise) {
       moduleImpl.handleAppLink(uri, promise);
     }

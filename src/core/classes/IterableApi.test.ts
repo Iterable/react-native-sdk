@@ -248,6 +248,19 @@ describe('IterableApi', () => {
     });
   });
 
+  describe('registerDeviceToken', () => {
+    it('should call RNIterableAPI.registerDeviceToken with the token', () => {
+      // GIVEN a device token
+      const token = 'test-device-token';
+
+      // WHEN registerDeviceToken is called
+      IterableApi.registerDeviceToken(token);
+
+      // THEN RNIterableAPI.registerDeviceToken is called with the token
+      expect(MockRNIterableAPI.registerDeviceToken).toBeCalledWith(token);
+    });
+  });
+
   describe('updateUser', () => {
     it('should call RNIterableAPI.updateUser with data fields and merge flag', () => {
       // GIVEN data fields and merge flag

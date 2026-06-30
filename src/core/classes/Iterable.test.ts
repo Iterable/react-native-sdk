@@ -142,6 +142,17 @@ describe('Iterable', () => {
     });
   });
 
+  describe('registerDeviceToken', () => {
+    it('should register the device token for the current user', () => {
+      // GIVEN a device token
+      const token = 'test-device-token';
+      // WHEN Iterable.registerDeviceToken is called
+      Iterable.registerDeviceToken(token);
+      // THEN corresponding method is called on RNIterableAPI
+      expect(MockRNIterableAPI.registerDeviceToken).toBeCalledWith(token);
+    });
+  });
+
   describe('getLastPushPayload', () => {
     it('should return the last push payload', async () => {
       const result = { var1: 'val1', var2: true };
