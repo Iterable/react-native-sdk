@@ -13,6 +13,7 @@ import { IterableInAppCloseSource } from '../../inApp/enums/IterableInAppCloseSo
 import { IterableInAppDeleteSource } from '../../inApp/enums/IterableInAppDeleteSource';
 import { IterableInAppShowResponse } from '../../inApp/enums/IterableInAppShowResponse';
 import { type IterableInboxImpressionRowInfo } from '../../inbox/types/IterableInboxImpressionRowInfo';
+import type { IterableEmbeddedMessage } from '../../embedded/types/IterableEmbeddedMessage';
 
 // Mock the RNIterableAPI module
 jest.mock('../../api', () => ({
@@ -1174,6 +1175,172 @@ describe('IterableApi', () => {
 
       // THEN RNIterableAPI.setAttributionInfo is called with undefined
       expect(MockRNIterableAPI.setAttributionInfo).toBeCalledWith(undefined);
+    });
+  });
+
+  describe('initializeWithApiKey default config', () => {
+    it('should use a default config when the config property is omitted', async () => {
+      // GIVEN an API key and version
+      const apiKey = 'test-api-key';
+      const version = '1.0.0';
+
+      // WHEN initializeWithApiKey is called without config
+      // @ts-expect-error - exercising the destructuring default for config
+      const result = await IterableApi.initializeWithApiKey(apiKey, {
+        version,
+      });
+
+      // THEN RNIterableAPI.initializeWithApiKey is called with a config dict
+      expect(MockRNIterableAPI.initializeWithApiKey).toBeCalledWith(
+        apiKey,
+        expect.any(Object),
+        version
+      );
+      expect(result).toBe(true);
+    });
+  });
+
+  describe('initialize2WithApiKey default config', () => {
+    it('should use a default config when the config property is omitted', async () => {
+      // GIVEN an API key, version, and endpoint
+      const apiKey = 'test-api-key';
+      const version = '1.0.0';
+      const apiEndPoint = 'https://api.staging.iterable.com';
+
+      // WHEN initialize2WithApiKey is called without config
+      // @ts-expect-error - exercising the destructuring default for config
+      const result = await IterableApi.initialize2WithApiKey(apiKey, {
+        version,
+        apiEndPoint,
+      });
+
+      // THEN RNIterableAPI.initialize2WithApiKey is called with a config dict
+      expect(MockRNIterableAPI.initialize2WithApiKey).toBeCalledWith(
+        apiKey,
+        expect.any(Object),
+        version,
+        apiEndPoint
+      );
+      expect(result).toBe(true);
+    });
+  });
+
+  describe('syncEmbeddedMessages', () => {
+    it('should call RNIterableAPI.syncEmbeddedMessages', () => {
+      // GIVEN no parameters
+      // WHEN syncEmbeddedMessages is called
+      IterableApi.syncEmbeddedMessages();
+
+      // THEN RNIterableAPI.syncEmbeddedMessages is called
+      expect(MockRNIterableAPI.syncEmbeddedMessages).toBeCalled();
+    });
+  });
+
+  describe('startEmbeddedSession', () => {
+    it('should call RNIterableAPI.startEmbeddedSession', () => {
+      // GIVEN no parameters
+      // WHEN startEmbeddedSession is called
+      IterableApi.startEmbeddedSession();
+
+      // THEN RNIterableAPI.startEmbeddedSession is called
+      expect(MockRNIterableAPI.startEmbeddedSession).toBeCalled();
+    });
+  });
+
+  describe('endEmbeddedSession', () => {
+    it('should call RNIterableAPI.endEmbeddedSession', () => {
+      // GIVEN no parameters
+      // WHEN endEmbeddedSession is called
+      IterableApi.endEmbeddedSession();
+
+      // THEN RNIterableAPI.endEmbeddedSession is called
+      expect(MockRNIterableAPI.endEmbeddedSession).toBeCalled();
+    });
+  });
+
+  describe('startEmbeddedImpression', () => {
+    it('should call RNIterableAPI.startEmbeddedImpression with messageId and placementId', () => {
+      // GIVEN a message ID and placement ID
+      const messageId = 'msg-1';
+      const placementId = 42;
+
+      // WHEN startEmbeddedImpression is called
+      IterableApi.startEmbeddedImpression(messageId, placementId);
+
+      // THEN RNIterableAPI.startEmbeddedImpression is called with correct parameters
+      expect(MockRNIterableAPI.startEmbeddedImpression).toBeCalledWith(
+        messageId,
+        placementId
+      );
+    });
+  });
+
+  describe('pauseEmbeddedImpression', () => {
+    it('should call RNIterableAPI.pauseEmbeddedImpression with messageId', () => {
+      // GIVEN a message ID
+      const messageId = 'msg-1';
+
+      // WHEN pauseEmbeddedImpression is called
+      IterableApi.pauseEmbeddedImpression(messageId);
+
+      // THEN RNIterableAPI.pauseEmbeddedImpression is called with messageId
+      expect(MockRNIterableAPI.pauseEmbeddedImpression).toBeCalledWith(
+        messageId
+      );
+    });
+  });
+
+  describe('getEmbeddedMessages', () => {
+    it('should return embedded messages from RNIterableAPI', async () => {
+      // GIVEN mock embedded messages
+      const mockMessages = [
+        {
+          metadata: {
+            messageId: 'msg-1',
+            placementId: 1,
+            campaignId: 123,
+          },
+          elements: { title: 'Test Message' },
+          payload: null,
+        },
+      ];
+      MockRNIterableAPI.getEmbeddedMessages = jest
+        .fn()
+        .mockResolvedValue(mockMessages);
+
+      // WHEN getEmbeddedMessages is called
+      const result = await IterableApi.getEmbeddedMessages([1]);
+
+      // THEN the messages are returned
+      expect(MockRNIterableAPI.getEmbeddedMessages).toBeCalledWith([1]);
+      expect(result).toBe(mockMessages);
+    });
+  });
+
+  describe('trackEmbeddedClick', () => {
+    it('should call RNIterableAPI.trackEmbeddedClick with message, buttonId, and clickedUrl', () => {
+      // GIVEN an embedded message, button ID, and clicked URL
+      const message: IterableEmbeddedMessage = {
+        metadata: {
+          messageId: 'msg-1',
+          placementId: 1,
+          campaignId: 123,
+        },
+        elements: null,
+        payload: null,
+      };
+      const buttonId = 'button-1';
+      const clickedUrl = 'https://example.com';
+
+      // WHEN trackEmbeddedClick is called
+      IterableApi.trackEmbeddedClick(message, buttonId, clickedUrl);
+
+      // THEN RNIterableAPI.trackEmbeddedClick is called with correct parameters
+      expect(MockRNIterableAPI.trackEmbeddedClick).toBeCalledWith(
+        message,
+        buttonId,
+        clickedUrl
+      );
     });
   });
 });

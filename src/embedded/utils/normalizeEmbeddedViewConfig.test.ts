@@ -103,4 +103,82 @@ describe('normalizeEmbeddedViewConfig', () => {
 
     expect(original).toEqual(snapshot);
   });
+
+  describe('partial config objects', () => {
+    it('handles a config with only borderWidth set', () => {
+      // GIVEN a partial config containing only borderWidth
+      const result = normalizeEmbeddedViewConfig({ borderWidth: 5 });
+
+      // THEN borderWidth is preserved and no other numeric keys are introduced
+      expect(result?.borderWidth).toBe(5);
+      expect(result?.borderCornerRadius).toBeUndefined();
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+
+    it('handles a config with only borderCornerRadius set', () => {
+      // GIVEN a partial config containing only borderCornerRadius
+      const result = normalizeEmbeddedViewConfig({ borderCornerRadius: 9 });
+
+      expect(result?.borderCornerRadius).toBe(9);
+      expect(result?.borderWidth).toBeUndefined();
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+
+    it('handles a config where borderWidth is explicitly null (coerceNumericField null branch)', () => {
+      // GIVEN a partial config where borderWidth is explicitly null
+      const result = normalizeEmbeddedViewConfig({
+        borderWidth: null,
+      } as never);
+
+      // THEN the null value is treated as absent and the key is dropped
+      expect(result?.borderWidth).toBeUndefined();
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+
+    it('handles a config where borderCornerRadius is explicitly null', () => {
+      const result = normalizeEmbeddedViewConfig({
+        borderCornerRadius: null,
+      } as never);
+
+      expect(result?.borderCornerRadius).toBeUndefined();
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+
+    it('handles a config with borderWidth null and a valid borderCornerRadius', () => {
+      // GIVEN a mixed partial config
+      const result = normalizeEmbeddedViewConfig({
+        borderWidth: null,
+        borderCornerRadius: 12,
+      } as never);
+
+      // THEN the null field is dropped while the valid number is preserved
+      expect(result?.borderWidth).toBeUndefined();
+      expect(result?.borderCornerRadius).toBe(12);
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+
+    it('handles a config with no numeric keys (only non-numeric fields)', () => {
+      // GIVEN a config with only non-numeric fields
+      const result = normalizeEmbeddedViewConfig({
+        backgroundColor: '#fff',
+        borderColor: '#000',
+      } as never);
+
+      // THEN the non-numeric fields are passed through unchanged
+      expect(result?.backgroundColor).toBe('#fff');
+      expect(result?.borderColor).toBe('#000');
+      expect(result?.borderWidth).toBeUndefined();
+      expect(result?.borderCornerRadius).toBeUndefined();
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+
+    it('handles an empty config object', () => {
+      // GIVEN an empty config object
+      const result = normalizeEmbeddedViewConfig({});
+
+      // THEN the result is an empty object (no numeric keys to coerce)
+      expect(result).toEqual({});
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+  });
 });

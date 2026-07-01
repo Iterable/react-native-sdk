@@ -657,6 +657,52 @@ describe('IterableEmbeddedManager', () => {
       // THEN isEnabled should be false (default)
       expect(manager.isEnabled).toBe(false);
     });
+
+    it('should initialize with embedded messaging disabled when config flag is null (nullish coalescing fallback)', () => {
+      // GIVEN a config where enableEmbeddedMessaging is explicitly null
+      // (exercises the `?? false` branch on line 57)
+      const configWithNull = new IterableConfig();
+      (configWithNull as unknown as {
+        enableEmbeddedMessaging: boolean | null;
+      }).enableEmbeddedMessaging = null;
+
+      // WHEN creating a new embedded manager
+      const manager = new IterableEmbeddedManager(configWithNull);
+
+      // THEN isEnabled should fall back to false via the `?? false` branch
+      expect(manager.isEnabled).toBe(false);
+    });
+
+    it('constructor with enableEmbeddedMessaging === false does not auto-call native sync', () => {
+      // GIVEN a config with enableEmbeddedMessaging explicitly false
+      const configWithFalse = new IterableConfig();
+      configWithFalse.enableEmbeddedMessaging = false;
+
+      // WHEN creating a new embedded manager
+      const manager = new IterableEmbeddedManager(configWithFalse);
+
+      // THEN isEnabled is false and the constructor did not auto-call native sync
+      // (the branch on line 57 is evaluated at construction time)
+      expect(manager.isEnabled).toBe(false);
+      expect(MockRNIterableAPI.syncEmbeddedMessages).not.toHaveBeenCalled();
+    });
+
+    it('explicit syncMessages still proxies through to native when enableEmbeddedMessaging === false', () => {
+      // GIVEN a config with enableEmbeddedMessaging explicitly false
+      const configWithFalse = new IterableConfig();
+      configWithFalse.enableEmbeddedMessaging = false;
+      const manager = new IterableEmbeddedManager(configWithFalse);
+
+      // sanity: constructor did not auto-call native sync
+      expect(MockRNIterableAPI.syncEmbeddedMessages).not.toHaveBeenCalled();
+
+      // WHEN syncMessages is called on a disabled manager
+      manager.syncMessages();
+
+      // THEN isEnabled remains false and the underlying sync still proxies through
+      expect(manager.isEnabled).toBe(false);
+      expect(MockRNIterableAPI.syncEmbeddedMessages).toHaveBeenCalledTimes(1);
+    });
   });
 });
 

@@ -398,5 +398,54 @@ describe('IterableHtmlInAppContent', () => {
       expect(content.edgeInsets.right).toBe(-Infinity);
       expect(content.type).toBe(IterableInAppContentType.html);
     });
+
+    it('should create instance from a minimal payload with zero edge insets and empty html', () => {
+      // GIVEN a minimal dictionary payload
+      const dict: IterableHtmlInAppContentRaw = {
+        edgeInsets: {
+          top: 0,
+          left: 0,
+          bottom: 0,
+          right: 0,
+        },
+        html: '',
+      };
+
+      // WHEN creating from dictionary
+      const content = IterableHtmlInAppContent.fromDict(dict);
+
+      // THEN it should produce a valid instance with defaults preserved
+      expect(content).toBeInstanceOf(IterableHtmlInAppContent);
+      expect(content.html).toBe('');
+      expect(content.edgeInsets.top).toBe(0);
+      expect(content.edgeInsets.left).toBe(0);
+      expect(content.edgeInsets.bottom).toBe(0);
+      expect(content.edgeInsets.right).toBe(0);
+      expect(content.type).toBe(IterableInAppContentType.html);
+    });
+
+    it('should create instance from a minimal payload with a single-space html string', () => {
+      // GIVEN a minimal dictionary payload with a single-space html
+      const dict: IterableHtmlInAppContentRaw = {
+        edgeInsets: {
+          top: 1,
+          left: 0,
+          bottom: 0,
+          right: 0,
+        },
+        html: ' ',
+      };
+
+      // WHEN creating from dictionary
+      const content = IterableHtmlInAppContent.fromDict(dict);
+
+      // THEN the minimal payload should be preserved exactly
+      expect(content.html).toBe(' ');
+      expect(content.edgeInsets.top).toBe(1);
+      expect(content.edgeInsets.left).toBe(0);
+      expect(content.edgeInsets.bottom).toBe(0);
+      expect(content.edgeInsets.right).toBe(0);
+      expect(content.type).toBe(IterableInAppContentType.html);
+    });
   });
 });
