@@ -673,17 +673,33 @@ describe('IterableEmbeddedManager', () => {
       expect(manager.isEnabled).toBe(false);
     });
 
-    it('should keep isEnabled false when constructed with enableEmbeddedMessaging === false and not call native sync', () => {
+    it('constructor with enableEmbeddedMessaging === false does not auto-call native sync', () => {
+      // GIVEN a config with enableEmbeddedMessaging explicitly false
+      const configWithFalse = new IterableConfig();
+      configWithFalse.enableEmbeddedMessaging = false;
+
+      // WHEN creating a new embedded manager
+      const manager = new IterableEmbeddedManager(configWithFalse);
+
+      // THEN isEnabled is false and the constructor did not auto-call native sync
+      // (the branch on line 57 is evaluated at construction time)
+      expect(manager.isEnabled).toBe(false);
+      expect(MockRNIterableAPI.syncEmbeddedMessages).not.toHaveBeenCalled();
+    });
+
+    it('explicit syncMessages still proxies through to native when enableEmbeddedMessaging === false', () => {
       // GIVEN a config with enableEmbeddedMessaging explicitly false
       const configWithFalse = new IterableConfig();
       configWithFalse.enableEmbeddedMessaging = false;
       const manager = new IterableEmbeddedManager(configWithFalse);
 
+      // sanity: constructor did not auto-call native sync
+      expect(MockRNIterableAPI.syncEmbeddedMessages).not.toHaveBeenCalled();
+
       // WHEN syncMessages is called on a disabled manager
       manager.syncMessages();
 
       // THEN isEnabled remains false and the underlying sync still proxies through
-      // (the branch on line 57 has already been evaluated at construction time)
       expect(manager.isEnabled).toBe(false);
       expect(MockRNIterableAPI.syncEmbeddedMessages).toHaveBeenCalledTimes(1);
     });
