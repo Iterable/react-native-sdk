@@ -334,6 +334,8 @@ describe('Iterable', () => {
       expect(config.pushIntegrationName).toBe(undefined);
       expect(config.urlHandler).toBe(undefined);
       expect(config.useInMemoryStorageForInApps).toBe(false);
+      expect(config.androidWakeDelayMs).toBe(1000);
+      expect(config.authCallbackTimeoutMs).toBe(1000);
       const configDict = config.toDict();
       expect(configDict.allowedProtocols).toEqual([]);
       expect(configDict.androidSdkUseInMemoryStorageForInApps).toBe(false);
@@ -350,6 +352,17 @@ describe('Iterable', () => {
       expect(configDict.pushIntegrationName).toBe(undefined);
       expect(configDict.urlHandlerPresent).toBe(false);
       expect(configDict.useInMemoryStorageForInApps).toBe(false);
+      expect(configDict.androidWakeDelayMs).toBe(1000);
+      expect(configDict.authCallbackTimeoutMs).toBe(1000);
+    });
+
+    it('should allow overriding androidWakeDelayMs and authCallbackTimeoutMs', () => {
+      const config = new IterableConfig();
+      config.androidWakeDelayMs = 1500;
+      config.authCallbackTimeoutMs = 2500;
+      const configDict = config.toDict();
+      expect(configDict.androidWakeDelayMs).toBe(1500);
+      expect(configDict.authCallbackTimeoutMs).toBe(2500);
     });
   });
 
@@ -1607,6 +1620,88 @@ describe('Iterable', () => {
         expect(MockLinking.openURL).toBeCalledWith(expectedUrl);
       });
     });
+
+    it('should honor a custom androidWakeDelayMs on Android', async () => {
+      // GIVEN Android platform
+      Object.defineProperty(Platform, 'OS', {
+        value: 'android',
+        writable: true,
+      });
+
+      // sets up event emitter
+      const nativeEmitter = new NativeEventEmitter();
+      nativeEmitter.removeAllListeners(IterableEventName.handleUrlCalled);
+
+      // sets up config with a custom wake delay
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      config.androidWakeDelayMs = 300;
+      config.urlHandler = jest.fn(() => false);
+
+      // initialize Iterable object
+      Iterable.initialize('apiKey', config);
+
+      // GIVEN the link can be opened
+      MockLinking.canOpenURL = jest.fn(async () => true);
+      MockLinking.openURL.mockReset();
+
+      const expectedUrl = 'https://somewhere.com';
+      const dict = {
+        url: expectedUrl,
+        context: {
+          action: { type: 'openUrl' },
+          source: IterableActionSource.inApp,
+        },
+      };
+
+      // WHEN handleUrlCalled event is emitted
+      nativeEmitter.emit(IterableEventName.handleUrlCalled, dict);
+
+      // THEN the handler is called after the custom delay, not the default
+      return await TestHelper.delayed(400, () => {
+        expect(config.urlHandler).toBeCalledWith(expectedUrl, dict.context);
+        expect(MockLinking.openURL).toBeCalledWith(expectedUrl);
+      });
+    });
+
+    it('should dispatch synchronously on Android when androidWakeDelayMs is 0', async () => {
+      // GIVEN Android platform
+      Object.defineProperty(Platform, 'OS', {
+        value: 'android',
+        writable: true,
+      });
+
+      // sets up event emitter
+      const nativeEmitter = new NativeEventEmitter();
+      nativeEmitter.removeAllListeners(IterableEventName.handleUrlCalled);
+
+      // sets up config with wake delay disabled
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      config.androidWakeDelayMs = 0;
+      config.urlHandler = jest.fn(() => false);
+
+      // initialize Iterable object
+      Iterable.initialize('apiKey', config);
+
+      MockLinking.canOpenURL = jest.fn(async () => true);
+      MockLinking.openURL.mockReset();
+
+      const expectedUrl = 'https://somewhere.com';
+      const dict = {
+        url: expectedUrl,
+        context: {
+          action: { type: 'openUrl' },
+          source: IterableActionSource.inApp,
+        },
+      };
+
+      // WHEN handleUrlCalled event is emitted
+      nativeEmitter.emit(IterableEventName.handleUrlCalled, dict);
+
+      // THEN the handler is invoked without a setTimeout delay
+      expect(config.urlHandler).toBeCalledWith(expectedUrl, dict.context);
+    });
   });
 
   describe('re-initialization', () => {
@@ -1729,6 +1824,84 @@ describe('Iterable', () => {
           'timeout-token'
         );
         expect(successCallback).not.toBeCalled();
+        expect(failureCallback).not.toBeCalled();
+      });
+    });
+
+    it('should honor a custom authCallbackTimeoutMs for the safety-net timeout', async () => {
+      // sets up event emitter
+      const nativeEmitter = new NativeEventEmitter();
+      nativeEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
+      nativeEmitter.removeAllListeners(
+        IterableEventName.handleAuthSuccessCalled
+      );
+      nativeEmitter.removeAllListeners(
+        IterableEventName.handleAuthFailureCalled
+      );
+
+      // sets up config with a short custom auth callback timeout
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      config.authCallbackTimeoutMs = 200;
+      const successCallback = jest.fn();
+      const failureCallback = jest.fn();
+      const authResponse = new IterableAuthResponse();
+      authResponse.authToken = 'short-timeout-token';
+      authResponse.successCallback = successCallback;
+      authResponse.failureCallback = failureCallback;
+      config.authHandler = jest.fn(() => Promise.resolve(authResponse));
+
+      // initialize Iterable object
+      Iterable.initialize('apiKey', config);
+
+      // WHEN handleAuthCalled event is emitted but no success/failure event follows
+      nativeEmitter.emit(IterableEventName.handleAuthCalled);
+
+      // THEN the safety-net timer fires at the custom interval, not the default
+      return await TestHelper.delayed(300, () => {
+        expect(MockRNIterableAPI.passAlongAuthToken).toBeCalledWith(
+          'short-timeout-token'
+        );
+        expect(successCallback).not.toBeCalled();
+        expect(failureCallback).not.toBeCalled();
+      });
+    });
+
+    it('should resolve the latch immediately when the native success event arrives before the safety-net timeout', async () => {
+      // sets up event emitter
+      const nativeEmitter = new NativeEventEmitter();
+      nativeEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
+      nativeEmitter.removeAllListeners(
+        IterableEventName.handleAuthSuccessCalled
+      );
+      nativeEmitter.removeAllListeners(
+        IterableEventName.handleAuthFailureCalled
+      );
+
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      config.authCallbackTimeoutMs = 2000;
+      const successCallback = jest.fn();
+      const failureCallback = jest.fn();
+      const authResponse = new IterableAuthResponse();
+      authResponse.authToken = 'fast-success-token';
+      authResponse.successCallback = successCallback;
+      authResponse.failureCallback = failureCallback;
+      config.authHandler = jest.fn(() => Promise.resolve(authResponse));
+
+      Iterable.initialize('apiKey', config);
+
+      // WHEN handleAuthCalled and handleAuthSuccessCalled both fire
+      nativeEmitter.emit(IterableEventName.handleAuthCalled);
+      nativeEmitter.emit(IterableEventName.handleAuthSuccessCalled);
+
+      // THEN successCallback resolves on the microtask queue, well before the
+      // 2000ms safety-net timeout.
+      return await TestHelper.delayed(50, () => {
+        expect(MockRNIterableAPI.passAlongAuthToken).toBeCalledWith(
+          'fast-success-token'
+        );
+        expect(successCallback).toBeCalled();
         expect(failureCallback).not.toBeCalled();
       });
     });

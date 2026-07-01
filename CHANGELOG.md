@@ -12,6 +12,18 @@
 - Added `Iterable.registerDeviceToken(token)` to re-enable push for the current device.
   - Android accepts an FCM token string.
   - iOS accepts a continuous hex string representation of the APNS token.
+- Replaced the two hardcoded 1000ms magic timeouts in the RN SDK with named,
+  documented, and configurable values (SDK-520).
+  - Added `IterableConfig.androidWakeDelayMs` (default `1000`) to tune the
+    Android deep-link wake delay before the SDK invokes `urlHandler`. Set to
+    `0` to dispatch synchronously.
+  - Added `IterableConfig.authCallbackTimeoutMs` (default `1000`) to tune the
+    safety-net timeout for the auth callback latch.
+  - The auth callback gate is now event-driven: the native
+    `handleAuthSuccessCalled` / `handleAuthFailureCalled` events resolve the
+    latch immediately. The timer survives only as a fallback when no native
+    event arrives within the configured window, instead of being the primary
+    resolution mechanism.
 
 ## 3.0.1
 

@@ -28,6 +28,20 @@ const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 const defaultConfig = new IterableConfig();
 
 /**
+ * Fallback safety-net timeout for the auth callback latch when no native
+ * auth success/failure event arrives. Overridable via
+ * {@link IterableConfig.authCallbackTimeoutMs}.
+ */
+const AUTH_CALLBACK_TIMEOUT_DEFAULT_MS = 1000;
+
+/**
+ * Default delay (ms) the SDK waits on Android before invoking the URL handler
+ * so the host Activity can wake from the background. Overridable via
+ * {@link IterableConfig.androidWakeDelayMs}.
+ */
+const ANDROID_WAKE_DELAY_DEFAULT_MS = 1000;
+
+/**
  * Checks if the response is an IterableAuthResponse
  */
 const isIterableAuthResponse = (
@@ -1009,10 +1023,20 @@ export class Iterable {
         Iterable.wakeApp();
 
         if (Platform.OS === 'android') {
-          //Give enough time for Activity to wake up.
-          setTimeout(() => {
+          // Give the host Activity time to wake from the background before
+          // dispatching the URL to the handler. Without this delay the
+          // handler can race the activity lifecycle and drop the link on
+          // cold start. Tunable via IterableConfig.androidWakeDelayMs.
+          const wakeDelayMs =
+            Iterable.savedConfig.androidWakeDelayMs ??
+            ANDROID_WAKE_DELAY_DEFAULT_MS;
+          if (wakeDelayMs > 0) {
+            setTimeout(() => {
+              callUrlHandler(Iterable.savedConfig, url, context);
+            }, wakeDelayMs);
+          } else {
             callUrlHandler(Iterable.savedConfig, url, context);
-          }, 1000);
+          }
         } else {
           callUrlHandler(Iterable.savedConfig, url, context);
         }
@@ -1043,37 +1067,90 @@ export class Iterable {
     }
 
     if (Iterable.savedConfig.authHandler) {
-      let authResponseCallback: IterableAuthResponseResult;
+      // Sentinel for the safety-net timeout path, distinct from the native
+      // SUCCESS / FAILURE results.
+      const AUTH_RESULT_NO_CALLBACK = 'NO_CALLBACK';
+      type AuthLatchResult =
+        | IterableAuthResponseResult
+        | typeof AUTH_RESULT_NO_CALLBACK;
+
+      // Event-driven auth latch. The native success/failure listeners
+      // resolve the latch when their event arrives; the safety-net timer
+      // resolves it only if no native event arrives within the configured
+      // window. The timer is a fallback — the latch resolves immediately
+      // when the native event fires.
+      //
+      // `pendingAuthResult` buffers a native result that arrives before the
+      // latch is created (e.g. the authHandler promise hasn't settled yet).
+      // It is consumed when the latch is created, so out-of-order events
+      // are not lost.
+      let authLatchResolver:
+        | ((result: IterableAuthResponseResult) => void)
+        | null = null;
+      let pendingAuthResult: IterableAuthResponseResult | null = null;
+
       RNEventEmitter.addListener(IterableEventName.handleAuthCalled, () => {
+        // Reset per-invocation state so a stale buffered result from a
+        // previous invocation cannot bleed into this one.
+        authLatchResolver = null;
+        pendingAuthResult = null;
+
         // MOB-10423: Check if we can use chain operator (?.) here instead
         // Asks frontend of the client/app to pass authToken
         Iterable.savedConfig.authHandler!()
           .then((promiseResult) => {
             // Promise result can be either just String OR of type AuthResponse.
-            // If type AuthReponse, authToken will be parsed looking for `authToken` within promised object. Two additional listeners will be registered for success and failure callbacks sent by native bridge layer.
+            // If type AuthResponse, authToken will be parsed looking for
+            // `authToken` within promised object. A latch is created and raced
+            // against a safety-net timeout: the native success/failure events
+            // resolve the latch immediately, while the timer only fires if no
+            // native event arrives within the configured window.
             // Else it will be looked for as a String.
             if (isIterableAuthResponse(promiseResult)) {
               Iterable.authManager.passAlongAuthToken(promiseResult.authToken);
 
-              setTimeout(() => {
-                if (
-                  authResponseCallback === IterableAuthResponseResult.SUCCESS
-                ) {
-                  if (promiseResult.successCallback) {
-                    promiseResult.successCallback?.();
+              const nativeLatch = new Promise<IterableAuthResponseResult>(
+                (resolve) => {
+                  if (pendingAuthResult !== null) {
+                    // A native event arrived before the latch was created;
+                    // resolve immediately with the buffered result.
+                    const buffered = pendingAuthResult;
+                    pendingAuthResult = null;
+                    resolve(buffered);
+                  } else {
+                    authLatchResolver = resolve;
                   }
-                } else if (
-                  authResponseCallback === IterableAuthResponseResult.FAILURE
-                ) {
-                  // We are currently only reporting JWT related errors.  In
-                  // the future, we should handle other types of errors as well.
-                  if (promiseResult.failureCallback) {
-                    promiseResult.failureCallback?.();
-                  }
-                } else {
-                  IterableLogger?.log('No callback received from native layer');
                 }
-              }, 1000);
+              );
+
+              const timeoutMs =
+                Iterable.savedConfig.authCallbackTimeoutMs ??
+                AUTH_CALLBACK_TIMEOUT_DEFAULT_MS;
+              const timeoutLatch = new Promise<AuthLatchResult>((resolve) => {
+                setTimeout(
+                  () => resolve(AUTH_RESULT_NO_CALLBACK),
+                  timeoutMs
+                );
+              });
+
+              Promise.race<AuthLatchResult>([nativeLatch, timeoutLatch]).then(
+                (result) => {
+                  // Clear the resolver so a late native event after the timeout
+                  // is a no-op.
+                  authLatchResolver = null;
+                  pendingAuthResult = null;
+                  if (result === IterableAuthResponseResult.SUCCESS) {
+                    promiseResult.successCallback?.();
+                  } else if (result === IterableAuthResponseResult.FAILURE) {
+                    // We are currently only reporting JWT related errors. In
+                    // the future, we should handle other types of errors as
+                    // well.
+                    promiseResult.failureCallback?.();
+                  } else {
+                    IterableLogger?.log('No callback received from native layer');
+                  }
+                }
+              );
             } else if (typeof promiseResult === 'string') {
               // If promise only returns string
               Iterable.authManager.passAlongAuthToken(promiseResult);
@@ -1093,16 +1170,33 @@ export class Iterable {
       RNEventEmitter.addListener(
         IterableEventName.handleAuthSuccessCalled,
         () => {
-          authResponseCallback = IterableAuthResponseResult.SUCCESS;
+          // Resolve the pending auth latch immediately; the timer becomes a
+          // no-op for this invocation.
+          if (authLatchResolver) {
+            const resolve = authLatchResolver;
+            authLatchResolver = null;
+            pendingAuthResult = null;
+            resolve(IterableAuthResponseResult.SUCCESS);
+          } else {
+            // Latch not created yet — buffer the result for the latch.
+            pendingAuthResult = IterableAuthResponseResult.SUCCESS;
+          }
         }
       );
       RNEventEmitter.addListener(
         IterableEventName.handleAuthFailureCalled,
         (authFailureResponse: IterableAuthFailure) => {
-          // Mark the flag for above listener to indicate something failed.
-          // `catch(err)` will only indicate failure on high level. No actions
-          // should be taken inside `catch(err)`.
-          authResponseCallback = IterableAuthResponseResult.FAILURE;
+          // Resolve the pending auth latch immediately; the timer becomes a
+          // no-op for this invocation.
+          if (authLatchResolver) {
+            const resolve = authLatchResolver;
+            authLatchResolver = null;
+            pendingAuthResult = null;
+            resolve(IterableAuthResponseResult.FAILURE);
+          } else {
+            // Latch not created yet — buffer the result for the latch.
+            pendingAuthResult = IterableAuthResponseResult.FAILURE;
+          }
 
           // Call the actual JWT error with `authFailure` object.
           Iterable.savedConfig?.onJwtError?.(authFailureResponse);

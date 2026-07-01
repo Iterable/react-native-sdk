@@ -330,6 +330,63 @@ export class IterableConfig {
   encryptionEnforced = false;
 
   /**
+   * Delay (in milliseconds) the SDK waits on Android before invoking the URL
+   * handler after a deep-link event.
+   *
+   * On Android, the host `Activity` may still be waking from the background when
+   * a deep-link event is delivered. This delay gives the activity time to resume
+   * before the SDK dispatches the URL to `urlHandler`. Without it, the handler
+   * can race the activity lifecycle and drop or mishandle the link on cold
+   * start.
+   *
+   * The wake delay is applied only on Android; iOS dispatches immediately.
+   *
+   * @remarks
+   * Tune this value if your app observes dropped or duplicated deep links on
+   * Android. Increase it on slower devices or custom application classes; set
+   * it to `0` to dispatch synchronously (not recommended unless you have
+   * confirmed your activity lifecycle does not require the delay).
+   *
+   * @example
+   * ```typescript
+   * const config = new IterableConfig();
+   * config.androidWakeDelayMs = 1500; // wait 1.5s on slow Android devices
+   * Iterable.initialize('<YOUR_API_KEY>', config);
+   * ```
+   */
+  androidWakeDelayMs = 1000;
+
+  /**
+   * Maximum time (in milliseconds) the SDK waits for a native auth success or
+   * failure event before resolving the auth callback latch on its own.
+   *
+   * When `authHandler` returns an `IterableAuthResponse`, the SDK passes the
+   * `authToken` to the native layer and waits for either a
+   * `handleAuthSuccessCalled` or `handleAuthFailureCalled` event before
+   * invoking `successCallback` / `failureCallback`. This timeout is a
+   * **safety net**: if no native event arrives within the window, the SDK
+   * resolves the latch with a "no callback received" outcome and logs a
+   * warning rather than hanging the auth flow indefinitely.
+   *
+   * The timer is a fallback, not the primary resolution mechanism. The latch
+   * resolves immediately when the native event arrives.
+   *
+   * @remarks
+   * Increase this value on networks or devices where native auth round-trips
+   * are slow. Setting it too low can cause premature "no callback received"
+   * warnings. Setting it too high increases perceived auth latency only when
+   * the native layer fails to respond.
+   *
+   * @example
+   * ```typescript
+   * const config = new IterableConfig();
+   * config.authCallbackTimeoutMs = 2000; // wait up to 2s for native auth events
+   * Iterable.initialize('<YOUR_API_KEY>', config);
+   * ```
+   */
+  authCallbackTimeoutMs = 1000;
+
+  /**
    * Should the SDK enable and use embedded messaging?
    *
    * **Documentation**
@@ -440,6 +497,8 @@ export class IterableConfig {
       encryptionEnforced: this.encryptionEnforced,
       retryPolicy: this.retryPolicy,
       enableEmbeddedMessaging: this.enableEmbeddedMessaging,
+      androidWakeDelayMs: this.androidWakeDelayMs,
+      authCallbackTimeoutMs: this.authCallbackTimeoutMs,
     };
   }
 }
