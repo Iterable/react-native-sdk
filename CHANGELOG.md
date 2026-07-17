@@ -1,4 +1,4 @@
-## Unreleased
+## 3.1.0
 
 ### Fixes
 - Fixed the React Native bridge contract for `Iterable.initialize` on iOS.
