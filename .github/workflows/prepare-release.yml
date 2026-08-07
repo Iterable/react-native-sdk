@@ -1,0 +1,204 @@
+name: Prepare Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'RN SDK version (e.g., 3.2.0 or 3.2.0-beta1)'
+        required: true
+        type: string
+      ios_sdk_version:
+        description: 'Optional: Iterable iOS SDK pin (e.g., 6.6.8). Leave blank to keep current.'
+        required: false
+        type: string
+      android_sdk_version:
+        description: 'Optional: Iterable Android SDK pin (e.g., 3.6.3). Leave blank to keep current.'
+        required: false
+        type: string
+      jira_ticket:
+        description: 'Optional: SDK Jira ticket number (e.g., 1234) for branch/PR naming.'
+        required: false
+        type: string
+      docs_pr_url:
+        description: 'Optional: iterable-docs PR URL to pre-fill in the release PR body.'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  prepare-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate version format
+        run: |
+          version="${{ github.event.inputs.version }}"
+          if ! [[ $version =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9]+)?$ ]]; then
+            echo "::error::Invalid RN version '$version'. Use semver (e.g., 3.2.0 or 3.2.0-beta1)."
+            exit 1
+          fi
+          if [ -n "${{ github.event.inputs.ios_sdk_version }}" ] && ! [[ "${{ github.event.inputs.ios_sdk_version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9]+)?$ ]]; then
+            echo "::error::Invalid ios_sdk_version '${{ github.event.inputs.ios_sdk_version }}'."
+            exit 1
+          fi
+          if [ -n "${{ github.event.inputs.android_sdk_version }}" ] && ! [[ "${{ github.event.inputs.android_sdk_version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9]+)?$ ]]; then
+            echo "::error::Invalid android_sdk_version '${{ github.event.inputs.android_sdk_version }}'."
+            exit 1
+          fi
+
+      - name: Promote Unreleased to new version in CHANGELOG.md
+        id: update_changelog
+        run: |
+          version="${{ github.event.inputs.version }}"
+          changelog_file="CHANGELOG.md"
+
+          if ! grep -qE '^## \[Unreleased\]' "$changelog_file"; then
+            echo "::error::CHANGELOG.md is missing a '## [Unreleased]' marker. Add it above the newest version header."
+            exit 1
+          fi
+
+          # Extract everything from '## [Unreleased]' up to (but not including) the next version header.
+          # Version headers may be either '## [X.Y.Z]' (bracketed) or '## X.Y.Z' (RN legacy format).
+          unreleased_body=$(awk '
+            /^## \[Unreleased\]/ { capturing=1; next }
+            /^## (\[)?[0-9]+\.[0-9]+\.[0-9]+/ { if (capturing) { exit } }
+            capturing { print }
+          ' "$changelog_file")
+
+          # Trim leading/trailing blank lines from the extracted body.
+          unreleased_body=$(printf '%s\n' "$unreleased_body" | awk 'NF{found=1} found' | awk '{lines[NR]=$0} END{for(i=NR;i>=1;i--) if(lines[i]!=""){last=i;break} for(i=1;i<=last;i++) print lines[i]}')
+
+          if [ -z "$unreleased_body" ]; then
+            echo "::error::No unreleased entries found under '## [Unreleased]'. Add release notes before running this workflow."
+            exit 1
+          fi
+
+          # Rebuild the file: preserve everything before '## [Unreleased]',
+          # write a fresh empty Unreleased block, write the new version block,
+          # then append everything from the first prior version header onward.
+          header=$(awk '/^## \[Unreleased\]/ { exit } { print }' "$changelog_file")
+          rest=$(awk '
+            /^## \[Unreleased\]/ { seen_unreleased=1; next }
+            seen_unreleased && /^## (\[)?[0-9]+\.[0-9]+\.[0-9]+/ { printing=1 }
+            printing { print }
+          ' "$changelog_file")
+
+          {
+            if [ -n "$header" ]; then
+              printf '%s\n' "$header"
+            fi
+            echo "## [Unreleased]"
+            echo ""
+            echo "## $version"
+            echo ""
+            printf '%s\n' "$unreleased_body"
+            echo ""
+            if [ -n "$rest" ]; then
+              printf '%s\n' "$rest"
+            fi
+          } > "$changelog_file.new"
+
+          mv "$changelog_file.new" "$changelog_file"
+          echo "new_version=$version" >> $GITHUB_OUTPUT
+
+      - name: Bump package.json version
+        run: npm --no-git-tag-version --allow-same-version version "${{ github.event.inputs.version }}"
+
+      - name: Regenerate src/itblBuildInfo.ts
+        run: node scripts/autoCreatePackageInfo.js
+
+      - name: Update iOS SDK pin (podspec)
+        if: ${{ github.event.inputs.ios_sdk_version != '' }}
+        run: |
+          ios_ver="${{ github.event.inputs.ios_sdk_version }}"
+          sed -i -E "s|(s\.dependency[[:space:]]+\"Iterable-iOS-SDK\",[[:space:]]+)\"[^\"]+\"|\1\"$ios_ver\"|" Iterable-React-Native-SDK.podspec
+          if ! grep -qE "s\.dependency[[:space:]]+\"Iterable-iOS-SDK\",[[:space:]]+\"$ios_ver\"" Iterable-React-Native-SDK.podspec; then
+            echo "::error::Failed to update Iterable-iOS-SDK dependency in Iterable-React-Native-SDK.podspec."
+            exit 1
+          fi
+
+      - name: Update Android SDK pin (build.gradle)
+        if: ${{ github.event.inputs.android_sdk_version != '' }}
+        run: |
+          android_ver="${{ github.event.inputs.android_sdk_version }}"
+          sed -i -E "s|(api[[:space:]]+\"com\.iterable:iterableapi:)[^\"]+\"|\1$android_ver\"|" android/build.gradle
+          if ! grep -qE "api[[:space:]]+\"com\.iterable:iterableapi:$android_ver\"" android/build.gradle; then
+            echo "::error::Failed to update com.iterable:iterableapi dependency in android/build.gradle."
+            exit 1
+          fi
+
+      - name: Compose branch, title, and body
+        id: meta
+        run: |
+          version="${{ github.event.inputs.version }}"
+          jira="${{ github.event.inputs.jira_ticket }}"
+          ios_ver="${{ github.event.inputs.ios_sdk_version }}"
+          android_ver="${{ github.event.inputs.android_sdk_version }}"
+          docs_pr="${{ github.event.inputs.docs_pr_url }}"
+
+          if [ -n "$jira" ]; then
+            branch="release/SDK-$jira-prepare-for-release-$version"
+            title="SDK-$jira: Prepare for Release $version"
+            commit="[SDK-$jira]: Prepare for release $version"
+          else
+            branch="prepare-for-release-$version"
+            title="Prepare for Release $version"
+            commit="Prepare for release $version"
+          fi
+
+          {
+            echo "branch=$branch"
+            echo "title=$title"
+            echo "commit=$commit"
+          } >> $GITHUB_OUTPUT
+
+          {
+            echo 'body<<EOF'
+            echo "# Prepare for Release $version"
+            echo ""
+            echo "## Native SDK pins"
+            if [ -n "$ios_ver" ]; then
+              echo "- iOS SDK pinned to \`$ios_ver\`"
+            else
+              echo "- iOS SDK pin: unchanged"
+            fi
+            if [ -n "$android_ver" ]; then
+              echo "- Android SDK pinned to \`$android_ver\`"
+            else
+              echo "- Android SDK pin: unchanged"
+            fi
+            echo ""
+            echo "## Docs"
+            if [ -n "$docs_pr" ]; then
+              echo "- $docs_pr"
+            else
+              echo "- [ ] Add link to the iterable-docs PR (validate-release.yml requires this)."
+            fi
+            echo ""
+            echo "## SDK Release Checklist"
+            echo "- [ ] CHANGELOG.md \`## $version\` block reviewed"
+            echo "- [ ] \`package.json\` version bumped"
+            echo "- [ ] \`src/itblBuildInfo.ts\` matches \`package.json\`"
+            echo "- [ ] README.md version compatibility table updated"
+            echo "- [ ] Native pin bumps verified (podspec, android/build.gradle) if applicable"
+            echo "- [ ] Example app smoke-tested on iOS + Android if native pins changed"
+            echo "- [ ] All CI checks passing"
+            echo 'EOF'
+          } >> $GITHUB_OUTPUT
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@4e1beaa7521e8b457b572c090b25bd3db56bf1c5 # v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: ${{ steps.meta.outputs.title }}
+          body: ${{ steps.meta.outputs.body }}
+          branch: ${{ steps.meta.outputs.branch }}
+          commit-message: ${{ steps.meta.outputs.commit }}
+          labels: release
+          delete-branch: true
