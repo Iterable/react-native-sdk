@@ -1,12 +1,12 @@
 {
   "name": "@iterable/react-native-sdk",
-  "version": "3.0.1",
+  "version": "3.1.0",
   "description": "Iterable SDK for React Native.",
-  "source": "./src/index.tsx",
   "main": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",
   "exports": {
     ".": {
+      "iterable-react-native-sdk-source": "./src/index.tsx",
       "types": "./lib/typescript/src/index.d.ts",
       "default": "./lib/module/index.js"
     },
@@ -78,15 +78,15 @@
     "@react-native/metro-config": "0.85.3",
     "@react-native/typescript-config": "0.85.3",
     "@react-navigation/native": "^7.1.14",
-    "@release-it/conventional-changelog": "^9.0.4",
-    "@testing-library/jest-native": "^5.4.3",
+    "@release-it/conventional-changelog": "^11.0.1",
     "@testing-library/react-native": "^13.3.3",
-    "@types/jest": "^29.5.5",
+    "@types/jest": "^29.5.14",
     "@types/react": "^19.2.0",
     "@typescript-eslint/eslint-plugin": "^8.13.0",
     "@typescript-eslint/parser": "^8.13.0",
     "baseline-browser-mapping": "^2.10.29",
     "commitlint": "^19.6.1",
+    "conventional-changelog-conventionalcommits": "^9.3.1",
     "del-cli": "^5.1.0",
     "dpdm": "^4.2.0",
     "eslint": "^9.39.5",
@@ -99,13 +99,13 @@
     "prettier-eslint": "^16.4.2",
     "react": "19.2.3",
     "react-native": "0.85.3",
-    "react-native-builder-bob": "^0.40.4",
+    "react-native-builder-bob": "^0.43.0",
     "react-native-gesture-handler": "^2.30.0",
     "react-native-safe-area-context": "^5.6.0",
     "react-native-screens": ">=4.19.0 <4.25.0",
     "react-native-webview": "^13.14.1",
     "react-test-renderer": "19.2.3",
-    "release-it": "^17.10.0",
+    "release-it": "^20.2.1",
     "turbo": "^1.10.7",
     "typedoc": "^0.28.13",
     "typedoc-plugin-coverage": "^3.3.0",
@@ -114,6 +114,8 @@
   },
   "resolutions": {
     "@types/react": "^19.2.0",
+    "babel-jest": "29.7.0",
+    "jest-environment-node": "29.7.0",
     "eslint-plugin-ft-flow": "^3.0.11"
   },
   "peerDependencies": {
@@ -154,17 +156,20 @@
     },
     "plugins": {
       "@release-it/conventional-changelog": {
-        "preset": "angular",
-        "types": [
-          {
-            "type": "feat",
-            "section": "Features"
-          },
-          {
-            "type": "fix",
-            "section": "Bug Fixes"
-          }
-        ]
+        "preset": {
+          "name": "conventionalcommits",
+          "types": [
+            {
+              "type": "feat",
+              "section": "Features"
+            },
+            {
+              "type": "fix",
+              "section": "Bug Fixes"
+            }
+          ]
+        },
+        "infile": "CHANGELOG.md"
       }
     }
   },

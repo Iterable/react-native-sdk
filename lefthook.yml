@@ -9,6 +9,8 @@ pre-commit:
       run: npx tsc
     circular:
       glob: "src/**/*.{ts,tsx}"
+      env:
+        CI: "true"
       run: yarn check:circular
     # version-check:
     #   glob: "package.json"

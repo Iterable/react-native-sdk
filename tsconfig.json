@@ -4,6 +4,7 @@
     "paths": {
       "@iterable/react-native-sdk": ["./src/index"]
     },
+    "customConditions": ["iterable-react-native-sdk-source"],
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "esModuleInterop": true,

@@ -1,9 +1,6 @@
 module.exports = {
   preset: '@react-native/jest-preset',
   setupFiles: ['<rootDir>/src/__mocks__/jest.setup.ts'],
-  setupFilesAfterEnv: [
-    '<rootDir>/node_modules/@testing-library/jest-native/extend-expect',
-  ],
   testMatch: ['<rootDir>/src/**/*.(test|spec).[jt]s?(x)'],
   transformIgnorePatterns: [
     'node_modules/(?!(react-native|@react-native|@react-navigation|react-native-screens|react-native-safe-area-context|react-native-gesture-handler|react-native-webview)/)',
