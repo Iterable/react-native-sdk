@@ -175,7 +175,29 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
-        # Initializes the CodeQL tools for scanning.
+      - uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
+        with:
+          xcode-version: '16.4'
+
+      - name: Print available simulators
+        run: xcrun simctl list devices | cat
+
+      - name: Get latest stable iOS version
+        id: ios-version
+        run: |
+          # First try to find iOS 18.x that's available
+          LATEST_IOS=$(xcrun simctl list runtimes | grep "iOS 18" | grep -v "watchOS" | grep -v "beta" | grep -v "Beta" | grep -v "unavailable" | tail -1 | sed 's/.*iOS \([0-9]*\.[0-9]*\).*/\1/')
+
+          # If no iOS 18.x available, fall back to any available iOS version
+          if [ -z "$LATEST_IOS" ]; then
+            echo "No iOS 18.x available, falling back to latest available iOS version..."
+            LATEST_IOS=$(xcrun simctl list runtimes | grep "iOS" | grep -v "watchOS" | grep -v "beta" | grep -v "Beta" | grep -v "unavailable" | tail -1 | sed 's/.*iOS \([0-9]*\.[0-9]*\).*/\1/')
+          fi
+
+          echo "version=$LATEST_IOS" >> $GITHUB_OUTPUT
+          echo "Latest stable iOS version: $LATEST_IOS"
+
+      # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v4
         with:
@@ -188,7 +210,8 @@ jobs:
           # For more details on CodeQL's query packs, refer to: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
           queries: ${{ matrix.language && 'security-extended, security-and-quality' }}
 
-      - if: matrix.build-mode == 'manual'
+      - name: Build example for CodeQL
+        if: matrix.build-mode == 'manual'
         shell: bash
         run: |
           cd example
@@ -196,7 +219,7 @@ jobs:
           cd ios
           bundle install
           bundle exec pod install
-          xcodebuild -workspace ReactNativeSdkExample.xcworkspace -scheme ReactNativeSdkExample -configuration Debug -destination 'platform=iOS Simulator,name=iPhone 16' build
+          xcodebuild -workspace ReactNativeSdkExample.xcworkspace -scheme ReactNativeSdkExample -configuration Debug -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=${{ steps.ios-version.outputs.version }}' build
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v4
