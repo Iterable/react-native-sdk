@@ -1,0 +1,74 @@
+name: Publish Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish (e.g., 3.6.0)'
+        required: true
+        type: string
+
+env:
+  VERSION: ${{ github.event.inputs.version }}
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  publish-release:
+    runs-on: ubuntu-latest
+    environment: npm
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify release is ready
+        run: |
+          if ! grep -qF "## $VERSION" CHANGELOG.md; then
+            echo "::error::CHANGELOG.md has no entry for $VERSION. Merge the prepare-release PR to main before running this workflow."
+            exit 1
+          fi
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'yarn'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Update npm for OIDC support
+        run: npm install -g npm@latest
+
+      - run: yarn install --frozen-lockfile
+
+      - run: yarn test --maxWorkers=2
+
+      - run: yarn prepare
+
+      - name: Publish to npm
+        run: npm publish --provenance
+
+      - name: Publish draft GitHub release and tag main
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release edit "$VERSION" \
+            --draft=false \
+            --target "$(git rev-parse HEAD)" \
+            --latest
+
+      - name: Slack notification
+        run: |
+          release_url="https://github.com/${{ github.repository }}/releases/tag/$VERSION"
+          payload=$(jq -n \
+            --arg text ":package: *React Native SDK ${VERSION}* has been released. <${release_url}|View release notes>." \
+            '{"text": $text}')
+          curl -sS -X POST -H 'Content-type: application/json' --data "$payload" "${{ secrets.SLACK_WEBHOOK }}"
+
+      - name: Slack failure notification
+        if: failure()
+        run: |
+          run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/attempts/${{ github.run_attempt }}"
+          payload=$(jq -n \
+            --arg text ":alert: React Native SDK release ${VERSION} failed (attempt ${{ github.run_attempt }}). Run: ${run_url}" \
+            '{"text": $text}')
+          curl -sS -X POST -H 'Content-type: application/json' --data "$payload" "${{ secrets.SLACK_WEBHOOK }}"
