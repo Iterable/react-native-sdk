@@ -24,6 +24,7 @@ Iterable. It supports JavaScript and TypeScript.
   - [Beta Versions](#beta-versions)
   - [Features](#features)
   - [Example project](#example-project)
+  - [Building a local npm package](#building-a-local-npm-package)
   - [Version mapping](#version-mapping)
   - [Release notes, support and troubleshooting](#release-notes-support-and-troubleshooting)
   - [License](#license)
@@ -117,6 +118,21 @@ To learn more about the SDK, read:
 For sample code, take a look at the following project:
 
 - [Example App](https://github.com/Iterable/react-native-sdk/tree/master/example)
+
+## Building a local npm package
+
+Generate a `.tgz` from **this** React Native SDK checkout. Do not run `npm pack` from a consuming app; that will not produce `@iterable/react-native-sdk`.
+
+From the root of this repository:
+
+```bash
+yarn install
+npm pack
+```
+
+`yarn install` runs `prepare` / `yarn build`. `npm pack` writes
+`iterable-react-native-sdk-<version>.tgz` in the repo root, using the version
+in `package.json` (for example `iterable-react-native-sdk-3.2.0.tgz`).
 
 ## Version mapping
 
