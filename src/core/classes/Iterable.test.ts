@@ -143,6 +143,16 @@ describe('Iterable', () => {
     });
   });
 
+  describe('disableDeviceForAllUsers', () => {
+    it('should disable the device for all users', () => {
+      // GIVEN no parameters
+      // WHEN Iterable.disableDeviceForAllUsers is called
+      Iterable.disableDeviceForAllUsers();
+      // THEN corresponding method is called on RNIterableAPI
+      expect(MockRNIterableAPI.disableDeviceForAllUsers).toBeCalled();
+    });
+  });
+
   describe('registerDeviceToken', () => {
     it('should register the device token for the current user', () => {
       // GIVEN a device token

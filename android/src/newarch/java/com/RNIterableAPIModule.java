@@ -138,6 +138,11 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   }
 
   @Override
+  public void disableDeviceForAllUsers() {
+    moduleImpl.disableDeviceForAllUsers();
+  }
+
+  @Override
   public void registerDeviceToken(String token) {
     moduleImpl.registerDeviceToken(token);
   }
