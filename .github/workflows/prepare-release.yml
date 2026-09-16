@@ -22,6 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: master
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Validate version format
@@ -49,6 +50,8 @@ jobs:
             cat "$changelog_file"
           } > "$temp_file"
           mv "$temp_file" "$changelog_file"
+
+          echo "See CHANGELOG.md for release notes." > "$RUNNER_TEMP/release-notes.md"
 
       - name: Bump package.json version
         run: npm --no-git-tag-version --allow-same-version version "${{ github.event.inputs.version }}"
@@ -88,5 +91,5 @@ jobs:
             gh release create "$version" \
               --draft \
               --title "$version" \
-              --notes "See CHANGELOG.md for release notes."
+              --notes-file "$RUNNER_TEMP/release-notes.md"
           fi
