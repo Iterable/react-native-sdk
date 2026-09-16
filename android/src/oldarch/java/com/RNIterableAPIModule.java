@@ -139,6 +139,11 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void disableDeviceForAllUsers() {
+      moduleImpl.disableDeviceForAllUsers();
+    }
+
+    @ReactMethod
     public void registerDeviceToken(String token) {
       moduleImpl.registerDeviceToken(token);
     }

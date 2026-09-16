@@ -138,6 +138,17 @@ export class IterableApi {
   }
 
   /**
+   * Disable this device's push token for every user associated with the device.
+   *
+   * iOS: forwards to native `IterableAPI.disableDeviceForAllUsers()`.
+   * Android: logged no-op — there is no public native "all users" equivalent.
+   */
+  static disableDeviceForAllUsers() {
+    IterableLogger.log('disableDeviceForAllUsers');
+    return RNIterableAPI.disableDeviceForAllUsers();
+  }
+
+  /**
    * Register the device token for the current user, re-enabling push notifications.
    *
    * @param token - On Android, the FCM token string. On iOS, a continuous hex string representation of the APNS token.

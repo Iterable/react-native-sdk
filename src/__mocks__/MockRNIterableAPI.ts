@@ -34,6 +34,8 @@ export class MockRNIterableAPI {
 
   static disableDeviceForCurrentUser = jest.fn();
 
+  static disableDeviceForAllUsers = jest.fn();
+
   static registerDeviceToken = jest.fn((token: string): void => {
     MockRNIterableAPI.token = token;
   });

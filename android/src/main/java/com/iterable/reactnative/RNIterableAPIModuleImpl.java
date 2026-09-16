@@ -373,6 +373,10 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         IterableApi.getInstance().disablePush();
     }
 
+    public void disableDeviceForAllUsers() {
+        IterableLogger.w(TAG, "disableDeviceForAllUsers is not supported on Android; use disableDeviceForCurrentUser. There is no public native equivalent.");
+    }
+
     public void registerDeviceToken(String token) {
         IterableLogger.v(TAG, "registerDeviceToken");
         IterableApi.getInstance().registerDeviceToken(token);

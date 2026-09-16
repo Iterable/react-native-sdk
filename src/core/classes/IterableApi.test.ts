@@ -282,6 +282,17 @@ describe('IterableApi', () => {
     });
   });
 
+  describe('disableDeviceForAllUsers', () => {
+    it('should call RNIterableAPI.disableDeviceForAllUsers', () => {
+      // GIVEN no parameters
+      // WHEN disableDeviceForAllUsers is called
+      IterableApi.disableDeviceForAllUsers();
+
+      // THEN RNIterableAPI.disableDeviceForAllUsers is called
+      expect(MockRNIterableAPI.disableDeviceForAllUsers).toBeCalled();
+    });
+  });
+
   describe('registerDeviceToken', () => {
     it('should call RNIterableAPI.registerDeviceToken with the token', () => {
       // GIVEN a device token
