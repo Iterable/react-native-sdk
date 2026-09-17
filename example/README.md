@@ -95,10 +95,14 @@ yarn android
 yarn ios
 ```
 
+From the SDK repo root you can also run `yarn example ios`.
+
+On **Xcode 27**, the CLI opens **Device Hub** (`DeviceHub.app`) instead of Simulator. This example pins `@react-native-community/cli` **20.2.0+** for that path. If several Xcode versions are installed, `xcode-select -p` must point at the one you intend to use.
+
 **NOTE**: If you are getting an error when running ios, make sure that *Xcode > Project Navigator > ReactNativeSdkExample > Build Settings > User
    Script Sandboxing* is set to **No**
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or on iOS (Simulator on Xcode 26 and earlier, Device Hub on Xcode 27) shortly provided you have set up your emulator/simulator correctly.
 
 This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
 
@@ -217,6 +221,12 @@ This is a known issue with Ruby 3.4.0.  You can fix it by running the following:
 gem install xcodeproj -v '< 1.26.0'
 gem install concurrent-ruby -v '< 1.3.4'
 ```
+
+## Xcode 27
+
+Xcode 27 replaces `Simulator.app` with Device Hub. `yarn ios` / `yarn example ios` require `@react-native-community/cli` **20.2.0+** (this example already pins it). A `Simulator.app does not exist` error means an older CLI is still on the path, or `xcode-select` points at a different Xcode.
+
+Xcode 27's iOS SDK also rejects any target with `IPHONEOS_DEPLOYMENT_TARGET` below **15.0**, including CocoaPods resource bundles such as `Iterable-iOS-SDK-IterableSDKResources` (12.0 from Iterable-iOS-SDK 6.6.7). This example's `ios/Podfile` `post_install` lifts generated Pods targets to **15.1**. Copy that lift into a host app Podfile if you hit the same `xcodebuild` 65 error. It does not change Iterable-iOS-SDK's published minimum; that wait is a later iOS SDK release and an RN pin off 6.6.7.
 
 ## Xcode 16.3 Issue
 
