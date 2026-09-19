@@ -11,27 +11,15 @@ React Native application.
 >"Creating a new application" step, before proceeding.
 
 ## Step 1: Install dependencies
-To install the app dependencies, run the following command from the
-_example app directory_ (the directory in which this document resides):
+
+From the **SDK repo root** (the parent of this `example/` directory):
 
 ```bash
 yarn install
+(cd example/ios && bundle install && bundle exec pod install)
 ```
 
-Once this is done, you will need to install the pods in the _ios_ folder in the
-_example app directory_.  To do so, run the following:
-
-```bash
-cd ios
-bundle install
-bundle exec pod install
-```
-
-Once this is done, `cd` back into the _example app directory_:
-
-```bash
-cd ..
-```
+`yarn install` at the root installs the Yarn workspace (SDK + example). The `example/ios` step is **iOS only** — skip it if you are only running Android.
 
 ## Step 2: Add your environment variables
 In the _example app directory_, there is a file called **.env.example**.  Make a
@@ -69,33 +57,19 @@ To add an API key, do the following:
  6. Copy the generated API key and JWT secret into your _.env_ file
 
 
-## Step 3: Start the Metro Server
+## Step 3: Start your Application
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
-
-To start Metro, run the following command from the _example app directory_:
+From the **SDK repo root**, run one of:
 
 ```bash
-yarn start
+yarn example android
 ```
-
-## Step 4: Start your Application
-
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _example app directory_. Run the following command to start your _Android_ or _iOS_ app:
-
-### For Android
 
 ```bash
-yarn android
+yarn example ios
 ```
 
-### For iOS
-
-```bash
-yarn ios
-```
-
-From the SDK repo root you can also run `yarn example ios`.
+`run-android` / `run-ios` start **Metro** in a separate terminal by default. You do not need to run `yarn start` first. Pass `--no-packager` if you already have Metro running and do not want a second window.
 
 On **Xcode 27**, the CLI opens **Device Hub** (`DeviceHub.app`) instead of Simulator. This example pins `@react-native-community/cli` **20.2.0+** for that path. If several Xcode versions are installed, `xcode-select -p` must point at the one you intend to use.
 
