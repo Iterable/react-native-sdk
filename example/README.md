@@ -11,27 +11,15 @@ React Native application.
 >"Creating a new application" step, before proceeding.
 
 ## Step 1: Install dependencies
-To install the app dependencies, run the following command from the
-_example app directory_ (the directory in which this document resides):
+
+From the **SDK repo root** (the parent of this `example/` directory):
 
 ```bash
 yarn install
+(cd example/ios && bundle install && bundle exec pod install)
 ```
 
-Once this is done, you will need to install the pods in the _ios_ folder in the
-_example app directory_.  To do so, run the following:
-
-```bash
-cd ios
-bundle install
-bundle exec pod install
-```
-
-Once this is done, `cd` back into the _example app directory_:
-
-```bash
-cd ..
-```
+`yarn install` at the root installs the Yarn workspace (SDK + example). The `example/ios` step is **iOS only** — skip it if you are only running Android.
 
 ## Step 2: Add your environment variables
 In the _example app directory_, there is a file called **.env.example**.  Make a
@@ -69,36 +57,26 @@ To add an API key, do the following:
  6. Copy the generated API key and JWT secret into your _.env_ file
 
 
-## Step 3: Start the Metro Server
+## Step 3: Start your Application
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
-
-To start Metro, run the following command from the _example app directory_:
+From the **SDK repo root**, run one of:
 
 ```bash
-yarn start
+yarn example android
 ```
-
-## Step 4: Start your Application
-
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _example app directory_. Run the following command to start your _Android_ or _iOS_ app:
-
-### For Android
 
 ```bash
-yarn android
+yarn example ios
 ```
 
-### For iOS
+`run-android` / `run-ios` start **Metro** in a separate terminal by default. You do not need to run `yarn start` first. Pass `--no-packager` if you already have Metro running and do not want a second window.
 
-```bash
-yarn ios
-```
+On **Xcode 27**, the CLI opens **Device Hub** (`DeviceHub.app`) instead of Simulator. This example pins `@react-native-community/cli` **20.2.0+** for that path. If several Xcode versions are installed, `xcode-select -p` must point at the one you intend to use.
 
 **NOTE**: If you are getting an error when running ios, make sure that *Xcode > Project Navigator > ReactNativeSdkExample > Build Settings > User
    Script Sandboxing* is set to **No**
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or on iOS (Simulator on Xcode 26 and earlier, Device Hub on Xcode 27) shortly provided you have set up your emulator/simulator correctly.
 
 This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
 
@@ -217,6 +195,12 @@ This is a known issue with Ruby 3.4.0.  You can fix it by running the following:
 gem install xcodeproj -v '< 1.26.0'
 gem install concurrent-ruby -v '< 1.3.4'
 ```
+
+## Xcode 27
+
+Xcode 27 replaces `Simulator.app` with Device Hub. `yarn ios` / `yarn example ios` require `@react-native-community/cli` **20.2.0+** (this example already pins it). A `Simulator.app does not exist` error means an older CLI is still on the path, or `xcode-select` points at a different Xcode.
+
+Xcode 27's iOS SDK also rejects any target with `IPHONEOS_DEPLOYMENT_TARGET` below **15.0**, including CocoaPods resource bundles such as `Iterable-iOS-SDK-IterableSDKResources` (12.0 from Iterable-iOS-SDK 6.6.7). This example's `ios/Podfile` `post_install` lifts generated Pods targets to **15.1**. Copy that lift into a host app Podfile if you hit the same `xcodebuild` 65 error. It does not change Iterable-iOS-SDK's published minimum; that wait is a later iOS SDK release and an RN pin off 6.6.7.
 
 ## Xcode 16.3 Issue
 
