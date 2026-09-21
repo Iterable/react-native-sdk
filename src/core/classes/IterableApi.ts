@@ -142,9 +142,17 @@ export class IterableApi {
    *
    * iOS: forwards to native `IterableAPI.disableDeviceForAllUsers()`.
    * Android: logged no-op — there is no public native "all users" equivalent.
+   * The warning is logged in JS (Metro) as well as native (logcat); the
+   * native method is still invoked.
    */
   static disableDeviceForAllUsers() {
-    IterableLogger.log('disableDeviceForAllUsers');
+    if (Platform.OS === 'android') {
+      IterableLogger.log(
+        'disableDeviceForAllUsers is not supported on Android; use disableDeviceForCurrentUser. There is no public native equivalent.'
+      );
+    } else {
+      IterableLogger.log('disableDeviceForAllUsers');
+    }
     return RNIterableAPI.disableDeviceForAllUsers();
   }
 

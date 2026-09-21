@@ -350,9 +350,10 @@ export class Iterable {
    * not only the currently signed-in user.
    *
    * On iOS this forwards to native `IterableAPI.disableDeviceForAllUsers()`.
-   * On Android this is a no-op that logs a warning: the native Android SDK has
-   * no public "all users" equivalent. Use {@link disableDeviceForCurrentUser} to
-   * disable push for the current user on both platforms.
+   * On Android this is a no-op that logs a warning in Metro and logcat: the
+   * native Android SDK has no public "all users" equivalent. Use
+   * {@link disableDeviceForCurrentUser} to disable push for the current user
+   * on both platforms. The native Android method is still invoked.
    *
    * Fire-and-forget: native success or failure is not surfaced to JS.
    *
