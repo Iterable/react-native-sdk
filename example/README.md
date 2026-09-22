@@ -200,7 +200,7 @@ gem install concurrent-ruby -v '< 1.3.4'
 
 Xcode 27 replaces `Simulator.app` with Device Hub. `yarn ios` / `yarn example ios` require `@react-native-community/cli` **20.2.0+** (this example already pins it). A `Simulator.app does not exist` error means an older CLI is still on the path, or `xcode-select` points at a different Xcode.
 
-Xcode 27's iOS SDK also rejects any target with `IPHONEOS_DEPLOYMENT_TARGET` below **15.0**, including CocoaPods resource bundles such as `Iterable-iOS-SDK-IterableSDKResources` (12.0 from Iterable-iOS-SDK 6.6.7). This example's `ios/Podfile` `post_install` lifts generated Pods targets to **15.1**. Copy that lift into a host app Podfile if you hit the same `xcodebuild` 65 error. It does not change Iterable-iOS-SDK's published minimum; that wait is a later iOS SDK release and an RN pin off 6.6.7.
+Xcode 27's iOS SDK also rejects any target with `IPHONEOS_DEPLOYMENT_TARGET` below **15.0**, including CocoaPods resource bundles such as `Iterable-iOS-SDK-IterableSDKResources` (12.0 from Iterable-iOS-SDK, including **6.7.5** pinned by RN **3.2.0**). This example's `ios/Podfile` `post_install` lifts generated Pods targets to **15.1**. Copy that lift into a host app Podfile if you hit the same `xcodebuild` 65 error. It does not change Iterable-iOS-SDK's published minimum; that wait is a later iOS SDK release that raises the platform to ≥ 15.1.
 
 ## Xcode 16.3 Issue
 
