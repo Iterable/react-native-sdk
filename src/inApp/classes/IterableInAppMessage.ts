@@ -175,16 +175,12 @@ export class IterableInAppMessage {
     const campaignId = dict.campaignId;
     const trigger = IterableInAppTrigger.fromDict(dict.trigger);
 
-    let createdAt = dict.createdAt;
-    if (createdAt) {
-      const dateObject = new Date(0);
-      createdAt = dateObject.setUTCMilliseconds(createdAt);
-    }
-    let expiresAt = dict.expiresAt;
-    if (expiresAt) {
-      const dateObject = new Date(0);
-      expiresAt = dateObject.setUTCMilliseconds(expiresAt);
-    }
+    const createdAt = dict.createdAt
+      ? new Date(dict.createdAt)
+      : undefined;
+    const expiresAt = dict.expiresAt
+      ? new Date(dict.expiresAt)
+      : undefined;
     const saveToInbox = IterableUtil.readBoolean(dict, 'saveToInbox');
     const inboxMetadataDict = dict.inboxMetadata;
     let inboxMetadata: IterableInboxMetadata | undefined;
@@ -196,16 +192,12 @@ export class IterableInAppMessage {
     const customPayload = dict.customPayload;
     const read = IterableUtil.readBoolean(dict, 'read');
 
-    const priorityLevel = dict.priorityLevel;
+    const priorityLevel = dict.priorityLevel ?? 0;
 
     return new IterableInAppMessage(
       messageId,
       campaignId,
       trigger,
-      // MOB-10426: Speak to the team about `IterableInAppMessage` requiring a date
-      // object, but being passed a number in this case
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      //  @ts-ignore
       createdAt,
       expiresAt,
       saveToInbox,
