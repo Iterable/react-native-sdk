@@ -4,7 +4,7 @@
 
 - Bumped native SDK pins to Android [3.10.1](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.10.1) and iOS [6.7.5](https://github.com/Iterable/swift-sdk/releases/tag/6.7.5). This is a native SDK bump, not new JS APIs.
   - Android now pulls `androidx.work:work-runtime:2.9.0` as a transitive dependency (WorkManager replaced AsyncTask-based push handling in native 3.7.0). No app code change is required.
-  - On iOS, `register(token:)` (exposed as `Iterable.registerDeviceToken`) now requires a current user. Calling it before `setEmail` / `setUserId` no longer sends the register request; the native SDK reports failure instead. The JS method is fire-and-forget and does not surface that failure.
+  - On iOS, `enableUnknownUserActivation` now defaults to `false` (fixed in native 6.7.1). RN 3.1.0 pinned iOS 6.6.7, where this flag defaulted to `true`, so iOS apps were accidentally running unknown-user activation. This release does not expose that config; unknown-user activation stays off on iOS unless a later RN release adds the API. Android's default was already `false`.
 
 ## 3.1.0
 
