@@ -144,6 +144,12 @@ import React
     IterableAPI.disableDeviceForCurrentUser()
   }
 
+  @objc(disableDeviceForAllUsers)
+  public func disableDeviceForAllUsers() {
+    ITBInfo()
+    IterableAPI.disableDeviceForAllUsers()
+  }
+
   @objc(registerDeviceToken:)
   public func registerDeviceToken(token: String) {
     ITBInfo()

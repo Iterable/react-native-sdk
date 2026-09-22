@@ -3,6 +3,7 @@ import { Platform } from 'react-native';
 import { MockRNIterableAPI } from '../../__mocks__/MockRNIterableAPI';
 import { IterableApi } from './IterableApi';
 import { IterableConfig } from './IterableConfig';
+import { IterableLogger } from './IterableLogger';
 import { IterableAttributionInfo } from './IterableAttributionInfo';
 import { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableInAppMessage } from '../../inApp/classes/IterableInAppMessage';
@@ -279,6 +280,59 @@ describe('IterableApi', () => {
 
       // THEN RNIterableAPI.disableDeviceForCurrentUser is called
       expect(MockRNIterableAPI.disableDeviceForCurrentUser).toBeCalled();
+    });
+  });
+
+  describe('disableDeviceForAllUsers', () => {
+    it('should call RNIterableAPI.disableDeviceForAllUsers', () => {
+      // GIVEN no parameters
+      // WHEN disableDeviceForAllUsers is called
+      IterableApi.disableDeviceForAllUsers();
+
+      // THEN RNIterableAPI.disableDeviceForAllUsers is called
+      expect(MockRNIterableAPI.disableDeviceForAllUsers).toBeCalled();
+    });
+
+    it('should log an unsupported warning on Android and still call native', () => {
+      const originalPlatform = Platform.OS;
+      Object.defineProperty(Platform, 'OS', {
+        value: 'android',
+        writable: true,
+      });
+      const logSpy = jest.spyOn(IterableLogger, 'log');
+
+      IterableApi.disableDeviceForAllUsers();
+
+      expect(logSpy).toHaveBeenCalledWith(
+        'disableDeviceForAllUsers is not supported on Android; use disableDeviceForCurrentUser. There is no public native equivalent.'
+      );
+      expect(MockRNIterableAPI.disableDeviceForAllUsers).toBeCalled();
+
+      logSpy.mockRestore();
+      Object.defineProperty(Platform, 'OS', {
+        value: originalPlatform,
+        writable: true,
+      });
+    });
+
+    it('should log the method name on iOS and still call native', () => {
+      const originalPlatform = Platform.OS;
+      Object.defineProperty(Platform, 'OS', {
+        value: 'ios',
+        writable: true,
+      });
+      const logSpy = jest.spyOn(IterableLogger, 'log');
+
+      IterableApi.disableDeviceForAllUsers();
+
+      expect(logSpy).toHaveBeenCalledWith('disableDeviceForAllUsers');
+      expect(MockRNIterableAPI.disableDeviceForAllUsers).toBeCalled();
+
+      logSpy.mockRestore();
+      Object.defineProperty(Platform, 'OS', {
+        value: originalPlatform,
+        writable: true,
+      });
     });
   });
 

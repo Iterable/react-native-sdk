@@ -230,6 +230,10 @@ RCT_EXPORT_MODULE()
   [_swiftAPI disableDeviceForCurrentUser];
 }
 
+- (void)disableDeviceForAllUsers {
+  [_swiftAPI disableDeviceForAllUsers];
+}
+
 - (void)registerDeviceToken:(NSString *)token {
   [_swiftAPI registerDeviceToken:token];
 }
@@ -514,6 +518,10 @@ RCT_EXPORT_METHOD(setAttributionInfo : (NSDictionary *)attributionInfo) {
 
 RCT_EXPORT_METHOD(disableDeviceForCurrentUser) {
   [_swiftAPI disableDeviceForCurrentUser];
+}
+
+RCT_EXPORT_METHOD(disableDeviceForAllUsers) {
+  [_swiftAPI disableDeviceForAllUsers];
 }
 
 RCT_EXPORT_METHOD(registerDeviceToken : (NSString *)token) {
