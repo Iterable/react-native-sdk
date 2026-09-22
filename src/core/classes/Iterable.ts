@@ -962,7 +962,28 @@ export class Iterable {
   /**
    * Logs out the current user from the Iterable SDK.
    *
-   * This method will remove all event listeners for the Iterable SDK and set the email and user ID to null.
+   * This is the React Native equivalent of native `logoutUser`. There is no
+   * dedicated bridged `logoutUser` method. `logout()` removes JS event
+   * listeners and clears identity via `setEmail(null)` and `setUserId(null)`,
+   * which triggers the native logout cleanup on both platforms.
+   *
+   * Native cleanup includes:
+   * - resetting the auth manager
+   * - resetting the in-app (and embedded) manager
+   * - disabling the current push token when
+   *   `IterableConfig.autoPushRegistration` is `true`
+   *
+   * Both identity-clears are required. On iOS, `setEmail(null)` is a no-op
+   * when the user is identified only by userId, and `setUserId(null)` is a
+   * no-op when the user is identified only by email.
+   *
+   * iOS has a public `IterableAPI.logoutUser()`; it is not wired through the
+   * RN bridge. Android has no public `logoutUser` — private
+   * `logoutPreviousUser()` runs as part of identity-clear. The iOS
+   * `logoutUser(withOnSuccess:onFailure:)` overload is also not exposed.
+   *
+   * Calling `logout()` when no user is signed in is safe: listeners are
+   * removed and native identity-clear is effectively a no-op.
    *
    * @example
    * ```typescript
