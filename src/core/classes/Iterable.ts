@@ -954,11 +954,12 @@ export class Iterable {
    *
    * Both identity-clears are required. On iOS, `setEmail(null)` is a no-op
    * when the user is identified only by userId, and `setUserId(null)` is a
-   * no-op when the user is identified only by email. Android has no public
-   * `logoutUser`; private `logoutPreviousUser()` runs as part of identity
-   * clear.
+   * no-op when the user is identified only by email.
    *
-   * iOS `logoutUser(withOnSuccess:onFailure:)` is not exposed.
+   * iOS has a public `IterableAPI.logoutUser()`; it is not wired through the
+   * RN bridge. Android has no public `logoutUser` — private
+   * `logoutPreviousUser()` runs as part of identity-clear. The iOS
+   * `logoutUser(withOnSuccess:onFailure:)` overload is also not exposed.
    *
    * Calling `logout()` when no user is signed in is safe: listeners are
    * removed and native identity-clear is effectively a no-op.
