@@ -372,6 +372,14 @@ export class IterableApi {
   }
 
   /**
+   * Get the JWT currently held by the native SDK for the signed-in user.
+   */
+  static getAuthToken() {
+    IterableLogger.log('getAuthToken');
+    return RNIterableAPI.getAuthToken();
+  }
+
+  /**
    * Pass along an auth token to the SDK.
    *
    * @param authToken - The auth token to pass along

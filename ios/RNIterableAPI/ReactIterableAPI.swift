@@ -500,6 +500,12 @@ import React
 
   // MARK: - SDK Auth Manager Functions
 
+  @objc(getAuthToken:rejecter:)
+  public func getAuthToken(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
+    ITBInfo()
+    resolver(IterableAPI.authToken)
+  }
+
   @objc(passAlongAuthToken:)
   public func passAlongAuthToken(authToken: String?) {
     ITBInfo()

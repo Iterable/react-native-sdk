@@ -249,6 +249,10 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         promise.resolve(RNIterableInternal.getUserId());
     }
 
+    public void getAuthToken(Promise promise) {
+        promise.resolve(RNIterableInternal.getAuthToken());
+    }
+
     public void trackEvent(String name, @Nullable ReadableMap dataFields) {
         IterableLogger.v(TAG, "trackEvent");
         IterableApi.getInstance().track(name, optSerializedDataFields(dataFields));

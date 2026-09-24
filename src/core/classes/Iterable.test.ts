@@ -1038,6 +1038,25 @@ describe('Iterable', () => {
       });
     });
 
+    describe('getAuthToken', () => {
+      it('should return the auth token from RNIterableAPI', async () => {
+        const expectedToken = 'jwt-token';
+        MockRNIterableAPI.authToken = expectedToken;
+
+        const result = await Iterable.authManager.getAuthToken();
+
+        expect(result).toBe(expectedToken);
+      });
+
+      it('should return null when RNIterableAPI has no auth token', async () => {
+        MockRNIterableAPI.authToken = null;
+
+        const result = await Iterable.authManager.getAuthToken();
+
+        expect(result).toBeNull();
+      });
+    });
+
     describe('passAlongAuthToken', () => {
       it('should call RNIterableAPI.passAlongAuthToken with a valid string token', async () => {
         // GIVEN a valid auth token

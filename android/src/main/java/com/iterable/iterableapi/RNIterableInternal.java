@@ -16,6 +16,11 @@ public class RNIterableInternal {
         return IterableApi.getInstance().getUserId();
     }
 
+    @Nullable
+    public static String getAuthToken() {
+        return IterableApi.getInstance().getAuthToken();
+    }
+
     public static JSONObject getInAppMessageJson(IterableInAppMessage message) {
         return message.toJSONObject();
     }

@@ -2,6 +2,9 @@
 
 ### Updates
 
+- Added `Iterable.authManager.getAuthToken()` to read the JWT currently held by the native SDK (SDK-559).
+  - iOS: `IterableAPI.authToken`.
+  - Android: `IterableApi.getAuthToken()`.
 - Added `Iterable.disableDeviceForAllUsers()` to unregister this device's push token from every user associated with the device (SDK-550).
   - iOS: forwards to native `IterableAPI.disableDeviceForAllUsers()`.
   - Android: graceful no-op that logs a warning; use `disableDeviceForCurrentUser()` to disable push for the current user. There is no public native "all users" equivalent.
