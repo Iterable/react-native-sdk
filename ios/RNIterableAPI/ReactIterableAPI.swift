@@ -35,6 +35,8 @@ import React
     case handleAuthFailureCalled
     case handleEmbeddedMessageUpdateCalled
     case handleEmbeddedMessagingDisabledCalled
+    // Android-only native API; listed so JS addListener does not warn on iOS.
+    case handleDecryptionFailureCalled
   }
 
   @objc public static var supportedEvents: [String] {

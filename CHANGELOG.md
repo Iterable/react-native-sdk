@@ -2,6 +2,7 @@
 
 ### Updates
 
+- Added `IterableConfig.decryptionFailureHandler` (Android only) to notify the app when native keychain decryption fails (SDK-557). The SDK clears stored PII and disables encryption for the device before invoking the callback; iOS has no equivalent native API and ignores this option.
 - Added `Iterable.disableDeviceForAllUsers()` to unregister this device's push token from every user associated with the device (SDK-550).
   - iOS: forwards to native `IterableAPI.disableDeviceForAllUsers()`.
   - Android: graceful no-op that logs a warning; use `disableDeviceForCurrentUser()` to disable push for the current user. There is no public native "all users" equivalent.

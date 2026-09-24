@@ -48,6 +48,9 @@ describe('Iterable', () => {
     nativeEmitter.removeAllListeners(
       IterableEventName.handleEmbeddedMessagingDisabledCalled
     );
+    nativeEmitter.removeAllListeners(
+      IterableEventName.handleDecryptionFailureCalled
+    );
 
     // Clear any pending timers
     jest.clearAllTimers();
@@ -1268,6 +1271,76 @@ describe('Iterable', () => {
       config.enableEmbeddedMessaging = true;
       await Iterable.initialize('test-key', config);
       expect(Iterable.embeddedManager.isEnabled).toBe(true);
+    });
+  });
+
+  describe('decryptionFailureHandler', () => {
+    it('should call decryptionFailureHandler when handleDecryptionFailureCalled event is emitted', () => {
+      const nativeEmitter = new NativeEventEmitter();
+      nativeEmitter.removeAllListeners(
+        IterableEventName.handleDecryptionFailureCalled
+      );
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      config.decryptionFailureHandler = jest.fn();
+      Iterable.initialize('apiKey', config);
+      nativeEmitter.emit(IterableEventName.handleDecryptionFailureCalled, {
+        message: 'Keychain decrypt error',
+      });
+      expect(config.decryptionFailureHandler).toHaveBeenCalledWith({
+        message: 'Keychain decrypt error',
+      });
+      expect(config.decryptionFailureHandler).toHaveBeenCalledTimes(1);
+    });
+
+    it('should use a generic message when the event payload message is empty', () => {
+      const nativeEmitter = new NativeEventEmitter();
+      nativeEmitter.removeAllListeners(
+        IterableEventName.handleDecryptionFailureCalled
+      );
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      config.decryptionFailureHandler = jest.fn();
+      Iterable.initialize('apiKey', config);
+      nativeEmitter.emit(IterableEventName.handleDecryptionFailureCalled, {
+        message: '   ',
+      });
+      expect(config.decryptionFailureHandler).toHaveBeenCalledWith({
+        message: 'Decryption failed',
+      });
+    });
+
+    it('should not set up listener if decryptionFailureHandler is not provided', () => {
+      const nativeEmitter = new NativeEventEmitter();
+      nativeEmitter.removeAllListeners(
+        IterableEventName.handleDecryptionFailureCalled
+      );
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      Iterable.initialize('apiKey', config);
+      expect(
+        nativeEmitter.listenerCount(
+          IterableEventName.handleDecryptionFailureCalled
+        )
+      ).toBe(0);
+      expect(() => {
+        nativeEmitter.emit(IterableEventName.handleDecryptionFailureCalled, {
+          message: 'ignored',
+        });
+      }).not.toThrow();
+    });
+
+    it('should include decryptionFailureHandlerPresent flag in config dict when callback is provided', () => {
+      const config = new IterableConfig();
+      config.decryptionFailureHandler = jest.fn();
+      const configDict = config.toDict();
+      expect(configDict.decryptionFailureHandlerPresent).toBe(true);
+    });
+
+    it('should set decryptionFailureHandlerPresent flag to false when callback is not provided', () => {
+      const config = new IterableConfig();
+      const configDict = config.toDict();
+      expect(configDict.decryptionFailureHandlerPresent).toBe(false);
     });
   });
 
