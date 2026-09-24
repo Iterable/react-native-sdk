@@ -39,8 +39,8 @@ Iterable. It supports JavaScript and TypeScript.
 Iterable's React Native SDK relies on:
 
 - **React Native**
-    - [React Native 0.75+](https://github.com/facebook/react-native)
-    - [React 18.1+](https://github.com/facebook/react)
+    - [React Native 0.77+](https://github.com/facebook/react-native)
+    - [React 18.3.1+](https://github.com/facebook/react)
 
     _UI Components require additional peer dependencies_
     - [React Navigation 6+](https://github.com/react-navigation/react-navigation)
