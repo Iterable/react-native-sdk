@@ -4,6 +4,7 @@ import { IterableDataRegion } from '../enums/IterableDataRegion';
 import { IterableLogLevel } from '../enums/IterableLogLevel';
 import { IterablePushPlatform } from '../enums/IterablePushPlatform';
 import type { IterableAuthFailure } from '../types/IterableAuthFailure';
+import type { IterableDecryptionFailure } from '../types/IterableDecryptionFailure';
 import type { IterableRetryPolicy } from '../types/IterableRetryPolicy';
 import { IterableAction } from './IterableAction';
 import type { IterableActionContext } from './IterableActionContext';
@@ -224,6 +225,29 @@ export class IterableConfig {
    * ```
    */
   onJwtError?: (authFailure: IterableAuthFailure) => void;
+
+  /**
+   * A callback invoked when the Android SDK fails to decrypt PII in keychain
+   * storage. Before calling this handler, the native SDK clears stored PII,
+   * disables encryption for the device, and requires the user to sign in again.
+   *
+   * **Android only.** iOS does not surface decryption failures this way; setting
+   * this callback on iOS has no effect.
+   *
+   * @param failure - Details about the decryption failure.
+   *
+   * @example
+   * ```typescript
+   * const config = new IterableConfig();
+   * config.decryptionFailureHandler = (failure) => {
+   *   console.error('Iterable decryption failed:', failure.message);
+   *   // Prompt the user to log in again
+   * };
+   * ```
+   */
+  decryptionFailureHandler?: (
+    failure: IterableDecryptionFailure
+  ) => void;
 
   /**
    * Set the verbosity of Android and iOS project's log system.
@@ -463,6 +487,8 @@ export class IterableConfig {
        * A boolean indicating if an authentication handler is present.
        */
       authHandlerPresent: this.authHandler !== undefined,
+      decryptionFailureHandlerPresent:
+        this.decryptionFailureHandler !== undefined,
       /**
        * A boolean indicating if an embedded message update callback is present.
        */
