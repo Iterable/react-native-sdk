@@ -34,17 +34,22 @@ target 'ReactNativeSdkExample' do
     )
 
 
-    ## Temporary workaround for Xcode 26.4
+    # Temporary workaround for Xcode 26.x / 27.
+    # fmt 11.0.2 fails consteval checks under Apple Clang 21; compile fmt as C++17 only.
+    # All other pods stay in C++20 (React-perflogger needs std::unordered_map::contains).
+    # Xcode 27 rejects Pods resource-bundle targets below iOS 15.0 (e.g.
+    # Iterable-iOS-SDK-IterableSDKResources at 12.0). Lift those generated targets
+    # to RN's min; do not change published podspec support ranges.
     installer.pods_project.targets.each do |target|
       target.build_configurations.each do |config|
-        # fmt/base.h unconditionally redefines FMT_USE_CONSTEVAL based on __cplusplus,
-        # so preprocessor defines are overwritten. The reliable fix is to compile fmt
-        # in C++17 mode: FMT_CPLUSPLUS (201703L) < 201709L → FMT_USE_CONSTEVAL = 0.
-        # All other pods stay in C++20 (React-perflogger needs std::unordered_map::contains).
         if target.name == 'fmt'
           config.build_settings['CLANG_CXX_LANGUAGE_STANDARD'] = 'c++17'
         end
 
+        current = config.build_settings['IPHONEOS_DEPLOYMENT_TARGET']
+        if current.nil? || current.to_f < 15.1
+          config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.1'
+        end
       end
     end
   end

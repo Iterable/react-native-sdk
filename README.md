@@ -24,6 +24,7 @@ Iterable. It supports JavaScript and TypeScript.
   - [Beta Versions](#beta-versions)
   - [Features](#features)
   - [Example project](#example-project)
+  - [Building a local npm package](#building-a-local-npm-package)
   - [Version mapping](#version-mapping)
   - [Release notes, support and troubleshooting](#release-notes-support-and-troubleshooting)
   - [License](#license)
@@ -38,8 +39,8 @@ Iterable. It supports JavaScript and TypeScript.
 Iterable's React Native SDK relies on:
 
 - **React Native**
-    - [React Native 0.75+](https://github.com/facebook/react-native)
-    - [React 18.1+](https://github.com/facebook/react)
+    - [React Native 0.77+](https://github.com/facebook/react-native)
+    - [React 18.3.1+](https://github.com/facebook/react)
 
     _UI Components require additional peer dependencies_
     - [React Navigation 6+](https://github.com/react-navigation/react-navigation)
@@ -54,6 +55,7 @@ Iterable's React Native SDK relies on:
       ```ruby
       use_frameworks! :linkage => :dynamic
       ```
+    - **Xcode 27:** `run-ios` needs `@react-native-community/cli` **20.2.0+** so it opens Device Hub (`DeviceHub.app`) instead of `Simulator.app`. `xcode-select` must point at the Xcode you are using when more than one version is installed. Xcode 27 also refuses CocoaPods resource-bundle targets below iOS **15.0** (this SDK's `IterableSDKResources` bundle still inherits **12.0** from Iterable-iOS-SDK, including **6.7.5** pinned by RN **3.2.0**). Lift generated Pods targets to **15.1** in the app `Podfile` `post_install` — see this repo's `example/ios/Podfile`. That is a **host** workaround until Iterable's iOS SDK publishes a ≥ 15.1 minimum and this SDK depends on it. It does not change the published Iterable iOS support range.
 
 - **Android**
     - [`minSdkVersion` 21+, `compileSdkVersion` 31+](https://medium.com/androiddevelopers/picking-your-compilesdkversion-minsdkversion-targetsdkversion-a098a0341ebd)
@@ -118,12 +120,28 @@ For sample code, take a look at the following project:
 
 - [Example App](https://github.com/Iterable/react-native-sdk/tree/master/example)
 
+## Building a local npm package
+
+Generate a `.tgz` from **this** React Native SDK checkout. Do not run `npm pack` from a consuming app; that will not produce `@iterable/react-native-sdk`.
+
+From the root of this repository:
+
+```bash
+yarn install
+npm pack
+```
+
+`yarn install` runs `prepare` / `yarn build`. `npm pack` writes
+`iterable-react-native-sdk-<version>.tgz` in the repo root, using the version
+in `package.json` (for example `iterable-react-native-sdk-3.2.0.tgz`).
+
 ## Version mapping
 
 For quick reference, the following table lists the versions of the [Android SDK](https://github.com/Iterable/iterable-android-sdk) and the [iOS SDK](https://github.com/Iterable/swift-sdk) the React Native SDK points to for version 1.2.0 and above.
 
 | RN SDK Version                                                              | Android SDK Version                                                          | iOS SDK Version |
 | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | --------------- |
+| [3.2.0](https://www.npmjs.com/package/@iterable/react-native-sdk/v/3.2.0) | [3.10.1](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.10.1) | [6.7.5](https://github.com/Iterable/swift-sdk/releases/tag/6.7.5)
 | [3.1.0](https://www.npmjs.com/package/@iterable/react-native-sdk/v/3.1.0) | [3.6.2](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.6.2) | [6.6.7](https://github.com/Iterable/swift-sdk/releases/tag/6.6.7)
 | [3.0.1](https://www.npmjs.com/package/@iterable/react-native-sdk/v/3.0.1) | [3.6.2](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.6.2) | [6.6.3](https://github.com/Iterable/swift-sdk/releases/tag/6.6.3)
 | [3.0.0](https://www.npmjs.com/package/@iterable/react-native-sdk/v/3.0.0) | [3.6.2](https://github.com/Iterable/iterable-android-sdk/releases/tag/3.6.2) | [6.6.3](https://github.com/Iterable/swift-sdk/releases/tag/6.6.3)
