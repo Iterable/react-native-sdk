@@ -179,6 +179,7 @@ export interface Spec extends TurboModule {
   ): void;
 
   // Auth
+  getAuthToken(): Promise<string | null>;
   passAlongAuthToken(authToken?: string | null): void;
   pauseAuthRetries(pauseRetry: boolean): void;
 

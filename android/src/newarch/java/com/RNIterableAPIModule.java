@@ -73,6 +73,11 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   }
 
   @Override
+  public void getAuthToken(Promise promise) {
+    moduleImpl.getAuthToken(promise);
+  }
+
+  @Override
   public void trackEvent(String name, @Nullable ReadableMap dataFields) {
     moduleImpl.trackEvent(name, dataFields);
   }
