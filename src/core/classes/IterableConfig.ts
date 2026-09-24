@@ -324,8 +324,17 @@ export class IterableConfig {
   pushPlatform: IterablePushPlatform = IterablePushPlatform.auto;
 
   /**
-   * Android only feature: This controls whether the SDK should enforce encryption for all PII stored on disk.
-   * By default, the SDK will not enforce encryption and may fallback to unencrypted storage in case the encryption fails.
+   * Android only: whether Iterable encrypts PII (email, userId, auth token) in on-device keychain storage.
+   * When `true` (the default), data is encrypted; when `false`, it is stored in plaintext.
+   * iOS always uses the system Keychain and ignores this option.
+   */
+  keychainEncryption = true;
+
+  /**
+   * @deprecated Use {@link IterableConfig.keychainEncryption} instead. Android honors
+   * `keychainEncryption` (default `true`, encrypted). This field is still serialized so
+   * older bridge payloads that omit `keychainEncryption` can fall back when
+   * `encryptionEnforced` is `true`; it does not disable encryption when left `false`.
    */
   encryptionEnforced = false;
 
@@ -482,6 +491,7 @@ export class IterableConfig {
       useInMemoryStorageForInApps: this.useInMemoryStorageForInApps,
       dataRegion: this.dataRegion,
       pushPlatform: this.pushPlatform,
+      keychainEncryption: this.keychainEncryption,
       encryptionEnforced: this.encryptionEnforced,
       retryPolicy: this.retryPolicy,
       enableEmbeddedMessaging: this.enableEmbeddedMessaging,

@@ -336,6 +336,7 @@ describe('Iterable', () => {
       expect(config.customActionHandler).toBe(undefined);
       expect(config.dataRegion).toBe(IterableDataRegion.US);
       expect(config.enableEmbeddedMessaging).toBe(false);
+      expect(config.keychainEncryption).toBe(true);
       expect(config.encryptionEnforced).toBe(false);
       expect(config.expiringAuthTokenRefreshPeriod).toBe(60.0);
       expect(config.inAppDisplayInterval).toBe(30.0);
@@ -355,6 +356,7 @@ describe('Iterable', () => {
       expect(configDict.customActionHandlerPresent).toBe(false);
       expect(configDict.dataRegion).toBe(IterableDataRegion.US);
       expect(configDict.enableEmbeddedMessaging).toBe(false);
+      expect(configDict.keychainEncryption).toBe(true);
       expect(configDict.encryptionEnforced).toBe(false);
       expect(configDict.expiringAuthTokenRefreshPeriod).toBe(60.0);
       expect(configDict.inAppDisplayInterval).toBe(30.0);
@@ -374,6 +376,32 @@ describe('Iterable', () => {
       const configDict = config.toDict();
       expect(configDict.androidWakeDelayMs).toBe(1500);
       expect(configDict.authCallbackTimeoutMs).toBe(2500);
+    });
+
+    it('should allow opting out of Android keychain encryption', () => {
+      const config = new IterableConfig();
+      config.keychainEncryption = false;
+      const configDict = config.toDict();
+      expect(config.keychainEncryption).toBe(false);
+      expect(configDict.keychainEncryption).toBe(false);
+    });
+
+    it('should still serialize encrypted keychain when only deprecated encryptionEnforced is set', () => {
+      const config = new IterableConfig();
+      config.encryptionEnforced = true;
+      const configDict = config.toDict();
+      expect(config.keychainEncryption).toBe(true);
+      expect(configDict.keychainEncryption).toBe(true);
+      expect(configDict.encryptionEnforced).toBe(true);
+    });
+
+    it('should prefer keychainEncryption over deprecated encryptionEnforced in toDict()', () => {
+      const config = new IterableConfig();
+      config.keychainEncryption = false;
+      config.encryptionEnforced = true;
+      const configDict = config.toDict();
+      expect(configDict.keychainEncryption).toBe(false);
+      expect(configDict.encryptionEnforced).toBe(true);
     });
   });
 
