@@ -1318,6 +1318,11 @@ describe('Iterable', () => {
       const config = new IterableConfig();
       config.logReactNativeSdkCalls = false;
       Iterable.initialize('apiKey', config);
+      expect(
+        nativeEmitter.listenerCount(
+          IterableEventName.handleDecryptionFailureCalled
+        )
+      ).toBe(0);
       expect(() => {
         nativeEmitter.emit(IterableEventName.handleDecryptionFailureCalled, {
           message: 'ignored',
