@@ -331,11 +331,10 @@ export class IterableConfig {
   keychainEncryption = true;
 
   /**
-   * @deprecated Use {@link IterableConfig.keychainEncryption} instead. This field is still serialized for
-   * back-compat on Android when `keychainEncryption` is absent from the bridge payload.
-   *
-   * Android only feature: This controls whether the SDK should enforce encryption for all PII stored on disk.
-   * By default, the SDK will not enforce encryption and may fallback to unencrypted storage in case the encryption fails.
+   * @deprecated Use {@link IterableConfig.keychainEncryption} instead. Android honors
+   * `keychainEncryption` (default `true`, encrypted). This field is still serialized so
+   * older bridge payloads that omit `keychainEncryption` can fall back when
+   * `encryptionEnforced` is `true`; it does not disable encryption when left `false`.
    */
   encryptionEnforced = false;
 

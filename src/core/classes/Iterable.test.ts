@@ -386,12 +386,21 @@ describe('Iterable', () => {
       expect(configDict.keychainEncryption).toBe(false);
     });
 
-    it('should keep keychainEncryption enabled when only deprecated encryptionEnforced is set', () => {
+    it('should still serialize encrypted keychain when only deprecated encryptionEnforced is set', () => {
       const config = new IterableConfig();
       config.encryptionEnforced = true;
       const configDict = config.toDict();
       expect(config.keychainEncryption).toBe(true);
       expect(configDict.keychainEncryption).toBe(true);
+      expect(configDict.encryptionEnforced).toBe(true);
+    });
+
+    it('should prefer keychainEncryption over deprecated encryptionEnforced in toDict()', () => {
+      const config = new IterableConfig();
+      config.keychainEncryption = false;
+      config.encryptionEnforced = true;
+      const configDict = config.toDict();
+      expect(configDict.keychainEncryption).toBe(false);
       expect(configDict.encryptionEnforced).toBe(true);
     });
   });
