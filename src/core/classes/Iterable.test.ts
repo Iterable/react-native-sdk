@@ -1528,12 +1528,28 @@ describe('Iterable', () => {
         );
         const config = new IterableConfig();
         config.logReactNativeSdkCalls = false;
+        config.enableEmbeddedMessaging = true;
         Iterable.initialize('apiKey', config);
         expect(() => {
           nativeEmitter.emit(
             IterableEventName.handleEmbeddedMessagingSyncSucceededCalled
           );
         }).not.toThrow();
+      });
+
+      it('should not set up listener when enableEmbeddedMessaging is false even if callback is provided', () => {
+        const nativeEmitter = new NativeEventEmitter();
+        nativeEmitter.removeAllListeners(
+          IterableEventName.handleEmbeddedMessagingSyncSucceededCalled
+        );
+        const config = new IterableConfig();
+        config.logReactNativeSdkCalls = false;
+        config.onEmbeddedMessagingSyncSucceeded = jest.fn();
+        Iterable.initialize('apiKey', config);
+        nativeEmitter.emit(
+          IterableEventName.handleEmbeddedMessagingSyncSucceededCalled
+        );
+        expect(config.onEmbeddedMessagingSyncSucceeded).not.toHaveBeenCalled();
       });
 
       it('should include onEmbeddedMessagingSyncSucceededPresent flag in config dict when callback is provided', () => {
@@ -1610,6 +1626,7 @@ describe('Iterable', () => {
         );
         const config = new IterableConfig();
         config.logReactNativeSdkCalls = false;
+        config.enableEmbeddedMessaging = true;
         Iterable.initialize('apiKey', config);
         expect(() => {
           nativeEmitter.emit(
@@ -1617,6 +1634,22 @@ describe('Iterable', () => {
             'ignored'
           );
         }).not.toThrow();
+      });
+
+      it('should not set up listener when enableEmbeddedMessaging is false even if callback is provided', () => {
+        const nativeEmitter = new NativeEventEmitter();
+        nativeEmitter.removeAllListeners(
+          IterableEventName.handleEmbeddedMessagingSyncFailedCalled
+        );
+        const config = new IterableConfig();
+        config.logReactNativeSdkCalls = false;
+        config.onEmbeddedMessagingSyncFailed = jest.fn();
+        Iterable.initialize('apiKey', config);
+        nativeEmitter.emit(
+          IterableEventName.handleEmbeddedMessagingSyncFailedCalled,
+          'ignored'
+        );
+        expect(config.onEmbeddedMessagingSyncFailed).not.toHaveBeenCalled();
       });
 
       it('should include onEmbeddedMessagingSyncFailedPresent flag in config dict when callback is provided', () => {
@@ -1630,6 +1663,56 @@ describe('Iterable', () => {
         const config = new IterableConfig();
         const configDict = config.toDict();
         expect(configDict.onEmbeddedMessagingSyncFailedPresent).toBe(false);
+      });
+    });
+
+    describe('sync callbacks vs onEmbeddedMessageUpdate', () => {
+      it('should invoke only the matching callback when update and sync handlers are configured', () => {
+        const nativeEmitter = new NativeEventEmitter();
+        nativeEmitter.removeAllListeners(
+          IterableEventName.handleEmbeddedMessageUpdateCalled
+        );
+        nativeEmitter.removeAllListeners(
+          IterableEventName.handleEmbeddedMessagingSyncSucceededCalled
+        );
+        nativeEmitter.removeAllListeners(
+          IterableEventName.handleEmbeddedMessagingSyncFailedCalled
+        );
+        const config = new IterableConfig();
+        config.logReactNativeSdkCalls = false;
+        config.enableEmbeddedMessaging = true;
+        config.onEmbeddedMessageUpdate = jest.fn();
+        config.onEmbeddedMessagingSyncSucceeded = jest.fn();
+        config.onEmbeddedMessagingSyncFailed = jest.fn();
+        Iterable.initialize('apiKey', config);
+
+        nativeEmitter.emit(
+          IterableEventName.handleEmbeddedMessageUpdateCalled
+        );
+        expect(config.onEmbeddedMessageUpdate).toHaveBeenCalled();
+        expect(config.onEmbeddedMessagingSyncSucceeded).not.toHaveBeenCalled();
+        expect(config.onEmbeddedMessagingSyncFailed).not.toHaveBeenCalled();
+
+        jest.clearAllMocks();
+
+        nativeEmitter.emit(
+          IterableEventName.handleEmbeddedMessagingSyncSucceededCalled
+        );
+        expect(config.onEmbeddedMessagingSyncSucceeded).toHaveBeenCalled();
+        expect(config.onEmbeddedMessageUpdate).not.toHaveBeenCalled();
+        expect(config.onEmbeddedMessagingSyncFailed).not.toHaveBeenCalled();
+
+        jest.clearAllMocks();
+
+        nativeEmitter.emit(
+          IterableEventName.handleEmbeddedMessagingSyncFailedCalled,
+          'sync failed'
+        );
+        expect(config.onEmbeddedMessagingSyncFailed).toHaveBeenCalledWith(
+          'sync failed'
+        );
+        expect(config.onEmbeddedMessageUpdate).not.toHaveBeenCalled();
+        expect(config.onEmbeddedMessagingSyncSucceeded).not.toHaveBeenCalled();
       });
     });
   });
