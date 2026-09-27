@@ -1018,6 +1018,12 @@ export class Iterable {
     RNEventEmitter.removeAllListeners(
       IterableEventName.handleEmbeddedMessagingDisabledCalled
     );
+    RNEventEmitter.removeAllListeners(
+      IterableEventName.handleEmbeddedMessagingSyncSucceededCalled
+    );
+    RNEventEmitter.removeAllListeners(
+      IterableEventName.handleEmbeddedMessagingSyncFailedCalled
+    );
   }
 
   /**
@@ -1306,6 +1312,26 @@ export class Iterable {
           IterableEventName.handleEmbeddedMessagingDisabledCalled,
           () => {
             Iterable.savedConfig.onEmbeddedMessagingDisabled?.();
+          }
+        );
+      }
+
+      if (Iterable.savedConfig.onEmbeddedMessagingSyncSucceeded) {
+        RNEventEmitter.addListener(
+          IterableEventName.handleEmbeddedMessagingSyncSucceededCalled,
+          () => {
+            Iterable.savedConfig.onEmbeddedMessagingSyncSucceeded?.();
+          }
+        );
+      }
+
+      if (Iterable.savedConfig.onEmbeddedMessagingSyncFailed) {
+        RNEventEmitter.addListener(
+          IterableEventName.handleEmbeddedMessagingSyncFailedCalled,
+          (reason: string | null | undefined) => {
+            Iterable.savedConfig.onEmbeddedMessagingSyncFailed?.(
+              reason ?? null
+            );
           }
         );
       }

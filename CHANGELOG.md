@@ -2,6 +2,14 @@
 
 ### Updates
 
+- Added `IterableConfig.onEmbeddedMessagingSyncSucceeded` and
+  `IterableConfig.onEmbeddedMessagingSyncFailed` so apps can observe embedded
+  messaging sync outcomes (SDK-749). Failure callbacks receive a nullable reason
+  string forwarded from the native SDKs. On iOS, subscription-inactive or
+  invalid API key failures may invoke both `onEmbeddedMessagingDisabled` and
+  `onEmbeddedMessagingSyncFailed`; on Android only
+  `onEmbeddedMessagingDisabled` is invoked for those cases (native SDK
+  behavior).
 - Added `Iterable.disableDeviceForAllUsers()` to unregister this device's push token from every user associated with the device (SDK-550).
   - iOS: forwards to native `IterableAPI.disableDeviceForAllUsers()`.
   - Android: graceful no-op that logs a warning; use `disableDeviceForCurrentUser()` to disable push for the current user. There is no public native "all users" equivalent.

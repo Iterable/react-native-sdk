@@ -726,6 +726,18 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         IterableLogger.d(TAG, "onEmbeddedMessagingDisabled");
         sendEvent(EventName.handleEmbeddedMessagingDisabledCalled.name(), null);
     }
+
+    @Override
+    public void onEmbeddedMessagingSyncSucceeded() {
+        IterableLogger.d(TAG, "onEmbeddedMessagingSyncSucceeded");
+        sendEvent(EventName.handleEmbeddedMessagingSyncSucceededCalled.name(), null);
+    }
+
+    @Override
+    public void onEmbeddedMessagingSyncFailed(@Nullable String reason) {
+        IterableLogger.d(TAG, "onEmbeddedMessagingSyncFailed");
+        sendEvent(EventName.handleEmbeddedMessagingSyncFailedCalled.name(), reason);
+    }
     // ---------------------------------------------------------------------------------------
     // endregion
 
@@ -817,6 +829,8 @@ enum EventName {
   handleCustomActionCalled,
   handleEmbeddedMessageUpdateCalled,
   handleEmbeddedMessagingDisabledCalled,
+  handleEmbeddedMessagingSyncSucceededCalled,
+  handleEmbeddedMessagingSyncFailedCalled,
   handleInAppCalled,
   handleUrlCalled,
   receivedIterableEmbeddedMessagesChanged,
