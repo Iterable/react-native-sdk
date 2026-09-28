@@ -331,10 +331,7 @@ export class IterableConfig {
   keychainEncryption = true;
 
   /**
-   * @deprecated Use {@link IterableConfig.keychainEncryption} instead. Android honors
-   * `keychainEncryption` (default `true`, encrypted). This field is still serialized so
-   * older bridge payloads that omit `keychainEncryption` can fall back when
-   * `encryptionEnforced` is `true`; it does not disable encryption when left `false`.
+   * @deprecated Has no effect on any platform. Use {@link IterableConfig.keychainEncryption}.
    */
   encryptionEnforced = false;
 

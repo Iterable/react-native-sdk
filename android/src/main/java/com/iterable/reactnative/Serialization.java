@@ -250,13 +250,8 @@ class Serialization {
                 configBuilder.setEnableEmbeddedMessaging(iterableContextJSON.optBoolean("enableEmbeddedMessaging"));
             }
 
-            boolean keychainEncryption = true;
-            if (iterableContextJSON.has("keychainEncryption")) {
-                keychainEncryption = iterableContextJSON.optBoolean("keychainEncryption");
-            } else if (iterableContextJSON.optBoolean("encryptionEnforced")) {
-                keychainEncryption = true;
-            }
-            configBuilder.setKeychainEncryption(keychainEncryption);
+            configBuilder.setKeychainEncryption(
+                    iterableContextJSON.optBoolean("keychainEncryption", true));
 
             if (iterableContextJSON.has("retryPolicy")) {
                 JSONObject retryPolicyJson = iterableContextJSON.getJSONObject("retryPolicy");
