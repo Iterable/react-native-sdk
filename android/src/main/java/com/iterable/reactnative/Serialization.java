@@ -250,6 +250,9 @@ class Serialization {
                 configBuilder.setEnableEmbeddedMessaging(iterableContextJSON.optBoolean("enableEmbeddedMessaging"));
             }
 
+            configBuilder.setKeychainEncryption(
+                    iterableContextJSON.optBoolean("keychainEncryption", true));
+
             if (iterableContextJSON.has("retryPolicy")) {
                 JSONObject retryPolicyJson = iterableContextJSON.getJSONObject("retryPolicy");
                 int maxRetry = retryPolicyJson.getInt("maxRetry");
