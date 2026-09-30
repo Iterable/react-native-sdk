@@ -29,6 +29,7 @@ import com.iterable.iterableapi.IterableAuthHandler;
 import com.iterable.iterableapi.IterableAuthManager;
 import com.iterable.iterableapi.IterableConfig;
 import com.iterable.iterableapi.IterableCustomActionHandler;
+import com.iterable.iterableapi.IterableDecryptionFailureHandler;
 import com.iterable.iterableapi.IterableEmbeddedMessage;
 import com.iterable.iterableapi.IterableEmbeddedUpdateHandler;
 import com.iterable.iterableapi.IterableHelper;
@@ -53,7 +54,7 @@ import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCustomActionHandler, IterableInAppHandler, IterableAuthHandler, IterableInAppManager.Listener, IterableEmbeddedUpdateHandler {
+public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCustomActionHandler, IterableInAppHandler, IterableAuthHandler, IterableDecryptionFailureHandler, IterableInAppManager.Listener, IterableEmbeddedUpdateHandler {
     public static final String NAME = "RNIterableAPI";
 
     private static String TAG = "RNIterableAPIModule";
@@ -92,6 +93,10 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         if (configReadableMap.hasKey("authHandlerPresent") && configReadableMap.getBoolean("authHandlerPresent") == true) {
             configBuilder.setAuthHandler(this);
         }
+
+        // IterableKeychain is created once with config.decryptionFailureHandler; the JS
+        // listener remains conditional on decryptionFailureHandlerPresent.
+        configBuilder.setDecryptionFailureHandler(this);
 
         // Check if embedded messaging is enabled before building config
         boolean enableEmbeddedMessaging = configReadableMap.hasKey("enableEmbeddedMessaging") && configReadableMap.getBoolean("enableEmbeddedMessaging");
@@ -160,6 +165,9 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         if (configReadableMap.hasKey("authHandlerPresent") && configReadableMap.getBoolean("authHandlerPresent") == true) {
             configBuilder.setAuthHandler(this);
         }
+
+        // See initializeWithApiKey — keychain caches this handler at first construction.
+        configBuilder.setDecryptionFailureHandler(this);
 
         // NOTE: There does not seem to be a way to set the API endpoint
         // override in the Android SDK.  Check with @Ayyanchira and @evantk91 to
@@ -663,6 +671,24 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         }
     }
 
+    private static final String DECRYPTION_FAILURE_DEFAULT_MESSAGE = "Decryption failed";
+
+    @Override
+    public void onDecryptionFailed(Exception exception) {
+        JSONObject messageJson = new JSONObject();
+        try {
+            String message = exception != null ? exception.getMessage() : null;
+            if (message == null || message.isEmpty()) {
+                message = DECRYPTION_FAILURE_DEFAULT_MESSAGE;
+            }
+            messageJson.put("message", message);
+            WritableMap eventData = Serialization.convertJsonToMap(messageJson);
+            sendEvent(EventName.handleDecryptionFailureCalled.name(), eventData);
+        } catch (JSONException e) {
+            IterableLogger.e(TAG, "Failed to send decryption failure event");
+        }
+    }
+
     @Override
     public void onAuthFailure(AuthFailure authFailure) {
       // Create a JSON object for the authFailure object
@@ -815,6 +841,7 @@ enum EventName {
   handleAuthFailureCalled,
   handleAuthSuccessCalled,
   handleCustomActionCalled,
+  handleDecryptionFailureCalled,
   handleEmbeddedMessageUpdateCalled,
   handleEmbeddedMessagingDisabledCalled,
   handleInAppCalled,

@@ -12,6 +12,7 @@ import { IterableInAppLocation } from '../../inApp/enums/IterableInAppLocation';
 import { IterableAuthResponseResult } from '../enums/IterableAuthResponseResult';
 import { IterableEventName } from '../enums/IterableEventName';
 import type { IterableAuthFailure } from '../types/IterableAuthFailure';
+import type { IterableDecryptionFailure } from '../types/IterableDecryptionFailure';
 import { callUrlHandler } from '../utils/callUrlHandler';
 import { IterableAction } from './IterableAction';
 import { IterableActionContext } from './IterableActionContext';
@@ -1018,6 +1019,9 @@ export class Iterable {
     RNEventEmitter.removeAllListeners(
       IterableEventName.handleEmbeddedMessagingDisabledCalled
     );
+    RNEventEmitter.removeAllListeners(
+      IterableEventName.handleDecryptionFailureCalled
+    );
   }
 
   /**
@@ -1309,6 +1313,20 @@ export class Iterable {
           }
         );
       }
+    }
+
+    if (Iterable.savedConfig.decryptionFailureHandler) {
+      RNEventEmitter.addListener(
+        IterableEventName.handleDecryptionFailureCalled,
+        (payload: IterableDecryptionFailure) => {
+          const rawMessage = payload?.message?.trim();
+          const message =
+            rawMessage && rawMessage.length > 0
+              ? rawMessage
+              : 'Decryption failed';
+          Iterable.savedConfig.decryptionFailureHandler?.({ message });
+        }
+      );
     }
   }
 
