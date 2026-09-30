@@ -677,6 +677,25 @@ describe('IterableApi', () => {
   // ======================= AUTH ======================= //
   // ====================================================== //
 
+  describe('getAuthToken', () => {
+    it('should return the auth token from RNIterableAPI', async () => {
+      const expectedToken = 'jwt-token';
+      MockRNIterableAPI.authToken = expectedToken;
+
+      const result = await IterableApi.getAuthToken();
+
+      expect(result).toBe(expectedToken);
+    });
+
+    it('should return null when RNIterableAPI has no auth token', async () => {
+      MockRNIterableAPI.authToken = null;
+
+      const result = await IterableApi.getAuthToken();
+
+      expect(result).toBeNull();
+    });
+  });
+
   describe('pauseAuthRetries', () => {
     it('should call RNIterableAPI.pauseAuthRetries with true', () => {
       // GIVEN pauseRetry is true

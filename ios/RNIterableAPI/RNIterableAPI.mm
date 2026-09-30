@@ -283,6 +283,11 @@ RCT_EXPORT_MODULE()
   [_swiftAPI updateVisibleRows:visibleRows];
 }
 
+- (void)getAuthToken:(RCTPromiseResolveBlock)resolve
+              reject:(RCTPromiseRejectBlock)reject {
+  [_swiftAPI getAuthToken:resolve rejecter:reject];
+}
+
 - (void)passAlongAuthToken:(NSString *_Nullable)authToken {
   [_swiftAPI passAlongAuthToken:authToken];
 }
@@ -569,6 +574,11 @@ RCT_EXPORT_METHOD(endSession) { [_swiftAPI endSession]; }
 
 RCT_EXPORT_METHOD(updateVisibleRows : (NSArray *)visibleRows) {
   [_swiftAPI updateVisibleRows:visibleRows];
+}
+
+RCT_EXPORT_METHOD(getAuthToken : (RCTPromiseResolveBlock)
+                      resolve rejecter : (RCTPromiseRejectBlock)reject) {
+  [_swiftAPI getAuthToken:resolve rejecter:reject];
 }
 
 RCT_EXPORT_METHOD(passAlongAuthToken : (NSString *_Nullable)authToken) {
