@@ -94,9 +94,9 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
             configBuilder.setAuthHandler(this);
         }
 
-        if (configReadableMap.hasKey("decryptionFailureHandlerPresent") && configReadableMap.getBoolean("decryptionFailureHandlerPresent") == true) {
-            configBuilder.setDecryptionFailureHandler(this);
-        }
+        // IterableKeychain is created once with config.decryptionFailureHandler; the JS
+        // listener remains conditional on decryptionFailureHandlerPresent.
+        configBuilder.setDecryptionFailureHandler(this);
 
         // Check if embedded messaging is enabled before building config
         boolean enableEmbeddedMessaging = configReadableMap.hasKey("enableEmbeddedMessaging") && configReadableMap.getBoolean("enableEmbeddedMessaging");
@@ -166,9 +166,8 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
             configBuilder.setAuthHandler(this);
         }
 
-        if (configReadableMap.hasKey("decryptionFailureHandlerPresent") && configReadableMap.getBoolean("decryptionFailureHandlerPresent") == true) {
-            configBuilder.setDecryptionFailureHandler(this);
-        }
+        // See initializeWithApiKey — keychain caches this handler at first construction.
+        configBuilder.setDecryptionFailureHandler(this);
 
         // NOTE: There does not seem to be a way to set the API endpoint
         // override in the Android SDK.  Check with @Ayyanchira and @evantk91 to

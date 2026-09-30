@@ -1352,6 +1352,38 @@ describe('Iterable', () => {
       const configDict = config.toDict();
       expect(configDict.decryptionFailureHandlerPresent).toBe(false);
     });
+
+    it('should invoke decryptionFailureHandler after re-initialize enables the callback', () => {
+      const nativeEmitter = new NativeEventEmitter();
+      nativeEmitter.removeAllListeners(
+        IterableEventName.handleDecryptionFailureCalled
+      );
+      const configWithoutHandler = new IterableConfig();
+      configWithoutHandler.logReactNativeSdkCalls = false;
+      Iterable.initialize('apiKey', configWithoutHandler);
+      expect(
+        nativeEmitter.listenerCount(
+          IterableEventName.handleDecryptionFailureCalled
+        )
+      ).toBe(0);
+
+      const configWithHandler = new IterableConfig();
+      configWithHandler.logReactNativeSdkCalls = false;
+      configWithHandler.decryptionFailureHandler = jest.fn();
+      Iterable.initialize('apiKey', configWithHandler);
+      expect(
+        nativeEmitter.listenerCount(
+          IterableEventName.handleDecryptionFailureCalled
+        )
+      ).toBe(1);
+
+      nativeEmitter.emit(IterableEventName.handleDecryptionFailureCalled, {
+        message: 'late handler',
+      });
+      expect(configWithHandler.decryptionFailureHandler).toHaveBeenCalledWith({
+        message: 'late handler',
+      });
+    });
   });
 
   describe('embedded messaging callbacks', () => {
