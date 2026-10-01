@@ -74,6 +74,11 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void getAuthToken(Promise promise) {
+      moduleImpl.getAuthToken(promise);
+    }
+
+    @ReactMethod
     public void trackEvent(String name, @Nullable ReadableMap dataFields) {
       moduleImpl.trackEvent(name, dataFields);
     }

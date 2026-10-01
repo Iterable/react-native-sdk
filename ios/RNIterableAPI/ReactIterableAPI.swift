@@ -37,6 +37,8 @@ import React
     case handleEmbeddedMessagingDisabledCalled
     case handleEmbeddedMessagingSyncSucceededCalled
     case handleEmbeddedMessagingSyncFailedCalled
+    // Android-only native API; listed so JS addListener does not warn on iOS.
+    case handleDecryptionFailureCalled
   }
 
   @objc public static var supportedEvents: [String] {
@@ -502,6 +504,12 @@ import React
 
   // MARK: - SDK Auth Manager Functions
 
+  @objc(getAuthToken:rejecter:)
+  public func getAuthToken(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
+    ITBInfo()
+    resolver(IterableAPI.authToken)
+  }
+
   @objc(passAlongAuthToken:)
   public func passAlongAuthToken(authToken: String?) {
     ITBInfo()
@@ -886,7 +894,7 @@ extension ReactIterableAPI: IterableEmbeddedUpdateDelegate {
       withName: EventName.handleEmbeddedMessageUpdateCalled.rawValue,
       body: nil as Any?)
   }
-  
+
   public func onEmbeddedMessagingDisabled() {
     ITBInfo()
     guard shouldEmit else {

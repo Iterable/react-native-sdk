@@ -29,4 +29,8 @@ export enum IterableEventName {
   /** Event that fires when an embedded messaging sync fails */
   handleEmbeddedMessagingSyncFailedCalled =
     'handleEmbeddedMessagingSyncFailedCalled',
+  /**
+   * Event that fires when Android keychain decryption fails (Android only).
+   */
+  handleDecryptionFailureCalled = 'handleDecryptionFailureCalled',
 }
