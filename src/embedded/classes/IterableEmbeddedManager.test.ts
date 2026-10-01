@@ -122,6 +122,24 @@ describe('IterableEmbeddedManager', () => {
         placementIds
       );
     });
+
+    it('should call IterableApi.syncEmbeddedMessages with null placement IDs', () => {
+      // WHEN syncMessages is called with null
+      embeddedManager.syncMessages(null);
+
+      // THEN IterableApi.syncEmbeddedMessages is called with null
+      expect(MockRNIterableAPI.syncEmbeddedMessages).toHaveBeenCalledTimes(1);
+      expect(MockRNIterableAPI.syncEmbeddedMessages).toHaveBeenCalledWith(null);
+    });
+
+    it('should call IterableApi.syncEmbeddedMessages with empty placement IDs', () => {
+      // WHEN syncMessages is called with an empty array
+      embeddedManager.syncMessages([]);
+
+      // THEN the empty array is forwarded (native syncs all placements)
+      expect(MockRNIterableAPI.syncEmbeddedMessages).toHaveBeenCalledTimes(1);
+      expect(MockRNIterableAPI.syncEmbeddedMessages).toHaveBeenCalledWith([]);
+    });
   });
 
   describe('getMessages', () => {

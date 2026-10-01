@@ -1308,6 +1308,14 @@ describe('IterableApi', () => {
       expect(MockRNIterableAPI.syncEmbeddedMessages).toBeCalledWith(null);
     });
 
+    it('should call RNIterableAPI.syncEmbeddedMessages with null when passed null', () => {
+      // WHEN syncEmbeddedMessages is called with null
+      IterableApi.syncEmbeddedMessages(null);
+
+      // THEN RNIterableAPI.syncEmbeddedMessages is called with null (sync all)
+      expect(MockRNIterableAPI.syncEmbeddedMessages).toBeCalledWith(null);
+    });
+
     it('should call RNIterableAPI.syncEmbeddedMessages with placement IDs', () => {
       // GIVEN placement IDs
       const placementIds = [1, 2];
