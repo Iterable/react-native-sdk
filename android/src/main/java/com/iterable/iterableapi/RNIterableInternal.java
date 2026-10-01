@@ -6,8 +6,6 @@ import org.json.JSONObject;
 
 public class RNIterableInternal {
 
-    private static String TAG = "RNIterableInternal";
-
     public static String getEmail() {
         return IterableApi.getInstance().getEmail();
     }
@@ -23,11 +21,8 @@ public class RNIterableInternal {
 
     public static JSONObject getInAppMessageJson(IterableInAppMessage message) {
         JSONObject messageJson = message.toJSONObject();
-        try {
-            messageJson.put("jsonOnly", message.isJsonOnly());
-        } catch (org.json.JSONException e) {
-            IterableLogger.e(TAG, "Failed to add jsonOnly to in-app message JSON");
-        }
+        // Overwrite native serialization (may use integer 1) so the bridge sends a boolean for JS.
+        messageJson.putOpt("jsonOnly", message.isJsonOnly());
         return messageJson;
     }
 
