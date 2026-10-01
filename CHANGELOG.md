@@ -2,6 +2,7 @@
 
 ### Updates
 
+- Added `IterableInAppMessage.jsonOnly` so `inAppHandler` and in-app message fetches can distinguish JSON-only messages from HTML in-apps (SDK-750).
 - Added `Iterable.authManager.getAuthToken()` to read the JWT currently held by the native SDK (SDK-559).
   - iOS: `IterableAPI.authToken`.
   - Android: `IterableApi.getAuthToken()`.

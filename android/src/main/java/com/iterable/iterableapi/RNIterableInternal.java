@@ -22,7 +22,13 @@ public class RNIterableInternal {
     }
 
     public static JSONObject getInAppMessageJson(IterableInAppMessage message) {
-        return message.toJSONObject();
+        JSONObject messageJson = message.toJSONObject();
+        try {
+            messageJson.put("jsonOnly", message.isJsonOnly());
+        } catch (org.json.JSONException e) {
+            IterableLogger.e(TAG, "Failed to add jsonOnly to in-app message JSON");
+        }
+        return messageJson;
     }
 
     public static IterableInAppMessage getMessageById(String messageId) {
