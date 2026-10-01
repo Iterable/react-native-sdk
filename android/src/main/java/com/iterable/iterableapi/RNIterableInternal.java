@@ -2,6 +2,7 @@ package com.iterable.iterableapi;
 
 import androidx.annotation.Nullable;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class RNIterableInternal {
@@ -19,10 +20,11 @@ public class RNIterableInternal {
         return IterableApi.getInstance().getAuthToken();
     }
 
-    public static JSONObject getInAppMessageJson(IterableInAppMessage message) {
+    public static JSONObject getInAppMessageJson(IterableInAppMessage message)
+            throws JSONException {
         JSONObject messageJson = message.toJSONObject();
         // Overwrite native serialization (may use integer 1) so the bridge sends a boolean for JS.
-        messageJson.putOpt("jsonOnly", message.isJsonOnly());
+        messageJson.put("jsonOnly", message.isJsonOnly());
         return messageJson;
     }
 
