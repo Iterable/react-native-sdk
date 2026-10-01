@@ -551,9 +551,11 @@ export class IterableApi {
   /**
    * Syncs embedded local cache with the server.
    */
-  static syncEmbeddedMessages() {
-    IterableLogger.log('syncEmbeddedMessages');
-    return RNIterableAPI.syncEmbeddedMessages();
+  static syncEmbeddedMessages(placementIds?: number[] | null) {
+    IterableLogger.log('syncEmbeddedMessages: ', placementIds);
+    return RNIterableAPI.syncEmbeddedMessages(
+      placementIds === undefined ? null : placementIds
+    );
   }
 
   /**

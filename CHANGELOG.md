@@ -2,6 +2,7 @@
 
 ### Updates
 
+- Added optional placement IDs to `Iterable.embeddedManager.syncMessages()` so apps can sync embedded messages for specific placements only (SDK-751). When omitted, null, or empty, behavior matches the previous sync-all call.
 - Added `Iterable.authManager.getAuthToken()` to read the JWT currently held by the native SDK (SDK-559).
   - iOS: `IterableAPI.authToken`.
   - Android: `IterableApi.getAuthToken()`.
