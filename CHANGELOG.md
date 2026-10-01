@@ -1,5 +1,9 @@
 ## Unreleased
 
+### Fixes
+
+- Fixed Android push-open tracking so `appAlreadyRunning` is forwarded to the native SDK (SDK-748). Previously every Android push open was reported as if the app was not already running.
+
 ### Updates
 
 - Added `Iterable.authManager.getAuthToken()` to read the JWT currently held by the native SDK (SDK-559).
