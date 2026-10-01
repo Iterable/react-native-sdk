@@ -91,6 +91,13 @@ export class IterableInAppMessage {
   readonly priorityLevel: number;
 
   /**
+   * Whether this message is JSON-only (custom payload without Iterable HTML UI).
+   * For JSON-only messages, `inAppHandler` show/skip does not control display on native;
+   * use this flag to branch custom handling instead of inferring from `customPayload` alone.
+   */
+  readonly jsonOnly: boolean;
+
+  /**
    * Constructs an instance of IterableInAppMessage.
    *
    * @param messageId - The unique identifier for the message.
@@ -103,6 +110,7 @@ export class IterableInAppMessage {
    * @param customPayload - A custom payload associated with the message.
    * @param read - A boolean indicating whether the message has been read.
    * @param priorityLevel - The priority level of the message.
+   * @param jsonOnly - Whether the message is JSON-only (defaults to `false`).
    */
   constructor(
     messageId: string,
@@ -114,7 +122,8 @@ export class IterableInAppMessage {
     inboxMetadata: IterableInboxMetadata | undefined,
     customPayload: unknown | undefined,
     read: boolean,
-    priorityLevel: number
+    priorityLevel: number,
+    jsonOnly: boolean = false
   ) {
     this.campaignId = campaignId;
     this.messageId = messageId;
@@ -126,6 +135,7 @@ export class IterableInAppMessage {
     this.customPayload = customPayload;
     this.read = read;
     this.priorityLevel = priorityLevel;
+    this.jsonOnly = jsonOnly;
   }
 
   /**
@@ -147,7 +157,8 @@ export class IterableInAppMessage {
       inAppMessage?.inboxMetadata,
       inAppMessage?.customPayload,
       inAppMessage?.read,
-      inAppMessage?.priorityLevel
+      inAppMessage?.priorityLevel,
+      inAppMessage?.jsonOnly ?? false
     );
   }
 
@@ -197,6 +208,10 @@ export class IterableInAppMessage {
     const read = IterableUtil.readBoolean(dict, 'read');
 
     const priorityLevel = dict.priorityLevel;
+    const jsonOnly = IterableUtil.readBoolean(
+      dict as Record<string, unknown>,
+      'jsonOnly'
+    );
 
     return new IterableInAppMessage(
       messageId,
@@ -212,7 +227,8 @@ export class IterableInAppMessage {
       inboxMetadata,
       customPayload,
       read,
-      priorityLevel
+      priorityLevel,
+      jsonOnly
     );
   }
 }

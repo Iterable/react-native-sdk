@@ -108,4 +108,30 @@ describe('IterableInAppMessage.fromDict', () => {
       expect(message.inboxMetadata).toBeUndefined();
     });
   });
+
+  describe('jsonOnly', () => {
+    it('parses jsonOnly true when present', () => {
+      const message = IterableInAppMessage.fromDict({
+        ...baseDict,
+        jsonOnly: true,
+      });
+
+      expect(message.jsonOnly).toBe(true);
+    });
+
+    it('parses jsonOnly false when present', () => {
+      const message = IterableInAppMessage.fromDict({
+        ...baseDict,
+        jsonOnly: false,
+      });
+
+      expect(message.jsonOnly).toBe(false);
+    });
+
+    it('defaults jsonOnly to false when omitted', () => {
+      const message = IterableInAppMessage.fromDict({ ...baseDict });
+
+      expect(message.jsonOnly).toBe(false);
+    });
+  });
 });
