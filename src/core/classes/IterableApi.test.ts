@@ -1299,13 +1299,34 @@ describe('IterableApi', () => {
   });
 
   describe('syncEmbeddedMessages', () => {
-    it('should call RNIterableAPI.syncEmbeddedMessages', () => {
+    it('should call RNIterableAPI.syncEmbeddedMessages with null when omitted', () => {
       // GIVEN no parameters
       // WHEN syncEmbeddedMessages is called
       IterableApi.syncEmbeddedMessages();
 
-      // THEN RNIterableAPI.syncEmbeddedMessages is called
-      expect(MockRNIterableAPI.syncEmbeddedMessages).toBeCalled();
+      // THEN RNIterableAPI.syncEmbeddedMessages is called with null (sync all)
+      expect(MockRNIterableAPI.syncEmbeddedMessages).toBeCalledWith(null);
+    });
+
+    it('should call RNIterableAPI.syncEmbeddedMessages with placement IDs', () => {
+      // GIVEN placement IDs
+      const placementIds = [1, 2];
+
+      // WHEN syncEmbeddedMessages is called
+      IterableApi.syncEmbeddedMessages(placementIds);
+
+      // THEN RNIterableAPI.syncEmbeddedMessages is called with placement IDs
+      expect(MockRNIterableAPI.syncEmbeddedMessages).toBeCalledWith(
+        placementIds
+      );
+    });
+
+    it('should call RNIterableAPI.syncEmbeddedMessages with empty array for sync all', () => {
+      // WHEN syncEmbeddedMessages is called with an empty array
+      IterableApi.syncEmbeddedMessages([]);
+
+      // THEN the empty array is forwarded (native syncs all placements)
+      expect(MockRNIterableAPI.syncEmbeddedMessages).toBeCalledWith([]);
     });
   });
 

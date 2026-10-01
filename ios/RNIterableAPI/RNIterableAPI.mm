@@ -304,8 +304,8 @@ RCT_EXPORT_MODULE()
   [_swiftAPI endEmbeddedSession];
 }
 
-- (void)syncEmbeddedMessages {
-  [_swiftAPI syncEmbeddedMessages];
+- (void)syncEmbeddedMessages:(NSArray *_Nullable)placementIds {
+  [_swiftAPI syncEmbeddedMessages:placementIds];
 }
 
 - (void)getEmbeddedMessages:(NSArray *_Nullable)placementIds
@@ -597,8 +597,8 @@ RCT_EXPORT_METHOD(endEmbeddedSession) {
   [_swiftAPI endEmbeddedSession];
 }
 
-RCT_EXPORT_METHOD(syncEmbeddedMessages) {
-  [_swiftAPI syncEmbeddedMessages];
+RCT_EXPORT_METHOD(syncEmbeddedMessages : (NSArray *_Nullable)placementIds) {
+  [_swiftAPI syncEmbeddedMessages:placementIds];
 }
 
 RCT_EXPORT_METHOD(getEmbeddedMessages : (NSArray *_Nullable)placementIds resolve : (RCTPromiseResolveBlock)resolve reject : (RCTPromiseRejectBlock)reject) {

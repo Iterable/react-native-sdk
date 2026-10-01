@@ -71,13 +71,17 @@ export class IterableEmbeddedManager {
    *
    * However, do not poll for new embedded messages at a regular interval.
    *
+   * @param placementIds - Optional placement IDs to sync. When omitted, null, or
+   * empty, syncs all placements.
+   *
    * @example
    * ```typescript
    * IterableEmbeddedManager.syncMessages();
+   * IterableEmbeddedManager.syncMessages([1, 2, 3]);
    * ```
    */
-  syncMessages() {
-    return IterableApi.syncEmbeddedMessages();
+  syncMessages(placementIds?: number[] | null) {
+    return IterableApi.syncEmbeddedMessages(placementIds);
   }
 
   /**

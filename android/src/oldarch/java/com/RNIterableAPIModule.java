@@ -244,8 +244,8 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void syncEmbeddedMessages() {
-      moduleImpl.syncEmbeddedMessages();
+    public void syncEmbeddedMessages(@Nullable ReadableArray placementIds) {
+      moduleImpl.syncEmbeddedMessages(placementIds);
     }
 
     @ReactMethod
