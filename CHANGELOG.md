@@ -2,6 +2,14 @@
 
 ### Updates
 
+- Added `IterableConfig.onEmbeddedMessagingSyncSucceeded` and
+  `IterableConfig.onEmbeddedMessagingSyncFailed` so apps can observe embedded
+  messaging sync outcomes (SDK-749). Failure callbacks receive a nullable reason
+  string forwarded from the native SDKs. On iOS, subscription-inactive or
+  invalid API key failures may invoke both `onEmbeddedMessagingDisabled` and
+  `onEmbeddedMessagingSyncFailed`; on Android only
+  `onEmbeddedMessagingDisabled` is invoked for those cases (native SDK
+  behavior).
 - Added `Iterable.authManager.getAuthToken()` to read the JWT currently held by the native SDK (SDK-559).
   - iOS: `IterableAPI.authToken`.
   - Android: `IterableApi.getAuthToken()`.
