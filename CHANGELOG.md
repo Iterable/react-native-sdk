@@ -1,5 +1,9 @@
 ## Unreleased
 
+### Fixes
+
+- Fixed `Iterable.trackPushOpenWithCampaignId` on Android so the `appAlreadyRunning` argument is forwarded to the native SDK instead of always being sent as `false`.
+
 ### Updates
 
 - Added `IterableConfig.onEmbeddedMessagingSyncSucceeded` and

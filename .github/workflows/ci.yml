@@ -109,6 +109,10 @@ jobs:
         run: |
           yarn turbo run build:android --cache-dir="${{ env.TURBO_CACHE_DIR }}"
 
+      - name: Run Android library unit tests
+        if: env.turbo_cache_hit != 1
+        run: yarn test:android:unit
+
   build-ios:
     runs-on: macos-14
     env:

@@ -277,7 +277,12 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
     }
 
     public void trackPushOpenWithCampaignId(double campaignId, @Nullable Double templateId, String messageId, boolean appAlreadyRunning, @Nullable ReadableMap dataFields) {
-        RNIterableInternal.trackPushOpenWithCampaignId((int) campaignId, templateId != null ? templateId.intValue() : null, messageId, optSerializedDataFields(dataFields));
+        RNIterableInternal.trackPushOpenWithCampaignId(
+                (int) campaignId,
+                templateId != null ? templateId.intValue() : null,
+                messageId,
+                appAlreadyRunning,
+                optSerializedDataFields(dataFields));
     }
 
     public void updateSubscriptions(@Nullable ReadableArray emailListIds, @Nullable ReadableArray unsubscribedChannelIds, @Nullable ReadableArray unsubscribedMessageTypeIds, @Nullable ReadableArray subscribedMessageTypeIds, double campaignId, double templateId) {
