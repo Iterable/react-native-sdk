@@ -2,7 +2,7 @@
 
 ### Fixes
 
-- Fixed Android push-open tracking so `appAlreadyRunning` is forwarded to the native SDK (SDK-748). Previously every Android push open was reported as if the app was not already running.
+- Fixed `Iterable.trackPushOpenWithCampaignId` on Android so the `appAlreadyRunning` argument is forwarded to the native SDK instead of always being sent as `false`.
 
 ### Updates
 
