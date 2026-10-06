@@ -92,12 +92,36 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
+          set -euo pipefail
           target="$(git rev-parse HEAD)"
 
           if ! gh release view "$VERSION" &>/dev/null; then
             echo "::error::No GitHub release named $VERSION. Run Prepare Release first."
             exit 1
           fi
+
+          release_tag_commit() {
+            git ls-remote origin "refs/tags/${1}^{}" 2>/dev/null | awk '{print $1}'
+          }
+
+          assert_release_tag_at_head() {
+            local tag_sha attempt
+            for attempt in 1 2 3 4 5; do
+              tag_sha=$(release_tag_commit "$VERSION")
+              if [ -n "$tag_sha" ]; then
+                break
+              fi
+              sleep 2
+            done
+            if [ -z "$tag_sha" ]; then
+              echo "::error::Release tag $VERSION not found on origin."
+              exit 1
+            fi
+            if [ "$tag_sha" != "$target" ]; then
+              echo "::error::Release $VERSION tag points to $tag_sha but master HEAD is $target. Fix the release tag or run Publish from the commit the tag targets."
+              exit 1
+            fi
+          }
 
           is_draft=$(gh release view "$VERSION" --json isDraft -q .isDraft)
           if [ "$is_draft" = "true" ]; then
@@ -107,16 +131,9 @@ jobs:
               --latest \
               --notes-file "$RUNNER_TEMP/release-notes.md"
             echo "Published GitHub release $VERSION at $target."
+            assert_release_tag_at_head
           else
-            if ! git rev-parse "refs/tags/$VERSION" >/dev/null 2>&1; then
-              echo "::error::GitHub release $VERSION is published but tag $VERSION is missing."
-              exit 1
-            fi
-            tag_sha=$(git rev-parse "refs/tags/$VERSION^{commit}")
-            if [ "$tag_sha" != "$target" ]; then
-              echo "::error::Release $VERSION tag points to $tag_sha but master HEAD is $target. Fix the release tag or run Publish from the commit the tag targets."
-              exit 1
-            fi
+            assert_release_tag_at_head
             echo "GitHub release $VERSION is already published at $target, skipping release edit."
           fi
 

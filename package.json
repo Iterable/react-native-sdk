@@ -47,7 +47,8 @@
     "prebuild": "yarn add_build_info",
     "build": "yarn add_build_info && yarn bob build",
     "prepare": "yarn build",
-    "release": "release-it"
+    "release": "node ./scripts/deprecated-npm-release.js",
+    "release:legacy": "release-it"
   },
   "keywords": [
     "react-native",

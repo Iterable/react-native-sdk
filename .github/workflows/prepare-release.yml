@@ -23,6 +23,9 @@ permissions:
 jobs:
   prepare-release:
     runs-on: ubuntu-latest
+    env:
+      VERSION: ${{ github.event.inputs.version }}
+      DOCS_PR: ${{ github.event.inputs.docs_pr }}
     steps:
       - uses: actions/create-github-app-token@v1
         id: app-token
@@ -37,13 +40,11 @@ jobs:
 
       - name: Validate inputs
         run: |
-          version="${{ github.event.inputs.version }}"
-          docs_pr="${{ github.event.inputs.docs_pr }}"
-          if ! [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo "::error::Invalid version format. Use a stable semver release (e.g., 3.6.0). Prereleases are not supported by this workflow."
             exit 1
           fi
-          if ! [[ "$docs_pr" =~ ^[0-9]+$ ]]; then
+          if ! [[ "$DOCS_PR" =~ ^[0-9]+$ ]]; then
             echo "::error::docs_pr must be the iterable-docs pull request number (digits only)."
             exit 1
           fi
@@ -55,13 +56,12 @@ jobs:
       - name: Update Changelog
         id: update_changelog
         run: |
-          version="${{ github.event.inputs.version }}"
           changelog_file="CHANGELOG.md"
 
           # RN has no [Unreleased] section -- insert a new ## version header at the top
           temp_file=$(mktemp)
           {
-            echo "## $version"
+            echo "## $VERSION"
             echo ""
             cat "$changelog_file"
           } > "$temp_file"
@@ -70,7 +70,7 @@ jobs:
           echo "See CHANGELOG.md for release notes." > "$RUNNER_TEMP/release-notes.md"
 
       - name: Bump package.json version
-        run: npm --no-git-tag-version --allow-same-version version "${{ github.event.inputs.version }}"
+        run: npm --no-git-tag-version --allow-same-version version "$VERSION"
 
       - name: Regenerate build info
         run: node scripts/autoCreatePackageInfo.js
@@ -101,13 +101,11 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
-          version="${{ github.event.inputs.version }}"
-
-          if gh release view "$version" &>/dev/null; then
-            echo "Draft release $version already exists, skipping."
+          if gh release view "$VERSION" &>/dev/null; then
+            echo "Draft release $VERSION already exists, skipping."
           else
-            gh release create "$version" \
+            gh release create "$VERSION" \
               --draft \
-              --title "$version" \
+              --title "$VERSION" \
               --notes-file "$RUNNER_TEMP/release-notes.md"
           fi

@@ -1,6 +1,9 @@
 #!/bin/bash
 
 set -euxo pipefail
+
+echo "ERROR: scripts/release_next_version.sh is deprecated. Use GitHub Actions Prepare Release and Publish Release workflows." >&2
+exit 1
 export SDK_DIR=$(cd `dirname "$0"`/.. && pwd)
 cd $SDK_DIR
 export VERSION=`sed -nE 's/"version": "([[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+)",/\1/p' package.json | xargs`
