@@ -101,7 +101,17 @@ jobs:
           fi
 
           release_tag_commit() {
-            git ls-remote origin "refs/tags/${1}^{}" 2>/dev/null | awk '{print $1}'
+            local tag="$1"
+            local peeled direct
+            peeled=$(git ls-remote origin "refs/tags/${tag}^{}" 2>/dev/null | awk '{print $1}')
+            if [ -n "$peeled" ]; then
+              echo "$peeled"
+              return
+            fi
+            direct=$(git ls-remote origin "refs/tags/${tag}" 2>/dev/null | awk '{print $1}')
+            if [ -n "$direct" ]; then
+              echo "$direct"
+            fi
           }
 
           assert_release_tag_at_head() {
