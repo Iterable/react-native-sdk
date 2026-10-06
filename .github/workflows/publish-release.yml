@@ -28,8 +28,8 @@ jobs:
 
       - name: Validate version format
         run: |
-          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9]+)?$ ]]; then
-            echo "::error::Invalid version format. Use semantic versioning (e.g., 3.6.0 or 3.6.0-beta1)"
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Invalid version format. Use a stable semver release (e.g., 3.6.0). Prereleases are not supported by this workflow."
             exit 1
           fi
 
@@ -40,7 +40,7 @@ jobs:
 
       - name: Verify release is ready on master HEAD
         run: |
-          changelog_top=$(grep -m1 -E '^## [0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9]+)?$' CHANGELOG.md | sed -E 's/^## //')
+          changelog_top=$(grep -m1 -E '^## [0-9]+\.[0-9]+\.[0-9]+$' CHANGELOG.md | sed -E 's/^## //')
           if [ "$changelog_top" != "$VERSION" ]; then
             echo "::error::CHANGELOG.md top version is '$changelog_top', expected '$VERSION' at master HEAD. Merge the prepare-release PR before running this workflow."
             exit 1
@@ -58,16 +58,31 @@ jobs:
             exit 1
           fi
 
+      - name: Extract changelog release notes
+        run: |
+          section=$(awk -v ver="$VERSION" '
+            $0 == "## " ver { capturing=1; next }
+            capturing && /^## [0-9]+\.[0-9]+\.[0-9]+$/ { exit }
+            capturing { print }
+          ' CHANGELOG.md)
+
+          if [ -z "$(printf '%s' "$section" | tr -d '[:space:]')" ]; then
+            echo "::error::No CHANGELOG.md content under ## $VERSION. Add release notes on the prepare-release PR before publishing."
+            exit 1
+          fi
+
+          printf '%s\n' "$section" > "$RUNNER_TEMP/release-notes.md"
+
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version-file: .nvmrc
           cache: 'yarn'
           registry-url: 'https://registry.npmjs.org'
 
-      - name: Update npm for OIDC support
-        run: npm install -g npm@latest
+      - name: Install npm for OIDC trusted publishing
+        run: npm install -g npm@11.17.0
 
-      - run: yarn install --frozen-lockfile
+      - run: yarn install --immutable
 
       - run: yarn test --maxWorkers=2
 
@@ -89,10 +104,20 @@ jobs:
             gh release edit "$VERSION" \
               --draft=false \
               --target "$target" \
-              --latest
+              --latest \
+              --notes-file "$RUNNER_TEMP/release-notes.md"
             echo "Published GitHub release $VERSION at $target."
           else
-            echo "GitHub release $VERSION is already published, skipping."
+            if ! git rev-parse "refs/tags/$VERSION" >/dev/null 2>&1; then
+              echo "::error::GitHub release $VERSION is published but tag $VERSION is missing."
+              exit 1
+            fi
+            tag_sha=$(git rev-parse "refs/tags/$VERSION^{commit}")
+            if [ "$tag_sha" != "$target" ]; then
+              echo "::error::Release $VERSION tag points to $tag_sha but master HEAD is $target. Fix the release tag or run Publish from the commit the tag targets."
+              exit 1
+            fi
+            echo "GitHub release $VERSION is already published at $target, skipping release edit."
           fi
 
       - name: Publish to npm
