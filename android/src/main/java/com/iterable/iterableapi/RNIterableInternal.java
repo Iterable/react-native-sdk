@@ -32,8 +32,14 @@ public class RNIterableInternal {
         return IterableApi.getInstance().getInAppManager().getMessageById(messageId);
     }
     
-    public static void trackPushOpenWithCampaignId(Integer campaignId, Integer templateId, String messageId, @Nullable JSONObject dataFields) {
-        IterableApi.getInstance().trackPushOpen(campaignId, templateId, messageId, dataFields);
+    public static void trackPushOpenWithCampaignId(
+            Integer campaignId,
+            Integer templateId,
+            String messageId,
+            boolean appAlreadyRunning,
+            @Nullable JSONObject dataFields) {
+        IterableApi.getInstance().trackPushOpen(
+                campaignId, templateId, messageId, appAlreadyRunning, dataFields);
     }
 
     public static void setAttributionInfo(IterableAttributionInfo attributionInfo) {

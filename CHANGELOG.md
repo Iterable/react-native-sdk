@@ -1,8 +1,20 @@
 ## Unreleased
 
+### Fixes
+
+- Fixed `Iterable.trackPushOpenWithCampaignId` on Android so the `appAlreadyRunning` argument is forwarded to the native SDK instead of always being sent as `false`.
+
 ### Updates
 
 - Added `IterableInAppMessage.jsonOnly` so `inAppHandler` and in-app message fetches can distinguish JSON-only messages from HTML in-apps (SDK-750).
+- Added `IterableConfig.onEmbeddedMessagingSyncSucceeded` and
+  `IterableConfig.onEmbeddedMessagingSyncFailed` so apps can observe embedded
+  messaging sync outcomes (SDK-749). Failure callbacks receive a nullable reason
+  string forwarded from the native SDKs. On iOS, subscription-inactive or
+  invalid API key failures may invoke both `onEmbeddedMessagingDisabled` and
+  `onEmbeddedMessagingSyncFailed`; on Android only
+  `onEmbeddedMessagingDisabled` is invoked for those cases (native SDK
+  behavior).
 - Added `Iterable.authManager.getAuthToken()` to read the JWT currently held by the native SDK (SDK-559).
   - iOS: `IterableAPI.authToken`.
   - Android: `IterableApi.getAuthToken()`.
