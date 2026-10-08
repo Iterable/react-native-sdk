@@ -313,7 +313,14 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
 
     public void setReadForMessage(String messageId, boolean read) {
         IterableLogger.v(TAG, "setReadForMessage");
-        IterableApi.getInstance().getInAppManager().setRead(RNIterableInternal.getMessageById(messageId), read);
+        IterableInAppMessage message = RNIterableInternal.getMessageById(messageId);
+
+        if (message == null) {
+            IterableLogger.d(TAG, "Failed to get in-app for message ID: " + messageId);
+            return;
+        }
+
+        IterableApi.getInstance().getInAppManager().setRead(message, read);
     }
 
     public void removeMessage(String messageId, double location, double deleteSource) {
