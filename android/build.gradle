@@ -107,5 +107,10 @@ dependencies {
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
   api "com.iterable:iterableapi:3.10.1"
     // api project(":iterableapi") // links to local android SDK repo rather than by release
+
+  testImplementation "junit:junit:4.13.2"
+  testImplementation "org.mockito:mockito-core:4.8.0"
+  testImplementation "org.mockito:mockito-inline:4.8.0"
+  testImplementation "org.robolectric:robolectric:4.14.1"
 }
 
