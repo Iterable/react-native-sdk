@@ -468,6 +468,44 @@ export class IterableConfig {
   onEmbeddedMessagingDisabled?: () => void;
 
   /**
+   * A callback function that is called when an embedded messaging sync completes
+   * successfully.
+   *
+   * This is distinct from {@link onEmbeddedMessageUpdate}, which fires when the
+   * local embedded message cache changes. Sync success indicates the network
+   * sync operation finished without error.
+   *
+   * @example
+   * ```typescript
+   * const config = new IterableConfig();
+   * config.enableEmbeddedMessaging = true;
+   * config.onEmbeddedMessagingSyncSucceeded = () => {
+   *   console.log('Embedded sync succeeded');
+   * };
+   * Iterable.initialize('<YOUR_API_KEY>', config);
+   * ```
+   */
+  onEmbeddedMessagingSyncSucceeded?: () => void;
+
+  /**
+   * A callback function that is called when an embedded messaging sync fails.
+   *
+   * @param reason - Failure reason from the native SDK, or `null` when none is
+   * available.
+   *
+   * @example
+   * ```typescript
+   * const config = new IterableConfig();
+   * config.enableEmbeddedMessaging = true;
+   * config.onEmbeddedMessagingSyncFailed = (reason) => {
+   *   console.warn('Embedded sync failed', reason);
+   * };
+   * Iterable.initialize('<YOUR_API_KEY>', config);
+   * ```
+   */
+  onEmbeddedMessagingSyncFailed?: (reason: string | null) => void;
+
+  /**
    * Converts the IterableConfig instance to a dictionary object.
    *
    * @returns An object representing the configuration.
@@ -505,6 +543,16 @@ export class IterableConfig {
        */
       onEmbeddedMessagingDisabledPresent:
         this.onEmbeddedMessagingDisabled !== undefined,
+      /**
+       * A boolean indicating if an embedded messaging sync succeeded callback is present.
+       */
+      onEmbeddedMessagingSyncSucceededPresent:
+        this.onEmbeddedMessagingSyncSucceeded !== undefined,
+      /**
+       * A boolean indicating if an embedded messaging sync failed callback is present.
+       */
+      onEmbeddedMessagingSyncFailedPresent:
+        this.onEmbeddedMessagingSyncFailed !== undefined,
       /** The log level for the SDK. */
       logLevel: this.logLevel,
       expiringAuthTokenRefreshPeriod: this.expiringAuthTokenRefreshPeriod,

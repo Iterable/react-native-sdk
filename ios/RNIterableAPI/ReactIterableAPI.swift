@@ -35,6 +35,8 @@ import React
     case handleAuthFailureCalled
     case handleEmbeddedMessageUpdateCalled
     case handleEmbeddedMessagingDisabledCalled
+    case handleEmbeddedMessagingSyncSucceededCalled
+    case handleEmbeddedMessagingSyncFailedCalled
     // Android-only native API; listed so JS addListener does not warn on iOS.
     case handleDecryptionFailureCalled
   }
@@ -715,8 +717,16 @@ import React
       // Add embedded update listener if any callback is present
       let onEmbeddedMessageUpdatePresent = configDict["onEmbeddedMessageUpdatePresent"] as? Bool ?? false
       let onEmbeddedMessagingDisabledPresent = configDict["onEmbeddedMessagingDisabledPresent"] as? Bool ?? false
+      let onEmbeddedMessagingSyncSucceededPresent =
+        configDict["onEmbeddedMessagingSyncSucceededPresent"] as? Bool ?? false
+      let onEmbeddedMessagingSyncFailedPresent =
+        configDict["onEmbeddedMessagingSyncFailedPresent"] as? Bool ?? false
 
-      if onEmbeddedMessageUpdatePresent || onEmbeddedMessagingDisabledPresent {
+      if onEmbeddedMessageUpdatePresent
+        || onEmbeddedMessagingDisabledPresent
+        || onEmbeddedMessagingSyncSucceededPresent
+        || onEmbeddedMessagingSyncFailedPresent
+      {
         IterableAPI.embeddedManager.addUpdateListener(self)
       }
 
@@ -889,7 +899,7 @@ extension ReactIterableAPI: IterableEmbeddedUpdateDelegate {
       withName: EventName.handleEmbeddedMessageUpdateCalled.rawValue,
       body: nil as Any?)
   }
-  
+
   public func onEmbeddedMessagingDisabled() {
     ITBInfo()
     guard shouldEmit else {
@@ -898,5 +908,25 @@ extension ReactIterableAPI: IterableEmbeddedUpdateDelegate {
     delegate?.sendEvent(
       withName: EventName.handleEmbeddedMessagingDisabledCalled.rawValue,
       body: nil as Any?)
+  }
+
+  public func onEmbeddedMessagingSyncSucceeded() {
+    ITBInfo()
+    guard shouldEmit else {
+      return
+    }
+    delegate?.sendEvent(
+      withName: EventName.handleEmbeddedMessagingSyncSucceededCalled.rawValue,
+      body: nil as Any?)
+  }
+
+  public func onEmbeddedMessagingSyncFailed(_ error: String?) {
+    ITBInfo()
+    guard shouldEmit else {
+      return
+    }
+    delegate?.sendEvent(
+      withName: EventName.handleEmbeddedMessagingSyncFailedCalled.rawValue,
+      body: error as Any?)
   }
 }
