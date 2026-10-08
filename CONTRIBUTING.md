@@ -13,6 +13,10 @@ Contributions (in the form of issues or pull requests) are welcome!
 * If you have a patch for a bug, or an implementation of a new feature, you're more than welcome to submit a pull request!
 * If the pull request is for an outstanding issue, please include a link to that issue. Otherwise, there's no need to create a new issue; simply explain the purpose of the Pull Request in the body. 
 
+#### **Running tests**
+* JS: `yarn test`
+* Android bridge (JDK 17 and the Android SDK required): `cd example/android && ./gradlew :iterable_react-native-sdk:testDebugUnitTest`
+
 Thanks,
 Team Iterable
 
