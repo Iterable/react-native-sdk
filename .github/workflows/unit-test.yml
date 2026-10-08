@@ -81,5 +81,4 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Run Android bridge unit tests
-        working-directory: example/android
-        run: ./gradlew :iterable_react-native-sdk:testDebugUnitTest --no-daemon --console=plain
+        run: yarn example test:android

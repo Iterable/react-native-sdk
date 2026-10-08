@@ -15,7 +15,7 @@ Contributions (in the form of issues or pull requests) are welcome!
 
 #### **Running tests**
 * JS: `yarn test`
-* Android bridge (JDK 17 and the Android SDK required): `cd example/android && ./gradlew :iterable_react-native-sdk:testDebugUnitTest`
+* Android bridge (JDK 17 and the Android SDK required): `yarn example test:android`
 
 Thanks,
 Team Iterable
