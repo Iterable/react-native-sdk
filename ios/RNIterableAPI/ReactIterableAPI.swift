@@ -537,10 +537,15 @@ import React
     EmbeddedSessionManager.shared.endSession()
   }
 
-  @objc(syncEmbeddedMessages)
-  public func syncEmbeddedMessages() {
+  @objc(syncEmbeddedMessages:)
+  public func syncEmbeddedMessages(placementIds: [NSNumber]?) {
     ITBInfo()
-    IterableAPI.embeddedManager.syncMessages { }
+    if let placementIds = placementIds, !placementIds.isEmpty {
+      let ids = placementIds.map { $0.intValue }
+      IterableAPI.embeddedManager.syncMessages(placementIds: ids) { }
+    } else {
+      IterableAPI.embeddedManager.syncMessages { }
+    }
   }
 
   @objc(getEmbeddedMessages:resolver:rejecter:)

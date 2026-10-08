@@ -97,15 +97,48 @@ describe('IterableEmbeddedManager', () => {
   });
 
   describe('syncMessages', () => {
-    it('should call IterableApi.syncEmbeddedMessages', async () => {
+    it('should call IterableApi.syncEmbeddedMessages with null when omitted', async () => {
       // WHEN syncMessages is called
       const result = await embeddedManager.syncMessages();
 
-      // THEN IterableApi.syncEmbeddedMessages is called
+      // THEN IterableApi.syncEmbeddedMessages is called with null
       expect(MockRNIterableAPI.syncEmbeddedMessages).toHaveBeenCalledTimes(1);
+      expect(MockRNIterableAPI.syncEmbeddedMessages).toHaveBeenCalledWith(null);
 
       // AND the result is returned
       expect(result).toBeUndefined();
+    });
+
+    it('should call IterableApi.syncEmbeddedMessages with placement IDs', () => {
+      // GIVEN placement IDs
+      const placementIds = [1, 2];
+
+      // WHEN syncMessages is called
+      embeddedManager.syncMessages(placementIds);
+
+      // THEN IterableApi.syncEmbeddedMessages is called with placement IDs
+      expect(MockRNIterableAPI.syncEmbeddedMessages).toHaveBeenCalledTimes(1);
+      expect(MockRNIterableAPI.syncEmbeddedMessages).toHaveBeenCalledWith(
+        placementIds
+      );
+    });
+
+    it('should call IterableApi.syncEmbeddedMessages with null placement IDs', () => {
+      // WHEN syncMessages is called with null
+      embeddedManager.syncMessages(null);
+
+      // THEN IterableApi.syncEmbeddedMessages is called with null
+      expect(MockRNIterableAPI.syncEmbeddedMessages).toHaveBeenCalledTimes(1);
+      expect(MockRNIterableAPI.syncEmbeddedMessages).toHaveBeenCalledWith(null);
+    });
+
+    it('should call IterableApi.syncEmbeddedMessages with empty placement IDs', () => {
+      // WHEN syncMessages is called with an empty array
+      embeddedManager.syncMessages([]);
+
+      // THEN the empty array is forwarded (native syncs all placements)
+      expect(MockRNIterableAPI.syncEmbeddedMessages).toHaveBeenCalledTimes(1);
+      expect(MockRNIterableAPI.syncEmbeddedMessages).toHaveBeenCalledWith([]);
     });
   });
 

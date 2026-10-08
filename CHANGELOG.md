@@ -6,6 +6,7 @@
 
 ### Updates
 
+- Added optional placement IDs to `Iterable.embeddedManager.syncMessages()` so apps can sync embedded messages for specific placements only (SDK-751). When omitted, null, or empty, behavior matches the previous sync-all call.
 - Added `IterableConfig.onEmbeddedMessagingSyncSucceeded` and
   `IterableConfig.onEmbeddedMessagingSyncFailed` so apps can observe embedded
   messaging sync outcomes (SDK-749). Failure callbacks receive a nullable reason
