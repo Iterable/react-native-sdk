@@ -23,6 +23,12 @@
 - Added `Iterable.disableDeviceForAllUsers()` to unregister this device's push token from every user associated with the device (SDK-550).
   - iOS: forwards to native `IterableAPI.disableDeviceForAllUsers()`.
   - Android: graceful no-op that logs a warning; use `disableDeviceForCurrentUser()` to disable push for the current user. There is no public native "all users" equivalent.
+## 3.2.1
+
+### Fixes
+
+- Fixed an Android crash when marking an in-app message as read after that message was no longer in the native queue.
+  - `setReadForMessage` logs and returns when the message id is missing, matching the iOS bridge. The Android bridge was passing that missing message into `IterableInAppManager.setRead`, which threw a `NullPointerException` and killed the app process.
 
 ## 3.2.0
 
