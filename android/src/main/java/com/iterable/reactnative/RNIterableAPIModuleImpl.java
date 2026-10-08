@@ -638,9 +638,8 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
     public IterableInAppHandler.InAppResponse onNewInApp(@NonNull IterableInAppMessage message) {
         IterableLogger.printInfo();
 
-        JSONObject messageJson = RNIterableInternal.getInAppMessageJson(message);
-
         try {
+            JSONObject messageJson = RNIterableInternal.getInAppMessageJson(message);
             WritableMap eventData = Serialization.convertJsonToMap(messageJson);
             jsCallBackLatch = new CountDownLatch(1);
             sendEvent(EventName.handleInAppCalled.name(), eventData);
