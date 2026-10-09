@@ -7,7 +7,7 @@
 - Fixed the Android module failing to compile against its pinned native Android SDK 3.10.1 in 3.2.0. The bridge now implements `onEmbeddedMessagingSyncSucceeded` and `onEmbeddedMessagingSyncFailed` from `IterableEmbeddedUpdateHandler` as no-ops, matching the native defaults.
 - Fixed an Android crash in `Iterable.inAppManager.showMessage` (`IllegalStateException: Method addObserver must be called on the main thread`), present since 3.2.0.
   - The bridge now displays the message on the main thread, matching `setAutoDisplayPaused` and the iOS SDK. It was calling the native in-app displayer on the React Native native-modules thread, which crashes when the current activity is not a `FragmentActivity` (for example a Jetpack Compose `ComponentActivity`).
-  - The promise now rejects when the message id is no longer in the native queue instead of crashing with a `NullPointerException`.
+  - The promise now rejects when the message id is empty or no longer in the native queue instead of crashing with a `NullPointerException`.
   - Dismissing a message by tapping outside it now resolves the promise with `null` instead of crashing on `url.toString()`.
 
 ### Updates

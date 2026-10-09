@@ -82,15 +82,23 @@ export class IterableInAppManager {
    *
    * @example
    * ```typescript
-   * Iterable.inAppManager.showMessage(message, false).then(url => {
-   *   console.log("url: " + url)
-   * });
+   * Iterable.inAppManager
+   *   .showMessage(message, false)
+   *   .then(url => {
+   *     console.log("url: " + url)
+   *   })
+   *   .catch(error => {
+   *     console.log("Could not show message: " + error.message)
+   *   });
    * ```
    *
    * @param message - The message to show (an {@link IterableInAppMessage} object)
    * @param consume - Whether or not the message should be consumed from the user's message queue after being shown. This should be defaulted to true.
    *
    * @returns A Promise that resolves to the URL of the button or link the user tapped to close the in-app message.
+   * On Android, it resolves to `null` when the user closes the message by tapping outside it, and rejects when the
+   * message id is empty or the message is not in the local queue. In other cases, such as when the message can't be
+   * displayed, the Promise may not settle.
    */
   showMessage(
     message: IterableInAppMessage,
