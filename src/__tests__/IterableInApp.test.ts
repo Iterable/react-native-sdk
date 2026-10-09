@@ -228,7 +228,8 @@ describe('Iterable In App', () => {
       });
   });
 
-  test('showMessage_messageNotInNativeQueue_rejects', async () => {
+  test('showMessage_nativeRejects_propagatesRejectionToJs', async () => {
+    // JS contract only: the native rejection itself is implemented in the iOS and Android bridges
     // GIVEN an in-app message that is no longer in the native queue
     const message: IterableInAppMessage = IterableInAppMessage.fromDict({
       messageId: 'message1',
