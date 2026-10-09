@@ -286,15 +286,26 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         );
     }
 
-    public void showMessage(String messageId, boolean consume, final Promise promise) {
-        if (messageId == null || messageId == "") {
+    public void showMessage(String messageId, final boolean consume, final Promise promise) {
+        if (messageId == null || messageId.isEmpty()) {
             promise.reject("", "messageId is null or empty");
             return;
         }
-        IterableApi.getInstance().getInAppManager().showMessage(RNIterableInternal.getMessageById(messageId), consume, new IterableHelper.IterableUrlCallback() {
+        final IterableInAppMessage message = RNIterableInternal.getMessageById(messageId);
+        if (message == null) {
+            promise.reject("", "Could not find message with id: " + messageId);
+            return;
+        }
+        // In-app display attaches lifecycle observers and fragments, which AndroidX requires on the main thread.
+        UiThreadUtil.runOnUiThread(new Runnable() {
             @Override
-            public void execute(@Nullable Uri url) {
-                promise.resolve(url.toString());
+            public void run() {
+                IterableApi.getInstance().getInAppManager().showMessage(message, consume, new IterableHelper.IterableUrlCallback() {
+                    @Override
+                    public void execute(@Nullable Uri url) {
+                        promise.resolve(url != null ? url.toString() : null);
+                    }
+                });
             }
         });
     }
@@ -728,6 +739,16 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
     public void onEmbeddedMessagingDisabled() {
         IterableLogger.d(TAG, "onEmbeddedMessagingDisabled");
         sendEvent(EventName.handleEmbeddedMessagingDisabledCalled.name(), null);
+    }
+
+    @Override
+    public void onEmbeddedMessagingSyncSucceeded() {
+        IterableLogger.d(TAG, "onEmbeddedMessagingSyncSucceeded");
+    }
+
+    @Override
+    public void onEmbeddedMessagingSyncFailed(@Nullable String reason) {
+        IterableLogger.d(TAG, "onEmbeddedMessagingSyncFailed: " + reason);
     }
     // ---------------------------------------------------------------------------------------
     // endregion
