@@ -9,6 +9,7 @@
   - The bridge now displays the message on the main thread, matching `setAutoDisplayPaused` and the iOS SDK. It was calling the native in-app displayer on the React Native native-modules thread, which crashes when the current activity is not a `FragmentActivity` (for example a Jetpack Compose `ComponentActivity`).
   - The promise now rejects when the message id is empty or no longer in the native queue instead of crashing with a `NullPointerException`.
   - Dismissing a message by tapping outside it now resolves the promise with `null` instead of crashing on `url.toString()`.
+- `Iterable.inAppManager.showMessage` now rejects on iOS when the message id is empty or no longer in the native queue, matching Android. Previously the promise never settled.
 
 ### Updates
 

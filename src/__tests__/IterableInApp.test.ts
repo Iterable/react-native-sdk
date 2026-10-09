@@ -228,6 +228,25 @@ describe('Iterable In App', () => {
       });
   });
 
+  test('showMessage_nativeRejects_propagatesRejectionToJs', async () => {
+    // JS contract only: the native rejection itself is implemented in the iOS and Android bridges
+    // GIVEN an in-app message that is no longer in the native queue
+    const message: IterableInAppMessage = IterableInAppMessage.fromDict({
+      messageId: 'message1',
+      campaignId: 1234,
+      trigger: { type: IterableInAppTriggerType.immediate },
+    });
+    const error = new Error('Could not find message with id: message1');
+
+    // WHEN the native module rejects the call
+    MockRNIterableAPI.showMessage.mockRejectedValueOnce(error);
+
+    // THEN Iterable.inAppManager.showMessage rejects with the native error
+    await expect(
+      Iterable.inAppManager?.showMessage(message, true)
+    ).rejects.toBe(error);
+  });
+
   test('removeMessage_params_methodCalledWithParams', () => {
     // GIVEN an in-app message
     const messageDict = {

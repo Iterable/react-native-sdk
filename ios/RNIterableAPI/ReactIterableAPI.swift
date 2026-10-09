@@ -384,8 +384,16 @@ import React
     rejecter: RCTPromiseRejectBlock
   ) {
     ITBInfo()
+    guard !messageId.isEmpty else {
+      ITBError("messageId is null or empty")
+      rejecter("", "messageId is null or empty", NSError(domain: "", code: 0, userInfo: nil))
+      return
+    }
     guard let message = IterableAPI.inAppManager.getMessage(withId: messageId) else {
       ITBError("Could not find message with id: \(messageId)")
+      rejecter(
+        "", "Could not find message with id: \(messageId)",
+        NSError(domain: "", code: 0, userInfo: nil))
       return
     }
     IterableAPI.inAppManager.show(message: message, consume: consume) { (url) in
