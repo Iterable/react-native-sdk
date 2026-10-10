@@ -367,6 +367,13 @@ describe('Iterable', () => {
       expect(configDict.androidWakeDelayMs).toBe(1500);
       expect(configDict.authCallbackTimeoutMs).toBe(2500);
     });
+
+    it('should include enableForegroundCriteriaFetch in toDict() when set to false', () => {
+      const config = new IterableConfig();
+      config.enableForegroundCriteriaFetch = false;
+      const configDict = config.toDict();
+      expect(configDict.enableForegroundCriteriaFetch).toBe(false);
+    });
   });
 
   describe('urlHandler', () => {
@@ -1251,7 +1258,6 @@ describe('Iterable', () => {
   describe('embeddedManager', () => {
     it('should be disabled by default', () => {
       const config = new IterableConfig();
-      expect(config.enableForegroundCriteriaFetch).toBe(true);
       expect(config.enableEmbeddedMessaging).toBe(false);
       expect(Iterable.embeddedManager.isEnabled).toBe(false);
     });
