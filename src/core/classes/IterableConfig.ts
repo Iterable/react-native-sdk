@@ -392,6 +392,14 @@ export class IterableConfig {
   authCallbackTimeoutMs = 6000;
 
   /**
+   * When `true` (the default), the SDK fetches unknown-user (anonymous) targeting
+   * criteria when the app enters the foreground.
+   *
+   * Set to `false` to disable that foreground fetch.
+   */
+  enableForegroundCriteriaFetch = true;
+
+  /**
    * Should the SDK enable and use embedded messaging?
    *
    * **Documentation**
@@ -484,6 +492,7 @@ export class IterableConfig {
       pushPlatform: this.pushPlatform,
       encryptionEnforced: this.encryptionEnforced,
       retryPolicy: this.retryPolicy,
+      enableForegroundCriteriaFetch: this.enableForegroundCriteriaFetch,
       enableEmbeddedMessaging: this.enableEmbeddedMessaging,
       androidWakeDelayMs: this.androidWakeDelayMs,
       authCallbackTimeoutMs: this.authCallbackTimeoutMs,
