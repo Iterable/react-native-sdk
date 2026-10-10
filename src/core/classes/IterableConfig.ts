@@ -263,6 +263,15 @@ export class IterableConfig {
   expiringAuthTokenRefreshPeriod = 60.0;
 
   /**
+   * Maximum number of unknown-user (anonymous) events stored locally before
+   * identification. The native SDK drops the oldest events when the count
+   * exceeds this limit.
+   *
+   * Applies when unknown-user activation is enabled on the native SDK.
+   */
+  eventThresholdLimit = 100;
+
+  /**
    * Use this array to declare the specific URL protocols that the SDK can
    * expect to see on incoming links from Iterable, so it knows that it can
    * safely handle them as needed. This array helps prevent the SDK from opening
@@ -476,6 +485,7 @@ export class IterableConfig {
       /** The log level for the SDK. */
       logLevel: this.logLevel,
       expiringAuthTokenRefreshPeriod: this.expiringAuthTokenRefreshPeriod,
+      eventThresholdLimit: this.eventThresholdLimit,
       allowedProtocols: this.allowedProtocols,
       androidSdkUseInMemoryStorageForInApps:
         this.androidSdkUseInMemoryStorageForInApps,

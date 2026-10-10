@@ -1,3 +1,9 @@
+## Unreleased
+
+### Updates
+
+- Added `IterableConfig.eventThresholdLimit` (default `100`) to cap locally stored unknown-user events before identification (SDK-553). Applies when unknown-user activation is enabled on the native SDK.
+
 ## 3.2.1
 
 ### Fixes

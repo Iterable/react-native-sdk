@@ -75,6 +75,10 @@ extension IterableConfig {
       config.expiringAuthTokenRefreshPeriod = expiringAuthTokenRefreshPeriod
     }
 
+    if let eventThresholdLimit = dict["eventThresholdLimit"] as? Int {
+      config.eventThresholdLimit = eventThresholdLimit
+    }
+
     if let logLevelNumber = dict["logLevel"] as? NSNumber {
       config.logDelegate = createLogDelegate(logLevelNumber: logLevelNumber)
     }

@@ -328,6 +328,7 @@ describe('Iterable', () => {
       expect(config.enableEmbeddedMessaging).toBe(false);
       expect(config.encryptionEnforced).toBe(false);
       expect(config.expiringAuthTokenRefreshPeriod).toBe(60.0);
+      expect(config.eventThresholdLimit).toBe(100);
       expect(config.inAppDisplayInterval).toBe(30.0);
       expect(config.inAppHandler).toBe(undefined);
       expect(config.logLevel).toBe(IterableLogLevel.debug);
@@ -347,6 +348,7 @@ describe('Iterable', () => {
       expect(configDict.enableEmbeddedMessaging).toBe(false);
       expect(configDict.encryptionEnforced).toBe(false);
       expect(configDict.expiringAuthTokenRefreshPeriod).toBe(60.0);
+      expect(configDict.eventThresholdLimit).toBe(100);
       expect(configDict.inAppDisplayInterval).toBe(30.0);
       expect(configDict.inAppHandlerPresent).toBe(false);
       expect(configDict.logLevel).toBe(IterableLogLevel.debug);
@@ -364,6 +366,13 @@ describe('Iterable', () => {
       const configDict = config.toDict();
       expect(configDict.androidWakeDelayMs).toBe(1500);
       expect(configDict.authCallbackTimeoutMs).toBe(2500);
+    });
+
+    it('should include eventThresholdLimit in toDict() when overridden', () => {
+      const config = new IterableConfig();
+      config.eventThresholdLimit = 50;
+      const configDict = config.toDict();
+      expect(configDict.eventThresholdLimit).toBe(50);
     });
   });
 
