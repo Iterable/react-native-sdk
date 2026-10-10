@@ -22,6 +22,7 @@ import com.iterable.iterableapi.IterableInAppDeleteActionType;
 import com.iterable.iterableapi.IterableInAppHandler;
 import com.iterable.iterableapi.IterableInAppLocation;
 import com.iterable.iterableapi.IterableInAppMessage;
+import com.iterable.iterableapi.IterableIdentityResolution;
 import com.iterable.iterableapi.IterableInboxSession;
 import com.iterable.iterableapi.IterableLogger;
 import com.iterable.iterableapi.RetryPolicy;
@@ -260,6 +261,17 @@ class Serialization {
                     retryPolicyType = RetryPolicy.Type.EXPONENTIAL;
                 }
                 configBuilder.setAuthRetryPolicy(new RetryPolicy(maxRetry, retryInterval, retryPolicyType));
+            }
+
+            if (iterableContextJSON.has("identityResolution")) {
+                JSONObject identityResolutionJson =
+                    iterableContextJSON.getJSONObject("identityResolution");
+                boolean replayOnVisitorToKnown =
+                    identityResolutionJson.optBoolean("replayOnVisitorToKnown", true);
+                boolean mergeOnUnknownToKnown =
+                    identityResolutionJson.optBoolean("mergeOnUnknownToKnown", true);
+                configBuilder.setIdentityResolution(
+                    new IterableIdentityResolution(replayOnVisitorToKnown, mergeOnUnknownToKnown));
             }
 
             return configBuilder;
