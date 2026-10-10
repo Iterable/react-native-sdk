@@ -81,6 +81,101 @@ describe('Iterable', () => {
     });
   });
 
+  describe('visitorUsageTracked', () => {
+    beforeEach(() => {
+      MockRNIterableAPI.visitorUsageTracked = false;
+      MockRNIterableAPI.unknownVisitorEvents = [];
+      Iterable.resetSdkInitializationStateForTests();
+    });
+
+    it('should expose setVisitorUsageTracked and getVisitorUsageTracked on Iterable', () => {
+      expect(typeof Iterable.setVisitorUsageTracked).toBe('function');
+      expect(typeof Iterable.getVisitorUsageTracked).toBe('function');
+    });
+
+    it('should forward true and false to RNIterableAPI after initialize', async () => {
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      await Iterable.initialize('test-key', config);
+
+      Iterable.setVisitorUsageTracked(true);
+      expect(MockRNIterableAPI.setVisitorUsageTracked).toHaveBeenCalledWith(true);
+
+      Iterable.setVisitorUsageTracked(false);
+      expect(MockRNIterableAPI.setVisitorUsageTracked).toHaveBeenCalledWith(false);
+    });
+
+    it('should resolve getVisitorUsageTracked to the value stored in the mock', async () => {
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      await Iterable.initialize('test-key', config);
+
+      MockRNIterableAPI.visitorUsageTracked = true;
+      await expect(Iterable.getVisitorUsageTracked()).resolves.toBe(true);
+
+      MockRNIterableAPI.visitorUsageTracked = false;
+      await expect(Iterable.getVisitorUsageTracked()).resolves.toBe(false);
+    });
+
+    it('should resolve to false when the integrator never calls the setter', async () => {
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      await Iterable.initialize('test-key', config);
+
+      await expect(Iterable.getVisitorUsageTracked()).resolves.toBe(false);
+    });
+
+    it('should return the persisted mock value after initialize runs again', async () => {
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      await Iterable.initialize('test-key', config);
+      Iterable.setVisitorUsageTracked(true);
+
+      Iterable.resetSdkInitializationStateForTests();
+      await Iterable.initialize('test-key', config);
+
+      await expect(Iterable.getVisitorUsageTracked()).resolves.toBe(true);
+    });
+
+    it('should clear unknown-visitor events in the mock on each setVisitorUsageTracked call', async () => {
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      MockRNIterableAPI.pushUnknownVisitorEventForTests('event-1');
+      await Iterable.initialize('test-key', config);
+
+      Iterable.setVisitorUsageTracked(false);
+      expect(MockRNIterableAPI.unknownVisitorEvents).toEqual([]);
+
+      MockRNIterableAPI.pushUnknownVisitorEventForTests('event-2');
+      Iterable.setVisitorUsageTracked(true);
+      expect(MockRNIterableAPI.unknownVisitorEvents).toEqual([]);
+    });
+
+    it('should not forward setVisitorUsageTracked before initialize resolves', async () => {
+      Iterable.setVisitorUsageTracked(true);
+      expect(MockRNIterableAPI.setVisitorUsageTracked).not.toHaveBeenCalled();
+      await expect(Iterable.getVisitorUsageTracked()).resolves.toBe(false);
+
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      await Iterable.initialize('test-key', config);
+      await expect(Iterable.getVisitorUsageTracked()).resolves.toBe(false);
+    });
+
+    it('should not call trackEvent, setEmail, or setUserId from visitor usage methods', async () => {
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      await Iterable.initialize('test-key', config);
+
+      Iterable.setVisitorUsageTracked(true);
+      await Iterable.getVisitorUsageTracked();
+
+      expect(MockRNIterableAPI.trackEvent).not.toHaveBeenCalled();
+      expect(MockRNIterableAPI.setEmail).not.toHaveBeenCalled();
+      expect(MockRNIterableAPI.setUserId).not.toHaveBeenCalled();
+    });
+  });
+
   describe('logout', () => {
     it('should call setEmail with null', () => {
       // GIVEN no parameters

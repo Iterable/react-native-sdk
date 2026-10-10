@@ -73,6 +73,16 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   }
 
   @Override
+  public void setVisitorUsageTracked(boolean tracked) {
+    moduleImpl.setVisitorUsageTracked(tracked);
+  }
+
+  @Override
+  public void getVisitorUsageTracked(Promise promise) {
+    moduleImpl.getVisitorUsageTracked(promise);
+  }
+
+  @Override
   public void trackEvent(String name, @Nullable ReadableMap dataFields) {
     moduleImpl.trackEvent(name, dataFields);
   }
