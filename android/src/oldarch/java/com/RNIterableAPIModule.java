@@ -74,6 +74,16 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void setVisitorUsageTracked(boolean tracked) {
+      moduleImpl.setVisitorUsageTracked(tracked);
+    }
+
+    @ReactMethod
+    public void getVisitorUsageTracked(Promise promise) {
+      moduleImpl.getVisitorUsageTracked(promise);
+    }
+
+    @ReactMethod
     public void trackEvent(String name, @Nullable ReadableMap dataFields) {
       moduleImpl.trackEvent(name, dataFields);
     }

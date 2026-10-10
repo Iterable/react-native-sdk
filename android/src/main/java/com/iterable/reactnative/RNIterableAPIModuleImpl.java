@@ -249,6 +249,15 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         promise.resolve(RNIterableInternal.getUserId());
     }
 
+    public void setVisitorUsageTracked(boolean tracked) {
+        IterableLogger.d(TAG, "setVisitorUsageTracked: " + tracked);
+        IterableApi.getInstance().setVisitorUsageTracked(tracked);
+    }
+
+    public void getVisitorUsageTracked(Promise promise) {
+        promise.resolve(IterableApi.getInstance().getVisitorUsageTracked());
+    }
+
     public void trackEvent(String name, @Nullable ReadableMap dataFields) {
         IterableLogger.v(TAG, "trackEvent");
         IterableApi.getInstance().track(name, optSerializedDataFields(dataFields));

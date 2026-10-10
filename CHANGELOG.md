@@ -1,3 +1,9 @@
+## Unreleased
+
+### Updates
+
+- Added `Iterable.setVisitorUsageTracked` and `Iterable.getVisitorUsageTracked` to record and read visitor consent for Unknown User Activation (SDK-561). Consent is persisted by the native SDK; unknown-user activation is not enabled from React Native config yet.
+
 ## 3.2.1
 
 ### Fixes

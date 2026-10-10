@@ -85,6 +85,8 @@ export interface Spec extends TurboModule {
   getEmail(): Promise<string | null>;
   setUserId(userId?: string | null, authToken?: string | null): void;
   getUserId(): Promise<string | null | undefined>;
+  setVisitorUsageTracked(tracked: boolean): void;
+  getVisitorUsageTracked(): Promise<boolean>;
 
   // In-app messaging
   setInAppShowResponse(number: number): void;

@@ -68,6 +68,15 @@ export class Iterable {
    */
   static savedConfig: IterableConfig = defaultConfig;
 
+  private static sdkInitialized = false;
+
+  /**
+   * @internal
+   */
+  static resetSdkInitializationStateForTests(): void {
+    Iterable.sdkInitialized = false;
+  }
+
   /**
    * In-app message manager for the current user.
    *
@@ -157,12 +166,18 @@ export class Iterable {
     apiKey: string,
     config: IterableConfig = new IterableConfig()
   ): Promise<boolean> {
+    Iterable.sdkInitialized = false;
     Iterable.savedConfig = config;
     this.setupIterable(config);
 
     const version = this.getVersionFromPackageJson();
 
-    return IterableApi.initializeWithApiKey(apiKey, { config, version });
+    return IterableApi.initializeWithApiKey(apiKey, { config, version }).then(
+      (initialized) => {
+        Iterable.sdkInitialized = true;
+        return initialized;
+      }
+    );
   }
 
   /**
@@ -176,6 +191,7 @@ export class Iterable {
     config: IterableConfig = new IterableConfig(),
     apiEndPoint: string
   ): Promise<boolean> {
+    Iterable.sdkInitialized = false;
     this.setupIterable(config);
 
     const version = this.getVersionFromPackageJson();
@@ -184,6 +200,9 @@ export class Iterable {
       config,
       version,
       apiEndPoint,
+    }).then((initialized) => {
+      Iterable.sdkInitialized = true;
+      return initialized;
     });
   }
 
@@ -331,6 +350,43 @@ export class Iterable {
    */
   static getUserId(): Promise<string | null | undefined> {
     return IterableApi.getUserId();
+  }
+
+  /**
+   * Record whether the end user has consented to visitor / unknown-user tracking.
+   *
+   * The value is persisted by the native SDK across app restarts. Each call
+   * clears locally stored unknown-visitor events on the native side.
+   *
+   * Unknown User Activation is not enabled from React Native config yet, so
+   * this only stores the consent flag until `enableUnknownUserActivation` is
+   * exposed. Use {@link Iterable.getVisitorUsageTracked} to read the stored value.
+   *
+   * No-op before `Iterable.initialize` has resolved (does not forward to native).
+   */
+  static setVisitorUsageTracked(tracked: boolean): void {
+    if (!Iterable.sdkInitialized) {
+      return;
+    }
+    IterableApi.setVisitorUsageTracked(tracked);
+  }
+
+  /**
+   * Returns whether visitor / unknown-user tracking consent has been recorded.
+   *
+   * Reads the value persisted by the native SDK (including across app restarts
+   * after a prior `setVisitorUsageTracked` call).
+   *
+   * Resolves to `false` before `Iterable.initialize` has resolved or if the
+   * integrator has never called `setVisitorUsageTracked`. Until
+   * `enableUnknownUserActivation` is exposed on `IterableConfig`, the flag is
+   * stored only and does not enable unknown-user flows by itself.
+   */
+  static getVisitorUsageTracked(): Promise<boolean> {
+    if (!Iterable.sdkInitialized) {
+      return Promise.resolve(false);
+    }
+    return IterableApi.getVisitorUsageTracked();
   }
 
   /**
