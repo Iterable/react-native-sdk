@@ -397,7 +397,7 @@ describe('Iterable', () => {
       });
     });
 
-    it('should default replayOnVisitorToKnown to true when only merge is set', () => {
+    it('should default mergeOnUnknownToKnown to true when only replayOnVisitorToKnown is set', () => {
       const config = new IterableConfig();
       config.identityResolution = { replayOnVisitorToKnown: false };
       const configDict = config.toDict();
