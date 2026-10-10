@@ -1,3 +1,9 @@
+## Unreleased
+
+### Updates
+
+- Added `IterableConfig.identityResolution` and the `IterableIdentityResolution` type so RN apps can configure default visitor replay and unknown-to-known merge behavior (SDK-556).
+
 ## 3.2.1
 
 ### Fixes

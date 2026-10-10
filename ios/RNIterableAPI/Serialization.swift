@@ -110,6 +110,16 @@ extension IterableConfig {
       }
     }
 
+    if let identityResolutionDict = dict["identityResolution"] as? [AnyHashable: Any] {
+      let replayOnVisitorToKnown =
+        identityResolutionDict["replayOnVisitorToKnown"] as? Bool ?? true
+      let mergeOnUnknownToKnown =
+        identityResolutionDict["mergeOnUnknownToKnown"] as? Bool ?? true
+      config.identityResolution = IterableIdentityResolution(
+        replayOnVisitorToKnown: replayOnVisitorToKnown,
+        mergeOnUnknownToKnown: mergeOnUnknownToKnown)
+    }
+
     return config
   }
 

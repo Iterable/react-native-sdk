@@ -337,6 +337,10 @@ describe('Iterable', () => {
       expect(config.useInMemoryStorageForInApps).toBe(false);
       expect(config.androidWakeDelayMs).toBe(1000);
       expect(config.authCallbackTimeoutMs).toBe(6000);
+      expect(config.identityResolution).toEqual({
+        replayOnVisitorToKnown: true,
+        mergeOnUnknownToKnown: true,
+      });
       const configDict = config.toDict();
       expect(configDict.allowedProtocols).toEqual([]);
       expect(configDict.androidSdkUseInMemoryStorageForInApps).toBe(false);
@@ -355,6 +359,10 @@ describe('Iterable', () => {
       expect(configDict.useInMemoryStorageForInApps).toBe(false);
       expect(configDict.androidWakeDelayMs).toBe(1000);
       expect(configDict.authCallbackTimeoutMs).toBe(6000);
+      expect(configDict.identityResolution).toEqual({
+        replayOnVisitorToKnown: true,
+        mergeOnUnknownToKnown: true,
+      });
     });
 
     it('should allow overriding androidWakeDelayMs and authCallbackTimeoutMs', () => {
@@ -364,6 +372,49 @@ describe('Iterable', () => {
       const configDict = config.toDict();
       expect(configDict.androidWakeDelayMs).toBe(1500);
       expect(configDict.authCallbackTimeoutMs).toBe(2500);
+    });
+
+    it('should include identityResolution in toDict() with overridden values', () => {
+      const config = new IterableConfig();
+      config.identityResolution = {
+        replayOnVisitorToKnown: false,
+        mergeOnUnknownToKnown: false,
+      };
+      const configDict = config.toDict();
+      expect(configDict.identityResolution).toEqual({
+        replayOnVisitorToKnown: false,
+        mergeOnUnknownToKnown: false,
+      });
+    });
+
+    it('should default missing identityResolution keys to true in toDict()', () => {
+      const config = new IterableConfig();
+      config.identityResolution = { mergeOnUnknownToKnown: false };
+      const configDict = config.toDict();
+      expect(configDict.identityResolution).toEqual({
+        replayOnVisitorToKnown: true,
+        mergeOnUnknownToKnown: false,
+      });
+    });
+
+    it('should default replayOnVisitorToKnown to true when only merge is set', () => {
+      const config = new IterableConfig();
+      config.identityResolution = { replayOnVisitorToKnown: false };
+      const configDict = config.toDict();
+      expect(configDict.identityResolution).toEqual({
+        replayOnVisitorToKnown: false,
+        mergeOnUnknownToKnown: true,
+      });
+    });
+
+    it('should default both identityResolution keys to true for an empty object', () => {
+      const config = new IterableConfig();
+      config.identityResolution = {};
+      const configDict = config.toDict();
+      expect(configDict.identityResolution).toEqual({
+        replayOnVisitorToKnown: true,
+        mergeOnUnknownToKnown: true,
+      });
     });
   });
 
