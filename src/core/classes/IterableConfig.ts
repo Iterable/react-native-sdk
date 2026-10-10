@@ -267,7 +267,10 @@ export class IterableConfig {
    * identification. The native SDK drops the oldest events when the count
    * exceeds this limit.
    *
-   * Applies when unknown-user activation is enabled on the native SDK.
+   * The value is sent to the native SDK at init. React Native does not expose
+   * `enableUnknownUserActivation` yet, so this limit has no observable effect
+   * until that option is added; when it is, the limit applies only while
+   * unknown-user activation is enabled.
    */
   eventThresholdLimit = 100;
 

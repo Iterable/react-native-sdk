@@ -2,7 +2,7 @@
 
 ### Updates
 
-- Added `IterableConfig.eventThresholdLimit` (default `100`) to cap locally stored unknown-user events before identification (SDK-553). Applies when unknown-user activation is enabled on the native SDK.
+- Added `IterableConfig.eventThresholdLimit` (default `100`) to cap locally stored unknown-user events before identification (SDK-553). The value is forwarded to the native SDK; it has no runtime effect in React Native until `enableUnknownUserActivation` is exposed in a future release (that switch is not on the RN config surface yet).
 
 ## 3.2.1
 
