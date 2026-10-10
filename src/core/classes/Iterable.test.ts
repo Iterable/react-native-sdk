@@ -325,6 +325,7 @@ describe('Iterable', () => {
       expect(config.checkForDeferredDeeplink).toBe(false);
       expect(config.customActionHandler).toBe(undefined);
       expect(config.dataRegion).toBe(IterableDataRegion.US);
+      expect(config.enableForegroundCriteriaFetch).toBe(true);
       expect(config.enableEmbeddedMessaging).toBe(false);
       expect(config.encryptionEnforced).toBe(false);
       expect(config.expiringAuthTokenRefreshPeriod).toBe(60.0);
@@ -344,6 +345,7 @@ describe('Iterable', () => {
       expect(configDict.autoPushRegistration).toBe(true);
       expect(configDict.customActionHandlerPresent).toBe(false);
       expect(configDict.dataRegion).toBe(IterableDataRegion.US);
+      expect(configDict.enableForegroundCriteriaFetch).toBe(true);
       expect(configDict.enableEmbeddedMessaging).toBe(false);
       expect(configDict.encryptionEnforced).toBe(false);
       expect(configDict.expiringAuthTokenRefreshPeriod).toBe(60.0);
@@ -1249,6 +1251,7 @@ describe('Iterable', () => {
   describe('embeddedManager', () => {
     it('should be disabled by default', () => {
       const config = new IterableConfig();
+      expect(config.enableForegroundCriteriaFetch).toBe(true);
       expect(config.enableEmbeddedMessaging).toBe(false);
       expect(Iterable.embeddedManager.isEnabled).toBe(false);
     });

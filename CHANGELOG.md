@@ -1,3 +1,9 @@
+## Unreleased
+
+### Updates
+
+- Added `IterableConfig.enableForegroundCriteriaFetch` (default `true`) to control whether the SDK fetches unknown-user targeting criteria when the app enters the foreground (SDK-554).
+
 ## 3.2.1
 
 ### Fixes

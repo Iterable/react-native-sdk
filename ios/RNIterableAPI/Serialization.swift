@@ -83,6 +83,10 @@ extension IterableConfig {
       config.useInMemoryStorageForInApps = useInMemoryStorageForInApp
     }
 
+    if let enableForegroundCriteriaFetch = dict["enableForegroundCriteriaFetch"] as? Bool {
+      config.enableForegroundCriteriaFetch = enableForegroundCriteriaFetch
+    }
+
     if let enableEmbeddedMessaging = dict["enableEmbeddedMessaging"] as? Bool {
       config.enableEmbeddedMessaging = enableEmbeddedMessaging
     }
