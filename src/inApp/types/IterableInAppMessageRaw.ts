@@ -29,4 +29,6 @@ export type IterableInAppMessageRaw = {
   read?: boolean;
   /** The priority level of the message. */
   priorityLevel?: number;
+  /** Whether the message is JSON-only (no HTML UI); show/skip in `inAppHandler` does not apply. */
+  jsonOnly?: boolean;
 };

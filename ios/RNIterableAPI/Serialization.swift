@@ -199,6 +199,7 @@ extension IterableInAppMessage {
     dict["customPayload"] = customPayload
     dict["read"] = read
     dict["priorityLevel"] = priorityLevel
+    dict["jsonOnly"] = jsonOnly
 
     return dict
   }

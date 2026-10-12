@@ -6,6 +6,7 @@
 
 ### Updates
 
+- Added `IterableInAppMessage.jsonOnly` so `inAppHandler` and in-app message fetches can distinguish JSON-only messages from HTML in-apps (SDK-750).
 - Added `IterableConfig.onEmbeddedMessagingSyncSucceeded` and
   `IterableConfig.onEmbeddedMessagingSyncFailed` so apps can observe embedded
   messaging sync outcomes (SDK-749). Failure callbacks receive a nullable reason
