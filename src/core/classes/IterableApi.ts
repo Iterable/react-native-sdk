@@ -550,6 +550,10 @@ export class IterableApi {
 
   /**
    * Syncs embedded local cache with the server.
+   *
+   * @param placementIds - When provided, limits the sync to those placements.
+   * See {@link IterableEmbeddedManager.syncMessages} for Android scoped-sync
+   * caveats (SDK-798).
    */
   static syncEmbeddedMessages(placementIds?: number[] | null) {
     IterableLogger.log('syncEmbeddedMessages: ', placementIds);

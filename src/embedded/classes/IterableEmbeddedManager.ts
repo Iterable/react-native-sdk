@@ -74,6 +74,12 @@ export class IterableEmbeddedManager {
    * @param placementIds - Optional placement IDs to sync. When omitted, null, or
    * empty, syncs all placements.
    *
+   * @remarks On Android, scoped sync may clear cached messages for placements
+   * that are not in the sync response (iterableapi SDK-798). iOS merges
+   * unrequested placements from the existing cache. Until Android iterableapi
+   * is fixed and this SDK bumps its Android pin, prefer calling `syncMessages()`
+   * without placement IDs on Android when multiple placements are in use.
+   *
    * @example
    * ```typescript
    * IterableEmbeddedManager.syncMessages();
