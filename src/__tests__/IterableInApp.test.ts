@@ -178,6 +178,106 @@ describe('Iterable In App', () => {
     );
   });
 
+  test('inAppHandler_jsonOnlyTrue_flagSetOnMessage', () => {
+    const nativeEmitter = new NativeEventEmitter();
+    nativeEmitter.removeAllListeners(IterableEventName.handleInAppCalled);
+
+    const config = new IterableConfig();
+    config.inAppHandler = jest.fn((_message: IterableInAppMessage) => {
+      return IterableInAppShowResponse.show;
+    });
+
+    Iterable.initialize('apiKey', config);
+
+    const messageDict = {
+      messageId: 'json-only-msg',
+      campaignId: 1234,
+      trigger: { type: IterableInAppTriggerType.immediate },
+      priorityLevel: 300.5,
+      jsonOnly: true,
+    };
+    const expectedMessage = new IterableInAppMessage(
+      'json-only-msg',
+      1234,
+      new IterableInAppTrigger(IterableInAppTriggerType.immediate),
+      undefined,
+      undefined,
+      false,
+      undefined,
+      undefined,
+      false,
+      300.5,
+      true
+    );
+
+    nativeEmitter.emit(IterableEventName.handleInAppCalled, messageDict);
+
+    expect(config.inAppHandler).toBeCalledWith(expectedMessage);
+  });
+
+  test('inAppHandler_jsonOnlyFalse_flagSetOnHtmlMessage', () => {
+    const nativeEmitter = new NativeEventEmitter();
+    nativeEmitter.removeAllListeners(IterableEventName.handleInAppCalled);
+
+    const config = new IterableConfig();
+    config.inAppHandler = jest.fn((_message: IterableInAppMessage) => {
+      return IterableInAppShowResponse.show;
+    });
+
+    Iterable.initialize('apiKey', config);
+
+    const messageDict = {
+      messageId: 'html-msg',
+      campaignId: 1234,
+      trigger: { type: IterableInAppTriggerType.immediate },
+      priorityLevel: 300.5,
+      jsonOnly: false,
+    };
+    const expectedMessage = new IterableInAppMessage(
+      'html-msg',
+      1234,
+      new IterableInAppTrigger(IterableInAppTriggerType.immediate),
+      undefined,
+      undefined,
+      false,
+      undefined,
+      undefined,
+      false,
+      300.5,
+      false
+    );
+
+    nativeEmitter.emit(IterableEventName.handleInAppCalled, messageDict);
+
+    expect(config.inAppHandler).toBeCalledWith(expectedMessage);
+  });
+
+  test('getMessages_jsonOnlyFlag_roundTripsFromBridgePayload', async () => {
+    const messageDicts = [
+      {
+        messageId: 'json-only',
+        campaignId: 1,
+        trigger: { type: IterableInAppTriggerType.immediate },
+        jsonOnly: true,
+      },
+      {
+        messageId: 'html',
+        campaignId: 2,
+        trigger: { type: IterableInAppTriggerType.immediate },
+        jsonOnly: false,
+      },
+    ];
+    const messages = messageDicts.map((message) =>
+      IterableInAppMessage.fromDict(message)
+    );
+
+    MockRNIterableAPI.setMessages(messages);
+
+    const messagesObtained = await Iterable.inAppManager?.getMessages();
+    expect(messagesObtained?.[0]?.jsonOnly).toBe(true);
+    expect(messagesObtained?.[1]?.jsonOnly).toBe(false);
+  });
+
   test('getMessages_noParams_returnsMessages', async () => {
     // GIVEN a list of in-app messages representing the local queue
     const messageDicts = [
