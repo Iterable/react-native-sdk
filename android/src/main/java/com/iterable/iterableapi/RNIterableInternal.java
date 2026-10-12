@@ -2,11 +2,10 @@ package com.iterable.iterableapi;
 
 import androidx.annotation.Nullable;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class RNIterableInternal {
-
-    private static String TAG = "RNIterableInternal";
 
     public static String getEmail() {
         return IterableApi.getInstance().getEmail();
@@ -21,8 +20,12 @@ public class RNIterableInternal {
         return IterableApi.getInstance().getAuthToken();
     }
 
-    public static JSONObject getInAppMessageJson(IterableInAppMessage message) {
-        return message.toJSONObject();
+    public static JSONObject getInAppMessageJson(IterableInAppMessage message)
+            throws JSONException {
+        JSONObject messageJson = message.toJSONObject();
+        // Overwrite native serialization (may use integer 1) so the bridge sends a boolean for JS.
+        messageJson.put("jsonOnly", message.isJsonOnly());
+        return messageJson;
     }
 
     public static IterableInAppMessage getMessageById(String messageId) {
