@@ -6,6 +6,8 @@
 
 ### Updates
 
+- Added optional placement IDs to `Iterable.embeddedManager.syncMessages()` so apps can sync embedded messages for specific placements only (SDK-751). When omitted, null, or empty, behavior matches the previous sync-all call.
+  - **Android:** Scoped sync (`syncMessages([id, …])`) matches the pinned iterableapi behavior and may remove cached messages for placements not included in the sync response (SDK-798). iOS preserves unrequested placements. Prefer `syncMessages()` without placement IDs on Android until the native fix ships and the Android SDK pin is bumped.
 - Added `IterableInAppMessage.jsonOnly` so `inAppHandler` and in-app message fetches can distinguish JSON-only messages from HTML in-apps (SDK-750).
 - Added `IterableConfig.onEmbeddedMessagingSyncSucceeded` and
   `IterableConfig.onEmbeddedMessagingSyncFailed` so apps can observe embedded

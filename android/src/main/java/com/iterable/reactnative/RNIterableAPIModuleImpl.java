@@ -796,9 +796,19 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
     // ---------------------------------------------------------------------------------------
     // region Embedded messaging
 
-    public void syncEmbeddedMessages() {
-        IterableLogger.d(TAG, "syncEmbeddedMessages");
-        IterableApi.getInstance().getEmbeddedManager().syncMessages();
+    public void syncEmbeddedMessages(@Nullable ReadableArray placementIds) {
+        IterableLogger.d(TAG, "syncEmbeddedMessages for placements: " + placementIds);
+
+        if (placementIds == null || placementIds.size() == 0) {
+            IterableApi.getInstance().getEmbeddedManager().syncMessages();
+        } else {
+            IterableLogger.w(TAG, "Scoped syncEmbeddedMessages may remove cached messages for placements not in the sync response (SDK-798). Prefer syncMessages() without placement IDs on Android until iterableapi is fixed.");
+            Long[] ids = new Long[placementIds.size()];
+            for (int i = 0; i < placementIds.size(); i++) {
+                ids[i] = (long) placementIds.getInt(i);
+            }
+            IterableApi.getInstance().getEmbeddedManager().syncMessages(ids);
+        }
     }
 
     public void startEmbeddedSession() {

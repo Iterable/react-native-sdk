@@ -240,8 +240,8 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   }
 
   @Override
-  public void syncEmbeddedMessages() {
-    moduleImpl.syncEmbeddedMessages();
+  public void syncEmbeddedMessages(@Nullable ReadableArray placementIds) {
+    moduleImpl.syncEmbeddedMessages(placementIds);
   }
 
   @Override
