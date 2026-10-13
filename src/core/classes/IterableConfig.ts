@@ -392,6 +392,15 @@ export class IterableConfig {
   authCallbackTimeoutMs = 6000;
 
   /**
+   * When `true`, the native SDK may store and process events for unidentified
+   * (unknown) users. Defaults to `false`.
+   *
+   * Visitor consent via `Iterable.setVisitorUsageTracked` is also required
+   * before the native SDK stores unknown-user events or runs unknown-user flows.
+   */
+  enableUnknownUserActivation = false;
+
+  /**
    * Should the SDK enable and use embedded messaging?
    *
    * **Documentation**
@@ -484,6 +493,7 @@ export class IterableConfig {
       pushPlatform: this.pushPlatform,
       encryptionEnforced: this.encryptionEnforced,
       retryPolicy: this.retryPolicy,
+      enableUnknownUserActivation: this.enableUnknownUserActivation,
       enableEmbeddedMessaging: this.enableEmbeddedMessaging,
       androidWakeDelayMs: this.androidWakeDelayMs,
       authCallbackTimeoutMs: this.authCallbackTimeoutMs,

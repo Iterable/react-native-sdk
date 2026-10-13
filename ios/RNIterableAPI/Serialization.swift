@@ -87,6 +87,10 @@ extension IterableConfig {
       config.enableEmbeddedMessaging = enableEmbeddedMessaging
     }
 
+    if let enableUnknownUserActivation = dict["enableUnknownUserActivation"] as? Bool {
+      config.enableUnknownUserActivation = enableUnknownUserActivation
+    }
+
     if let dataRegion = dict["dataRegion"] as? NSNumber {
       switch dataRegion {
       case 0:

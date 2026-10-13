@@ -1,3 +1,9 @@
+## Unreleased
+
+### Updates
+
+- Added `IterableConfig.enableUnknownUserActivation` (default `false`) to opt in to Unknown User Activation on the native SDK (SDK-794). Visitor consent via `Iterable.setVisitorUsageTracked` is also required before the native SDK stores unknown-user events.
+
 ## 3.2.1
 
 ### Fixes

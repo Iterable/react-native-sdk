@@ -326,6 +326,7 @@ describe('Iterable', () => {
       expect(config.customActionHandler).toBe(undefined);
       expect(config.dataRegion).toBe(IterableDataRegion.US);
       expect(config.enableEmbeddedMessaging).toBe(false);
+      expect(config.enableUnknownUserActivation).toBe(false);
       expect(config.encryptionEnforced).toBe(false);
       expect(config.expiringAuthTokenRefreshPeriod).toBe(60.0);
       expect(config.inAppDisplayInterval).toBe(30.0);
@@ -345,6 +346,7 @@ describe('Iterable', () => {
       expect(configDict.customActionHandlerPresent).toBe(false);
       expect(configDict.dataRegion).toBe(IterableDataRegion.US);
       expect(configDict.enableEmbeddedMessaging).toBe(false);
+      expect(configDict.enableUnknownUserActivation).toBe(false);
       expect(configDict.encryptionEnforced).toBe(false);
       expect(configDict.expiringAuthTokenRefreshPeriod).toBe(60.0);
       expect(configDict.inAppDisplayInterval).toBe(30.0);
@@ -364,6 +366,13 @@ describe('Iterable', () => {
       const configDict = config.toDict();
       expect(configDict.androidWakeDelayMs).toBe(1500);
       expect(configDict.authCallbackTimeoutMs).toBe(2500);
+    });
+
+    it('should include enableUnknownUserActivation in toDict() when set to true', () => {
+      const config = new IterableConfig();
+      config.enableUnknownUserActivation = true;
+      const configDict = config.toDict();
+      expect(configDict.enableUnknownUserActivation).toBe(true);
     });
   });
 
