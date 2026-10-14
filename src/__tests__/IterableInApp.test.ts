@@ -178,6 +178,46 @@ describe('Iterable In App', () => {
     );
   });
 
+  test('fromDict_withCreatedAtAndExpiresAt_returnsDateObjects', () => {
+    // GIVEN a message dict with numeric timestamps from the native bridge
+    const createdAtMs = 1609459200000; // 2021-01-01T00:00:00.000Z
+    const expiresAtMs = 1609545600000; // 2021-01-02T00:00:00.000Z
+    const messageDict = {
+      messageId: 'message1',
+      campaignId: 1234,
+      trigger: { type: IterableInAppTriggerType.immediate },
+      createdAt: createdAtMs,
+      expiresAt: expiresAtMs,
+      priorityLevel: 300.5,
+    };
+
+    // WHEN fromDict is called
+    const message = IterableInAppMessage.fromDict(messageDict);
+
+    // THEN createdAt and expiresAt are Date objects with the correct values
+    expect(message.createdAt).toBeInstanceOf(Date);
+    expect(message.expiresAt).toBeInstanceOf(Date);
+    expect(message.createdAt?.getTime()).toBe(createdAtMs);
+    expect(message.expiresAt?.getTime()).toBe(expiresAtMs);
+  });
+
+  test('fromDict_withoutCreatedAtAndExpiresAt_returnsUndefined', () => {
+    // GIVEN a message dict without timestamps
+    const messageDict = {
+      messageId: 'message1',
+      campaignId: 1234,
+      trigger: { type: IterableInAppTriggerType.immediate },
+      priorityLevel: 300.5,
+    };
+
+    // WHEN fromDict is called
+    const message = IterableInAppMessage.fromDict(messageDict);
+
+    // THEN createdAt and expiresAt are undefined
+    expect(message.createdAt).toBeUndefined();
+    expect(message.expiresAt).toBeUndefined();
+  });
+
   test('getMessages_noParams_returnsMessages', async () => {
     // GIVEN a list of in-app messages representing the local queue
     const messageDicts = [
