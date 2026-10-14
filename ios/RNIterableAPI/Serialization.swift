@@ -75,12 +75,20 @@ extension IterableConfig {
       config.expiringAuthTokenRefreshPeriod = expiringAuthTokenRefreshPeriod
     }
 
+    if let eventThresholdLimit = dict["eventThresholdLimit"] as? Int {
+      config.eventThresholdLimit = eventThresholdLimit
+    }
+
     if let logLevelNumber = dict["logLevel"] as? NSNumber {
       config.logDelegate = createLogDelegate(logLevelNumber: logLevelNumber)
     }
 
     if let useInMemoryStorageForInApp = dict["useInMemoryStorageForInApps"] as? Bool {
       config.useInMemoryStorageForInApps = useInMemoryStorageForInApp
+    }
+
+    if let enableForegroundCriteriaFetch = dict["enableForegroundCriteriaFetch"] as? Bool {
+      config.enableForegroundCriteriaFetch = enableForegroundCriteriaFetch
     }
 
     if let enableEmbeddedMessaging = dict["enableEmbeddedMessaging"] as? Bool {
