@@ -4,6 +4,7 @@ import { IterableDataRegion } from '../enums/IterableDataRegion';
 import { IterableLogLevel } from '../enums/IterableLogLevel';
 import { IterablePushPlatform } from '../enums/IterablePushPlatform';
 import type { IterableAuthFailure } from '../types/IterableAuthFailure';
+import type { IterableIdentityResolution } from '../types/IterableIdentityResolution';
 import type { IterableRetryPolicy } from '../types/IterableRetryPolicy';
 import { IterableAction } from './IterableAction';
 import type { IterableActionContext } from './IterableActionContext';
@@ -420,6 +421,18 @@ export class IterableConfig {
   enableForegroundCriteriaFetch = true;
 
   /**
+   * Default identity-resolution behavior when identifying a user with
+   * `Iterable.setEmail` or `Iterable.setUserId`.
+   *
+   * Applies when unknown-user activation and visitor tracking are enabled on the
+   * native SDK. Omitted keys in a partial object default to `true`.
+   */
+  identityResolution: IterableIdentityResolution = {
+    replayOnVisitorToKnown: true,
+    mergeOnUnknownToKnown: true,
+  };
+
+  /**
    * Should the SDK enable and use embedded messaging?
    *
    * **Documentation**
@@ -515,6 +528,12 @@ export class IterableConfig {
       retryPolicy: this.retryPolicy,
       enableUnknownUserActivation: this.enableUnknownUserActivation,
       enableForegroundCriteriaFetch: this.enableForegroundCriteriaFetch,
+      identityResolution: {
+        replayOnVisitorToKnown:
+          this.identityResolution.replayOnVisitorToKnown ?? true,
+        mergeOnUnknownToKnown:
+          this.identityResolution.mergeOnUnknownToKnown ?? true,
+      },
       enableEmbeddedMessaging: this.enableEmbeddedMessaging,
       androidWakeDelayMs: this.androidWakeDelayMs,
       authCallbackTimeoutMs: this.authCallbackTimeoutMs,

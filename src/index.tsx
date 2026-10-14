@@ -30,6 +30,7 @@ export {
 export type {
   IterableAuthFailure,
   IterableEdgeInsetDetails,
+  IterableIdentityResolution,
   IterableRetryPolicy,
 } from './core/types';
 export {
