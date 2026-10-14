@@ -129,6 +129,21 @@ import React
     resolver(IterableAPI.userId)
   }
 
+  @objc(setVisitorUsageTracked:)
+  public func setVisitorUsageTracked(tracked: Bool) {
+    ITBInfo()
+    IterableAPI.setVisitorUsageTracked(isVisitorUsageTracked: tracked)
+  }
+
+  @objc(getVisitorUsageTracked:rejecter:)
+  public func getVisitorUsageTracked(
+    resolver: @escaping RCTPromiseResolveBlock,
+    rejecter: @escaping RCTPromiseRejectBlock
+  ) {
+    ITBInfo()
+    resolver(IterableAPI.getVisitorUsageTracked())
+  }
+
   // MARK: - Iterable API Request Functions
 
   @objc(setInAppShowResponse:)

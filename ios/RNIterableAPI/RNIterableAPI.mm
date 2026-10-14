@@ -112,6 +112,15 @@ RCT_EXPORT_MODULE()
   [_swiftAPI getUserId:resolve rejecter:reject];
 }
 
+- (void)setVisitorUsageTracked:(BOOL)tracked {
+  [_swiftAPI setVisitorUsageTracked:tracked];
+}
+
+- (void)getVisitorUsageTracked:(RCTPromiseResolveBlock)resolve
+                        reject:(RCTPromiseRejectBlock)reject {
+  [_swiftAPI getVisitorUsageTracked:resolve rejecter:reject];
+}
+
 - (void)setInAppShowResponse:(double)inAppShowResponse {
   [_swiftAPI setInAppShowResponse:inAppShowResponse];
 }
@@ -401,6 +410,15 @@ RCT_EXPORT_METHOD(setUserId : (NSString *_Nullable)
 RCT_EXPORT_METHOD(getUserId : (RCTPromiseResolveBlock)
                       resolve reject : (RCTPromiseRejectBlock)reject) {
   [_swiftAPI getUserId:resolve rejecter:reject];
+}
+
+RCT_EXPORT_METHOD(setVisitorUsageTracked : (BOOL)tracked) {
+  [_swiftAPI setVisitorUsageTracked:tracked];
+}
+
+RCT_EXPORT_METHOD(getVisitorUsageTracked : (RCTPromiseResolveBlock)
+                      resolve reject : (RCTPromiseRejectBlock)reject) {
+  [_swiftAPI getVisitorUsageTracked:resolve rejecter:reject];
 }
 
 RCT_EXPORT_METHOD(setInAppShowResponse : (double)inAppShowResponse) {

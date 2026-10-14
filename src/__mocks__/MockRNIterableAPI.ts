@@ -9,6 +9,8 @@ export class MockRNIterableAPI {
   static attributionInfo?: IterableAttributionInfo;
   static messages?: IterableInAppMessage[];
   static clickedUrl?: string;
+  static visitorUsageTracked = false;
+  static unknownVisitorEvents: string[] = [];
 
   static async getEmail(): Promise<string | undefined> {
     return await new Promise((resolve) => {
@@ -31,6 +33,19 @@ export class MockRNIterableAPI {
     MockRNIterableAPI.userId = userId;
     MockRNIterableAPI.token = authToken;
   });
+
+  static setVisitorUsageTracked = jest.fn((tracked: boolean): void => {
+    MockRNIterableAPI.visitorUsageTracked = tracked;
+    MockRNIterableAPI.unknownVisitorEvents = [];
+  });
+
+  static getVisitorUsageTracked = jest.fn(async (): Promise<boolean> => {
+    return await Promise.resolve(MockRNIterableAPI.visitorUsageTracked);
+  });
+
+  static pushUnknownVisitorEventForTests(eventId: string): void {
+    MockRNIterableAPI.unknownVisitorEvents.push(eventId);
+  }
 
   static disableDeviceForCurrentUser = jest.fn();
 
