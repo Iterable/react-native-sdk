@@ -264,6 +264,17 @@ export class IterableConfig {
   expiringAuthTokenRefreshPeriod = 60.0;
 
   /**
+   * Maximum number of unknown-user (anonymous) events stored locally before
+   * identification. The native SDK drops the oldest events when the count
+   * exceeds this limit.
+   *
+   * The value is sent to the native SDK at init. The limit applies only while
+   * unknown-user activation is enabled (`enableUnknownUserActivation`) and
+   * visitor consent has been granted.
+   */
+  eventThresholdLimit = 100;
+
+  /**
    * Use this array to declare the specific URL protocols that the SDK can
    * expect to see on incoming links from Iterable, so it knows that it can
    * safely handle them as needed. This array helps prevent the SDK from opening
@@ -393,6 +404,23 @@ export class IterableConfig {
   authCallbackTimeoutMs = 6000;
 
   /**
+   * When `true`, the native SDK may store and process events for unidentified
+   * (unknown) users. Defaults to `false`.
+   *
+   * Visitor consent via `Iterable.setVisitorUsageTracked` is also required
+   * before the native SDK stores unknown-user events or runs unknown-user flows.
+   */
+  enableUnknownUserActivation = false;
+
+  /**
+   * When `true` (the default), the SDK fetches unknown-user (anonymous) targeting
+   * criteria when the app enters the foreground.
+   *
+   * Set to `false` to disable that foreground fetch.
+   */
+  enableForegroundCriteriaFetch = true;
+
+  /**
    * Default identity-resolution behavior when identifying a user with
    * `Iterable.setEmail` or `Iterable.setUserId`.
    *
@@ -489,6 +517,7 @@ export class IterableConfig {
       /** The log level for the SDK. */
       logLevel: this.logLevel,
       expiringAuthTokenRefreshPeriod: this.expiringAuthTokenRefreshPeriod,
+      eventThresholdLimit: this.eventThresholdLimit,
       allowedProtocols: this.allowedProtocols,
       androidSdkUseInMemoryStorageForInApps:
         this.androidSdkUseInMemoryStorageForInApps,
@@ -497,6 +526,8 @@ export class IterableConfig {
       pushPlatform: this.pushPlatform,
       encryptionEnforced: this.encryptionEnforced,
       retryPolicy: this.retryPolicy,
+      enableUnknownUserActivation: this.enableUnknownUserActivation,
+      enableForegroundCriteriaFetch: this.enableForegroundCriteriaFetch,
       identityResolution: {
         replayOnVisitorToKnown:
           this.identityResolution.replayOnVisitorToKnown ?? true,
