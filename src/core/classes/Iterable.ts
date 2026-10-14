@@ -358,9 +358,11 @@ export class Iterable {
    * The value is persisted by the native SDK across app restarts. Each call
    * clears locally stored unknown-visitor events on the native side.
    *
-   * Unknown User Activation is not enabled from React Native config yet, so
-   * this only stores the consent flag until `enableUnknownUserActivation` is
-   * exposed. Use {@link Iterable.getVisitorUsageTracked} to read the stored value.
+   * This method only records consent; it does not opt the app into Unknown User
+   * Activation by itself. Unknown-user flows also require
+   * `IterableConfig.enableUnknownUserActivation` (defaults to `false`) at
+   * `Iterable.initialize`. Use {@link Iterable.getVisitorUsageTracked} to read
+   * the stored value.
    *
    * No-op before `Iterable.initialize` has resolved (does not forward to native).
    */
@@ -378,9 +380,9 @@ export class Iterable {
    * after a prior `setVisitorUsageTracked` call).
    *
    * Resolves to `false` before `Iterable.initialize` has resolved or if the
-   * integrator has never called `setVisitorUsageTracked`. Until
-   * `enableUnknownUserActivation` is exposed on `IterableConfig`, the flag is
-   * stored only and does not enable unknown-user flows by itself.
+   * integrator has never called `setVisitorUsageTracked`. Visitor consent alone
+   * does not enable unknown-user flows; those also require
+   * `IterableConfig.enableUnknownUserActivation` (defaults to `false`) at init.
    */
   static getVisitorUsageTracked(): Promise<boolean> {
     if (!Iterable.sdkInitialized) {
