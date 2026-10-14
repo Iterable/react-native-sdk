@@ -325,6 +325,7 @@ describe('Iterable', () => {
       expect(config.checkForDeferredDeeplink).toBe(false);
       expect(config.customActionHandler).toBe(undefined);
       expect(config.dataRegion).toBe(IterableDataRegion.US);
+      expect(config.enableForegroundCriteriaFetch).toBe(true);
       expect(config.enableEmbeddedMessaging).toBe(false);
       expect(config.encryptionEnforced).toBe(false);
       expect(config.expiringAuthTokenRefreshPeriod).toBe(60.0);
@@ -345,6 +346,7 @@ describe('Iterable', () => {
       expect(configDict.autoPushRegistration).toBe(true);
       expect(configDict.customActionHandlerPresent).toBe(false);
       expect(configDict.dataRegion).toBe(IterableDataRegion.US);
+      expect(configDict.enableForegroundCriteriaFetch).toBe(true);
       expect(configDict.enableEmbeddedMessaging).toBe(false);
       expect(configDict.encryptionEnforced).toBe(false);
       expect(configDict.expiringAuthTokenRefreshPeriod).toBe(60.0);
@@ -366,6 +368,13 @@ describe('Iterable', () => {
       const configDict = config.toDict();
       expect(configDict.androidWakeDelayMs).toBe(1500);
       expect(configDict.authCallbackTimeoutMs).toBe(2500);
+    });
+
+    it('should include enableForegroundCriteriaFetch in toDict() when set to false', () => {
+      const config = new IterableConfig();
+      config.enableForegroundCriteriaFetch = false;
+      const configDict = config.toDict();
+      expect(configDict.enableForegroundCriteriaFetch).toBe(false);
     });
 
     it('should include eventThresholdLimit in toDict() when overridden', () => {

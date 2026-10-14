@@ -251,6 +251,10 @@ class Serialization {
                 configBuilder.setDataRegion(iterableDataRegion);
             }
 
+            if (iterableContextJSON.has("enableForegroundCriteriaFetch")) {
+                configBuilder.setEnableForegroundCriteriaFetch(iterableContextJSON.optBoolean("enableForegroundCriteriaFetch"));
+            }
+
             if (iterableContextJSON.has("enableEmbeddedMessaging")) {
                 configBuilder.setEnableEmbeddedMessaging(iterableContextJSON.optBoolean("enableEmbeddedMessaging"));
             }
