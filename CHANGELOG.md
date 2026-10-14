@@ -2,7 +2,10 @@
 
 ### Updates
 
-- Added `Iterable.setVisitorUsageTracked` and `Iterable.getVisitorUsageTracked` to record and read visitor consent for Unknown User Activation (SDK-561). Consent is persisted by the native SDK; unknown-user activation is not enabled from React Native config yet.
+- Added `IterableConfig.enableUnknownUserActivation` (default `false`) to opt in to Unknown User Activation on the native SDK (SDK-794). Visitor consent via `Iterable.setVisitorUsageTracked` is also required before the native SDK stores unknown-user events.
+- Added `IterableConfig.enableForegroundCriteriaFetch` (default `true`) to control whether the SDK fetches unknown-user targeting criteria when the app enters the foreground (SDK-554).
+- Added `IterableConfig.eventThresholdLimit` (default `100`) to cap locally stored unknown-user events before identification (SDK-553). The value is forwarded to the native SDK and applies when unknown-user activation is enabled.
+- Added `Iterable.setVisitorUsageTracked` and `Iterable.getVisitorUsageTracked` to record and read visitor consent for Unknown User Activation (SDK-561). Consent is persisted by the native SDK.
 
 ## 3.2.1
 
@@ -13,8 +16,12 @@
 - Fixed the Android module failing to compile against its pinned native Android SDK 3.10.1 in 3.2.0. The bridge now implements `onEmbeddedMessagingSyncSucceeded` and `onEmbeddedMessagingSyncFailed` from `IterableEmbeddedUpdateHandler` as no-ops, matching the native defaults.
 - Fixed an Android crash in `Iterable.inAppManager.showMessage` (`IllegalStateException: Method addObserver must be called on the main thread`), present since 3.2.0.
   - The bridge now displays the message on the main thread, matching `setAutoDisplayPaused` and the iOS SDK. It was calling the native in-app displayer on the React Native native-modules thread, which crashes when the current activity is not a `FragmentActivity` (for example a Jetpack Compose `ComponentActivity`).
-  - The promise now rejects when the message id is no longer in the native queue instead of crashing with a `NullPointerException`.
+  - The promise now rejects when the message id is empty or no longer in the native queue instead of crashing with a `NullPointerException`.
   - Dismissing a message by tapping outside it now resolves the promise with `null` instead of crashing on `url.toString()`.
+
+### Updates
+
+- Documented minimum supported React Native (**0.77+**) and React (**18.3.1+**) versions in the README.
 
 ## 3.2.0
 
