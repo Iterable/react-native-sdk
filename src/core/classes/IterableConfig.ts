@@ -267,10 +267,9 @@ export class IterableConfig {
    * identification. The native SDK drops the oldest events when the count
    * exceeds this limit.
    *
-   * The value is sent to the native SDK at init. React Native does not expose
-   * `enableUnknownUserActivation` yet, so this limit has no observable effect
-   * until that option is added; when it is, the limit applies only while
-   * unknown-user activation is enabled.
+   * The value is sent to the native SDK at init. The limit applies only while
+   * unknown-user activation is enabled (`enableUnknownUserActivation`) and
+   * visitor consent has been granted.
    */
   eventThresholdLimit = 100;
 
@@ -404,6 +403,15 @@ export class IterableConfig {
   authCallbackTimeoutMs = 6000;
 
   /**
+   * When `true`, the native SDK may store and process events for unidentified
+   * (unknown) users. Defaults to `false`.
+   *
+   * Visitor consent via `Iterable.setVisitorUsageTracked` is also required
+   * before the native SDK stores unknown-user events or runs unknown-user flows.
+   */
+  enableUnknownUserActivation = false;
+
+  /**
    * When `true` (the default), the SDK fetches unknown-user (anonymous) targeting
    * criteria when the app enters the foreground.
    *
@@ -505,6 +513,7 @@ export class IterableConfig {
       pushPlatform: this.pushPlatform,
       encryptionEnforced: this.encryptionEnforced,
       retryPolicy: this.retryPolicy,
+      enableUnknownUserActivation: this.enableUnknownUserActivation,
       enableForegroundCriteriaFetch: this.enableForegroundCriteriaFetch,
       enableEmbeddedMessaging: this.enableEmbeddedMessaging,
       androidWakeDelayMs: this.androidWakeDelayMs,

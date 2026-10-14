@@ -259,6 +259,11 @@ class Serialization {
                 configBuilder.setEnableEmbeddedMessaging(iterableContextJSON.optBoolean("enableEmbeddedMessaging"));
             }
 
+            if (iterableContextJSON.has("enableUnknownUserActivation")) {
+                configBuilder.setEnableUnknownUserActivation(
+                    iterableContextJSON.optBoolean("enableUnknownUserActivation"));
+            }
+
             if (iterableContextJSON.has("retryPolicy")) {
                 JSONObject retryPolicyJson = iterableContextJSON.getJSONObject("retryPolicy");
                 int maxRetry = retryPolicyJson.getInt("maxRetry");
