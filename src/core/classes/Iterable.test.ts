@@ -443,6 +443,16 @@ describe('Iterable', () => {
         mergeOnUnknownToKnown: true,
       });
     });
+
+    it('should default both identityResolution keys to true when identityResolution is undefined', () => {
+      const config = new IterableConfig();
+      config.identityResolution = undefined as unknown as IterableConfig['identityResolution'];
+      const configDict = config.toDict();
+      expect(configDict.identityResolution).toEqual({
+        replayOnVisitorToKnown: true,
+        mergeOnUnknownToKnown: true,
+      });
+    });
   });
 
   describe('urlHandler', () => {

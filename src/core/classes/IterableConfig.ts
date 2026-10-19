@@ -530,9 +530,9 @@ export class IterableConfig {
       enableForegroundCriteriaFetch: this.enableForegroundCriteriaFetch,
       identityResolution: {
         replayOnVisitorToKnown:
-          this.identityResolution.replayOnVisitorToKnown ?? true,
+          this.identityResolution?.replayOnVisitorToKnown ?? true,
         mergeOnUnknownToKnown:
-          this.identityResolution.mergeOnUnknownToKnown ?? true,
+          this.identityResolution?.mergeOnUnknownToKnown ?? true,
       },
       enableEmbeddedMessaging: this.enableEmbeddedMessaging,
       androidWakeDelayMs: this.androidWakeDelayMs,
