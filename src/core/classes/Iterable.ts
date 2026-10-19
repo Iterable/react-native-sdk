@@ -27,6 +27,13 @@ const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
 const defaultConfig = new IterableConfig();
 
+let sdkInitialized = false;
+
+/** Resets init gating for unit tests only; not part of the public package API. */
+export function resetSdkInitializationStateForTests(): void {
+  sdkInitialized = false;
+}
+
 /**
  * Checks if the response is an IterableAuthResponse
  */
@@ -67,15 +74,6 @@ export class Iterable {
    * Current configuration of the Iterable SDK
    */
   static savedConfig: IterableConfig = defaultConfig;
-
-  private static sdkInitialized = false;
-
-  /**
-   * @internal
-   */
-  static resetSdkInitializationStateForTests(): void {
-    Iterable.sdkInitialized = false;
-  }
 
   /**
    * In-app message manager for the current user.
@@ -166,7 +164,7 @@ export class Iterable {
     apiKey: string,
     config: IterableConfig = new IterableConfig()
   ): Promise<boolean> {
-    Iterable.sdkInitialized = false;
+    sdkInitialized = false;
     Iterable.savedConfig = config;
     this.setupIterable(config);
 
@@ -174,7 +172,7 @@ export class Iterable {
 
     return IterableApi.initializeWithApiKey(apiKey, { config, version }).then(
       (initialized) => {
-        Iterable.sdkInitialized = true;
+        sdkInitialized = true;
         return initialized;
       }
     );
@@ -191,7 +189,7 @@ export class Iterable {
     config: IterableConfig = new IterableConfig(),
     apiEndPoint: string
   ): Promise<boolean> {
-    Iterable.sdkInitialized = false;
+    sdkInitialized = false;
     this.setupIterable(config);
 
     const version = this.getVersionFromPackageJson();
@@ -201,7 +199,7 @@ export class Iterable {
       version,
       apiEndPoint,
     }).then((initialized) => {
-      Iterable.sdkInitialized = true;
+      sdkInitialized = true;
       return initialized;
     });
   }
@@ -367,7 +365,7 @@ export class Iterable {
    * No-op before `Iterable.initialize` has resolved (does not forward to native).
    */
   static setVisitorUsageTracked(tracked: boolean): void {
-    if (!Iterable.sdkInitialized) {
+    if (!sdkInitialized) {
       return;
     }
     IterableApi.setVisitorUsageTracked(tracked);
@@ -385,7 +383,7 @@ export class Iterable {
    * `IterableConfig.enableUnknownUserActivation` (defaults to `false`) at init.
    */
   static getVisitorUsageTracked(): Promise<boolean> {
-    if (!Iterable.sdkInitialized) {
+    if (!sdkInitialized) {
       return Promise.resolve(false);
     }
     return IterableApi.getVisitorUsageTracked();

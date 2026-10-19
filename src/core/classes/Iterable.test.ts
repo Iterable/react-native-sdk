@@ -23,6 +23,7 @@ import {
   IterableInAppTriggerType,
   IterableLogLevel,
 } from '../..';
+import { resetSdkInitializationStateForTests } from './Iterable';
 import { TestHelper } from '../../__tests__/TestHelper';
 import { IterableLogger } from './IterableLogger';
 
@@ -85,7 +86,7 @@ describe('Iterable', () => {
     beforeEach(() => {
       MockRNIterableAPI.visitorUsageTracked = false;
       MockRNIterableAPI.unknownVisitorEvents = [];
-      Iterable.resetSdkInitializationStateForTests();
+      resetSdkInitializationStateForTests();
     });
 
     it('should expose setVisitorUsageTracked and getVisitorUsageTracked on Iterable', () => {
@@ -131,7 +132,7 @@ describe('Iterable', () => {
       await Iterable.initialize('test-key', config);
       Iterable.setVisitorUsageTracked(true);
 
-      Iterable.resetSdkInitializationStateForTests();
+      resetSdkInitializationStateForTests();
       await Iterable.initialize('test-key', config);
 
       await expect(Iterable.getVisitorUsageTracked()).resolves.toBe(true);
