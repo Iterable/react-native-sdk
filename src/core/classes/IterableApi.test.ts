@@ -271,6 +271,25 @@ describe('IterableApi', () => {
     });
   });
 
+  describe('visitorUsageTracked', () => {
+    beforeEach(() => {
+      MockRNIterableAPI.visitorUsageTracked = false;
+    });
+
+    it('should call RNIterableAPI.setVisitorUsageTracked with the tracked flag', () => {
+      IterableApi.setVisitorUsageTracked(true);
+      expect(MockRNIterableAPI.setVisitorUsageTracked).toHaveBeenCalledWith(true);
+
+      IterableApi.setVisitorUsageTracked(false);
+      expect(MockRNIterableAPI.setVisitorUsageTracked).toHaveBeenCalledWith(false);
+    });
+
+    it('should return visitor usage tracked from RNIterableAPI', async () => {
+      MockRNIterableAPI.visitorUsageTracked = true;
+      await expect(IterableApi.getVisitorUsageTracked()).resolves.toBe(true);
+    });
+  });
+
   describe('disableDeviceForCurrentUser', () => {
     it('should call RNIterableAPI.disableDeviceForCurrentUser', () => {
       // GIVEN no parameters
