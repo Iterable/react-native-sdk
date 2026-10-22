@@ -1032,6 +1032,9 @@ export class Iterable {
     RNEventEmitter.removeAllListeners(
       IterableEventName.handleEmbeddedMessagingDisabledCalled
     );
+    RNEventEmitter.removeAllListeners(
+      IterableEventName.handleUnknownUserCreatedCalled
+    );
   }
 
   /**
@@ -1301,6 +1304,25 @@ export class Iterable {
 
           // Call the actual JWT error with `authFailure` object.
           Iterable.savedConfig?.onJwtError?.(authFailureResponse);
+        }
+      );
+    }
+
+    if (Iterable.savedConfig.unknownUserHandler) {
+      RNEventEmitter.addListener(
+        IterableEventName.handleUnknownUserCreatedCalled,
+        (dict: { userId?: string }) => {
+          const userId = dict?.userId;
+          if (userId === undefined || userId === null) {
+            return;
+          }
+          try {
+            Iterable.savedConfig.unknownUserHandler!(userId);
+          } catch {
+            IterableLogger?.log(
+              'IterableConfig.unknownUserHandler threw an error'
+            );
+          }
         }
       );
     }

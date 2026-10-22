@@ -433,6 +433,39 @@ export class IterableConfig {
   };
 
   /**
+   * Called when the native SDK creates a generated user id after unknown-user
+   * activation criteria are met.
+   *
+   * JWT-enabled API keys: native logs in as that id immediately after this
+   * callback and invokes `authHandler` without passing the id. Store the
+   * `userId` argument **synchronously** here so `authHandler` can mint a token
+   * for that id in the same turn. Do not use `Iterable.getUserId()` in this
+   * callback; native has not switched identity yet. In `authHandler`, consume
+   * and clear that pending id on each call so later known-user logins and
+   * token refreshes use `Iterable.getUserId()` instead of a stale cached id.
+   *
+   * @param userId - The generated unknown user id from Iterable.
+   *
+   * @example
+   * ```typescript
+   * let pendingUnknownUserId: string | null = null;
+   * const config = new IterableConfig();
+   * config.enableUnknownUserActivation = true;
+   * config.unknownUserHandler = (userId) => {
+   *   pendingUnknownUserId = userId;
+   * };
+   * config.authHandler = async () => {
+   *   const unknownUserId = pendingUnknownUserId;
+   *   pendingUnknownUserId = null;
+   *   const id = unknownUserId ?? (await Iterable.getUserId());
+   *   return fetchJwtForUser(id);
+   * };
+   * Iterable.initialize('<YOUR_API_KEY>', config);
+   * ```
+   */
+  unknownUserHandler?: (userId: string) => void;
+
+  /**
    * Should the SDK enable and use embedded messaging?
    *
    * **Documentation**
@@ -504,6 +537,10 @@ export class IterableConfig {
        * A boolean indicating if an authentication handler is present.
        */
       authHandlerPresent: this.authHandler !== undefined,
+      /**
+       * A boolean indicating if an unknown-user handler is present.
+       */
+      unknownUserHandlerPresent: this.unknownUserHandler !== undefined,
       /**
        * A boolean indicating if an embedded message update callback is present.
        */
