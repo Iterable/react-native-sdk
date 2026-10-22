@@ -440,7 +440,9 @@ export class IterableConfig {
    * callback and invokes `authHandler` without passing the id. Store the
    * `userId` argument **synchronously** here so `authHandler` can mint a token
    * for that id in the same turn. Do not use `Iterable.getUserId()` in this
-   * callback; native has not switched identity yet.
+   * callback; native has not switched identity yet. In `authHandler`, consume
+   * and clear that pending id on each call so later known-user logins and
+   * token refreshes use `Iterable.getUserId()` instead of a stale cached id.
    *
    * @param userId - The generated unknown user id from Iterable.
    *
@@ -453,7 +455,9 @@ export class IterableConfig {
    *   pendingUnknownUserId = userId;
    * };
    * config.authHandler = async () => {
-   *   const id = pendingUnknownUserId ?? (await Iterable.getUserId());
+   *   const unknownUserId = pendingUnknownUserId;
+   *   pendingUnknownUserId = null;
+   *   const id = unknownUserId ?? (await Iterable.getUserId());
    *   return fetchJwtForUser(id);
    * };
    * Iterable.initialize('<YOUR_API_KEY>', config);
