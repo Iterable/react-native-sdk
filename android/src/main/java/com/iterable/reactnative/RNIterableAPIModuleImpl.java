@@ -39,6 +39,7 @@ import com.iterable.iterableapi.IterableInAppManager;
 import com.iterable.iterableapi.IterableInAppMessage;
 import com.iterable.iterableapi.IterableInboxSession;
 import com.iterable.iterableapi.IterableLogger;
+import com.iterable.iterableapi.IterableUnknownUserHandler;
 import com.iterable.iterableapi.IterableUrlHandler;
 import com.iterable.iterableapi.RNIterableInternal;
 
@@ -53,7 +54,7 @@ import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCustomActionHandler, IterableInAppHandler, IterableAuthHandler, IterableInAppManager.Listener, IterableEmbeddedUpdateHandler {
+public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCustomActionHandler, IterableInAppHandler, IterableAuthHandler, IterableUnknownUserHandler, IterableInAppManager.Listener, IterableEmbeddedUpdateHandler {
     public static final String NAME = "RNIterableAPI";
 
     private static String TAG = "RNIterableAPIModule";
@@ -91,6 +92,10 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
 
         if (configReadableMap.hasKey("authHandlerPresent") && configReadableMap.getBoolean("authHandlerPresent") == true) {
             configBuilder.setAuthHandler(this);
+        }
+
+        if (configReadableMap.hasKey("unknownUserHandlerPresent") && configReadableMap.getBoolean("unknownUserHandlerPresent") == true) {
+            configBuilder.setUnknownUserHandler(this);
         }
 
         // Check if embedded messaging is enabled before building config
@@ -159,6 +164,10 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
 
         if (configReadableMap.hasKey("authHandlerPresent") && configReadableMap.getBoolean("authHandlerPresent") == true) {
             configBuilder.setAuthHandler(this);
+        }
+
+        if (configReadableMap.hasKey("unknownUserHandlerPresent") && configReadableMap.getBoolean("unknownUserHandlerPresent") == true) {
+            configBuilder.setUnknownUserHandler(this);
         }
 
         // NOTE: There does not seem to be a way to set the API endpoint
@@ -751,6 +760,18 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
     }
 
     @Override
+    public void onUnknownUserCreated(@NonNull String userId) {
+        JSONObject messageJson = new JSONObject();
+        try {
+            messageJson.put("userId", userId);
+            WritableMap eventData = Serialization.convertJsonToMap(messageJson);
+            sendEvent(EventName.handleUnknownUserCreatedCalled.name(), eventData);
+        } catch (JSONException e) {
+            IterableLogger.e(TAG, "Failed to emit unknown user created event");
+        }
+    }
+
+    @Override
     public void onEmbeddedMessagingSyncSucceeded() {
         IterableLogger.d(TAG, "onEmbeddedMessagingSyncSucceeded");
     }
@@ -850,6 +871,7 @@ enum EventName {
   handleCustomActionCalled,
   handleEmbeddedMessageUpdateCalled,
   handleEmbeddedMessagingDisabledCalled,
+  handleUnknownUserCreatedCalled,
   handleInAppCalled,
   handleUrlCalled,
   receivedIterableEmbeddedMessagesChanged,

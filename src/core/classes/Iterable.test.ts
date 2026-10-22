@@ -49,6 +49,9 @@ describe('Iterable', () => {
     nativeEmitter.removeAllListeners(
       IterableEventName.handleEmbeddedMessagingDisabledCalled
     );
+    nativeEmitter.removeAllListeners(
+      IterableEventName.handleUnknownUserCreatedCalled
+    );
 
     // Clear any pending timers
     jest.clearAllTimers();
@@ -1442,6 +1445,74 @@ describe('Iterable', () => {
       config.enableEmbeddedMessaging = true;
       await Iterable.initialize('test-key', config);
       expect(Iterable.embeddedManager.isEnabled).toBe(true);
+    });
+  });
+
+  describe('unknownUserHandler', () => {
+    it('should call unknownUserHandler when handleUnknownUserCreatedCalled is emitted with userId', () => {
+      const nativeEmitter = new NativeEventEmitter();
+      nativeEmitter.removeAllListeners(
+        IterableEventName.handleUnknownUserCreatedCalled
+      );
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      config.unknownUserHandler = jest.fn();
+      Iterable.initialize('apiKey', config);
+      nativeEmitter.emit(IterableEventName.handleUnknownUserCreatedCalled, {
+        userId: 'generated-unknown-user-id',
+      });
+      expect(config.unknownUserHandler).toHaveBeenCalledWith(
+        'generated-unknown-user-id'
+      );
+    });
+
+    it('should not set up a listener when unknownUserHandler is omitted', () => {
+      const nativeEmitter = new NativeEventEmitter();
+      nativeEmitter.removeAllListeners(
+        IterableEventName.handleUnknownUserCreatedCalled
+      );
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      Iterable.initialize('apiKey', config);
+      expect(() => {
+        nativeEmitter.emit(IterableEventName.handleUnknownUserCreatedCalled, {
+          userId: 'generated-unknown-user-id',
+        });
+      }).not.toThrow();
+    });
+
+    it('should include unknownUserHandlerPresent in toDict() when the handler is set', () => {
+      const config = new IterableConfig();
+      config.unknownUserHandler = jest.fn();
+      expect(config.toDict().unknownUserHandlerPresent).toBe(true);
+    });
+
+    it('should set unknownUserHandlerPresent to false when the handler is omitted', () => {
+      const config = new IterableConfig();
+      expect(config.toDict().unknownUserHandlerPresent).toBe(false);
+    });
+
+    it('should log without the userId when unknownUserHandler throws', () => {
+      const nativeEmitter = new NativeEventEmitter();
+      nativeEmitter.removeAllListeners(
+        IterableEventName.handleUnknownUserCreatedCalled
+      );
+      const secretUserId = 'secret-unknown-user-id-for-log-test';
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      config.unknownUserHandler = jest.fn(() => {
+        throw new Error(`handler failed for ${secretUserId}`);
+      });
+      const logSpy = jest.spyOn(IterableLogger, 'log');
+      Iterable.initialize('apiKey', config);
+      nativeEmitter.emit(IterableEventName.handleUnknownUserCreatedCalled, {
+        userId: secretUserId,
+      });
+      const loggedText = logSpy.mock.calls
+        .map((args) => String(args[0]))
+        .join('\n');
+      expect(loggedText).not.toContain(secretUserId);
+      logSpy.mockRestore();
     });
   });
 
