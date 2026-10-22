@@ -2,6 +2,7 @@ import { NativeEventEmitter, Platform } from 'react-native';
 
 import { MockLinking } from '../../__mocks__/MockLinking';
 import { MockRNIterableAPI } from '../../__mocks__/MockRNIterableAPI';
+import { testNativeEventEmitter } from '../../__mocks__/jest.setup';
 // import from the same location that consumers import from
 import {
   Iterable,
@@ -1458,6 +1459,11 @@ describe('Iterable', () => {
       config.logReactNativeSdkCalls = false;
       config.unknownUserHandler = jest.fn();
       Iterable.initialize('apiKey', config);
+      expect(
+        testNativeEventEmitter.listenerCount(
+          IterableEventName.handleUnknownUserCreatedCalled
+        )
+      ).toBe(1);
       nativeEmitter.emit(IterableEventName.handleUnknownUserCreatedCalled, {
         userId: 'generated-unknown-user-id',
       });
@@ -1466,19 +1472,18 @@ describe('Iterable', () => {
       );
     });
 
-    it('should not set up a listener when unknownUserHandler is omitted', () => {
-      const nativeEmitter = new NativeEventEmitter();
-      nativeEmitter.removeAllListeners(
+    it('should not register a handleUnknownUserCreatedCalled listener when unknownUserHandler is omitted', () => {
+      testNativeEventEmitter.removeAllListeners(
         IterableEventName.handleUnknownUserCreatedCalled
       );
       const config = new IterableConfig();
       config.logReactNativeSdkCalls = false;
       Iterable.initialize('apiKey', config);
-      expect(() => {
-        nativeEmitter.emit(IterableEventName.handleUnknownUserCreatedCalled, {
-          userId: 'generated-unknown-user-id',
-        });
-      }).not.toThrow();
+      expect(
+        testNativeEventEmitter.listenerCount(
+          IterableEventName.handleUnknownUserCreatedCalled
+        )
+      ).toBe(0);
     });
 
     it('should include unknownUserHandlerPresent in toDict() when the handler is set', () => {
