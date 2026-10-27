@@ -23,7 +23,7 @@ body:
     id: steps
     attributes:
       label: Steps to reproduce
-      description: List the steps needed to reproduce the behaviour reliably.
+      description: List the steps needed to reproduce the behavior reliably.
       placeholder: |
         1.
         2.
@@ -66,13 +66,13 @@ body:
   - type: textarea
     id: expected
     attributes:
-      label: Expected behaviour
+      label: Expected behavior
     validations:
       required: true
   - type: textarea
     id: actual
     attributes:
-      label: Actual behaviour
+      label: Actual behavior
     validations:
       required: true
   - type: input
