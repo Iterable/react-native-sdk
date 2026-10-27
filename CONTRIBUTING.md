@@ -3,7 +3,7 @@ Contributions (in the form of issues or pull requests) are welcome!
 
 #### **Bugs**
 * Please make sure the bug hasn't already been reported.
-* If it hasn't, open a new issue. Please provide as much detail about the bug as possible.
+* If it hasn't, open a new issue using the **Bug report** form on GitHub so we get the details we need.
 
 #### **Feature Suggestions**
 * Feel free to open issues for enhancements and new features! 

@@ -1,0 +1,131 @@
+name: Bug report
+description: Report a problem with the Iterable React Native SDK
+title: ''
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Do not paste API keys, JWTs, email addresses, EAS tokens, or other secrets** in this form.
+
+        ### Beta software notice
+
+        Our team does not provide support for issues encountered on beta or pre-release versions of operating systems, development tools, or other software. Please verify that the issue occurs on stable, officially released software before submitting this report.
+  - type: textarea
+    id: description
+    attributes:
+      label: Issue description
+      description: A clear and concise description of the issue.
+      placeholder: What happened? What were you trying to do?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: List the steps needed to reproduce the behaviour reliably.
+      placeholder: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: input
+    id: org-id
+    attributes:
+      label: Iterable org id
+      placeholder: Your Iterable organization id
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - iOS
+        - Android
+        - Both
+    validations:
+      required: true
+  - type: input
+    id: rn-sdk-version
+    attributes:
+      label: Iterable React Native SDK version
+      description: For example 3.2.1
+      placeholder: 3.2.1
+    validations:
+      required: true
+  - type: input
+    id: react-native-version
+    attributes:
+      label: React Native version
+      description: For example 0.85.3
+      placeholder: 0.85.3
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+    validations:
+      required: true
+  - type: input
+    id: ios-version
+    attributes:
+      label: iOS version
+      description: Optional. Include if relevant to the issue.
+    validations:
+      required: false
+  - type: input
+    id: android-version
+    attributes:
+      label: Android API / OS version
+      description: Optional. Include if relevant to the issue.
+    validations:
+      required: false
+  - type: dropdown
+    id: using-expo
+    attributes:
+      label: Using Expo?
+      options:
+        - 'No'
+        - 'Yes'
+    validations:
+      required: false
+  - type: input
+    id: expo-sdk-version
+    attributes:
+      label: Expo SDK version
+      description: Optional. If you use Expo, which SDK version?
+    validations:
+      required: false
+  - type: input
+    id: expo-plugin-version
+    attributes:
+      label: '@iterable/expo-plugin version'
+      description: Optional. If you use the Iterable Expo plugin, which version?
+    validations:
+      required: false
+  - type: dropdown
+    id: new-architecture
+    attributes:
+      label: New Architecture
+      options:
+        - 'Yes'
+        - 'No'
+        - Unknown
+    validations:
+      required: false
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or additional context
+      description: Optional. Redact secrets before pasting.
+    validations:
+      required: false
