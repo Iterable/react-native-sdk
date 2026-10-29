@@ -12,6 +12,7 @@
 @protocol IterableInAppDelegate;
 @protocol IterableCustomActionDelegate;
 @protocol IterableAuthDelegate;
+@protocol IterableUnknownUserHandler;
 @protocol IterableURLDelegate;
 @protocol IterableEmbeddedUpdateDelegate;
 typedef NS_ENUM(NSInteger, InAppShowResponse) {
