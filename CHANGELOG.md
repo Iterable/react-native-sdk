@@ -1,3 +1,14 @@
+## Unreleased
+
+### Updates
+
+- Added `IterableConfig.enableUnknownUserActivation` (default `false`) to opt in to Unknown User Activation on the native SDK (SDK-794). Visitor consent via `Iterable.setVisitorUsageTracked` is also required before the native SDK stores unknown-user events.
+- Added `IterableConfig.enableForegroundCriteriaFetch` (default `true`) to control whether the SDK fetches unknown-user targeting criteria when the app enters the foreground (SDK-554).
+- Added `IterableConfig.eventThresholdLimit` (default `100`) to cap locally stored unknown-user events before identification (SDK-553). The value is forwarded to the native SDK and applies when unknown-user activation is enabled.
+- Added `Iterable.setVisitorUsageTracked` and `Iterable.getVisitorUsageTracked` to record and read visitor consent for Unknown User Activation (SDK-561). Consent is persisted by the native SDK.
+- Added `IterableConfig.identityResolution` and the `IterableIdentityResolution` type so RN apps can configure default visitor replay and unknown-to-known merge behavior (SDK-556).
+- Added `IterableConfig.unknownUserHandler` so JWT-enabled apps can receive the generated unknown user id before native requests a token (SDK-804). Store the id synchronously in the handler and mint in `authHandler` for that id.
+
 ## 3.2.1
 
 ### Fixes

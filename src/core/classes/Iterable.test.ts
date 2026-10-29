@@ -2,6 +2,7 @@ import { NativeEventEmitter, Platform } from 'react-native';
 
 import { MockLinking } from '../../__mocks__/MockLinking';
 import { MockRNIterableAPI } from '../../__mocks__/MockRNIterableAPI';
+import { testNativeEventEmitter } from '../../__mocks__/jest.setup';
 // import from the same location that consumers import from
 import {
   Iterable,
@@ -23,6 +24,7 @@ import {
   IterableInAppTriggerType,
   IterableLogLevel,
 } from '../..';
+import { resetSdkInitializationStateForTests } from './Iterable';
 import { TestHelper } from '../../__tests__/TestHelper';
 import { IterableLogger } from './IterableLogger';
 
@@ -47,6 +49,9 @@ describe('Iterable', () => {
     );
     nativeEmitter.removeAllListeners(
       IterableEventName.handleEmbeddedMessagingDisabledCalled
+    );
+    nativeEmitter.removeAllListeners(
+      IterableEventName.handleUnknownUserCreatedCalled
     );
 
     // Clear any pending timers
@@ -78,6 +83,101 @@ describe('Iterable', () => {
       return await Iterable.getUserId().then((id) => {
         expect(id).toBe(result);
       });
+    });
+  });
+
+  describe('visitorUsageTracked', () => {
+    beforeEach(() => {
+      MockRNIterableAPI.visitorUsageTracked = false;
+      MockRNIterableAPI.unknownVisitorEvents = [];
+      resetSdkInitializationStateForTests();
+    });
+
+    it('should expose setVisitorUsageTracked and getVisitorUsageTracked on Iterable', () => {
+      expect(typeof Iterable.setVisitorUsageTracked).toBe('function');
+      expect(typeof Iterable.getVisitorUsageTracked).toBe('function');
+    });
+
+    it('should forward true and false to RNIterableAPI after initialize', async () => {
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      await Iterable.initialize('test-key', config);
+
+      Iterable.setVisitorUsageTracked(true);
+      expect(MockRNIterableAPI.setVisitorUsageTracked).toHaveBeenCalledWith(true);
+
+      Iterable.setVisitorUsageTracked(false);
+      expect(MockRNIterableAPI.setVisitorUsageTracked).toHaveBeenCalledWith(false);
+    });
+
+    it('should resolve getVisitorUsageTracked to the value stored in the mock', async () => {
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      await Iterable.initialize('test-key', config);
+
+      MockRNIterableAPI.visitorUsageTracked = true;
+      await expect(Iterable.getVisitorUsageTracked()).resolves.toBe(true);
+
+      MockRNIterableAPI.visitorUsageTracked = false;
+      await expect(Iterable.getVisitorUsageTracked()).resolves.toBe(false);
+    });
+
+    it('should resolve to false when the integrator never calls the setter', async () => {
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      await Iterable.initialize('test-key', config);
+
+      await expect(Iterable.getVisitorUsageTracked()).resolves.toBe(false);
+    });
+
+    it('should return the persisted mock value after initialize runs again', async () => {
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      await Iterable.initialize('test-key', config);
+      Iterable.setVisitorUsageTracked(true);
+
+      resetSdkInitializationStateForTests();
+      await Iterable.initialize('test-key', config);
+
+      await expect(Iterable.getVisitorUsageTracked()).resolves.toBe(true);
+    });
+
+    it('should clear unknown-visitor events in the mock on each setVisitorUsageTracked call', async () => {
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      MockRNIterableAPI.pushUnknownVisitorEventForTests('event-1');
+      await Iterable.initialize('test-key', config);
+
+      Iterable.setVisitorUsageTracked(false);
+      expect(MockRNIterableAPI.unknownVisitorEvents).toEqual([]);
+
+      MockRNIterableAPI.pushUnknownVisitorEventForTests('event-2');
+      Iterable.setVisitorUsageTracked(true);
+      expect(MockRNIterableAPI.unknownVisitorEvents).toEqual([]);
+    });
+
+    it('should not forward setVisitorUsageTracked before initialize resolves', async () => {
+      Iterable.setVisitorUsageTracked(true);
+      expect(MockRNIterableAPI.setVisitorUsageTracked).not.toHaveBeenCalled();
+      await expect(Iterable.getVisitorUsageTracked()).resolves.toBe(false);
+
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      await Iterable.initialize('test-key', config);
+      await expect(Iterable.getVisitorUsageTracked()).resolves.toBe(false);
+    });
+
+    it('should not call trackEvent, setEmail, or setUserId from visitor usage methods', async () => {
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      await Iterable.initialize('test-key', config);
+
+      Iterable.setVisitorUsageTracked(true);
+      await Iterable.getVisitorUsageTracked();
+
+      expect(MockRNIterableAPI.trackEvent).not.toHaveBeenCalled();
+      expect(MockRNIterableAPI.setEmail).not.toHaveBeenCalled();
+      expect(MockRNIterableAPI.setUserId).not.toHaveBeenCalled();
     });
   });
 
@@ -325,9 +425,12 @@ describe('Iterable', () => {
       expect(config.checkForDeferredDeeplink).toBe(false);
       expect(config.customActionHandler).toBe(undefined);
       expect(config.dataRegion).toBe(IterableDataRegion.US);
+      expect(config.enableForegroundCriteriaFetch).toBe(true);
       expect(config.enableEmbeddedMessaging).toBe(false);
+      expect(config.enableUnknownUserActivation).toBe(false);
       expect(config.encryptionEnforced).toBe(false);
       expect(config.expiringAuthTokenRefreshPeriod).toBe(60.0);
+      expect(config.eventThresholdLimit).toBe(100);
       expect(config.inAppDisplayInterval).toBe(30.0);
       expect(config.inAppHandler).toBe(undefined);
       expect(config.logLevel).toBe(IterableLogLevel.debug);
@@ -337,6 +440,10 @@ describe('Iterable', () => {
       expect(config.useInMemoryStorageForInApps).toBe(false);
       expect(config.androidWakeDelayMs).toBe(1000);
       expect(config.authCallbackTimeoutMs).toBe(6000);
+      expect(config.identityResolution).toEqual({
+        replayOnVisitorToKnown: true,
+        mergeOnUnknownToKnown: true,
+      });
       const configDict = config.toDict();
       expect(configDict.allowedProtocols).toEqual([]);
       expect(configDict.androidSdkUseInMemoryStorageForInApps).toBe(false);
@@ -344,9 +451,12 @@ describe('Iterable', () => {
       expect(configDict.autoPushRegistration).toBe(true);
       expect(configDict.customActionHandlerPresent).toBe(false);
       expect(configDict.dataRegion).toBe(IterableDataRegion.US);
+      expect(configDict.enableForegroundCriteriaFetch).toBe(true);
       expect(configDict.enableEmbeddedMessaging).toBe(false);
+      expect(configDict.enableUnknownUserActivation).toBe(false);
       expect(configDict.encryptionEnforced).toBe(false);
       expect(configDict.expiringAuthTokenRefreshPeriod).toBe(60.0);
+      expect(configDict.eventThresholdLimit).toBe(100);
       expect(configDict.inAppDisplayInterval).toBe(30.0);
       expect(configDict.inAppHandlerPresent).toBe(false);
       expect(configDict.logLevel).toBe(IterableLogLevel.debug);
@@ -355,6 +465,10 @@ describe('Iterable', () => {
       expect(configDict.useInMemoryStorageForInApps).toBe(false);
       expect(configDict.androidWakeDelayMs).toBe(1000);
       expect(configDict.authCallbackTimeoutMs).toBe(6000);
+      expect(configDict.identityResolution).toEqual({
+        replayOnVisitorToKnown: true,
+        mergeOnUnknownToKnown: true,
+      });
     });
 
     it('should allow overriding androidWakeDelayMs and authCallbackTimeoutMs', () => {
@@ -364,6 +478,80 @@ describe('Iterable', () => {
       const configDict = config.toDict();
       expect(configDict.androidWakeDelayMs).toBe(1500);
       expect(configDict.authCallbackTimeoutMs).toBe(2500);
+    });
+
+    it('should include enableUnknownUserActivation in toDict() when set to true', () => {
+      const config = new IterableConfig();
+      config.enableUnknownUserActivation = true;
+      const configDict = config.toDict();
+      expect(configDict.enableUnknownUserActivation).toBe(true);
+    });
+
+    it('should include enableForegroundCriteriaFetch in toDict() when set to false', () => {
+      const config = new IterableConfig();
+      config.enableForegroundCriteriaFetch = false;
+      const configDict = config.toDict();
+      expect(configDict.enableForegroundCriteriaFetch).toBe(false);
+    });
+
+    it('should include eventThresholdLimit in toDict() when overridden', () => {
+      const config = new IterableConfig();
+      config.eventThresholdLimit = 50;
+      const configDict = config.toDict();
+      expect(configDict.eventThresholdLimit).toBe(50);
+    });
+
+    it('should include identityResolution in toDict() with overridden values', () => {
+      const config = new IterableConfig();
+      config.identityResolution = {
+        replayOnVisitorToKnown: false,
+        mergeOnUnknownToKnown: false,
+      };
+      const configDict = config.toDict();
+      expect(configDict.identityResolution).toEqual({
+        replayOnVisitorToKnown: false,
+        mergeOnUnknownToKnown: false,
+      });
+    });
+
+    it('should default missing identityResolution keys to true in toDict()', () => {
+      const config = new IterableConfig();
+      config.identityResolution = { mergeOnUnknownToKnown: false };
+      const configDict = config.toDict();
+      expect(configDict.identityResolution).toEqual({
+        replayOnVisitorToKnown: true,
+        mergeOnUnknownToKnown: false,
+      });
+    });
+
+    it('should default mergeOnUnknownToKnown to true when only replayOnVisitorToKnown is set', () => {
+      const config = new IterableConfig();
+      config.identityResolution = { replayOnVisitorToKnown: false };
+      const configDict = config.toDict();
+      expect(configDict.identityResolution).toEqual({
+        replayOnVisitorToKnown: false,
+        mergeOnUnknownToKnown: true,
+      });
+    });
+
+    it('should default both identityResolution keys to true for an empty object', () => {
+      const config = new IterableConfig();
+      config.identityResolution = {};
+      const configDict = config.toDict();
+      expect(configDict.identityResolution).toEqual({
+        replayOnVisitorToKnown: true,
+        mergeOnUnknownToKnown: true,
+      });
+    });
+
+    it('should default both identityResolution keys to true when identityResolution is undefined', () => {
+      const config = new IterableConfig();
+      config.identityResolution = undefined as unknown as IterableConfig['identityResolution'];
+      const configDict = config.toDict();
+      expect(configDict.identityResolution).toEqual({
+        replayOnVisitorToKnown: true,
+        mergeOnUnknownToKnown: true,
+      });
     });
   });
 
@@ -1258,6 +1446,78 @@ describe('Iterable', () => {
       config.enableEmbeddedMessaging = true;
       await Iterable.initialize('test-key', config);
       expect(Iterable.embeddedManager.isEnabled).toBe(true);
+    });
+  });
+
+  describe('unknownUserHandler', () => {
+    it('should call unknownUserHandler when handleUnknownUserCreatedCalled is emitted with userId', () => {
+      const nativeEmitter = new NativeEventEmitter();
+      nativeEmitter.removeAllListeners(
+        IterableEventName.handleUnknownUserCreatedCalled
+      );
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      config.unknownUserHandler = jest.fn();
+      Iterable.initialize('apiKey', config);
+      expect(
+        testNativeEventEmitter.listenerCount(
+          IterableEventName.handleUnknownUserCreatedCalled
+        )
+      ).toBe(1);
+      nativeEmitter.emit(IterableEventName.handleUnknownUserCreatedCalled, {
+        userId: 'generated-unknown-user-id',
+      });
+      expect(config.unknownUserHandler).toHaveBeenCalledWith(
+        'generated-unknown-user-id'
+      );
+    });
+
+    it('should not register a handleUnknownUserCreatedCalled listener when unknownUserHandler is omitted', () => {
+      testNativeEventEmitter.removeAllListeners(
+        IterableEventName.handleUnknownUserCreatedCalled
+      );
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      Iterable.initialize('apiKey', config);
+      expect(
+        testNativeEventEmitter.listenerCount(
+          IterableEventName.handleUnknownUserCreatedCalled
+        )
+      ).toBe(0);
+    });
+
+    it('should include unknownUserHandlerPresent in toDict() when the handler is set', () => {
+      const config = new IterableConfig();
+      config.unknownUserHandler = jest.fn();
+      expect(config.toDict().unknownUserHandlerPresent).toBe(true);
+    });
+
+    it('should set unknownUserHandlerPresent to false when the handler is omitted', () => {
+      const config = new IterableConfig();
+      expect(config.toDict().unknownUserHandlerPresent).toBe(false);
+    });
+
+    it('should log without the userId when unknownUserHandler throws', () => {
+      const nativeEmitter = new NativeEventEmitter();
+      nativeEmitter.removeAllListeners(
+        IterableEventName.handleUnknownUserCreatedCalled
+      );
+      const secretUserId = 'secret-unknown-user-id-for-log-test';
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      config.unknownUserHandler = jest.fn(() => {
+        throw new Error(`handler failed for ${secretUserId}`);
+      });
+      const logSpy = jest.spyOn(IterableLogger, 'log');
+      Iterable.initialize('apiKey', config);
+      nativeEmitter.emit(IterableEventName.handleUnknownUserCreatedCalled, {
+        userId: secretUserId,
+      });
+      const loggedText = logSpy.mock.calls
+        .map((args) => String(args[0]))
+        .join('\n');
+      expect(loggedText).not.toContain(secretUserId);
+      logSpy.mockRestore();
     });
   });
 

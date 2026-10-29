@@ -12,6 +12,7 @@
 @protocol IterableInAppDelegate;
 @protocol IterableCustomActionDelegate;
 @protocol IterableAuthDelegate;
+@protocol IterableUnknownUserHandler;
 @protocol IterableURLDelegate;
 @protocol IterableEmbeddedUpdateDelegate;
 typedef NS_ENUM(NSInteger, InAppShowResponse) {
@@ -110,6 +111,15 @@ RCT_EXPORT_MODULE()
 - (void)getUserId:(RCTPromiseResolveBlock)resolve
            reject:(RCTPromiseRejectBlock)reject {
   [_swiftAPI getUserId:resolve rejecter:reject];
+}
+
+- (void)setVisitorUsageTracked:(BOOL)tracked {
+  [_swiftAPI setVisitorUsageTracked:tracked];
+}
+
+- (void)getVisitorUsageTracked:(RCTPromiseResolveBlock)resolve
+                        reject:(RCTPromiseRejectBlock)reject {
+  [_swiftAPI getVisitorUsageTracked:resolve rejecter:reject];
 }
 
 - (void)setInAppShowResponse:(double)inAppShowResponse {
@@ -401,6 +411,15 @@ RCT_EXPORT_METHOD(setUserId : (NSString *_Nullable)
 RCT_EXPORT_METHOD(getUserId : (RCTPromiseResolveBlock)
                       resolve reject : (RCTPromiseRejectBlock)reject) {
   [_swiftAPI getUserId:resolve rejecter:reject];
+}
+
+RCT_EXPORT_METHOD(setVisitorUsageTracked : (BOOL)tracked) {
+  [_swiftAPI setVisitorUsageTracked:tracked];
+}
+
+RCT_EXPORT_METHOD(getVisitorUsageTracked : (RCTPromiseResolveBlock)
+                      resolve reject : (RCTPromiseRejectBlock)reject) {
+  [_swiftAPI getVisitorUsageTracked:resolve rejecter:reject];
 }
 
 RCT_EXPORT_METHOD(setInAppShowResponse : (double)inAppShowResponse) {

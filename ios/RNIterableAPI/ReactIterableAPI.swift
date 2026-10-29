@@ -35,6 +35,7 @@ import React
     case handleAuthFailureCalled
     case handleEmbeddedMessageUpdateCalled
     case handleEmbeddedMessagingDisabledCalled
+    case handleUnknownUserCreatedCalled
   }
 
   @objc public static var supportedEvents: [String] {
@@ -127,6 +128,21 @@ import React
   public func getUserId(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
     ITBInfo()
     resolver(IterableAPI.userId)
+  }
+
+  @objc(setVisitorUsageTracked:)
+  public func setVisitorUsageTracked(tracked: Bool) {
+    ITBInfo()
+    IterableAPI.setVisitorUsageTracked(isVisitorUsageTracked: tracked)
+  }
+
+  @objc(getVisitorUsageTracked:rejecter:)
+  public func getVisitorUsageTracked(
+    resolver: @escaping RCTPromiseResolveBlock,
+    rejecter: @escaping RCTPromiseRejectBlock
+  ) {
+    ITBInfo()
+    resolver(IterableAPI.getVisitorUsageTracked())
   }
 
   // MARK: - Iterable API Request Functions
@@ -662,6 +678,12 @@ import React
       iterableConfig.authDelegate = self
     }
 
+    if let unknownUserHandlerPresent = configDict["unknownUserHandlerPresent"] as? Bool,
+      unknownUserHandlerPresent == true
+    {
+      iterableConfig.unknownUserHandler = self
+    }
+
     // connect new inbox in-app payloads to the RN SDK
     NotificationCenter.default.addObserver(
       self, selector: #selector(receivedIterableInboxChanged),
@@ -857,6 +879,18 @@ extension ReactIterableAPI: IterableAuthDelegate {
   }
 
   public func onTokenRegistrationFailed(_ reason: String?) {
+  }
+}
+
+extension ReactIterableAPI: IterableUnknownUserHandler {
+  public func onUnknownUserCreated(userId: String) {
+    ITBInfo()
+    guard shouldEmit else {
+      return
+    }
+    delegate?.sendEvent(
+      withName: EventName.handleUnknownUserCreatedCalled.rawValue,
+      body: ["userId": userId])
   }
 }
 

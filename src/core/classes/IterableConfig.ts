@@ -4,6 +4,7 @@ import { IterableDataRegion } from '../enums/IterableDataRegion';
 import { IterableLogLevel } from '../enums/IterableLogLevel';
 import { IterablePushPlatform } from '../enums/IterablePushPlatform';
 import type { IterableAuthFailure } from '../types/IterableAuthFailure';
+import type { IterableIdentityResolution } from '../types/IterableIdentityResolution';
 import type { IterableRetryPolicy } from '../types/IterableRetryPolicy';
 import { IterableAction } from './IterableAction';
 import type { IterableActionContext } from './IterableActionContext';
@@ -263,6 +264,17 @@ export class IterableConfig {
   expiringAuthTokenRefreshPeriod = 60.0;
 
   /**
+   * Maximum number of unknown-user (anonymous) events stored locally before
+   * identification. The native SDK drops the oldest events when the count
+   * exceeds this limit.
+   *
+   * The value is sent to the native SDK at init. The limit applies only while
+   * unknown-user activation is enabled (`enableUnknownUserActivation`) and
+   * visitor consent has been granted.
+   */
+  eventThresholdLimit = 100;
+
+  /**
    * Use this array to declare the specific URL protocols that the SDK can
    * expect to see on incoming links from Iterable, so it knows that it can
    * safely handle them as needed. This array helps prevent the SDK from opening
@@ -392,6 +404,68 @@ export class IterableConfig {
   authCallbackTimeoutMs = 6000;
 
   /**
+   * When `true`, the native SDK may store and process events for unidentified
+   * (unknown) users. Defaults to `false`.
+   *
+   * Visitor consent via `Iterable.setVisitorUsageTracked` is also required
+   * before the native SDK stores unknown-user events or runs unknown-user flows.
+   */
+  enableUnknownUserActivation = false;
+
+  /**
+   * When `true` (the default), the SDK fetches unknown-user (anonymous) targeting
+   * criteria when the app enters the foreground.
+   *
+   * Set to `false` to disable that foreground fetch.
+   */
+  enableForegroundCriteriaFetch = true;
+
+  /**
+   * Default identity-resolution behavior when identifying a user with
+   * `Iterable.setEmail` or `Iterable.setUserId`.
+   *
+   * Applies when unknown-user activation and visitor tracking are enabled on the
+   * native SDK. Omitted keys in a partial object default to `true`.
+   */
+  identityResolution: IterableIdentityResolution = {
+    replayOnVisitorToKnown: true,
+    mergeOnUnknownToKnown: true,
+  };
+
+  /**
+   * Called when the native SDK creates a generated user id after unknown-user
+   * activation criteria are met.
+   *
+   * JWT-enabled API keys: native logs in as that id immediately after this
+   * callback and invokes `authHandler` without passing the id. Store the
+   * `userId` argument **synchronously** here so `authHandler` can mint a token
+   * for that id in the same turn. Do not use `Iterable.getUserId()` in this
+   * callback; native has not switched identity yet. In `authHandler`, consume
+   * and clear that pending id on each call so later known-user logins and
+   * token refreshes use `Iterable.getUserId()` instead of a stale cached id.
+   *
+   * @param userId - The generated unknown user id from Iterable.
+   *
+   * @example
+   * ```typescript
+   * let pendingUnknownUserId: string | null = null;
+   * const config = new IterableConfig();
+   * config.enableUnknownUserActivation = true;
+   * config.unknownUserHandler = (userId) => {
+   *   pendingUnknownUserId = userId;
+   * };
+   * config.authHandler = async () => {
+   *   const unknownUserId = pendingUnknownUserId;
+   *   pendingUnknownUserId = null;
+   *   const id = unknownUserId ?? (await Iterable.getUserId());
+   *   return fetchJwtForUser(id);
+   * };
+   * Iterable.initialize('<YOUR_API_KEY>', config);
+   * ```
+   */
+  unknownUserHandler?: (userId: string) => void;
+
+  /**
    * Should the SDK enable and use embedded messaging?
    *
    * **Documentation**
@@ -464,6 +538,10 @@ export class IterableConfig {
        */
       authHandlerPresent: this.authHandler !== undefined,
       /**
+       * A boolean indicating if an unknown-user handler is present.
+       */
+      unknownUserHandlerPresent: this.unknownUserHandler !== undefined,
+      /**
        * A boolean indicating if an embedded message update callback is present.
        */
       onEmbeddedMessageUpdatePresent:
@@ -476,6 +554,7 @@ export class IterableConfig {
       /** The log level for the SDK. */
       logLevel: this.logLevel,
       expiringAuthTokenRefreshPeriod: this.expiringAuthTokenRefreshPeriod,
+      eventThresholdLimit: this.eventThresholdLimit,
       allowedProtocols: this.allowedProtocols,
       androidSdkUseInMemoryStorageForInApps:
         this.androidSdkUseInMemoryStorageForInApps,
@@ -484,6 +563,14 @@ export class IterableConfig {
       pushPlatform: this.pushPlatform,
       encryptionEnforced: this.encryptionEnforced,
       retryPolicy: this.retryPolicy,
+      enableUnknownUserActivation: this.enableUnknownUserActivation,
+      enableForegroundCriteriaFetch: this.enableForegroundCriteriaFetch,
+      identityResolution: {
+        replayOnVisitorToKnown:
+          this.identityResolution?.replayOnVisitorToKnown ?? true,
+        mergeOnUnknownToKnown:
+          this.identityResolution?.mergeOnUnknownToKnown ?? true,
+      },
       enableEmbeddedMessaging: this.enableEmbeddedMessaging,
       androidWakeDelayMs: this.androidWakeDelayMs,
       authCallbackTimeoutMs: this.authCallbackTimeoutMs,

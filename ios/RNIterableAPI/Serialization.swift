@@ -75,6 +75,10 @@ extension IterableConfig {
       config.expiringAuthTokenRefreshPeriod = expiringAuthTokenRefreshPeriod
     }
 
+    if let eventThresholdLimit = dict["eventThresholdLimit"] as? Int {
+      config.eventThresholdLimit = eventThresholdLimit
+    }
+
     if let logLevelNumber = dict["logLevel"] as? NSNumber {
       config.logDelegate = createLogDelegate(logLevelNumber: logLevelNumber)
     }
@@ -83,8 +87,16 @@ extension IterableConfig {
       config.useInMemoryStorageForInApps = useInMemoryStorageForInApp
     }
 
+    if let enableForegroundCriteriaFetch = dict["enableForegroundCriteriaFetch"] as? Bool {
+      config.enableForegroundCriteriaFetch = enableForegroundCriteriaFetch
+    }
+
     if let enableEmbeddedMessaging = dict["enableEmbeddedMessaging"] as? Bool {
       config.enableEmbeddedMessaging = enableEmbeddedMessaging
+    }
+
+    if let enableUnknownUserActivation = dict["enableUnknownUserActivation"] as? Bool {
+      config.enableUnknownUserActivation = enableUnknownUserActivation
     }
 
     if let dataRegion = dict["dataRegion"] as? NSNumber {
@@ -108,6 +120,16 @@ extension IterableConfig {
         config.retryPolicy = RetryPolicy(
           maxRetry: maxRetry, retryInterval: retryInterval, retryBackoff: retryBackoffType)
       }
+    }
+
+    if let identityResolutionDict = dict["identityResolution"] as? [AnyHashable: Any] {
+      let replayOnVisitorToKnown =
+        identityResolutionDict["replayOnVisitorToKnown"] as? Bool ?? true
+      let mergeOnUnknownToKnown =
+        identityResolutionDict["mergeOnUnknownToKnown"] as? Bool ?? true
+      config.identityResolution = IterableIdentityResolution(
+        replayOnVisitorToKnown: replayOnVisitorToKnown,
+        mergeOnUnknownToKnown: mergeOnUnknownToKnown)
     }
 
     return config

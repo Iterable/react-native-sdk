@@ -27,6 +27,13 @@ const RNEventEmitter = new NativeEventEmitter(RNIterableAPI);
 
 const defaultConfig = new IterableConfig();
 
+let sdkInitialized = false;
+
+/** Resets init gating for unit tests only; not part of the public package API. */
+export function resetSdkInitializationStateForTests(): void {
+  sdkInitialized = false;
+}
+
 /**
  * Checks if the response is an IterableAuthResponse
  */
@@ -157,12 +164,18 @@ export class Iterable {
     apiKey: string,
     config: IterableConfig = new IterableConfig()
   ): Promise<boolean> {
+    sdkInitialized = false;
     Iterable.savedConfig = config;
     this.setupIterable(config);
 
     const version = this.getVersionFromPackageJson();
 
-    return IterableApi.initializeWithApiKey(apiKey, { config, version });
+    return IterableApi.initializeWithApiKey(apiKey, { config, version }).then(
+      (initialized) => {
+        sdkInitialized = true;
+        return initialized;
+      }
+    );
   }
 
   /**
@@ -176,6 +189,7 @@ export class Iterable {
     config: IterableConfig = new IterableConfig(),
     apiEndPoint: string
   ): Promise<boolean> {
+    sdkInitialized = false;
     this.setupIterable(config);
 
     const version = this.getVersionFromPackageJson();
@@ -184,6 +198,9 @@ export class Iterable {
       config,
       version,
       apiEndPoint,
+    }).then((initialized) => {
+      sdkInitialized = true;
+      return initialized;
     });
   }
 
@@ -331,6 +348,45 @@ export class Iterable {
    */
   static getUserId(): Promise<string | null | undefined> {
     return IterableApi.getUserId();
+  }
+
+  /**
+   * Record whether the end user has consented to visitor / unknown-user tracking.
+   *
+   * The value is persisted by the native SDK across app restarts. Each call
+   * clears locally stored unknown-visitor events on the native side.
+   *
+   * This method only records consent; it does not opt the app into Unknown User
+   * Activation by itself. Unknown-user flows also require
+   * `IterableConfig.enableUnknownUserActivation` (defaults to `false`) at
+   * `Iterable.initialize`. Use {@link Iterable.getVisitorUsageTracked} to read
+   * the stored value.
+   *
+   * No-op before `Iterable.initialize` has resolved (does not forward to native).
+   */
+  static setVisitorUsageTracked(tracked: boolean): void {
+    if (!sdkInitialized) {
+      return;
+    }
+    IterableApi.setVisitorUsageTracked(tracked);
+  }
+
+  /**
+   * Returns whether visitor / unknown-user tracking consent has been recorded.
+   *
+   * Reads the value persisted by the native SDK (including across app restarts
+   * after a prior `setVisitorUsageTracked` call).
+   *
+   * Resolves to `false` before `Iterable.initialize` has resolved or if the
+   * integrator has never called `setVisitorUsageTracked`. Visitor consent alone
+   * does not enable unknown-user flows; those also require
+   * `IterableConfig.enableUnknownUserActivation` (defaults to `false`) at init.
+   */
+  static getVisitorUsageTracked(): Promise<boolean> {
+    if (!sdkInitialized) {
+      return Promise.resolve(false);
+    }
+    return IterableApi.getVisitorUsageTracked();
   }
 
   /**
@@ -976,6 +1032,9 @@ export class Iterable {
     RNEventEmitter.removeAllListeners(
       IterableEventName.handleEmbeddedMessagingDisabledCalled
     );
+    RNEventEmitter.removeAllListeners(
+      IterableEventName.handleUnknownUserCreatedCalled
+    );
   }
 
   /**
@@ -1245,6 +1304,25 @@ export class Iterable {
 
           // Call the actual JWT error with `authFailure` object.
           Iterable.savedConfig?.onJwtError?.(authFailureResponse);
+        }
+      );
+    }
+
+    if (Iterable.savedConfig.unknownUserHandler) {
+      RNEventEmitter.addListener(
+        IterableEventName.handleUnknownUserCreatedCalled,
+        (dict: { userId?: string }) => {
+          const userId = dict?.userId;
+          if (userId === undefined || userId === null) {
+            return;
+          }
+          try {
+            Iterable.savedConfig.unknownUserHandler!(userId);
+          } catch {
+            IterableLogger?.log(
+              'IterableConfig.unknownUserHandler threw an error'
+            );
+          }
         }
       );
     }
