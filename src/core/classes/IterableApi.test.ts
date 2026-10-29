@@ -3,6 +3,7 @@ import { Platform } from 'react-native';
 import { MockRNIterableAPI } from '../../__mocks__/MockRNIterableAPI';
 import { IterableApi } from './IterableApi';
 import { IterableConfig } from './IterableConfig';
+import { IterableLogger } from './IterableLogger';
 import { IterableAttributionInfo } from './IterableAttributionInfo';
 import { IterableCommerceItem } from './IterableCommerceItem';
 import { IterableInAppMessage } from '../../inApp/classes/IterableInAppMessage';
@@ -279,6 +280,59 @@ describe('IterableApi', () => {
 
       // THEN RNIterableAPI.disableDeviceForCurrentUser is called
       expect(MockRNIterableAPI.disableDeviceForCurrentUser).toBeCalled();
+    });
+  });
+
+  describe('disableDeviceForAllUsers', () => {
+    it('should call RNIterableAPI.disableDeviceForAllUsers', () => {
+      // GIVEN no parameters
+      // WHEN disableDeviceForAllUsers is called
+      IterableApi.disableDeviceForAllUsers();
+
+      // THEN RNIterableAPI.disableDeviceForAllUsers is called
+      expect(MockRNIterableAPI.disableDeviceForAllUsers).toBeCalled();
+    });
+
+    it('should log an unsupported warning on Android and still call native', () => {
+      const originalPlatform = Platform.OS;
+      Object.defineProperty(Platform, 'OS', {
+        value: 'android',
+        writable: true,
+      });
+      const logSpy = jest.spyOn(IterableLogger, 'log');
+
+      IterableApi.disableDeviceForAllUsers();
+
+      expect(logSpy).toHaveBeenCalledWith(
+        'disableDeviceForAllUsers is not supported on Android; use disableDeviceForCurrentUser. There is no public native equivalent.'
+      );
+      expect(MockRNIterableAPI.disableDeviceForAllUsers).toBeCalled();
+
+      logSpy.mockRestore();
+      Object.defineProperty(Platform, 'OS', {
+        value: originalPlatform,
+        writable: true,
+      });
+    });
+
+    it('should log the method name on iOS and still call native', () => {
+      const originalPlatform = Platform.OS;
+      Object.defineProperty(Platform, 'OS', {
+        value: 'ios',
+        writable: true,
+      });
+      const logSpy = jest.spyOn(IterableLogger, 'log');
+
+      IterableApi.disableDeviceForAllUsers();
+
+      expect(logSpy).toHaveBeenCalledWith('disableDeviceForAllUsers');
+      expect(MockRNIterableAPI.disableDeviceForAllUsers).toBeCalled();
+
+      logSpy.mockRestore();
+      Object.defineProperty(Platform, 'OS', {
+        value: originalPlatform,
+        writable: true,
+      });
     });
   });
 
@@ -622,6 +676,25 @@ describe('IterableApi', () => {
   // ====================================================== //
   // ======================= AUTH ======================= //
   // ====================================================== //
+
+  describe('getAuthToken', () => {
+    it('should return the auth token from RNIterableAPI', async () => {
+      const expectedToken = 'jwt-token';
+      MockRNIterableAPI.authToken = expectedToken;
+
+      const result = await IterableApi.getAuthToken();
+
+      expect(result).toBe(expectedToken);
+    });
+
+    it('should return null when RNIterableAPI has no auth token', async () => {
+      MockRNIterableAPI.authToken = null;
+
+      const result = await IterableApi.getAuthToken();
+
+      expect(result).toBeNull();
+    });
+  });
 
   describe('pauseAuthRetries', () => {
     it('should call RNIterableAPI.pauseAuthRetries with true', () => {
@@ -1226,13 +1299,42 @@ describe('IterableApi', () => {
   });
 
   describe('syncEmbeddedMessages', () => {
-    it('should call RNIterableAPI.syncEmbeddedMessages', () => {
+    it('should call RNIterableAPI.syncEmbeddedMessages with null when omitted', () => {
       // GIVEN no parameters
       // WHEN syncEmbeddedMessages is called
       IterableApi.syncEmbeddedMessages();
 
-      // THEN RNIterableAPI.syncEmbeddedMessages is called
-      expect(MockRNIterableAPI.syncEmbeddedMessages).toBeCalled();
+      // THEN RNIterableAPI.syncEmbeddedMessages is called with null (sync all)
+      expect(MockRNIterableAPI.syncEmbeddedMessages).toBeCalledWith(null);
+    });
+
+    it('should call RNIterableAPI.syncEmbeddedMessages with null when passed null', () => {
+      // WHEN syncEmbeddedMessages is called with null
+      IterableApi.syncEmbeddedMessages(null);
+
+      // THEN RNIterableAPI.syncEmbeddedMessages is called with null (sync all)
+      expect(MockRNIterableAPI.syncEmbeddedMessages).toBeCalledWith(null);
+    });
+
+    it('should call RNIterableAPI.syncEmbeddedMessages with placement IDs', () => {
+      // GIVEN placement IDs
+      const placementIds = [1, 2];
+
+      // WHEN syncEmbeddedMessages is called
+      IterableApi.syncEmbeddedMessages(placementIds);
+
+      // THEN RNIterableAPI.syncEmbeddedMessages is called with placement IDs
+      expect(MockRNIterableAPI.syncEmbeddedMessages).toBeCalledWith(
+        placementIds
+      );
+    });
+
+    it('should call RNIterableAPI.syncEmbeddedMessages with empty array for sync all', () => {
+      // WHEN syncEmbeddedMessages is called with an empty array
+      IterableApi.syncEmbeddedMessages([]);
+
+      // THEN the empty array is forwarded (native syncs all placements)
+      expect(MockRNIterableAPI.syncEmbeddedMessages).toBeCalledWith([]);
     });
   });
 

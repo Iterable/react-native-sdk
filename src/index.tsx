@@ -29,6 +29,7 @@ export {
 } from './core/hooks';
 export type {
   IterableAuthFailure,
+  IterableDecryptionFailure,
   IterableEdgeInsetDetails,
   IterableRetryPolicy,
 } from './core/types';

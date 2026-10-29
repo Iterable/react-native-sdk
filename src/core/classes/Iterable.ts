@@ -12,6 +12,7 @@ import { IterableInAppLocation } from '../../inApp/enums/IterableInAppLocation';
 import { IterableAuthResponseResult } from '../enums/IterableAuthResponseResult';
 import { IterableEventName } from '../enums/IterableEventName';
 import type { IterableAuthFailure } from '../types/IterableAuthFailure';
+import type { IterableDecryptionFailure } from '../types/IterableDecryptionFailure';
 import { callUrlHandler } from '../utils/callUrlHandler';
 import { IterableAction } from './IterableAction';
 import { IterableActionContext } from './IterableActionContext';
@@ -343,6 +344,27 @@ export class Iterable {
    */
   static disableDeviceForCurrentUser() {
     IterableApi.disableDeviceForCurrentUser();
+  }
+
+  /**
+   * Disable this device's push token for every user associated with the device,
+   * not only the currently signed-in user.
+   *
+   * On iOS this forwards to native `IterableAPI.disableDeviceForAllUsers()`.
+   * On Android this is a no-op that logs a warning in Metro and logcat: the
+   * native Android SDK has no public "all users" equivalent. Use
+   * {@link disableDeviceForCurrentUser} to disable push for the current user
+   * on both platforms. The native Android method is still invoked.
+   *
+   * Fire-and-forget: native success or failure is not surfaced to JS.
+   *
+   * @example
+   * ```typescript
+   * Iterable.disableDeviceForAllUsers();
+   * ```
+   */
+  static disableDeviceForAllUsers() {
+    IterableApi.disableDeviceForAllUsers();
   }
 
   /**
@@ -941,7 +963,28 @@ export class Iterable {
   /**
    * Logs out the current user from the Iterable SDK.
    *
-   * This method will remove all event listeners for the Iterable SDK and set the email and user ID to null.
+   * This is the React Native equivalent of native `logoutUser`. There is no
+   * dedicated bridged `logoutUser` method. `logout()` removes JS event
+   * listeners and clears identity via `setEmail(null)` and `setUserId(null)`,
+   * which triggers the native logout cleanup on both platforms.
+   *
+   * Native cleanup includes:
+   * - resetting the auth manager
+   * - resetting the in-app (and embedded) manager
+   * - disabling the current push token when
+   *   `IterableConfig.autoPushRegistration` is `true`
+   *
+   * Both identity-clears are required. On iOS, `setEmail(null)` is a no-op
+   * when the user is identified only by userId, and `setUserId(null)` is a
+   * no-op when the user is identified only by email.
+   *
+   * iOS has a public `IterableAPI.logoutUser()`; it is not wired through the
+   * RN bridge. Android has no public `logoutUser` — private
+   * `logoutPreviousUser()` runs as part of identity-clear. The iOS
+   * `logoutUser(withOnSuccess:onFailure:)` overload is also not exposed.
+   *
+   * Calling `logout()` when no user is signed in is safe: listeners are
+   * removed and native identity-clear is effectively a no-op.
    *
    * @example
    * ```typescript
@@ -975,6 +1018,15 @@ export class Iterable {
     );
     RNEventEmitter.removeAllListeners(
       IterableEventName.handleEmbeddedMessagingDisabledCalled
+    );
+    RNEventEmitter.removeAllListeners(
+      IterableEventName.handleEmbeddedMessagingSyncSucceededCalled
+    );
+    RNEventEmitter.removeAllListeners(
+      IterableEventName.handleEmbeddedMessagingSyncFailedCalled
+    );
+    RNEventEmitter.removeAllListeners(
+      IterableEventName.handleDecryptionFailureCalled
     );
   }
 
@@ -1267,6 +1319,40 @@ export class Iterable {
           }
         );
       }
+
+      if (Iterable.savedConfig.onEmbeddedMessagingSyncSucceeded) {
+        RNEventEmitter.addListener(
+          IterableEventName.handleEmbeddedMessagingSyncSucceededCalled,
+          () => {
+            Iterable.savedConfig.onEmbeddedMessagingSyncSucceeded?.();
+          }
+        );
+      }
+
+      if (Iterable.savedConfig.onEmbeddedMessagingSyncFailed) {
+        RNEventEmitter.addListener(
+          IterableEventName.handleEmbeddedMessagingSyncFailedCalled,
+          (reason: string | null | undefined) => {
+            Iterable.savedConfig.onEmbeddedMessagingSyncFailed?.(
+              reason ?? null
+            );
+          }
+        );
+      }
+    }
+
+    if (Iterable.savedConfig.decryptionFailureHandler) {
+      RNEventEmitter.addListener(
+        IterableEventName.handleDecryptionFailureCalled,
+        (payload: IterableDecryptionFailure) => {
+          const rawMessage = payload?.message?.trim();
+          const message =
+            rawMessage && rawMessage.length > 0
+              ? rawMessage
+              : 'Decryption failed';
+          Iterable.savedConfig.decryptionFailureHandler?.({ message });
+        }
+      );
     }
   }
 
