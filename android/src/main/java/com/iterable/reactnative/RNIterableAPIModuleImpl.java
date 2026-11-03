@@ -29,6 +29,7 @@ import com.iterable.iterableapi.IterableAuthHandler;
 import com.iterable.iterableapi.IterableAuthManager;
 import com.iterable.iterableapi.IterableConfig;
 import com.iterable.iterableapi.IterableCustomActionHandler;
+import com.iterable.iterableapi.IterableDecryptionFailureHandler;
 import com.iterable.iterableapi.IterableEmbeddedMessage;
 import com.iterable.iterableapi.IterableEmbeddedUpdateHandler;
 import com.iterable.iterableapi.IterableHelper;
@@ -54,7 +55,7 @@ import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCustomActionHandler, IterableInAppHandler, IterableAuthHandler, IterableUnknownUserHandler, IterableInAppManager.Listener, IterableEmbeddedUpdateHandler {
+public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCustomActionHandler, IterableInAppHandler, IterableAuthHandler, IterableUnknownUserHandler, IterableDecryptionFailureHandler, IterableInAppManager.Listener, IterableEmbeddedUpdateHandler {
     public static final String NAME = "RNIterableAPI";
 
     private static String TAG = "RNIterableAPIModule";
@@ -97,6 +98,10 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         if (configReadableMap.hasKey("unknownUserHandlerPresent") && configReadableMap.getBoolean("unknownUserHandlerPresent") == true) {
             configBuilder.setUnknownUserHandler(this);
         }
+
+        // IterableKeychain is created once with config.decryptionFailureHandler; the JS
+        // listener remains conditional on decryptionFailureHandlerPresent.
+        configBuilder.setDecryptionFailureHandler(this);
 
         // Check if embedded messaging is enabled before building config
         boolean enableEmbeddedMessaging = configReadableMap.hasKey("enableEmbeddedMessaging") && configReadableMap.getBoolean("enableEmbeddedMessaging");
@@ -169,6 +174,9 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         if (configReadableMap.hasKey("unknownUserHandlerPresent") && configReadableMap.getBoolean("unknownUserHandlerPresent") == true) {
             configBuilder.setUnknownUserHandler(this);
         }
+
+        // See initializeWithApiKey — keychain caches this handler at first construction.
+        configBuilder.setDecryptionFailureHandler(this);
 
         // NOTE: There does not seem to be a way to set the API endpoint
         // override in the Android SDK.  Check with @Ayyanchira and @evantk91 to
@@ -267,6 +275,10 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         promise.resolve(IterableApi.getInstance().getVisitorUsageTracked());
     }
 
+    public void getAuthToken(Promise promise) {
+        promise.resolve(RNIterableInternal.getAuthToken());
+    }
+
     public void trackEvent(String name, @Nullable ReadableMap dataFields) {
         IterableLogger.v(TAG, "trackEvent");
         IterableApi.getInstance().track(name, optSerializedDataFields(dataFields));
@@ -283,7 +295,12 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
     }
 
     public void trackPushOpenWithCampaignId(double campaignId, @Nullable Double templateId, String messageId, boolean appAlreadyRunning, @Nullable ReadableMap dataFields) {
-        RNIterableInternal.trackPushOpenWithCampaignId((int) campaignId, templateId != null ? templateId.intValue() : null, messageId, optSerializedDataFields(dataFields));
+        RNIterableInternal.trackPushOpenWithCampaignId(
+                (int) campaignId,
+                templateId != null ? templateId.intValue() : null,
+                messageId,
+                appAlreadyRunning,
+                optSerializedDataFields(dataFields));
     }
 
     public void updateSubscriptions(@Nullable ReadableArray emailListIds, @Nullable ReadableArray unsubscribedChannelIds, @Nullable ReadableArray unsubscribedMessageTypeIds, @Nullable ReadableArray subscribedMessageTypeIds, double campaignId, double templateId) {
@@ -407,6 +424,10 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
     public void disableDeviceForCurrentUser() {
         IterableLogger.v(TAG, "disableDevice");
         IterableApi.getInstance().disablePush();
+    }
+
+    public void disableDeviceForAllUsers() {
+        IterableLogger.w(TAG, "disableDeviceForAllUsers is not supported on Android; use disableDeviceForCurrentUser. There is no public native equivalent.");
     }
 
     public void registerDeviceToken(String token) {
@@ -646,9 +667,8 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
     public IterableInAppHandler.InAppResponse onNewInApp(@NonNull IterableInAppMessage message) {
         IterableLogger.printInfo();
 
-        JSONObject messageJson = RNIterableInternal.getInAppMessageJson(message);
-
         try {
+            JSONObject messageJson = RNIterableInternal.getInAppMessageJson(message);
             WritableMap eventData = Serialization.convertJsonToMap(messageJson);
             jsCallBackLatch = new CountDownLatch(1);
             sendEvent(EventName.handleInAppCalled.name(), eventData);
@@ -692,6 +712,24 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
         } catch (InterruptedException e) {
             IterableLogger.e(TAG, "auth handler module failed");
             return null;
+        }
+    }
+
+    private static final String DECRYPTION_FAILURE_DEFAULT_MESSAGE = "Decryption failed";
+
+    @Override
+    public void onDecryptionFailed(Exception exception) {
+        JSONObject messageJson = new JSONObject();
+        try {
+            String message = exception != null ? exception.getMessage() : null;
+            if (message == null || message.isEmpty()) {
+                message = DECRYPTION_FAILURE_DEFAULT_MESSAGE;
+            }
+            messageJson.put("message", message);
+            WritableMap eventData = Serialization.convertJsonToMap(messageJson);
+            sendEvent(EventName.handleDecryptionFailureCalled.name(), eventData);
+        } catch (JSONException e) {
+            IterableLogger.e(TAG, "Failed to send decryption failure event");
         }
     }
 
@@ -774,11 +812,13 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
     @Override
     public void onEmbeddedMessagingSyncSucceeded() {
         IterableLogger.d(TAG, "onEmbeddedMessagingSyncSucceeded");
+        sendEvent(EventName.handleEmbeddedMessagingSyncSucceededCalled.name(), null);
     }
 
     @Override
     public void onEmbeddedMessagingSyncFailed(@Nullable String reason) {
         IterableLogger.d(TAG, "onEmbeddedMessagingSyncFailed: " + reason);
+        sendEvent(EventName.handleEmbeddedMessagingSyncFailedCalled.name(), reason);
     }
     // ---------------------------------------------------------------------------------------
     // endregion
@@ -786,9 +826,19 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
     // ---------------------------------------------------------------------------------------
     // region Embedded messaging
 
-    public void syncEmbeddedMessages() {
-        IterableLogger.d(TAG, "syncEmbeddedMessages");
-        IterableApi.getInstance().getEmbeddedManager().syncMessages();
+    public void syncEmbeddedMessages(@Nullable ReadableArray placementIds) {
+        IterableLogger.d(TAG, "syncEmbeddedMessages for placements: " + placementIds);
+
+        if (placementIds == null || placementIds.size() == 0) {
+            IterableApi.getInstance().getEmbeddedManager().syncMessages();
+        } else {
+            IterableLogger.w(TAG, "Scoped syncEmbeddedMessages may remove cached messages for placements not in the sync response (SDK-798). Prefer syncMessages() without placement IDs on Android until iterableapi is fixed.");
+            Long[] ids = new Long[placementIds.size()];
+            for (int i = 0; i < placementIds.size(); i++) {
+                ids[i] = (long) placementIds.getInt(i);
+            }
+            IterableApi.getInstance().getEmbeddedManager().syncMessages(ids);
+        }
     }
 
     public void startEmbeddedSession() {
@@ -869,8 +919,11 @@ enum EventName {
   handleAuthFailureCalled,
   handleAuthSuccessCalled,
   handleCustomActionCalled,
+  handleDecryptionFailureCalled,
   handleEmbeddedMessageUpdateCalled,
   handleEmbeddedMessagingDisabledCalled,
+  handleEmbeddedMessagingSyncSucceededCalled,
+  handleEmbeddedMessagingSyncFailedCalled,
   handleUnknownUserCreatedCalled,
   handleInAppCalled,
   handleUrlCalled,

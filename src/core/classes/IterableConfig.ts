@@ -4,6 +4,7 @@ import { IterableDataRegion } from '../enums/IterableDataRegion';
 import { IterableLogLevel } from '../enums/IterableLogLevel';
 import { IterablePushPlatform } from '../enums/IterablePushPlatform';
 import type { IterableAuthFailure } from '../types/IterableAuthFailure';
+import type { IterableDecryptionFailure } from '../types/IterableDecryptionFailure';
 import type { IterableIdentityResolution } from '../types/IterableIdentityResolution';
 import type { IterableRetryPolicy } from '../types/IterableRetryPolicy';
 import { IterableAction } from './IterableAction';
@@ -227,6 +228,29 @@ export class IterableConfig {
   onJwtError?: (authFailure: IterableAuthFailure) => void;
 
   /**
+   * A callback invoked when the Android SDK fails to decrypt PII in keychain
+   * storage. Before calling this handler, the native SDK clears stored PII,
+   * disables encryption for the device, and requires the user to sign in again.
+   *
+   * **Android only.** iOS does not surface decryption failures this way; setting
+   * this callback on iOS has no effect.
+   *
+   * @param failure - Details about the decryption failure.
+   *
+   * @example
+   * ```typescript
+   * const config = new IterableConfig();
+   * config.decryptionFailureHandler = (failure) => {
+   *   console.error('Iterable decryption failed:', failure.message);
+   *   // Prompt the user to log in again
+   * };
+   * ```
+   */
+  decryptionFailureHandler?: (
+    failure: IterableDecryptionFailure
+  ) => void;
+
+  /**
    * Set the verbosity of Android and iOS project's log system.
    *
    * By default, you will be able to see info level logs printed in IDE when running the app.
@@ -336,8 +360,14 @@ export class IterableConfig {
   pushPlatform: IterablePushPlatform = IterablePushPlatform.auto;
 
   /**
-   * Android only feature: This controls whether the SDK should enforce encryption for all PII stored on disk.
-   * By default, the SDK will not enforce encryption and may fallback to unencrypted storage in case the encryption fails.
+   * Android only: whether Iterable encrypts PII (email, userId, auth token) in on-device keychain storage.
+   * When `true` (the default), data is encrypted; when `false`, it is stored in plaintext.
+   * iOS always uses the system Keychain and ignores this option.
+   */
+  keychainEncryption = true;
+
+  /**
+   * @deprecated Has no effect on any platform. Use {@link IterableConfig.keychainEncryption}.
    */
   encryptionEnforced = false;
 
@@ -512,6 +542,44 @@ export class IterableConfig {
   onEmbeddedMessagingDisabled?: () => void;
 
   /**
+   * A callback function that is called when an embedded messaging sync completes
+   * successfully.
+   *
+   * This is distinct from {@link onEmbeddedMessageUpdate}, which fires when the
+   * local embedded message cache changes. Sync success indicates the network
+   * sync operation finished without error.
+   *
+   * @example
+   * ```typescript
+   * const config = new IterableConfig();
+   * config.enableEmbeddedMessaging = true;
+   * config.onEmbeddedMessagingSyncSucceeded = () => {
+   *   console.log('Embedded sync succeeded');
+   * };
+   * Iterable.initialize('<YOUR_API_KEY>', config);
+   * ```
+   */
+  onEmbeddedMessagingSyncSucceeded?: () => void;
+
+  /**
+   * A callback function that is called when an embedded messaging sync fails.
+   *
+   * @param reason - Failure reason from the native SDK, or `null` when none is
+   * available.
+   *
+   * @example
+   * ```typescript
+   * const config = new IterableConfig();
+   * config.enableEmbeddedMessaging = true;
+   * config.onEmbeddedMessagingSyncFailed = (reason) => {
+   *   console.warn('Embedded sync failed', reason);
+   * };
+   * Iterable.initialize('<YOUR_API_KEY>', config);
+   * ```
+   */
+  onEmbeddedMessagingSyncFailed?: (reason: string | null) => void;
+
+  /**
    * Converts the IterableConfig instance to a dictionary object.
    *
    * @returns An object representing the configuration.
@@ -537,6 +605,8 @@ export class IterableConfig {
        * A boolean indicating if an authentication handler is present.
        */
       authHandlerPresent: this.authHandler !== undefined,
+      decryptionFailureHandlerPresent:
+        this.decryptionFailureHandler !== undefined,
       /**
        * A boolean indicating if an unknown-user handler is present.
        */
@@ -551,6 +621,16 @@ export class IterableConfig {
        */
       onEmbeddedMessagingDisabledPresent:
         this.onEmbeddedMessagingDisabled !== undefined,
+      /**
+       * A boolean indicating if an embedded messaging sync succeeded callback is present.
+       */
+      onEmbeddedMessagingSyncSucceededPresent:
+        this.onEmbeddedMessagingSyncSucceeded !== undefined,
+      /**
+       * A boolean indicating if an embedded messaging sync failed callback is present.
+       */
+      onEmbeddedMessagingSyncFailedPresent:
+        this.onEmbeddedMessagingSyncFailed !== undefined,
       /** The log level for the SDK. */
       logLevel: this.logLevel,
       expiringAuthTokenRefreshPeriod: this.expiringAuthTokenRefreshPeriod,
@@ -561,6 +641,7 @@ export class IterableConfig {
       useInMemoryStorageForInApps: this.useInMemoryStorageForInApps,
       dataRegion: this.dataRegion,
       pushPlatform: this.pushPlatform,
+      keychainEncryption: this.keychainEncryption,
       encryptionEnforced: this.encryptionEnforced,
       retryPolicy: this.retryPolicy,
       enableUnknownUserActivation: this.enableUnknownUserActivation,

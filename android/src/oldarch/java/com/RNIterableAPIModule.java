@@ -84,6 +84,11 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void getAuthToken(Promise promise) {
+      moduleImpl.getAuthToken(promise);
+    }
+
+    @ReactMethod
     public void trackEvent(String name, @Nullable ReadableMap dataFields) {
       moduleImpl.trackEvent(name, dataFields);
     }
@@ -146,6 +151,11 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void disableDeviceForCurrentUser() {
       moduleImpl.disableDeviceForCurrentUser();
+    }
+
+    @ReactMethod
+    public void disableDeviceForAllUsers() {
+      moduleImpl.disableDeviceForAllUsers();
     }
 
     @ReactMethod
@@ -244,8 +254,8 @@ public class RNIterableAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void syncEmbeddedMessages() {
-      moduleImpl.syncEmbeddedMessages();
+    public void syncEmbeddedMessages(@Nullable ReadableArray placementIds) {
+      moduleImpl.syncEmbeddedMessages(placementIds);
     }
 
     @ReactMethod
