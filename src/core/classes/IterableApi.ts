@@ -129,6 +129,16 @@ export class IterableApi {
     return RNIterableAPI.getUserId();
   }
 
+  static setVisitorUsageTracked(tracked: boolean) {
+    IterableLogger.log('setVisitorUsageTracked: ', tracked);
+    return RNIterableAPI.setVisitorUsageTracked(tracked);
+  }
+
+  static getVisitorUsageTracked() {
+    IterableLogger.log('getVisitorUsageTracked');
+    return RNIterableAPI.getVisitorUsageTracked();
+  }
+
   /**
    * Disable the device for the current user.
    */

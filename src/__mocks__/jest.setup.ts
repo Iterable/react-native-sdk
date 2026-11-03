@@ -58,3 +58,6 @@ jest.doMock('react-native', () => {
     ReactNative
   );
 });
+
+/** Shared backing store for all NativeEventEmitter instances in tests. */
+export const testNativeEventEmitter = mockNativeEventEmitter;

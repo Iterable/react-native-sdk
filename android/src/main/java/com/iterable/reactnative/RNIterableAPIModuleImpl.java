@@ -40,6 +40,7 @@ import com.iterable.iterableapi.IterableInAppManager;
 import com.iterable.iterableapi.IterableInAppMessage;
 import com.iterable.iterableapi.IterableInboxSession;
 import com.iterable.iterableapi.IterableLogger;
+import com.iterable.iterableapi.IterableUnknownUserHandler;
 import com.iterable.iterableapi.IterableUrlHandler;
 import com.iterable.iterableapi.RNIterableInternal;
 
@@ -54,7 +55,7 @@ import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCustomActionHandler, IterableInAppHandler, IterableAuthHandler, IterableDecryptionFailureHandler, IterableInAppManager.Listener, IterableEmbeddedUpdateHandler {
+public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCustomActionHandler, IterableInAppHandler, IterableAuthHandler, IterableUnknownUserHandler, IterableDecryptionFailureHandler, IterableInAppManager.Listener, IterableEmbeddedUpdateHandler {
     public static final String NAME = "RNIterableAPI";
 
     private static String TAG = "RNIterableAPIModule";
@@ -92,6 +93,10 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
 
         if (configReadableMap.hasKey("authHandlerPresent") && configReadableMap.getBoolean("authHandlerPresent") == true) {
             configBuilder.setAuthHandler(this);
+        }
+
+        if (configReadableMap.hasKey("unknownUserHandlerPresent") && configReadableMap.getBoolean("unknownUserHandlerPresent") == true) {
+            configBuilder.setUnknownUserHandler(this);
         }
 
         // IterableKeychain is created once with config.decryptionFailureHandler; the JS
@@ -164,6 +169,10 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
 
         if (configReadableMap.hasKey("authHandlerPresent") && configReadableMap.getBoolean("authHandlerPresent") == true) {
             configBuilder.setAuthHandler(this);
+        }
+
+        if (configReadableMap.hasKey("unknownUserHandlerPresent") && configReadableMap.getBoolean("unknownUserHandlerPresent") == true) {
+            configBuilder.setUnknownUserHandler(this);
         }
 
         // See initializeWithApiKey — keychain caches this handler at first construction.
@@ -255,6 +264,15 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
 
     public void getUserId(Promise promise) {
         promise.resolve(RNIterableInternal.getUserId());
+    }
+
+    public void setVisitorUsageTracked(boolean tracked) {
+        IterableLogger.d(TAG, "setVisitorUsageTracked: " + tracked);
+        IterableApi.getInstance().setVisitorUsageTracked(tracked);
+    }
+
+    public void getVisitorUsageTracked(Promise promise) {
+        promise.resolve(IterableApi.getInstance().getVisitorUsageTracked());
     }
 
     public void getAuthToken(Promise promise) {
@@ -780,6 +798,18 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
     }
 
     @Override
+    public void onUnknownUserCreated(@NonNull String userId) {
+        JSONObject messageJson = new JSONObject();
+        try {
+            messageJson.put("userId", userId);
+            WritableMap eventData = Serialization.convertJsonToMap(messageJson);
+            sendEvent(EventName.handleUnknownUserCreatedCalled.name(), eventData);
+        } catch (JSONException e) {
+            IterableLogger.e(TAG, "Failed to emit unknown user created event");
+        }
+    }
+
+    @Override
     public void onEmbeddedMessagingSyncSucceeded() {
         IterableLogger.d(TAG, "onEmbeddedMessagingSyncSucceeded");
         sendEvent(EventName.handleEmbeddedMessagingSyncSucceededCalled.name(), null);
@@ -894,6 +924,7 @@ enum EventName {
   handleEmbeddedMessagingDisabledCalled,
   handleEmbeddedMessagingSyncSucceededCalled,
   handleEmbeddedMessagingSyncFailedCalled,
+  handleUnknownUserCreatedCalled,
   handleInAppCalled,
   handleUrlCalled,
   receivedIterableEmbeddedMessagesChanged,

@@ -33,4 +33,6 @@ export enum IterableEventName {
    * Event that fires when Android keychain decryption fails (Android only).
    */
   handleDecryptionFailureCalled = 'handleDecryptionFailureCalled',
+  /** Event that fires when the native SDK creates an unknown user id */
+  handleUnknownUserCreatedCalled = 'handleUnknownUserCreatedCalled',
 }
