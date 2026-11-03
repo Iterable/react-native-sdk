@@ -26,6 +26,20 @@ export class IterableAuthManager {
   }
 
   /**
+   * Get the JWT currently held by the native SDK for the signed-in user.
+   *
+   * @returns The current auth token, or `null` when no token is stored
+   *
+   * @example
+   * ```typescript
+   * const token = await Iterable.authManager.getAuthToken();
+   * ```
+   */
+  getAuthToken(): Promise<string | null> {
+    return IterableApi.getAuthToken();
+  }
+
+  /**
    * Pass along an auth token to the SDK.
    *
    * @param authToken - The auth token to pass along

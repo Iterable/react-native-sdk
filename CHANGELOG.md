@@ -1,3 +1,31 @@
+## Unreleased
+
+### Fixes
+
+- Fixed `Iterable.trackPushOpenWithCampaignId` on Android so the `appAlreadyRunning` argument is forwarded to the native SDK instead of always being sent as `false`.
+
+### Updates
+
+- Added optional placement IDs to `Iterable.embeddedManager.syncMessages()` so apps can sync embedded messages for specific placements only (SDK-751). When omitted, null, or empty, behavior matches the previous sync-all call.
+  - **Android:** Scoped sync (`syncMessages([id, …])`) matches the pinned iterableapi behavior and may remove cached messages for placements not included in the sync response (SDK-798). iOS preserves unrequested placements. Prefer `syncMessages()` without placement IDs on Android until the native fix ships and the Android SDK pin is bumped.
+- Added `IterableInAppMessage.jsonOnly` so `inAppHandler` and in-app message fetches can distinguish JSON-only messages from HTML in-apps (SDK-750).
+- Added `IterableConfig.onEmbeddedMessagingSyncSucceeded` and
+  `IterableConfig.onEmbeddedMessagingSyncFailed` so apps can observe embedded
+  messaging sync outcomes (SDK-749). Failure callbacks receive a nullable reason
+  string forwarded from the native SDKs. On iOS, subscription-inactive or
+  invalid API key failures may invoke both `onEmbeddedMessagingDisabled` and
+  `onEmbeddedMessagingSyncFailed`; on Android only
+  `onEmbeddedMessagingDisabled` is invoked for those cases (native SDK
+  behavior).
+- Added `Iterable.authManager.getAuthToken()` to read the JWT currently held by the native SDK (SDK-559).
+  - iOS: `IterableAPI.authToken`.
+  - Android: `IterableApi.getAuthToken()`.
+- Added `IterableConfig.decryptionFailureHandler` (Android only) to notify the app when native keychain decryption fails (SDK-557). The SDK clears stored PII and disables encryption for the device before invoking the callback; iOS has no equivalent native API and ignores this option.
+- Added `IterableConfig.keychainEncryption` (default `true`, Android only) so React Native apps can control native `IterableConfig.Builder.setKeychainEncryption`.
+- Deprecated `IterableConfig.encryptionEnforced`, which never had an effect.
+- Added `Iterable.disableDeviceForAllUsers()` to unregister this device's push token from every user associated with the device (SDK-550).
+  - iOS: forwards to native `IterableAPI.disableDeviceForAllUsers()`.
+  - Android: graceful no-op that logs a warning; use `disableDeviceForCurrentUser()` to disable push for the current user. There is no public native "all users" equivalent.
 ## 3.2.1
 
 ### Fixes

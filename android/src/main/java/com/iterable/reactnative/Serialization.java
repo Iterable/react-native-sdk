@@ -129,7 +129,8 @@ class Serialization {
         return messageContent;
     }
 
-    static JSONArray serializeInAppMessages(List<IterableInAppMessage> inAppMessages) {
+    static JSONArray serializeInAppMessages(List<IterableInAppMessage> inAppMessages)
+            throws JSONException {
         JSONArray inAppMessagesJson = new JSONArray();
         for (IterableInAppMessage message : inAppMessages) {
             JSONObject messageJson = RNIterableInternal.getInAppMessageJson(message);
@@ -249,6 +250,9 @@ class Serialization {
             if (iterableContextJSON.has("enableEmbeddedMessaging")) {
                 configBuilder.setEnableEmbeddedMessaging(iterableContextJSON.optBoolean("enableEmbeddedMessaging"));
             }
+
+            configBuilder.setKeychainEncryption(
+                    iterableContextJSON.optBoolean("keychainEncryption", true));
 
             if (iterableContextJSON.has("retryPolicy")) {
                 JSONObject retryPolicyJson = iterableContextJSON.getJSONObject("retryPolicy");

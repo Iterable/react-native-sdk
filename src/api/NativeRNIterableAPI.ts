@@ -147,6 +147,7 @@ export interface Spec extends TurboModule {
 
   // Device management
   disableDeviceForCurrentUser(): void;
+  disableDeviceForAllUsers(): void;
   registerDeviceToken(token: string): void;
   getLastPushPayload(): Promise<{
     [key: string]: string | number | boolean;
@@ -178,11 +179,12 @@ export interface Spec extends TurboModule {
   ): void;
 
   // Auth
+  getAuthToken(): Promise<string | null>;
   passAlongAuthToken(authToken?: string | null): void;
   pauseAuthRetries(pauseRetry: boolean): void;
 
   // Embedded Messaging
-  syncEmbeddedMessages(): void;
+  syncEmbeddedMessages(placementIds: Array<number> | null): void;
   startEmbeddedSession(): void;
   endEmbeddedSession(): void;
   startEmbeddedImpression(messageId: string, placementId: number): void;

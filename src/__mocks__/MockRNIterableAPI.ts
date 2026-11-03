@@ -4,6 +4,7 @@ import { IterableInAppMessage } from '../inApp';
 export class MockRNIterableAPI {
   static email?: string;
   static userId?: string;
+  static authToken?: string | null;
   static token?: string;
   static lastPushPayload?: unknown;
   static attributionInfo?: IterableAttributionInfo;
@@ -33,6 +34,8 @@ export class MockRNIterableAPI {
   });
 
   static disableDeviceForCurrentUser = jest.fn();
+
+  static disableDeviceForAllUsers = jest.fn();
 
   static registerDeviceToken = jest.fn((token: string): void => {
     MockRNIterableAPI.token = token;
@@ -79,6 +82,12 @@ export class MockRNIterableAPI {
   static wakeApp = jest.fn();
 
   static setInAppShowResponse = jest.fn();
+
+  static async getAuthToken(): Promise<string | null> {
+    return await new Promise((resolve) => {
+      resolve(MockRNIterableAPI.authToken ?? null);
+    });
+  }
 
   static passAlongAuthToken = jest.fn();
 
