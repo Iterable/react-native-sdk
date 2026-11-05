@@ -3,6 +3,7 @@
 ### Fixes
 
 - Fixed `Iterable.trackPushOpenWithCampaignId` on Android so the `appAlreadyRunning` argument is forwarded to the native SDK instead of always being sent as `false`.
+- `Iterable.inAppManager.showMessage` now rejects on iOS when the message id is empty or no longer in the native queue, matching Android. Previously the promise never settled.
 
 ### Updates
 
