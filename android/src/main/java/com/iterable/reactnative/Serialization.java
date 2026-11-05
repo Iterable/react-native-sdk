@@ -22,6 +22,7 @@ import com.iterable.iterableapi.IterableInAppDeleteActionType;
 import com.iterable.iterableapi.IterableInAppHandler;
 import com.iterable.iterableapi.IterableInAppLocation;
 import com.iterable.iterableapi.IterableInAppMessage;
+import com.iterable.iterableapi.IterableIdentityResolution;
 import com.iterable.iterableapi.IterableInboxSession;
 import com.iterable.iterableapi.IterableLogger;
 import com.iterable.iterableapi.RetryPolicy;
@@ -129,7 +130,8 @@ class Serialization {
         return messageContent;
     }
 
-    static JSONArray serializeInAppMessages(List<IterableInAppMessage> inAppMessages) {
+    static JSONArray serializeInAppMessages(List<IterableInAppMessage> inAppMessages)
+            throws JSONException {
         JSONArray inAppMessagesJson = new JSONArray();
         for (IterableInAppMessage message : inAppMessages) {
             JSONObject messageJson = RNIterableInternal.getInAppMessageJson(message);
@@ -201,6 +203,11 @@ class Serialization {
                 configBuilder.setExpiringAuthTokenRefreshPeriod(iterableContextJSON.optLong("expiringAuthTokenRefreshPeriod"));
             }
 
+            if (iterableContextJSON.has("eventThresholdLimit")) {
+                configBuilder.setEventThresholdLimit(
+                    iterableContextJSON.optInt("eventThresholdLimit", 100));
+            }
+
             if (iterableContextJSON.has("useInMemoryStorageForInApps") || iterableContextJSON.has("androidSdkUseInMemoryStorageForInApps")) {
                 configBuilder.setUseInMemoryStorageForInApps(iterableContextJSON.optBoolean("useInMemoryStorageForInApps"));
             }
@@ -246,9 +253,21 @@ class Serialization {
                 configBuilder.setDataRegion(iterableDataRegion);
             }
 
+            if (iterableContextJSON.has("enableForegroundCriteriaFetch")) {
+                configBuilder.setEnableForegroundCriteriaFetch(iterableContextJSON.optBoolean("enableForegroundCriteriaFetch"));
+            }
+
             if (iterableContextJSON.has("enableEmbeddedMessaging")) {
                 configBuilder.setEnableEmbeddedMessaging(iterableContextJSON.optBoolean("enableEmbeddedMessaging"));
             }
+
+            if (iterableContextJSON.has("enableUnknownUserActivation")) {
+                configBuilder.setEnableUnknownUserActivation(
+                    iterableContextJSON.optBoolean("enableUnknownUserActivation"));
+            }
+
+            configBuilder.setKeychainEncryption(
+                    iterableContextJSON.optBoolean("keychainEncryption", true));
 
             if (iterableContextJSON.has("retryPolicy")) {
                 JSONObject retryPolicyJson = iterableContextJSON.getJSONObject("retryPolicy");
@@ -260,6 +279,17 @@ class Serialization {
                     retryPolicyType = RetryPolicy.Type.EXPONENTIAL;
                 }
                 configBuilder.setAuthRetryPolicy(new RetryPolicy(maxRetry, retryInterval, retryPolicyType));
+            }
+
+            if (iterableContextJSON.has("identityResolution")) {
+                JSONObject identityResolutionJson =
+                    iterableContextJSON.getJSONObject("identityResolution");
+                boolean replayOnVisitorToKnown =
+                    identityResolutionJson.optBoolean("replayOnVisitorToKnown", true);
+                boolean mergeOnUnknownToKnown =
+                    identityResolutionJson.optBoolean("mergeOnUnknownToKnown", true);
+                configBuilder.setIdentityResolution(
+                    new IterableIdentityResolution(replayOnVisitorToKnown, mergeOnUnknownToKnown));
             }
 
             return configBuilder;

@@ -27,6 +27,8 @@ const mockNativeEventEmitterConstructor = jest.fn().mockImplementation(() => ({
     eventType: string,
     listener: (...args: unknown[]) => void
   ) => mockNativeEventEmitter.removeListener(eventType, listener),
+  listenerCount: (eventType: string) =>
+    mockNativeEventEmitter.listenerCount(eventType),
 }));
 
 jest.mock(
@@ -56,3 +58,6 @@ jest.doMock('react-native', () => {
     ReactNative
   );
 });
+
+/** Shared backing store for all NativeEventEmitter instances in tests. */
+export const testNativeEventEmitter = mockNativeEventEmitter;

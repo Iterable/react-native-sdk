@@ -97,6 +97,7 @@ docs/
 
 # Agents
 .agent/
+.artifacts/
 .claude/
 .cursor/
 .opencode/

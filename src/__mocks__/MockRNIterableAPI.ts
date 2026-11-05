@@ -4,11 +4,14 @@ import { IterableInAppMessage } from '../inApp';
 export class MockRNIterableAPI {
   static email?: string;
   static userId?: string;
+  static authToken?: string | null;
   static token?: string;
   static lastPushPayload?: unknown;
   static attributionInfo?: IterableAttributionInfo;
   static messages?: IterableInAppMessage[];
   static clickedUrl?: string;
+  static visitorUsageTracked = false;
+  static unknownVisitorEvents: string[] = [];
 
   static async getEmail(): Promise<string | undefined> {
     return await new Promise((resolve) => {
@@ -32,7 +35,22 @@ export class MockRNIterableAPI {
     MockRNIterableAPI.token = authToken;
   });
 
+  static setVisitorUsageTracked = jest.fn((tracked: boolean): void => {
+    MockRNIterableAPI.visitorUsageTracked = tracked;
+    MockRNIterableAPI.unknownVisitorEvents = [];
+  });
+
+  static getVisitorUsageTracked = jest.fn(async (): Promise<boolean> => {
+    return await Promise.resolve(MockRNIterableAPI.visitorUsageTracked);
+  });
+
+  static pushUnknownVisitorEventForTests(eventId: string): void {
+    MockRNIterableAPI.unknownVisitorEvents.push(eventId);
+  }
+
   static disableDeviceForCurrentUser = jest.fn();
+
+  static disableDeviceForAllUsers = jest.fn();
 
   static registerDeviceToken = jest.fn((token: string): void => {
     MockRNIterableAPI.token = token;
@@ -79,6 +97,12 @@ export class MockRNIterableAPI {
   static wakeApp = jest.fn();
 
   static setInAppShowResponse = jest.fn();
+
+  static async getAuthToken(): Promise<string | null> {
+    return await new Promise((resolve) => {
+      resolve(MockRNIterableAPI.authToken ?? null);
+    });
+  }
 
   static passAlongAuthToken = jest.fn();
 

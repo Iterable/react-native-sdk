@@ -81,6 +81,14 @@ android {
     targetCompatibility JavaVersion.VERSION_1_8
   }
 
+  testOptions {
+    unitTests.all {
+      testLogging {
+        exceptionFormat "full"
+      }
+    }
+  }
+
   sourceSets {
     main {
       if (isNewArchitectureEnabled()) {

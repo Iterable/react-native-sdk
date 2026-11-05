@@ -2,6 +2,7 @@ import { NativeEventEmitter, Platform } from 'react-native';
 
 import { MockLinking } from '../../__mocks__/MockLinking';
 import { MockRNIterableAPI } from '../../__mocks__/MockRNIterableAPI';
+import { testNativeEventEmitter } from '../../__mocks__/jest.setup';
 // import from the same location that consumers import from
 import {
   Iterable,
@@ -23,6 +24,7 @@ import {
   IterableInAppTriggerType,
   IterableLogLevel,
 } from '../..';
+import { resetSdkInitializationStateForTests } from './Iterable';
 import { TestHelper } from '../../__tests__/TestHelper';
 import { IterableLogger } from './IterableLogger';
 
@@ -47,6 +49,18 @@ describe('Iterable', () => {
     );
     nativeEmitter.removeAllListeners(
       IterableEventName.handleEmbeddedMessagingDisabledCalled
+    );
+    nativeEmitter.removeAllListeners(
+      IterableEventName.handleEmbeddedMessagingSyncSucceededCalled
+    );
+    nativeEmitter.removeAllListeners(
+      IterableEventName.handleEmbeddedMessagingSyncFailedCalled
+    );
+    nativeEmitter.removeAllListeners(
+      IterableEventName.handleDecryptionFailureCalled
+    );
+    nativeEmitter.removeAllListeners(
+      IterableEventName.handleUnknownUserCreatedCalled
     );
 
     // Clear any pending timers
@@ -78,6 +92,101 @@ describe('Iterable', () => {
       return await Iterable.getUserId().then((id) => {
         expect(id).toBe(result);
       });
+    });
+  });
+
+  describe('visitorUsageTracked', () => {
+    beforeEach(() => {
+      MockRNIterableAPI.visitorUsageTracked = false;
+      MockRNIterableAPI.unknownVisitorEvents = [];
+      resetSdkInitializationStateForTests();
+    });
+
+    it('should expose setVisitorUsageTracked and getVisitorUsageTracked on Iterable', () => {
+      expect(typeof Iterable.setVisitorUsageTracked).toBe('function');
+      expect(typeof Iterable.getVisitorUsageTracked).toBe('function');
+    });
+
+    it('should forward true and false to RNIterableAPI after initialize', async () => {
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      await Iterable.initialize('test-key', config);
+
+      Iterable.setVisitorUsageTracked(true);
+      expect(MockRNIterableAPI.setVisitorUsageTracked).toHaveBeenCalledWith(true);
+
+      Iterable.setVisitorUsageTracked(false);
+      expect(MockRNIterableAPI.setVisitorUsageTracked).toHaveBeenCalledWith(false);
+    });
+
+    it('should resolve getVisitorUsageTracked to the value stored in the mock', async () => {
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      await Iterable.initialize('test-key', config);
+
+      MockRNIterableAPI.visitorUsageTracked = true;
+      await expect(Iterable.getVisitorUsageTracked()).resolves.toBe(true);
+
+      MockRNIterableAPI.visitorUsageTracked = false;
+      await expect(Iterable.getVisitorUsageTracked()).resolves.toBe(false);
+    });
+
+    it('should resolve to false when the integrator never calls the setter', async () => {
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      await Iterable.initialize('test-key', config);
+
+      await expect(Iterable.getVisitorUsageTracked()).resolves.toBe(false);
+    });
+
+    it('should return the persisted mock value after initialize runs again', async () => {
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      await Iterable.initialize('test-key', config);
+      Iterable.setVisitorUsageTracked(true);
+
+      resetSdkInitializationStateForTests();
+      await Iterable.initialize('test-key', config);
+
+      await expect(Iterable.getVisitorUsageTracked()).resolves.toBe(true);
+    });
+
+    it('should clear unknown-visitor events in the mock on each setVisitorUsageTracked call', async () => {
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      MockRNIterableAPI.pushUnknownVisitorEventForTests('event-1');
+      await Iterable.initialize('test-key', config);
+
+      Iterable.setVisitorUsageTracked(false);
+      expect(MockRNIterableAPI.unknownVisitorEvents).toEqual([]);
+
+      MockRNIterableAPI.pushUnknownVisitorEventForTests('event-2');
+      Iterable.setVisitorUsageTracked(true);
+      expect(MockRNIterableAPI.unknownVisitorEvents).toEqual([]);
+    });
+
+    it('should not forward setVisitorUsageTracked before initialize resolves', async () => {
+      Iterable.setVisitorUsageTracked(true);
+      expect(MockRNIterableAPI.setVisitorUsageTracked).not.toHaveBeenCalled();
+      await expect(Iterable.getVisitorUsageTracked()).resolves.toBe(false);
+
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      await Iterable.initialize('test-key', config);
+      await expect(Iterable.getVisitorUsageTracked()).resolves.toBe(false);
+    });
+
+    it('should not call trackEvent, setEmail, or setUserId from visitor usage methods', async () => {
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      await Iterable.initialize('test-key', config);
+
+      Iterable.setVisitorUsageTracked(true);
+      await Iterable.getVisitorUsageTracked();
+
+      expect(MockRNIterableAPI.trackEvent).not.toHaveBeenCalled();
+      expect(MockRNIterableAPI.setEmail).not.toHaveBeenCalled();
+      expect(MockRNIterableAPI.setUserId).not.toHaveBeenCalled();
     });
   });
 
@@ -140,6 +249,16 @@ describe('Iterable', () => {
       Iterable.disableDeviceForCurrentUser();
       // THEN corresponding method is called on RNITerableAPI
       expect(MockRNIterableAPI.disableDeviceForCurrentUser).toBeCalled();
+    });
+  });
+
+  describe('disableDeviceForAllUsers', () => {
+    it('should disable the device for all users', () => {
+      // GIVEN no parameters
+      // WHEN Iterable.disableDeviceForAllUsers is called
+      Iterable.disableDeviceForAllUsers();
+      // THEN corresponding method is called on RNIterableAPI
+      expect(MockRNIterableAPI.disableDeviceForAllUsers).toBeCalled();
     });
   });
 
@@ -325,9 +444,13 @@ describe('Iterable', () => {
       expect(config.checkForDeferredDeeplink).toBe(false);
       expect(config.customActionHandler).toBe(undefined);
       expect(config.dataRegion).toBe(IterableDataRegion.US);
+      expect(config.enableForegroundCriteriaFetch).toBe(true);
       expect(config.enableEmbeddedMessaging).toBe(false);
+      expect(config.enableUnknownUserActivation).toBe(false);
+      expect(config.keychainEncryption).toBe(true);
       expect(config.encryptionEnforced).toBe(false);
       expect(config.expiringAuthTokenRefreshPeriod).toBe(60.0);
+      expect(config.eventThresholdLimit).toBe(100);
       expect(config.inAppDisplayInterval).toBe(30.0);
       expect(config.inAppHandler).toBe(undefined);
       expect(config.logLevel).toBe(IterableLogLevel.debug);
@@ -337,6 +460,10 @@ describe('Iterable', () => {
       expect(config.useInMemoryStorageForInApps).toBe(false);
       expect(config.androidWakeDelayMs).toBe(1000);
       expect(config.authCallbackTimeoutMs).toBe(6000);
+      expect(config.identityResolution).toEqual({
+        replayOnVisitorToKnown: true,
+        mergeOnUnknownToKnown: true,
+      });
       const configDict = config.toDict();
       expect(configDict.allowedProtocols).toEqual([]);
       expect(configDict.androidSdkUseInMemoryStorageForInApps).toBe(false);
@@ -344,9 +471,13 @@ describe('Iterable', () => {
       expect(configDict.autoPushRegistration).toBe(true);
       expect(configDict.customActionHandlerPresent).toBe(false);
       expect(configDict.dataRegion).toBe(IterableDataRegion.US);
+      expect(configDict.enableForegroundCriteriaFetch).toBe(true);
       expect(configDict.enableEmbeddedMessaging).toBe(false);
+      expect(configDict.enableUnknownUserActivation).toBe(false);
+      expect(configDict.keychainEncryption).toBe(true);
       expect(configDict.encryptionEnforced).toBe(false);
       expect(configDict.expiringAuthTokenRefreshPeriod).toBe(60.0);
+      expect(configDict.eventThresholdLimit).toBe(100);
       expect(configDict.inAppDisplayInterval).toBe(30.0);
       expect(configDict.inAppHandlerPresent).toBe(false);
       expect(configDict.logLevel).toBe(IterableLogLevel.debug);
@@ -355,6 +486,10 @@ describe('Iterable', () => {
       expect(configDict.useInMemoryStorageForInApps).toBe(false);
       expect(configDict.androidWakeDelayMs).toBe(1000);
       expect(configDict.authCallbackTimeoutMs).toBe(6000);
+      expect(configDict.identityResolution).toEqual({
+        replayOnVisitorToKnown: true,
+        mergeOnUnknownToKnown: true,
+      });
     });
 
     it('should allow overriding androidWakeDelayMs and authCallbackTimeoutMs', () => {
@@ -364,6 +499,88 @@ describe('Iterable', () => {
       const configDict = config.toDict();
       expect(configDict.androidWakeDelayMs).toBe(1500);
       expect(configDict.authCallbackTimeoutMs).toBe(2500);
+    });
+
+    it('should include enableUnknownUserActivation in toDict() when set to true', () => {
+      const config = new IterableConfig();
+      config.enableUnknownUserActivation = true;
+      const configDict = config.toDict();
+      expect(configDict.enableUnknownUserActivation).toBe(true);
+    });
+
+    it('should include enableForegroundCriteriaFetch in toDict() when set to false', () => {
+      const config = new IterableConfig();
+      config.enableForegroundCriteriaFetch = false;
+      const configDict = config.toDict();
+      expect(configDict.enableForegroundCriteriaFetch).toBe(false);
+    });
+
+    it('should include eventThresholdLimit in toDict() when overridden', () => {
+      const config = new IterableConfig();
+      config.eventThresholdLimit = 50;
+      const configDict = config.toDict();
+      expect(configDict.eventThresholdLimit).toBe(50);
+    });
+
+    it('should include identityResolution in toDict() with overridden values', () => {
+      const config = new IterableConfig();
+      config.identityResolution = {
+        replayOnVisitorToKnown: false,
+        mergeOnUnknownToKnown: false,
+      };
+      const configDict = config.toDict();
+      expect(configDict.identityResolution).toEqual({
+        replayOnVisitorToKnown: false,
+        mergeOnUnknownToKnown: false,
+      });
+    });
+
+    it('should default missing identityResolution keys to true in toDict()', () => {
+      const config = new IterableConfig();
+      config.identityResolution = { mergeOnUnknownToKnown: false };
+      const configDict = config.toDict();
+      expect(configDict.identityResolution).toEqual({
+        replayOnVisitorToKnown: true,
+        mergeOnUnknownToKnown: false,
+      });
+    });
+
+    it('should default mergeOnUnknownToKnown to true when only replayOnVisitorToKnown is set', () => {
+      const config = new IterableConfig();
+      config.identityResolution = { replayOnVisitorToKnown: false };
+      const configDict = config.toDict();
+      expect(configDict.identityResolution).toEqual({
+        replayOnVisitorToKnown: false,
+        mergeOnUnknownToKnown: true,
+      });
+    });
+
+    it('should default both identityResolution keys to true for an empty object', () => {
+      const config = new IterableConfig();
+      config.identityResolution = {};
+      const configDict = config.toDict();
+      expect(configDict.identityResolution).toEqual({
+        replayOnVisitorToKnown: true,
+        mergeOnUnknownToKnown: true,
+      });
+    });
+
+    it('should default both identityResolution keys to true when identityResolution is undefined', () => {
+      const config = new IterableConfig();
+      config.identityResolution = undefined as unknown as IterableConfig['identityResolution'];
+      const configDict = config.toDict();
+      expect(configDict.identityResolution).toEqual({
+        replayOnVisitorToKnown: true,
+        mergeOnUnknownToKnown: true,
+      });
+    });
+
+    it('should allow opting out of Android keychain encryption', () => {
+      const config = new IterableConfig();
+      config.keychainEncryption = false;
+      const configDict = config.toDict();
+      expect(config.keychainEncryption).toBe(false);
+      expect(configDict.keychainEncryption).toBe(false);
     });
   });
 
@@ -1028,6 +1245,25 @@ describe('Iterable', () => {
       });
     });
 
+    describe('getAuthToken', () => {
+      it('should return the auth token from RNIterableAPI', async () => {
+        const expectedToken = 'jwt-token';
+        MockRNIterableAPI.authToken = expectedToken;
+
+        const result = await Iterable.authManager.getAuthToken();
+
+        expect(result).toBe(expectedToken);
+      });
+
+      it('should return null when RNIterableAPI has no auth token', async () => {
+        MockRNIterableAPI.authToken = null;
+
+        const result = await Iterable.authManager.getAuthToken();
+
+        expect(result).toBeNull();
+      });
+    });
+
     describe('passAlongAuthToken', () => {
       it('should call RNIterableAPI.passAlongAuthToken with a valid string token', async () => {
         // GIVEN a valid auth token
@@ -1261,6 +1497,180 @@ describe('Iterable', () => {
     });
   });
 
+  describe('unknownUserHandler', () => {
+    it('should call unknownUserHandler when handleUnknownUserCreatedCalled is emitted with userId', () => {
+      const nativeEmitter = new NativeEventEmitter();
+      nativeEmitter.removeAllListeners(
+        IterableEventName.handleUnknownUserCreatedCalled
+      );
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      config.unknownUserHandler = jest.fn();
+      Iterable.initialize('apiKey', config);
+      expect(
+        testNativeEventEmitter.listenerCount(
+          IterableEventName.handleUnknownUserCreatedCalled
+        )
+      ).toBe(1);
+      nativeEmitter.emit(IterableEventName.handleUnknownUserCreatedCalled, {
+        userId: 'generated-unknown-user-id',
+      });
+      expect(config.unknownUserHandler).toHaveBeenCalledWith(
+        'generated-unknown-user-id'
+      );
+    });
+
+    it('should not register a handleUnknownUserCreatedCalled listener when unknownUserHandler is omitted', () => {
+      testNativeEventEmitter.removeAllListeners(
+        IterableEventName.handleUnknownUserCreatedCalled
+      );
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      Iterable.initialize('apiKey', config);
+      expect(
+        testNativeEventEmitter.listenerCount(
+          IterableEventName.handleUnknownUserCreatedCalled
+        )
+      ).toBe(0);
+    });
+
+    it('should include unknownUserHandlerPresent in toDict() when the handler is set', () => {
+      const config = new IterableConfig();
+      config.unknownUserHandler = jest.fn();
+      expect(config.toDict().unknownUserHandlerPresent).toBe(true);
+    });
+
+    it('should set unknownUserHandlerPresent to false when the handler is omitted', () => {
+      const config = new IterableConfig();
+      expect(config.toDict().unknownUserHandlerPresent).toBe(false);
+    });
+
+    it('should log without the userId when unknownUserHandler throws', () => {
+      const nativeEmitter = new NativeEventEmitter();
+      nativeEmitter.removeAllListeners(
+        IterableEventName.handleUnknownUserCreatedCalled
+      );
+      const secretUserId = 'secret-unknown-user-id-for-log-test';
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      config.unknownUserHandler = jest.fn(() => {
+        throw new Error(`handler failed for ${secretUserId}`);
+      });
+      const logSpy = jest.spyOn(IterableLogger, 'log');
+      Iterable.initialize('apiKey', config);
+      nativeEmitter.emit(IterableEventName.handleUnknownUserCreatedCalled, {
+        userId: secretUserId,
+      });
+      const loggedText = logSpy.mock.calls
+        .map((args) => String(args[0]))
+        .join('\n');
+      expect(loggedText).not.toContain(secretUserId);
+      logSpy.mockRestore();
+    });
+  });
+
+  describe('decryptionFailureHandler', () => {
+    it('should call decryptionFailureHandler when handleDecryptionFailureCalled event is emitted', () => {
+      const nativeEmitter = new NativeEventEmitter();
+      nativeEmitter.removeAllListeners(
+        IterableEventName.handleDecryptionFailureCalled
+      );
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      config.decryptionFailureHandler = jest.fn();
+      Iterable.initialize('apiKey', config);
+      nativeEmitter.emit(IterableEventName.handleDecryptionFailureCalled, {
+        message: 'Keychain decrypt error',
+      });
+      expect(config.decryptionFailureHandler).toHaveBeenCalledWith({
+        message: 'Keychain decrypt error',
+      });
+      expect(config.decryptionFailureHandler).toHaveBeenCalledTimes(1);
+    });
+
+    it('should use a generic message when the event payload message is empty', () => {
+      const nativeEmitter = new NativeEventEmitter();
+      nativeEmitter.removeAllListeners(
+        IterableEventName.handleDecryptionFailureCalled
+      );
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      config.decryptionFailureHandler = jest.fn();
+      Iterable.initialize('apiKey', config);
+      nativeEmitter.emit(IterableEventName.handleDecryptionFailureCalled, {
+        message: '   ',
+      });
+      expect(config.decryptionFailureHandler).toHaveBeenCalledWith({
+        message: 'Decryption failed',
+      });
+    });
+
+    it('should not set up listener if decryptionFailureHandler is not provided', () => {
+      const nativeEmitter = new NativeEventEmitter();
+      nativeEmitter.removeAllListeners(
+        IterableEventName.handleDecryptionFailureCalled
+      );
+      const config = new IterableConfig();
+      config.logReactNativeSdkCalls = false;
+      Iterable.initialize('apiKey', config);
+      expect(
+        nativeEmitter.listenerCount(
+          IterableEventName.handleDecryptionFailureCalled
+        )
+      ).toBe(0);
+      expect(() => {
+        nativeEmitter.emit(IterableEventName.handleDecryptionFailureCalled, {
+          message: 'ignored',
+        });
+      }).not.toThrow();
+    });
+
+    it('should include decryptionFailureHandlerPresent flag in config dict when callback is provided', () => {
+      const config = new IterableConfig();
+      config.decryptionFailureHandler = jest.fn();
+      const configDict = config.toDict();
+      expect(configDict.decryptionFailureHandlerPresent).toBe(true);
+    });
+
+    it('should set decryptionFailureHandlerPresent flag to false when callback is not provided', () => {
+      const config = new IterableConfig();
+      const configDict = config.toDict();
+      expect(configDict.decryptionFailureHandlerPresent).toBe(false);
+    });
+
+    it('should invoke decryptionFailureHandler after re-initialize enables the callback', () => {
+      const nativeEmitter = new NativeEventEmitter();
+      nativeEmitter.removeAllListeners(
+        IterableEventName.handleDecryptionFailureCalled
+      );
+      const configWithoutHandler = new IterableConfig();
+      configWithoutHandler.logReactNativeSdkCalls = false;
+      Iterable.initialize('apiKey', configWithoutHandler);
+      expect(
+        nativeEmitter.listenerCount(
+          IterableEventName.handleDecryptionFailureCalled
+        )
+      ).toBe(0);
+
+      const configWithHandler = new IterableConfig();
+      configWithHandler.logReactNativeSdkCalls = false;
+      configWithHandler.decryptionFailureHandler = jest.fn();
+      Iterable.initialize('apiKey', configWithHandler);
+      expect(
+        nativeEmitter.listenerCount(
+          IterableEventName.handleDecryptionFailureCalled
+        )
+      ).toBe(1);
+
+      nativeEmitter.emit(IterableEventName.handleDecryptionFailureCalled, {
+        message: 'late handler',
+      });
+      expect(configWithHandler.decryptionFailureHandler).toHaveBeenCalledWith({
+        message: 'late handler',
+      });
+    });
+  });
+
   describe('embedded messaging callbacks', () => {
     describe('onEmbeddedMessageUpdate', () => {
       it('should call onEmbeddedMessageUpdate when handleEmbeddedMessageUpdateCalled event is emitted', () => {
@@ -1482,6 +1892,221 @@ describe('Iterable', () => {
         // THEN both presence flags are true
         expect(configDict.onEmbeddedMessageUpdatePresent).toBe(true);
         expect(configDict.onEmbeddedMessagingDisabledPresent).toBe(true);
+      });
+    });
+
+    describe('onEmbeddedMessagingSyncSucceeded', () => {
+      it('should call onEmbeddedMessagingSyncSucceeded when handleEmbeddedMessagingSyncSucceededCalled event is emitted', () => {
+        const nativeEmitter = new NativeEventEmitter();
+        nativeEmitter.removeAllListeners(
+          IterableEventName.handleEmbeddedMessagingSyncSucceededCalled
+        );
+        const config = new IterableConfig();
+        config.logReactNativeSdkCalls = false;
+        config.enableEmbeddedMessaging = true;
+        config.onEmbeddedMessagingSyncSucceeded = jest.fn();
+        Iterable.initialize('apiKey', config);
+        nativeEmitter.emit(
+          IterableEventName.handleEmbeddedMessagingSyncSucceededCalled
+        );
+        expect(config.onEmbeddedMessagingSyncSucceeded).toHaveBeenCalled();
+        expect(config.onEmbeddedMessagingSyncSucceeded).toHaveBeenCalledTimes(
+          1
+        );
+      });
+
+      it('should not set up listener if onEmbeddedMessagingSyncSucceeded is not provided', () => {
+        const nativeEmitter = new NativeEventEmitter();
+        nativeEmitter.removeAllListeners(
+          IterableEventName.handleEmbeddedMessagingSyncSucceededCalled
+        );
+        const config = new IterableConfig();
+        config.logReactNativeSdkCalls = false;
+        config.enableEmbeddedMessaging = true;
+        Iterable.initialize('apiKey', config);
+        expect(() => {
+          nativeEmitter.emit(
+            IterableEventName.handleEmbeddedMessagingSyncSucceededCalled
+          );
+        }).not.toThrow();
+      });
+
+      it('should not set up listener when enableEmbeddedMessaging is false even if callback is provided', () => {
+        const nativeEmitter = new NativeEventEmitter();
+        nativeEmitter.removeAllListeners(
+          IterableEventName.handleEmbeddedMessagingSyncSucceededCalled
+        );
+        const config = new IterableConfig();
+        config.logReactNativeSdkCalls = false;
+        config.onEmbeddedMessagingSyncSucceeded = jest.fn();
+        Iterable.initialize('apiKey', config);
+        nativeEmitter.emit(
+          IterableEventName.handleEmbeddedMessagingSyncSucceededCalled
+        );
+        expect(config.onEmbeddedMessagingSyncSucceeded).not.toHaveBeenCalled();
+      });
+
+      it('should include onEmbeddedMessagingSyncSucceededPresent flag in config dict when callback is provided', () => {
+        const config = new IterableConfig();
+        config.onEmbeddedMessagingSyncSucceeded = jest.fn();
+        const configDict = config.toDict();
+        expect(configDict.onEmbeddedMessagingSyncSucceededPresent).toBe(true);
+      });
+
+      it('should set onEmbeddedMessagingSyncSucceededPresent flag to false when callback is not provided', () => {
+        const config = new IterableConfig();
+        const configDict = config.toDict();
+        expect(configDict.onEmbeddedMessagingSyncSucceededPresent).toBe(false);
+      });
+    });
+
+    describe('onEmbeddedMessagingSyncFailed', () => {
+      it('should call onEmbeddedMessagingSyncFailed with reason when handleEmbeddedMessagingSyncFailedCalled event is emitted', () => {
+        const nativeEmitter = new NativeEventEmitter();
+        nativeEmitter.removeAllListeners(
+          IterableEventName.handleEmbeddedMessagingSyncFailedCalled
+        );
+        const config = new IterableConfig();
+        config.logReactNativeSdkCalls = false;
+        config.enableEmbeddedMessaging = true;
+        config.onEmbeddedMessagingSyncFailed = jest.fn();
+        Iterable.initialize('apiKey', config);
+        nativeEmitter.emit(
+          IterableEventName.handleEmbeddedMessagingSyncFailedCalled,
+          'network error'
+        );
+        expect(config.onEmbeddedMessagingSyncFailed).toHaveBeenCalledWith(
+          'network error'
+        );
+      });
+
+      it('should deliver null when failure event has no reason', () => {
+        const nativeEmitter = new NativeEventEmitter();
+        nativeEmitter.removeAllListeners(
+          IterableEventName.handleEmbeddedMessagingSyncFailedCalled
+        );
+        const config = new IterableConfig();
+        config.logReactNativeSdkCalls = false;
+        config.enableEmbeddedMessaging = true;
+        config.onEmbeddedMessagingSyncFailed = jest.fn();
+        Iterable.initialize('apiKey', config);
+        nativeEmitter.emit(
+          IterableEventName.handleEmbeddedMessagingSyncFailedCalled,
+          null
+        );
+        expect(config.onEmbeddedMessagingSyncFailed).toHaveBeenCalledWith(null);
+      });
+
+      it('should deliver null when failure event omits the reason payload', () => {
+        const nativeEmitter = new NativeEventEmitter();
+        nativeEmitter.removeAllListeners(
+          IterableEventName.handleEmbeddedMessagingSyncFailedCalled
+        );
+        const config = new IterableConfig();
+        config.logReactNativeSdkCalls = false;
+        config.enableEmbeddedMessaging = true;
+        config.onEmbeddedMessagingSyncFailed = jest.fn();
+        Iterable.initialize('apiKey', config);
+        nativeEmitter.emit(
+          IterableEventName.handleEmbeddedMessagingSyncFailedCalled
+        );
+        expect(config.onEmbeddedMessagingSyncFailed).toHaveBeenCalledWith(null);
+      });
+
+      it('should not set up listener if onEmbeddedMessagingSyncFailed is not provided', () => {
+        const nativeEmitter = new NativeEventEmitter();
+        nativeEmitter.removeAllListeners(
+          IterableEventName.handleEmbeddedMessagingSyncFailedCalled
+        );
+        const config = new IterableConfig();
+        config.logReactNativeSdkCalls = false;
+        config.enableEmbeddedMessaging = true;
+        Iterable.initialize('apiKey', config);
+        expect(() => {
+          nativeEmitter.emit(
+            IterableEventName.handleEmbeddedMessagingSyncFailedCalled,
+            'ignored'
+          );
+        }).not.toThrow();
+      });
+
+      it('should not set up listener when enableEmbeddedMessaging is false even if callback is provided', () => {
+        const nativeEmitter = new NativeEventEmitter();
+        nativeEmitter.removeAllListeners(
+          IterableEventName.handleEmbeddedMessagingSyncFailedCalled
+        );
+        const config = new IterableConfig();
+        config.logReactNativeSdkCalls = false;
+        config.onEmbeddedMessagingSyncFailed = jest.fn();
+        Iterable.initialize('apiKey', config);
+        nativeEmitter.emit(
+          IterableEventName.handleEmbeddedMessagingSyncFailedCalled,
+          'ignored'
+        );
+        expect(config.onEmbeddedMessagingSyncFailed).not.toHaveBeenCalled();
+      });
+
+      it('should include onEmbeddedMessagingSyncFailedPresent flag in config dict when callback is provided', () => {
+        const config = new IterableConfig();
+        config.onEmbeddedMessagingSyncFailed = jest.fn();
+        const configDict = config.toDict();
+        expect(configDict.onEmbeddedMessagingSyncFailedPresent).toBe(true);
+      });
+
+      it('should set onEmbeddedMessagingSyncFailedPresent flag to false when callback is not provided', () => {
+        const config = new IterableConfig();
+        const configDict = config.toDict();
+        expect(configDict.onEmbeddedMessagingSyncFailedPresent).toBe(false);
+      });
+    });
+
+    describe('sync callbacks vs onEmbeddedMessageUpdate', () => {
+      it('should invoke only the matching callback when update and sync handlers are configured', () => {
+        const nativeEmitter = new NativeEventEmitter();
+        nativeEmitter.removeAllListeners(
+          IterableEventName.handleEmbeddedMessageUpdateCalled
+        );
+        nativeEmitter.removeAllListeners(
+          IterableEventName.handleEmbeddedMessagingSyncSucceededCalled
+        );
+        nativeEmitter.removeAllListeners(
+          IterableEventName.handleEmbeddedMessagingSyncFailedCalled
+        );
+        const config = new IterableConfig();
+        config.logReactNativeSdkCalls = false;
+        config.enableEmbeddedMessaging = true;
+        config.onEmbeddedMessageUpdate = jest.fn();
+        config.onEmbeddedMessagingSyncSucceeded = jest.fn();
+        config.onEmbeddedMessagingSyncFailed = jest.fn();
+        Iterable.initialize('apiKey', config);
+
+        nativeEmitter.emit(
+          IterableEventName.handleEmbeddedMessageUpdateCalled
+        );
+        expect(config.onEmbeddedMessageUpdate).toHaveBeenCalled();
+        expect(config.onEmbeddedMessagingSyncSucceeded).not.toHaveBeenCalled();
+        expect(config.onEmbeddedMessagingSyncFailed).not.toHaveBeenCalled();
+
+        jest.clearAllMocks();
+
+        nativeEmitter.emit(
+          IterableEventName.handleEmbeddedMessagingSyncSucceededCalled
+        );
+        expect(config.onEmbeddedMessagingSyncSucceeded).toHaveBeenCalled();
+        expect(config.onEmbeddedMessageUpdate).not.toHaveBeenCalled();
+        expect(config.onEmbeddedMessagingSyncFailed).not.toHaveBeenCalled();
+
+        jest.clearAllMocks();
+
+        nativeEmitter.emit(
+          IterableEventName.handleEmbeddedMessagingSyncFailedCalled,
+          'sync failed'
+        );
+        expect(config.onEmbeddedMessagingSyncFailed).toHaveBeenCalledWith(
+          'sync failed'
+        );
+        expect(config.onEmbeddedMessageUpdate).not.toHaveBeenCalled();
+        expect(config.onEmbeddedMessagingSyncSucceeded).not.toHaveBeenCalled();
       });
     });
   });

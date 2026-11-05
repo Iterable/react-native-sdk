@@ -1,3 +1,37 @@
+## Unreleased
+
+### Fixes
+
+- Fixed `Iterable.trackPushOpenWithCampaignId` on Android so the `appAlreadyRunning` argument is forwarded to the native SDK instead of always being sent as `false`.
+
+### Updates
+
+- Added optional placement IDs to `Iterable.embeddedManager.syncMessages()` so apps can sync embedded messages for specific placements only (SDK-751). When omitted, null, or empty, behavior matches the previous sync-all call.
+  - **Android:** Scoped sync (`syncMessages([id, …])`) matches the pinned iterableapi behavior and may remove cached messages for placements not included in the sync response (SDK-798). iOS preserves unrequested placements. Prefer `syncMessages()` without placement IDs on Android until the native fix ships and the Android SDK pin is bumped.
+- Added `IterableInAppMessage.jsonOnly` so `inAppHandler` and in-app message fetches can distinguish JSON-only messages from HTML in-apps (SDK-750).
+- Added `IterableConfig.onEmbeddedMessagingSyncSucceeded` and
+  `IterableConfig.onEmbeddedMessagingSyncFailed` so apps can observe embedded
+  messaging sync outcomes (SDK-749). Failure callbacks receive a nullable reason
+  string forwarded from the native SDKs. On iOS, subscription-inactive or
+  invalid API key failures may invoke both `onEmbeddedMessagingDisabled` and
+  `onEmbeddedMessagingSyncFailed`; on Android only
+  `onEmbeddedMessagingDisabled` is invoked for those cases (native SDK
+  behavior).
+- Added `Iterable.authManager.getAuthToken()` to read the JWT currently held by the native SDK (SDK-559).
+  - iOS: `IterableAPI.authToken`.
+  - Android: `IterableApi.getAuthToken()`.
+- Added `IterableConfig.decryptionFailureHandler` (Android only) to notify the app when native keychain decryption fails (SDK-557). The SDK clears stored PII and disables encryption for the device before invoking the callback; iOS has no equivalent native API and ignores this option.
+- Added `IterableConfig.keychainEncryption` (default `true`, Android only) so React Native apps can control native `IterableConfig.Builder.setKeychainEncryption`.
+- Deprecated `IterableConfig.encryptionEnforced`, which never had an effect.
+- Added `Iterable.disableDeviceForAllUsers()` to unregister this device's push token from every user associated with the device (SDK-550).
+  - iOS: forwards to native `IterableAPI.disableDeviceForAllUsers()`.
+  - Android: graceful no-op that logs a warning; use `disableDeviceForCurrentUser()` to disable push for the current user. There is no public native "all users" equivalent.
+- Added `IterableConfig.enableUnknownUserActivation` (default `false`) to opt in to Unknown User Activation on the native SDK (SDK-794). Visitor consent via `Iterable.setVisitorUsageTracked` is also required before the native SDK stores unknown-user events.
+- Added `IterableConfig.enableForegroundCriteriaFetch` (default `true`) to control whether the SDK fetches unknown-user targeting criteria when the app enters the foreground (SDK-554).
+- Added `IterableConfig.eventThresholdLimit` (default `100`) to cap locally stored unknown-user events before identification (SDK-553). The value is forwarded to the native SDK and applies when unknown-user activation is enabled.
+- Added `Iterable.setVisitorUsageTracked` and `Iterable.getVisitorUsageTracked` to record and read visitor consent for Unknown User Activation (SDK-561). Consent is persisted by the native SDK.
+- Added `IterableConfig.identityResolution` and the `IterableIdentityResolution` type so RN apps can configure default visitor replay and unknown-to-known merge behavior (SDK-556).
+- Added `IterableConfig.unknownUserHandler` so JWT-enabled apps can receive the generated unknown user id before native requests a token (SDK-804). Store the id synchronously in the handler and mint in `authHandler` for that id.
 ## 3.2.1
 
 ### Fixes

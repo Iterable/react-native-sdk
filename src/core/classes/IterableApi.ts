@@ -129,12 +129,41 @@ export class IterableApi {
     return RNIterableAPI.getUserId();
   }
 
+  static setVisitorUsageTracked(tracked: boolean) {
+    IterableLogger.log('setVisitorUsageTracked: ', tracked);
+    return RNIterableAPI.setVisitorUsageTracked(tracked);
+  }
+
+  static getVisitorUsageTracked() {
+    IterableLogger.log('getVisitorUsageTracked');
+    return RNIterableAPI.getVisitorUsageTracked();
+  }
+
   /**
    * Disable the device for the current user.
    */
   static disableDeviceForCurrentUser() {
     IterableLogger.log('disableDeviceForCurrentUser');
     return RNIterableAPI.disableDeviceForCurrentUser();
+  }
+
+  /**
+   * Disable this device's push token for every user associated with the device.
+   *
+   * iOS: forwards to native `IterableAPI.disableDeviceForAllUsers()`.
+   * Android: logged no-op — there is no public native "all users" equivalent.
+   * The warning is logged in JS (Metro) as well as native (logcat); the
+   * native method is still invoked.
+   */
+  static disableDeviceForAllUsers() {
+    if (Platform.OS === 'android') {
+      IterableLogger.log(
+        'disableDeviceForAllUsers is not supported on Android; use disableDeviceForCurrentUser. There is no public native equivalent.'
+      );
+    } else {
+      IterableLogger.log('disableDeviceForAllUsers');
+    }
+    return RNIterableAPI.disableDeviceForAllUsers();
   }
 
   /**
@@ -353,6 +382,14 @@ export class IterableApi {
   }
 
   /**
+   * Get the JWT currently held by the native SDK for the signed-in user.
+   */
+  static getAuthToken() {
+    IterableLogger.log('getAuthToken');
+    return RNIterableAPI.getAuthToken();
+  }
+
+  /**
    * Pass along an auth token to the SDK.
    *
    * @param authToken - The auth token to pass along
@@ -523,10 +560,16 @@ export class IterableApi {
 
   /**
    * Syncs embedded local cache with the server.
+   *
+   * @param placementIds - When provided, limits the sync to those placements.
+   * See {@link IterableEmbeddedManager.syncMessages} for Android scoped-sync
+   * caveats (SDK-798).
    */
-  static syncEmbeddedMessages() {
-    IterableLogger.log('syncEmbeddedMessages');
-    return RNIterableAPI.syncEmbeddedMessages();
+  static syncEmbeddedMessages(placementIds?: number[] | null) {
+    IterableLogger.log('syncEmbeddedMessages: ', placementIds);
+    return RNIterableAPI.syncEmbeddedMessages(
+      placementIds === undefined ? null : placementIds
+    );
   }
 
   /**

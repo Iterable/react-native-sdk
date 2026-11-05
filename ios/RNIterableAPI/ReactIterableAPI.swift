@@ -35,6 +35,11 @@ import React
     case handleAuthFailureCalled
     case handleEmbeddedMessageUpdateCalled
     case handleEmbeddedMessagingDisabledCalled
+    case handleEmbeddedMessagingSyncSucceededCalled
+    case handleEmbeddedMessagingSyncFailedCalled
+    // Android-only native API; listed so JS addListener does not warn on iOS.
+    case handleDecryptionFailureCalled
+    case handleUnknownUserCreatedCalled
   }
 
   @objc public static var supportedEvents: [String] {
@@ -129,6 +134,21 @@ import React
     resolver(IterableAPI.userId)
   }
 
+  @objc(setVisitorUsageTracked:)
+  public func setVisitorUsageTracked(tracked: Bool) {
+    ITBInfo()
+    IterableAPI.setVisitorUsageTracked(isVisitorUsageTracked: tracked)
+  }
+
+  @objc(getVisitorUsageTracked:rejecter:)
+  public func getVisitorUsageTracked(
+    resolver: @escaping RCTPromiseResolveBlock,
+    rejecter: @escaping RCTPromiseRejectBlock
+  ) {
+    ITBInfo()
+    resolver(IterableAPI.getVisitorUsageTracked())
+  }
+
   // MARK: - Iterable API Request Functions
 
   @objc(setInAppShowResponse:)
@@ -142,6 +162,12 @@ import React
   public func disableDeviceForCurrentUser() {
     ITBInfo()
     IterableAPI.disableDeviceForCurrentUser()
+  }
+
+  @objc(disableDeviceForAllUsers)
+  public func disableDeviceForAllUsers() {
+    ITBInfo()
+    IterableAPI.disableDeviceForAllUsers()
   }
 
   @objc(registerDeviceToken:)
@@ -502,6 +528,12 @@ import React
 
   // MARK: - SDK Auth Manager Functions
 
+  @objc(getAuthToken:rejecter:)
+  public func getAuthToken(resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
+    ITBInfo()
+    resolver(IterableAPI.authToken)
+  }
+
   @objc(passAlongAuthToken:)
   public func passAlongAuthToken(authToken: String?) {
     ITBInfo()
@@ -529,10 +561,15 @@ import React
     EmbeddedSessionManager.shared.endSession()
   }
 
-  @objc(syncEmbeddedMessages)
-  public func syncEmbeddedMessages() {
+  @objc(syncEmbeddedMessages:)
+  public func syncEmbeddedMessages(placementIds: [NSNumber]?) {
     ITBInfo()
-    IterableAPI.embeddedManager.syncMessages { }
+    if let placementIds = placementIds, !placementIds.isEmpty {
+      let ids = placementIds.map { $0.intValue }
+      IterableAPI.embeddedManager.syncMessages(placementIds: ids) { }
+    } else {
+      IterableAPI.embeddedManager.syncMessages { }
+    }
   }
 
   @objc(getEmbeddedMessages:resolver:rejecter:)
@@ -670,6 +707,12 @@ import React
       iterableConfig.authDelegate = self
     }
 
+    if let unknownUserHandlerPresent = configDict["unknownUserHandlerPresent"] as? Bool,
+      unknownUserHandlerPresent == true
+    {
+      iterableConfig.unknownUserHandler = self
+    }
+
     // connect new inbox in-app payloads to the RN SDK
     NotificationCenter.default.addObserver(
       self, selector: #selector(receivedIterableInboxChanged),
@@ -704,8 +747,16 @@ import React
       // Add embedded update listener if any callback is present
       let onEmbeddedMessageUpdatePresent = configDict["onEmbeddedMessageUpdatePresent"] as? Bool ?? false
       let onEmbeddedMessagingDisabledPresent = configDict["onEmbeddedMessagingDisabledPresent"] as? Bool ?? false
+      let onEmbeddedMessagingSyncSucceededPresent =
+        configDict["onEmbeddedMessagingSyncSucceededPresent"] as? Bool ?? false
+      let onEmbeddedMessagingSyncFailedPresent =
+        configDict["onEmbeddedMessagingSyncFailedPresent"] as? Bool ?? false
 
-      if onEmbeddedMessageUpdatePresent || onEmbeddedMessagingDisabledPresent {
+      if onEmbeddedMessageUpdatePresent
+        || onEmbeddedMessagingDisabledPresent
+        || onEmbeddedMessagingSyncSucceededPresent
+        || onEmbeddedMessagingSyncFailedPresent
+      {
         IterableAPI.embeddedManager.addUpdateListener(self)
       }
 
@@ -868,6 +919,18 @@ extension ReactIterableAPI: IterableAuthDelegate {
   }
 }
 
+extension ReactIterableAPI: IterableUnknownUserHandler {
+  public func onUnknownUserCreated(userId: String) {
+    ITBInfo()
+    guard shouldEmit else {
+      return
+    }
+    delegate?.sendEvent(
+      withName: EventName.handleUnknownUserCreatedCalled.rawValue,
+      body: ["userId": userId])
+  }
+}
+
 extension ReactIterableAPI: IterableEmbeddedUpdateDelegate {
   public func onMessagesUpdated() {
     ITBInfo()
@@ -878,7 +941,7 @@ extension ReactIterableAPI: IterableEmbeddedUpdateDelegate {
       withName: EventName.handleEmbeddedMessageUpdateCalled.rawValue,
       body: nil as Any?)
   }
-  
+
   public func onEmbeddedMessagingDisabled() {
     ITBInfo()
     guard shouldEmit else {
@@ -887,5 +950,25 @@ extension ReactIterableAPI: IterableEmbeddedUpdateDelegate {
     delegate?.sendEvent(
       withName: EventName.handleEmbeddedMessagingDisabledCalled.rawValue,
       body: nil as Any?)
+  }
+
+  public func onEmbeddedMessagingSyncSucceeded() {
+    ITBInfo()
+    guard shouldEmit else {
+      return
+    }
+    delegate?.sendEvent(
+      withName: EventName.handleEmbeddedMessagingSyncSucceededCalled.rawValue,
+      body: nil as Any?)
+  }
+
+  public func onEmbeddedMessagingSyncFailed(_ error: String?) {
+    ITBInfo()
+    guard shouldEmit else {
+      return
+    }
+    delegate?.sendEvent(
+      withName: EventName.handleEmbeddedMessagingSyncFailedCalled.rawValue,
+      body: error as Any?)
   }
 }

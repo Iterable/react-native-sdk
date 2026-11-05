@@ -4,6 +4,8 @@ import { IterableDataRegion } from '../enums/IterableDataRegion';
 import { IterableLogLevel } from '../enums/IterableLogLevel';
 import { IterablePushPlatform } from '../enums/IterablePushPlatform';
 import type { IterableAuthFailure } from '../types/IterableAuthFailure';
+import type { IterableDecryptionFailure } from '../types/IterableDecryptionFailure';
+import type { IterableIdentityResolution } from '../types/IterableIdentityResolution';
 import type { IterableRetryPolicy } from '../types/IterableRetryPolicy';
 import { IterableAction } from './IterableAction';
 import type { IterableActionContext } from './IterableActionContext';
@@ -226,6 +228,29 @@ export class IterableConfig {
   onJwtError?: (authFailure: IterableAuthFailure) => void;
 
   /**
+   * A callback invoked when the Android SDK fails to decrypt PII in keychain
+   * storage. Before calling this handler, the native SDK clears stored PII,
+   * disables encryption for the device, and requires the user to sign in again.
+   *
+   * **Android only.** iOS does not surface decryption failures this way; setting
+   * this callback on iOS has no effect.
+   *
+   * @param failure - Details about the decryption failure.
+   *
+   * @example
+   * ```typescript
+   * const config = new IterableConfig();
+   * config.decryptionFailureHandler = (failure) => {
+   *   console.error('Iterable decryption failed:', failure.message);
+   *   // Prompt the user to log in again
+   * };
+   * ```
+   */
+  decryptionFailureHandler?: (
+    failure: IterableDecryptionFailure
+  ) => void;
+
+  /**
    * Set the verbosity of Android and iOS project's log system.
    *
    * By default, you will be able to see info level logs printed in IDE when running the app.
@@ -261,6 +286,17 @@ export class IterableConfig {
    * `authHandler` to get an updated JWT.
    */
   expiringAuthTokenRefreshPeriod = 60.0;
+
+  /**
+   * Maximum number of unknown-user (anonymous) events stored locally before
+   * identification. The native SDK drops the oldest events when the count
+   * exceeds this limit.
+   *
+   * The value is sent to the native SDK at init. The limit applies only while
+   * unknown-user activation is enabled (`enableUnknownUserActivation`) and
+   * visitor consent has been granted.
+   */
+  eventThresholdLimit = 100;
 
   /**
    * Use this array to declare the specific URL protocols that the SDK can
@@ -324,8 +360,14 @@ export class IterableConfig {
   pushPlatform: IterablePushPlatform = IterablePushPlatform.auto;
 
   /**
-   * Android only feature: This controls whether the SDK should enforce encryption for all PII stored on disk.
-   * By default, the SDK will not enforce encryption and may fallback to unencrypted storage in case the encryption fails.
+   * Android only: whether Iterable encrypts PII (email, userId, auth token) in on-device keychain storage.
+   * When `true` (the default), data is encrypted; when `false`, it is stored in plaintext.
+   * iOS always uses the system Keychain and ignores this option.
+   */
+  keychainEncryption = true;
+
+  /**
+   * @deprecated Has no effect on any platform. Use {@link IterableConfig.keychainEncryption}.
    */
   encryptionEnforced = false;
 
@@ -392,6 +434,68 @@ export class IterableConfig {
   authCallbackTimeoutMs = 6000;
 
   /**
+   * When `true`, the native SDK may store and process events for unidentified
+   * (unknown) users. Defaults to `false`.
+   *
+   * Visitor consent via `Iterable.setVisitorUsageTracked` is also required
+   * before the native SDK stores unknown-user events or runs unknown-user flows.
+   */
+  enableUnknownUserActivation = false;
+
+  /**
+   * When `true` (the default), the SDK fetches unknown-user (anonymous) targeting
+   * criteria when the app enters the foreground.
+   *
+   * Set to `false` to disable that foreground fetch.
+   */
+  enableForegroundCriteriaFetch = true;
+
+  /**
+   * Default identity-resolution behavior when identifying a user with
+   * `Iterable.setEmail` or `Iterable.setUserId`.
+   *
+   * Applies when unknown-user activation and visitor tracking are enabled on the
+   * native SDK. Omitted keys in a partial object default to `true`.
+   */
+  identityResolution: IterableIdentityResolution = {
+    replayOnVisitorToKnown: true,
+    mergeOnUnknownToKnown: true,
+  };
+
+  /**
+   * Called when the native SDK creates a generated user id after unknown-user
+   * activation criteria are met.
+   *
+   * JWT-enabled API keys: native logs in as that id immediately after this
+   * callback and invokes `authHandler` without passing the id. Store the
+   * `userId` argument **synchronously** here so `authHandler` can mint a token
+   * for that id in the same turn. Do not use `Iterable.getUserId()` in this
+   * callback; native has not switched identity yet. In `authHandler`, consume
+   * and clear that pending id on each call so later known-user logins and
+   * token refreshes use `Iterable.getUserId()` instead of a stale cached id.
+   *
+   * @param userId - The generated unknown user id from Iterable.
+   *
+   * @example
+   * ```typescript
+   * let pendingUnknownUserId: string | null = null;
+   * const config = new IterableConfig();
+   * config.enableUnknownUserActivation = true;
+   * config.unknownUserHandler = (userId) => {
+   *   pendingUnknownUserId = userId;
+   * };
+   * config.authHandler = async () => {
+   *   const unknownUserId = pendingUnknownUserId;
+   *   pendingUnknownUserId = null;
+   *   const id = unknownUserId ?? (await Iterable.getUserId());
+   *   return fetchJwtForUser(id);
+   * };
+   * Iterable.initialize('<YOUR_API_KEY>', config);
+   * ```
+   */
+  unknownUserHandler?: (userId: string) => void;
+
+  /**
    * Should the SDK enable and use embedded messaging?
    *
    * **Documentation**
@@ -438,6 +542,44 @@ export class IterableConfig {
   onEmbeddedMessagingDisabled?: () => void;
 
   /**
+   * A callback function that is called when an embedded messaging sync completes
+   * successfully.
+   *
+   * This is distinct from {@link onEmbeddedMessageUpdate}, which fires when the
+   * local embedded message cache changes. Sync success indicates the network
+   * sync operation finished without error.
+   *
+   * @example
+   * ```typescript
+   * const config = new IterableConfig();
+   * config.enableEmbeddedMessaging = true;
+   * config.onEmbeddedMessagingSyncSucceeded = () => {
+   *   console.log('Embedded sync succeeded');
+   * };
+   * Iterable.initialize('<YOUR_API_KEY>', config);
+   * ```
+   */
+  onEmbeddedMessagingSyncSucceeded?: () => void;
+
+  /**
+   * A callback function that is called when an embedded messaging sync fails.
+   *
+   * @param reason - Failure reason from the native SDK, or `null` when none is
+   * available.
+   *
+   * @example
+   * ```typescript
+   * const config = new IterableConfig();
+   * config.enableEmbeddedMessaging = true;
+   * config.onEmbeddedMessagingSyncFailed = (reason) => {
+   *   console.warn('Embedded sync failed', reason);
+   * };
+   * Iterable.initialize('<YOUR_API_KEY>', config);
+   * ```
+   */
+  onEmbeddedMessagingSyncFailed?: (reason: string | null) => void;
+
+  /**
    * Converts the IterableConfig instance to a dictionary object.
    *
    * @returns An object representing the configuration.
@@ -463,6 +605,12 @@ export class IterableConfig {
        * A boolean indicating if an authentication handler is present.
        */
       authHandlerPresent: this.authHandler !== undefined,
+      decryptionFailureHandlerPresent:
+        this.decryptionFailureHandler !== undefined,
+      /**
+       * A boolean indicating if an unknown-user handler is present.
+       */
+      unknownUserHandlerPresent: this.unknownUserHandler !== undefined,
       /**
        * A boolean indicating if an embedded message update callback is present.
        */
@@ -473,17 +621,37 @@ export class IterableConfig {
        */
       onEmbeddedMessagingDisabledPresent:
         this.onEmbeddedMessagingDisabled !== undefined,
+      /**
+       * A boolean indicating if an embedded messaging sync succeeded callback is present.
+       */
+      onEmbeddedMessagingSyncSucceededPresent:
+        this.onEmbeddedMessagingSyncSucceeded !== undefined,
+      /**
+       * A boolean indicating if an embedded messaging sync failed callback is present.
+       */
+      onEmbeddedMessagingSyncFailedPresent:
+        this.onEmbeddedMessagingSyncFailed !== undefined,
       /** The log level for the SDK. */
       logLevel: this.logLevel,
       expiringAuthTokenRefreshPeriod: this.expiringAuthTokenRefreshPeriod,
+      eventThresholdLimit: this.eventThresholdLimit,
       allowedProtocols: this.allowedProtocols,
       androidSdkUseInMemoryStorageForInApps:
         this.androidSdkUseInMemoryStorageForInApps,
       useInMemoryStorageForInApps: this.useInMemoryStorageForInApps,
       dataRegion: this.dataRegion,
       pushPlatform: this.pushPlatform,
+      keychainEncryption: this.keychainEncryption,
       encryptionEnforced: this.encryptionEnforced,
       retryPolicy: this.retryPolicy,
+      enableUnknownUserActivation: this.enableUnknownUserActivation,
+      enableForegroundCriteriaFetch: this.enableForegroundCriteriaFetch,
+      identityResolution: {
+        replayOnVisitorToKnown:
+          this.identityResolution?.replayOnVisitorToKnown ?? true,
+        mergeOnUnknownToKnown:
+          this.identityResolution?.mergeOnUnknownToKnown ?? true,
+      },
       enableEmbeddedMessaging: this.enableEmbeddedMessaging,
       androidWakeDelayMs: this.androidWakeDelayMs,
       authCallbackTimeoutMs: this.authCallbackTimeoutMs,

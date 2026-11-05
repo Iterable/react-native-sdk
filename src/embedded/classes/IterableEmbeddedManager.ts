@@ -71,13 +71,23 @@ export class IterableEmbeddedManager {
    *
    * However, do not poll for new embedded messages at a regular interval.
    *
+   * @param placementIds - Optional placement IDs to sync. When omitted, null, or
+   * empty, syncs all placements.
+   *
+   * @remarks On Android, scoped sync may clear cached messages for placements
+   * that are not in the sync response (iterableapi SDK-798). iOS merges
+   * unrequested placements from the existing cache. Until Android iterableapi
+   * is fixed and this SDK bumps its Android pin, prefer calling `syncMessages()`
+   * without placement IDs on Android when multiple placements are in use.
+   *
    * @example
    * ```typescript
    * IterableEmbeddedManager.syncMessages();
+   * IterableEmbeddedManager.syncMessages([1, 2, 3]);
    * ```
    */
-  syncMessages() {
-    return IterableApi.syncEmbeddedMessages();
+  syncMessages(placementIds?: number[] | null) {
+    return IterableApi.syncEmbeddedMessages(placementIds);
   }
 
   /**

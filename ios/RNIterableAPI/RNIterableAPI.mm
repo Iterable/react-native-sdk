@@ -12,6 +12,7 @@
 @protocol IterableInAppDelegate;
 @protocol IterableCustomActionDelegate;
 @protocol IterableAuthDelegate;
+@protocol IterableUnknownUserHandler;
 @protocol IterableURLDelegate;
 @protocol IterableEmbeddedUpdateDelegate;
 typedef NS_ENUM(NSInteger, InAppShowResponse) {
@@ -110,6 +111,15 @@ RCT_EXPORT_MODULE()
 - (void)getUserId:(RCTPromiseResolveBlock)resolve
            reject:(RCTPromiseRejectBlock)reject {
   [_swiftAPI getUserId:resolve rejecter:reject];
+}
+
+- (void)setVisitorUsageTracked:(BOOL)tracked {
+  [_swiftAPI setVisitorUsageTracked:tracked];
+}
+
+- (void)getVisitorUsageTracked:(RCTPromiseResolveBlock)resolve
+                        reject:(RCTPromiseRejectBlock)reject {
+  [_swiftAPI getVisitorUsageTracked:resolve rejecter:reject];
 }
 
 - (void)setInAppShowResponse:(double)inAppShowResponse {
@@ -230,6 +240,10 @@ RCT_EXPORT_MODULE()
   [_swiftAPI disableDeviceForCurrentUser];
 }
 
+- (void)disableDeviceForAllUsers {
+  [_swiftAPI disableDeviceForAllUsers];
+}
+
 - (void)registerDeviceToken:(NSString *)token {
   [_swiftAPI registerDeviceToken:token];
 }
@@ -279,6 +293,11 @@ RCT_EXPORT_MODULE()
   [_swiftAPI updateVisibleRows:visibleRows];
 }
 
+- (void)getAuthToken:(RCTPromiseResolveBlock)resolve
+              reject:(RCTPromiseRejectBlock)reject {
+  [_swiftAPI getAuthToken:resolve rejecter:reject];
+}
+
 - (void)passAlongAuthToken:(NSString *_Nullable)authToken {
   [_swiftAPI passAlongAuthToken:authToken];
 }
@@ -295,8 +314,8 @@ RCT_EXPORT_MODULE()
   [_swiftAPI endEmbeddedSession];
 }
 
-- (void)syncEmbeddedMessages {
-  [_swiftAPI syncEmbeddedMessages];
+- (void)syncEmbeddedMessages:(NSArray *_Nullable)placementIds {
+  [_swiftAPI syncEmbeddedMessages:placementIds];
 }
 
 - (void)getEmbeddedMessages:(NSArray *_Nullable)placementIds
@@ -401,6 +420,15 @@ RCT_EXPORT_METHOD(setUserId : (NSString *_Nullable)
 RCT_EXPORT_METHOD(getUserId : (RCTPromiseResolveBlock)
                       resolve reject : (RCTPromiseRejectBlock)reject) {
   [_swiftAPI getUserId:resolve rejecter:reject];
+}
+
+RCT_EXPORT_METHOD(setVisitorUsageTracked : (BOOL)tracked) {
+  [_swiftAPI setVisitorUsageTracked:tracked];
+}
+
+RCT_EXPORT_METHOD(getVisitorUsageTracked : (RCTPromiseResolveBlock)
+                      resolve reject : (RCTPromiseRejectBlock)reject) {
+  [_swiftAPI getVisitorUsageTracked:resolve rejecter:reject];
 }
 
 RCT_EXPORT_METHOD(setInAppShowResponse : (double)inAppShowResponse) {
@@ -516,6 +544,10 @@ RCT_EXPORT_METHOD(disableDeviceForCurrentUser) {
   [_swiftAPI disableDeviceForCurrentUser];
 }
 
+RCT_EXPORT_METHOD(disableDeviceForAllUsers) {
+  [_swiftAPI disableDeviceForAllUsers];
+}
+
 RCT_EXPORT_METHOD(registerDeviceToken : (NSString *)token) {
   [_swiftAPI registerDeviceToken:token];
 }
@@ -563,6 +595,11 @@ RCT_EXPORT_METHOD(updateVisibleRows : (NSArray *)visibleRows) {
   [_swiftAPI updateVisibleRows:visibleRows];
 }
 
+RCT_EXPORT_METHOD(getAuthToken : (RCTPromiseResolveBlock)
+                      resolve rejecter : (RCTPromiseRejectBlock)reject) {
+  [_swiftAPI getAuthToken:resolve rejecter:reject];
+}
+
 RCT_EXPORT_METHOD(passAlongAuthToken : (NSString *_Nullable)authToken) {
   [_swiftAPI passAlongAuthToken:authToken];
 }
@@ -579,8 +616,8 @@ RCT_EXPORT_METHOD(endEmbeddedSession) {
   [_swiftAPI endEmbeddedSession];
 }
 
-RCT_EXPORT_METHOD(syncEmbeddedMessages) {
-  [_swiftAPI syncEmbeddedMessages];
+RCT_EXPORT_METHOD(syncEmbeddedMessages : (NSArray *_Nullable)placementIds) {
+  [_swiftAPI syncEmbeddedMessages:placementIds];
 }
 
 RCT_EXPORT_METHOD(getEmbeddedMessages : (NSArray *_Nullable)placementIds resolve : (RCTPromiseResolveBlock)resolve reject : (RCTPromiseRejectBlock)reject) {

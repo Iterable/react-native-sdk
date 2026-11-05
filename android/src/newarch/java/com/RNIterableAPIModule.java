@@ -73,6 +73,21 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   }
 
   @Override
+  public void setVisitorUsageTracked(boolean tracked) {
+    moduleImpl.setVisitorUsageTracked(tracked);
+  }
+
+  @Override
+  public void getVisitorUsageTracked(Promise promise) {
+    moduleImpl.getVisitorUsageTracked(promise);
+  }
+
+  @Override
+  public void getAuthToken(Promise promise) {
+    moduleImpl.getAuthToken(promise);
+  }
+
+  @Override
   public void trackEvent(String name, @Nullable ReadableMap dataFields) {
     moduleImpl.trackEvent(name, dataFields);
   }
@@ -135,6 +150,11 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   @Override
   public void disableDeviceForCurrentUser() {
     moduleImpl.disableDeviceForCurrentUser();
+  }
+
+  @Override
+  public void disableDeviceForAllUsers() {
+    moduleImpl.disableDeviceForAllUsers();
   }
 
   @Override
@@ -230,8 +250,8 @@ public class RNIterableAPIModule extends NativeRNIterableAPISpec {
   }
 
   @Override
-  public void syncEmbeddedMessages() {
-    moduleImpl.syncEmbeddedMessages();
+  public void syncEmbeddedMessages(@Nullable ReadableArray placementIds) {
+    moduleImpl.syncEmbeddedMessages(placementIds);
   }
 
   @Override
