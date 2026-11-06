@@ -1,4 +1,11 @@
-import { act, fireEvent, render, waitFor } from '@testing-library/react-native';
+import { View } from 'react-native';
+import {
+  act,
+  fireEvent,
+  render,
+  type RenderResult,
+  waitFor,
+} from '@testing-library/react-native';
 
 import { MockLinking } from '../../__mocks__/MockLinking';
 import { MockRNIterableAPI } from '../../__mocks__/MockRNIterableAPI';
@@ -16,19 +23,6 @@ import { IterableInAppCloseSource } from '../../inApp/enums/IterableInAppCloseSo
 import { IterableInAppLocation } from '../../inApp/enums/IterableInAppLocation';
 import type { IterableInboxRowViewModel } from '../types';
 import { IterableInboxMessageDisplay } from './IterableInboxMessageDisplay';
-
-jest.mock('react-native-webview', () => {
-  const React = require('react');
-  const { View } = require('react-native');
-  const WebView = (props: {
-    onMessage?: (event: { nativeEvent: { data: string } }) => void;
-  }) =>
-    React.createElement(View, {
-      testID: 'inbox-message-webview',
-      onMessage: props.onMessage,
-    });
-  return { WebView };
-});
 
 describe('IterableInboxMessageDisplay', () => {
   const messageId = 'msg-1';
@@ -93,7 +87,7 @@ describe('IterableInboxMessageDisplay', () => {
     Iterable.savedConfig = new IterableConfig();
   });
 
-  async function renderWithContent() {
+  async function renderWithContent(): Promise<RenderResult> {
     const utils = render(
       <IterableInboxMessageDisplay
         rowViewModel={rowViewModel}
@@ -110,23 +104,24 @@ describe('IterableInboxMessageDisplay', () => {
     return utils;
   }
 
-  function postMessage(
-    getByTestId: (id: string) => {
-      props: { onMessage?: (e: { nativeEvent: { data: string } }) => void };
-    },
-    url: string
-  ) {
-    const webView = getByTestId('inbox-message-webview');
-    const onMessage = webView.props.onMessage;
-    expect(onMessage).toBeDefined();
-    onMessage!({ nativeEvent: { data: url } });
+  /** Global setup mocks `WebView` as `View`; pick the node wired with `onMessage`. */
+  function postWebViewMessage(utils: RenderResult, url: string) {
+    const candidates = utils.UNSAFE_getAllByType(View);
+    const webView = candidates.find(
+      (node) => typeof node.props.onMessage === 'function'
+    );
+    expect(webView).toBeDefined();
+    const onMessage = webView!.props.onMessage as (
+      e: { nativeEvent: { data: string } }
+    ) => void;
+    onMessage({ nativeEvent: { data: url } });
   }
 
   it('should open http(s) in the system browser and return to the inbox', async () => {
-    const { getByTestId } = await renderWithContent();
+    const utils = await renderWithContent();
     const url = 'https://example.com/path';
 
-    postMessage(getByTestId, url);
+    postWebViewMessage(utils, url);
 
     expect(trackInAppClickSpy).toHaveBeenCalledWith(
       rowViewModel.inAppMessage,
@@ -146,9 +141,9 @@ describe('IterableInboxMessageDisplay', () => {
   });
 
   it('should delete the row and return to the inbox for iterable://delete', async () => {
-    const { getByTestId } = await renderWithContent();
+    const utils = await renderWithContent();
 
-    postMessage(getByTestId, 'iterable://delete');
+    postWebViewMessage(utils, 'iterable://delete');
 
     expect(deleteRow).toHaveBeenCalledWith(messageId);
     expect(returnToInbox).toHaveBeenCalled();
@@ -157,9 +152,9 @@ describe('IterableInboxMessageDisplay', () => {
   });
 
   it('should return to the inbox for iterable://dismiss without deleting', async () => {
-    const { getByTestId } = await renderWithContent();
+    const utils = await renderWithContent();
 
-    postMessage(getByTestId, 'iterable://dismiss');
+    postWebViewMessage(utils, 'iterable://dismiss');
 
     expect(returnToInbox).toHaveBeenCalled();
     expect(deleteRow).not.toHaveBeenCalled();
@@ -167,10 +162,10 @@ describe('IterableInboxMessageDisplay', () => {
   });
 
   it('should invoke customActionHandler with the action type for action:// URLs', async () => {
-    const { getByTestId } = await renderWithContent();
+    const utils = await renderWithContent();
     const url = 'action://foo';
 
-    postMessage(getByTestId, url);
+    postWebViewMessage(utils, url);
 
     await waitFor(() => {
       expect(customActionHandler).toHaveBeenCalled();
@@ -187,9 +182,9 @@ describe('IterableInboxMessageDisplay', () => {
   });
 
   it('should swallow unknown iterable:// URLs without calling urlHandler or returning to inbox', async () => {
-    const { getByTestId } = await renderWithContent();
+    const utils = await renderWithContent();
 
-    postMessage(getByTestId, 'iterable://foo');
+    postWebViewMessage(utils, 'iterable://foo');
 
     expect(returnToInbox).not.toHaveBeenCalled();
     expect(urlHandler).not.toHaveBeenCalled();
@@ -198,10 +193,10 @@ describe('IterableInboxMessageDisplay', () => {
   });
 
   it('should pass other URLs to urlHandler', async () => {
-    const { getByTestId } = await renderWithContent();
+    const utils = await renderWithContent();
     const url = 'myapp://screen';
 
-    postMessage(getByTestId, url);
+    postWebViewMessage(utils, url);
 
     await waitFor(() => {
       expect(urlHandler).toHaveBeenCalledWith(url, expect.any(IterableActionContext));
@@ -214,10 +209,10 @@ describe('IterableInboxMessageDisplay', () => {
     trackInAppClickSpy.mockRestore();
     trackInAppCloseSpy.mockRestore();
 
-    const { getByTestId } = await renderWithContent();
+    const utils = await renderWithContent();
     const url = 'https://example.com/x';
 
-    postMessage(getByTestId, url);
+    postWebViewMessage(utils, url);
 
     expect(MockRNIterableAPI.trackInAppClick).toHaveBeenCalledWith(
       messageId,
