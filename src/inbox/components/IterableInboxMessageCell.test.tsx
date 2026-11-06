@@ -100,7 +100,7 @@ describe('IterableInboxMessageCell', () => {
     jest.restoreAllMocks();
   });
 
-  it('renders default layout with title, subtitle, formatted date, and unread chrome', () => {
+  it('should render default layout with title, subtitle, formatted date, and unread chrome', () => {
     // GIVEN an unread row
     const rowViewModel = buildRowViewModel(false);
 
@@ -134,7 +134,7 @@ describe('IterableInboxMessageCell', () => {
     expect(unreadDots.length).toBeGreaterThan(0);
   });
 
-  it('renders read state without the unread indicator', () => {
+  it('should render read state without the unread indicator', () => {
     // GIVEN a read row
     const rowViewModel = buildRowViewModel(true);
 
@@ -159,7 +159,7 @@ describe('IterableInboxMessageCell', () => {
     expect(unreadDots.length).toBe(0);
   });
 
-  it('uses messageListItemLayout when it returns content', () => {
+  it('should use messageListItemLayout when it returns content', () => {
     // GIVEN a custom layout factory
     const messageListItemLayout = jest.fn(
       (_isLast: boolean, _row: IterableInboxRowViewModel) =>
