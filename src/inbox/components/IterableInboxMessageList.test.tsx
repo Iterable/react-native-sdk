@@ -1,4 +1,4 @@
-import { render, waitFor } from '@testing-library/react-native';
+import { act, render, waitFor } from '@testing-library/react-native';
 import { FlatList } from 'react-native';
 
 import { IterableInAppMessage } from '../../inApp';
@@ -9,6 +9,9 @@ import type { IterableInboxRowViewModel } from '../types';
 
 import { IterableInboxMessageList } from './IterableInboxMessageList';
 
+/** Set by the mock so tests can simulate swipe end after mount. */
+const iterableInboxMessageCellMockHooks: { endSwipe?: () => void } = {};
+
 jest.mock('./IterableInboxMessageCell', () => {
   const React = require('react');
   const { Text } = require('react-native');
@@ -18,12 +21,15 @@ jest.mock('./IterableInboxMessageCell', () => {
       rowViewModel: IterableInboxRowViewModel;
       swipingCheck: (swiping: boolean) => void;
     }) => {
+      const { swipingCheck, rowViewModel } = props;
       React.useEffect(() => {
-        props.swipingCheck(true);
-      }, [props]);
+        swipingCheck(true);
+        iterableInboxMessageCellMockHooks.endSwipe = () => swipingCheck(false);
+        // Runs on mount; swipingCheck is stable (setState from IterableInboxMessageList).
+      }, [swipingCheck]);
       return (
-        <Text testID={`inbox-cell-${props.rowViewModel.inAppMessage.messageId}`}>
-          {props.rowViewModel.inAppMessage.messageId}
+        <Text testID={`inbox-cell-${rowViewModel.inAppMessage.messageId}`}>
+          {rowViewModel.inAppMessage.messageId}
         </Text>
       );
     },
@@ -74,6 +80,7 @@ describe('IterableInboxMessageList', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    iterableInboxMessageCellMockHooks.endSwipe = undefined;
   });
 
   it('should render one cell per rowViewModels', () => {
@@ -174,8 +181,8 @@ describe('IterableInboxMessageList', () => {
     ]);
   });
 
-  it('should set scrollEnabled to false while swiping is true', async () => {
-    // GIVEN a list that reports swipe state via IterableInboxMessageCell
+  it('should disable scroll while swiping and re-enable when swipe ends', async () => {
+    // GIVEN a list that reports swipe state via IterableInboxMessageCell (mock)
     const { UNSAFE_getByType } = render(
       <IterableInboxMessageList
         {...baseProps}
@@ -185,9 +192,19 @@ describe('IterableInboxMessageList', () => {
 
     const flatList = UNSAFE_getByType(FlatList);
 
-    // WHEN cells mount and signal swiping
+    // WHEN the cell mounts and signals swiping
     await waitFor(() => {
       expect(flatList.props.scrollEnabled).toBe(false);
+    });
+
+    // WHEN swipe ends
+    await act(async () => {
+      iterableInboxMessageCellMockHooks.endSwipe?.();
+    });
+
+    // THEN scrolling is allowed again
+    await waitFor(() => {
+      expect(flatList.props.scrollEnabled).toBe(true);
     });
   });
 });
