@@ -163,6 +163,9 @@ export const IterableInboxMessageDisplay = ({
     const source = IterableActionSource.inApp;
     const context = new IterableActionContext(action, source);
 
+    // Track before routing: aligns with native HTML in-app (click/close first,
+    // then iterable:// handling). Unknown iterable:// paths still get these
+    // events while skipping urlHandler / returnToInbox below.
     Iterable.trackInAppClick(
       rowViewModel.inAppMessage,
       IterableInAppLocation.inbox,
@@ -181,6 +184,9 @@ export const IterableInboxMessageDisplay = ({
       //handle dismiss action
     } else if (URL === 'iterable://dismiss') {
       returnToInbox();
+      // iterable:// is reserved — only delete/dismiss are SDK actions (SDK-633)
+    } else if (URL.startsWith('iterable://')) {
+      return;
       //handle external link
     } else if (URL.slice(0, 4) === 'http') {
       returnToInbox(() => Linking.openURL(URL));
