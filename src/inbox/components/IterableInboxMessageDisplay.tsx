@@ -181,6 +181,9 @@ export const IterableInboxMessageDisplay = ({
       //handle dismiss action
     } else if (URL === 'iterable://dismiss') {
       returnToInbox();
+      // iterable:// is reserved — only delete/dismiss are SDK actions (SDK-633)
+    } else if (URL.startsWith('iterable://')) {
+      return;
       //handle external link
     } else if (URL.slice(0, 4) === 'http') {
       returnToInbox(() => Linking.openURL(URL));
