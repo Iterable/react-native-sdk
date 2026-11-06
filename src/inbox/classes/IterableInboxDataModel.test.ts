@@ -62,7 +62,56 @@ describe('IterableInboxDataModel', () => {
   });
 
   describe('refresh', () => {
-    it('should map inbox messages through filter, comparator, and default sort (most recent first)', async () => {
+    it('should sort by most recent first when no comparator is set', async () => {
+      // GIVEN two messages with different createdAt values, returned older-first
+      const older = makeMessage('older', new Date('2024-01-01T10:00:00.000Z'));
+      const newer = makeMessage('newer', new Date('2024-02-01T10:00:00.000Z'));
+
+      const getInboxSpy = jest
+        .spyOn(IterableApi, 'getInboxMessages')
+        .mockResolvedValue([older, newer]);
+
+      const model = new IterableInboxDataModel();
+
+      // WHEN refresh runs without set() (default sortByMostRecent)
+      const rows = await model.refresh();
+
+      // THEN newer messages appear first regardless of API order
+      expect(getInboxSpy).toHaveBeenCalledTimes(1);
+      expect(rows.map((r) => r.inAppMessage.messageId)).toEqual([
+        'newer',
+        'older',
+      ]);
+      expect(rows[0]?.inAppMessage).toBe(newer);
+    });
+
+    it('should apply a filter with default most-recent sort when only a filter is set', async () => {
+      // GIVEN three messages and a filter; no custom comparator (default sort)
+      const oldest = makeMessage('a', new Date('2024-01-01T10:00:00.000Z'));
+      const mid = makeMessage('b', new Date('2024-02-01T10:00:00.000Z'));
+      const newest = makeMessage('c', new Date('2024-03-01T10:00:00.000Z'));
+      const hidden = makeMessage('hidden', new Date('2024-04-01T10:00:00.000Z'));
+
+      jest.spyOn(IterableApi, 'getInboxMessages').mockResolvedValue([
+        oldest,
+        mid,
+        newest,
+        hidden,
+      ]);
+
+      const model = new IterableInboxDataModel();
+      model.set((m) => m.messageId !== 'hidden');
+
+      const rows = await model.refresh();
+
+      expect(rows.map((r) => r.inAppMessage.messageId)).toEqual([
+        'c',
+        'b',
+        'a',
+      ]);
+    });
+
+    it('should map inbox messages through filter and a custom comparator', async () => {
       // GIVEN messages returned in arbitrary order and a filter that drops one id
       const older = makeMessage('older', new Date('2024-01-01T10:00:00.000Z'));
       const newer = makeMessage('newer', new Date('2024-02-01T10:00:00.000Z'));
@@ -81,7 +130,7 @@ describe('IterableInboxDataModel', () => {
       // WHEN refresh runs
       const rows = await model.refresh();
 
-      // THEN filter and comparator are applied and rows map inbox fields
+      // THEN filter and comparator override default sort (lexicographic: newer, older)
       expect(getInboxSpy).toHaveBeenCalledTimes(1);
       expect(rows.map((r) => r.inAppMessage.messageId)).toEqual([
         'newer',
