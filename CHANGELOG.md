@@ -1,9 +1,5 @@
 ## Unreleased
 
-### Tests
-
-- Added unit tests for `IterableInboxMessageCell` covering default layout, custom `messageListItemLayout`, row tap, and swipe-to-delete (SDK-619).
-
 ### Fixes
 
 - Fixed `Iterable.trackPushOpenWithCampaignId` on Android so the `appAlreadyRunning` argument is forwarded to the native SDK instead of always being sent as `false`.

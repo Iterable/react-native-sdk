@@ -172,7 +172,7 @@ describe('IterableInboxMessageCell', () => {
     );
 
     // WHEN the cell renders
-    const { getByLabelText } = render(
+    const { getByLabelText, queryByText } = render(
       <IterableInboxMessageCell
         {...baseProps}
         messageListItemLayout={messageListItemLayout}
@@ -180,9 +180,10 @@ describe('IterableInboxMessageCell', () => {
       />
     );
 
-    // THEN the layout function is used and the custom tree is shown
-    expect(messageListItemLayout).toHaveBeenCalled();
+    // THEN the custom tree replaces the default layout
+    expect(messageListItemLayout).toHaveBeenCalledWith(false, expect.anything());
     expect(getByLabelText('custom-layout-marker')).toBeTruthy();
+    expect(queryByText('Row title')).toBeNull();
   });
 
   it('should call handleMessageSelect with message id and index when the row is pressed', () => {
