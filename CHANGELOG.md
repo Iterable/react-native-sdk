@@ -2,13 +2,12 @@
 
 ### Fixes
 
-- Inbox message HTML links: unknown `iterable://` URLs no longer fall through to `urlHandler`; only `iterable://delete` and `iterable://dismiss` are handled as SDK actions (SDK-615, SDK-633).
+- Fixed inbox HTML messages forwarding unknown `iterable://` links to `urlHandler`. `iterable://` is reserved for `iterable://delete` and `iterable://dismiss`; any other `iterable://` link now closes the message without calling a handler. Use `action://name` for custom actions (`customActionHandler`) and `https` or your app's own scheme for deep links (`urlHandler`).
 - Fixed `Iterable.trackPushOpenWithCampaignId` on Android so the `appAlreadyRunning` argument is forwarded to the native SDK instead of always being sent as `false`.
 - `Iterable.inAppManager.showMessage` now rejects on iOS when the message id is empty or no longer in the native queue, matching Android. Previously the promise never settled.
 
 ### Updates
 
-- Added unit tests for inbox message link handling in `IterableInboxMessageDisplay` (SDK-615).
 - Added optional placement IDs to `Iterable.embeddedManager.syncMessages()` so apps can sync embedded messages for specific placements only (SDK-751). When omitted, null, or empty, behavior matches the previous sync-all call.
   - **Android:** Scoped sync (`syncMessages([id, …])`) matches the pinned iterableapi behavior and may remove cached messages for placements not included in the sync response (SDK-798). iOS preserves unrequested placements. Prefer `syncMessages()` without placement IDs on Android until the native fix ships and the Android SDK pin is bumped.
 - Added `IterableInAppMessage.jsonOnly` so `inAppHandler` and in-app message fetches can distinguish JSON-only messages from HTML in-apps (SDK-750).

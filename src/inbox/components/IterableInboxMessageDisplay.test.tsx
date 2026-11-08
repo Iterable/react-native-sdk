@@ -148,6 +148,7 @@ describe('IterableInboxMessageDisplay', () => {
     expect(deleteRow).toHaveBeenCalledWith(messageId);
     expect(returnToInbox).toHaveBeenCalled();
     expect(urlHandler).not.toHaveBeenCalled();
+    expect(customActionHandler).not.toHaveBeenCalled();
     expect(MockLinking.openURL).not.toHaveBeenCalled();
   });
 
@@ -159,6 +160,7 @@ describe('IterableInboxMessageDisplay', () => {
     expect(returnToInbox).toHaveBeenCalled();
     expect(deleteRow).not.toHaveBeenCalled();
     expect(urlHandler).not.toHaveBeenCalled();
+    expect(customActionHandler).not.toHaveBeenCalled();
   });
 
   it('should invoke customActionHandler with the action type for action:// URLs', async () => {
@@ -181,13 +183,23 @@ describe('IterableInboxMessageDisplay', () => {
     expect(urlHandler).not.toHaveBeenCalled();
   });
 
-  it('should swallow unknown iterable:// URLs without calling urlHandler or returning to inbox', async () => {
+  it('should close the message for unknown iterable:// URLs without calling any handler', async () => {
     const utils = await renderWithContent();
+    const url = 'iterable://foo';
 
-    postWebViewMessage(utils, 'iterable://foo');
+    postWebViewMessage(utils, url);
 
-    expect(returnToInbox).not.toHaveBeenCalled();
+    expect(returnToInbox).toHaveBeenCalledTimes(1);
+    expect(trackInAppClickSpy).toHaveBeenCalledTimes(1);
+    expect(trackInAppCloseSpy).toHaveBeenCalledTimes(1);
+    expect(trackInAppCloseSpy).toHaveBeenCalledWith(
+      rowViewModel.inAppMessage,
+      IterableInAppLocation.inbox,
+      IterableInAppCloseSource.link,
+      url
+    );
     expect(urlHandler).not.toHaveBeenCalled();
+    expect(customActionHandler).not.toHaveBeenCalled();
     expect(MockLinking.openURL).not.toHaveBeenCalled();
     expect(deleteRow).not.toHaveBeenCalled();
   });
