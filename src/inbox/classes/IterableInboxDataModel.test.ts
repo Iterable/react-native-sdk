@@ -17,9 +17,6 @@ jest.mock('../../api', () => ({
 }));
 
 describe('IterableInboxDataModel', () => {
-  let dateLocaleSpy: jest.SpyInstance;
-  let timeLocaleSpy: jest.SpyInstance;
-
   const makeMessage = (
     messageId: string,
     createdAt: Date,
@@ -48,17 +45,20 @@ describe('IterableInboxDataModel', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    dateLocaleSpy = jest
+    jest
       .spyOn(Date.prototype, 'toLocaleDateString')
-      .mockReturnValue('1/15/2024');
-    timeLocaleSpy = jest
+      .mockImplementation(function (this: Date) {
+        return `date-${this.toISOString()}`;
+      });
+    jest
       .spyOn(Date.prototype, 'toLocaleTimeString')
-      .mockReturnValue('3:00:00 PM');
+      .mockImplementation(function (this: Date) {
+        return `time-${this.toISOString()}`;
+      });
   });
 
   afterEach(() => {
-    dateLocaleSpy.mockRestore();
-    timeLocaleSpy.mockRestore();
+    jest.restoreAllMocks();
   });
 
   describe('refresh', () => {
@@ -112,8 +112,9 @@ describe('IterableInboxDataModel', () => {
     });
 
     it('should map inbox messages through filter and a custom comparator', async () => {
-      // GIVEN messages returned in arbitrary order and a filter that drops one id
-      const older = makeMessage('older', new Date('2024-01-01T10:00:00.000Z'));
+      const older = makeMessage('older', new Date('2024-01-01T10:00:00.000Z'), {
+        read: true,
+      });
       const newer = makeMessage('newer', new Date('2024-02-01T10:00:00.000Z'));
       const hidden = makeMessage('hidden', new Date('2024-03-01T10:00:00.000Z'));
 
@@ -124,20 +125,28 @@ describe('IterableInboxDataModel', () => {
       const model = new IterableInboxDataModel();
       model.set(
         (m) => m.messageId !== 'hidden',
-        (a, b) => a.messageId.localeCompare(b.messageId)
+        // Reverse id order: the opposite of the default most-recent-first sort
+        (a, b) => b.messageId.localeCompare(a.messageId)
       );
 
       // WHEN refresh runs
       const rows = await model.refresh();
 
-      // THEN filter and comparator override default sort (lexicographic: newer, older)
+      // THEN the filter drops 'hidden' and the comparator replaces the default sort
       expect(getInboxSpy).toHaveBeenCalledTimes(1);
       expect(rows.map((r) => r.inAppMessage.messageId)).toEqual([
-        'newer',
         'older',
+        'newer',
       ]);
-      expect(rows[0]?.title).toBe('title-newer');
-      expect(rows[0]?.inAppMessage).toBe(newer);
+      expect(rows[0]).toEqual({
+        title: 'title-older',
+        subtitle: 'sub',
+        imageUrl: 'https://example.com/icon.png',
+        createdAt: older.createdAt,
+        read: true,
+        inAppMessage: older,
+      });
+      expect(rows[0]?.inAppMessage).toBe(older);
     });
 
     it('should resolve to an empty array when getInboxMessages rejects', async () => {
@@ -165,21 +174,23 @@ describe('IterableInboxDataModel', () => {
       // WHEN the date is formatted
       const formatted = model.getFormattedDate(message);
 
-      // THEN the default mapper combines locale date and time
-      expect(formatted).toBe('1/15/2024 at 3:00:00 PM');
+      // THEN the default mapper combines locale date and time for that instant
+      expect(formatted).toBe(
+        'date-2024-06-15T12:00:00.000Z at time-2024-06-15T12:00:00.000Z'
+      );
     });
 
     it('should use the custom date mapper when set', () => {
       // GIVEN a custom date mapper
       const model = new IterableInboxDataModel();
-      model.set(undefined, undefined, () => 'custom-label');
+      model.set(undefined, undefined, (m) => `custom-${m.messageId}`);
       const message = makeMessage('m1', new Date('2024-06-15T12:00:00.000Z'));
 
       // WHEN the date is formatted
       const formatted = model.getFormattedDate(message);
 
       // THEN the custom mapper output is returned
-      expect(formatted).toBe('custom-label');
+      expect(formatted).toBe('custom-m1');
     });
   });
 
