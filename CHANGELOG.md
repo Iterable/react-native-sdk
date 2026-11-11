@@ -2,7 +2,7 @@
 
 ### Fixes
 
-- Fixed inbox HTML messages forwarding unknown `iterable://` links to `urlHandler`. `iterable://` is reserved for `iterable://delete` and `iterable://dismiss`; any other `iterable://` link now closes the message without calling a handler. Use `action://name` for custom actions (`customActionHandler`) and `https` or your app's own scheme for deep links (`urlHandler`).
+- Fixed inbox HTML messages forwarding unknown `iterable://` links to `urlHandler`. `iterable://` is reserved for `iterable://delete` and `iterable://dismiss`; any other `iterable://` link now closes the message without calling a handler. Use `action://name` for custom actions (`customActionHandler`) and your app's own scheme for deep links (`urlHandler`). In inbox messages, `http(s)` links open with `Linking.openURL` and do not call `urlHandler`.
 - Fixed `Iterable.trackPushOpenWithCampaignId` on Android so the `appAlreadyRunning` argument is forwarded to the native SDK instead of always being sent as `false`.
 - `Iterable.inAppManager.showMessage` now rejects on iOS when the message id is empty or no longer in the native queue, matching Android. Previously the promise never settled.
 

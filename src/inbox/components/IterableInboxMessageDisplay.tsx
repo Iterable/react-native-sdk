@@ -163,9 +163,9 @@ export const IterableInboxMessageDisplay = ({
     const source = IterableActionSource.inApp;
     const context = new IterableActionContext(action, source);
 
-    // Track before routing, like native HTML in-apps: every link click sends
-    // click and close(link), then the message closes. Unknown iterable://
-    // paths close without calling urlHandler or customActionHandler.
+    // Like native HTML in-apps, every link click sends click and close(link)
+    // and then closes the message. Unknown iterable:// paths close without
+    // calling urlHandler or customActionHandler.
     Iterable.trackInAppClick(
       rowViewModel.inAppMessage,
       IterableInAppLocation.inbox,
