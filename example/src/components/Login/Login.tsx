@@ -8,12 +8,11 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { colors, type Route } from '../../constants';
+import { colors } from '../../constants';
 import { useIterableApp } from '../../hooks';
-import type { RootStackScreenProps } from '../../types';
 import { styles } from './Login.styles';
 
-export const Login = ({ navigation }: RootStackScreenProps<Route.Login>) => {
+export const Login = () => {
   const { apiKey, setApiKey, userId, setUserId, initialize, loginInProgress } =
     useIterableApp();
   const loginIsEnabled = useMemo(() => apiKey && userId, [apiKey, userId]);
@@ -54,7 +53,7 @@ export const Login = ({ navigation }: RootStackScreenProps<Route.Login>) => {
             <Pressable
               style={loginIsEnabled ? styles.button : styles.buttonDisabled}
               disabled={!loginIsEnabled}
-              onPressOut={() => initialize(navigation)}
+              onPressOut={() => initialize()}
             >
               <Text
                 style={

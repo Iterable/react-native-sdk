@@ -1,8 +1,8 @@
-import type { StackNavigationProp } from '@react-navigation/stack';
 import {
   createContext,
   useCallback,
   useContext,
+  useRef,
   useState,
   type FunctionComponent,
 } from 'react';
@@ -19,10 +19,8 @@ import {
 } from '@iterable/react-native-sdk';
 
 import { Route } from '../constants/routes';
-import type { RootStackParamList } from '../types/navigation';
+import { navigationRef } from '../navigationRef';
 import NativeJwtTokenModule from '../NativeJwtTokenModule';
-
-type Navigation = StackNavigationProp<RootStackParamList>;
 
 interface IterableAppProps {
   /** The API key for your Iterable instance */
@@ -31,10 +29,9 @@ interface IterableAppProps {
   config: IterableConfig | null;
   /**
    * Call to initialize the Iterable SDK
-   * @param navigation - The navigation prop from the screen
    * @returns Promise<boolean> Whether the initialization was successful
    */
-  initialize: (navigation: Navigation) => void;
+  initialize: () => void;
   /** Whether the SDK has been initialized */
   isInitialized?: boolean;
   /** Is the tab in focus the `Inbox` tab? */
@@ -99,6 +96,8 @@ export const IterableAppProvider: FunctionComponent<
   const [isInboxTab, setIsInboxTab] = useState<boolean>(false);
   const [itblConfig, setItblConfig] = useState<IterableConfig | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  // Read by `urlHandler`, which is created once and would see stale state
+  const isLoggedInRef = useRef<boolean>(false);
   const [isInitialized, setIsInitialized] = useState<boolean>(false);
   const [apiKey, setApiKey] = useState<string | undefined>(
     process.env.ITBL_API_KEY
@@ -141,6 +140,7 @@ export const IterableAppProvider: FunctionComponent<
     }
 
     fn(id, token);
+    isLoggedInRef.current = true;
     setIsLoggedIn(true);
     setLoginInProgress(false);
 
@@ -148,7 +148,7 @@ export const IterableAppProvider: FunctionComponent<
   }, [getJwtToken, userId]);
 
   const initialize = useCallback(
-    (navigation: Navigation) => {
+    () => {
       logout();
 
       const config = new IterableConfig();
@@ -176,13 +176,13 @@ export const IterableAppProvider: FunctionComponent<
       };
 
       config.urlHandler = (url: string) => {
-        const routeNames = [Route.Commerce, Route.Inbox, Route.User];
+        // Logged out: the tabs do not exist, so leave the URL unhandled
+        if (!isLoggedInRef.current || !navigationRef.isReady()) return false;
+
+        const routeNames = [Route.Commerce, Route.Inbox, Route.User] as const;
         for (const route of routeNames) {
           if (url.includes(route.toLowerCase())) {
-            // [MOB-10418](https://iterable.atlassian.net/browse/MOB-10418): Figure out typing for this
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            navigation.navigate(route);
+            navigationRef.navigate(Route.Main, { screen: route });
             return true;
           }
         }
@@ -278,6 +278,7 @@ export const IterableAppProvider: FunctionComponent<
     Iterable.setUserId(null);
     Iterable.logout();
     lastTimeStamp = 0;
+    isLoggedInRef.current = false;
     setIsLoggedIn(false);
   }, []);
 

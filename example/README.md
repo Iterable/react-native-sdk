@@ -81,6 +81,22 @@ If everything is set up _correctly_, you should see your new app running in your
 This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
 
 
+## Testing deep links (Android)
+
+The example's `MainActivity` handles `app://` URLs (`AndroidManifest.xml`), and `urlHandler` in `src/hooks/useIterableApp.tsx` routes `app://commerce`, `app://inbox` and `app://user` to the matching tab. Sign in first: while signed out, `urlHandler` returns `false` and nothing is navigated.
+
+Check the intent filter from a terminal (app running or killed):
+
+```bash
+adb shell am start -a android.intent.action.VIEW -c android.intent.category.BROWSABLE -d "app://inbox" iterable.reactnativesdk.example
+```
+
+To test an Open URL push end to end, send a push campaign with an **Open URL** action of `app://inbox`, then tap it:
+
+- **App killed** (`adb shell am force-stop iterable.reactnativesdk.example`): the app launches and `urlHandler` receives `app://inbox` after `androidWakeDelayMs` (default 1000 ms). The example registers `urlHandler` only after you tap **Sign in**, so a cold-start push reaches `urlHandler` once you have signed in.
+- **App in the foreground**: tap once; `urlHandler` receives the URL and the Inbox tab shows.
+- **Wrapped link**: a `https://links.iterable.com/...` link that wraps an `app://` URL is expected to reach `urlHandler` as the unwrapped `app://` URL (the native Iterable SDK does the unwrap). If you see the wrapped `https://` URL instead, report it.
+
 ## Congratulations! :tada:
 
 You've successfully run the Iterable Example App. :partying_face:
