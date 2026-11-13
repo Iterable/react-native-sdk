@@ -3,11 +3,12 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import App from './components/App';
 import { IterableAppProvider } from './hooks';
+import { navigationRef } from './navigationRef';
 
 export default function Main() {
   return (
     <SafeAreaProvider>
-      <NavigationContainer>
+      <NavigationContainer ref={navigationRef}>
         <IterableAppProvider>
           <App />
         </IterableAppProvider>
