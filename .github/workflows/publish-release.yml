@@ -1,0 +1,173 @@
+name: Publish Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish (e.g., 3.6.0)'
+        required: true
+        type: string
+
+env:
+  VERSION: ${{ github.event.inputs.version }}
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  publish-release:
+    runs-on: ubuntu-latest
+    environment: npm
+    steps:
+      - uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ vars.ITERABLE_SDK_RELEASE_APP_ID }}
+          private-key: ${{ secrets.ITERABLE_SDK_RELEASE_APP_PRIVATE_KEY }}
+
+      - name: Validate version format
+        run: |
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Invalid version format. Use a stable semver release (e.g., 3.6.0). Prereleases are not supported by this workflow."
+            exit 1
+          fi
+
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Verify release is ready on master HEAD
+        run: |
+          changelog_top=$(grep -m1 -E '^## [0-9]+\.[0-9]+\.[0-9]+$' CHANGELOG.md | sed -E 's/^## //')
+          if [ "$changelog_top" != "$VERSION" ]; then
+            echo "::error::CHANGELOG.md top version is '$changelog_top', expected '$VERSION' at master HEAD. Merge the prepare-release PR before running this workflow."
+            exit 1
+          fi
+
+          pkg_ver=$(node -p "require('./package.json').version")
+          if [ "$pkg_ver" != "$VERSION" ]; then
+            echo "::error::package.json version is '$pkg_ver', expected '$VERSION'."
+            exit 1
+          fi
+
+          build_info_ver=$(grep -oP "version:\s*'\K[^']+" src/itblBuildInfo.ts)
+          if [ "$build_info_ver" != "$VERSION" ]; then
+            echo "::error::src/itblBuildInfo.ts version is '$build_info_ver', expected '$VERSION'."
+            exit 1
+          fi
+
+      - name: Extract changelog release notes
+        run: |
+          section=$(awk -v ver="$VERSION" '
+            $0 == "## " ver { capturing=1; next }
+            capturing && /^## [0-9]+\.[0-9]+\.[0-9]+$/ { exit }
+            capturing { print }
+          ' CHANGELOG.md)
+
+          if [ -z "$(printf '%s' "$section" | tr -d '[:space:]')" ]; then
+            echo "::error::No CHANGELOG.md content under ## $VERSION. Add release notes on the prepare-release PR before publishing."
+            exit 1
+          fi
+
+          printf '%s\n' "$section" > "$RUNNER_TEMP/release-notes.md"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: 'yarn'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install npm for OIDC trusted publishing
+        run: npm install -g npm@11.17.0
+
+      - run: yarn install --immutable
+
+      - run: yarn test --maxWorkers=2
+
+      - run: yarn prepare
+
+      - name: Publish draft GitHub release and tag master
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          set -euo pipefail
+          target="$(git rev-parse HEAD)"
+
+          if ! gh release view "$VERSION" &>/dev/null; then
+            echo "::error::No GitHub release named $VERSION. Run Prepare Release first."
+            exit 1
+          fi
+
+          release_tag_commit() {
+            local tag="$1"
+            local peeled direct
+            peeled=$(git ls-remote origin "refs/tags/${tag}^{}" 2>/dev/null | awk '{print $1}')
+            if [ -n "$peeled" ]; then
+              echo "$peeled"
+              return
+            fi
+            direct=$(git ls-remote origin "refs/tags/${tag}" 2>/dev/null | awk '{print $1}')
+            if [ -n "$direct" ]; then
+              echo "$direct"
+            fi
+          }
+
+          assert_release_tag_at_head() {
+            local tag_sha attempt
+            for attempt in 1 2 3 4 5; do
+              tag_sha=$(release_tag_commit "$VERSION")
+              if [ -n "$tag_sha" ]; then
+                break
+              fi
+              sleep 2
+            done
+            if [ -z "$tag_sha" ]; then
+              echo "::error::Release tag $VERSION not found on origin."
+              exit 1
+            fi
+            if [ "$tag_sha" != "$target" ]; then
+              echo "::error::Release $VERSION tag points to $tag_sha but master HEAD is $target. Fix the release tag or run Publish from the commit the tag targets."
+              exit 1
+            fi
+          }
+
+          is_draft=$(gh release view "$VERSION" --json isDraft -q .isDraft)
+          if [ "$is_draft" = "true" ]; then
+            gh release edit "$VERSION" \
+              --draft=false \
+              --target "$target" \
+              --latest \
+              --notes-file "$RUNNER_TEMP/release-notes.md"
+            echo "Published GitHub release $VERSION at $target."
+            assert_release_tag_at_head
+          else
+            assert_release_tag_at_head
+            echo "GitHub release $VERSION is already published at $target, skipping release edit."
+          fi
+
+      - name: Publish to npm
+        run: |
+          if npm view "@iterable/react-native-sdk@${VERSION}" version 2>/dev/null | grep -qxF "$VERSION"; then
+            echo "Version $VERSION is already on npm, skipping publish."
+          else
+            npm publish --provenance
+          fi
+
+      - name: Slack notification
+        run: |
+          release_url="https://github.com/${{ github.repository }}/releases/tag/$VERSION"
+          payload=$(jq -n \
+            --arg text ":package: *React Native SDK ${VERSION}* has been released. <${release_url}|View release notes>." \
+            '{"text": $text}')
+          curl -sS -X POST -H 'Content-type: application/json' --data "$payload" "${{ secrets.SLACK_WEBHOOK }}"
+
+      - name: Slack failure notification
+        if: failure()
+        run: |
+          run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/attempts/${{ github.run_attempt }}"
+          payload=$(jq -n \
+            --arg text ":alert: React Native SDK release ${VERSION} failed (attempt ${{ github.run_attempt }}). Run: ${run_url}" \
+            '{"text": $text}')
+          curl -sS -X POST -H 'Content-type: application/json' --data "$payload" "${{ secrets.SLACK_WEBHOOK }}"
