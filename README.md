@@ -56,6 +56,33 @@ Iterable's React Native SDK relies on:
       use_frameworks! :linkage => :dynamic
       ```
     - **Xcode 27:** `run-ios` needs `@react-native-community/cli` **20.2.0+** so it opens Device Hub (`DeviceHub.app`) instead of `Simulator.app`. `xcode-select` must point at the Xcode you are using when more than one version is installed. Xcode 27 also refuses CocoaPods resource-bundle targets below iOS **15.0** (this SDK's `IterableSDKResources` bundle still inherits **12.0** from Iterable-iOS-SDK, including **6.7.5** pinned by RN **3.2.0**). Lift generated Pods targets to **15.1** in the app `Podfile` `post_install` — see this repo's `example/ios/Podfile`. That is a **host** workaround until Iterable's iOS SDK publishes a ≥ 15.1 minimum and this SDK depends on it. It does not change the published Iterable iOS support range.
+    - **Push completion handlers (Iterable-iOS-SDK 6.7.5):** If the native SDK is not initialized when a push arrives, `IterableAppIntegration` may not call your completion handlers. Pass **`nil`** for the integration method's completion-handler parameter (as Iterable's native iOS SDK docs describe for passing a nil value) and call the system completion handler yourself. **Tradeoff:** your app typically invokes the fetch/response completion handler immediately after forwarding the notification (for example `completionHandler(.noData)`), so iOS may grant less background execution time for Iterable's own work than when the native SDK holds the handler and calls it when finished.
+
+      ```swift
+      func application(
+        _ application: UIApplication,
+        didReceiveRemoteNotification userInfo: [AnyHashable: Any],
+        fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
+      ) {
+        IterableAppIntegration.application(
+          application,
+          didReceiveRemoteNotification: userInfo,
+          fetchCompletionHandler: nil)
+        completionHandler(.noData)
+      }
+
+      func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        didReceive response: UNNotificationResponse,
+        withCompletionHandler completionHandler: @escaping () -> Void
+      ) {
+        IterableAppIntegration.userNotificationCenter(
+          center,
+          didReceive: response,
+          withCompletionHandler: nil)
+        completionHandler()
+      }
+      ```
 
 - **Android**
     - [`minSdkVersion` 21+, `compileSdkVersion` 31+](https://medium.com/androiddevelopers/picking-your-compilesdkversion-minsdkversion-targetsdkversion-a098a0341ebd)

@@ -889,6 +889,10 @@ extension ReactIterableAPI: IterableAuthDelegate {
   public func onAuthTokenRequested(completion: @escaping AuthTokenRetrievalHandler) {
     ITBInfo()
     DispatchQueue.global(qos: .userInitiated).async {
+      self.passedAuthToken = nil
+      while self.authHandlerSemaphore.wait(timeout: .now()) == .success {
+        // Drain stale signals from a prior timed-out auth request.
+      }
       self.delegate?.sendEvent(
         withName: EventName.handleAuthCalled.rawValue,
         body: nil as Any?)
