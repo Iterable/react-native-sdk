@@ -6,6 +6,8 @@
 
 ### Fixes
 
+- Fixed stale JWT handoff when `authHandler` fails, times out, or returns an unexpected value. The JS bridge now calls `passAlongAuthToken(null)` on rejection, unexpected results, and synchronous throws, and clears zombie invocations from the pending queue. Android and iOS native auth waits discard any token (and, on iOS, any pending semaphore signal) from a prior request before starting a new one, so a timed-out wait no longer returns a previous token.
+- Documented that iOS apps must call push notification completion handlers themselves when integrating `IterableAppIntegration` with Iterable-iOS-SDK 6.7.5 (native SDK may omit the handler when not initialized). See the example app `AppDelegate` and README.
 - Fixed `Iterable.trackPushOpenWithCampaignId` on Android so the `appAlreadyRunning` argument is forwarded to the native SDK instead of always being sent as `false`.
 - `Iterable.inAppManager.showMessage` now rejects on iOS when the message id is empty or no longer in the native queue, matching Android. Previously the promise never settled.
 

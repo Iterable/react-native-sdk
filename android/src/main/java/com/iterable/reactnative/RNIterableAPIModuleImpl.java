@@ -702,6 +702,7 @@ public class RNIterableAPIModuleImpl implements IterableUrlHandler, IterableCust
     @Override
     public String onAuthTokenRequested() {
         IterableLogger.printInfo();
+        passedAuthToken = null;
 
         try {
             authHandlerCallbackLatch = new CountDownLatch(1);

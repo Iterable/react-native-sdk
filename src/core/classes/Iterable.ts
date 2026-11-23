@@ -1220,7 +1220,18 @@ export class Iterable {
 
         // MOB-10423: Check if we can use chain operator (?.) here instead
         // Asks frontend of the client/app to pass authToken
-        Iterable.savedConfig.authHandler!()
+        let authHandlerPromise: ReturnType<
+          NonNullable<typeof Iterable.savedConfig.authHandler>
+        >;
+        try {
+          authHandlerPromise = Iterable.savedConfig.authHandler!();
+        } catch (e) {
+          IterableLogger?.log(e);
+          Iterable.authManager.passAlongAuthToken(null);
+          removeInvocation();
+          return;
+        }
+        authHandlerPromise
           .then((promiseResult) => {
             // Promise result can be either just String OR of type AuthResponse.
             // If type AuthResponse, authToken will be parsed looking for
@@ -1300,11 +1311,13 @@ export class Iterable {
               IterableLogger?.log(
                 'Unexpected promise returned. Auth token expects promise of String, null, undefined, or AuthResponse type.'
               );
+              Iterable.authManager.passAlongAuthToken(null);
               removeInvocation();
             }
           })
           .catch((e) => {
             IterableLogger?.log(e);
+            Iterable.authManager.passAlongAuthToken(null);
             removeInvocation();
           });
       });

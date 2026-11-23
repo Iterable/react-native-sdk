@@ -59,7 +59,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
     ITBInfo()
-    IterableAppIntegration.application(application, didReceiveRemoteNotification: userInfo, fetchCompletionHandler: completionHandler)
+    IterableAppIntegration.application(
+      application,
+      didReceiveRemoteNotification: userInfo,
+      fetchCompletionHandler: nil)
+    completionHandler(.noData)
   }
 
   func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
@@ -124,6 +128,10 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 
   // The method will be called on the delegate when the user responded to the notification by opening the application, dismissing the notification or choosing a UNNotificationAction. The delegate must be set before the application returns from applicationDidFinishLaunching:.
   public func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-    IterableAppIntegration.userNotificationCenter(center, didReceive: response, withCompletionHandler: completionHandler)
+    IterableAppIntegration.userNotificationCenter(
+      center,
+      didReceive: response,
+      withCompletionHandler: nil)
+    completionHandler()
   }
 }

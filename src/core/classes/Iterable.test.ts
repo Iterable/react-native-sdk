@@ -1164,7 +1164,7 @@ describe('Iterable', () => {
         });
       });
 
-      it('should call authHandler when handleAuthCalled event is emitted and returns an unexpected response', () => {
+      it('should call authHandler when handleAuthCalled event is emitted and returns an unexpected response', async () => {
         // sets up event emitter
         const nativeEmitter = new NativeEventEmitter();
         nativeEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
@@ -1176,32 +1176,124 @@ describe('Iterable', () => {
             | string
             | IterableAuthResponse);
         });
+        const logSpy = jest.spyOn(IterableLogger, 'log');
         // initialize Iterable object
         Iterable.initialize('apiKey', config);
         // GIVEN auth handler returns unexpected response
         // WHEN handleAuthCalled event is emitted
         nativeEmitter.emit(IterableEventName.handleAuthCalled);
-        // THEN error is logged (we can't easily test console.log, but we can verify no crash)
-        expect(MockRNIterableAPI.passAlongAuthToken).not.toBeCalled();
+        // THEN passAlongAuthToken(null) notifies native and the invocation is removed
+        await new Promise((resolve) => setTimeout(resolve, 0));
+        expect(MockRNIterableAPI.passAlongAuthToken).toHaveBeenCalledTimes(1);
+        expect(MockRNIterableAPI.passAlongAuthToken).toHaveBeenCalledWith(null);
+        const unexpectedLog = logSpy.mock.calls.find(
+          (args) =>
+            typeof args[0] === 'string' &&
+            args[0].includes('Unexpected promise returned')
+        );
+        expect(unexpectedLog).toBeDefined();
+        logSpy.mockRestore();
       });
 
-      it('should call authHandler when handleAuthCalled event is emitted and rejects the promise', () => {
+      it('should call authHandler when handleAuthCalled event is emitted and rejects the promise', async () => {
         // sets up event emitter
         const nativeEmitter = new NativeEventEmitter();
         nativeEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
         // sets up config file and authHandler function
         const config = new IterableConfig();
         config.logReactNativeSdkCalls = false;
+        const authError = new Error('Auth failed');
         config.authHandler = jest.fn(() => {
-          return Promise.reject(new Error('Auth failed'));
+          return Promise.reject(authError);
         });
+        const logSpy = jest.spyOn(IterableLogger, 'log');
         // initialize Iterable object
         Iterable.initialize('apiKey', config);
         // GIVEN auth handler rejects promise
         // WHEN handleAuthCalled event is emitted
         nativeEmitter.emit(IterableEventName.handleAuthCalled);
-        // THEN error is logged (we can't easily test console.log, but we can verify no crash)
-        expect(MockRNIterableAPI.passAlongAuthToken).not.toBeCalled();
+        // THEN passAlongAuthToken(null) notifies native and the invocation is removed
+        await new Promise((resolve) => setTimeout(resolve, 0));
+        expect(MockRNIterableAPI.passAlongAuthToken).toHaveBeenCalledTimes(1);
+        expect(MockRNIterableAPI.passAlongAuthToken).toHaveBeenCalledWith(null);
+        expect(logSpy).toHaveBeenCalledWith(authError);
+        logSpy.mockRestore();
+      });
+
+      it('should pass null to native when authHandler throws synchronously', async () => {
+        const nativeEmitter = new NativeEventEmitter();
+        nativeEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
+        nativeEmitter.removeAllListeners(
+          IterableEventName.handleAuthSuccessCalled
+        );
+
+        const config = new IterableConfig();
+        config.logReactNativeSdkCalls = false;
+
+        const successCallback2 = jest.fn();
+        const authResponse2 = new IterableAuthResponse();
+        authResponse2.authToken = 'after-sync-throw';
+        authResponse2.successCallback = successCallback2;
+
+        let callCount = 0;
+        config.authHandler = jest.fn(() => {
+          callCount += 1;
+          if (callCount === 1) {
+            throw new Error('sync auth failure');
+          }
+          return Promise.resolve(authResponse2);
+        });
+
+        Iterable.initialize('apiKey', config);
+        nativeEmitter.emit(IterableEventName.handleAuthCalled);
+        expect(MockRNIterableAPI.passAlongAuthToken).toBeCalledWith(null);
+
+        nativeEmitter.emit(IterableEventName.handleAuthCalled);
+        await new Promise((resolve) => setTimeout(resolve, 0));
+        nativeEmitter.emit(IterableEventName.handleAuthSuccessCalled);
+
+        return TestHelper.delayed(50, () => {
+          expect(successCallback2).toBeCalled();
+        });
+      });
+
+      it('should route the next native success to the next invocation after unexpected auth result', async () => {
+        const nativeEmitter = new NativeEventEmitter();
+        nativeEmitter.removeAllListeners(IterableEventName.handleAuthCalled);
+        nativeEmitter.removeAllListeners(
+          IterableEventName.handleAuthSuccessCalled
+        );
+
+        const config = new IterableConfig();
+        config.logReactNativeSdkCalls = false;
+
+        const successCallback2 = jest.fn();
+        const authResponse2 = new IterableAuthResponse();
+        authResponse2.authToken = 'recovery-token';
+        authResponse2.successCallback = successCallback2;
+
+        let callCount = 0;
+        config.authHandler = jest.fn(() => {
+          callCount += 1;
+          if (callCount === 1) {
+            return Promise.resolve({ bad: true } as unknown as IterableAuthResponse);
+          }
+          return Promise.resolve(authResponse2);
+        });
+
+        Iterable.initialize('apiKey', config);
+
+        nativeEmitter.emit(IterableEventName.handleAuthCalled);
+        await new Promise((resolve) => setTimeout(resolve, 0));
+        expect(MockRNIterableAPI.passAlongAuthToken).toHaveBeenCalledWith(null);
+
+        nativeEmitter.emit(IterableEventName.handleAuthCalled);
+        await new Promise((resolve) => setTimeout(resolve, 0));
+        nativeEmitter.emit(IterableEventName.handleAuthSuccessCalled);
+
+        return TestHelper.delayed(50, () => {
+          expect(successCallback2).toBeCalled();
+        });
       });
     });
   });
